@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -38,11 +38,14 @@ import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.CreateFFTFilterMemory;
 import net.imglib2.Point;
+import net.imglib2.RandomAccess;
 import net.imglib2.algorithm.region.hypersphere.HyperSphere;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.type.Type;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
 import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.type.numeric.real.FloatType;
 
 import org.junit.Test;
@@ -179,4 +182,55 @@ public class ConvolveTest extends AbstractOpTest {
 			value.setReal(1);
 		}
 	}
+	
+	/** tests fft based convolve */
+	@Test
+	@SuppressWarnings("unchecked")
+	public void testCreateAndConvolvePoints() {
+		
+		final int xSize=128;
+		final int ySize=128;
+		final int zSize=128;
+		
+		int[] size = new int[] { xSize, ySize, zSize };
+		
+		Img<DoubleType> phantom=(Img<DoubleType>)ops.create().img(size, new DoubleType());
+
+		RandomAccess<DoubleType> randomAccess=phantom.randomAccess();
+
+		randomAccess.setPosition(new long[]{xSize/2, ySize/2, zSize/2});
+		randomAccess.get().setReal(255.0);
+		
+		randomAccess.setPosition(new long[]{xSize/4, ySize/4, zSize/4});
+		randomAccess.get().setReal(255.0);
+
+		Point location = new Point(phantom.numDimensions());
+		location.setPosition(new long[]{3*xSize/4, 3*ySize/4, 3*zSize/4});
+
+		HyperSphere<DoubleType> hyperSphere = new HyperSphere<DoubleType>(phantom, location, 5);
+				
+		for (DoubleType value : hyperSphere) {
+			value.setReal(16);
+		}
+		
+		// create psf using the gaussian kernel op (alternatively PSF could be an input to the script)
+		Img<DoubleType> psf=(Img<DoubleType>)ops.create().kernelGauss(new long[]{5, 5, 5});
+
+		// convolve psf with phantom
+		Img<DoubleType> convolved=ops.filter().convolve(phantom, psf);
+		
+		DoubleType sum = new DoubleType();
+		DoubleType max = new DoubleType();
+		DoubleType min = new DoubleType();
+		
+		ops.stats().sum(sum, convolved);
+		ops.stats().max(max, convolved);
+		ops.stats().min(min, convolved);
+		
+		assertEquals(sum.getRealDouble(), 8750.00, 0.001);
+		assertEquals(max.getRealDouble(), 3.155, 0.001);
+		assertEquals(min.getRealDouble(), 2.978E-7, 0.001);
+		
+	}
+	
 }

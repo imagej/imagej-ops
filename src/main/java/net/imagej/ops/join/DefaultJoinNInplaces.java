@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -34,31 +34,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractInplaceOp;
-import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Joins a list of {@link InplaceOp}s.
+ * Joins a list of {@link UnaryInplaceOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
 @Plugin(type = Ops.Join.class)
-public class DefaultJoinNInplaces<A> extends AbstractInplaceOp<A> implements
+public class DefaultJoinNInplaces<A> extends AbstractUnaryInplaceOp<A> implements
 	JoinNInplaces<A>
 {
 
 	@Parameter
-	private List<? extends InplaceOp<A>> ops;
+	private List<? extends UnaryInplaceOp<A>> ops;
 
-	// -- InplaceOp methods --
+	// -- UnaryInplaceOp methods --
 
 	@Override
 	public void mutate(final A input) {
-		for (final InplaceOp<A> inplace : getOps()) {
+		for (final UnaryInplaceOp<A> inplace : getOps()) {
 			inplace.mutate(input);
 		}
 	}
@@ -66,12 +66,12 @@ public class DefaultJoinNInplaces<A> extends AbstractInplaceOp<A> implements
 	// -- JoinNOps methods --
 
 	@Override
-	public void setOps(final List<? extends InplaceOp<A>> ops) {
+	public void setOps(final List<? extends UnaryInplaceOp<A>> ops) {
 		this.ops = ops;
 	}
 
 	@Override
-	public List<? extends InplaceOp<A>> getOps() {
+	public List<? extends UnaryInplaceOp<A>> getOps() {
 		return ops;
 	}
 
@@ -81,8 +81,8 @@ public class DefaultJoinNInplaces<A> extends AbstractInplaceOp<A> implements
 	public DefaultJoinNInplaces<A> getIndependentInstance() {
 		final DefaultJoinNInplaces<A> joiner = new DefaultJoinNInplaces<>();
 
-		final ArrayList<InplaceOp<A>> opsCopy = new ArrayList<>();
-		for (final InplaceOp<A> func : getOps()) {
+		final ArrayList<UnaryInplaceOp<A>> opsCopy = new ArrayList<>();
+		for (final UnaryInplaceOp<A> func : getOps()) {
 			opsCopy.add(func.getIndependentInstance());
 		}
 

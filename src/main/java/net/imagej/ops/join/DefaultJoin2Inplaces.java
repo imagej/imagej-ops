@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -31,47 +31,47 @@
 package net.imagej.ops.join;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractInplaceOp;
-import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Joins two {@link InplaceOp}s.
+ * Joins two {@link UnaryInplaceOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Ops.Join.class)
-public class DefaultJoin2Inplaces<A> extends AbstractInplaceOp<A> implements
+public class DefaultJoin2Inplaces<A> extends AbstractUnaryInplaceOp<A> implements
 	Join2Inplaces<A>
 {
 
 	@Parameter
-	private InplaceOp<A> first;
+	private UnaryInplaceOp<A> first;
 
 	@Parameter
-	private InplaceOp<A> second;
+	private UnaryInplaceOp<A> second;
 
 	// -- Join2Ops methods --
 
 	@Override
-	public InplaceOp<A> getFirst() {
+	public UnaryInplaceOp<A> getFirst() {
 		return first;
 	}
 
 	@Override
-	public void setFirst(final InplaceOp<A> first) {
+	public void setFirst(final UnaryInplaceOp<A> first) {
 		this.first = first;
 	}
 
 	@Override
-	public InplaceOp<A> getSecond() {
+	public UnaryInplaceOp<A> getSecond() {
 		return second;
 	}
 
 	@Override
-	public void setSecond(final InplaceOp<A> second) {
+	public void setSecond(final UnaryInplaceOp<A> second) {
 		this.second = second;
 	}
 

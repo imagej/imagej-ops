@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@ package net.imagej.ops.threshold.apply;
 import java.util.Comparator;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
 import net.imagej.ops.threshold.ApplyThreshold;
 import net.imglib2.type.logic.BitType;
 
@@ -41,26 +41,24 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Applies a threshold value to the given object using the specified comparator,
- * producing a {@link BitType} set to 1 iff the object compares above the
- * threshold.
+ * Applies a threshold value (the second input) to the given object using the
+ * specified comparator, producing a {@link BitType} set to 1 iff the object
+ * compares above the threshold.
  *
  * @author Curtis Rueden
  */
 @Plugin(type = Ops.Threshold.Apply.class)
-public class ApplyThresholdComparator<T> extends AbstractUnaryComputerOp<T, BitType>
-	implements ApplyThreshold<T, BitType>
+public class ApplyThresholdComparator<T> extends
+	AbstractBinaryComputerOp<T, T, BitType> implements
+	ApplyThreshold<T, BitType>
 {
-
-	@Parameter
-	private T threshold;
 
 	@Parameter
 	private Comparator<? super T> comparator;
 
 	@Override
-	public void compute1(final T input, final BitType output) {
-		output.set(comparator.compare(input, threshold) > 0);
+	public void compute2(final T input1, final T input2, final BitType output) {
+		output.set(comparator.compare(input1, input2) > 0);
 	}
 
 }

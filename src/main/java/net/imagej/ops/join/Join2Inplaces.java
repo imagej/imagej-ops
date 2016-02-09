@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,17 +30,17 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
 /**
- * A join operation which joins two {@link InplaceOp}s. The joined
- * {@link InplaceOp} mutates each argument using the first {@link InplaceOp}
- * followed by the second {@link InplaceOp}.
+ * A join operation which joins two {@link UnaryInplaceOp}s. The joined
+ * {@link UnaryInplaceOp} mutates each argument using the first {@link UnaryInplaceOp}
+ * followed by the second {@link UnaryInplaceOp}.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface Join2Inplaces<A> extends InplaceOp<A>,
-	Join2Ops<InplaceOp<A>, InplaceOp<A>>
+public interface Join2Inplaces<A> extends UnaryInplaceOp<A>,
+	Join2Ops<UnaryInplaceOp<A>, UnaryInplaceOp<A>>
 {
 
 	@Override

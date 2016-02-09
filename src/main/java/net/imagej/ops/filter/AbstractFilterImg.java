@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@
 
 package net.imagej.ops.filter;
 
-import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
@@ -52,7 +52,7 @@ import org.scijava.plugin.Parameter;
  * @param <K>
  */
 public abstract class AbstractFilterImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
-	extends AbstractUnaryHybridOp<Img<I>, Img<O>>
+	extends AbstractUnaryHybridCF<Img<I>, Img<O>>
 {
 
 	/**

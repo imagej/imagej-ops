@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -72,11 +72,13 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 	public void assertComplete(final String namespace,
 		final Class<?> namespaceClass)
 	{
+		boolean success = true; // whether the test will succeed
 		for (final String op : ops.ops()) {
 			final String ns = OpUtils.getNamespace(op);
 			if (!MiscUtils.equal(namespace, ns)) continue;
-			assertComplete(namespaceClass, op);
+			if (!checkComplete(namespaceClass, op)) success = false;
 		}
+		assertTrue("Coverage mismatch", success);
 	}
 
 	/**
@@ -113,7 +115,8 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 	 * @see GlobalNamespaceTest Usage examples for global namespace ops.
 	 * @see net.imagej.ops.math.MathNamespaceTest Usage examples for math ops.
 	 */
-	public void assertComplete(final Class<?> namespaceClass, final String qName)
+	public boolean checkComplete(final Class<?> namespaceClass,
+		final String qName)
 	{
 		final String namespace = OpUtils.getNamespace(qName);
 		final String opName = OpUtils.stripNamespace(qName);
@@ -147,7 +150,7 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		}
 
 		// cross-check them!
-		assertComplete(namespace, methods, opList);
+		return checkComplete(namespace, methods, opList);
 	}
 
 	/**
@@ -168,13 +171,13 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 	 * @param methods List of methods.
 	 * @param infos List of ops.
 	 */
-	public void assertComplete(final String namespace,
+	public boolean checkComplete(final String namespace,
 		final Collection<Method> methods,
 		final Collection<? extends OpInfo> infos)
 	{
 		final OpCoverSet coverSet = new OpCoverSet();
 
-		boolean success = true; // whether the test will succeed
+		boolean success = true;
 		for (final Method method : methods) {
 			final String name = method.getName();
 			final String qName = namespace == null ? name : namespace + "." + name;
@@ -214,7 +217,7 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 			success = false;
 		}
 
-		assertTrue("Coverage mismatch", success);
+		return success;
 	}
 
 	// -- Helper methods --

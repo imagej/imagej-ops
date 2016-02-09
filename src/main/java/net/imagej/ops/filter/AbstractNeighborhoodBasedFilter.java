@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,18 +30,18 @@
 
 package net.imagej.ops.filter;
 
-import org.scijava.plugin.Parameter;
-
 import net.imagej.ops.Ops.Map;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
-import net.imagej.ops.special.Computers;
-import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.outofbounds.OutOfBoundsBorderFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.view.Views;
+
+import org.scijava.plugin.Parameter;
 
 public abstract class AbstractNeighborhoodBasedFilter<I, O> extends
 	AbstractUnaryComputerOp<RandomAccessibleInterval<I>, IterableInterval<O>>

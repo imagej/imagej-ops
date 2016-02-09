@@ -1,0 +1,139 @@
+/*
+ * #%L
+ * ImageJ software for multidimensional image processing and analysis.
+ * %%
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
+ * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * %%
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * #L%
+ */
+
+package net.imagej.ops.math;
+
+import net.imagej.ops.Contingent;
+import net.imagej.ops.Ops;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractBinaryHybridCFI;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.type.numeric.NumericType;
+import net.imglib2.util.Intervals;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
+/**
+ * Wrapper class for binary math operations between {@link IterableInterval}s
+ * and write result to {@link IterableInterval}s. 
+ *
+ * @author Leon Yang
+ */
+public final class IIToIIOutputII {
+	
+	private IIToIIOutputII() {
+		// NB: Prevent instantiation of utility class.
+	}
+#foreach ($op in $ops)
+#set ($iface = "Ops.Math.$op.name")
+	
+	@Plugin(type = ${iface}.class, priority = Priority.HIGH_PRIORITY)
+	public static class ${op.name}<T extends NumericType<T>> extends
+		AbstractBinaryHybridCFI<IterableInterval<T>> implements $iface,
+		Contingent
+	{
+
+		private UnaryFunctionOp<IterableInterval<T>, IterableInterval<T>> outputCreator;
+
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		@Override
+		public void initialize() {
+			outputCreator = (UnaryFunctionOp) Functions.unary(ops(),
+				Ops.Create.Img.class, IterableInterval.class, in1(), in1().firstElement()
+					.createVariable());
+		}
+
+		// TODO: extend common abstract base class which implements Contingent
+		// for dimensionality checking.
+
+		@Override
+		public boolean conforms() {
+			if (!Intervals.equalDimensions(in1(), in2())) return false;
+			if (!in1().iterationOrder().equals(in2().iterationOrder())) return false;
+			if (out() == null) return true;
+			return Intervals.equalDimensions(in1(), out()) && in1().iterationOrder()
+				.equals(out().iterationOrder());
+		}
+
+		@Override
+		public IterableInterval<T> createOutput(final IterableInterval<T> input1,
+			final IterableInterval<T> input2)
+		{
+			return outputCreator.compute1(input1);
+		}
+
+		@Override
+		public void compute2(final IterableInterval<T> input1,
+			final IterableInterval<T> input2, final IterableInterval<T> output)
+		{
+			final Cursor<T> in1Cursor = input1.cursor();
+			final Cursor<T> in2Cursor = input2.cursor();
+			final Cursor<T> outCursor = output.cursor();
+			while (in1Cursor.hasNext()) {
+				outCursor.next().set(in1Cursor.next());
+				outCursor.get().${op.function}(in2Cursor.next());
+			}
+		}
+
+		@Override
+		public void mutate1(final IterableInterval<T> arg,
+			final IterableInterval<T> in)
+		{
+			final Cursor<T> in1Cursor = arg.cursor();
+			final Cursor<T> in2Cursor = in.cursor();
+			while (in1Cursor.hasNext()) {
+				in1Cursor.next().${op.function}(in2Cursor.next());
+			}
+		}
+
+		@Override
+		public void mutate2(final IterableInterval<T> in,
+			final IterableInterval<T> arg)
+		{
+			final T tmp = in.firstElement().createVariable();
+			final Cursor<T> in1Cursor = in.cursor();
+			final Cursor<T> in2Cursor = arg.cursor();
+			while (in1Cursor.hasNext()) {
+				tmp.set(in1Cursor.next());
+				tmp.${op.function}(in2Cursor.next());
+				in2Cursor.get().set(tmp);
+			}
+		}
+
+		@Override
+		public ${op.name}<T> getIndependentInstance() {
+			return this;
+		}
+	}
+#end
+}

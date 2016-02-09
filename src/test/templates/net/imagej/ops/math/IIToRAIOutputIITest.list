@@ -1,0 +1,13 @@
+# Unit tests for binary arithmetic ops with IterableIntervals and output to
+# IterableIntervals.
+
+[IIToRAIOutputIITest.java]
+
+ops = ```
+[
+	[name: "Add",      function: "add"],
+	[name: "Subtract", function: "sub"], 
+	[name: "Multiply", function: "mul"], 
+	[name: "Divide",   function: "div"]
+]
+```

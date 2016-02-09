@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -37,11 +37,11 @@ import java.util.ArrayList;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.OpInfo;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.Hybrids;
-import net.imagej.ops.special.UnaryFunctionOp;
-import net.imagej.ops.special.UnaryHybridOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imagej.ops.special.hybrid.Hybrids;
+import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -66,7 +66,7 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 
 	private UnaryFunctionOp<Img<ByteType>, DoubleType> func;
 
-	private UnaryHybridOp<Img<ByteType>, DoubleType> hybrid;
+	private UnaryHybridCF<Img<ByteType>, DoubleType> hybrid;
 
 	@Before
 	public void initCustomOps() {
@@ -79,7 +79,7 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 		imgB = generateByteArrayTestImg(true, new long[] { 10, 10 });
 
 		func = Functions.unary(env, Ops.Stats.Min.class, DoubleType.class, imgA);
-		hybrid = Hybrids.unary(env, Ops.Stats.Min.class, DoubleType.class, imgA);
+		hybrid = Hybrids.unaryCF(env, Ops.Stats.Min.class, DoubleType.class, imgA);
 	}
 
 	@Test
@@ -107,7 +107,7 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 	}
 
 	// some specialized ops to track number of counts
-	public static class MyMin extends AbstractUnaryHybridOp<Img<ByteType>, DoubleType>
+	public static class MyMin extends AbstractUnaryHybridCF<Img<ByteType>, DoubleType>
 		implements Ops.Stats.Min
 	{
 

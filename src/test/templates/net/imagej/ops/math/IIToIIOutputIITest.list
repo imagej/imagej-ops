@@ -1,0 +1,12 @@
+# Unit tests for binary arithmetic ops with IIs and RAIs and output to IIs.
+
+[IIToIIOutputIITest.java]
+
+ops = ```
+[
+	[name: "Add",      function: "add"],
+	[name: "Subtract", function: "sub"], 
+	[name: "Multiply", function: "mul"], 
+	[name: "Divide",   function: "div"]
+]
+```

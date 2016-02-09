@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -27,14 +27,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.features.tamura2d;
 
 import java.util.ArrayList;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.image.histogram.HistogramCreate;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.gradient.PartialDerivative;
@@ -49,35 +50,42 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * 
  * Implementation of Tamura's Directionality Feature
  * 
  * @author Andreas Graumann, University of Konstanz
- *
  * @param <I>
  * @param <O>
  */
 @SuppressWarnings("rawtypes")
-@Plugin(type = Ops.Tamura.Directionality.class, label = "Tamura 2D: Directionality")
+@Plugin(type = Ops.Tamura.Directionality.class,
+	label = "Tamura 2D: Directionality")
 public class DefaultDirectionalityFeature<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractTamuraFeature<I, O> implements Ops.Tamura.Directionality {
+	extends AbstractTamuraFeature<I, O> implements Ops.Tamura.Directionality
+{
 
 	@Parameter(required = true)
 	private int histogramSize = 16;
 
 	private UnaryFunctionOp<Iterable, Histogram1d> histOp;
 	private UnaryFunctionOp<Iterable, RealType> stdOp;
+	private UnaryFunctionOp<RandomAccessibleInterval<I>, Img<I>> imgCreator;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize() {
-		stdOp = Functions.unary(ops(), Ops.Stats.StdDev.class, RealType.class, Iterable.class);
+		stdOp = Functions.unary(ops(), Ops.Stats.StdDev.class, RealType.class,
+			Iterable.class);
 		histOp = Functions.unary(ops(), HistogramCreate.class, Histogram1d.class,
 			Iterable.class, histogramSize);
+		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+			Img.class, in(), Util.getTypeFromInterval(in()));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void compute1(final RandomAccessibleInterval<I> input, final O output) {
+	public void compute1(final RandomAccessibleInterval<I> input,
+		final O output)
+	{
 
 		// List to store all directions occuring within the image on borders
 		ArrayList<DoubleType> dirList = new ArrayList<>();
@@ -87,12 +95,14 @@ public class DefaultDirectionalityFeature<I extends RealType<I>, O extends RealT
 		input.dimensions(dims);
 
 		// create image for derivations in x and y direction
-		Img<I> derX = ops().create().img(input, Util.getTypeFromInterval(input));
-		Img<I> derY = ops().create().img(input, Util.getTypeFromInterval(input));
+		Img<I> derX = imgCreator.compute1(input);
+		Img<I> derY = imgCreator.compute1(input);
 
 		// calculate derivations in x and y direction
-		PartialDerivative.gradientCentralDifference2(Views.extendMirrorSingle(input), derX, 0);
-		PartialDerivative.gradientCentralDifference2(Views.extendMirrorSingle(input), derY, 1);
+		PartialDerivative.gradientCentralDifference2(Views.extendMirrorSingle(
+			input), derX, 0);
+		PartialDerivative.gradientCentralDifference2(Views.extendMirrorSingle(
+			input), derY, 1);
 
 		// calculate theta at each position: theta = atan(dX/dY) + pi/2
 		Cursor<I> cX = derX.cursor();

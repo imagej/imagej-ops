@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@
 package net.imagej.ops.create.img;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.Interval;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
@@ -62,11 +62,17 @@ public class CreateImgFromInterval<T extends Type<T>> extends
 	@Parameter(required = false)
 	private ImgFactory<T> fac;
 
+	private DefaultCreateImg<T> imgCreator;
+
 	@SuppressWarnings("unchecked")
 	@Override
+	public void initialize() {
+		imgCreator = ops().op(DefaultCreateImg.class, in(), outType, fac);
+	}
+
+	@Override
 	public Img<T> compute1(final Interval interval) {
-		Img<T> output =
-			(Img<T>) ops().run(DefaultCreateImg.class, interval, outType, fac);
+		Img<T> output = imgCreator.compute1(interval);
 		long[] min = new long[interval.numDimensions()];
 		interval.min(min);
 

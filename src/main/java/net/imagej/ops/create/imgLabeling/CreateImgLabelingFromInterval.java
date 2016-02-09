@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,15 +30,16 @@
 
 package net.imagej.ops.create.imgLabeling;
 
-import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.Output;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.Interval;
+import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.type.numeric.IntegerType;
 
-import org.scijava.ItemIO;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -53,14 +54,9 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.ImgLabeling.class, priority = Priority.HIGH_PRIORITY)
 public class CreateImgLabelingFromInterval<L, T extends IntegerType<T>> extends
-	AbstractOp implements Ops.Create.ImgLabeling, Output<ImgLabeling<L, T>>
+	AbstractUnaryFunctionOp<Interval, ImgLabeling<L, T>> implements
+	Ops.Create.ImgLabeling
 {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private ImgLabeling<L, T> output;
-
-	@Parameter
-	private Interval interval;
 
 	@Parameter(required = false)
 	private T outType;
@@ -71,20 +67,21 @@ public class CreateImgLabelingFromInterval<L, T extends IntegerType<T>> extends
 	@Parameter(required = false)
 	private int maxNumLabelSets;
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void run() {
+	private UnaryFunctionOp<Interval, Img<T>> imgCreator;
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void initialize() {
 		if (outType == null) {
 			outType = (T) ops().create().integerType(maxNumLabelSets);
 		}
-
-		output = new ImgLabeling<>(ops().create().img(interval, outType, fac));
+		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+			Img.class, in(), outType, fac);
 	}
 
 	@Override
-	public ImgLabeling<L, T> out() {
-		return output;
+	public ImgLabeling<L, T> compute1(final Interval input) {
+		return new ImgLabeling<>(imgCreator.compute1(input));
 	}
 
 }

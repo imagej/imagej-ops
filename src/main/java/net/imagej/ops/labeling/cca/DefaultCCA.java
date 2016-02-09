@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -34,7 +34,10 @@ import java.util.Iterator;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.labeling.ConnectedComponents;
 import net.imglib2.algorithm.labeling.ConnectedComponents.StructuringElement;
@@ -55,7 +58,7 @@ import org.scijava.thread.ThreadService;
 @Plugin(type = Ops.Labeling.CCA.class, priority = 1.0)
 public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 	extends
-	AbstractUnaryHybridOp<RandomAccessibleInterval<T>, ImgLabeling<L, I>>
+	AbstractUnaryHybridCF<RandomAccessibleInterval<T>, ImgLabeling<L, I>>
 	implements Contingent, Ops.Labeling.CCA
 {
 
@@ -67,6 +70,15 @@ public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 
 	@Parameter(required = false)
 	private Iterator<L> labelGenerator;
+
+	private UnaryFunctionOp<Interval, ImgLabeling<L, I>> imgLabelingCreator;
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public void initialize() {
+		imgLabelingCreator = (UnaryFunctionOp) Functions.unary(ops(),
+			Ops.Create.ImgLabeling.class, ImgLabeling.class, in());
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -82,11 +94,10 @@ public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 	}
 
 	@Override
-	public ImgLabeling<L, I>
-		createOutput(final RandomAccessibleInterval<T> input)
+	public ImgLabeling<L, I> createOutput(
+		final RandomAccessibleInterval<T> input)
 	{
-		// HACK: For Java 6 compiler.
-		return ops().create().<L, I> imgLabeling(input);
+		return imgLabelingCreator.compute1(input);
 	}
 
 	@Override

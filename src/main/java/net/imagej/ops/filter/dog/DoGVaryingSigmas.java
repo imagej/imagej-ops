@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -32,9 +32,9 @@ package net.imagej.ops.filter.dog;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.chain.HybridViaHybrid;
-import net.imagej.ops.chain.RAIs;
-import net.imagej.ops.special.UnaryHybridOp;
+import net.imagej.ops.special.chain.HybridViaHybrid;
+import net.imagej.ops.special.chain.RAIs;
+import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
@@ -72,7 +72,7 @@ public class DoGVaryingSigmas<T extends NumericType<T> & NativeType<T>>
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> fac;
 
 	@Override
-	public UnaryHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	public UnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 		createWorker(final RandomAccessibleInterval<T> t)
 	{
 		final T type = Util.getTypeFromInterval(t);

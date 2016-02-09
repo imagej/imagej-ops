@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@ package net.imagej.ops.filter.addNoise;
 import java.util.Random;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Parameter;
@@ -62,17 +62,20 @@ public class AddNoiseRealType<I extends RealType<I>, O extends RealType<O>>
 	
 	private Random rng;
 
-	public long getSeed() {
-		return seed;
-	}
-	
-	public void setSeed(final long seed) {
-		this.seed = seed;
-	}
-	
+	// -- UnaryComputerOp methods --
+
 	@Override
 	public void compute1(final I input, final O output) {
 		if (rng == null) rng = new Random(seed);
+		addNoise(input, output, rangeMin, rangeMax, rangeStdDev, rng);
+	}
+
+	// -- Static utility methods --
+
+	public static <I extends RealType<I>, O extends RealType<O>> void addNoise(
+		final I input, final O output, final double rangeMin, final double rangeMax,
+		final double rangeStdDev, final Random rng)
+	{
 		int i = 0;
 		do {
 			final double newVal =

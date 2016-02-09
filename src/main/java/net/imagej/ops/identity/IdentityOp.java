@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -31,13 +31,13 @@
 package net.imagej.ops.identity;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
 /**
  * A typed "identity" function.
  * 
  * @author Curtis Rueden
  */
-public interface IdentityOp<A> extends Ops.Identity, InplaceOp<A> {
+public interface IdentityOp<A> extends Ops.Identity, UnaryInplaceOp<A> {
 	// NB: Marker interface.
 }

@@ -1,0 +1,10 @@
+# Generate MapBinaryComputers.
+
+[MapBinaryComputers.java]
+
+types = ```
+[
+	[name: "IterableInterval",         alias: "II"],
+	[name: "RandomAccessibleInterval", alias: "RAI"],
+]
+```

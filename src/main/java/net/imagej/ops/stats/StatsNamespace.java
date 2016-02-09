@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -279,21 +279,35 @@ public class StatsNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.stats.IterableIntervalSize.class)
+	@OpMethod(op = net.imagej.ops.stats.DefaultQuantile.class)
+	public <T extends RealType<T>, O extends RealType<O>> O quantile(final Iterable<T> in, final double quantile) {
+		final O result =
+			(O) ops().run(net.imagej.ops.stats.DefaultQuantile.class, in, quantile);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.stats.DefaultQuantile.class)
+	public <T extends RealType<T>, O extends RealType<O>> O quantile(final O out, final Iterable<T> in, final double quantile) {
+		final O result =
+			(O) ops().run(net.imagej.ops.stats.DefaultQuantile.class, out, in, quantile);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.stats.IISize.class)
 	public <T extends RealType<T>, O extends RealType<O>> O size(
 		final IterableInterval<T> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.stats.IterableIntervalSize.class, in);
+			(O) ops().run(net.imagej.ops.stats.IISize.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.stats.IterableIntervalSize.class)
+	@OpMethod(op = net.imagej.ops.stats.IISize.class)
 	public <T extends RealType<T>, O extends RealType<O>> O size(final O out,
 		final IterableInterval<T> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.stats.IterableIntervalSize.class, out, in);
+			(O) ops().run(net.imagej.ops.stats.IISize.class, out, in);
 		return result;
 	}
 

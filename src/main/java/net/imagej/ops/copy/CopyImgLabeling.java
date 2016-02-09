@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -32,9 +32,11 @@ package net.imagej.ops.copy;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
-import net.imagej.ops.special.Computers;
-import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelingMapping;
@@ -53,23 +55,26 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Copy.ImgLabeling.class)
 public class CopyImgLabeling<T extends IntegerType<T> & NativeType<T>, L>
-		extends AbstractUnaryHybridOp<ImgLabeling<L, T>, ImgLabeling<L, T>>
+		extends AbstractUnaryHybridCF<ImgLabeling<L, T>, ImgLabeling<L, T>>
 		implements Ops.Copy.ImgLabeling, Contingent {
 	
 	
 	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> raiCopyOp;
 	private UnaryComputerOp<LabelingMapping<L>, LabelingMapping<L>> mappingCopyOp;
+	private UnaryFunctionOp<ImgLabeling<L, T>, ImgLabeling<L, T>> outputCreator;
 
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
 		raiCopyOp = Computers.unary(ops(), Ops.Copy.RAI.class, in().getIndexImg() ,in().getIndexImg());
 		mappingCopyOp = Computers.unary(ops(), Ops.Copy.LabelingMapping.class, in().getMapping(), in().getMapping());
+		outputCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.ImgLabeling.class, ImgLabeling.class, in());
 	}
 	
 	@Override
 	public ImgLabeling<L, T> createOutput(final ImgLabeling<L, T> input) {
-		return ops().create().imgLabeling(input);
+		return outputCreator.compute1(input);
 	}
 
 	

@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,6 @@
 
 package net.imagej.ops;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -54,20 +53,6 @@ public final class OpUtils {
 	}
 
 	// -- Utility methods --
-
-	public static Object run(final Module module) {
-		module.run();
-		return result(module);
-	}
-
-	public static Object result(final Module module) {
-		final List<Object> outputs = new ArrayList<>();
-		for (final ModuleItem<?> output : module.getInfo().outputs()) {
-			final Object value = output.getValue(module);
-			outputs.add(value);
-		}
-		return outputs.size() == 1 ? outputs.get(0) : outputs;
-	}
 
 	public static Object[] args(final Object[] latter, final Object... former) {
 		final Object[] result = new Object[former.length + latter.length];
@@ -198,6 +183,20 @@ public final class OpUtils {
 		return sb.toString();
 	}
 
+	/**
+	 * Gets a string with an analysis of a particular match request failure.
+	 * <p>
+	 * This method is used to generate informative exception messages when no
+	 * matches, or too many matches, are found.
+	 * </p>
+	 * 
+	 * @param candidates The list of candidates from which a match was desired.
+	 * @param matches The list of matching modules.
+	 * @return A multi-line string describing the situation: 1) the type of match
+	 *         failure; 2) the list of matching ops (if any); 3) the request
+	 *         itself; and 4) the list of candidates including status (i.e.,
+	 *         whether it matched, and if not, why not).
+	 */
 	public static <OP extends Op> String matchInfo(
 		final List<OpCandidate<OP>> candidates, final List<Module> matches)
 	{

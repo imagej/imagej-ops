@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -34,7 +34,7 @@ import java.math.BigDecimal;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Convert;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.IntegerType;
@@ -72,7 +72,7 @@ public final class ConvertTypes {
 
 	@Plugin(type = Ops.Convert.Bit.class, name = Ops.Convert.Bit.NAME)
 	public static class ComplexToBit<C extends ComplexType<C>> extends
-		AbstractUnaryHybridOp<C, BitType> implements Convert.Bit
+		AbstractUnaryHybridCF<C, BitType> implements Convert.Bit
 	{
 
 		@Override
@@ -89,7 +89,7 @@ public final class ConvertTypes {
 
 	@Plugin(type = Ops.Convert.Uint2.class, name = Ops.Convert.Uint2.NAME)
 	public static class ComplexToUint2<C extends ComplexType<C>> extends
-		AbstractUnaryHybridOp<C, Unsigned2BitType> implements Convert.Uint2
+		AbstractUnaryHybridCF<C, Unsigned2BitType> implements Convert.Uint2
 	{
 
 		@Override
@@ -107,7 +107,7 @@ public final class ConvertTypes {
 	@Plugin(type = Ops.Convert.Uint2.class, name = Ops.Convert.Uint2.NAME,
 		priority = Priority.HIGH_PRIORITY)
 	public static class IntegerToUint2<T extends IntegerType<T>> extends
-		AbstractUnaryHybridOp<T, Unsigned2BitType> implements Convert.Uint2
+		AbstractUnaryHybridCF<T, Unsigned2BitType> implements Convert.Uint2
 	{
 
 		@Override
@@ -124,7 +124,7 @@ public final class ConvertTypes {
 
 	@Plugin(type = Ops.Convert.Uint4.class, name = Ops.Convert.Uint4.NAME)
 	public static class ComplexToUint4<C extends ComplexType<C>> extends
-		AbstractUnaryHybridOp<C, Unsigned4BitType> implements Convert.Uint4
+		AbstractUnaryHybridCF<C, Unsigned4BitType> implements Convert.Uint4
 	{
 
 		@Override
@@ -142,7 +142,7 @@ public final class ConvertTypes {
 	@Plugin(type = Ops.Convert.Uint4.class, name = Ops.Convert.Uint4.NAME,
 		priority = Priority.HIGH_PRIORITY)
 	public static class IntegerToUint4<T extends IntegerType<T>> extends
-		AbstractUnaryHybridOp<T, Unsigned4BitType> implements Convert.Uint4
+		AbstractUnaryHybridCF<T, Unsigned4BitType> implements Convert.Uint4
 	{
 
 		@Override
@@ -160,7 +160,7 @@ public final class ConvertTypes {
 	@Plugin(type = Ops.Convert.Int8.class, name = Ops.Convert.Int8.NAME,
 		attrs = { @Attr(name = "aliases", value = Ops.Convert.Int8.ALIASES) })
 	public static class ComplexToInt8<C extends ComplexType<C>> extends
-		AbstractUnaryHybridOp<C, ByteType> implements Convert.Int8
+		AbstractUnaryHybridCF<C, ByteType> implements Convert.Int8
 	{
 
 		@Override
@@ -178,7 +178,7 @@ public final class ConvertTypes {
 	@Plugin(type = Ops.Convert.Int8.class, name = Ops.Convert.Int8.NAME,
 		priority = Priority.HIGH_PRIORITY)
 	public static class IntegerToInt8<T extends IntegerType<T>> extends
-		AbstractUnaryHybridOp<T, ByteType> implements Convert.Int8
+		AbstractUnaryHybridCF<T, ByteType> implements Convert.Int8
 	{
 
 		@Override
@@ -196,7 +196,7 @@ public final class ConvertTypes {
 	@Plugin(type = Ops.Convert.Uint8.class, name = Ops.Convert.Uint8.NAME,
 		attrs = { @Attr(name = "aliases", value = Ops.Convert.Uint8.ALIASES) })
 	public static class ComplexToUint8<C extends ComplexType<C>> extends
-		AbstractUnaryHybridOp<C, UnsignedByteType> implements Convert.Uint8
+		AbstractUnaryHybridCF<C, UnsignedByteType> implements Convert.Uint8
 	{
 
 		@Override
@@ -215,7 +215,7 @@ public final class ConvertTypes {
 		priority = Priority.HIGH_PRIORITY, attrs = { @Attr(name = "aliases",
 			value = Ops.Convert.Uint8.ALIASES) })
 	public static class IntegerToUint8<T extends IntegerType<T>> extends
-		AbstractUnaryHybridOp<T, UnsignedByteType> implements Convert.Uint8
+		AbstractUnaryHybridCF<T, UnsignedByteType> implements Convert.Uint8
 	{
 
 		@Override
@@ -232,7 +232,7 @@ public final class ConvertTypes {
 
 	@Plugin(type = Ops.Convert.Uint12.class, name = Ops.Convert.Uint12.NAME)
 	public static class ComplexToUint12<C extends ComplexType<C>> extends
-		AbstractUnaryHybridOp<C, Unsigned12BitType> implements Convert.Uint12
+		AbstractUnaryHybridCF<C, Unsigned12BitType> implements Convert.Uint12
 	{
 
 		@Override
@@ -250,7 +250,7 @@ public final class ConvertTypes {
 	@Plugin(type = Ops.Convert.Uint12.class, name = Ops.Convert.Uint12.NAME,
 		priority = Priority.HIGH_PRIORITY)
 	public static class IntegerToUint12<T extends IntegerType<T>> extends
-		AbstractUnaryHybridOp<T, Unsigned12BitType> implements Convert.Uint12
+		AbstractUnaryHybridCF<T, Unsigned12BitType> implements Convert.Uint12
 	{
 
 		@Override
@@ -268,7 +268,7 @@ public final class ConvertTypes {
 	@Plugin(type = Ops.Convert.Int16.class, name = Ops.Convert.Int16.NAME,
 		attrs = { @Attr(name = "aliases", value = Ops.Convert.Int16.ALIASES) })
 	public static class ComplexToInt16<C extends ComplexType<C>> extends
-		AbstractUnaryHybridOp<C, ShortType> implements Convert.Int16
+		AbstractUnaryHybridCF<C, ShortType> implements Convert.Int16
 	{
 
 		@Override
@@ -286,7 +286,7 @@ public final class ConvertTypes {
 	@Plugin(type = Ops.Convert.Int16.class, name = Ops.Convert.Int16.NAME,
 		priority = Priority.HIGH_PRIORITY)
 	public static class IntegerToInt16<T extends IntegerType<T>> extends
-		AbstractUnaryHybridOp<T, ShortType> implements Convert.Int16
+		AbstractUnaryHybridCF<T, ShortType> implements Convert.Int16
 	{
 
 		@Override
@@ -304,7 +304,7 @@ public final class ConvertTypes {
 	@Plugin(type = Ops.Convert.Uint16.class, name = Ops.Convert.Uint16.NAME,
 		attrs = { @Attr(name = "aliases", value = Ops.Convert.Uint16.ALIASES) })
 	public static class ComplexToUint16<C extends ComplexType<C>> extends
-		AbstractUnaryHybridOp<C, UnsignedShortType> implements Convert.Uint16
+		AbstractUnaryHybridCF<C, UnsignedShortType> implements Convert.Uint16
 	{
 
 		@Override
@@ -323,7 +323,7 @@ public final class ConvertTypes {
 		priority = Priority.HIGH_PRIORITY, attrs = { @Attr(name = "aliases",
 			value = Ops.Convert.Uint16.ALIASES) })
 	public static class IntegerToUint16<T extends IntegerType<T>> extends
-		AbstractUnaryHybridOp<T, UnsignedShortType> implements Convert.Uint16
+		AbstractUnaryHybridCF<T, UnsignedShortType> implements Convert.Uint16
 	{
 
 		@Override
@@ -341,7 +341,7 @@ public final class ConvertTypes {
 	@Plugin(type = Ops.Convert.Int32.class, name = Ops.Convert.Int32.NAME,
 		attrs = { @Attr(name = "aliases", value = Ops.Convert.Int32.ALIASES) })
 	public static class ComplexToInt32<C extends ComplexType<C>> extends
-		AbstractUnaryHybridOp<C, IntType> implements Convert.Int32
+		AbstractUnaryHybridCF<C, IntType> implements Convert.Int32
 	{
 
 		@Override
@@ -360,7 +360,7 @@ public final class ConvertTypes {
 		priority = Priority.HIGH_PRIORITY, attrs = { @Attr(name = "aliases",
 			value = Ops.Convert.Int32.ALIASES) })
 	public static class IntegerToInt32<T extends IntegerType<T>> extends
-		AbstractUnaryHybridOp<T, IntType> implements Convert.Int32
+		AbstractUnaryHybridCF<T, IntType> implements Convert.Int32
 	{
 
 		@Override
@@ -378,7 +378,7 @@ public final class ConvertTypes {
 	@Plugin(type = Ops.Convert.Uint32.class, name = Ops.Convert.Uint32.NAME,
 		attrs = { @Attr(name = "aliases", value = Ops.Convert.Uint32.ALIASES) })
 	public static class ComplexToUint32<C extends ComplexType<C>> extends
-		AbstractUnaryHybridOp<C, UnsignedIntType> implements Convert.Uint32
+		AbstractUnaryHybridCF<C, UnsignedIntType> implements Convert.Uint32
 	{
 
 		@Override
@@ -397,7 +397,7 @@ public final class ConvertTypes {
 		priority = Priority.HIGH_PRIORITY, attrs = { @Attr(name = "aliases",
 			value = Ops.Convert.Uint32.ALIASES) })
 	public static class IntegerToUint32<T extends IntegerType<T>> extends
-		AbstractUnaryHybridOp<T, UnsignedIntType> implements Convert.Uint32
+		AbstractUnaryHybridCF<T, UnsignedIntType> implements Convert.Uint32
 	{
 
 		@Override
@@ -415,7 +415,7 @@ public final class ConvertTypes {
 	@Plugin(type = Ops.Convert.Int64.class, name = Ops.Convert.Int64.NAME,
 		attrs = { @Attr(name = "aliases", value = Ops.Convert.Int64.ALIASES) })
 	public static class ComplexToInt64<C extends ComplexType<C>> extends
-		AbstractUnaryHybridOp<C, LongType> implements Convert.Int64
+		AbstractUnaryHybridCF<C, LongType> implements Convert.Int64
 	{
 
 		@Override
@@ -434,7 +434,7 @@ public final class ConvertTypes {
 		priority = Priority.HIGH_PRIORITY, attrs = { @Attr(name = "aliases",
 			value = Ops.Convert.Int64.ALIASES) })
 	public static class IntegerToInt64<T extends IntegerType<T>> extends
-		AbstractUnaryHybridOp<T, LongType> implements Convert.Int64
+		AbstractUnaryHybridCF<T, LongType> implements Convert.Int64
 	{
 
 		@Override
@@ -452,7 +452,7 @@ public final class ConvertTypes {
 	@Plugin(type = Ops.Convert.Uint64.class, name = Ops.Convert.Uint64.NAME,
 		attrs = { @Attr(name = "aliases", value = Ops.Convert.Uint64.ALIASES) })
 	public static class ComplexToUint64<C extends ComplexType<C>> extends
-		AbstractUnaryHybridOp<C, UnsignedLongType> implements Convert.Uint64
+		AbstractUnaryHybridCF<C, UnsignedLongType> implements Convert.Uint64
 	{
 
 		@Override
@@ -478,7 +478,7 @@ public final class ConvertTypes {
 		priority = Priority.HIGH_PRIORITY, attrs = { @Attr(name = "aliases",
 			value = Ops.Convert.Uint64.ALIASES) })
 	public static class IntegerToUint64<T extends IntegerType<T>> extends
-		AbstractUnaryHybridOp<T, UnsignedLongType> implements Convert.Uint64
+		AbstractUnaryHybridCF<T, UnsignedLongType> implements Convert.Uint64
 	{
 
 		@Override
@@ -495,7 +495,7 @@ public final class ConvertTypes {
 
 	@Plugin(type = Ops.Convert.Uint128.class, name = Ops.Convert.Uint128.NAME)
 	public static class ComplexToUint128<C extends ComplexType<C>> extends
-		AbstractUnaryHybridOp<C, Unsigned128BitType> implements Convert.Uint128
+		AbstractUnaryHybridCF<C, Unsigned128BitType> implements Convert.Uint128
 	{
 
 		@Override
@@ -520,7 +520,7 @@ public final class ConvertTypes {
 	@Plugin(type = Ops.Convert.Uint128.class, name = Ops.Convert.Uint128.NAME,
 		priority = Priority.HIGH_PRIORITY)
 	public static class IntegerToUint128<T extends IntegerType<T>> extends
-		AbstractUnaryHybridOp<T, Unsigned128BitType> implements Convert.Uint128
+		AbstractUnaryHybridCF<T, Unsigned128BitType> implements Convert.Uint128
 	{
 
 		@Override
@@ -538,7 +538,7 @@ public final class ConvertTypes {
 	@Plugin(type = Ops.Convert.Float32.class, name = Ops.Convert.Float32.NAME,
 		attrs = { @Attr(name = "aliases", value = Ops.Convert.Float32.ALIASES) })
 	public static class ComplexToFloat32<C extends ComplexType<C>> extends
-		AbstractUnaryHybridOp<C, FloatType> implements Convert.Float32
+		AbstractUnaryHybridCF<C, FloatType> implements Convert.Float32
 	{
 
 		@Override
@@ -556,7 +556,7 @@ public final class ConvertTypes {
 	@Plugin(type = Ops.Convert.Cfloat32.class, name = Ops.Convert.Cfloat32.NAME,
 		attrs = { @Attr(name = "aliases", value = Ops.Convert.Cfloat32.ALIASES) })
 	public static class ComplexToCfloat32<C extends ComplexType<C>> extends
-		AbstractUnaryHybridOp<C, ComplexFloatType> implements Convert.Cfloat32
+		AbstractUnaryHybridCF<C, ComplexFloatType> implements Convert.Cfloat32
 	{
 
 		@Override
@@ -574,7 +574,7 @@ public final class ConvertTypes {
 	@Plugin(type = Ops.Convert.Float64.class, name = Ops.Convert.Float64.NAME,
 		attrs = { @Attr(name = "aliases", value = Ops.Convert.Float64.ALIASES) })
 	public static class ComplexToFloat64<C extends ComplexType<C>> extends
-		AbstractUnaryHybridOp<C, DoubleType> implements Convert.Float64
+		AbstractUnaryHybridCF<C, DoubleType> implements Convert.Float64
 	{
 
 		@Override
@@ -592,7 +592,7 @@ public final class ConvertTypes {
 	@Plugin(type = Ops.Convert.Cfloat64.class, name = Ops.Convert.Cfloat64.NAME,
 		attrs = { @Attr(name = "aliases", value = Ops.Convert.Cfloat64.ALIASES) })
 	public static class ComplexToCfloat64<C extends ComplexType<C>> extends
-		AbstractUnaryHybridOp<C, ComplexDoubleType> implements Convert.Cfloat64
+		AbstractUnaryHybridCF<C, ComplexDoubleType> implements Convert.Cfloat64
 	{
 
 		@Override

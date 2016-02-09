@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -31,16 +31,18 @@
 package net.imagej.ops.math;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.hybrid.AbstractBinaryHybridCFI;
 import net.imglib2.type.numeric.NumericType;
 
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
  * Generated arithmetic ops with ImgLib2 {@link NumericType}s.
  *
  * @author Aparna Pal
+ * @author Leon Yang
+ * @author Curtis Rueden
  */
 public final class NumericTypeBinaryMath {
 
@@ -51,29 +53,39 @@ public final class NumericTypeBinaryMath {
 #set ($iface = "Ops.Math.$op.name")
 
 	/** Op that $op.verbs two NumericType values. */
-	@Plugin(type = ${iface}.class)
-	public static class $op.name<T extends NumericType<T>>
-		extends AbstractUnaryHybridOp<T, T> implements $iface
+	@Plugin(type = ${iface}.class, priority = Priority.HIGH_PRIORITY)
+	public static class $op.name<T extends NumericType<T>> extends
+		AbstractBinaryHybridCFI<T> implements $iface
 	{
 
-		@Parameter
-		private T b;
-
 		@Override
-		public T createOutput(T input) {
-			return input.createVariable();
+		public void compute2(final T input1, final T input2, final T output) {
+			output.set(input1);
+			output.${op.function}(input2);
 		}
 
 		@Override
-		public void compute1(final T input, final T output) {
-			if(output== b)
-			{
-				output.$!{op.function}(input);
-			}
-			else{
-				output.set(input);
-				output.$!{op.function}(b);
-			}
+		public T createOutput(T input1, T input2) {
+			return input1.createVariable();
+		}
+
+		@Override
+		public void mutate1(final T arg, final T in) {
+			final T result = arg.createVariable();
+			compute2(arg, in, result);
+			arg.set(result);
+		}
+
+		@Override
+		public void mutate2(final T in, final T arg) {
+			final T result = arg.createVariable();
+			compute2(in, arg, result);
+			arg.set(result);
+		}
+
+		@Override
+		public ${op.name}<T> getIndependentInstance() {
+			return this;
 		}
 	}
 #end

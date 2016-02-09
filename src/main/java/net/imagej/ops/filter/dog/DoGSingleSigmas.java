@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -33,9 +33,9 @@ package net.imagej.ops.filter.dog;
 import java.util.Arrays;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
-import net.imagej.ops.special.Computers;
-import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
@@ -54,7 +54,7 @@ import org.scijava.thread.ThreadService;
  */
 @Plugin(type = Ops.Filter.DoG.class, priority = 1.0)
 public class DoGSingleSigmas<T extends NumericType<T> & NativeType<T>> extends
-	AbstractUnaryHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	AbstractUnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Filter.DoG
 {
 

@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@
 package net.imagej.ops.copy;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.type.Type;
 
 import org.scijava.plugin.Plugin;
@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  */
 @Plugin(type = Ops.Copy.Type.class)
-public class CopyType<T extends Type<T>> extends AbstractUnaryHybridOp<T, T>
+public class CopyType<T extends Type<T>> extends AbstractUnaryHybridCF<T, T>
 		implements Ops.Copy.Type {
 
 	@Override

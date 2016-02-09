@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -31,8 +31,8 @@
 package net.imagej.ops.threshold.localMidGrey;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -61,18 +61,18 @@ public class LocalMidGrey<T extends RealType<T>> extends
 	@Override
 	public void initialize() {
 		minMaxFunc =
-			(UnaryFunctionOp) Functions.unary(ops(), Ops.Stats.MinMax.class, Pair.class, in().getB());
+			(UnaryFunctionOp) Functions.unary(ops(), Ops.Stats.MinMax.class, Pair.class, in2());
 	}
 
 	@Override
-	public void compute1(final Pair<T, Iterable<T>> input, final BitType output) {
+	public void compute2(T center, Iterable<T> neighborhood, BitType output) {
 
-		final Pair<T, T> outputs = minMaxFunc.compute1(input.getB());
+		final Pair<T, T> outputs = minMaxFunc.compute1(neighborhood);
 
 		final double minValue = outputs.getA().getRealDouble();
 		final double maxValue = outputs.getB().getRealDouble();
 
 		output
-			.set(input.getA().getRealDouble() > ((maxValue + minValue) / 2.0) - c);
+			.set(center.getRealDouble() > ((maxValue + minValue) / 2.0) - c);
 	}
 }

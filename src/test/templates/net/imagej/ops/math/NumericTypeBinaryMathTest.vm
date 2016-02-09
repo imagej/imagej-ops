@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -61,6 +61,7 @@ public class NumericTypeBinaryMathTest extends AbstractOpTest {
 #foreach ($test in $tests)
 #set ($className = "NumericTypeBinaryMath.$test.op")
 #foreach ($type in $types)
+#set ($methodName = $test.op.substring(0, 1).toLowerCase() + $test.op.substring(1))
 
 	/** Tests {@link $className} with {@link $type} arguments. */
 	@Test
@@ -72,7 +73,7 @@ public class NumericTypeBinaryMathTest extends AbstractOpTest {
 		final $type expected = new ${type}();
 		expected.set(a);
 		expected.${test.function}(b);
-		final Object result = ops.run(${className}.class, a, b);
+		final Object result = ops.math().$methodName(a, b);
 		final $type actual = ($type) result;
 ## NB: Compare values, until all types implement equals properly.
 ##		assertEquals(expected, actual);

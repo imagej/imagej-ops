@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@
 package net.imagej.ops.filter.mean;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 
@@ -40,6 +40,8 @@ import net.imglib2.RandomAccessibleInterval;
  * 
  * @author Jonathan Hale (University of Konstanz)
  */
-public interface MeanFilterOp<I, O> extends Ops.Filter.Mean, UnaryComputerOp<RandomAccessibleInterval<I>, IterableInterval<O>> {
+public interface MeanFilterOp<I, O> extends Ops.Filter.Mean,
+	UnaryComputerOp<RandomAccessibleInterval<I>, IterableInterval<O>>
+{
 	// NB: Marker interface.
 }

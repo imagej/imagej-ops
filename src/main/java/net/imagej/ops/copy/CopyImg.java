@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -32,11 +32,11 @@ package net.imagej.ops.copy;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
-import net.imagej.ops.special.Computers;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.UnaryComputerOp;
-import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.img.Img;
 import net.imglib2.type.NativeType;
 import net.imglib2.util.Intervals;
@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Copy.Img.class)
 public class CopyImg<T extends NativeType<T>> extends
-		AbstractUnaryHybridOp<Img<T>, Img<T>> implements Ops.Copy.Img, Contingent {
+		AbstractUnaryHybridCF<Img<T>, Img<T>> implements Ops.Copy.Img, Contingent {
 	
 	private UnaryComputerOp<Iterable<T>, Iterable<T>> copyComputer;
 
@@ -61,7 +61,7 @@ public class CopyImg<T extends NativeType<T>> extends
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		copyComputer = Computers.unary(ops(), CopyIterableInterval.class, in(), in());
+		copyComputer = Computers.unary(ops(), CopyII.class, in(), in());
 		createFunc = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
 			Img.class, in());
 	}

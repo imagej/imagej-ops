@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,9 +30,8 @@
 
 package net.imagej.ops.create.integerType;
 
-import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.Output;
+import net.imagej.ops.special.function.AbstractNullaryFunctionOp;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.IntegerType;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -43,7 +42,6 @@ import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.integer.UnsignedIntType;
 import net.imglib2.type.numeric.integer.UnsignedShortType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -54,52 +52,42 @@ import org.scijava.plugin.Plugin;
  */
 @SuppressWarnings("rawtypes")
 @Plugin(type = Ops.Create.IntegerType.class)
-public class DefaultCreateIntegerType extends AbstractOp implements
-	Ops.Create.IntegerType, Output<IntegerType>
+public class DefaultCreateIntegerType extends
+	AbstractNullaryFunctionOp<IntegerType> implements Ops.Create.IntegerType
 {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private IntegerType output;
 
 	@Parameter(required = false)
 	private long maxValue;
 
 	@Override
-	public void run() {
+	public IntegerType compute0() {
 		if (maxValue > 0) {
 			if (maxValue <= 2) {
-				output = new BitType();
+				return new BitType();
 			}
 			else if (maxValue <= Byte.MAX_VALUE + 1) {
-				output = new ByteType();
+				return new ByteType();
 			}
 			else if (maxValue <= (Byte.MAX_VALUE + 1) * 2) {
-				output = new UnsignedByteType();
+				return new UnsignedByteType();
 			}
 			else if (maxValue <= Short.MAX_VALUE + 1) {
-				output = new ShortType();
+				return new ShortType();
 			}
 			else if (maxValue <= (Short.MAX_VALUE + 1) * 2) {
-				output = new UnsignedShortType();
+				return new UnsignedShortType();
 			}
 			else if (maxValue <= Integer.MAX_VALUE + 1) {
-				output = new IntType();
+				return new IntType();
 			}
 			else if (maxValue <= (Integer.MAX_VALUE + 1l) * 2l) {
-				output = new UnsignedIntType();
+				return new UnsignedIntType();
 			}
-			else if (maxValue <= Long.MAX_VALUE) {
-				output = new LongType();
+			else {
+				return new LongType();
 			}
 		}
-		else {
-			output = new IntType();
-		}
-	}
-
-	@Override
-	public IntegerType out() {
-		return output;
+		return new IntType();
 	}
 
 }

@@ -2,18 +2,18 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *
+ * 
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -36,6 +36,12 @@ import static org.junit.Assert.assertTrue;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.SpecialOp;
+import net.imagej.ops.special.SpecialOpMatchingTest.Apple;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
+import net.imagej.ops.special.function.AbstractNullaryFunctionOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 
 import org.junit.Test;
 import org.scijava.Priority;
@@ -115,8 +121,57 @@ public class HelpCandidatesTest extends AbstractOpTest {
 		final String actualYuckyOrange = ops.help("test.orange", Yucky.class);
 		assertEquals(expectedYuckyOrange, actualYuckyOrange);
 		
-		final String expectedEmpty = ops.help("test.apple", Ops.Help.class);
-		assertEquals("No such operation.", expectedEmpty);
+		final String actualEmpty = ops.help("test.apple", Ops.Help.class);
+		assertEquals("No such operation.", actualEmpty);
+	}
+
+	@Test
+	public void testSpecial() {
+		final String expectedF0 = "" + //
+			"Available operations:\n" + //
+			"\t(Apple out) =\n" + //
+			"\tnet.imagej.ops.help.HelpCandidatesTest$AppleF0()";
+		final String actualF0 = ops.help("test.special", null, 0,
+			SpecialOp.Flavor.FUNCTION);
+		assertEquals(expectedF0, actualF0);
+
+		final String expectedF1 = "" + //
+			"Available operations:\n" + //
+			"\t(Apple out) =\n" + //
+			"\tnet.imagej.ops.help.HelpCandidatesTest$AppleF1(\n" + //
+			"\t\tApple in)";
+		final String actualF1 = ops.help("test.special", null, 1,
+			SpecialOp.Flavor.FUNCTION);
+		assertEquals(expectedF1, actualF1);
+
+		final String expectedF2 = "Available operations:\n" +
+			"\t(Apple out) =\n" +
+			"\tnet.imagej.ops.help.HelpCandidatesTest$AppleF2(\n" +
+			"\t\tApple in1,\n" +
+			"\t\tApple in2)";
+		final String actualF2 = ops.help("test.special", null, 2,
+			SpecialOp.Flavor.FUNCTION);
+		assertEquals(expectedF2, actualF2);
+
+		final String expectedC0 = "No such operation.";
+		final String actualC0 = ops.help("test.special", null, 0,
+			SpecialOp.Flavor.COMPUTER);
+		assertEquals(expectedC0, actualC0);
+
+		final String expectedC1 = "" + //
+			"Available operations:\n" + //
+			"\t(Apple out) =\n" + //
+			"\tnet.imagej.ops.help.HelpCandidatesTest$AppleC1(\n" + //
+			"\t\tApple out,\n" + //
+			"\t\tApple in)";
+		final String actualC1 = ops.help("test.special", null, 1,
+			SpecialOp.Flavor.COMPUTER);
+		assertEquals(expectedC1, actualC1);
+
+		final String expectedC2 = "No such operation.";
+		final String actualC2 = ops.help("test.special", null, 2,
+			SpecialOp.Flavor.COMPUTER);
+		assertEquals(expectedC2, actualC2);
 	}
 
 	// -- Helper classes --
@@ -153,4 +208,35 @@ public class HelpCandidatesTest extends AbstractOpTest {
 		// NB: No implementation needed.
 	}
 
+	@Plugin(type = Op.class, name = "test.special")
+	public static class AppleF0 extends AbstractNullaryFunctionOp<Apple> {
+		@Override
+		public Apple compute0() {
+			return new Apple();
+		}
+	}
+
+	@Plugin(type = Op.class, name = "test.special")
+	public static class AppleF1 extends AbstractUnaryFunctionOp<Apple, Apple> {
+		@Override
+		public Apple compute1(final Apple in) {
+			return new Apple();
+		}
+	}
+
+	@Plugin(type = Op.class, name = "test.special")
+	public static class AppleF2 extends AbstractBinaryFunctionOp<Apple, Apple, Apple> {
+		@Override
+		public Apple compute2(final Apple in1, final Apple in2) {
+			return new Apple();
+		}
+	}
+
+	@Plugin(type = Op.class, name = "test.special")
+	public static class AppleC1 extends AbstractUnaryComputerOp<Apple, Apple> {
+		@Override
+		public void compute1(final Apple out, final Apple in) {
+			// NB: No implementation needed.
+		}
+	}
 }

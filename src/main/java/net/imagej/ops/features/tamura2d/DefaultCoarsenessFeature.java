@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,6 @@ package net.imagej.ops.features.tamura2d;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.mean.MeanFilterOp;
 import net.imglib2.Cursor;
@@ -49,7 +48,6 @@ import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Intervals;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -64,9 +62,6 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Tamura.Coarseness.class, label = "Tamura 2D: Coarseness")
 public class DefaultCoarsenessFeature<I extends RealType<I>, O extends RealType<O>>
 		extends AbstractTamuraFeature<I, O> implements Ops.Tamura.Coarseness {
-
-	@Parameter
-	protected OpService ops;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -169,7 +164,7 @@ public class DefaultCoarsenessFeature<I extends RealType<I>, O extends RealType<
 		OutOfBoundsMirrorFactory<ByteType, Img<ByteType>> oobFactory = new OutOfBoundsMirrorFactory<>(
 				Boundary.SINGLE);
 
-		ops.run(MeanFilterOp.class, meanImg, input, new RectangleShape(i, true), oobFactory);
+		ops().run(MeanFilterOp.class, meanImg, input, new RectangleShape(i, true), oobFactory);
 
 		return meanImg;
 	}

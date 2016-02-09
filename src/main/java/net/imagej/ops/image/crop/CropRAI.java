@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,15 +30,14 @@
 
 package net.imagej.ops.image.crop;
 
-import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.util.Intervals;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
-import org.scijava.ItemIO;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -48,13 +47,10 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Ops.Image.Crop.class, priority = Priority.LOW_PRIORITY)
-public class CropRAI<T> extends AbstractOp implements Ops.Image.Crop {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private RandomAccessibleInterval<T> out;
-
-	@Parameter
-	private RandomAccessibleInterval<T> in;
+public class CropRAI<T> extends
+	AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	implements Ops.Image.Crop
+{
 
 	@Parameter
 	protected Interval interval;
@@ -63,7 +59,9 @@ public class CropRAI<T> extends AbstractOp implements Ops.Image.Crop {
 	private boolean dropSingleDimensions = true;
 
 	@Override
-	public void run() {
+	public RandomAccessibleInterval<T> compute1(
+		final RandomAccessibleInterval<T> input)
+	{
 		boolean oneSizedDims = false;
 
 		if (dropSingleDimensions) {
@@ -75,17 +73,10 @@ public class CropRAI<T> extends AbstractOp implements Ops.Image.Crop {
 			}
 		}
 
-		if (Intervals.equals(in, interval) && !oneSizedDims) {
-			out = in;
-		}
-		else {
-			IntervalView<T> res;
-			if (Intervals.contains(in, interval)) res =
-				Views.offsetInterval(in, interval);
-			else {
-				throw new RuntimeException("Intervals don't match!");
-			}
-			out = oneSizedDims ? Views.dropSingletonDimensions(res) : res;
-		}
+		if (Intervals.equals(input, interval) && !oneSizedDims) return input;
+		if (!Intervals.contains(input, interval)) throw new RuntimeException(
+			"Intervals don't match!");
+		IntervalView<T> res = Views.offsetInterval(input, interval);
+		return oneSizedDims ? Views.dropSingletonDimensions(res) : res;
 	}
 }

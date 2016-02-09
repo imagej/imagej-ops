@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@ package net.imagej.ops.math;
 import java.util.Random;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -334,8 +334,8 @@ public final class RealMath {
 	 * component of an input real number.
 	 */
 	@Plugin(type = Ops.Math.Ceil.class)
-	public static class Ceil<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Ceil
+	public static class Ceil<I extends RealType<I>, O extends RealType<O>> extends
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Ceil
 	{
 
 		@Override
@@ -364,8 +364,8 @@ public final class RealMath {
 	 * of the real component of an input real number.
 	 */
 	@Plugin(type = Ops.Math.Cosh.class)
-	public static class Cosh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Cosh
+	public static class Cosh<I extends RealType<I>, O extends RealType<O>> extends
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Cosh
 	{
 
 		@Override
@@ -394,8 +394,8 @@ public final class RealMath {
 	 * cotangent of the real component of an input real number.
 	 */
 	@Plugin(type = Ops.Math.Coth.class)
-	public static class Coth<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Coth
+	public static class Coth<I extends RealType<I>, O extends RealType<O>> extends
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Coth
 	{
 
 		@Override
@@ -424,8 +424,8 @@ public final class RealMath {
 	 * of the real component of an input real number.
 	 */
 	@Plugin(type = Ops.Math.Csch.class)
-	public static class Csch<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Csch
+	public static class Csch<I extends RealType<I>, O extends RealType<O>> extends
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Csch
 	{
 
 		@Override
@@ -596,8 +596,8 @@ public final class RealMath {
 	 * real component of an input real number.
 	 */
 	@Plugin(type = Ops.Math.Log2.class)
-	public static class Log2<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Log2
+	public static class Log2<I extends RealType<I>, O extends RealType<O>> extends
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Log2
 	{
 
 		@Override
@@ -865,8 +865,8 @@ public final class RealMath {
 	 * of the real component of an input real number.
 	 */
 	@Plugin(type = Ops.Math.Sech.class)
-	public static class Sech<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Sech
+	public static class Sech<I extends RealType<I>, O extends RealType<O>> extends
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Sech
 	{
 
 		@Override
@@ -913,8 +913,8 @@ public final class RealMath {
 	 * sin(x) / x.
 	 */
 	@Plugin(type = Ops.Math.Sinc.class)
-	public static class Sinc<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Sinc
+	public static class Sinc<I extends RealType<I>, O extends RealType<O>> extends
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Sinc
 	{
 
 		@Override
@@ -952,8 +952,8 @@ public final class RealMath {
 	 * the real component of an input real number.
 	 */
 	@Plugin(type = Ops.Math.Sinh.class)
-	public static class Sinh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Sinh
+	public static class Sinh<I extends RealType<I>, O extends RealType<O>> extends
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Sinh
 	{
 
 		@Override
@@ -983,8 +983,8 @@ public final class RealMath {
 	 * real component of an input real number.
 	 */
 	@Plugin(type = Ops.Math.Sqrt.class)
-	public static class Sqrt<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Sqrt
+	public static class Sqrt<I extends RealType<I>, O extends RealType<O>> extends
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Sqrt
 	{
 
 		@Override
@@ -1000,8 +1000,8 @@ public final class RealMath {
 	 * with h(0) = 1 rather than 0.5.
 	 */
 	@Plugin(type = Ops.Math.Step.class)
-	public static class Step<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Step
+	public static class Step<I extends RealType<I>, O extends RealType<O>> extends
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Step
 	{
 
 		@Override
@@ -1049,8 +1049,8 @@ public final class RealMath {
 	 * of the real component of an input real number.
 	 */
 	@Plugin(type = Ops.Math.Tanh.class)
-	public static class Tanh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Tanh
+	public static class Tanh<I extends RealType<I>, O extends RealType<O>> extends
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Tanh
 	{
 
 		@Override
@@ -1091,20 +1091,6 @@ public final class RealMath {
 		@Override
 		public void compute1(final I input, final O output) {
 			output.setReal(constant ^ (long) input.getRealDouble());
-		}
-	}
-
-	/**
-	 * Sets the real component of an output real number to zero.
-	 */
-	@Plugin(type = Ops.Math.Zero.class)
-	public static class Zero<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Zero
-	{
-
-		@Override
-		public void compute1(final I input, final O output) {
-			output.setZero();
 		}
 	}
 

@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,11 +30,10 @@
 
 package net.imagej.ops.run;
 
-import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -44,20 +43,16 @@ import org.scijava.plugin.Plugin;
  * @author Curtis Rueden
  */
 @Plugin(type = Ops.Run.class)
-public class RunByType extends AbstractOp implements Ops.Run {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private Object output;
-
-	@Parameter
-	private Class<? extends Op> type;
+public class RunByType extends
+	AbstractUnaryFunctionOp<Class<? extends Op>, Object> implements Ops.Run
+{
 
 	@Parameter
 	private Object[] args;
 
 	@Override
-	public void run() {
-		output = ops().run(type, args);
+	public Object compute1(final Class<? extends Op> input) {
+		return ops().run(input, args);
 	}
 
 }

@@ -1,0 +1,7 @@
+# Generate tests for MapBinaryComputers
+
+[MapBinaryComputersTest.java]
+
+types = ```
+["II", "RAI"]
+```

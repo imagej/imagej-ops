@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,25 +30,25 @@
 
 package net.imagej.ops.map.neighborhood;
 
-import net.imagej.ops.map.MapComputer;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
-import net.imglib2.util.Pair;
-
 import org.scijava.plugin.Parameter;
 
+import net.imagej.ops.map.MapBinaryComputer;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+
 /**
- * Abstract implementation of a {@link MapComputer} for
+ * Abstract implementation of a {@link MapBinaryComputer} for
  * {@link CenterAwareComputerOp}.
  * 
  * @author Jonathan Hale (University of Konstanz)
+ * @author Stefan Helfrich (University of Konstanz)
  * @param <A> mapped on {@code <B>}
  * @param <B> mapped from {@code <A>}
  * @param <C> provides {@code <A>}s
  * @param <D> provides {@code <B>}s
  */
-public abstract class AbstractMapCenterAwareComputer<A, B, C, D> extends
-	AbstractUnaryComputerOp<C, D> implements
-	MapComputer<Pair<A, Iterable<A>>, B, CenterAwareComputerOp<A, B>>
+public abstract class AbstractMapCenterAwareComputer<A, B, C, D> 
+	extends AbstractUnaryComputerOp<C, D>
+	implements MapBinaryComputer<A, Iterable<A>, B, CenterAwareComputerOp<A, B>>
 {
 
 	@Parameter

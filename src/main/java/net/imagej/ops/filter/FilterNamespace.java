@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -32,16 +32,14 @@ package net.imagej.ops.filter;
 
 import java.util.List;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.gauss.DefaultGaussRAI;
 import net.imagej.ops.filter.gauss.GaussRAISingleSigma;
-import net.imagej.ops.special.UnaryComputerOp;
-import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
@@ -55,6 +53,8 @@ import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * The filter namespace contains ops that filter data.
@@ -71,7 +71,8 @@ public class FilterNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.Ops.Filter.AddNoise.class, args);
 	}
 
-	@OpMethod(op = net.imagej.ops.filter.addNoise.AddNoiseRealType.class)
+	@OpMethod(ops = { net.imagej.ops.filter.addNoise.AddNoiseRealType.class,
+		net.imagej.ops.filter.addNoise.AddNoiseRealTypeCFI.class })
 	public <I extends RealType<I>, O extends RealType<O>> O addNoise(final O out,
 		final I in, final double rangeMin, final double rangeMax,
 		final double rangeStdDev)
@@ -83,15 +84,26 @@ public class FilterNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.filter.addNoise.AddNoiseRealType.class)
+	@OpMethod(ops = { net.imagej.ops.filter.addNoise.AddNoiseRealType.class,
+		net.imagej.ops.filter.addNoise.AddNoiseRealTypeCFI.class })
 	public <I extends RealType<I>, O extends RealType<O>> O addNoise(final O out,
 		final I in, final double rangeMin, final double rangeMax,
 		final double rangeStdDev, final long seed)
 	{
 		@SuppressWarnings("unchecked")
-		final O result =
-			(O) ops().run(net.imagej.ops.filter.addNoise.AddNoiseRealType.class, out,
-				in, rangeMin, rangeMax, rangeStdDev, seed);
+		final O result = (O) ops().run(Ops.Filter.AddNoise.class, out, in, rangeMin,
+			rangeMax, rangeStdDev, seed);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.filter.addNoise.AddNoiseRealTypeCFI.class)
+	public <T extends RealType<T>> T addNoise(final T in, final double rangeMin,
+		final double rangeMax, final double rangeStdDev)
+	{
+		@SuppressWarnings("unchecked")
+		final T result = (T) ops().run(
+			net.imagej.ops.filter.addNoise.AddNoiseRealTypeCFI.class, in, rangeMin,
+			rangeMax, rangeStdDev);
 		return result;
 	}
 

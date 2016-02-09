@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -233,6 +233,12 @@ public class StatisticsTest extends AbstractOpTest {
 	@Test
 	public void testPercentile() {
 		Assert.assertEquals("50-th Percentile", 128d, ops.stats().percentile(randomlyFilledImg, 50d)
+				.getRealDouble(), 0.00001d);
+	}
+
+	@Test
+	public void testQuantile() {
+		Assert.assertEquals("0.5-th Quantile", 128d, ops.stats().quantile(randomlyFilledImg, 0.5d)
 				.getRealDouble(), 0.00001d);
 	}
 

@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -32,13 +32,11 @@ package net.imagej.ops.create.imgPlus;
 
 import net.imagej.ImgPlus;
 import net.imagej.ImgPlusMetadata;
-import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.Output;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.img.Img;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -49,39 +47,27 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  */
 @Plugin(type = Ops.Create.ImgPlus.class)
-public class DefaultCreateImgPlus<T> extends AbstractOp implements
-	Ops.Create.ImgPlus, Output<ImgPlus<T>>, Contingent
+public class DefaultCreateImgPlus<T> extends
+	AbstractUnaryFunctionOp<Img<T>, ImgPlus<T>> implements Ops.Create.ImgPlus,
+	Contingent
 {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private ImgPlus<T> output;
-
-	@Parameter
-	private Img<T> img;
 
 	@Parameter(required = false)
 	private ImgPlusMetadata metadata;
 
 	@Override
-	public void run() {
+	public ImgPlus<T> compute1(final Img<T> input) {
 
 		if (metadata != null) {
-			output = new ImgPlus<>(img, metadata);
+			return new ImgPlus<>(input, metadata);
 		}
-		else {
-			output = new ImgPlus<>(img);
-		}
+		return new ImgPlus<>(input);
 
 	}
 
 	@Override
 	public boolean conforms() {
-		return metadata == null || metadata.numDimensions() == img.numDimensions();
-	}
-
-	@Override
-	public ImgPlus<T> out() {
-		return output;
+		return metadata == null || metadata.numDimensions() == in().numDimensions();
 	}
 
 }

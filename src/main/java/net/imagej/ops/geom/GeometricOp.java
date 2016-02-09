@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@
 
 package net.imagej.ops.geom;
 
-import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 
 /**
  * Simple marker interface for Geoemtric ops.

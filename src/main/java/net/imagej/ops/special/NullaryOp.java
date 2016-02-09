@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,22 +30,50 @@
 
 package net.imagej.ops.special;
 
+import net.imagej.ops.special.computer.NullaryComputerOp;
+import net.imagej.ops.special.function.NullaryFunctionOp;
+import net.imagej.ops.special.hybrid.NullaryHybridCF;
+
 /**
  * A <em>nullary</em> operation computes a result in a vacuum, without any input
  * values.
  * <p>
  * Nullary ops come in two major flavors: {@link NullaryComputerOp} and
- * {@link NullaryFunctionOp}. An additional type, {@link NullaryHybridOp},
+ * {@link NullaryFunctionOp}. An additional hybrid type {@link NullaryHybridCF}
  * unions both flavors.
  * </p>
  * 
  * @author Curtis Rueden
  * @param <O> type of output
- * @see NullaryComputerOp
- * @see NullaryFunctionOp
- * @see NullaryHybridOp
  */
 public interface NullaryOp<O> extends SpecialOp, Output<O> {
+
+	/**
+	 * Executes the operation in a type-safe but flexible way.
+	 * <p>
+	 * The exact behavior depends on the type of special op.
+	 * </p>
+	 * @param output reference where the operation's result will be stored
+	 * @return result of the operation
+	 * @see NullaryComputerOp#run(Object)
+	 * @see NullaryFunctionOp#run(Object)
+	 * @see NullaryHybridCF#run(Object)
+	 */
+	O run(O output);
+
+	// -- SpecialOp methods --
+
+	@Override
+	default int getArity() {
+		return 0;
+	}
+
+	// -- Runnable methods --
+
+	@Override
+	default void run() {
+		run(out());
+	}
 
 	// -- Threadable methods --
 

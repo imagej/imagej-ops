@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,13 +30,11 @@
 
 package net.imagej.ops.create.nativeType;
 
-import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.Output;
+import net.imagej.ops.special.function.AbstractNullaryFunctionOp;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -49,24 +47,15 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.NativeType.class)
 public class DefaultCreateNativeType<T extends NativeType<T>> extends
-	AbstractOp implements Ops.Create.NativeType, Output<T>
+	AbstractNullaryFunctionOp<T> implements Ops.Create.NativeType
 {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T output;
 
 	@Parameter(required = false)
 	private Class<T> type;
 
 	@Override
-	public void run() {
-		if (type != null) output = createTypeFromClass();
-		else output = createTypeFromScratch();
-	}
-
-	@Override
-	public T out() {
-		return output;
+	public T compute0() {
+		return type != null ? createTypeFromClass() : createTypeFromScratch();
 	}
 
 	// -- Helper methods --

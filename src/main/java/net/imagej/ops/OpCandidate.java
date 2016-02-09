@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,6 +30,9 @@
 
 package net.imagej.ops;
 
+import java.util.List;
+
+import org.scijava.ValidityProblem;
 import org.scijava.command.CommandInfo;
 import org.scijava.module.Module;
 import org.scijava.module.ModuleItem;
@@ -157,7 +160,17 @@ public class OpCandidate<OP extends Op> {
 				sb.append("MATCH");
 				break;
 			case INVALID_MODULE:
-				sb.append("Invalid module: " + info.cInfo().getDelegateClassName());
+				sb.append("Invalid op: " + info.cInfo().getDelegateClassName());
+				final List<ValidityProblem> problems = info.cInfo().getProblems();
+				final int problemCount = problems.size();
+				if (problemCount > 0) sb.append(" (");
+				int no = 0;
+				for (final ValidityProblem problem : problems) {
+					if (no++ > 0) sb.append("; ");
+					if (problemCount > 1) sb.append(no + ". ");
+					sb.append(problem.getMessage());
+				}
+				if (problemCount > 0) sb.append(")");
 				break;
 			case TOO_FEW_OUTPUTS:
 				sb.append("Too few outputs");

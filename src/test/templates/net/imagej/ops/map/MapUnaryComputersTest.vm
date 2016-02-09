@@ -1,0 +1,113 @@
+/*
+ * #%L
+ * ImageJ software for multidimensional image processing and analysis.
+ * %%
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
+ * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * %%
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * #L%
+ */
+
+package net.imagej.ops.map;
+
+import static org.junit.Assert.assertEquals;
+
+import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
+import net.imagej.ops.map.MapUnaryComputers.IIToII;
+import net.imagej.ops.map.MapUnaryComputers.IIToIIParallel;
+import net.imagej.ops.map.MapUnaryComputers.IIToRAI;
+import net.imagej.ops.map.MapUnaryComputers.IIToRAIParallel;
+import net.imagej.ops.map.MapUnaryComputers.RAIToII;
+import net.imagej.ops.map.MapUnaryComputers.RAIToIIParallel;
+import net.imagej.ops.special.computer.Computers;
+import net.imglib2.Cursor;
+import net.imglib2.img.Img;
+import net.imglib2.type.numeric.integer.ByteType;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+/**
+ * Tests for {@link MapUnaryComputers}.
+ * 
+ * @author Leon Yang
+ * @author Christian Dietz (University of Konstanz)
+ */
+public class MapUnaryComputersTest extends AbstractOpTest {
+
+	private Img<ByteType> in;
+	private Img<ByteType> out;
+	private Img<ByteType> outDiffDims;
+	private Op add;
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
+
+	@Before
+	public void initImg() {
+		in = generateByteArrayTestImg(true, 10, 10);
+		out = generateByteArrayTestImg(false, 10, 10);
+		outDiffDims = generateByteArrayTestImg(false, 10, 10, 2);
+		add = Computers.unary(ops, Ops.Math.Add.class, ByteType.class, ByteType.class,
+			new ByteType((byte) 1));
+	}
+
+## there are 3 combinations of unary maps: "all RAIs" is not included
+#set ($count = 3)
+#foreach ($inType in $types)
+#foreach ($outType in $types)
+#if ($count > 0)
+#foreach ($parallel in ["", "Parallel"])
+#set ($className = "${inType}To${outType}${parallel}")
+	@Test
+	public void test${className}() {
+		ops.run(${className}.class, out, in, add);
+		assertImgAddOneEquals(in, out);
+
+		// Expect exception when output has different dimensions
+		thrown.expect(IllegalArgumentException.class);
+		ops.op(${className}.class, outDiffDims, in, add);
+	}
+
+#end
+#end
+#set ($count = $count - 1)
+#end
+#end
+	// -- helper methods --
+
+	private static void assertImgAddOneEquals(Img<ByteType> in, Img<ByteType> out) {
+		final Cursor<ByteType> inCursor = in.cursor();
+		final Cursor<ByteType> outCursor = out.cursor();
+
+		while (inCursor.hasNext()) {
+			assertEquals((byte) (inCursor.next().get() + 1),
+				outCursor.next().get());
+		}
+	}
+
+}

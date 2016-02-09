@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -39,11 +39,10 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractCenterAwareNeighborhoodBasedFilter;
 import net.imagej.ops.map.neighborhood.AbstractCenterAwareComputerOp;
 import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
-import net.imagej.ops.special.Computers;
-import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.util.Pair;
 
 /**
  * Default implementation of {@link SigmaFilterOp}.
@@ -65,6 +64,7 @@ public class DefaultSigmaFilter<T extends RealType<T>, V extends RealType<V>>
 
 	@Override
 	protected CenterAwareComputerOp<T, V> unaryComputer(final V outType) {
+
 		final AbstractCenterAwareComputerOp<T, V> op =
 			new AbstractCenterAwareComputerOp<T, V>()
 		{
@@ -72,23 +72,23 @@ public class DefaultSigmaFilter<T extends RealType<T>, V extends RealType<V>>
 				private UnaryComputerOp<Iterable<T>, DoubleType> variance;
 
 				@Override
-				public void compute1(Pair<T, Iterable<T>> input, V output) {
+				public void compute2(T center, Iterable<T> neighborhood, V output) {
 					if (variance == null) {
 						variance = Computers.unary(ops(), Ops.Stats.Variance.class,
-							DoubleType.class, input.getB());
+							DoubleType.class, neighborhood);
 					}
 
 					DoubleType varianceResult = new DoubleType();
-					variance.compute1(input.getB(), varianceResult);
+					variance.compute1(neighborhood, varianceResult);
 					double varianceValue = varianceResult.getRealDouble() * range;
 
-					final double centerValue = input.getA().getRealDouble();
+					final double centerValue = center.getRealDouble();
 					double sumAll = 0;
 					double sumWithin = 0;
 					long countAll = 0;
 					long countWithin = 0;
 
-					for (T neighbor : input.getB()) {
+					for (T neighbor : neighborhood) {
 						final double pixelValue = neighbor.getRealDouble();
 						final double diff = centerValue - pixelValue;
 

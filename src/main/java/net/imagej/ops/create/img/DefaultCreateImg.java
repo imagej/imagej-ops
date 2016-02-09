@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,9 +30,8 @@
 
 package net.imagej.ops.create.img;
 
-import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.Output;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.Dimensions;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
@@ -42,7 +41,6 @@ import net.imglib2.img.ImgFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.util.Util;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -54,15 +52,9 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  */
 @Plugin(type = Ops.Create.Img.class)
-public class DefaultCreateImg<T> extends AbstractOp implements Ops.Create.Img,
-	Output<Img<T>>
+public class DefaultCreateImg<T> extends
+	AbstractUnaryFunctionOp<Dimensions, Img<T>> implements Ops.Create.Img
 {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private Img<T> output;
-
-	@Parameter
-	private Dimensions dims;
 
 	@Parameter(required = false)
 	private T outType;
@@ -72,15 +64,15 @@ public class DefaultCreateImg<T> extends AbstractOp implements Ops.Create.Img,
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void run() {
+	public void initialize() {
 		// FIXME: not guaranteed to be a T unless a Class<T> is given.
 		if (outType == null) {
-			if (dims instanceof IterableInterval) {
-				outType = (T) ((IterableInterval<?>) dims).firstElement();
+			if (in() instanceof IterableInterval) {
+				outType = (T) ((IterableInterval<?>) in()).firstElement();
 			}
-			else if (dims instanceof RandomAccessibleInterval) {
+			else if (in() instanceof RandomAccessibleInterval) {
 				outType = (T) Util.getTypeFromInterval(
-					(RandomAccessibleInterval<?>) dims);
+					(RandomAccessibleInterval<?>) in());
 			}
 			else {
 				// HACK: For Java 6 compiler.
@@ -92,8 +84,8 @@ public class DefaultCreateImg<T> extends AbstractOp implements Ops.Create.Img,
 		}
 
 		if (fac == null) {
-			if (dims instanceof Img) {
-				final Img<?> inImg = ((Img<?>) dims);
+			if (in() instanceof Img) {
+				final Img<?> inImg = ((Img<?>) in());
 				if (inImg.firstElement().getClass().isInstance(outType)) {
 					fac = (ImgFactory<T>) inImg.factory();
 				}
@@ -106,22 +98,20 @@ public class DefaultCreateImg<T> extends AbstractOp implements Ops.Create.Img,
 					}
 					catch (final IncompatibleTypeException e) {
 						// FIXME: outType may not be a NativeType, but imgFactory needs one.
-						fac = (ImgFactory<T>) ops().create().imgFactory(dims, outType);
+						fac = (ImgFactory<T>) ops().create().imgFactory(in(), outType);
 					}
 				}
 			}
 			else {
 				// FIXME: outType may not be a NativeType, but imgFactory needs one.
-				fac = (ImgFactory<T>) ops().create().imgFactory(dims, outType);
+				fac = (ImgFactory<T>) ops().create().imgFactory(in(), outType);
 			}
 		}
-
-		output = fac.create(dims, outType);
 	}
 
 	@Override
-	public Img<T> out() {
-		return output;
+	public Img<T> compute1(final Dimensions input) {
+		return fac.create(input, outType);
 	}
 
 }

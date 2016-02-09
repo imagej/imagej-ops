@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -31,15 +31,15 @@
 package net.imagej.ops.join;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
-import net.imagej.ops.special.InplaceOp;
-import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Joins a {@link UnaryComputerOp} with an {@link InplaceOp}.
+ * Joins a {@link UnaryComputerOp} with an {@link UnaryInplaceOp}.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
@@ -52,7 +52,7 @@ public class DefaultJoinComputerAndInplace<A, B> extends
 	private UnaryComputerOp<A, B> first;
 
 	@Parameter
-	private InplaceOp<B> second;
+	private UnaryInplaceOp<B> second;
 
 	// -- Join2Ops methods --
 
@@ -67,12 +67,12 @@ public class DefaultJoinComputerAndInplace<A, B> extends
 	}
 
 	@Override
-	public InplaceOp<B> getSecond() {
+	public UnaryInplaceOp<B> getSecond() {
 		return second;
 	}
 
 	@Override
-	public void setSecond(final InplaceOp<B> second) {
+	public void setSecond(final UnaryInplaceOp<B> second) {
 		this.second = second;
 	}
 

@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,8 +30,8 @@
 
 package net.imagej.ops.image.scale;
 
-import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.FlatIterationOrder;
@@ -44,7 +44,6 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -52,12 +51,9 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Ops.Image.Scale.class)
-public class ScaleImg<T extends RealType<T>> extends AbstractOp implements
-	Ops.Image.Scale
+public class ScaleImg<T extends RealType<T>> extends
+	AbstractUnaryFunctionOp<Img<T>, Img<T>> implements Ops.Image.Scale
 {
-
-	@Parameter
-	private Img<T> in;
 
 	@Parameter
 	/*Scale factors for each dimension*/
@@ -66,32 +62,30 @@ public class ScaleImg<T extends RealType<T>> extends AbstractOp implements
 	@Parameter
 	private InterpolatorFactory<T, RandomAccessible<T>> interpolator;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private Img<T> out;
-
 	@Override
-	public void run() {
-		if (in.numDimensions() != scaleFactors.length) {
+	public Img<T> compute1(Img<T> input) {
+		if (input.numDimensions() != scaleFactors.length) {
 			throw new IllegalArgumentException(
-				"Less/more scale factors are provided than dimensions in the image.");
+				"Less/more scale factors are provided than dimensions input the image.");
 		}
 
-		final long[] newDims = new long[in.numDimensions()];
-		in.dimensions(newDims);
-		for (int i = 0; i < Math.min(scaleFactors.length, in.numDimensions()); i++)
+		final long[] newDims = new long[input.numDimensions()];
+		input.dimensions(newDims);
+		for (int i = 0; i < Math.min(scaleFactors.length, input
+			.numDimensions()); i++)
 		{
-			newDims[i] = Math.round(in.dimension(i) * scaleFactors[i]);
+			newDims[i] = Math.round(input.dimension(i) * scaleFactors[i]);
 		}
 
-		IntervalView<T> interval =
-			Views.interval(Views.raster(RealViews.affineReal(Views.interpolate(Views
-				.extendMirrorSingle(in), interpolator),
-				new net.imglib2.realtransform.Scale(scaleFactors))), new FinalInterval(
+		IntervalView<T> interval = Views.interval(Views.raster(RealViews.affineReal(
+			Views.interpolate(Views.extendMirrorSingle(input), interpolator),
+			new net.imglib2.realtransform.Scale(scaleFactors))), new FinalInterval(
 				newDims));
 
-		out = in.factory().create(newDims, in.firstElement().createVariable());
+		final Img<T> out = input.factory().create(newDims, input.firstElement()
+			.createVariable());
 		Cursor<T> outC = out.cursor();
-		if (in.iterationOrder().equals(new FlatIterationOrder(in))) {
+		if (input.iterationOrder().equals(new FlatIterationOrder(input))) {
 			Cursor<T> viewC = Views.flatIterable(interval).cursor();
 			while (outC.hasNext()) {
 				outC.fwd();
@@ -108,6 +102,6 @@ public class ScaleImg<T extends RealType<T>> extends AbstractOp implements
 			}
 
 		}
-
+		return out;
 	}
 }

@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,11 +30,11 @@
 
 package net.imagej.ops.threshold;
 
-import java.util.List;
-
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.histogram.Histogram1d;
-import net.imglib2.img.Img;
+import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
@@ -51,34 +51,30 @@ public final class ApplyThresholdMethod {
 	private ApplyThresholdMethod() {
 		// NB: Prevent instantiation of utility class.
 	}
-
-	/**
-	 * Dirty hack to coerce {@code Compute*Threshold} methods which have an extra
-	 * {@code errMsg} output. Eventually it might be nice to redesign how error
-	 * messages work for thresholding, to avoid polluting the output objects.
-	 */
-	private static <T> T unwrap(final List<Object> list) {
-		@SuppressWarnings("unchecked")
-		final T result = (T) list.get(0);
-		return result;
-	}
 #foreach ($method in $methods)
 #set ($iface = "Ops.Threshold.${method.iface}")
 
 	@Plugin(type = ${iface}.class)
 	public static class ${method.iface}<T extends RealType<T>>
-		extends AbstractApplyThresholdImg<T, Img<T>>
+		extends AbstractApplyThresholdImg<T>
 		implements ${iface}
 	{
 
+		private UnaryFunctionOp<Histogram1d<T>, T> thresholdFunc;
+
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		@Override
-		public T getThreshold(final Img<T> input) {
-			final Histogram1d<T> hist = ops().image().histogram(input);
-#if ($method.list)
-			return unwrap(ops().threshold().${method.name}(hist));
-#else
-			return ops().threshold().${method.name}(hist);
-#end
+		public void initialize() {
+			super.initialize();
+			thresholdFunc = (UnaryFunctionOp) Functions.unary(ops(),
+				Ops.Threshold.${method.iface}.class, in().firstElement().getClass(),
+				Histogram1d.class);
+		}
+
+		@Override
+		public T getThreshold(final IterableInterval<T> input) {
+			final Histogram1d<T> hist = histCreator.compute1(input);
+			return thresholdFunc.compute1(hist);
 		}
 	}
 #end

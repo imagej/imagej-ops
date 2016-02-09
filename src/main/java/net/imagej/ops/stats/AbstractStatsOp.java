@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@
 package net.imagej.ops.stats;
 
 import net.imagej.ops.OpService;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -44,7 +44,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @param <O> output type
  */
 public abstract class AbstractStatsOp<I, O extends RealType<O>> extends
-	AbstractUnaryHybridOp<I, O> implements StatsOp<I, O>
+	AbstractUnaryHybridCF<I, O> implements StatsOp<I, O>
 {
 
 	@SuppressWarnings("unchecked")

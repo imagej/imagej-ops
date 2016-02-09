@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,18 +30,17 @@
 
 package net.imagej.ops.image.normalize;
 
-import net.imagej.ops.OpEnvironment;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
-import net.imagej.ops.special.UnaryComputerOp;
-import net.imglib2.IterableInterval;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.converter.Converter;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Pair;
 
 /**
- * Simple {@link UnaryComputerOp} and {@link Converter} to perform a normalization.
+ * Simple {@link UnaryComputerOp} and {@link Converter} to perform a
+ * normalization.
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @author Leon Yang
  */
 class NormalizeRealTypeComputer<T extends RealType<T>> extends
 	AbstractUnaryComputerOp<T, T> implements Converter<T, T>
@@ -49,47 +48,24 @@ class NormalizeRealTypeComputer<T extends RealType<T>> extends
 
 	private double targetMin, targetMax, sourceMin, factor;
 
-	public NormalizeRealTypeComputer(final OpEnvironment ops, final T sourceMin,
-		final T sourceMax, final T targetMin, final T targetMax,
-		final IterableInterval<T> input)
+	public NormalizeRealTypeComputer() {}
+
+	public NormalizeRealTypeComputer(final double sourceMin,
+		final double sourceMax, final double targetMin, final double targetMax)
 	{
-		double tmp = 0.0;
-		
-		if (sourceMin != null && sourceMax != null) {
-			this.sourceMin = sourceMin.getRealDouble();
-			tmp = sourceMax.getRealDouble();
-		} else {
-			final Pair<T,T> minMax = ops.stats().minMax(input);
-			if (sourceMin == null) {
-				this.sourceMin = minMax.getA().getRealDouble();
-			}
-			else {
-				this.sourceMin = sourceMin.getRealDouble();
-			}
-			if (sourceMax == null) {
-				tmp = minMax.getB().getRealDouble();
-			}
-			else {
-				tmp = sourceMax.getRealDouble();
-			}
-		}
+		setup(sourceMin, sourceMax, targetMin, targetMax);
+	}
 
-		if (targetMax == null) {
-			this.targetMax = input.firstElement().getMaxValue();
-		}
-		else {
-			this.targetMax = targetMax.getRealDouble();
-		}
+	public void setup(final double sourceMin, final double sourceMax,
+		final double targetMin, final double targetMax)
+	{
+		this.sourceMin = sourceMin;
+		final double tmp = sourceMax;
+		this.targetMin = targetMin;
+		this.targetMax = targetMax;
 
-		if (targetMin == null) {
-			this.targetMin = input.firstElement().getMinValue();
-		}
-		else {
-			this.targetMin = targetMin.getRealDouble();
-		}
-
-		this.factor =
-			1.0d / (tmp - this.sourceMin) * (this.targetMax - this.targetMin);
+		this.factor = 1.0d / (tmp - this.sourceMin) * (this.targetMax -
+			this.targetMin);
 	}
 
 	@Override

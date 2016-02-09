@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -34,7 +34,9 @@ import java.util.List;
 import java.util.Set;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.NullaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.roi.labeling.LabelingMapping;
 import net.imglib2.roi.labeling.LabelingMapping.SerialisationAccess;
 
@@ -50,12 +52,21 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Copy.LabelingMapping.class,
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class CopyLabelingMapping<L> extends
-		AbstractUnaryHybridOp<LabelingMapping<L>, LabelingMapping<L>> implements
+		AbstractUnaryHybridCF<LabelingMapping<L>, LabelingMapping<L>> implements
 		Ops.Copy.LabelingMapping {
+	
+	private NullaryFunctionOp<LabelingMapping<L>> outputCreator;
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void initialize() {
+		outputCreator = (NullaryFunctionOp) Functions.nullary(ops(),
+			Ops.Create.LabelingMapping.class, LabelingMapping.class, in().numSets());
+	}
 
 	@Override
 	public LabelingMapping<L> createOutput(final LabelingMapping<L> input) {
-		return ops().create().labelingMapping(input.numSets());
+		return outputCreator.compute0();
 	}
 
 	@Override

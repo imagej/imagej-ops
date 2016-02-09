@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@
 package net.imagej.ops.filter.gauss;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.gauss3.Gauss3;
@@ -57,10 +57,10 @@ import org.scijava.thread.ThreadService;
  * @param <V> type of output
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
-@Plugin(type = Ops.Filter.Gauss.class)
+@Plugin(type = Ops.Filter.Gauss.class, priority = 1.0)
 public class DefaultGaussRAI<T extends RealType<T>, V extends RealType<V>>
 	extends
-	AbstractUnaryHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<V>>
+	AbstractUnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<V>>
 	implements Ops.Filter.Gauss
 {
 

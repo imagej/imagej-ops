@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,15 +30,15 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
 /**
- * Typed interface for "map" {@link InplaceOp}s.
+ * Typed interface for "map" {@link UnaryInplaceOp}s.
  * 
  * @author Curtis Rueden
  * @param <EA> element type of inplace arguments
- * @param <OP> type of {@link InplaceOp} which processes each element
+ * @param <OP> type of {@link UnaryInplaceOp} which processes each element
  */
-public interface MapInplace<EA, OP extends InplaceOp<EA>> extends MapOp<OP> {
+public interface MapInplace<EA, OP extends UnaryInplaceOp<EA>> extends MapOp<OP> {
 	// NB: Marker interface.
 }

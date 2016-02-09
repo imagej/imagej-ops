@@ -1,0 +1,7 @@
+# Generate tests for MapUnaryComputers
+
+[MapUnaryComputersTest.java]
+
+types = ```
+["II", "RAI"]
+```

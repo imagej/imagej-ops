@@ -2,18 +2,18 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *
+ * 
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -35,6 +35,30 @@ import static org.junit.Assert.assertSame;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
+import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
+import net.imagej.ops.special.computer.AbstractNullaryComputerOp;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.NullaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
+import net.imagej.ops.special.function.AbstractNullaryFunctionOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.NullaryFunctionOp;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractBinaryHybridCF;
+import net.imagej.ops.special.hybrid.AbstractNullaryHybridCF;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imagej.ops.special.hybrid.BinaryHybridCF;
+import net.imagej.ops.special.hybrid.Hybrids;
+import net.imagej.ops.special.hybrid.NullaryHybridCF;
+import net.imagej.ops.special.hybrid.UnaryHybridCF;
+import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
+import net.imagej.ops.special.inplace.Inplaces;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
 import org.junit.Test;
 import org.scijava.ItemIO;
@@ -99,22 +123,22 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	}
 
 	/**
-	 * Tests {@link Hybrids#nullary(OpEnvironment, Class, Class, Object...)}
+	 * Tests {@link Hybrids#nullaryCF(OpEnvironment, Class, Class, Object...)}
 	 * (i.e.: without the output specified).
 	 */
 	@Test
 	public void testNullaryHybrid() {
-		final NullaryHybridOp<Apple> nullaryHybridA = Hybrids.nullary(ops,
+		final NullaryHybridCF<Apple> nullaryHybridA = Hybrids.nullaryCF(ops,
 			FruitOp.class, Apple.class);
 		assertSame(nullaryHybridA.getClass(), NullaryHybridA.class);
 
-		final NullaryHybridOp<Orange> nullaryHybridO = Hybrids.nullary(ops,
+		final NullaryHybridCF<Orange> nullaryHybridO = Hybrids.nullaryCF(ops,
 			FruitOp.class, Orange.class);
 		assertSame(nullaryHybridO.getClass(), NullaryHybridO.class);
 	}
 
 	/**
-	 * Tests {@link Hybrids#nullary(OpEnvironment, Class, Object, Object...)}
+	 * Tests {@link Hybrids#nullaryCF(OpEnvironment, Class, Object, Object...)}
 	 * (i.e.: with the output specified).
 	 */
 	@Test
@@ -122,11 +146,11 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		final Apple a = new Apple();
 		final Orange o = new Orange();
 
-		final NullaryHybridOp<Apple> nullaryHybridA = Hybrids.nullary(ops,
+		final NullaryHybridCF<Apple> nullaryHybridA = Hybrids.nullaryCF(ops,
 			FruitOp.class, a);
 		assertSame(nullaryHybridA.getClass(), NullaryHybridA.class);
 
-		final NullaryHybridOp<Orange> nullaryHybridO = Hybrids.nullary(ops,
+		final NullaryHybridCF<Orange> nullaryHybridO = Hybrids.nullaryCF(ops,
 			FruitOp.class, o);
 		assertSame(nullaryHybridO.getClass(), NullaryHybridO.class);
 	}
@@ -261,30 +285,30 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	}
 
 	/**
-	 * Tests {@link Hybrids#unary(OpEnvironment, Class, Class, Class, Object...)}
+	 * Tests {@link Hybrids#unaryCF(OpEnvironment, Class, Class, Class, Object...)}
 	 * (i.e.: with neither output nor input specified).
 	 */
 	@Test
 	public void testUnaryHybrid() {
-		final UnaryHybridOp<Apple, Apple> unaryHybridAA = Hybrids.unary(ops,
+		final UnaryHybridCF<Apple, Apple> unaryHybridAA = Hybrids.unaryCF(ops,
 			FruitOp.class, Apple.class, Apple.class);
 		assertSame(unaryHybridAA.getClass(), UnaryHybridAA.class);
 
-		final UnaryHybridOp<Apple, Orange> unaryHybridAO = Hybrids.unary(ops,
+		final UnaryHybridCF<Apple, Orange> unaryHybridAO = Hybrids.unaryCF(ops,
 			FruitOp.class, Orange.class, Apple.class);
 		assertSame(unaryHybridAO.getClass(), UnaryHybridAO.class);
 
-		final UnaryHybridOp<Orange, Apple> unaryHybridOA = Hybrids.unary(ops,
+		final UnaryHybridCF<Orange, Apple> unaryHybridOA = Hybrids.unaryCF(ops,
 			FruitOp.class, Apple.class, Orange.class);
 		assertSame(unaryHybridOA.getClass(), UnaryHybridOA.class);
 
-		final UnaryHybridOp<Orange, Orange> unaryHybridOO = Hybrids.unary(ops,
+		final UnaryHybridCF<Orange, Orange> unaryHybridOO = Hybrids.unaryCF(ops,
 			FruitOp.class, Orange.class, Orange.class);
 		assertSame(unaryHybridOO.getClass(), UnaryHybridOO.class);
 	}
 
 	/**
-	 * Tests {@link Hybrids#unary(OpEnvironment, Class, Class, Object, Object...)}
+	 * Tests {@link Hybrids#unaryCF(OpEnvironment, Class, Class, Object, Object...)}
 	 * (i.e.: with the input specified).
 	 */
 	@Test
@@ -292,26 +316,26 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		final Apple a = new Apple();
 		final Orange o = new Orange();
 
-		final UnaryHybridOp<Apple, Apple> unaryHybridAA = Hybrids.unary(ops,
+		final UnaryHybridCF<Apple, Apple> unaryHybridAA = Hybrids.unaryCF(ops,
 			FruitOp.class, Apple.class, a);
 		assertSame(unaryHybridAA.getClass(), UnaryHybridAA.class);
 
-		final UnaryHybridOp<Apple, Orange> unaryHybridAO = Hybrids.unary(ops,
+		final UnaryHybridCF<Apple, Orange> unaryHybridAO = Hybrids.unaryCF(ops,
 			FruitOp.class, Orange.class, a);
 		assertSame(unaryHybridAO.getClass(), UnaryHybridAO.class);
 
-		final UnaryHybridOp<Orange, Apple> unaryHybridOA = Hybrids.unary(ops,
+		final UnaryHybridCF<Orange, Apple> unaryHybridOA = Hybrids.unaryCF(ops,
 			FruitOp.class, Apple.class, o);
 		assertSame(unaryHybridOA.getClass(), UnaryHybridOA.class);
 
-		final UnaryHybridOp<Orange, Orange> unaryHybridOO = Hybrids.unary(ops,
+		final UnaryHybridCF<Orange, Orange> unaryHybridOO = Hybrids.unaryCF(ops,
 			FruitOp.class, Orange.class, o);
 		assertSame(unaryHybridOO.getClass(), UnaryHybridOO.class);
 	}
 
 	/**
 	 * Tests
-	 * {@link Hybrids#unary(OpEnvironment, Class, Object, Object, Object...)}
+	 * {@link Hybrids#unaryCF(OpEnvironment, Class, Object, Object, Object...)}
 	 * (i.e.: with the output and input specified).
 	 */
 	@Test
@@ -319,19 +343,19 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		final Apple a = new Apple();
 		final Orange o = new Orange();
 
-		final UnaryHybridOp<Apple, Apple> binaryHybridAA = Hybrids.unary(ops,
+		final UnaryHybridCF<Apple, Apple> binaryHybridAA = Hybrids.unaryCF(ops,
 			FruitOp.class, a, a);
 		assertSame(binaryHybridAA.getClass(), UnaryHybridAA.class);
 
-		final UnaryHybridOp<Apple, Orange> binaryHybridAO = Hybrids.unary(ops,
+		final UnaryHybridCF<Apple, Orange> binaryHybridAO = Hybrids.unaryCF(ops,
 			FruitOp.class, o, a);
 		assertSame(binaryHybridAO.getClass(), UnaryHybridAO.class);
 
-		final UnaryHybridOp<Orange, Apple> binaryHybridOA = Hybrids.unary(ops,
+		final UnaryHybridCF<Orange, Apple> binaryHybridOA = Hybrids.unaryCF(ops,
 			FruitOp.class, a, o);
 		assertSame(binaryHybridOA.getClass(), UnaryHybridOA.class);
 
-		final UnaryHybridOp<Orange, Orange> binaryHybridOO = Hybrids.unary(ops,
+		final UnaryHybridCF<Orange, Orange> binaryHybridOO = Hybrids.unaryCF(ops,
 			FruitOp.class, o, o);
 		assertSame(binaryHybridOO.getClass(), UnaryHybridOO.class);
 	}
@@ -342,11 +366,11 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testInplace() {
-		final InplaceOp<Apple> inplaceA = Inplaces.unary(ops, FruitOp.class,
+		final UnaryInplaceOp<Apple> inplaceA = Inplaces.unary(ops, FruitOp.class,
 			Apple.class);
 		assertSame(inplaceA.getClass(), InplaceA.class);
 
-		final InplaceOp<Orange> inplaceO = Inplaces.unary(ops, FruitOp.class,
+		final UnaryInplaceOp<Orange> inplaceO = Inplaces.unary(ops, FruitOp.class,
 			Orange.class);
 		assertSame(inplaceO.getClass(), InplaceO.class);
 	}
@@ -360,10 +384,10 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		final Apple a = new Apple();
 		final Orange o = new Orange();
 
-		final InplaceOp<Apple> inplaceA = Inplaces.unary(ops, FruitOp.class, a);
+		final UnaryInplaceOp<Apple> inplaceA = Inplaces.unary(ops, FruitOp.class, a);
 		assertSame(inplaceA.getClass(), InplaceA.class);
 
-		final InplaceOp<Orange> inplaceO = Inplaces.unary(ops, FruitOp.class, o);
+		final UnaryInplaceOp<Orange> inplaceO = Inplaces.unary(ops, FruitOp.class, o);
 		assertSame(inplaceO.getClass(), InplaceO.class);
 	}
 
@@ -499,31 +523,31 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 
 	/**
 	 * Tests
-	 * {@link Hybrids#binary(OpEnvironment, Class, Class, Class, Class, Object...)}
+	 * {@link Hybrids#binaryCF(OpEnvironment, Class, Class, Class, Class, Object...)}
 	 * (i.e.: with neither output nor inputs specified).
 	 */
 	@Test
 	public void testBinaryHybrid() {
-		final BinaryHybridOp<Apple, Apple, Lemon> binaryHybridAAL = Hybrids.binary(
+		final BinaryHybridCF<Apple, Apple, Lemon> binaryHybridAAL = Hybrids.binaryCF(
 			ops, FruitOp.class, Lemon.class, Apple.class, Apple.class);
 		assertSame(binaryHybridAAL.getClass(), BinaryHybridAAL.class);
 
-		final BinaryHybridOp<Apple, Orange, Lemon> binaryHybridAOL = Hybrids.binary(
+		final BinaryHybridCF<Apple, Orange, Lemon> binaryHybridAOL = Hybrids.binaryCF(
 			ops, FruitOp.class, Lemon.class, Apple.class, Orange.class);
 		assertSame(binaryHybridAOL.getClass(), BinaryHybridAOL.class);
 
-		final BinaryHybridOp<Orange, Apple, Lemon> binaryHybridOAL = Hybrids.binary(
+		final BinaryHybridCF<Orange, Apple, Lemon> binaryHybridOAL = Hybrids.binaryCF(
 			ops, FruitOp.class, Lemon.class, Orange.class, Apple.class);
 		assertSame(binaryHybridOAL.getClass(), BinaryHybridOAL.class);
 
-		final BinaryHybridOp<Orange, Orange, Lemon> binaryHybridOOL = Hybrids
-			.binary(ops, FruitOp.class, Lemon.class, Orange.class, Orange.class);
+		final BinaryHybridCF<Orange, Orange, Lemon> binaryHybridOOL = Hybrids
+			.binaryCF(ops, FruitOp.class, Lemon.class, Orange.class, Orange.class);
 		assertSame(binaryHybridOOL.getClass(), BinaryHybridOOL.class);
 	}
 
 	/**
 	 * Tests
-	 * {@link Hybrids#binary(OpEnvironment, Class, Class, Object, Object, Object...)}
+	 * {@link Hybrids#binaryCF(OpEnvironment, Class, Class, Object, Object, Object...)}
 	 * (i.e.: with the inputs specified).
 	 */
 	@Test
@@ -531,26 +555,26 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		final Apple a = new Apple();
 		final Orange o = new Orange();
 
-		final BinaryHybridOp<Apple, Apple, Lemon> binaryHybridAAL = Hybrids.binary(
+		final BinaryHybridCF<Apple, Apple, Lemon> binaryHybridAAL = Hybrids.binaryCF(
 			ops, FruitOp.class, Lemon.class, a, a);
 		assertSame(binaryHybridAAL.getClass(), BinaryHybridAAL.class);
 
-		final BinaryHybridOp<Apple, Orange, Lemon> binaryHybridAOL = Hybrids.binary(
+		final BinaryHybridCF<Apple, Orange, Lemon> binaryHybridAOL = Hybrids.binaryCF(
 			ops, FruitOp.class, Lemon.class, a, o);
 		assertSame(binaryHybridAOL.getClass(), BinaryHybridAOL.class);
 
-		final BinaryHybridOp<Orange, Apple, Lemon> binaryHybridOAL = Hybrids.binary(
+		final BinaryHybridCF<Orange, Apple, Lemon> binaryHybridOAL = Hybrids.binaryCF(
 			ops, FruitOp.class, Lemon.class, o, a);
 		assertSame(binaryHybridOAL.getClass(), BinaryHybridOAL.class);
 
-		final BinaryHybridOp<Orange, Orange, Lemon> binaryHybridOOL = Hybrids
-			.binary(ops, FruitOp.class, Lemon.class, o, o);
+		final BinaryHybridCF<Orange, Orange, Lemon> binaryHybridOOL = Hybrids
+			.binaryCF(ops, FruitOp.class, Lemon.class, o, o);
 		assertSame(binaryHybridOOL.getClass(), BinaryHybridOOL.class);
 	}
 
 	/**
 	 * Tests
-	 * {@link Hybrids#binary(OpEnvironment, Class, Object, Object, Object, Object...)}
+	 * {@link Hybrids#binaryCF(OpEnvironment, Class, Object, Object, Object, Object...)}
 	 * (i.e.: with the output and inputs specified).
 	 */
 	@Test
@@ -559,19 +583,19 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		final Orange o = new Orange();
 		final Lemon l = new Lemon();
 
-		final BinaryHybridOp<Apple, Apple, Lemon> binaryHybridAAL = Hybrids.binary(ops,
+		final BinaryHybridCF<Apple, Apple, Lemon> binaryHybridAAL = Hybrids.binaryCF(ops,
 			FruitOp.class, l, a, a);
 		assertSame(binaryHybridAAL.getClass(), BinaryHybridAAL.class);
 
-		final BinaryHybridOp<Apple, Orange, Lemon> binaryHybridAOL = Hybrids.binary(ops,
+		final BinaryHybridCF<Apple, Orange, Lemon> binaryHybridAOL = Hybrids.binaryCF(ops,
 			FruitOp.class, l, a, o);
 		assertSame(binaryHybridAOL.getClass(), BinaryHybridAOL.class);
 
-		final BinaryHybridOp<Orange, Apple, Lemon> binaryHybridOAL = Hybrids.binary(ops,
+		final BinaryHybridCF<Orange, Apple, Lemon> binaryHybridOAL = Hybrids.binaryCF(ops,
 			FruitOp.class, l, o, a);
 		assertSame(binaryHybridOAL.getClass(), BinaryHybridOAL.class);
 
-		final BinaryHybridOp<Orange, Orange, Lemon> binaryHybridOOL = Hybrids.binary(ops,
+		final BinaryHybridCF<Orange, Orange, Lemon> binaryHybridOOL = Hybrids.binaryCF(ops,
 			FruitOp.class, l, o, o);
 		assertSame(binaryHybridOOL.getClass(), BinaryHybridOOL.class);
 	}
@@ -615,7 +639,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	}
 
 	public abstract static class NullaryFruitHybrid<O> extends
-		AbstractNullaryHybridOp<O> implements FruitOp
+		AbstractNullaryHybridCF<O> implements FruitOp
 	{
 
 		@Override
@@ -650,7 +674,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	}
 
 	public abstract static class UnaryFruitHybrid<I, O> extends
-		AbstractUnaryHybridOp<I, O> implements FruitOp
+		AbstractUnaryHybridCF<I, O> implements FruitOp
 	{
 
 		@Override
@@ -664,7 +688,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		}
 	}
 
-	public abstract static class FruitInplace<A> extends AbstractInplaceOp<A>
+	public abstract static class FruitInplace<A> extends AbstractUnaryInplaceOp<A>
 		implements FruitOp
 	{
 
@@ -934,7 +958,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	}
 
 	public abstract static class BinaryFruitHybrid<I1, I2, O> extends
-		AbstractBinaryHybridOp<I1, I2, O> implements FruitOp
+		AbstractBinaryHybridCF<I1, I2, O> implements FruitOp
 	{
 
 		@Override

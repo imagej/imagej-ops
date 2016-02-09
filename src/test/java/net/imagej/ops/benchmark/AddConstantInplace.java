@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,14 +30,14 @@
 package net.imagej.ops.benchmark;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.special.AbstractInplaceOp;
+import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
 import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class)
-public class AddConstantInplace<T extends NumericType<T>> extends AbstractInplaceOp<T> {
+public class AddConstantInplace<T extends NumericType<T>> extends AbstractUnaryInplaceOp<T> {
 
 	@Parameter
 	private T value;

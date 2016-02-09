@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -36,11 +36,10 @@ import java.util.Iterator;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
-import net.imglib2.util.Pair;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -145,15 +144,15 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 	{
 
 		@Override
-		public void compute1(final Pair<ByteType, Iterable<ByteType>> input,
+		public void compute2(final ByteType center, final Iterable<ByteType> neighborhood,
 			final ByteType output)
 		{
-			ByteType a = input.getA();
+			ByteType a = center;
 
 			a.set((byte) 0);
 			output.set((byte) 0);
 
-			for (Iterator<ByteType> iter = input.getB().iterator(); iter.hasNext(); iter
+			for (Iterator<ByteType> iter = neighborhood.iterator(); iter.hasNext(); iter
 				.next())
 			{
 				output.inc();

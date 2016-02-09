@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,8 +30,8 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.special.AbstractInplaceOp;
-import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
 import org.scijava.plugin.Parameter;
 
@@ -42,22 +42,22 @@ import org.scijava.plugin.Parameter;
  * @param <EA> element type of inplace arguments
  * @param <PA> producer of arguments
  */
-public abstract class AbstractMapInplace<EA, PA> extends AbstractInplaceOp<PA>
-	implements MapInplace<EA, InplaceOp<EA>>
+public abstract class AbstractMapInplace<EA, PA> extends AbstractUnaryInplaceOp<PA>
+	implements MapInplace<EA, UnaryInplaceOp<EA>>
 {
 
 	@Parameter
-	private InplaceOp<EA> op;
+	private UnaryInplaceOp<EA> op;
 
 	// -- MapOp methods --
 
 	@Override
-	public InplaceOp<EA> getOp() {
+	public UnaryInplaceOp<EA> getOp() {
 		return op;
 	}
 
 	@Override
-	public void setOp(final InplaceOp<EA> op) {
+	public void setOp(final UnaryInplaceOp<EA> op) {
 		this.op = op;
 	}
 

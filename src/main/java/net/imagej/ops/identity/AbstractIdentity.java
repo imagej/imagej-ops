@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,13 +30,13 @@
 
 package net.imagej.ops.identity;
 
-import net.imagej.ops.special.AbstractInplaceOp;
+import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
 
 /**
  * Abstract superclass of {@link IdentityOp} implementations.
  * 
  * @author Curtis Rueden
  */
-public abstract class AbstractIdentity<T> extends AbstractInplaceOp<T> {
+public abstract class AbstractIdentity<T> extends AbstractUnaryInplaceOp<T> {
 	// NB: No implementation needed.
 }

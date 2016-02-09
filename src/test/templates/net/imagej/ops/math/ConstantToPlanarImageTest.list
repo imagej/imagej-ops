@@ -1,0 +1,22 @@
+# Unit tests for binary arithmetic ops with PlanarImages. 
+
+[ConstantToPlanarImageTest.java]
+
+types = ```
+[
+	[name: "Byte",     primitive: "byte"], 
+	[name: "Int",      primitive: "int"], 
+	[name: "Long",     primitive: "long"], 
+	[name: "Float",    primitive: "float"], 
+	[name: "Double",   primitive: "double"]
+]
+```
+
+ops = ```
+[
+	[name: "Add",      operator: "+"],
+	[name: "Subtract", operator: "-"], 
+	[name: "Multiply", operator: "*"], 
+	[name: "Divide",   operator: "/"],
+]
+```

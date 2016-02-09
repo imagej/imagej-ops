@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.features.tamura2d;
 
-import net.imagej.ops.special.UnaryHybridOp;
+import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -45,6 +45,6 @@ import net.imglib2.type.numeric.RealType;
  *            output type
  */
 public interface TamuraFeature<I extends RealType<I>, O extends RealType<O>>
-		extends UnaryHybridOp<RandomAccessibleInterval<I>, O> {
+		extends UnaryHybridCF<RandomAccessibleInterval<I>, O> {
 	// NB: marker interface
 }

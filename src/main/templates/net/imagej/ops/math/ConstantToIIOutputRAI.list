@@ -1,0 +1,12 @@
+# Generated functional binary arithmetic ops with II as input and RAI as output.
+
+[ConstantToIIOutputRAI.java]
+
+ops = ```
+[
+	[name: "Add",      function: "add"],
+	[name: "Subtract", function: "sub"], 
+	[name: "Multiply", function: "mul"], 
+	[name: "Divide",   function: "div"]
+]
+```

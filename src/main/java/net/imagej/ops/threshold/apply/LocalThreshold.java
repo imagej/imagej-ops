@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -31,14 +31,16 @@
 package net.imagej.ops.threshold.apply;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.chain.RAIs;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -46,13 +48,13 @@ import org.scijava.plugin.Plugin;
 /**
  * Apply a local thresholding method to an image, optionally using a out of
  * bounds strategy.
- * 
+ *
  * @author Jonathan Hale (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
+ * @author Stefan Helfrich (University of Konstanz)
  */
 @Plugin(type = Ops.Threshold.Apply.class)
-public class LocalThreshold<T extends RealType<T>>
-	extends
+public class LocalThreshold<T extends RealType<T>> extends
 	AbstractUnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<BitType>>
 	implements Ops.Threshold.Apply
 {
@@ -66,17 +68,19 @@ public class LocalThreshold<T extends RealType<T>>
 	@Parameter(required = false)
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds;
 
+	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<BitType>> mapper;
+
+	@Override
+	public void initialize() {
+		mapper = Computers.unary(ops(), Ops.Map.class, out(), RAIs.extend(in(),
+			outOfBounds), method, shape);
+	}
+
 	@Override
 	public void compute1(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<BitType> output)
 	{
-		RandomAccessibleInterval<T> extendedInput = input;
-
-		if (outOfBounds != null) {
-			extendedInput = Views.interval(Views.extend(input, outOfBounds), input);
-		}
-
-		ops().map(output, extendedInput, method, shape);
+		mapper.compute1(RAIs.extend(input, outOfBounds), output);
 	}
 
 }

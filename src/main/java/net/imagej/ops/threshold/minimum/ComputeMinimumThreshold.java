@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,7 @@ package net.imagej.ops.threshold.minimum;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.AbstractComputeThresholdHistogram;
-import net.imagej.ops.threshold.ThresholdUtils;
+import net.imagej.ops.threshold.Thresholds;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
 
@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
 // plugin found in Fiji (version 1.14).
 
 /**
- * Implements a minimum threshold method by Prewitt & Mendelsohn.
+ * Implements a minimum threshold method by Prewitt &amp; Mendelsohn.
  * 
  * @author Barry DeZonia
  * @author Gabriel Landini
@@ -90,7 +90,7 @@ public class ComputeMinimumThreshold<T extends RealType<T>> extends
 		}
 		double[] tHisto = iHisto;
 
-		while (!ThresholdUtils.bimodalTest(iHisto)) {
+		while (!Thresholds.bimodalTest(iHisto)) {
 			// smooth with a 3 point running mean filter
 			for (int i = 1; i < histogram.length - 1; i++)
 				tHisto[i] = (iHisto[i - 1] + iHisto[i] + iHisto[i + 1]) / 3;

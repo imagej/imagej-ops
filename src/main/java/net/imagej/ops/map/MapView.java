@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,11 +30,11 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.special.UnaryComputerOp;
-import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 
 /**
- * A {@link MapComputer} {@link UnaryFunctionOp} which converts entries on
+ * A {@link MapUnaryComputer} {@link UnaryFunctionOp} which converts entries on
  * demand by wrapping in a thin "view" data structure.
  *
  * @author Christian Dietz (University of Konstanz)
@@ -44,7 +44,7 @@ import net.imagej.ops.special.UnaryFunctionOp;
  * @param <PO> producer of outputs
  */
 public interface MapView<EI, EO, PI, PO> extends
-	MapComputer<EI, EO, UnaryComputerOp<EI, EO>>, UnaryFunctionOp<PI, PO>
+	MapUnaryComputer<EI, EO, UnaryComputerOp<EI, EO>>, UnaryFunctionOp<PI, PO>
 {
 
 	/**

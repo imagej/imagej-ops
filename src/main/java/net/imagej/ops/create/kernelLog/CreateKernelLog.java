@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@
 package net.imagej.ops.create.kernelLog;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.create.AbstractCreateKernel;
+import net.imagej.ops.create.AbstractCreateGaussianKernel;
 import net.imglib2.Cursor;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.NativeType;
@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.KernelLog.class)
 public class CreateKernelLog<T extends ComplexType<T> & NativeType<T>> extends
-	AbstractCreateKernel<T> implements Ops.Create.KernelLog
+	AbstractCreateGaussianKernel<T> implements Ops.Create.KernelLog
 {
 
 	@Override
@@ -63,7 +63,7 @@ public class CreateKernelLog<T extends ComplexType<T> & NativeType<T>> extends
 			// Optimal sigma for LoG approach and dimensionality.
 			final double sigma_optimal = sigma[i] / Math.sqrt(numDimensions);
 
-			sigmaPixels[i] = sigma_optimal / calibration[i];
+			sigmaPixels[i] = sigma_optimal;
 		}
 		final int n = sigmaPixels.length;
 		final long[] sizes = new long[n];
@@ -97,7 +97,7 @@ public class CreateKernelLog<T extends ComplexType<T> & NativeType<T>> extends
 			double mantissa = 0;
 			double exponent = 0;
 			for (int d = 0; d < coords.length; d++) {
-				final double x = calibration[d] * (coords[d] - middle[d]);
+				final double x = (coords[d] - middle[d]);
 				mantissa += -C * (x * x / sigma[0] / sigma[0] - 1d);
 				exponent += -x * x / 2d / sigma[0] / sigma[0];
 			}

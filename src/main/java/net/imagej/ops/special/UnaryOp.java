@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,13 +30,20 @@
 
 package net.imagej.ops.special;
 
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.UnaryHybridCF;
+import net.imagej.ops.special.hybrid.UnaryHybridCFI;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
+
 /**
  * A <em>unary</em> operation computes a result from a given input. The contents
  * of the input are not affected.
  * <p>
- * Unary ops come in two major flavors: {@link UnaryComputerOp} and
- * {@link UnaryFunctionOp}. An additional type, {@link UnaryHybridOp}, unions
- * both flavors.
+ * Unary ops come in three major flavors: {@link UnaryComputerOp},
+ * {@link UnaryFunctionOp} and {@link UnaryInplaceOp}. Additional hybrid types
+ * exist that union these flavors in various combinations: {@link UnaryHybridCF}
+ * and {@link UnaryHybridCFI}.
  * </p>
  * <p>
  * A unary op may be treated as a {@link NullaryOp} by holding the input
@@ -46,11 +53,37 @@ package net.imagej.ops.special;
  * @author Curtis Rueden
  * @param <I> type of input
  * @param <O> type of output
- * @see UnaryComputerOp
- * @see UnaryFunctionOp
- * @see UnaryHybridOp
  */
 public interface UnaryOp<I, O> extends NullaryOp<O>, UnaryInput<I> {
+
+	/**
+	 * Executes the operation in a type-safe but flexible way.
+	 * <p>
+	 * The exact behavior depends on the type of special op.
+	 * </p>
+	 * @param input argument to the operation
+	 * @param output reference where the operation's result will be stored
+	 * @return result of the operation
+	 * @see UnaryComputerOp#run(Object, Object)
+	 * @see UnaryFunctionOp#run(Object, Object)
+	 * @see UnaryInplaceOp#run(Object, Object)
+	 * @see UnaryHybridCF#run(Object, Object)
+	 */
+	O run(I input, O output);
+
+	// -- SpecialOp methods --
+
+	@Override
+	default int getArity() {
+		return 1;
+	}
+
+	// -- Runnable methods --
+
+	@Override
+	default void run() {
+		run(in(), out());
+	}
 
 	// -- Threadable methods --
 

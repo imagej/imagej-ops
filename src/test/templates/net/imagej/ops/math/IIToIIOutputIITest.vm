@@ -1,0 +1,85 @@
+/*
+ * #%L
+ * ImageJ software for multidimensional image processing and analysis.
+ * %%
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
+ * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * %%
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * #L%
+ */
+
+package net.imagej.ops.math;
+
+import static org.junit.Assert.assertEquals;
+
+import net.imagej.ops.AbstractOpTest;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImgs;
+import net.imglib2.type.numeric.real.FloatType;
+
+import org.junit.Before;
+import org.junit.Test;
+
+public class IIToIIOutputIITest extends AbstractOpTest {
+
+	private Img<FloatType> in1;
+	private Img<FloatType> in2;
+	private Img<FloatType> copy1;
+	private Img<FloatType> out;
+
+	@Before
+	public void initImg() {
+		in1 = generateFloatArrayTestImg(true, 3, 3);
+		in2 = ArrayImgs.floats(new float[] { 11, 12, 13, 14, 15, 16, 17, 18, 19 },
+			3, 3);
+		copy1 = in1.copy();
+		out = ArrayImgs.floats(3, 3);
+	}
+	
+#foreach ($op in $ops)
+	@Test
+	public void test${op.name}() {
+		@SuppressWarnings("unchecked")
+		final IIToRAIOutputII.${op.name}<FloatType> op = ops.op(IIToRAIOutputII.${op.name}.class,
+			out, in1, in2);
+		op.run();
+		final IterableInterval<FloatType> created = op.compute2(in1, in2);
+		op.mutate(in1);
+		final Cursor<FloatType> in1Cursor = in1.cursor();
+		final Cursor<FloatType> copy1Cursor = copy1.cursor();
+		final Cursor<FloatType> in2Cursor = in2.cursor();
+		final Cursor<FloatType> outCursor = out.cursor();
+		final Cursor<FloatType> crtCursor = created.cursor();
+		while (copy1Cursor.hasNext()) {
+			copy1Cursor.next().${op.function}(in2Cursor.next());
+			final float expected = copy1Cursor.get().get();
+			assertEquals(in1Cursor.next().get(), expected, 0.0);
+			assertEquals(outCursor.next().get(), expected, 0.0);
+			assertEquals(crtCursor.next().get(), expected, 0.0);
+		}
+	}
+
+#end
+}

@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -31,19 +31,17 @@
 package net.imagej.ops.copy;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.chain.RAIs;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
-import net.imagej.ops.special.Computers;
-import net.imagej.ops.special.UnaryComputerOp;
-import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.special.chain.RAIs;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.Type;
 import net.imglib2.util.Intervals;
 import net.imglib2.util.Util;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -55,12 +53,9 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Copy.RAI.class, priority = 1.0)
 public class CopyRAI<T> extends
-	AbstractUnaryHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	AbstractUnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Copy.RAI, Contingent
 {
-
-	@Parameter
-	protected OpService ops;
 
 	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> mapComputer;
 
@@ -79,7 +74,7 @@ public class CopyRAI<T> extends
 			out() == null ? Type.class : Util.getTypeFromInterval(out()).getClass();
 		final T inType = Util.getTypeFromInterval(in());
 		final UnaryComputerOp<T, ?> typeComputer =
-			Computers.unary(ops, Ops.Copy.Type.class, outTypeClass, inType);
+			Computers.unary(ops(), Ops.Copy.Type.class, outTypeClass, inType);
 		mapComputer = RAIs.computer(ops(), Ops.Map.class, in(), typeComputer);
 		createFunc = RAIs.function(ops(), Ops.Create.Img.class, in(), inType);
 	}

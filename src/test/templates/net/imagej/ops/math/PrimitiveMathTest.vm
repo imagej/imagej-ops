@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -46,11 +46,12 @@ public class PrimitiveMathTest extends AbstractOpTest {
 #if ($types.containsKey($test.code))
 #set ($type = $types.get($test.code))
 #set ($className = "$type.name$test.op")
+#set ($methodName = $test.op.substring(0, 1).toLowerCase() + $test.op.substring(1))
 
 	/** Tests {@link PrimitiveMath.$className}. */
 	@Test
 	public void test$className() {
-		final Object result = ops.run(PrimitiveMath.${className}.class, $test.args);
+		final Object result = ops.math().$methodName($test.args);
 		assertTrue(result instanceof $type.name);
 		final $type.primitive value = ($type.name) result;
 #if ($type.delta)

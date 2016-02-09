@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@ package net.imagej.ops.features.lbp2d;
 import java.util.ArrayList;
 
 import net.imagej.ops.Ops.LBP.LBP2D;
-import net.imagej.ops.special.UnaryHybridOp;
+import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
@@ -46,7 +46,7 @@ import net.imglib2.type.numeric.integer.LongType;
  * @param <O> type of output value
  */
 public interface LBP2DFeature<I extends RealType<I>> extends
-	UnaryHybridOp<RandomAccessibleInterval<I>, ArrayList<LongType>>, LBP2D
+	UnaryHybridCF<RandomAccessibleInterval<I>, ArrayList<LongType>>, LBP2D
 {
 	// NB: marker interface
 }

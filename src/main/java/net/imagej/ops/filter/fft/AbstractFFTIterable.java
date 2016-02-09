@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@
 
 package net.imagej.ops.filter.fft;
 
-import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 
 /**
  * Abstract superclass for forward fft implementations.
@@ -38,7 +38,7 @@ import net.imagej.ops.special.AbstractUnaryHybridOp;
  * @author Brian Northan
  */
 public abstract class AbstractFFTIterable<C, T, I extends Iterable<C>, O extends Iterable<T>>
-	extends AbstractUnaryHybridOp<I, O>
+	extends AbstractUnaryHybridCF<I, O>
 {
 
 }

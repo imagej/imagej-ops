@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@
 package net.imagej.ops.create.kernelGauss;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.create.AbstractCreateKernel;
+import net.imagej.ops.create.AbstractCreateGaussianKernel;
 import net.imglib2.Cursor;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.NativeType;
@@ -54,7 +54,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.KernelGauss.class)
 public class CreateKernelGauss<T extends ComplexType<T> & NativeType<T>>
-	extends AbstractCreateKernel<T> implements Ops.Create.KernelGauss
+	extends AbstractCreateGaussianKernel<T> implements Ops.Create.KernelGauss
 {
 
 	@Override
@@ -65,7 +65,7 @@ public class CreateKernelGauss<T extends ComplexType<T> & NativeType<T>>
 		final double[][] kernelArrays = new double[numDimensions][];
 
 		for (int d = 0; d < numDimensions; d++) {
-			sigmaPixels[d] = sigma[d] / calibration[d];
+			sigmaPixels[d] = sigma[d];
 
 			dims[d] = Math.max(3, (2 * (int) (3 * sigmaPixels[d] + 0.5) + 1));
 			kernelArrays[d] = Util.createGaussianKernel1DDouble(sigmaPixels[d], true);

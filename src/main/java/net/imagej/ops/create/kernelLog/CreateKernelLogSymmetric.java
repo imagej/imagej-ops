@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@
 package net.imagej.ops.create.kernelLog;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.create.AbstractCreateSymmetricKernel;
+import net.imagej.ops.create.AbstractCreateSymmetricGaussianKernel;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
 
@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.KernelLog.class, priority = Priority.HIGH_PRIORITY)
 public class CreateKernelLogSymmetric<T extends ComplexType<T> & NativeType<T>>
-	extends AbstractCreateSymmetricKernel<T> implements Ops.Create.KernelLog
+	extends AbstractCreateSymmetricGaussianKernel<T> implements Ops.Create.KernelLog
 {
 
 	@Override
@@ -58,14 +58,6 @@ public class CreateKernelLogSymmetric<T extends ComplexType<T> & NativeType<T>>
 			sigmas[d] = sigma;
 		}
 
-		if (calibration == null) {
-			calibration = new double[numDimensions];
-
-			for (int i = 0; i < numDimensions; i++) {
-				calibration[i] = 1.0;
-			}
-		}
-
-		output = ops().create().kernelLog(outType, fac, sigmas, calibration);
+		output = ops().create().kernelLog(outType, fac, sigmas);
 	}
 }
