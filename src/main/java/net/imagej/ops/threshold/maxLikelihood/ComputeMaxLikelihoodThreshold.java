@@ -114,7 +114,7 @@ public class ComputeMaxLikelihoodThreshold<T extends RealType<T>> extends
 				/ (Thresholds.A(y, n) - Thresholds.A(y, T)) - (nu * nu);
 
 		// % Return if sigma2 or tau2 are zero, to avoid division by zero
-		if (sigma2 == 0 | tau2 == 0)
+		if (sigma2 == 0 || tau2 == 0)
 			return -1;
 
 		double mu_prev = Double.NaN;

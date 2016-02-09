@@ -60,7 +60,7 @@ public class ImgImgFactory<T extends Type<T>, V extends Type<V>> implements
 			return input.factory().imgFactory(resType).create(input, resType);
 		}
 		catch (final IncompatibleTypeException e) {
-			throw new RuntimeException(e);
+			throw new IllegalArgumentException(e);
 		}
 	}
 }

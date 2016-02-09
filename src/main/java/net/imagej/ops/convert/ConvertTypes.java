@@ -462,7 +462,7 @@ public final class ConvertTypes {
 
 		@Override
 		public void compute1(final C input, final UnsignedLongType output) {
-			final BigDecimal bd = new BigDecimal(input.getRealDouble());
+			final BigDecimal bd = BigDecimal.valueOf(input.getRealDouble());
 			final BigDecimal r = bd.remainder(BigDecimal.ONE);
 			if (r.compareTo(BigDecimal.ZERO) == 0) {
 				output.set(bd.toBigIntegerExact().longValue());
@@ -505,7 +505,7 @@ public final class ConvertTypes {
 
 		@Override
 		public void compute1(final C input, final Unsigned128BitType output) {
-			final BigDecimal bd = new BigDecimal(input.getRealDouble());
+			final BigDecimal bd = BigDecimal.valueOf(input.getRealDouble());
 			final BigDecimal r = bd.remainder(BigDecimal.ONE);
 			if (r.compareTo(BigDecimal.ZERO) == 0) {
 				output.set(bd.toBigIntegerExact());
