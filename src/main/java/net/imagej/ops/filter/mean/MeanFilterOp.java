@@ -32,12 +32,16 @@ package net.imagej.ops.filter.mean;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccessibleInterval;
 
 /**
  * A typed "mean" filter.
  * 
  * @author Jonathan Hale (University of Konstanz)
  */
-public interface MeanFilterOp<I> extends Ops.Filter.Mean, UnaryComputerOp<I, I> {
+public interface MeanFilterOp<I, O> extends Ops.Filter.Mean,
+	UnaryComputerOp<RandomAccessibleInterval<I>, IterableInterval<O>>
+{
 	// NB: Marker interface.
 }

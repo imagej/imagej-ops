@@ -30,42 +30,48 @@
 
 package net.imagej.ops.filter;
 
+import org.scijava.plugin.Parameter;
+
+import net.imagej.ops.Ops.Map;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
+import net.imglib2.outofbounds.OutOfBoundsBorderFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.view.Views;
 
-import org.scijava.plugin.Parameter;
-
 public abstract class AbstractNeighborhoodBasedFilter<I, O> extends
-	AbstractUnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	AbstractUnaryComputerOp<RandomAccessibleInterval<I>, IterableInterval<O>>
 {
 
 	@Parameter
 	private Shape shape;
 
 	@Parameter(required = false)
-	private OutOfBoundsFactory<I, RandomAccessibleInterval<I>> outOfBoundsFactory;
+	private OutOfBoundsFactory<I, RandomAccessibleInterval<I>> outOfBoundsFactory =
+		new OutOfBoundsBorderFactory<I, RandomAccessibleInterval<I>>();
+
+	private UnaryComputerOp<Iterable<I>, O> filterOp;
+
+	private UnaryComputerOp<RandomAccessibleInterval<I>, IterableInterval<O>> map;
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public void initialize() {
+		filterOp = unaryComputer(out().firstElement());
+		map = (UnaryComputerOp) Computers.unary(ops(), Map.class, out(), in(),
+			filterOp, shape);
+	}
 
 	@Override
 	public void compute1(RandomAccessibleInterval<I> input,
-		RandomAccessibleInterval<O> output)
+		IterableInterval<O> output)
 	{
-		// optionally extend input if outOfBoundsFactory is set
-		RandomAccessibleInterval<I> extInput = input;
-		if (outOfBoundsFactory != null) {
-			extInput = Views.interval(Views.extend(input, outOfBoundsFactory), input);
-		}
-
-		I in = input.randomAccess().get();
-		O out = output.randomAccess().get();
-
-		// map computer to neighborhoods
-		ops().map(output, extInput, getComputer(in.getClass(), out.getClass()),
-			getShape());
-
+		map.compute1(Views.interval(Views.extend(input, outOfBoundsFactory), input),
+			output);
 	}
 
 	/**
@@ -78,22 +84,13 @@ public abstract class AbstractNeighborhoodBasedFilter<I, O> extends
 	}
 
 	/**
-	 * Set the shape (structuring element) to be used by this filter.
-	 * 
-	 * @param s the shape
-	 */
-	public void setShape(Shape s) {
-		shape = s;
-	}
-
-	/**
 	 * @param inClass Class of the type in the input
 	 *          {@link RandomAccessibleInterval}
 	 * @param outClass Class of the type in the output
 	 *          {@link RandomAccessibleInterval}
 	 * @return the Computer to map to all neighborhoods of input to output.
 	 */
-	protected abstract UnaryComputerOp<Iterable<I>, O> getComputer(final Class<?> inClass,
-		final Class<?> outClass);
+	protected abstract UnaryComputerOp<Iterable<I>, O> unaryComputer(
+		final O outType);
 
 }

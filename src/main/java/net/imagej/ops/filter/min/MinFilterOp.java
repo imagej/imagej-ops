@@ -32,12 +32,16 @@ package net.imagej.ops.filter.min;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccessibleInterval;
 
 /**
  * A typed "min" filter.
  * 
  * @author Jonathan Hale (University of Konstanz)
  */
-public interface MinFilterOp<I> extends Ops.Filter.Min, UnaryComputerOp<I, I> {
+public interface MinFilterOp<T, V> extends Ops.Filter.Min,
+	UnaryComputerOp<RandomAccessibleInterval<T>, IterableInterval<V>>
+{
 	// NB: Marker interface.
 }
