@@ -59,8 +59,8 @@ public class LocalMidGreyThreshold<T extends RealType<T>> extends
 	private double c;
 	
 	@Override
-	protected CenterAwareComputerOp<T, BitType> getComputer(
-		final Class<?> inClass, final Class<?> outClass)
+	protected CenterAwareComputerOp<T, BitType> unaryComputer(
+		final BitType outClass)
 	{
 		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
 
