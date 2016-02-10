@@ -30,13 +30,14 @@
 
 package net.imagej.ops.map.neighborhood;
 
+import org.scijava.plugin.Parameter;
+
 import net.imagej.ops.map.MapBinaryComputer;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 
-import org.scijava.plugin.Parameter;
-
 /**
- * Abstract implementation of a {@link MapBinaryComputer} for {@link CenterAwareComputerOp}.
+ * Abstract implementation of a {@link MapBinaryComputer} for
+ * {@link CenterAwareComputerOp}.
  * 
  * @author Jonathan Hale (University of Konstanz)
  * @author Stefan Helfrich (University of Konstanz)

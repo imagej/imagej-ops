@@ -46,8 +46,8 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Evaluates a {@link UnaryComputerOp} for each {@link Neighborhood} on the input
- * {@link RandomAccessibleInterval}.
+ * Evaluates a {@link UnaryComputerOp} for each {@link Neighborhood} on the
+ * input {@link RandomAccessibleInterval}.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
@@ -70,9 +70,9 @@ public class MapNeighborhood<I, O> extends
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		map = (UnaryComputerOp) Computers.unary(ops(), Map.class, RandomAccessibleInterval.class,
-			in() != null ? shape.neighborhoodsSafe(in()) : IterableInterval.class,
-			getOp());
+		map = (UnaryComputerOp) Computers.unary(ops(), Map.class,
+			RandomAccessibleInterval.class, in() != null ? shape.neighborhoodsSafe(
+				in()) : IterableInterval.class, getOp());
 	}
 
 	@Override

@@ -108,7 +108,7 @@ public class Convolve<I extends RealType<I>, K extends RealType<K>, O extends Re
 				out = (ImgPlus) in.factory().imgFactory(new FloatType())
 						.create(in, new FloatType());
 			} catch (final IncompatibleTypeException e) {
-				throw new RuntimeException(e);
+				throw new IllegalArgumentException(e);
 			}
 		} else {
 			out = (ImgPlus<O>) in.factory().create(in,

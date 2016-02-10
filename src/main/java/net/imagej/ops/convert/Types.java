@@ -140,7 +140,7 @@ public final class Types {
 		return original.and(maskU64);
 	}
 
-	public static BigInteger uint64(final double value) { return (new BigDecimal(value).toBigInteger()).and(maskU64); }
+	public static BigInteger uint64(final double value) { return bigInt(value).and(maskU64); }
 
 	public static BigInteger uint64(final Number value) { return uint64(value.longValue()); }
 
@@ -153,8 +153,7 @@ public final class Types {
 	}
 
 	public static BigInteger uint128(final double value) { 
-		BigDecimal bd = new BigDecimal(value);
-		BigInteger bi = bd.toBigInteger();
+		BigInteger bi = bigInt(value);
 		if (bi.compareTo(BigInteger.ZERO) >= 0) return bi;
 		return new BigInteger(validBytes(bi.toByteArray())); 
 		}
@@ -197,4 +196,5 @@ public final class Types {
 
 	public static double float64(final boolean value) { return value ? 1 : 0; }
 
+	private static BigInteger bigInt(final double value) { return BigDecimal.valueOf(value).toBigInteger(); }
 }

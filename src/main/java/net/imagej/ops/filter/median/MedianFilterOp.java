@@ -32,12 +32,16 @@ package net.imagej.ops.filter.median;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccessibleInterval;
 
 /**
  * A typed "median" filter.
  * 
  * @author Jonathan Hale (University of Konstanz)
  */
-public interface MedianFilterOp<I> extends Ops.Filter.Median, UnaryComputerOp<I, I> {
+public interface MedianFilterOp<I, O> extends Ops.Filter.Median,
+	UnaryComputerOp<RandomAccessibleInterval<I>, IterableInterval<O>>
+{
 	// NB: Marker interface.
 }

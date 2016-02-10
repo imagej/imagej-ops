@@ -32,14 +32,16 @@ package net.imagej.ops.filter.variance;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccessibleInterval;
 
 /**
  * A typed "variance" filter.
  * 
  * @author Jonathan Hale (University of Konstanz)
  */
-public interface VarianceFilterOp<I> extends Ops.Filter.Variance,
-	UnaryComputerOp<I, I>
+public interface VarianceFilterOp<I, O> extends Ops.Filter.Variance,
+	UnaryComputerOp<RandomAccessibleInterval<I>, IterableInterval<O>>
 {
 	// NB: Marker interface.
 }

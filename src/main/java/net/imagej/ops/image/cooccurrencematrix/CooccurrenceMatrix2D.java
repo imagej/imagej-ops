@@ -106,8 +106,8 @@ public class CooccurrenceMatrix2D<T extends RealType<T>> extends
 
 		int nrPairs = 0;
 
-		final double orientationAtX = orientation.getValueAtDim(0) * distance;
-		final double orientationAtY = orientation.getValueAtDim(1) * distance;
+		final int orientationAtX = orientation.getValueAtDim(0) * distance;
+		final int orientationAtY = orientation.getValueAtDim(1) * distance;
 		for (int y = 0; y < pixels.length; y++) {
 			for (int x = 0; x < pixels[y].length; x++) {
 				// ignore pixels not in mask
@@ -116,8 +116,8 @@ public class CooccurrenceMatrix2D<T extends RealType<T>> extends
 				}
 
 				// // get second pixel
-				final int sx = (int) (x + orientationAtX);
-				final int sy = (int) (y + orientationAtY);
+				final int sx =  x + orientationAtX;
+				final int sy =  y + orientationAtY;
 
 				// second pixel in interval and mask
 				if (sx >= 0 && sy >= 0 && sy < pixels.length

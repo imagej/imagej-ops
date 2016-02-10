@@ -30,34 +30,30 @@
 
 package net.imagej.ops.filter.variance;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractNeighborhoodBasedFilter;
-import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.RealType;
-
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.Ops;
+import net.imagej.ops.filter.AbstractNeighborhoodBasedFilter;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 
 /**
  * Default implementation of {@link VarianceFilterOp}.
  * 
  * @author Jonathan Hale (University of Konstanz)
- * @param <T> type
+ * @param <T>
+ *            type
  */
 @Plugin(type = Ops.Filter.Variance.class, priority = Priority.LOW_PRIORITY)
-public class DefaultVarianceFilter<T extends RealType<T>> extends
-	AbstractNeighborhoodBasedFilter<T, T> implements
-	VarianceFilterOp<RandomAccessibleInterval<T>>
-{
+public class DefaultVarianceFilter<T, V> extends AbstractNeighborhoodBasedFilter<T, V>
+		implements VarianceFilterOp<T, V> {
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	protected UnaryComputerOp<Iterable<T>, T> getComputer(Class<?> inClass,
-		Class<?> outClass)
-	{
-		return (UnaryComputerOp<Iterable<T>, T>) ops().op(Ops.Stats.Variance.class, outClass,
-			Iterable.class);
+	protected UnaryComputerOp<Iterable<T>, V> unaryComputer(final V type) {
+		return (UnaryComputerOp) Computers.unary(ops(), Ops.Stats.Variance.class,
+			type.getClass(), Iterable.class);
 	}
 
 }

@@ -111,7 +111,7 @@ public class ComputeMinimumThreshold<T extends RealType<T>> extends
 		double[] y = iHisto;
 		for (int k = 1; k < max; k++) {
 			// IJ.log(" "+i+"  "+iHisto[i]);
-			if (y[k - 1] > y[k] & y[k + 1] >= y[k])
+			if (y[k - 1] > y[k] && y[k + 1] >= y[k])
 				return k;
 		}
 		return -1;

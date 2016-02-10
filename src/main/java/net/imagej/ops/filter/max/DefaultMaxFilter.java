@@ -30,14 +30,13 @@
 
 package net.imagej.ops.filter.max;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractNeighborhoodBasedFilter;
-import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.RealType;
-
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.Ops;
+import net.imagej.ops.filter.AbstractNeighborhoodBasedFilter;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 
 /**
  * Default implementation of {@link MaxFilterOp}.
@@ -46,17 +45,15 @@ import org.scijava.plugin.Plugin;
  * @param <T> type
  */
 @Plugin(type = Ops.Filter.Max.class, priority = Priority.LOW_PRIORITY)
-public class DefaultMaxFilter<T extends RealType<T>> extends
-	AbstractNeighborhoodBasedFilter<T, T> implements
-	MaxFilterOp<RandomAccessibleInterval<T>>
+public class DefaultMaxFilter<T, V> extends
+	AbstractNeighborhoodBasedFilter<T, V> implements MaxFilterOp<T, V>
 {
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	protected UnaryComputerOp<Iterable<T>, T> getComputer(Class<?> inClass,
-		Class<?> outClass)
-	{
-		return (UnaryComputerOp<Iterable<T>, T>) ops().op(Ops.Stats.Max.class, outClass, Iterable.class);
+	protected UnaryComputerOp<Iterable<T>, V> unaryComputer(final V out) {
+		return (UnaryComputerOp) Computers.unary(ops(), Ops.Stats.Max.class, out
+			.getClass(), Iterable.class);
 	}
 
 }

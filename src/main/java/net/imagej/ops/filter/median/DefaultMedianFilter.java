@@ -30,14 +30,13 @@
 
 package net.imagej.ops.filter.median;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractNeighborhoodBasedFilter;
-import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.RealType;
-
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.Ops;
+import net.imagej.ops.filter.AbstractNeighborhoodBasedFilter;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 
 /**
  * Default implementation of {@link MedianFilterOp}.
@@ -46,18 +45,15 @@ import org.scijava.plugin.Plugin;
  * @param <T> type
  */
 @Plugin(type = Ops.Filter.Median.class, priority = Priority.LOW_PRIORITY)
-public class DefaultMedianFilter<T extends RealType<T>> extends
-	AbstractNeighborhoodBasedFilter<T, T> implements
-	MedianFilterOp<RandomAccessibleInterval<T>>
+public class DefaultMedianFilter<T, V> extends
+	AbstractNeighborhoodBasedFilter<T, V> implements MedianFilterOp<T, V>
 {
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	protected UnaryComputerOp<Iterable<T>, T> getComputer(Class<?> inClass,
-		Class<?> outClass)
-	{
-		return (UnaryComputerOp<Iterable<T>, T>) ops().op(Ops.Stats.Median.class, inClass,
-			Iterable.class);
+	protected UnaryComputerOp<Iterable<T>, V> unaryComputer(final V type) {
+		return (UnaryComputerOp) Computers.unary(ops(), Ops.Stats.Median.class, type
+			.getClass(), Iterable.class);
 	}
 
 }
