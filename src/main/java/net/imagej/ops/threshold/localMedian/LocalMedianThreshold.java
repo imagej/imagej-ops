@@ -31,6 +31,7 @@
 package net.imagej.ops.threshold.localMedian;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
@@ -56,35 +57,30 @@ public class LocalMedianThreshold<T extends RealType<T>> extends LocalThreshold<
 	@Parameter
 	private double c;
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void initialize() {
-		method = new LocalMedianThresholdComputer<>((UnaryComputerOp) Computers
-			.unary(ops(), Ops.Stats.Median.class, DoubleType.class, in()));
+	protected CenterAwareComputerOp<T, BitType> getComputer(
+		final Class<?> inClass, final Class<?> outClass)
+	{
+		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
 
-		super.initialize();
+			private UnaryComputerOp<Iterable<T>, DoubleType> median;
+
+			@Override
+			public void compute2(T center, Iterable<T> neighborhood, BitType output) {
+
+				if (median == null) {
+					median = Computers
+							.unary(ops(), Ops.Stats.Median.class, DoubleType.class, neighborhood);
+				}
+
+				final DoubleType m = new DoubleType();
+				median.compute1(neighborhood, m);
+				output.set(center.getRealDouble() > m.getRealDouble() - c);
+			}
+		};
+
+		op.setEnvironment(ops());
+		return op;
 	}
 	
-	private class LocalMedianThresholdComputer<I extends RealType<I>> extends
-		LocalThresholdMethod<I>
-	{
-
-		private final UnaryComputerOp<Iterable<I>, DoubleType> median;
-
-		public LocalMedianThresholdComputer(
-			final UnaryComputerOp<Iterable<I>, DoubleType> medianFunc)
-		{
-			super();
-			this.median = medianFunc;
-		}
-
-		@Override
-		public void compute2(I center, Iterable<I> neighborhood, BitType output) {
-
-			final DoubleType m = new DoubleType();
-			median.compute1(neighborhood, m);
-			output.set(center.getRealDouble() > m.getRealDouble() - c);
-		}
-	}
-
 }

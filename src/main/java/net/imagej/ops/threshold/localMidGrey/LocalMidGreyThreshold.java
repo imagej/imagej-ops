@@ -30,7 +30,11 @@
 
 package net.imagej.ops.threshold.localMidGrey;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Ops;
+import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
@@ -38,9 +42,6 @@ import net.imagej.ops.threshold.apply.LocalThreshold;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Pair;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
  * LocalThresholdMethod which thresholds against the average of the maximum and
@@ -56,39 +57,35 @@ public class LocalMidGreyThreshold<T extends RealType<T>> extends
 
 	@Parameter
 	private double c;
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	
 	@Override
-	public void initialize() {
-		method = new LocalMidGreyThresholdComputer<>((UnaryFunctionOp) Functions
-			.unary(ops(), Ops.Stats.MinMax.class, Pair.class, in()));
-
-		super.initialize();
-	}
-
-	private class LocalMidGreyThresholdComputer<I extends RealType<I>> extends
-		LocalThresholdMethod<I>
+	protected CenterAwareComputerOp<T, BitType> getComputer(
+		final Class<?> inClass, final Class<?> outClass)
 	{
+		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
 
-		private UnaryFunctionOp<Iterable<I>, Pair<I, I>> minMaxFunc;
+			private UnaryFunctionOp<Iterable<T>, Pair<T, T>> minMaxFunc;
 
-		public LocalMidGreyThresholdComputer(
-			final UnaryFunctionOp<Iterable<I>, Pair<I, I>> minMaxFunc)
-		{
-			super();
-			this.minMaxFunc = minMaxFunc;
-		}
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			@Override
+			public void compute2(T center, Iterable<T> neighborhood, BitType output) {
 
-		@Override
-		public void compute2(I center, Iterable<I> neighborhood, BitType output) {
+				if (minMaxFunc == null) {
+					minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(),
+						Ops.Stats.MinMax.class, Pair.class, neighborhood);
+				}
 
-			final Pair<I, I> outputs = minMaxFunc.compute1(neighborhood);
+				final Pair<T, T> outputs = minMaxFunc.compute1(neighborhood);
 
-			final double minValue = outputs.getA().getRealDouble();
-			final double maxValue = outputs.getB().getRealDouble();
+				final double minValue = outputs.getA().getRealDouble();
+				final double maxValue = outputs.getB().getRealDouble();
 
-			output.set(center.getRealDouble() > ((maxValue + minValue) / 2.0) - c);
-		}
+				output.set(center.getRealDouble() > ((maxValue + minValue) / 2.0) - c);
+			}
+		};
+
+		op.setEnvironment(ops());
+		return op;
 	}
 
 }

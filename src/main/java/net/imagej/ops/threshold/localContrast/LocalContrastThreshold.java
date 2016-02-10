@@ -31,6 +31,7 @@
 package net.imagej.ops.threshold.localContrast;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
@@ -52,42 +53,38 @@ import org.scijava.plugin.Plugin;
 public class LocalContrastThreshold<T extends RealType<T>> extends
 		LocalThreshold<T> implements Ops.Threshold.LocalContrastThreshold {
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void initialize() {
-		method = new LocalContrastThresholdComputer<>((UnaryFunctionOp) Functions
-			.unary(ops(), Ops.Stats.MinMax.class, Pair.class, in()));
-
-		super.initialize();
-	}
-
-	private class LocalContrastThresholdComputer<I extends RealType<I>> extends
-		LocalThresholdMethod<I>
+	protected CenterAwareComputerOp<T, BitType> getComputer(
+		final Class<?> inClass, final Class<?> outClass)
 	{
+		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
 
-		private UnaryFunctionOp<Iterable<I>, Pair<I, I>> minMaxFunc;
+			private UnaryFunctionOp<Iterable<T>, Pair<T, T>> minMaxFunc;
 
-		public LocalContrastThresholdComputer(
-			final UnaryFunctionOp<Iterable<I>, Pair<I, I>> minMaxFunc)
-		{
-			super();
-			this.minMaxFunc = minMaxFunc;
-		}
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			@Override
+			public void compute2(T center, Iterable<T> neighborhood, BitType output) {
 
-		@Override
-		public void compute2(I center, Iterable<I> neighborhood, BitType output) {
+				if (minMaxFunc == null) {
+					minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(),
+						Ops.Stats.MinMax.class, Pair.class, neighborhood);
+				}
 
-			final Pair<I, I> outputs = minMaxFunc.compute1(neighborhood);
+				final Pair<T, T> outputs = minMaxFunc.compute1(neighborhood);
 
-			final double centerValue = center.getRealDouble();
-			final double diffMin = centerValue - outputs.getA().getRealDouble();
-			final double diffMax = outputs.getB().getRealDouble() - centerValue;
+				final double centerValue = center.getRealDouble();
+				final double diffMin = centerValue - outputs.getA().getRealDouble();
+				final double diffMax = outputs.getB().getRealDouble() - centerValue;
 
-			// set to background (false) if pixel closer to min value,
-			// and to foreground (true) if pixel closer to max value.
-			// If diffMin and diffMax are equal, output will be set to fg.
-			output.set(diffMin <= diffMax);
-		}
+				// set to background (false) if pixel closer to min value,
+				// and to foreground (true) if pixel closer to max value.
+				// If diffMin and diffMax are equal, output will be set to fg.
+				output.set(diffMin <= diffMax);
+			}
+		};
+
+		op.setEnvironment(ops());
+		return op;
 	}
 
 }

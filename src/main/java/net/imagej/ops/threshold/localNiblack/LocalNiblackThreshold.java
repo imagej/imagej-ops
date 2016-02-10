@@ -30,7 +30,11 @@
 
 package net.imagej.ops.threshold.localNiblack;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Ops;
+import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
@@ -38,9 +42,6 @@ import net.imagej.ops.threshold.apply.LocalThreshold;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
  * LocalThresholdMethod using Niblack's thresholding method.
@@ -59,45 +60,41 @@ public class LocalNiblackThreshold<T extends RealType<T>> extends LocalThreshold
 	@Parameter
 	private double k;
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void initialize() {
-		method = new LocalNiblackThresholdComputer<>((UnaryComputerOp) Computers
-			.unary(ops(), Ops.Stats.Mean.class, new DoubleType(), in()),
-			(UnaryComputerOp) Computers.unary(ops(), Ops.Stats.StdDev.class,
-				new DoubleType(), in()));
-
-		super.initialize();
-	}
-	
-	private class LocalNiblackThresholdComputer<I extends RealType<I>> extends
-		LocalThresholdMethod<I>
+	protected CenterAwareComputerOp<T, BitType> getComputer(
+		final Class<?> inClass, final Class<?> outClass)
 	{
+		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
 
-		private UnaryComputerOp<Iterable<I>, DoubleType> mean;
-		private UnaryComputerOp<Iterable<I>, DoubleType> stdDeviation;
+			private UnaryComputerOp<Iterable<T>, DoubleType> mean;
+			private UnaryComputerOp<Iterable<T>, DoubleType> stdDeviation;
 
-		public LocalNiblackThresholdComputer(
-			final UnaryComputerOp<Iterable<I>, DoubleType> mean,
-			final UnaryComputerOp<Iterable<I>, DoubleType> stdDeviation)
-		{
-			super();
-			this.mean = mean;
-			this.stdDeviation = stdDeviation;
-		}
+			@Override
+			public void compute2(T center, Iterable<T> neighborhood, BitType output) {
 
-		@Override
-		public void compute2(I center, Iterable<I> neighborhood, BitType output) {
+				if (mean == null) {
+					mean = Computers.unary(ops(), Ops.Stats.Mean.class, new DoubleType(),
+						neighborhood);
+				}
 
-			final DoubleType m = new DoubleType();
-			mean.compute1(neighborhood, m);
+				if (stdDeviation == null) {
+					stdDeviation = Computers.unary(ops(), Ops.Stats.StdDev.class,
+						new DoubleType(), neighborhood);
+				}
 
-			final DoubleType stdDev = new DoubleType();
-			stdDeviation.compute1(neighborhood, stdDev);
+				final DoubleType m = new DoubleType();
+				mean.compute1(neighborhood, m);
 
-			output.set(center.getRealDouble() > m.getRealDouble() + k * stdDev
-				.getRealDouble() - c);
-		}
+				final DoubleType stdDev = new DoubleType();
+				stdDeviation.compute1(neighborhood, stdDev);
+
+				output.set(center.getRealDouble() > m.getRealDouble() + k * stdDev
+					.getRealDouble() - c);
+			}
+		};
+
+		op.setEnvironment(ops());
+		return op;
 	}
 
 }

@@ -30,7 +30,12 @@
 
 package net.imagej.ops.threshold.localMean;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Ops;
+import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
@@ -38,11 +43,6 @@ import net.imagej.ops.threshold.apply.LocalThreshold;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.view.Views;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
  * LocalThresholdMethod that uses the mean and operates directly of RAIs.
@@ -60,34 +60,29 @@ public class LocalMeanThreshold<T extends RealType<T>> extends
 	private double c;
 
 	@Override
-	public void initialize() {
-		method = new LocalMeanThresholdComputer<>(Computers.unary(ops(),
-			Ops.Stats.Mean.class, DoubleType.class, Views.iterable(in())));
-		
-		super.initialize();
-	}
-
-	private class LocalMeanThresholdComputer<I extends RealType<I>> extends
-		LocalThresholdMethod<I>
+	protected CenterAwareComputerOp<T, BitType> getComputer(
+		final Class<?> inClass, final Class<?> outClass)
 	{
+		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
 
-		private UnaryComputerOp<Iterable<I>, DoubleType> meanOp;
+			private UnaryComputerOp<Iterable<T>, DoubleType> meanOp;
 
-		public LocalMeanThresholdComputer(
-			UnaryComputerOp<Iterable<I>, DoubleType> meanOp)
-		{
-			super();
-			this.meanOp = meanOp;
-		}
+			@Override
+			public void compute2(T center, Iterable<T> neighborhood, BitType output) {
 
-		@Override
-		public void compute2(I center, Iterable<I> neighborhood, BitType output) {
+				if (meanOp == null) {
+					meanOp = Computers.unary(ops(),	Ops.Stats.Mean.class, DoubleType.class, neighborhood);
+				}
 
-			final DoubleType m = new DoubleType();
+				final DoubleType m = new DoubleType();
 
-			meanOp.compute1(neighborhood, m);
-			output.set(center.getRealDouble() > m.getRealDouble() - c);
-		}
+				meanOp.compute1(neighborhood, m);
+				output.set(center.getRealDouble() > m.getRealDouble() - c);
+			}
+		};
+
+		op.setEnvironment(ops());
+		return op;
 	}
-
+	
 }
