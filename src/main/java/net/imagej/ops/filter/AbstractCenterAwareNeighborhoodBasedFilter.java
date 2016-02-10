@@ -31,11 +31,13 @@
 package net.imagej.ops.filter;
 
 import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
+import net.imagej.ops.special.chain.RAIs;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
-import net.imglib2.view.Views;
+import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
+import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 
 import org.scijava.plugin.Parameter;
 
@@ -47,23 +49,19 @@ public abstract class AbstractCenterAwareNeighborhoodBasedFilter<I, O> extends
 	private Shape shape;
 
 	@Parameter(required = false)
-	private OutOfBoundsFactory<I, RandomAccessibleInterval<I>> outOfBoundsFactory;
+	private OutOfBoundsFactory<I, RandomAccessibleInterval<I>> outOfBoundsFactory =
+		new OutOfBoundsMirrorFactory<>(Boundary.SINGLE);
 
 	@Override
 	public void compute1(RandomAccessibleInterval<I> input,
 		RandomAccessibleInterval<O> output)
 	{
-		// optionally extend input if outOfBoundsFactory is set
-		RandomAccessibleInterval<I> extInput = input;
-		if (outOfBoundsFactory != null) {
-			extInput = Views.interval(Views.extend(input, outOfBoundsFactory), input);
-		}
 
 		I in = input.randomAccess().get();
 		O out = output.randomAccess().get();
 
 		// map computer to neighborhoods
-		ops().map(output, extInput, getComputer(in.getClass(), out.getClass()),
+		ops().map(output, RAIs.extend(input, outOfBoundsFactory), getComputer(in.getClass(), out.getClass()),
 			getShape());
 
 	}
