@@ -296,6 +296,7 @@ namespaces = ```
 	[name: "stats", iface: "Stats", ops: [
 		[name: "geometricMean",               iface: "GeometricMean"],
 		[name: "harmonicMean",                iface: "HarmonicMean"],
+		[name: "integralMean",                iface: "IntegralMean"],
 		[name: "integralSum",                 iface: "IntegralSum"],
 		[name: "kurtosis",                    iface: "Kurtosis"],
 		[name: "max",                         iface: "Max"],
