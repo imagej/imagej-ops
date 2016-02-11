@@ -37,6 +37,7 @@ import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
 import net.imglib2.Dimensions;
+import net.imglib2.FinalDimensions;
 import net.imglib2.Interval;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
@@ -71,25 +72,21 @@ public class CreateNamespace extends AbstractNamespace {
 	}
 
 	/**
-	 * Helper method for {@link #img(Object...)} to ensure {@code int} varargs are
-	 * not expanded. Necessary because a {@code Long[]} is also an
-	 * {@code Object[]}. See https://github.com/imagej/imagej-ops/pull/115
+	 * Creates an {@link Img} of type {@link DoubleType} with the given dimensions.
 	 */
-	public Object img(final Integer... dims) {
+	public Img<DoubleType> img(final Integer... dims) {
 		int[] ints = new int[dims.length];
 		for (int i=0; i<ints.length; i++) ints[i] = dims[i];
-		return img(ints);
+		return img(new FinalDimensions(ints), new DoubleType());
 	}
 
 	/**
-	 * Helper method for {@link #img(Object...)} to ensure {@code long} varargs
-	 * are not expanded. Necessary because a {@code Long[]} is also an
-	 * {@code Object[]}. See https://github.com/imagej/imagej-ops/pull/115
+	 * Creates an {@link Img} of type {@link DoubleType} with the given dimensions.
 	 */
-	public Object img(final Long... dims) {
+	public Img<DoubleType> img(final Long... dims) {
 		long[] longs = new long[dims.length];
 		for (int i=0; i<longs.length; i++) longs[i] = dims[i];
-		return img(longs);
+		return img(new FinalDimensions(longs), new DoubleType());
 	}
 
 	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromImg.class)
