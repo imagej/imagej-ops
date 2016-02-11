@@ -35,6 +35,7 @@ import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.stats.IntegralSum;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
+import net.imglib2.Interval;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.integral.IntegralImg;
@@ -139,55 +140,8 @@ public class LocalMeanRAIIntegral<T extends RealType<T> & NativeType<T>> extends
 				.numDimensions()];
 			neighborhood.localize(neighborhoodPosition);
 
-			// Absolute difference between minima
-			final long[] neighborhoodMinimum = new long[neighborhood.numDimensions()];
-			neighborhood.min(neighborhoodMinimum);
-			neighborhoodMinimum[0] = neighborhoodMinimum[0] + 1;
-			neighborhoodMinimum[1] = neighborhoodMinimum[1] + 1;
-
-			final long[] neighborhoodMaximum = new long[neighborhood.numDimensions()];
-			neighborhood.max(neighborhoodMaximum);
-			neighborhoodMaximum[0] = neighborhoodMaximum[0] - 1;
-			neighborhoodMaximum[1] = neighborhoodMaximum[1] - 1;
-
-			final long[] inputMinimum = new long[extendedImg.numDimensions()];
-			extendedImg.min(inputMinimum);
-
-			final long[] inputMaximum = new long[extendedImg.numDimensions()];
-			extendedImg.max(inputMaximum);
-
-			int area = 1;
-			for (int d = 0; d < input.numDimensions(); d++)
-			{
-				if (neighborhoodMinimum[d] <= inputMinimum[d] &&
-						neighborhoodMaximum[d] <= inputMaximum[d])
-				{
-					area *= Math.abs((neighborhoodMaximum[d] + 1) - inputMinimum[d]);
-					continue;
-				}
-
-				if (neighborhoodMinimum[d] >= inputMinimum[d] &&
-						neighborhoodMaximum[d] <= inputMaximum[d])
-				{
-					area *= Math.abs((neighborhoodMaximum[d] + 1) -
-						neighborhoodMinimum[d]);
-					continue;
-				}
-
-				if (neighborhoodMinimum[d] >= inputMinimum[d] &&
-						neighborhoodMaximum[d] >= inputMaximum[d])
-				{
-					area *= Math.abs((inputMaximum[d] + 1) - neighborhoodMinimum[d]);
-					continue;
-				}
-
-				if (neighborhoodMinimum[d] <= inputMinimum[d] && 
-						neighborhoodMaximum[d] >= inputMaximum[d])
-				{
-					area *= Math.abs((neighborhoodMaximum[d] + 1) - neighborhoodMinimum[d]);
-					continue;
-				}
-			}
+			// Compute overlap
+			int area = overlap(correctNeighborhoodInterval(neighborhood), extendedImg);
 
 			// Compute mean by dividing the sum divided by the number of elements
 			sum.div(new DoubleType(area));
@@ -208,4 +162,49 @@ public class LocalMeanRAIIntegral<T extends RealType<T> & NativeType<T>> extends
 		}
 	}
 
+	/**
+	 * TODO Documentation
+	 * FIXME Move to central place?
+	 * 
+	 * @param interval1
+	 * @param interval2
+	 * @return area/volume/?
+	 */
+	private int overlap(Interval interval1, Interval interval2)
+	{
+		assert(interval1.numDimensions() == interval2.numDimensions());		
+		int area = 1;
+		
+		for (int d = 0; d < interval1.numDimensions(); d++)
+		{
+			long upperLimit = Math.min(interval1.max(d), interval2.max(d));
+			long lowerLimit = Math.max(interval1.min(d), interval2.min(d));
+			
+			area *= (upperLimit + 1) - lowerLimit;
+		}
+		
+		return area;
+	}
+
+	/**
+	 * TODO Documentation
+	 * 
+	 * @param neighborhood
+	 * @return Blubb
+	 */
+	private Interval correctNeighborhoodInterval(Interval neighborhood) {	
+		final long[] neighborhoodMinimum = new long[neighborhood.numDimensions()];
+		neighborhood.min(neighborhoodMinimum);
+		final long[] neighborhoodMaximum = new long[neighborhood.numDimensions()];
+		neighborhood.max(neighborhoodMaximum);
+		
+		for (int d = 0; d < neighborhood.numDimensions(); d++)
+		{
+			neighborhoodMinimum[d] = neighborhoodMinimum[d] + 1;		
+			neighborhoodMaximum[d] = neighborhoodMaximum[d] - 1;
+		}
+		
+		return new FinalInterval(neighborhoodMinimum, neighborhoodMaximum);
+	}
+	
 }
