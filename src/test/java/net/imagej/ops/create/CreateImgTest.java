@@ -39,6 +39,7 @@ import net.imagej.ops.AbstractOpTest;
 import net.imglib2.FinalDimensions;
 import net.imglib2.FinalInterval;
 import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.img.cell.CellImgFactory;
 import net.imglib2.img.planar.PlanarImgs;
@@ -128,22 +129,21 @@ public class CreateImgTest extends AbstractOpTest {
 
 	@Test
 	public void testImageFactory() {
-
 		final long[] dim = new long[] { 10, 10, 10 };
 
-		assertEquals("Image Factory: ", ArrayImgFactory.class, ((Img<?>) ops
-			.create().img(dim, new DoubleType(), new ArrayImgFactory<DoubleType>())).factory()
-			.getClass());
+		final Img<?> arrayImg = (Img<?>) ops.create().img(dim, new DoubleType(),
+			new ArrayImgFactory<DoubleType>());
+		final Class<?> arrayFactoryClass = arrayImg.factory().getClass();
+		assertEquals("Image Factory: ", ArrayImgFactory.class, arrayFactoryClass);
 
-		assertEquals("Image Factory: ", CellImgFactory.class, ((Img<?>) ops
-			.create().img(dim, new DoubleType(), new CellImgFactory<DoubleType>())).factory()
-			.getClass());
-
+		final Img<?> cellImg = (Img<?>) ops.create().img(dim, new DoubleType(),
+			new CellImgFactory<DoubleType>());
+		final Class<?> cellFactoryClass = cellImg.factory().getClass();
+		assertEquals("Image Factory: ", CellImgFactory.class, cellFactoryClass);
 	}
 
 	@Test
 	public void testImageType() {
-
 		final long[] dim = new long[] { 10, 10, 10 };
 
 		assertEquals("Image Type: ", BitType.class, ((Img<?>) ops.create().img(dim,
@@ -167,7 +167,6 @@ public class CreateImgTest extends AbstractOpTest {
 
 	@Test
 	public void testCreateFromImgSameType() {
-
 		final Img<ByteType> input = PlanarImgs.bytes(10, 10, 10);
 		final Img<?> res =
 			ops.create().img(input, input.firstElement().createVariable());
@@ -181,7 +180,6 @@ public class CreateImgTest extends AbstractOpTest {
 
 	@Test
 	public void testCreateFromImgDifferentType() {
-
 		final Img<ByteType> input = PlanarImgs.bytes(10, 10, 10);
 		final Img<?> res = ops.create().img(input, new ShortType());
 
@@ -194,7 +192,6 @@ public class CreateImgTest extends AbstractOpTest {
 
 	@Test
 	public void testCreateFromRaiDifferentType() {
-
 		final IntervalView<ByteType> input =
 			Views.interval(PlanarImgs.bytes(10, 10, 10), new FinalInterval(
 				new long[] { 10, 10, 1 }));
@@ -216,7 +213,6 @@ public class CreateImgTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testCreateFromIntegerArray() {
-
 		final Integer[] dims = new Integer[] {25, 25, 10};
 
 		final Img<?> res = (Img<?>) ops.create().img(dims);
@@ -233,7 +229,6 @@ public class CreateImgTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testCreateFromLongArray() {
-
 		final Long[] dims = new Long[] {25l, 25l, 10l};
 
 		final Img<?> res = (Img<?>) ops.create().img(dims);
