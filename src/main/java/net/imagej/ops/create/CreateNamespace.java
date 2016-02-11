@@ -366,6 +366,40 @@ public class CreateNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	// -- kernel --
+
+	/** Executes the "kernel" operation on the given arguments. */
+	@OpMethod(op = Ops.Create.Kernel.class)
+	public Object kernel(final Object... args) {
+		return ops().run(Ops.Create.Kernel.NAME, args);
+	}
+
+	/** Executes the "kernel" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.kernel.CreateKernel.class)
+	public <T extends ComplexType<T>> Img<T> kernel(final double[]... values) {
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(net.imagej.ops.create.kernel.CreateKernel.class,
+				new Object[] { values });
+		return result;
+	}
+
+	/** Executes the "kernel" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.kernel.CreateKernel.class)
+	public <T extends ComplexType<T>> Img<T> kernel(final Type<T> outType, final double[]... values) {
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(net.imagej.ops.create.kernel.CreateKernel.class, outType, values);
+		return result;
+	}
+
+	/** Executes the "kernel" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.kernel.CreateKernel.class)
+	public <T extends ComplexType<T>> Img<T> kernel(final Type<T> outType, final ImgFactory<T> fac,
+			final double[]... values) {
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(net.imagej.ops.create.kernel.CreateKernel.class, outType, fac, values);
+		return result;
+	}
+
 	// -- kernelGauss --
 
 	/** Executes the "kernelGauss" operation on the given arguments. */

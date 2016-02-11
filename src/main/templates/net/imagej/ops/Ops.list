@@ -61,6 +61,7 @@ namespaces = ```
 		[name: "imgLabeling",                 iface: "ImgLabeling"],
 		[name: "imgPlus",                     iface: "ImgPlus"],
 		[name: "integerType",                 iface: "IntegerType"],
+    [name: "kernel",                      iface: "Kernel"],
 		[name: "kernelGauss",                 iface: "KernelGauss"],
 		[name: "kernelLog",                   iface: "KernelLog"],
 		[name: "labelingMapping",             iface: "LabelingMapping"],
