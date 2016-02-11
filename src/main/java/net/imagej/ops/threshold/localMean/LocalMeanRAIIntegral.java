@@ -30,9 +30,13 @@
 
 package net.imagej.ops.threshold.localMean;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
-import net.imagej.ops.stats.IntegralSum;
+import net.imagej.ops.stats.IntegralMean;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
@@ -50,10 +54,6 @@ import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.Views;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
  * LocalThresholdMethod using mean.
@@ -78,12 +78,12 @@ public class LocalMeanRAIIntegral<T extends RealType<T> & NativeType<T>> extends
 	@Parameter
 	private double c;
 
-	private IntegralSum<DoubleType> integralSum;
+	private IntegralMean<DoubleType> integralMean;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize() {
-		integralSum = ops().op(IntegralSum.class, DoubleType.class, RectangleNeighborhood.class);
+		integralMean = ops().op(IntegralMean.class, DoubleType.class, RectangleNeighborhood.class, Interval.class);
 
 		// Increase span of shape by 1 to return correct values together with the
 		// integralSum operation
@@ -133,18 +133,12 @@ public class LocalMeanRAIIntegral<T extends RealType<T> & NativeType<T>> extends
 			
 			final DoubleType sum = new DoubleType();
 			if (neighborhood instanceof RectangleNeighborhood) {
-				integralSum.compute1((RectangleNeighborhood<DoubleType>) neighborhood, sum);
+				integralMean.compute2((RectangleNeighborhood<DoubleType>) neighborhood, input, sum);
 			}
 
 			final long[] neighborhoodPosition = new long[neighborhood
 				.numDimensions()];
 			neighborhood.localize(neighborhoodPosition);
-
-			// Compute overlap
-			int area = overlap(correctNeighborhoodInterval(neighborhood), extendedImg);
-
-			// Compute mean by dividing the sum divided by the number of elements
-			sum.div(new DoubleType(area));
 
 			// Subtract the contrast
 			sum.sub(new DoubleType(c));
@@ -160,51 +154,6 @@ public class LocalMeanRAIIntegral<T extends RealType<T> & NativeType<T>> extends
 			outputRandomAccess.setPosition(neighborhood);
 			outputRandomAccess.get().set(inputPixelAsDoubleType.compareTo(sum) > 0);
 		}
-	}
-
-	/**
-	 * TODO Documentation
-	 * FIXME Move to central place?
-	 * 
-	 * @param interval1
-	 * @param interval2
-	 * @return area/volume/?
-	 */
-	private int overlap(Interval interval1, Interval interval2)
-	{
-		assert(interval1.numDimensions() == interval2.numDimensions());		
-		int area = 1;
-		
-		for (int d = 0; d < interval1.numDimensions(); d++)
-		{
-			long upperLimit = Math.min(interval1.max(d), interval2.max(d));
-			long lowerLimit = Math.max(interval1.min(d), interval2.min(d));
-			
-			area *= (upperLimit + 1) - lowerLimit;
-		}
-		
-		return area;
-	}
-
-	/**
-	 * TODO Documentation
-	 * 
-	 * @param neighborhood
-	 * @return Blubb
-	 */
-	private Interval correctNeighborhoodInterval(Interval neighborhood) {	
-		final long[] neighborhoodMinimum = new long[neighborhood.numDimensions()];
-		neighborhood.min(neighborhoodMinimum);
-		final long[] neighborhoodMaximum = new long[neighborhood.numDimensions()];
-		neighborhood.max(neighborhoodMaximum);
-		
-		for (int d = 0; d < neighborhood.numDimensions(); d++)
-		{
-			neighborhoodMinimum[d] = neighborhoodMinimum[d] + 1;		
-			neighborhoodMaximum[d] = neighborhoodMaximum[d] - 1;
-		}
-		
-		return new FinalInterval(neighborhoodMinimum, neighborhoodMaximum);
 	}
 	
 }
