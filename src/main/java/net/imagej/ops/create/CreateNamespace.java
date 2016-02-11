@@ -93,11 +93,10 @@ public class CreateNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromImg.class)
-	public <T extends NativeType<T>> Img<T> img(final Img<T> input) {
+	public <T extends NativeType<T>> Img<T> img(final Img<T> in) {
 		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(net.imagej.ops.create.img.CreateImgFromImg.class,
-				input);
+		final Img<T> result = (Img<T>) ops().run(
+			net.imagej.ops.create.img.CreateImgFromImg.class, in);
 		return result;
 	}
 
