@@ -298,6 +298,7 @@ namespaces = ```
 		[name: "harmonicMean",                iface: "HarmonicMean"],
 		[name: "integralMean",                iface: "IntegralMean"],
 		[name: "integralSum",                 iface: "IntegralSum"],
+		[name: "integralVariance",            iface: "IntegralVariance"],
 		[name: "kurtosis",                    iface: "Kurtosis"],
 		[name: "max",                         iface: "Max"],
 		[name: "mean",                        iface: "Mean",                aliases: ["avg"]],
