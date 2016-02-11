@@ -117,7 +117,7 @@ public class CopyNamespace extends AbstractNamespace {
 	public <T> IterableInterval<T> iterableInterval(final IterableInterval<T> in) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-				net.imagej.ops.copy.CopyII.class, in);
+				net.imagej.ops.Ops.Copy.IterableInterval.class, in);
 		return result;
 	}
 
@@ -128,7 +128,7 @@ public class CopyNamespace extends AbstractNamespace {
 			final IterableInterval<T> out, final IterableInterval<T> in) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-				net.imagej.ops.copy.CopyII.class, out, in);
+				net.imagej.ops.Ops.Copy.IterableInterval.class, out, in);
 		return result;
 	}
 

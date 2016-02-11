@@ -55,7 +55,7 @@ public class TamuraNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.features.tamura2d.DefaultContrastFeature.class)
 	public <I extends RealType<I>, O extends RealType<O>> O contrast(final RandomAccessibleInterval<I> in) {
 
-		final O result = (O) ops().run(net.imagej.ops.features.tamura2d.DefaultContrastFeature.class, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Tamura.Contrast.class, in);
 
 		return result;
 	}
@@ -64,7 +64,7 @@ public class TamuraNamespace extends AbstractNamespace {
 	public <I extends RealType<I>, O extends RealType<O>> O contrast(final O out,
 			final RandomAccessibleInterval<I> in) {
 
-		final O result = (O) ops().run(net.imagej.ops.features.tamura2d.DefaultContrastFeature.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Tamura.Contrast.class, out, in);
 
 		return result;
 	}
@@ -72,7 +72,7 @@ public class TamuraNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.features.tamura2d.DefaultDirectionalityFeature.class)
 	public <I extends RealType<I>, O extends RealType<O>> O directionality(final RandomAccessibleInterval<I> in,
 			final int histogramSize) {
-		final O result = (O) ops().run(net.imagej.ops.features.tamura2d.DefaultDirectionalityFeature.class, in,
+		final O result = (O) ops().run(net.imagej.ops.Ops.Tamura.Directionality.class, in,
 				histogramSize);
 		return result;
 	}
@@ -80,7 +80,7 @@ public class TamuraNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.features.tamura2d.DefaultDirectionalityFeature.class)
 	public <I extends RealType<I>, O extends RealType<O>> O directionality(final O out,
 			final RandomAccessibleInterval<I> in, final int histogramSize) {
-		final O result = (O) ops().run(net.imagej.ops.features.tamura2d.DefaultDirectionalityFeature.class, out, in,
+		final O result = (O) ops().run(net.imagej.ops.Ops.Tamura.Directionality.class, out, in,
 				histogramSize);
 		return result;
 	}
@@ -88,7 +88,7 @@ public class TamuraNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.features.tamura2d.DefaultCoarsenessFeature.class)
 	public <I extends RealType<I>, O extends RealType<O>> O coarseness(final RandomAccessibleInterval<I> in) {
 
-		final O result = (O) ops().run(net.imagej.ops.features.tamura2d.DefaultCoarsenessFeature.class, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Tamura.Coarseness.class, in);
 
 		return result;
 	}
@@ -97,7 +97,7 @@ public class TamuraNamespace extends AbstractNamespace {
 	public <I extends RealType<I>, O extends RealType<O>> O coarseness(final O out,
 			final RandomAccessibleInterval<I> in) {
 
-		final O result = (O) ops().run(net.imagej.ops.features.tamura2d.DefaultCoarsenessFeature.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Tamura.Coarseness.class, out, in);
 
 		return result;
 	}

@@ -94,7 +94,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Abs.class)
 	public <I extends RealType<I>, O extends RealType<O>> O abs(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Abs.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Abs.class, out, in);
 		return result;
 	}
 
@@ -183,7 +183,7 @@ public class MathNamespace extends AbstractNamespace {
 	public <T extends NumericType<T>> IterableInterval<T> add(final IterableInterval<T> out,
 			final IterableInterval<T> in1, final IterableInterval<T> in2) {
 		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result = (IterableInterval<T>) ops().run(net.imagej.ops.math.IIToIIOutputII.Add.class,
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(net.imagej.ops.Ops.Math.Add.class,
 				out, in1, in2);
 		return result;
 	}
@@ -192,7 +192,7 @@ public class MathNamespace extends AbstractNamespace {
 	public <T extends NumericType<T>> IterableInterval<T> add(final IterableInterval<T> in1,
 			final IterableInterval<T> in2) {
 		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result = (IterableInterval<T>) ops().run(net.imagej.ops.math.IIToIIOutputII.Add.class,
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(net.imagej.ops.Ops.Math.Add.class,
 				in1, in2);
 		return result;
 	}
@@ -208,7 +208,7 @@ public class MathNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<T> in2) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops()
-				.run(net.imagej.ops.math.IIToRAIOutputII.Add.class, in1, in2);
+				.run(net.imagej.ops.Ops.Math.Add.class, in1, in2);
 		return result;
 	}
 
@@ -217,7 +217,7 @@ public class MathNamespace extends AbstractNamespace {
 			final IterableInterval<T> in1, final RandomAccessibleInterval<T> in2) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops()
-				.run(net.imagej.ops.math.IIToRAIOutputII.Add.class, out, in1, in2);
+				.run(net.imagej.ops.Ops.Math.Add.class, out, in1, in2);
 		return result;
 	}
 
@@ -225,7 +225,7 @@ public class MathNamespace extends AbstractNamespace {
 	public <T extends NumericType<T>> IterableInterval<T> add(final IterableInterval<T> in, final T value) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops()
-				.run(net.imagej.ops.math.ConstantToIIOutputII.Add.class, in, value);
+				.run(net.imagej.ops.Ops.Math.Add.class, in, value);
 		return result;
 	}
 
@@ -234,7 +234,7 @@ public class MathNamespace extends AbstractNamespace {
 			final IterableInterval<T> in, final T value) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops()
-				.run(net.imagej.ops.math.ConstantToIIOutputII.Add.class, out, in, value);
+				.run(net.imagej.ops.Ops.Math.Add.class, out, in, value);
 		return result;
 	}
 
@@ -247,7 +247,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Add.class)
 	public <I extends RealType<I>, O extends RealType<O>> O add(final O out, final I in, final double constant) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Add.class, out, in, constant);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Add.class, out, in, constant);
 		return result;
 	}
 
@@ -255,7 +255,7 @@ public class MathNamespace extends AbstractNamespace {
 	public <I1 extends RealType<I1>, I2 extends RealType<I2>, O extends RealType<O>> O add(final O out, final I1 in1,
 			final I2 in2) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealBinaryMath.Add.class, out, in1, in2);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Add.class, out, in1, in2);
 		return result;
 	}
 
@@ -277,7 +277,7 @@ public class MathNamespace extends AbstractNamespace {
 	public PlanarImg<DoubleType, DoubleArray> add(final PlanarImg<DoubleType, DoubleArray> image, final double value) {
 		@SuppressWarnings("unchecked")
 		final PlanarImg<DoubleType, DoubleArray> result = (PlanarImg<DoubleType, DoubleArray>) ops()
-				.run(net.imagej.ops.math.ConstantToPlanarImage.AddDouble.class, image, value);
+				.run(net.imagej.ops.Ops.Math.Add.class, image, value);
 		return result;
 	}
 
@@ -285,7 +285,7 @@ public class MathNamespace extends AbstractNamespace {
 	public PlanarImg<FloatType, FloatArray> add(final PlanarImg<FloatType, FloatArray> image, final float value) {
 		@SuppressWarnings("unchecked")
 		final PlanarImg<FloatType, FloatArray> result = (PlanarImg<FloatType, FloatArray>) ops()
-				.run(net.imagej.ops.math.ConstantToPlanarImage.AddFloat.class, image, value);
+				.run(net.imagej.ops.Ops.Math.Add.class, image, value);
 		return result;
 	}
 
@@ -321,14 +321,14 @@ public class MathNamespace extends AbstractNamespace {
 			final IterableInterval<T> in, final T value) {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
-				.run(net.imagej.ops.math.ConstantToIIOutputRAI.Add.class, out, in, value);
+				.run(net.imagej.ops.Ops.Math.Add.class, out, in, value);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.NumericTypeBinaryMath.Add.class)
 	public <T extends NumericType<T>> T add(final T in, final T b) {
 		@SuppressWarnings("unchecked")
-		final T result = (T) ops().run(net.imagej.ops.math.NumericTypeBinaryMath.Add.class, in, b);
+		final T result = (T) ops().run(net.imagej.ops.Ops.Math.Add.class, in, b);
 		return result;
 	}
 
@@ -355,7 +355,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.AndConstant.class)
 	public <I extends RealType<I>, O extends RealType<O>> O and(final O out, final I in, final long constant) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.AndConstant.class, out, in, constant);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.And.class, out, in, constant);
 		return result;
 	}
 
@@ -363,7 +363,7 @@ public class MathNamespace extends AbstractNamespace {
 	public <I1 extends RealType<I1>, I2 extends RealType<I2>, O extends RealType<O>> O and(final O out, final I1 in1,
 			final I2 in2) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealBinaryMath.And.class, out, in1, in2);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.And.class, out, in1, in2);
 		return result;
 	}
 
@@ -381,7 +381,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Arccos.class)
 	public <I extends RealType<I>, O extends RealType<O>> O arccos(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Arccos.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Arccos.class, out, in);
 		return result;
 	}
 
@@ -393,7 +393,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Arccosh.class)
 	public <I extends RealType<I>, O extends RealType<O>> O arccosh(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Arccosh.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Arccosh.class, out, in);
 		return result;
 	}
 
@@ -405,7 +405,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Arccot.class)
 	public <I extends RealType<I>, O extends RealType<O>> O arccot(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Arccot.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Arccot.class, out, in);
 		return result;
 	}
 
@@ -417,7 +417,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Arccoth.class)
 	public <I extends RealType<I>, O extends RealType<O>> O arccoth(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Arccoth.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Arccoth.class, out, in);
 		return result;
 	}
 
@@ -429,7 +429,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Arccsc.class)
 	public <I extends RealType<I>, O extends RealType<O>> O arccsc(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Arccsc.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Arccsc.class, out, in);
 		return result;
 	}
 
@@ -441,7 +441,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Arccsch.class)
 	public <I extends RealType<I>, O extends RealType<O>> O arccsch(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Arccsch.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Arccsch.class, out, in);
 		return result;
 	}
 
@@ -453,7 +453,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Arcsec.class)
 	public <I extends RealType<I>, O extends RealType<O>> O arcsec(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Arcsec.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Arcsec.class, out, in);
 		return result;
 	}
 
@@ -465,7 +465,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Arcsech.class)
 	public <I extends RealType<I>, O extends RealType<O>> O arcsech(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Arcsech.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Arcsech.class, out, in);
 		return result;
 	}
 
@@ -483,7 +483,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Arcsin.class)
 	public <I extends RealType<I>, O extends RealType<O>> O arcsin(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Arcsin.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Arcsin.class, out, in);
 		return result;
 	}
 
@@ -495,7 +495,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Arcsinh.class)
 	public <I extends RealType<I>, O extends RealType<O>> O arcsinh(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Arcsinh.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Arcsinh.class, out, in);
 		return result;
 	}
 
@@ -513,7 +513,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Arctan.class)
 	public <I extends RealType<I>, O extends RealType<O>> O arctan(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Arctan.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Arctan.class, out, in);
 		return result;
 	}
 
@@ -525,7 +525,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Arctanh.class)
 	public <I extends RealType<I>, O extends RealType<O>> O arctanh(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Arctanh.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Arctanh.class, out, in);
 		return result;
 	}
 
@@ -543,7 +543,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Ceil.class)
 	public <I extends RealType<I>, O extends RealType<O>> O ceil(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Ceil.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Ceil.class, out, in);
 		return result;
 	}
 
@@ -578,7 +578,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Cos.class)
 	public <I extends RealType<I>, O extends RealType<O>> O cos(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Cos.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Cos.class, out, in);
 		return result;
 	}
 
@@ -596,7 +596,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Cosh.class)
 	public <I extends RealType<I>, O extends RealType<O>> O cosh(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Cosh.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Cosh.class, out, in);
 		return result;
 	}
 
@@ -608,7 +608,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Cot.class)
 	public <I extends RealType<I>, O extends RealType<O>> O cot(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Cot.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Cot.class, out, in);
 		return result;
 	}
 
@@ -620,7 +620,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Coth.class)
 	public <I extends RealType<I>, O extends RealType<O>> O coth(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Coth.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Coth.class, out, in);
 		return result;
 	}
 
@@ -632,7 +632,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Csc.class)
 	public <I extends RealType<I>, O extends RealType<O>> O csc(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Csc.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Csc.class, out, in);
 		return result;
 	}
 
@@ -644,7 +644,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Csch.class)
 	public <I extends RealType<I>, O extends RealType<O>> O csch(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Csch.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Csch.class, out, in);
 		return result;
 	}
 
@@ -662,7 +662,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.CubeRoot.class)
 	public <I extends RealType<I>, O extends RealType<O>> O cubeRoot(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.CubeRoot.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.CubeRoot.class, out, in);
 		return result;
 	}
 
@@ -750,7 +750,7 @@ public class MathNamespace extends AbstractNamespace {
 			final IterableInterval<T> in1, final IterableInterval<T> in2) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops()
-				.run(net.imagej.ops.math.IIToIIOutputII.Divide.class, out, in1, in2);
+				.run(net.imagej.ops.Ops.Math.Divide.class, out, in1, in2);
 		return result;
 	}
 
@@ -759,7 +759,7 @@ public class MathNamespace extends AbstractNamespace {
 			final IterableInterval<T> in2) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops()
-				.run(net.imagej.ops.math.IIToIIOutputII.Divide.class, in1, in2);
+				.run(net.imagej.ops.Ops.Math.Divide.class, in1, in2);
 		return result;
 	}
 
@@ -774,7 +774,7 @@ public class MathNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<T> in2) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops()
-				.run(net.imagej.ops.math.IIToRAIOutputII.Divide.class, in1, in2);
+				.run(net.imagej.ops.Ops.Math.Divide.class, in1, in2);
 		return result;
 	}
 
@@ -783,7 +783,7 @@ public class MathNamespace extends AbstractNamespace {
 			final IterableInterval<T> in1, final RandomAccessibleInterval<T> in2) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops()
-				.run(net.imagej.ops.math.IIToRAIOutputII.Divide.class, out, in1, in2);
+				.run(net.imagej.ops.Ops.Math.Divide.class, out, in1, in2);
 		return result;
 	}
 
@@ -791,7 +791,7 @@ public class MathNamespace extends AbstractNamespace {
 	public <T extends NumericType<T>> IterableInterval<T> divide(final IterableInterval<T> in, final T value) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops()
-				.run(net.imagej.ops.math.ConstantToIIOutputII.Divide.class, in, value);
+				.run(net.imagej.ops.Ops.Math.Divide.class, in, value);
 		return result;
 	}
 
@@ -800,7 +800,7 @@ public class MathNamespace extends AbstractNamespace {
 			final IterableInterval<T> in, final T value) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops()
-				.run(net.imagej.ops.math.ConstantToIIOutputII.Divide.class, out, in, value);
+				.run(net.imagej.ops.Ops.Math.Divide.class, out, in, value);
 		return result;
 	}
 
@@ -814,7 +814,7 @@ public class MathNamespace extends AbstractNamespace {
 	public <I extends RealType<I>, O extends RealType<O>> O divide(final O out, final I in, final double constant,
 			final double dbzVal) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Divide.class, out, in, constant, dbzVal);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Divide.class, out, in, constant, dbzVal);
 		return result;
 	}
 
@@ -822,7 +822,7 @@ public class MathNamespace extends AbstractNamespace {
 	public <I1 extends RealType<I1>, I2 extends RealType<I2>, O extends RealType<O>> O divide(final O out, final I1 in1,
 			final I2 in2, final double dbzVal) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealBinaryMath.Divide.class, out, in1, in2, dbzVal);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Divide.class, out, in1, in2, dbzVal);
 		return result;
 	}
 
@@ -845,7 +845,7 @@ public class MathNamespace extends AbstractNamespace {
 			final double value) {
 		@SuppressWarnings("unchecked")
 		final PlanarImg<DoubleType, DoubleArray> result = (PlanarImg<DoubleType, DoubleArray>) ops()
-				.run(net.imagej.ops.math.ConstantToPlanarImage.DivideDouble.class, image, value);
+				.run(net.imagej.ops.Ops.Math.Divide.class, image, value);
 		return result;
 	}
 
@@ -853,7 +853,7 @@ public class MathNamespace extends AbstractNamespace {
 	public PlanarImg<FloatType, FloatArray> divide(final PlanarImg<FloatType, FloatArray> image, final float value) {
 		@SuppressWarnings("unchecked")
 		final PlanarImg<FloatType, FloatArray> result = (PlanarImg<FloatType, FloatArray>) ops()
-				.run(net.imagej.ops.math.ConstantToPlanarImage.DivideFloat.class, image, value);
+				.run(net.imagej.ops.Ops.Math.Divide.class, image, value);
 		return result;
 	}
 
@@ -889,21 +889,21 @@ public class MathNamespace extends AbstractNamespace {
 			final IterableInterval<T> in, final T value) {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
-				.run(net.imagej.ops.math.ConstantToIIOutputRAI.Divide.class, out, in, value);
+				.run(net.imagej.ops.Ops.Math.Divide.class, out, in, value);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.NumericTypeBinaryMath.Divide.class)
 	public <T extends NumericType<T>> T divide(final T in, final T b) {
 		@SuppressWarnings("unchecked")
-		final T result = (T) ops().run(net.imagej.ops.math.NumericTypeBinaryMath.Divide.class, in, b);
+		final T result = (T) ops().run(net.imagej.ops.Ops.Math.Divide.class, in, b);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.NumericTypeBinaryMath.Divide.class)
 	public <T extends NumericType<T>> T divide(final T out, final T in, final T b) {
 		@SuppressWarnings("unchecked")
-		final T result = (T) ops().run(net.imagej.ops.math.NumericTypeBinaryMath.Divide.class, out, in, b);
+		final T result = (T) ops().run(net.imagej.ops.Ops.Math.Divide.class, out, in, b);
 		return result;
 	}
 
@@ -916,7 +916,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Exp.class)
 	public <I extends RealType<I>, O extends RealType<O>> O exp(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Exp.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Exp.class, out, in);
 		return result;
 	}
 
@@ -928,7 +928,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.ExpMinusOne.class)
 	public <I extends RealType<I>, O extends RealType<O>> O expMinusOne(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.ExpMinusOne.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.ExpMinusOne.class, out, in);
 		return result;
 	}
 
@@ -946,7 +946,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Floor.class)
 	public <I extends RealType<I>, O extends RealType<O>> O floor(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Floor.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Floor.class, out, in);
 		return result;
 	}
 
@@ -958,7 +958,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.GammaConstant.class)
 	public <I extends RealType<I>, O extends RealType<O>> O gamma(final O out, final I in, final double constant) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.GammaConstant.class, out, in, constant);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Gamma.class, out, in, constant);
 		return result;
 	}
 
@@ -971,7 +971,7 @@ public class MathNamespace extends AbstractNamespace {
 	public <I extends RealType<I>, O extends RealType<O>> O invert(final O out, final I in, final double specifiedMin,
 			final double specifiedMax) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Invert.class, out, in, specifiedMin, specifiedMax);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Invert.class, out, in, specifiedMin, specifiedMax);
 		return result;
 	}
 
@@ -1006,7 +1006,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Log.class)
 	public <I extends RealType<I>, O extends RealType<O>> O log(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Log.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Log.class, out, in);
 		return result;
 	}
 
@@ -1024,7 +1024,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Log10.class)
 	public <I extends RealType<I>, O extends RealType<O>> O log10(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Log10.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Log10.class, out, in);
 		return result;
 	}
 
@@ -1036,7 +1036,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Log2.class)
 	public <I extends RealType<I>, O extends RealType<O>> O log2(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Log2.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Log2.class, out, in);
 		return result;
 	}
 
@@ -1054,7 +1054,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.LogOnePlusX.class)
 	public <I extends RealType<I>, O extends RealType<O>> O logOnePlusX(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.LogOnePlusX.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.LogOnePlusX.class, out, in);
 		return result;
 	}
 
@@ -1090,7 +1090,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.MaxConstant.class)
 	public <I extends RealType<I>, O extends RealType<O>> O max(final O out, final I in, final double constant) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.MaxConstant.class, out, in, constant);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Max.class, out, in, constant);
 		return result;
 	}
 
@@ -1126,7 +1126,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.MinConstant.class)
 	public <I extends RealType<I>, O extends RealType<O>> O min(final O out, final I in, final double constant) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.MinConstant.class, out, in, constant);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Min.class, out, in, constant);
 		return result;
 	}
 
@@ -1212,7 +1212,7 @@ public class MathNamespace extends AbstractNamespace {
 			final IterableInterval<T> in1, final IterableInterval<T> in2) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops()
-				.run(net.imagej.ops.math.IIToIIOutputII.Multiply.class, out, in1, in2);
+				.run(net.imagej.ops.Ops.Math.Multiply.class, out, in1, in2);
 		return result;
 	}
 
@@ -1221,7 +1221,7 @@ public class MathNamespace extends AbstractNamespace {
 			final IterableInterval<T> in2) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops()
-				.run(net.imagej.ops.math.IIToIIOutputII.Multiply.class, in1, in2);
+				.run(net.imagej.ops.Ops.Math.Multiply.class, in1, in2);
 		return result;
 	}
 
@@ -1236,7 +1236,7 @@ public class MathNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<T> in2) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops()
-				.run(net.imagej.ops.math.IIToRAIOutputII.Multiply.class, in1, in2);
+				.run(net.imagej.ops.Ops.Math.Multiply.class, in1, in2);
 		return result;
 	}
 
@@ -1245,7 +1245,7 @@ public class MathNamespace extends AbstractNamespace {
 			final IterableInterval<T> in1, final RandomAccessibleInterval<T> in2) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops()
-				.run(net.imagej.ops.math.IIToRAIOutputII.Multiply.class, out, in1, in2);
+				.run(net.imagej.ops.Ops.Math.Multiply.class, out, in1, in2);
 		return result;
 	}
 
@@ -1253,7 +1253,7 @@ public class MathNamespace extends AbstractNamespace {
 	public <T extends NumericType<T>> IterableInterval<T> multiply(final IterableInterval<T> in, final T value) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops()
-				.run(net.imagej.ops.math.ConstantToIIOutputII.Multiply.class, in, value);
+				.run(net.imagej.ops.Ops.Math.Multiply.class, in, value);
 		return result;
 	}
 
@@ -1262,7 +1262,7 @@ public class MathNamespace extends AbstractNamespace {
 			final IterableInterval<T> in, final T value) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops()
-				.run(net.imagej.ops.math.ConstantToIIOutputII.Multiply.class, out, in, value);
+				.run(net.imagej.ops.Ops.Math.Multiply.class, out, in, value);
 		return result;
 	}
 
@@ -1275,7 +1275,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Multiply.class)
 	public <I extends RealType<I>, O extends RealType<O>> O multiply(final O out, final I in, final double constant) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Multiply.class, out, in, constant);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Multiply.class, out, in, constant);
 		return result;
 	}
 
@@ -1283,7 +1283,7 @@ public class MathNamespace extends AbstractNamespace {
 	public <I1 extends RealType<I1>, I2 extends RealType<I2>, O extends RealType<O>> O multiply(final O out,
 			final I1 in1, final I2 in2) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealBinaryMath.Multiply.class, out, in1, in2);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Multiply.class, out, in1, in2);
 		return result;
 	}
 
@@ -1306,7 +1306,7 @@ public class MathNamespace extends AbstractNamespace {
 			final double value) {
 		@SuppressWarnings("unchecked")
 		final PlanarImg<DoubleType, DoubleArray> result = (PlanarImg<DoubleType, DoubleArray>) ops()
-				.run(net.imagej.ops.math.ConstantToPlanarImage.MultiplyDouble.class, image, value);
+				.run(net.imagej.ops.Ops.Math.Multiply.class, image, value);
 		return result;
 	}
 
@@ -1314,7 +1314,7 @@ public class MathNamespace extends AbstractNamespace {
 	public PlanarImg<FloatType, FloatArray> multiply(final PlanarImg<FloatType, FloatArray> image, final float value) {
 		@SuppressWarnings("unchecked")
 		final PlanarImg<FloatType, FloatArray> result = (PlanarImg<FloatType, FloatArray>) ops()
-				.run(net.imagej.ops.math.ConstantToPlanarImage.MultiplyFloat.class, image, value);
+				.run(net.imagej.ops.Ops.Math.Multiply.class, image, value);
 		return result;
 	}
 
@@ -1352,14 +1352,14 @@ public class MathNamespace extends AbstractNamespace {
 			final IterableInterval<T> in, final T value) {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
-				.run(net.imagej.ops.math.ConstantToIIOutputRAI.Multiply.class, out, in, value);
+				.run(net.imagej.ops.Ops.Math.Multiply.class, out, in, value);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.NumericTypeBinaryMath.Multiply.class)
 	public <T extends NumericType<T>> T multiply(final T in, final T b) {
 		@SuppressWarnings("unchecked")
-		final T result = (T) ops().run(net.imagej.ops.math.NumericTypeBinaryMath.Multiply.class, in, b);
+		final T result = (T) ops().run(net.imagej.ops.Ops.Math.Multiply.class, in, b);
 		return result;
 	}
 
@@ -1374,7 +1374,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.NearestInt.class)
 	public <I extends RealType<I>, O extends RealType<O>> O nearestInt(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.NearestInt.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.NearestInt.class, out, in);
 		return result;
 	}
 
@@ -1410,7 +1410,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Negate.class)
 	public <I extends RealType<I>, O extends RealType<O>> O negate(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Negate.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Negate.class, out, in);
 		return result;
 	}
 
@@ -1434,7 +1434,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.OrConstant.class)
 	public <I extends RealType<I>, O extends RealType<O>> O or(final O out, final I in, final long constant) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.OrConstant.class, out, in, constant);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Or.class, out, in, constant);
 		return result;
 	}
 
@@ -1442,7 +1442,7 @@ public class MathNamespace extends AbstractNamespace {
 	public <I1 extends RealType<I1>, I2 extends RealType<I2>, O extends RealType<O>> O or(final O out, final I1 in1,
 			final I2 in2) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealBinaryMath.Or.class, out, in1, in2);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Or.class, out, in1, in2);
 		return result;
 	}
 
@@ -1460,7 +1460,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.PowerConstant.class)
 	public <I extends RealType<I>, O extends RealType<O>> O power(final O out, final I in, final double constant) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.PowerConstant.class, out, in, constant);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Power.class, out, in, constant);
 		return result;
 	}
 
@@ -1472,14 +1472,14 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.RandomGaussian.class)
 	public <I extends RealType<I>, O extends RealType<O>> O randomGaussian(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.RandomGaussian.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.RandomGaussian.class, out, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.RandomGaussian.class)
 	public <I extends RealType<I>, O extends RealType<O>> O randomGaussian(final O out, final I in, final long seed) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.RandomGaussian.class, out, in, seed);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.RandomGaussian.class, out, in, seed);
 		return result;
 	}
 
@@ -1491,14 +1491,14 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.RandomUniform.class)
 	public <I extends RealType<I>, O extends RealType<O>> O randomUniform(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.RandomUniform.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.RandomUniform.class, out, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.RandomUniform.class)
 	public <I extends RealType<I>, O extends RealType<O>> O randomUniform(final O out, final I in, final long seed) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.RandomUniform.class, out, in, seed);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.RandomUniform.class, out, in, seed);
 		return result;
 	}
 
@@ -1510,7 +1510,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Reciprocal.class)
 	public <I extends RealType<I>, O extends RealType<O>> O reciprocal(final O out, final I in, final double dbzVal) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Reciprocal.class, out, in, dbzVal);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Reciprocal.class, out, in, dbzVal);
 		return result;
 	}
 
@@ -1580,7 +1580,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Round.class)
 	public <I extends RealType<I>, O extends RealType<O>> O round(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Round.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Round.class, out, in);
 		return result;
 	}
 
@@ -1592,7 +1592,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Sec.class)
 	public <I extends RealType<I>, O extends RealType<O>> O sec(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Sec.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Sec.class, out, in);
 		return result;
 	}
 
@@ -1604,7 +1604,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Sech.class)
 	public <I extends RealType<I>, O extends RealType<O>> O sech(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Sech.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Sech.class, out, in);
 		return result;
 	}
 
@@ -1628,7 +1628,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Signum.class)
 	public <I extends RealType<I>, O extends RealType<O>> O signum(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Signum.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Signum.class, out, in);
 		return result;
 	}
 
@@ -1646,7 +1646,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Sin.class)
 	public <I extends RealType<I>, O extends RealType<O>> O sin(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Sin.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Sin.class, out, in);
 		return result;
 	}
 
@@ -1658,7 +1658,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Sinc.class)
 	public <I extends RealType<I>, O extends RealType<O>> O sinc(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Sinc.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Sinc.class, out, in);
 		return result;
 	}
 
@@ -1670,7 +1670,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.SincPi.class)
 	public <I extends RealType<I>, O extends RealType<O>> O sincPi(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.SincPi.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.SincPi.class, out, in);
 		return result;
 	}
 
@@ -1688,7 +1688,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Sinh.class)
 	public <I extends RealType<I>, O extends RealType<O>> O sinh(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Sinh.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Sinh.class, out, in);
 		return result;
 	}
 
@@ -1700,7 +1700,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Sqr.class)
 	public <I extends RealType<I>, O extends RealType<O>> O sqr(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Sqr.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Sqr.class, out, in);
 		return result;
 	}
 
@@ -1718,7 +1718,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Sqrt.class)
 	public <I extends RealType<I>, O extends RealType<O>> O sqrt(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Sqrt.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Sqrt.class, out, in);
 		return result;
 	}
 
@@ -1730,7 +1730,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Step.class)
 	public <I extends RealType<I>, O extends RealType<O>> O step(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Step.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Step.class, out, in);
 		return result;
 	}
 
@@ -1819,7 +1819,7 @@ public class MathNamespace extends AbstractNamespace {
 			final IterableInterval<T> in1, final IterableInterval<T> in2) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops()
-				.run(net.imagej.ops.math.IIToIIOutputII.Subtract.class, out, in1, in2);
+				.run(net.imagej.ops.Ops.Math.Subtract.class, out, in1, in2);
 		return result;
 	}
 
@@ -1828,7 +1828,7 @@ public class MathNamespace extends AbstractNamespace {
 			final IterableInterval<T> in2) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops()
-				.run(net.imagej.ops.math.IIToIIOutputII.Subtract.class, in1, in2);
+				.run(net.imagej.ops.Ops.Math.Subtract.class, in1, in2);
 		return result;
 	}
 
@@ -1843,7 +1843,7 @@ public class MathNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<T> in2) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops()
-				.run(net.imagej.ops.math.IIToRAIOutputII.Subtract.class, in1, in2);
+				.run(net.imagej.ops.Ops.Math.Subtract.class, in1, in2);
 		return result;
 	}
 
@@ -1852,7 +1852,7 @@ public class MathNamespace extends AbstractNamespace {
 			final IterableInterval<T> in1, final RandomAccessibleInterval<T> in2) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops()
-				.run(net.imagej.ops.math.IIToRAIOutputII.Subtract.class, out, in1, in2);
+				.run(net.imagej.ops.Ops.Math.Subtract.class, out, in1, in2);
 		return result;
 	}
 
@@ -1860,7 +1860,7 @@ public class MathNamespace extends AbstractNamespace {
 	public <T extends NumericType<T>> IterableInterval<T> subtract(final IterableInterval<T> in, final T value) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops()
-				.run(net.imagej.ops.math.ConstantToIIOutputII.Subtract.class, in, value);
+				.run(net.imagej.ops.Ops.Math.Subtract.class, in, value);
 		return result;
 	}
 
@@ -1869,7 +1869,7 @@ public class MathNamespace extends AbstractNamespace {
 			final IterableInterval<T> in, final T value) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops()
-				.run(net.imagej.ops.math.ConstantToIIOutputII.Subtract.class, out, in, value);
+				.run(net.imagej.ops.Ops.Math.Subtract.class, out, in, value);
 		return result;
 	}
 
@@ -1882,7 +1882,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Subtract.class)
 	public <I extends RealType<I>, O extends RealType<O>> O subtract(final O out, final I in, final double constant) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Subtract.class, out, in, constant);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Subtract.class, out, in, constant);
 		return result;
 	}
 
@@ -1890,7 +1890,7 @@ public class MathNamespace extends AbstractNamespace {
 	public <I1 extends RealType<I1>, I2 extends RealType<I2>, O extends RealType<O>> O subtract(final O out,
 			final I1 in1, final I2 in2) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealBinaryMath.Subtract.class, out, in1, in2);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Subtract.class, out, in1, in2);
 		return result;
 	}
 
@@ -1914,7 +1914,7 @@ public class MathNamespace extends AbstractNamespace {
 			final double value) {
 		@SuppressWarnings("unchecked")
 		final PlanarImg<DoubleType, DoubleArray> result = (PlanarImg<DoubleType, DoubleArray>) ops()
-				.run(net.imagej.ops.math.ConstantToPlanarImage.SubtractDouble.class, image, value);
+				.run(net.imagej.ops.Ops.Math.Subtract.class, image, value);
 		return result;
 	}
 
@@ -1922,7 +1922,7 @@ public class MathNamespace extends AbstractNamespace {
 	public PlanarImg<FloatType, FloatArray> subtract(final PlanarImg<FloatType, FloatArray> image, final float value) {
 		@SuppressWarnings("unchecked")
 		final PlanarImg<FloatType, FloatArray> result = (PlanarImg<FloatType, FloatArray>) ops()
-				.run(net.imagej.ops.math.ConstantToPlanarImage.SubtractFloat.class, image, value);
+				.run(net.imagej.ops.Ops.Math.Subtract.class, image, value);
 		return result;
 	}
 
@@ -1959,14 +1959,14 @@ public class MathNamespace extends AbstractNamespace {
 			final IterableInterval<T> in, final T value) {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
-				.run(net.imagej.ops.math.ConstantToIIOutputRAI.Subtract.class, out, in, value);
+				.run(net.imagej.ops.Ops.Math.Subtract.class, out, in, value);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.NumericTypeBinaryMath.Subtract.class)
 	public <T extends NumericType<T>> T subtract(final T in, final T b) {
 		@SuppressWarnings("unchecked")
-		final T result = (T) ops().run(net.imagej.ops.math.NumericTypeBinaryMath.Subtract.class, in, b);
+		final T result = (T) ops().run(net.imagej.ops.Ops.Math.Subtract.class, in, b);
 		return result;
 	}
 
@@ -1980,14 +1980,14 @@ public class MathNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleTan.class)
 	public double tan(final double a) {
-		final double result = (Double) ops().run(net.imagej.ops.math.PrimitiveMath.DoubleTan.class, a);
+		final double result = (Double) ops().run(net.imagej.ops.Ops.Math.Tan.class, a);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Tan.class)
 	public <I extends RealType<I>, O extends RealType<O>> O tan(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Tan.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Tan.class, out, in);
 		return result;
 	}
 
@@ -1998,14 +1998,14 @@ public class MathNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleTanh.class)
 	public double tanh(final double a) {
-		final double result = (Double) ops().run(net.imagej.ops.math.PrimitiveMath.DoubleTanh.class, a);
+		final double result = (Double) ops().run(net.imagej.ops.Ops.Math.Tanh.class, a);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Tanh.class)
 	public <I extends RealType<I>, O extends RealType<O>> O tanh(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Tanh.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Tanh.class, out, in);
 		return result;
 	}
 
@@ -2017,7 +2017,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.Ulp.class)
 	public <I extends RealType<I>, O extends RealType<O>> O ulp(final O out, final I in) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Ulp.class, out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Ulp.class, out, in);
 		return result;
 	}
 
@@ -2058,7 +2058,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealMath.XorConstant.class)
 	public <I extends RealType<I>, O extends RealType<O>> O xor(final O out, final I in, final long constant) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.XorConstant.class, out, in, constant);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Xor.class, out, in, constant);
 		return result;
 	}
 
@@ -2066,7 +2066,7 @@ public class MathNamespace extends AbstractNamespace {
 	public <I1 extends RealType<I1>, I2 extends RealType<I2>, O extends RealType<O>> O xor(final O out, final I1 in1,
 			final I2 in2) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealBinaryMath.Xor.class, out, in1, in2);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Xor.class, out, in1, in2);
 		return result;
 	}
 
@@ -2078,7 +2078,7 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.NumericTypeNullaryMath.Zero.class)
 	public <T extends NumericType<T>> T zero(final T out) {
 		@SuppressWarnings("unchecked")
-		final T result = (T) ops().run(net.imagej.ops.math.NumericTypeNullaryMath.Zero.class, out);
+		final T result = (T) ops().run(net.imagej.ops.Ops.Math.Zero.class, out);
 		return result;
 	}
 

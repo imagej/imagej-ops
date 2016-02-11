@@ -55,7 +55,7 @@ public class ZernikeNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.features.zernike.DefaultPhaseFeature.class)
 	public <T extends RealType<T>, O extends RealType<O>> O phase(final IterableInterval<T> in, final int order,
 			final int repitition) {
-		final O result = (O) ops().run(net.imagej.ops.features.zernike.DefaultPhaseFeature.class, in, order,
+		final O result = (O) ops().run(net.imagej.ops.Ops.Zernike.Phase.class, in, order,
 				repitition);
 		return result;
 	}
@@ -63,7 +63,7 @@ public class ZernikeNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.features.zernike.DefaultPhaseFeature.class)
 	public <T extends RealType<T>, O extends RealType<O> > O phase(final O out, final IterableInterval<T> in, final int order,
 			final int repitition) {
-		final O result = (O) ops().run(net.imagej.ops.features.zernike.DefaultPhaseFeature.class, out, in, order,
+		final O result = (O) ops().run(net.imagej.ops.Ops.Zernike.Phase.class, out, in, order,
 				repitition);
 		return result;
 	}
@@ -71,7 +71,7 @@ public class ZernikeNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.features.zernike.DefaultMagnitudeFeature.class)
 	public <T extends RealType<T>, O extends RealType<O>> O magnitude(final IterableInterval<T> in, final int order,
 			final int repitition) {
-		final O result = (O) ops().run(net.imagej.ops.features.zernike.DefaultMagnitudeFeature.class, in, order,
+		final O result = (O) ops().run(net.imagej.ops.Ops.Zernike.Magnitude.class, in, order,
 				repitition);
 		return result;
 	}
@@ -79,7 +79,7 @@ public class ZernikeNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.features.zernike.DefaultMagnitudeFeature.class)
 	public <T extends RealType<T>, O extends RealType<O>> O magnitude(final O out, final IterableInterval<T> in, final int order,
 			final int repitition) {
-		final O result = (O) ops().run(net.imagej.ops.features.zernike.DefaultMagnitudeFeature.class, out, in, order,
+		final O result = (O) ops().run(net.imagej.ops.Ops.Zernike.Magnitude.class, out, in, order,
 				repitition);
 		return result;
 	}

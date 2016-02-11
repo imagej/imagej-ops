@@ -61,7 +61,7 @@ public class LBPNamespace extends AbstractNamespace {
 		final int histogramSize)
 	{
 		final ArrayList<LongType> result = (ArrayList<LongType>) ops().run(
-			net.imagej.ops.features.lbp2d.DefaultLBP2D.class, in, distance,
+			net.imagej.ops.Ops.LBP.LBP2D.class, in, distance,
 			histogramSize);
 		return result;
 	}
@@ -73,7 +73,7 @@ public class LBPNamespace extends AbstractNamespace {
 		final int distance, final int histogramSize)
 	{
 		final ArrayList<LongType> result = (ArrayList<LongType>) ops().run(
-			net.imagej.ops.features.lbp2d.DefaultLBP2D.class, out, in, distance,
+			net.imagej.ops.Ops.LBP.LBP2D.class, out, in, distance,
 			histogramSize);
 		return result;
 	}

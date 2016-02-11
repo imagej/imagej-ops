@@ -79,7 +79,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.centralmoments.DefaultCentralMoment01.class,
+					net.imagej.ops.Ops.ImageMoments.CentralMoment01.class,
 					in);
 		return result;
 	}
@@ -93,7 +93,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.centralmoments.DefaultCentralMoment01.class,
+					net.imagej.ops.Ops.ImageMoments.CentralMoment01.class,
 					out, in);
 		return result;
 	}
@@ -107,7 +107,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.centralmoments.DefaultCentralMoment02.class,
+					net.imagej.ops.Ops.ImageMoments.CentralMoment02.class,
 					in);
 		return result;
 	}
@@ -121,7 +121,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.centralmoments.DefaultCentralMoment02.class,
+					net.imagej.ops.Ops.ImageMoments.CentralMoment02.class,
 					out, in);
 		return result;
 	}
@@ -135,7 +135,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.centralmoments.DefaultCentralMoment03.class,
+					net.imagej.ops.Ops.ImageMoments.CentralMoment03.class,
 					in);
 		return result;
 	}
@@ -149,7 +149,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.centralmoments.DefaultCentralMoment03.class,
+					net.imagej.ops.Ops.ImageMoments.CentralMoment03.class,
 					out, in);
 		return result;
 	}
@@ -163,7 +163,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.centralmoments.DefaultCentralMoment10.class,
+					net.imagej.ops.Ops.ImageMoments.CentralMoment10.class,
 					in);
 		return result;
 	}
@@ -177,7 +177,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.centralmoments.DefaultCentralMoment10.class,
+					net.imagej.ops.Ops.ImageMoments.CentralMoment10.class,
 					out, in);
 		return result;
 	}
@@ -214,7 +214,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.centralmoments.DefaultCentralMoment12.class,
+					net.imagej.ops.Ops.ImageMoments.CentralMoment12.class,
 					in);
 		return result;
 	}
@@ -228,7 +228,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.centralmoments.DefaultCentralMoment12.class,
+					net.imagej.ops.Ops.ImageMoments.CentralMoment12.class,
 					out, in);
 		return result;
 	}
@@ -242,7 +242,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.centralmoments.DefaultCentralMoment20.class,
+					net.imagej.ops.Ops.ImageMoments.CentralMoment20.class,
 					in);
 		return result;
 	}
@@ -256,7 +256,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.centralmoments.DefaultCentralMoment20.class,
+					net.imagej.ops.Ops.ImageMoments.CentralMoment20.class,
 					out, in);
 		return result;
 	}
@@ -270,7 +270,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.centralmoments.DefaultCentralMoment21.class,
+					net.imagej.ops.Ops.ImageMoments.CentralMoment21.class,
 					in);
 		return result;
 	}
@@ -284,7 +284,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.centralmoments.DefaultCentralMoment21.class,
+					net.imagej.ops.Ops.ImageMoments.CentralMoment21.class,
 					out, in);
 		return result;
 	}
@@ -298,7 +298,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.centralmoments.DefaultCentralMoment30.class,
+					net.imagej.ops.Ops.ImageMoments.CentralMoment30.class,
 					in);
 		return result;
 	}
@@ -312,7 +312,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.centralmoments.DefaultCentralMoment30.class,
+					net.imagej.ops.Ops.ImageMoments.CentralMoment30.class,
 					out, in);
 		return result;
 	}
@@ -322,7 +322,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final IterableInterval<I> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.imagemoments.moments.DefaultMoment00.class,
+			(O) ops().run(net.imagej.ops.Ops.ImageMoments.Moment00.class,
 				in);
 		return result;
 	}
@@ -332,7 +332,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final IterableInterval<I> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.imagemoments.moments.DefaultMoment00.class,
+			(O) ops().run(net.imagej.ops.Ops.ImageMoments.Moment00.class,
 				out, in);
 		return result;
 	}
@@ -342,7 +342,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final IterableInterval<I> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.imagemoments.moments.DefaultMoment01.class,
+			(O) ops().run(net.imagej.ops.Ops.ImageMoments.Moment01.class,
 				in);
 		return result;
 	}
@@ -352,7 +352,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final IterableInterval<I> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.imagemoments.moments.DefaultMoment01.class,
+			(O) ops().run(net.imagej.ops.Ops.ImageMoments.Moment01.class,
 				out, in);
 		return result;
 	}
@@ -362,7 +362,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final IterableInterval<I> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.imagemoments.moments.DefaultMoment10.class,
+			(O) ops().run(net.imagej.ops.Ops.ImageMoments.Moment10.class,
 				in);
 		return result;
 	}
@@ -372,7 +372,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final IterableInterval<I> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.imagemoments.moments.DefaultMoment10.class,
+			(O) ops().run(net.imagej.ops.Ops.ImageMoments.Moment10.class,
 				out, in);
 		return result;
 	}
@@ -382,7 +382,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final IterableInterval<I> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.imagemoments.moments.DefaultMoment11.class,
+			(O) ops().run(net.imagej.ops.Ops.ImageMoments.Moment11.class,
 				in);
 		return result;
 	}
@@ -392,7 +392,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final IterableInterval<I> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.imagemoments.moments.DefaultMoment11.class,
+			(O) ops().run(net.imagej.ops.Ops.ImageMoments.Moment11.class,
 				out, in);
 		return result;
 	}
@@ -406,7 +406,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.normalizedcentralmoments.DefaultNormalizedCentralMoment02.class,
+					net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment02.class,
 					in);
 		return result;
 	}
@@ -420,7 +420,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.normalizedcentralmoments.DefaultNormalizedCentralMoment02.class,
+					net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment02.class,
 					out, in);
 		return result;
 	}
@@ -434,7 +434,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.normalizedcentralmoments.DefaultNormalizedCentralMoment03.class,
+					net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment03.class,
 					in);
 		return result;
 	}
@@ -448,7 +448,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.normalizedcentralmoments.DefaultNormalizedCentralMoment03.class,
+					net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment03.class,
 					out, in);
 		return result;
 	}
@@ -462,7 +462,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.normalizedcentralmoments.DefaultNormalizedCentralMoment11.class,
+					net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment11.class,
 					in);
 		return result;
 	}
@@ -476,7 +476,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.normalizedcentralmoments.DefaultNormalizedCentralMoment11.class,
+					net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment11.class,
 					out, in);
 		return result;
 	}
@@ -490,7 +490,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.normalizedcentralmoments.DefaultNormalizedCentralMoment12.class,
+					net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment12.class,
 					in);
 		return result;
 	}
@@ -504,7 +504,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.normalizedcentralmoments.DefaultNormalizedCentralMoment12.class,
+					net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment12.class,
 					out, in);
 		return result;
 	}
@@ -518,7 +518,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.normalizedcentralmoments.DefaultNormalizedCentralMoment20.class,
+					net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment20.class,
 					in);
 		return result;
 	}
@@ -532,7 +532,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.normalizedcentralmoments.DefaultNormalizedCentralMoment20.class,
+					net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment20.class,
 					out, in);
 		return result;
 	}
@@ -546,7 +546,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.normalizedcentralmoments.DefaultNormalizedCentralMoment21.class,
+					net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment21.class,
 					in);
 		return result;
 	}
@@ -560,7 +560,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.normalizedcentralmoments.DefaultNormalizedCentralMoment21.class,
+					net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment21.class,
 					out, in);
 		return result;
 	}
@@ -574,7 +574,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.normalizedcentralmoments.DefaultNormalizedCentralMoment30.class,
+					net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment30.class,
 					in);
 		return result;
 	}
@@ -588,7 +588,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops()
 				.run(
-					net.imagej.ops.imagemoments.normalizedcentralmoments.DefaultNormalizedCentralMoment30.class,
+					net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment30.class,
 					out, in);
 		return result;
 	}
@@ -598,7 +598,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final IterableInterval<I> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.imagemoments.hu.DefaultHuMoment1.class, in);
+			(O) ops().run(net.imagej.ops.Ops.ImageMoments.HuMoment1.class, in);
 		return result;
 	}
 
@@ -607,7 +607,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O out, final IterableInterval<I> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.imagemoments.hu.DefaultHuMoment1.class, out,
+			(O) ops().run(net.imagej.ops.Ops.ImageMoments.HuMoment1.class, out,
 				in);
 		return result;
 	}
@@ -617,7 +617,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final IterableInterval<I> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.imagemoments.hu.DefaultHuMoment2.class, in);
+			(O) ops().run(net.imagej.ops.Ops.ImageMoments.HuMoment2.class, in);
 		return result;
 	}
 
@@ -626,7 +626,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O out, final IterableInterval<I> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.imagemoments.hu.DefaultHuMoment2.class, out,
+			(O) ops().run(net.imagej.ops.Ops.ImageMoments.HuMoment2.class, out,
 				in);
 		return result;
 	}
@@ -636,7 +636,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final IterableInterval<I> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.imagemoments.hu.DefaultHuMoment3.class, in);
+			(O) ops().run(net.imagej.ops.Ops.ImageMoments.HuMoment3.class, in);
 		return result;
 	}
 
@@ -645,7 +645,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O out, final IterableInterval<I> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.imagemoments.hu.DefaultHuMoment3.class, out,
+			(O) ops().run(net.imagej.ops.Ops.ImageMoments.HuMoment3.class, out,
 				in);
 		return result;
 	}
@@ -655,7 +655,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final IterableInterval<I> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.imagemoments.hu.DefaultHuMoment4.class, in);
+			(O) ops().run(net.imagej.ops.Ops.ImageMoments.HuMoment4.class, in);
 		return result;
 	}
 
@@ -664,7 +664,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O out, final IterableInterval<I> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.imagemoments.hu.DefaultHuMoment4.class, out,
+			(O) ops().run(net.imagej.ops.Ops.ImageMoments.HuMoment4.class, out,
 				in);
 		return result;
 	}
@@ -674,7 +674,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final IterableInterval<I> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.imagemoments.hu.DefaultHuMoment5.class, in);
+			(O) ops().run(net.imagej.ops.Ops.ImageMoments.HuMoment5.class, in);
 		return result;
 	}
 
@@ -683,7 +683,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O out, final IterableInterval<I> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.imagemoments.hu.DefaultHuMoment5.class, out,
+			(O) ops().run(net.imagej.ops.Ops.ImageMoments.HuMoment5.class, out,
 				in);
 		return result;
 	}
@@ -693,7 +693,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final IterableInterval<I> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.imagemoments.hu.DefaultHuMoment6.class, in);
+			(O) ops().run(net.imagej.ops.Ops.ImageMoments.HuMoment6.class, in);
 		return result;
 	}
 
@@ -702,7 +702,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O out, final IterableInterval<I> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.imagemoments.hu.DefaultHuMoment6.class, out,
+			(O) ops().run(net.imagej.ops.Ops.ImageMoments.HuMoment6.class, out,
 				in);
 		return result;
 	}
@@ -712,7 +712,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final IterableInterval<I> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.imagemoments.hu.DefaultHuMoment7.class, in);
+			(O) ops().run(net.imagej.ops.Ops.ImageMoments.HuMoment7.class, in);
 		return result;
 	}
 
@@ -721,7 +721,7 @@ public class ImageMomentsNamespace extends AbstractNamespace {
 		final O out, final IterableInterval<I> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.imagemoments.hu.DefaultHuMoment7.class, out,
+			(O) ops().run(net.imagej.ops.Ops.ImageMoments.HuMoment7.class, out,
 				in);
 		return result;
 	}
