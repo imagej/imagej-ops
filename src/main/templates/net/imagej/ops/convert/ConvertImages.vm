@@ -37,6 +37,7 @@ import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.img.Img;
+import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
 #set ($imports = [])
 #foreach ($op in $ops)
@@ -86,7 +87,7 @@ public final class ConvertImages {
 
 	// -- Helper classes --
 
-	private abstract static class ConvertViaMap<I extends ComplexType<I>, O>
+	private abstract static class ConvertViaMap<I extends ComplexType<I>, O extends NativeType<O>>
 		extends HybridViaComputer<IterableInterval<I>, Img<O>>
 	{
 

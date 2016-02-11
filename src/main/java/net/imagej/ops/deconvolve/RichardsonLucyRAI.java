@@ -34,6 +34,7 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.filter.IterativeFFTFilterRAI;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.view.Views;
@@ -54,7 +55,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Deconvolve.RichardsonLucy.class,
 	priority = Priority.HIGH_PRIORITY)
-public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends IterativeFFTFilterRAI<I, O, K, C> implements Ops.Deconvolve.RichardsonLucy
 {
 
