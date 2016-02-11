@@ -191,6 +191,15 @@ public class CreateNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(
+		ops = net.imagej.ops.create.imgFactory.CreateImgFactoryFromImg.class)
+	public <T extends NativeType<T>> ImgFactory<T> imgFactory(final Img<T> in) {
+		@SuppressWarnings("unchecked")
+		final ImgFactory<T> result = (ImgFactory<T>) ops().run(
+			net.imagej.ops.Ops.Create.ImgFactory.class, in);
+		return result;
+	}
+
 	// -- imgLabeling --
 
 	@OpMethod(op = net.imagej.ops.Ops.Create.ImgLabeling.class)
