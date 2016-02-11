@@ -32,6 +32,7 @@ package net.imagej.ops.stats;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
+import net.imglib2.algorithm.integral.IntegralCursor;
 import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
 import net.imglib2.converter.Converter;
 import net.imglib2.converter.RealDoubleConverter;
@@ -58,7 +59,7 @@ public class IntegralSum<I extends RealType<I>> extends
 		final DoubleType output)
 	{
 		// computation according to	https://en.wikipedia.org/wiki/Summed_area_table
-		final RectangleNeighborhood<I>.IntegralCursor cursor = input.integralCursor();
+		final IntegralCursor<I> cursor = new IntegralCursor<>(input);
 		int dimensions = input.numDimensions();
 		
 		// Compute \sum (-1)^{dim - ||cornerVector||_{1}} * I(x^{cornerVector})
