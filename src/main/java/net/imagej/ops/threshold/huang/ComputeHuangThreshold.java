@@ -35,6 +35,7 @@ import net.imagej.ops.threshold.AbstractComputeThresholdHistogram;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 //NB - this plugin adapted from Gabriel Landini's code of his AutoThreshold
@@ -46,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = Ops.Threshold.Huang.class)
+@Plugin(type = Ops.Threshold.Huang.class, priority = Priority.HIGH_PRIORITY)
 public class ComputeHuangThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> implements Ops.Threshold.Huang {
 
