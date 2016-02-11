@@ -37,7 +37,6 @@ import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -65,7 +64,7 @@ public class MapUnaryComputers {
 	 * @Param <EI> element type of inputs
 	 * @Param <EO> element type of outputs
 	 */
-	@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + $priority)
+	@Plugin(type = Ops.Map.class, priority = $priority)
 	public static class ${inType.alias}To${outType.alias}<EI, EO> extends
 		AbstractMapComputer<EI, EO, ${inType.name}<EI>, ${outType.name}<EO>>
 		implements Contingent
@@ -91,7 +90,7 @@ public class MapUnaryComputers {
 	 * @Param <EI> element type of inputs
 	 * @Param <EO> element type of outputs
 	 */
-	@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + $paraPrio)
+	@Plugin(type = Ops.Map.class, priority = $paraPrio)
 	public static class ${inType.alias}To${outType.alias}Parallel<EI, EO> extends
 		AbstractMapComputer<EI, EO, ${inType.name}<EI>, ${outType.name}<EO>>
 		implements Contingent, Parallel
