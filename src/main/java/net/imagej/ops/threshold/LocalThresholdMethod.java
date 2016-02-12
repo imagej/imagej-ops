@@ -31,13 +31,12 @@
 package net.imagej.ops.threshold;
 
 import net.imagej.ops.map.neighborhood.AbstractCenterAwareComputerOp;
-import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.threshold.apply.LocalThreshold;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 
 /**
- * {@link CenterAwareComputerOp} for use in {@link LocalThreshold}.
+ * {@link AbstractCenterAwareComputerOp} for use in {@link LocalThreshold}s.
  * 
  * @author Jonathan Hale (University of Konstanz)
  */

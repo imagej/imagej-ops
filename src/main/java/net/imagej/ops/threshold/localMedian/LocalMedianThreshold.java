@@ -28,14 +28,14 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localSauvola;
+package net.imagej.ops.threshold.localMedian;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Stats.Mean;
-import net.imagej.ops.Ops.Stats.StdDev;
+import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
+import net.imagej.ops.threshold.apply.LocalThreshold;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -44,53 +44,43 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * This is a modification of Niblack's thresholding method. In contrast to the
- * recommendation on parameters in the publication, this implementation operates
- * on normalized images (to the [0, 1] range). Hence, the r parameter defaults
- * to half the possible standard deviation in a normalized image, namely 0.5
+ * LocalThresholdMethod using median.
  * 
- * Sauvola J. and Pietaksinen M. (2000) "Adaptive Document Image Binarization"
- * Pattern Recognition, 33(2): 225-236
- * 
- * http://www.ee.oulu.fi/mvg/publications/show_pdf.php?ID=24
- * 
- * Original ImageJ1 implementation by Gabriel Landini.
- * 
- * @author Stefan Helfrich <s.helfrich@fz-juelich.de>
+ * @author Jonathan Hale
+ * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.LocalSauvola.class, name = Ops.Threshold.LocalSauvola.NAME)
-public class LocalSauvola<T extends RealType<T>> extends LocalThresholdMethod<T>
-	implements Ops.Threshold.LocalSauvola
+@Plugin(type = Ops.Threshold.LocalMedianThreshold.class)
+public class LocalMedianThreshold<T extends RealType<T>> extends LocalThreshold<T>
+	implements Ops.Threshold.LocalMedianThreshold
 {
 
-	@Parameter(required = false)
-	private double k = 0.5d;
-
-	@Parameter(required = false)
-	private double r = 0.5d;
-
-	// FIXME: Faster calculation of mean and std-dev.
-	private UnaryComputerOp<Iterable<T>, DoubleType> mean;
-	private UnaryComputerOp<Iterable<T>, DoubleType> stdDeviation;
+	@Parameter
+	private double c;
 
 	@Override
-	public void initialize() {
-		mean = Computers.unary(ops(), Mean.class, DoubleType.class, in2());
-		stdDeviation = Computers.unary(ops(), StdDev.class, DoubleType.class, in2());
+	protected CenterAwareComputerOp<T, BitType> unaryComputer(
+		final BitType outClass)
+	{
+		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
+
+			private UnaryComputerOp<Iterable<T>, DoubleType> median;
+
+			@Override
+			public void compute2(T center, Iterable<T> neighborhood, BitType output) {
+
+				if (median == null) {
+					median = Computers
+							.unary(ops(), Ops.Stats.Median.class, DoubleType.class, neighborhood);
+				}
+
+				final DoubleType m = new DoubleType();
+				median.compute1(neighborhood, m);
+				output.set(center.getRealDouble() > m.getRealDouble() - c);
+			}
+		};
+
+		op.setEnvironment(ops());
+		return op;
 	}
-
-	@Override
-	public void compute2(T center, Iterable<T> neighborhood, BitType output) {
-
-		final DoubleType meanValue = new DoubleType();
-		mean.compute1(neighborhood, meanValue);
-
-		final DoubleType stdDevValue = new DoubleType();
-		stdDeviation.compute1(neighborhood, stdDevValue);
-
-		double threshold = meanValue.get() * (1.0d + k * ((Math.sqrt(stdDevValue.get())/r) - 1.0));
-
-		output.set(center.getRealDouble() >= threshold);
-	}
-
+	
 }

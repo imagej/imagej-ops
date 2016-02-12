@@ -28,56 +28,61 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localNiblack;
+package net.imagej.ops.threshold.localMean;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
+import net.imagej.ops.threshold.apply.LocalThreshold;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 /**
- * LocalThresholdMethod using Niblacks thresholding method.
- * 
- * @author Jonathan Hale
+ * LocalThresholdMethod that uses the mean and operates directly of RAIs.
+ *
+ * @author Jonathan Hale (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
+ * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.LocalNiblack.class)
-public class LocalNiblack<T extends RealType<T>> extends LocalThresholdMethod<T>
-	implements Ops.Threshold.LocalNiblack
+@Plugin(type = Ops.Threshold.LocalMeanThreshold.class, priority = Priority.LOW_PRIORITY)
+public class LocalMeanThreshold<T extends RealType<T>> extends
+	LocalThreshold<T>	implements Ops.Threshold.LocalMeanThreshold
 {
 
 	@Parameter
 	private double c;
 
-	@Parameter
-	private double k;
-
-	private UnaryComputerOp<Iterable<T>, DoubleType> mean;
-
-	private UnaryComputerOp<Iterable<T>, DoubleType> stdDeviation;
-
 	@Override
-	public void initialize() {
-		//FIXME: make sure Mean is used inStdDev.
-		mean = Computers.unary(ops(), Ops.Stats.Mean.class, new DoubleType(), in2());
-		stdDeviation = Computers.unary(ops(), Ops.Stats.StdDev.class, new DoubleType(), in2());
+	protected CenterAwareComputerOp<T, BitType> unaryComputer(
+		final BitType outClass)
+	{
+		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
+
+			private UnaryComputerOp<Iterable<T>, DoubleType> meanOp;
+
+			@Override
+			public void compute2(T center, Iterable<T> neighborhood, BitType output) {
+
+				if (meanOp == null) {
+					meanOp = Computers.unary(ops(),	Ops.Stats.Mean.class, DoubleType.class, neighborhood);
+				}
+
+				final DoubleType m = new DoubleType();
+
+				meanOp.compute1(neighborhood, m);
+				output.set(center.getRealDouble() > m.getRealDouble() - c);
+			}
+		};
+
+		op.setEnvironment(ops());
+		return op;
 	}
-
-	@Override
-	public void compute2(T center, Iterable<T> neighborhood, BitType output) {
-
-		final DoubleType m = new DoubleType();
-		mean.compute1(neighborhood, m);
-
-		final DoubleType stdDev = new DoubleType();
-		stdDeviation.compute1(neighborhood, stdDev);
-
-		output.set(center.getRealDouble() > m.getRealDouble() + k * stdDev
-			.getRealDouble() - c);
-	}
+	
 }

@@ -32,27 +32,24 @@ package net.imagej.ops.threshold.apply;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
-
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.ThresholdNamespace;
-import net.imagej.ops.threshold.localBernsen.LocalBernsen;
-import net.imagej.ops.threshold.localContrast.LocalContrast;
-import net.imagej.ops.threshold.localMean.LocalMean;
-import net.imagej.ops.threshold.localMedian.LocalMedian;
-import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
-import net.imagej.ops.threshold.localNiblack.LocalNiblack;
-import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar;
-import net.imagej.ops.threshold.localSauvola.LocalSauvola;
+import net.imagej.ops.threshold.localBernsen.LocalBernsenThreshold;
+import net.imagej.ops.threshold.localContrast.LocalContrastThreshold;
+import net.imagej.ops.threshold.localMean.LocalMeanThreshold;
+import net.imagej.ops.threshold.localMedian.LocalMedianThreshold;
+import net.imagej.ops.threshold.localMidGrey.LocalMidGreyThreshold;
+import net.imagej.ops.threshold.localNiblack.LocalNiblackThreshold;
+import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkarThreshold;
+import net.imagej.ops.threshold.localSauvola.LocalSauvolaThreshold;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.ByteType;
-import net.imglib2.util.Pair;
-import net.imglib2.util.ValuePair;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -88,145 +85,147 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testOpMethods() {
-		final BitType out = new BitType();
+		ops.threshold().localMeanThreshold(out, in, new RectangleShape(3, false),
+			0.0);
+		ops.threshold().localMeanThreshold(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
+				Boundary.SINGLE), 0.0);
 
-		ops.threshold().localBernsen(out, in.firstElement(), in, 1.0,
-			Double.MAX_VALUE * 0.5);
-		ops.threshold().localContrast(out, in.firstElement(), in);
-		ops.threshold().localMean(out, in.firstElement(), in, 1.0);
-		ops.threshold().localMedian(out, in.firstElement(), in, 1.0);
-		ops.threshold().localMidGrey(out, in.firstElement(), in, 1.0);
-		ops.threshold().localNiblack(out, in.firstElement(), in, 1.0, 2.0);
-		ops.threshold().localPhansalkar(out, in.firstElement(), in, 0.25, 0.5);
-		ops.threshold().localPhansalkar(out, in.firstElement(), in);
-		ops.threshold().localSauvola(out, in.firstElement(), in, 0.5, 0.5);
-		ops.threshold().localSauvola(out, in.firstElement(), in);
+		ops.threshold().localBernsenThreshold(out, in, new RectangleShape(3, false),
+			1.0, Double.MAX_VALUE * 0.5);
+		ops.threshold().localBernsenThreshold(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
+				Boundary.SINGLE), 1.0, Double.MAX_VALUE * 0.5);
+
+		ops.threshold().localContrastThreshold(out, in, new RectangleShape(3,
+			false));
+		ops.threshold().localContrastThreshold(out, in, new RectangleShape(3,
+			false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
+				Boundary.SINGLE));
+
+		ops.threshold().localMedianThreshold(out, in, new RectangleShape(3, false),
+			1.0);
+		ops.threshold().localMedianThreshold(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
+				Boundary.SINGLE), 1.0);
+
+		ops.threshold().localMidGreyThreshold(out, in, new RectangleShape(3, false),
+			1.0);
+		ops.threshold().localMidGreyThreshold(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
+				Boundary.SINGLE), 1.0);
+
+		ops.threshold().localNiblackThreshold(out, in, new RectangleShape(3, false),
+			1.0, 2.0);
+		ops.threshold().localNiblackThreshold(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
+				Boundary.SINGLE), 1.0, 2.0);
+
+		ops.threshold().localPhansalkarThreshold(out, in, new RectangleShape(3,
+			false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
+				Boundary.SINGLE), 0.25, 0.5);
+		ops.threshold().localPhansalkarThreshold(out, in, new RectangleShape(3,
+			false));
+
+		ops.threshold().localSauvolaThreshold(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
+				Boundary.SINGLE), 0.5, 0.5);
+		ops.threshold().localSauvolaThreshold(out, in, new RectangleShape(3,
+			false));
 	}
 
 	/**
-	 * @see LocalBernsen
+	 * @see LocalBernsenThreshold
 	 */
 	@Test
-	public void testLocalBernsen() {
-		ops.threshold().apply(
-			out,
-			in,
-			ops.op(LocalBernsen.class, BitType.class,
-				ByteType.class, in, 1.0, Double.MAX_VALUE * 0.5),
-			new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+	public void testLocalBernsenThreshold() {
+		ops.run(LocalBernsenThreshold.class, out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE), 1.0,
+			Double.MAX_VALUE * 0.5);
 
 		assertEquals(out.firstElement().get(), true);
 	}
 
 	/**
-	 * @see LocalContrast
+	 * @see LocalContrastThreshold
 	 */
 	@Test
-	public void testLocalContrast() {
-		ops.threshold().apply(
-			out,
-			in,
-			ops.op(LocalContrast.class, BitType.class,
-				ByteType.class, in),
-			new RectangleShape(3, false),
+	public void testLocalContrastThreshold() {
+		ops.run(LocalContrastThreshold.class, out, in, new RectangleShape(3, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
 
 		assertEquals(out.firstElement().get(), false);
 	}
 
 	/**
-	 * @see LocalMean
+	 * @see LocalMeanThreshold
 	 */
 	@Test
-	public void testLocalMean() {
-		ops.threshold().apply(
-			out,
-			in,
-			ops.op(LocalMean.class, BitType.class,
-				ByteType.class, in, 0.0),
-			new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+	public void testLocalThresholdMean() {
+		ops.run(LocalMeanThreshold.class, out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
+			0.0);
 
 		assertEquals(out.firstElement().get(), true);
 	}
 
 	/**
-	 * @see LocalMedian
+	 * @see LocalMedianThreshold
 	 */
 	@Test
-	public void testLocalMedian() {
-		ops.threshold().apply(
-			out,
-			in,
-			ops.op(LocalMedian.class, BitType.class,
-			  ByteType.class, in, 0.0),
-			new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+	public void testLocalMedianThreshold() {
+		ops.run(LocalMedianThreshold.class, out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
+			0.0);
 
 		assertEquals(out.firstElement().get(), true);
 	}
 
 	/**
-	 * @see LocalMidGrey
+	 * @see LocalMidGreyThreshold
 	 */
 	@Test
-	public void testLocalMidGrey() {
-		ops.threshold().apply(
-			out,
-			in,
-			ops.op(LocalMidGrey.class, BitType.class,
-				ByteType.class, in, 0.0),
-			new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+	public void testLocalMidGreyThreshold() {
+		ops.run(LocalMidGreyThreshold.class, out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE), 0.0);
+		
+		assertEquals(out.firstElement().get(), true);
+	}
+
+	/**
+	 * @see LocalNiblackThreshold
+	 */
+	@Test
+	public void testLocalNiblackThreshold() {
+		ops.run(LocalNiblackThreshold.class, out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
+			0.0, 0.0);
 
 		assertEquals(out.firstElement().get(), true);
 	}
 
 	/**
-	 * @see LocalNiblack
-	 */
-	@Test
-	public void testLocalNiblack() {
-		ops.threshold().apply(
-			out,
-			in,
-			ops.op(LocalNiblack.class, BitType.class,
-				ByteType.class, in, 0.0, 0.0),
-			new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
-
-		assertEquals(out.firstElement().get(), true);
-	}
-
-	/**
-	 * @see LocalPhansalkar
+	 * @see LocalPhansalkarThreshold
 	 */
 	@Test
 	public void testLocalPhansalkar() {
-		ops.threshold().apply(
-			out,
-			in,
-			ops.op(LocalPhansalkar.class, BitType.class,
-				ByteType.class, in, 0.0, 0.0),
-			new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+		ops.run(LocalPhansalkarThreshold.class, out, in, new RectangleShape(3,
+			false), new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(
+				Boundary.SINGLE), 0.0, 0.0);
 
 		assertEquals(out.firstElement().get(), false);
 	}
 
-	/**	 
-	 * @see LocalSauvola
+	/**
+	 * @see LocalSauvolaThreshold
 	 */
 	@Test
 	public void testLocalSauvola() {
-		ops.threshold().apply(
-			out,
-			in,
-			ops.op(LocalSauvola.class, BitType.class,
-				ByteType.class, in, 0.0, 0.0),
-			new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+		ops.run(LocalSauvolaThreshold.class, out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
+			0.0, 0.0);
 
 		assertEquals(out.firstElement().get(), false);
 	}

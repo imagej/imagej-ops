@@ -30,18 +30,18 @@
 
 package net.imagej.ops.threshold.localPhansalkar;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Stats.Mean;
-import net.imagej.ops.Ops.Stats.StdDev;
+import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
+import net.imagej.ops.threshold.apply.LocalThreshold;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
  * This is a modification of Sauvola's thresholding method to deal with low
@@ -62,11 +62,11 @@ import org.scijava.plugin.Plugin;
  * diversity stained cytology images. International Conference on Communications
  * and Signal Processing (ICCSP), 2011, 218 - 220.
  * 
- * @author Stefan Helfrich <s.helfrich@fz-juelich.de>
+ * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.LocalPhansalkar.class, name = Ops.Threshold.LocalPhansalkar.NAME)
-public class LocalPhansalkar<T extends RealType<T>> extends LocalThresholdMethod<T>
-	implements Ops.Threshold.LocalPhansalkar
+@Plugin(type = Ops.Threshold.LocalPhansalkarThreshold.class)
+public class LocalPhansalkarThreshold<T extends RealType<T>> extends LocalThreshold<T>
+	implements Ops.Threshold.LocalPhansalkarThreshold
 {
 
 	@Parameter(required = false)
@@ -75,31 +75,46 @@ public class LocalPhansalkar<T extends RealType<T>> extends LocalThresholdMethod
 	@Parameter(required = false)
 	private double r = 0.5;
 
-	// FIXME: Faster calculation of mean and std-dev
-	private UnaryComputerOp<Iterable<T>, DoubleType> mean;
-	private UnaryComputerOp<Iterable<T>, DoubleType> stdDeviation;
-
 	private double p = 2.0;
 	private double q = 10.0;
-
+	
 	@Override
-	public void initialize() {
-		mean = Computers.unary(ops(), Mean.class, DoubleType.class, in2());
-		stdDeviation = Computers.unary(ops(), StdDev.class, DoubleType.class, in2());
-	}
+	protected CenterAwareComputerOp<T, BitType> unaryComputer(
+		final BitType outClass)
+	{
+		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
 
-	@Override
-	public void compute2(T center, Iterable<T> neighborhood, BitType output) {
-		
-		final DoubleType meanValue = new DoubleType();
-		mean.compute1(neighborhood, meanValue);
+			private UnaryComputerOp<Iterable<T>, DoubleType> mean;
+			private UnaryComputerOp<Iterable<T>, DoubleType> stdDeviation;
 
-		final DoubleType stdDevValue = new DoubleType();
-		stdDeviation.compute1(neighborhood, stdDevValue);
+			@Override
+			public void compute2(T center, Iterable<T> neighborhood, BitType output) {
 
-		double threshold = meanValue.get() * (1.0d + p * Math.exp(-q * meanValue.get()) + k * ((stdDevValue.get()/r) - 1.0));
-		
-		output.set(center.getRealDouble() >= threshold);
+				if (mean == null) {
+					mean = Computers.unary(ops(), Ops.Stats.Mean.class, new DoubleType(),
+						neighborhood);
+				}
+
+				if (stdDeviation == null) {
+					stdDeviation = Computers.unary(ops(), Ops.Stats.StdDev.class,
+						new DoubleType(), neighborhood);
+				}
+
+				final DoubleType meanValue = new DoubleType();
+				mean.compute1(neighborhood, meanValue);
+
+				final DoubleType stdDevValue = new DoubleType();
+				stdDeviation.compute1(neighborhood, stdDevValue);
+
+				double threshold = meanValue.get() * (1.0d + p * Math.exp(-q * meanValue
+					.get()) + k * ((stdDevValue.get() / r) - 1.0));
+
+				output.set(center.getRealDouble() >= threshold);
+			}
+		};
+
+		op.setEnvironment(ops());
+		return op;
 	}
 
 }

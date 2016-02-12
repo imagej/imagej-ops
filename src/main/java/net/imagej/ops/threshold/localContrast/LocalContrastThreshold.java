@@ -28,51 +28,63 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localMidGrey;
+package net.imagej.ops.threshold.localContrast;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
+import net.imagej.ops.threshold.apply.LocalThreshold;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Pair;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * LocalThresholdMethod which thresholds against the average of the maximum and
- * minimum pixels of a neighborhood.
+ * LocalThresholdMethod which determines whether a pixel is closer to the
+ * maximum or minimum pixel of a neighborhood.
  * 
  * @author Jonathan Hale
+ * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.LocalMidGrey.class)
-public class LocalMidGrey<T extends RealType<T>> extends
-	LocalThresholdMethod<T> implements Ops.Threshold.LocalMidGrey
-{
-
-	@Parameter
-	private double c;
-
-	private UnaryFunctionOp<Iterable<T>, Pair<T, T>> minMaxFunc;
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public void initialize() {
-		minMaxFunc =
-			(UnaryFunctionOp) Functions.unary(ops(), Ops.Stats.MinMax.class, Pair.class, in2());
-	}
+@Plugin(type = Ops.Threshold.LocalContrastThreshold.class)
+public class LocalContrastThreshold<T extends RealType<T>> extends
+		LocalThreshold<T> implements Ops.Threshold.LocalContrastThreshold {
 
 	@Override
-	public void compute2(T center, Iterable<T> neighborhood, BitType output) {
+	protected CenterAwareComputerOp<T, BitType> unaryComputer(
+		final BitType outClass)
+	{
+		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
 
-		final Pair<T, T> outputs = minMaxFunc.compute1(neighborhood);
+			private UnaryFunctionOp<Iterable<T>, Pair<T, T>> minMaxFunc;
 
-		final double minValue = outputs.getA().getRealDouble();
-		final double maxValue = outputs.getB().getRealDouble();
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			@Override
+			public void compute2(T center, Iterable<T> neighborhood, BitType output) {
 
-		output
-			.set(center.getRealDouble() > ((maxValue + minValue) / 2.0) - c);
+				if (minMaxFunc == null) {
+					minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(),
+						Ops.Stats.MinMax.class, Pair.class, neighborhood);
+				}
+
+				final Pair<T, T> outputs = minMaxFunc.compute1(neighborhood);
+
+				final double centerValue = center.getRealDouble();
+				final double diffMin = centerValue - outputs.getA().getRealDouble();
+				final double diffMax = outputs.getB().getRealDouble() - centerValue;
+
+				// set to background (false) if pixel closer to min value,
+				// and to foreground (true) if pixel closer to max value.
+				// If diffMin and diffMax are equal, output will be set to fg.
+				output.set(diffMin <= diffMax);
+			}
+		};
+
+		op.setEnvironment(ops());
+		return op;
 	}
+
 }

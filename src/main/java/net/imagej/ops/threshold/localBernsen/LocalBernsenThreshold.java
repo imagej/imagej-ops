@@ -30,29 +30,32 @@
 
 package net.imagej.ops.threshold.localBernsen;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Ops;
+import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
-import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
+import net.imagej.ops.threshold.apply.LocalThreshold;
+import net.imagej.ops.threshold.localMidGrey.LocalMidGreyThreshold;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Pair;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 /**
- * LocalThresholdMethod which is similar to {@link LocalMidGrey}, but uses a
+ * LocalThresholdMethod which is similar to {@link LocalMidGreyThreshold}, but uses a
  * constant value rather than the value of the input pixel when the contrast in
  * the neighborhood of that pixel is too small.
- * 
+ *
  * @author Jonathan Hale
+ * @author Stefan Helfrich (University of Konstanz)
  * @param <T> input type
  */
-@Plugin(type = Ops.Threshold.LocalBernsen.class)
-public class LocalBernsen<T extends RealType<T>> extends
-	LocalThresholdMethod<T> implements Ops.Threshold.LocalBernsen
+@Plugin(type = Ops.Threshold.LocalBernsenThreshold.class)
+public class LocalBernsenThreshold<T extends RealType<T>> extends
+	LocalThreshold<T> implements Ops.Threshold.LocalBernsenThreshold
 {
 
 	@Parameter
@@ -61,28 +64,41 @@ public class LocalBernsen<T extends RealType<T>> extends
 	@Parameter
 	private double halfMaxValue;
 
-	private UnaryFunctionOp<Iterable<T>, Pair<T,T>> minMaxFunc;
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void initialize() {
-		minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(), Ops.Stats.MinMax.class, Pair.class, in2());
+	protected CenterAwareComputerOp<T, BitType> unaryComputer(
+		final BitType outClass)
+	{
+		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
+
+			private UnaryFunctionOp<Iterable<T>, Pair<T, T>> minMaxFunc;
+
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			@Override
+			public void compute2(final T center, final Iterable<T> neighborhood,
+				final BitType output)
+			{
+
+				if (minMaxFunc == null) {
+					minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(), Ops.Stats.MinMax.class, Pair.class, neighborhood);
+				}
+				
+				final Pair<T, T> outputs = minMaxFunc.compute1(neighborhood);
+				final double minValue = outputs.getA().getRealDouble();
+				final double maxValue = outputs.getB().getRealDouble();
+				final double midGrey = (maxValue + minValue) / 2.0;
+
+				if ((maxValue - minValue) < constrastThreshold) {
+					output.set(midGrey >= halfMaxValue);
+				}
+				else {
+					output.set(center.getRealDouble() >= midGrey);
+				}
+			}
+
+			};
+		
+		op.setEnvironment(ops());	
+		return op;
 	}
 
-	@Override
-	public void compute2(final T center, final Iterable<T> neighborhood, final BitType output) {
-
-		final Pair<T, T> outputs = minMaxFunc.compute1(neighborhood);
-		final double minValue = outputs.getA().getRealDouble();
-		final double maxValue = outputs.getB().getRealDouble();
-		final double midGrey = (maxValue + minValue) / 2.0;
-
-		if ((maxValue - minValue) < constrastThreshold) {
-			output.set(midGrey >= halfMaxValue);
-		}
-		else {
-			output.set(center.getRealDouble() >= midGrey);
-		}
-
-	}
 }
