@@ -72,7 +72,7 @@ public class IntegralSum<I extends RealType<I>> extends
 		while ( cursor.hasNext() )
 		{
 			// Obtain the cursor position encoded as corner vector
-			int cornerInteger = cursor.getCornerInteger();
+			int cornerInteger = cursor.getCornerRepresentation();
 			final I value = cursor.next().copy();
 			final DoubleType valueAsDoubleType = new DoubleType();
 			conv.convert(value, valueAsDoubleType);

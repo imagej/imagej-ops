@@ -77,7 +77,7 @@ public class IntegralVariance<I extends RealType<I>> extends
 		while ( cursorS1.hasNext() )
 		{
 			// Obtain the cursor position encoded as corner vector
-			int cornerInteger1 = cursorS1.getCornerInteger();
+			int cornerInteger1 = cursorS1.getCornerRepresentation();
 			final I value1 = cursorS1.next().copy();
 			final DoubleType value1AsDoubleType = new DoubleType();
 			conv.convert(value1, value1AsDoubleType);
@@ -95,7 +95,7 @@ public class IntegralVariance<I extends RealType<I>> extends
 
 		while (cursorS2.hasNext()) {
 			// Obtain the cursor position encoded as corner vector
-			int cornerInteger2 = cursorS2.getCornerInteger();
+			int cornerInteger2 = cursorS2.getCornerRepresentation();
 			final I value2 = cursorS2.next().copy();
 			final DoubleType value2AsDoubleType = new DoubleType();
 			conv.convert(value2, value2AsDoubleType);

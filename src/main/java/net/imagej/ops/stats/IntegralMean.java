@@ -74,11 +74,12 @@ public class IntegralMean<I extends RealType<I>> extends
 		
 		while ( cursor.hasNext() )
 		{
-			// Obtain the cursor position encoded as corner vector
-			int cornerInteger = cursor.getCornerInteger();
 			final I value = cursor.next().copy();
 			final DoubleType valueAsDoubleType = new DoubleType();
 			conv.convert(value, valueAsDoubleType);
+			
+			// Obtain the cursor position encoded as corner vector
+			int cornerInteger = cursor.getCornerRepresentation();
 			
 			// Determine if the value has to be added (factor==1) or subtracted (factor==-1)
 			DoubleType factor = new DoubleType(Math.pow(-1.0d, dimensions - norm(cornerInteger)));
