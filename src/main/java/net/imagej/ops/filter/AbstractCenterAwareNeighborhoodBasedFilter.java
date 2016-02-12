@@ -49,7 +49,7 @@ public abstract class AbstractCenterAwareNeighborhoodBasedFilter<I, O> extends
 {
 
 	@Parameter
-	private Shape shape;
+	protected Shape shape;
 
 	@Parameter(required = false)
 	private OutOfBoundsFactory<I, RandomAccessibleInterval<I>> outOfBoundsFactory =
