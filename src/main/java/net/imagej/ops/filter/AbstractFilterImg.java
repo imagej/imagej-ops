@@ -36,7 +36,6 @@ import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.img.planar.PlanarImgFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
-import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.util.Util;
@@ -83,7 +82,7 @@ public abstract class AbstractFilterImg<I extends RealType<I>, O extends RealTyp
 	 * The output type. If null default output type will be used.
 	 */
 	@Parameter(required = false)
-	private Type<O> outType;
+	private O outType;
 
 	/**
 	 * Factory to create output Img
@@ -106,13 +105,13 @@ public abstract class AbstractFilterImg<I extends RealType<I>, O extends RealTyp
 				.getClass())
 			{
 				Object temp = input.firstElement().createVariable();
-				outType = (Type<O>) temp;
+				outType = (O) temp;
 
 			}
 			// otherwise default to float
 			else {
 				Object temp = new FloatType();
-				outType = (Type<O>) temp;
+				outType = (O) temp;
 			}
 		}
 

@@ -76,7 +76,7 @@ public class ImageNamespace extends AbstractNamespace {
 	/** Executes the "ascii" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.ascii.DefaultASCII.class)
 	public <T extends RealType<T>> String ascii(
-			final IterableInterval<T> image, final RealType<T> min) {
+			final IterableInterval<T> image, final T min) {
 		final String result = (String) ops().run(
 				net.imagej.ops.image.ascii.DefaultASCII.class, image, min);
 		return result;
@@ -85,8 +85,8 @@ public class ImageNamespace extends AbstractNamespace {
 	/** Executes the "ascii" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.ascii.DefaultASCII.class)
 	public <T extends RealType<T>> String ascii(
-			final IterableInterval<T> image, final RealType<T> min,
-			final RealType<T> max) {
+			final IterableInterval<T> image, final T min,
+			final T max) {
 		final String result = (String) ops().run(
 				net.imagej.ops.image.ascii.DefaultASCII.class, image, min, max);
 		return result;

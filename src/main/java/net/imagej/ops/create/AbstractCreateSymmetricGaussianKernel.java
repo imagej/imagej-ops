@@ -33,7 +33,6 @@ package net.imagej.ops.create;
 import net.imagej.ops.AbstractOp;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
-import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 
 import org.scijava.ItemIO;
@@ -50,7 +49,7 @@ public abstract class AbstractCreateSymmetricGaussianKernel<T extends ComplexTyp
 {
 
 	@Parameter(required = false)
-	protected Type<T> outType;
+	protected T outType;
 
 	@Parameter(required = false)
 	protected ImgFactory<T> fac;

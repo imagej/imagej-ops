@@ -378,7 +378,7 @@ public class CreateNamespace extends AbstractNamespace {
 	/** Executes the "kernelGauss" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric.class)
-	public <T extends ComplexType<T>> Img<T> kernelGauss(final Type<T> outType,
+	public <T extends ComplexType<T>> Img<T> kernelGauss(final T outType,
 		final int numDimensions, final double sigma)
 	{
 		@SuppressWarnings("unchecked")
@@ -392,7 +392,7 @@ public class CreateNamespace extends AbstractNamespace {
 	/** Executes the "kernelGauss" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric.class)
-	public <T extends ComplexType<T>> Img<T> kernelGauss(final Type<T> outType,
+	public <T extends ComplexType<T>> Img<T> kernelGauss(final T outType,
 		final ImgFactory<T> fac, final int numDimensions, final double sigma)
 	{
 		@SuppressWarnings("unchecked")
@@ -419,7 +419,7 @@ public class CreateNamespace extends AbstractNamespace {
 	/** Executes the "kernelGauss" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.create.kernelGauss.CreateKernelGauss.class)
 	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelGauss(
-		final Type<T> outType, final double... sigma)
+		final T outType, final double... sigma)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<T> result =
@@ -432,7 +432,7 @@ public class CreateNamespace extends AbstractNamespace {
 	/** Executes the "kernelGauss" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.create.kernelGauss.CreateKernelGauss.class)
 	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelGauss(
-		final Type<T> outType, final ImgFactory<T> fac, final double... sigma)
+		final T outType, final ImgFactory<T> fac, final double... sigma)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<T> result =
@@ -469,7 +469,7 @@ public class CreateNamespace extends AbstractNamespace {
 	/** Executes the "kernelLog" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric.class)
 	public
-		<T extends ComplexType<T>> Img<T> kernelLog(final Type<T> outType,
+		<T extends ComplexType<T>> Img<T> kernelLog(final T outType,
 			final int numDimensions, final double sigma)
 	{
 		@SuppressWarnings("unchecked")
@@ -483,7 +483,7 @@ public class CreateNamespace extends AbstractNamespace {
 	/** Executes the "kernelLog" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric.class)
 	public
-		<T extends ComplexType<T>> Img<T> kernelLog(final Type<T> outType,
+		<T extends ComplexType<T>> Img<T> kernelLog(final T outType,
 			final ImgFactory<T> fac, final int numDimensions, final double sigma)
 	{
 		@SuppressWarnings("unchecked")
@@ -509,7 +509,7 @@ public class CreateNamespace extends AbstractNamespace {
 	/** Executes the "kernelLog" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.create.kernelLog.CreateKernelLog.class)
 	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelLog(
-		final Type<T> outType, final double... sigma)
+		final T outType, final double... sigma)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<T> result =
@@ -521,7 +521,7 @@ public class CreateNamespace extends AbstractNamespace {
 	/** Executes the "kernelLog" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.create.kernelLog.CreateKernelLog.class)
 	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelLog(
-		final Type<T> outType, final ImgFactory<T> fac, final double... sigma)
+		final T outType, final ImgFactory<T> fac, final double... sigma)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<T> result =

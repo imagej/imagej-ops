@@ -53,14 +53,14 @@ public abstract class AbstractCreateKernelImg<V extends Type<V>, W extends Type<
 	private Img<V> output;
 
 	@Parameter(required = false)
-	private Type<V> outType;
+	private V outType;
 
 	@Parameter(required = false)
 	private ImgFactory<V> fac;
 
 	@SuppressWarnings("unchecked")
 	protected void createOutputImg(final long[] dims, final ImgFactory<V> fac,
-		final Type<V> outType, final FAC defaultFactory, final W defaultType)
+		final V outType, final FAC defaultFactory, final W defaultType)
 	{
 
 		// no factory and no type
@@ -81,7 +81,7 @@ public abstract class AbstractCreateKernelImg<V extends Type<V>, W extends Type<
 
 	}
 
-	protected void createOutputImg(final long[] dims, final Type<V> outType,
+	protected void createOutputImg(final long[] dims, final V outType,
 		final FAC defaultFactory, final W defaultType)
 	{
 		createOutputImg(dims, null, outType, defaultFactory, defaultType);
@@ -97,7 +97,7 @@ public abstract class AbstractCreateKernelImg<V extends Type<V>, W extends Type<
 		return output;
 	}
 
-	protected Type<V> getOutType() {
+	protected V getOutType() {
 		return outType;
 	}
 

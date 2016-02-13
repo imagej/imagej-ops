@@ -134,7 +134,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final int maxIterations)
+			final O outType, final int maxIterations)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
@@ -150,7 +150,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory,
+			final O outType, final ImgFactory<O> outFactory,
 			final int maxIterations)
 	{
 		@SuppressWarnings("unchecked")
@@ -168,8 +168,8 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory,
-			final ComplexType<C> fftType, final int maxIterations)
+			final O outType, final ImgFactory<O> outFactory,
+			final C fftType, final int maxIterations)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
@@ -186,8 +186,8 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory,
-			final ComplexType<C> fftType, final ImgFactory<C> fftFactory,
+			final O outType, final ImgFactory<O> outFactory,
+			final C fftType, final ImgFactory<C> fftFactory,
 			final int maxIterations)
 	{
 		@SuppressWarnings("unchecked")
@@ -205,8 +205,8 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory,
-			final ComplexType<C> fftType, final ImgFactory<C> fftFactory,
+			final O outType, final ImgFactory<O> outFactory,
+			final C fftType, final ImgFactory<C> fftFactory,
 			final int maxIterations, final boolean nonCirculant)
 	{
 		@SuppressWarnings("unchecked")
@@ -224,8 +224,8 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory,
-			final ComplexType<C> fftType, final ImgFactory<C> fftFactory,
+			final O outType, final ImgFactory<O> outFactory,
+			final C fftType, final ImgFactory<C> fftFactory,
 			final int maxIterations, final boolean nonCirculant,
 			final boolean accelerate)
 	{
@@ -511,7 +511,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final int maxIterations,
+			final O outType, final int maxIterations,
 			final float regularizationFactor)
 	{
 		@SuppressWarnings("unchecked")
@@ -528,7 +528,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory,
+			final O outType, final ImgFactory<O> outFactory,
 			final int maxIterations, final float regularizationFactor)
 	{
 		@SuppressWarnings("unchecked")
@@ -546,8 +546,8 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory,
-			final ComplexType<C> fftType, final int maxIterations,
+			final O outType, final ImgFactory<O> outFactory,
+			final C fftType, final int maxIterations,
 			final float regularizationFactor)
 	{
 		@SuppressWarnings("unchecked")
@@ -565,8 +565,8 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory,
-			final ComplexType<C> fftType, final ImgFactory<C> fftFactory,
+			final O outType, final ImgFactory<O> outFactory,
+			final C fftType, final ImgFactory<C> fftFactory,
 			final int maxIterations, final float regularizationFactor)
 	{
 		@SuppressWarnings("unchecked")
@@ -584,8 +584,8 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory,
-			final ComplexType<C> fftType, final ImgFactory<C> fftFactory,
+			final O outType, final ImgFactory<O> outFactory,
+			final C fftType, final ImgFactory<C> fftFactory,
 			final int maxIterations, final float regularizationFactor,
 			final boolean nonCirculant)
 	{
@@ -604,8 +604,8 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory,
-			final ComplexType<C> fftType, final ImgFactory<C> fftFactory,
+			final O outType, final ImgFactory<O> outFactory,
+			final C fftType, final ImgFactory<C> fftFactory,
 			final int maxIterations, final float regularizationFactor,
 			final boolean nonCirculant, final boolean accelerate)
 	{
