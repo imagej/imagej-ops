@@ -54,23 +54,20 @@ public class CreateIntegerTypeTest extends AbstractOpTest {
 
 	@Test
 	public void testCreateIntegerType() {
-
-		assertEquals(ops.create().integerType(2).getClass(), BitType.class);
-		assertEquals(ops.create().integerType(Byte.MAX_VALUE + 1)
-			.getClass(), ByteType.class);
-		assertEquals(ops.create().integerType((Byte.MAX_VALUE + 1) * 2)
-			.getClass(), UnsignedByteType.class);
-		assertEquals(ops.create().integerType((Short.MAX_VALUE + 1))
-			.getClass(), ShortType.class);
-		assertEquals(ops.create().integerType((Short.MAX_VALUE + 1) * 2)
-			.getClass(), UnsignedShortType.class);
-		assertEquals(ops.create().integerType((Integer.MAX_VALUE + 1))
-			.getClass(), IntType.class);
-		assertEquals(ops
-			.create().integerType((Integer.MAX_VALUE + 1l) * 2l).getClass(),
-			UnsignedIntType.class);
-		assertEquals(ops.create().integerType(Long.MAX_VALUE).getClass(),
-			LongType.class);
-
+		assertEquals(BitType.class, ops.create().integerType(2).getClass());
+		assertEquals(ByteType.class, ops.create().integerType(Byte.MAX_VALUE + 1)
+			.getClass());
+		assertEquals(UnsignedByteType.class, ops.create().integerType(
+			(Byte.MAX_VALUE + 1) * 2).getClass());
+		assertEquals(ShortType.class, ops.create().integerType(Short.MAX_VALUE + 1)
+			.getClass());
+		assertEquals(UnsignedShortType.class, ops.create().integerType(
+			(Short.MAX_VALUE + 1) * 2).getClass());
+		assertEquals(IntType.class, ops.create().integerType(Integer.MAX_VALUE + 1)
+			.getClass());
+		assertEquals(UnsignedIntType.class, ops.create().integerType(
+			(Integer.MAX_VALUE + 1l) * 2l).getClass());
+		assertEquals(LongType.class, ops.create().integerType(Long.MAX_VALUE)
+			.getClass());
 	}
 }
