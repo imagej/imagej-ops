@@ -32,8 +32,6 @@ package net.imagej.ops.threshold.apply;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
-
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.ThresholdNamespace;
@@ -51,8 +49,6 @@ import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.ByteType;
-import net.imglib2.util.Pair;
-import net.imglib2.util.ValuePair;
 
 import org.junit.Before;
 import org.junit.Test;

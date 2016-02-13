@@ -33,11 +33,8 @@ package net.imagej.ops.create.kernelLog;
 import net.imagej.ops.Ops;
 import net.imagej.ops.create.AbstractCreateGaussianKernel;
 import net.imglib2.Cursor;
-import net.imglib2.FinalDimensions;
-import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
 
