@@ -67,11 +67,6 @@ public class CreateNamespace extends AbstractNamespace {
 
 	// -- img --
 
-	@OpMethod(op = net.imagej.ops.Ops.Create.Img.class)
-	public Object img(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Create.Img.class, args);
-	}
-
 	/**
 	 * Creates an {@link Img} of type {@link DoubleType} with the given
 	 * dimensions.
