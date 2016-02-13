@@ -81,18 +81,6 @@ public abstract class AbstractCreateKernelImg<V extends Type<V>, W extends Type<
 
 	}
 
-	protected void createOutputImg(final long[] dims, final V outType,
-		final FAC defaultFactory, final W defaultType)
-	{
-		createOutputImg(dims, null, outType, defaultFactory, defaultType);
-	}
-
-	protected void createOutputImg(final long[] dims, final ImgFactory<V> fac,
-		final FAC defaultFactory, final W defaultType)
-	{
-		createOutputImg(dims, fac, null, defaultFactory, defaultType);
-	}
-
 	protected Img<V> getOutput() {
 		return output;
 	}
