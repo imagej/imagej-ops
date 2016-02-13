@@ -193,7 +193,7 @@ public class ConvolveTest extends AbstractOpTest {
 		
 		int[] size = new int[] { xSize, ySize, zSize };
 		
-		Img<DoubleType> phantom=(Img<DoubleType>)ops.create().img(size, new DoubleType());
+		Img<DoubleType> phantom = ops.create().img(size);
 
 		RandomAccess<DoubleType> randomAccess=phantom.randomAccess();
 

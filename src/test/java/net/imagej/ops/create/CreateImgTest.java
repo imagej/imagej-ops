@@ -36,6 +36,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Random;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imglib2.Dimensions;
 import net.imglib2.FinalDimensions;
 import net.imglib2.FinalInterval;
 import net.imglib2.img.Img;
@@ -107,7 +108,7 @@ public class CreateImgTest extends AbstractOpTest {
 			}
 
 			// create img
-			final Img<?> img = (Img<?>) ops.create().img(dim);
+			final Img<DoubleType> img = ops.create().img(dim);
 
 			assertArrayEquals("Image Dimensions:", dim, Intervals
 				.dimensionsAsLongArray(img));
@@ -128,14 +129,14 @@ public class CreateImgTest extends AbstractOpTest {
 
 	@Test
 	public void testImageFactory() {
-		final long[] dim = new long[] { 10, 10, 10 };
+		final Dimensions dim = new FinalDimensions(10, 10, 10);
 
-		final Img<?> arrayImg = (Img<?>) ops.create().img(dim, new DoubleType(),
+		final Img<DoubleType> arrayImg = ops.create().img(dim, new DoubleType(),
 			new ArrayImgFactory<DoubleType>());
 		final Class<?> arrayFactoryClass = arrayImg.factory().getClass();
 		assertEquals("Image Factory: ", ArrayImgFactory.class, arrayFactoryClass);
 
-		final Img<?> cellImg = (Img<?>) ops.create().img(dim, new DoubleType(),
+		final Img<DoubleType> cellImg = ops.create().img(dim, new DoubleType(),
 			new CellImgFactory<DoubleType>());
 		final Class<?> cellFactoryClass = cellImg.factory().getClass();
 		assertEquals("Image Factory: ", CellImgFactory.class, cellFactoryClass);
@@ -143,7 +144,7 @@ public class CreateImgTest extends AbstractOpTest {
 
 	@Test
 	public void testImageType() {
-		final long[] dim = new long[] { 10, 10, 10 };
+		final Dimensions dim = new FinalDimensions(10, 10, 10);
 
 		assertEquals("Image Type: ", BitType.class, ((Img<?>) ops.create().img(dim,
 			new BitType())).firstElement().getClass());
