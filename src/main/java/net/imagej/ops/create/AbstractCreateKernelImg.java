@@ -64,15 +64,15 @@ public abstract class AbstractCreateKernelImg<V extends Type<V>, W extends Type<
 	{
 
 		// no factory and no type
-		if ((fac == null) && (outType == null)) {
+		if (fac == null && outType == null) {
 			output = (Img<V>) ops().create().img(dims, defaultType, defaultFactory);
 		}
 		// type but no factory
-		else if ((fac == null) && (outType != null)) {
+		else if (fac == null && outType != null) {
 			output = (Img<V>) ops().create().img(dims, outType, defaultFactory);
 		}
 		// factory but no type
-		else if ((fac != null) && (outType == null)) {
+		else if (fac != null && outType == null) {
 			output = (Img<V>) ops().create().img(dims, defaultType, fac);
 		}
 		else {
