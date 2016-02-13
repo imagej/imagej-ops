@@ -30,34 +30,52 @@
 
 package net.imagej.ops.create.kernelGauss;
 
+import java.util.Arrays;
+
 import net.imagej.ops.Ops;
-import net.imagej.ops.create.AbstractCreateSymmetricGaussianKernel;
-import net.imglib2.type.NativeType;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
 
-import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Convenience op for generating a symmetric Gaussian kernel
- * 
+ * Creates a Gaussian Kernel
+ *
+ * @author Christian Dietz (University of Konstanz)
  * @author Brian Northan
  * @param <T>
  */
-@Plugin(type = Ops.Create.KernelGauss.class, priority = Priority.HIGH_PRIORITY)
-public class CreateKernelGaussSymmetric<T extends ComplexType<T> & NativeType<T>>
-	extends AbstractCreateSymmetricGaussianKernel<T> implements
+@Plugin(type = Ops.Create.KernelGauss.class)
+public class CreateKernelGaussSymmetric<T extends ComplexType<T>> extends
+	AbstractUnaryFunctionOp<Double, RandomAccessibleInterval<T>> implements
 	Ops.Create.KernelGauss
 {
 
+	@Parameter
+	private int numDims;
+
+	@Parameter
+	private T type;
+
+	private UnaryFunctionOp<double[], RandomAccessibleInterval<T>> kernelOp;
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public void run() {
-		double[] sigmas = new double[numDimensions];
-
-		for (int d = 0; d < numDimensions; d++) {
-			sigmas[d] = sigma;
-		}
-
-		output = ops().create().kernelGauss(outType, fac, sigmas);
+	public void initialize() {
+		kernelOp = (UnaryFunctionOp) Functions.unary(ops(),
+			Ops.Create.KernelGauss.class, RandomAccessibleInterval.class,
+			double[].class, type);
 	}
+
+	@Override
+	public RandomAccessibleInterval<T> compute1(final Double input) {
+		final double[] sigmas = new double[numDims];
+		Arrays.fill(sigmas, input);
+		return kernelOp.compute1(sigmas);
+	}
+
 }

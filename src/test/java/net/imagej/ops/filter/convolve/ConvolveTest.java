@@ -36,10 +36,10 @@ import static org.junit.Assert.assertSame;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.create.kernelGauss.CreateKernelGauss;
 import net.imagej.ops.filter.CreateFFTFilterMemory;
 import net.imglib2.Point;
 import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.region.hypersphere.HyperSphere;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
@@ -191,7 +191,6 @@ public class ConvolveTest extends AbstractOpTest {
 	
 	/** tests fft based convolve */
 	@Test
-	@SuppressWarnings("unchecked")
 	public void testCreateAndConvolvePoints() {
 		
 		final int xSize=128;
@@ -213,14 +212,14 @@ public class ConvolveTest extends AbstractOpTest {
 		Point location = new Point(phantom.numDimensions());
 		location.setPosition(new long[]{3*xSize/4, 3*ySize/4, 3*zSize/4});
 
-		HyperSphere<DoubleType> hyperSphere = new HyperSphere<DoubleType>(phantom, location, 5);
+		HyperSphere<DoubleType> hyperSphere = new HyperSphere<>(phantom, location, 5);
 				
 		for (DoubleType value : hyperSphere) {
 			value.setReal(16);
 		}
 		
 		// create psf using the gaussian kernel op (alternatively PSF could be an input to the script)
-		Img<DoubleType> psf=(Img<DoubleType>)ops.run(CreateKernelGauss.class, new long[]{5, 5, 5});
+		RandomAccessibleInterval<DoubleType> psf= ops.create().kernelGauss(new double[]{5, 5, 5}, new DoubleType());
 
 		// convolve psf with phantom
 		Img<DoubleType> convolved=ops.filter().convolve(phantom, psf);

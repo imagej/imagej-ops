@@ -33,12 +33,7 @@ package net.imagej.ops.create;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.create.kernelGauss.CreateKernelGauss;
-import net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric;
-import net.imagej.ops.create.kernelLog.CreateKernelLog;
-import net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric;
-import net.imglib2.img.Img;
-import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.real.FloatType;
 
 import org.junit.Test;
@@ -63,25 +58,17 @@ public class CreateKernelTest extends AbstractOpTest {
 			sigmas[i] = sigma;
 		}
 
-		@SuppressWarnings("unchecked")
-		final Img<FloatType> gaussianKernel = (Img<FloatType>) ops.run(
-			CreateKernelGaussSymmetric.class, new FloatType(),
-			new ArrayImgFactory<FloatType>(), numDimensions, sigma);
+		final RandomAccessibleInterval<FloatType> gaussianKernel = ops.create()
+			.kernelGauss(sigma, numDimensions, new FloatType());
 
-		@SuppressWarnings("unchecked")
-		final Img<FloatType> gaussianKernel2 = (Img<FloatType>) ops.run(
-			CreateKernelGauss.class, new FloatType(),
-			new ArrayImgFactory<FloatType>(), sigmas);
+		final RandomAccessibleInterval<FloatType> gaussianKernel2 = ops.create()
+			.kernelGauss(sigmas, new FloatType());
 
-		@SuppressWarnings("unchecked")
-		final Img<FloatType> logKernel = (Img<FloatType>) ops.run(
-			CreateKernelLogSymmetric.class, new FloatType(),
-			new ArrayImgFactory<FloatType>(), numDimensions, sigma);
+		final RandomAccessibleInterval<FloatType> logKernel = ops.create()
+			.kernelLog(sigma, numDimensions, new FloatType());
 
-		@SuppressWarnings("unchecked")
-		final Img<FloatType> logKernel2 = (Img<FloatType>) ops.run(
-			CreateKernelLog.class, new FloatType(), new ArrayImgFactory<FloatType>(),
-			sigmas);
+		final RandomAccessibleInterval<FloatType> logKernel2 = ops.create()
+			.kernelLog(sigmas, new FloatType());
 
 		assertEquals(gaussianKernel.dimension(1), 31);
 		assertEquals(gaussianKernel2.dimension(1), 31);
@@ -104,47 +91,13 @@ public class CreateKernelTest extends AbstractOpTest {
 			sigmas[i] = sigma;
 		}
 
-		/*Img<FloatType> gaussianKernel =
-			(Img<FloatType>) ops.create().kernelGauss(sigmas, null, new FloatType(),
-				new ArrayImgFactory());
-		
-		// no factory
-		Img<FloatType> gaussianKernel2 =
-			(Img<FloatType>) ops.create().kernelGauss(sigmas, null, new FloatType());
-		*/
-		@SuppressWarnings("unchecked")
-		final Img<FloatType> gaussianKernel = (Img<FloatType>) ops.run(
-			CreateKernelGauss.class, new FloatType(),
-			new ArrayImgFactory<FloatType>(), sigmas);
-
-		// no factory
-		@SuppressWarnings("unchecked")
-		final Img<FloatType> gaussianKernel2 = (Img<FloatType>) ops.run(
-			CreateKernelGauss.class, new FloatType(), null, sigmas);
-		// no factory, no type
-		final Img<?> gaussianKernel3 = (Img<?>) ops.run(CreateKernelGauss.class,
-			sigmas);
-
+		final RandomAccessibleInterval<FloatType> gaussianKernel = ops.create()
+			.kernelGauss(sigmas, new FloatType());
 		assertEquals(gaussianKernel.dimension(1), 31);
-		assertEquals(gaussianKernel2.dimension(1), 31);
-		assertEquals(gaussianKernel3.dimension(1), 31);
 
-		@SuppressWarnings("unchecked")
-		final Img<FloatType> logKernel = (Img<FloatType>) ops.run(
-			CreateKernelLog.class, new FloatType(), new ArrayImgFactory<FloatType>(),
-			sigmas);
-
-		// no factory
-		@SuppressWarnings("unchecked")
-		final Img<FloatType> logKernel2 = (Img<FloatType>) ops.run(
-			CreateKernelLog.class, new FloatType(), null, sigmas);
-
-		// no factory, no type
-		final Img<?> logKernel3 = (Img<?>) ops.run(CreateKernelLog.class, sigmas);
-
+		final RandomAccessibleInterval<FloatType> logKernel = ops.create()
+			.kernelLog(sigmas, new FloatType());
 		assertEquals(logKernel.dimension(1), 27);
-		assertEquals(logKernel2.dimension(1), 27);
-		assertEquals(logKernel3.dimension(1), 27);
 	}
 
 }
