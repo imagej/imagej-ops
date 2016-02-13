@@ -46,7 +46,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Create an IntegerType with at least maxValue maximum
+ * Create an IntegerType with at least {@code maxValue} maximum.
  *
  * @author Christian Dietz (University of Konstanz)
  */
