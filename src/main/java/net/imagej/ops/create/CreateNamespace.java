@@ -80,7 +80,7 @@ public class CreateNamespace extends AbstractNamespace {
 	public Img<DoubleType> img(final Integer[] dims) {
 		int[] ints = new int[dims.length];
 		for (int i=0; i<ints.length; i++) ints[i] = dims[i];
-		return img(new FinalDimensions(ints), new DoubleType());
+		return img(ints);
 	}
 
 	/**
@@ -90,7 +90,23 @@ public class CreateNamespace extends AbstractNamespace {
 	public Img<DoubleType> img(final Long[] dims) {
 		long[] longs = new long[dims.length];
 		for (int i=0; i<longs.length; i++) longs[i] = dims[i];
-		return img(new FinalDimensions(longs), new DoubleType());
+		return img(longs);
+	}
+
+	/**
+	 * Creates an {@link Img} of type {@link DoubleType} with the given
+	 * dimensions.
+	 */
+	public Img<DoubleType> img(final int[] dims) {
+		return img(new FinalDimensions(dims), new DoubleType());
+	}
+
+	/**
+	 * Creates an {@link Img} of type {@link DoubleType} with the given
+	 * dimensions.
+	 */
+	public Img<DoubleType> img(final long[] dims) {
+		return img(new FinalDimensions(dims), new DoubleType());
 	}
 
 	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromDimsAndType.class)
