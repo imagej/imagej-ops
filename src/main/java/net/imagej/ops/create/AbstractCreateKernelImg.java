@@ -31,9 +31,13 @@
 package net.imagej.ops.create;
 
 import net.imagej.ops.AbstractOp;
+import net.imglib2.FinalInterval;
+import net.imglib2.Interval;
+import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
-import net.imglib2.type.Type;
+import net.imglib2.type.NativeType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -45,8 +49,8 @@ import org.scijava.plugin.Parameter;
  * @author Brian Northan
  * @param <V>
  */
-public abstract class AbstractCreateKernelImg<V extends Type<V>, W extends Type<W>, FAC extends ImgFactory<W>>
-	extends AbstractOp
+public abstract class AbstractCreateKernelImg<V extends NativeType<V>> extends
+	AbstractOp
 {
 
 	@Parameter(type = ItemIO.OUTPUT)
@@ -59,24 +63,36 @@ public abstract class AbstractCreateKernelImg<V extends Type<V>, W extends Type<
 	private ImgFactory<V> fac;
 
 	@SuppressWarnings("unchecked")
-	protected void createOutputImg(final long[] dims, final ImgFactory<V> fac,
-		final V outType, final FAC defaultFactory, final W defaultType)
-	{
+	protected void createOutputImg(final long[] dims) {
+		final Interval interval = new FinalInterval(dims);
 
 		// no factory and no type
 		if (fac == null && outType == null) {
-			output = (Img<V>) ops().create().img(dims, defaultType, defaultFactory);
+			final Img<DoubleType> img = ops().create().img(interval);
+			// FIXME: This cast is wrong.
+			output = (Img<V>) img;
 		}
 		// type but no factory
 		else if (fac == null && outType != null) {
-			output = (Img<V>) ops().create().img(dims, outType, defaultFactory);
+			output = ops().create().img(interval, outType);
 		}
 		// factory but no type
 		else if (fac != null && outType == null) {
-			output = (Img<V>) ops().create().img(dims, defaultType, fac);
+			final DoubleType dType = new DoubleType();
+			try {
+				final ImgFactory<DoubleType> dFactory = fac.imgFactory(dType);
+				final Img<DoubleType> img = ops().create().img(interval, dType,
+					dFactory);
+				// FIXME: This cast is wrong.
+				output = (Img<V>) img;
+			}
+			catch (final IncompatibleTypeException exc) {
+				throw new IllegalArgumentException("Factory " + fac.getClass()
+					.getName() + " does not support " + dType.getClass().getName(), exc);
+			}
 		}
 		else {
-			output = (Img<V>) ops().create().img(dims, outType, fac);
+			output = ops().create().img(interval, outType, fac);
 		}
 
 	}
@@ -87,10 +103,6 @@ public abstract class AbstractCreateKernelImg<V extends Type<V>, W extends Type<
 
 	protected V getOutType() {
 		return outType;
-	}
-
-	protected ImgFactory<V> getFac() {
-		return fac;
 	}
 
 }

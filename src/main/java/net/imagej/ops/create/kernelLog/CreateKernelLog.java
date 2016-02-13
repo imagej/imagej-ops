@@ -33,6 +33,7 @@ package net.imagej.ops.create.kernelLog;
 import net.imagej.ops.Ops;
 import net.imagej.ops.create.AbstractCreateGaussianKernel;
 import net.imglib2.Cursor;
+import net.imglib2.FinalDimensions;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
@@ -77,8 +78,7 @@ public class CreateKernelLog<T extends ComplexType<T> & NativeType<T>> extends
 			middle[d] = 1 + hksizes;
 		}
 
-		createOutputImg(sizes, getFac(), getOutType(),
-			new ArrayImgFactory<DoubleType>(), new DoubleType());
+		createOutputImg(sizes);
 
 		final Cursor<T> c = getOutput().cursor();
 		final long[] coords = new long[numDimensions];

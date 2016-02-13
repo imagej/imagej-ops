@@ -31,7 +31,6 @@
 package net.imagej.ops.create;
 
 import net.imagej.ops.Contingent;
-import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.complex.ComplexDoubleType;
@@ -50,8 +49,7 @@ import org.scijava.plugin.Parameter;
  * @param <T>
  */
 public abstract class AbstractCreateGaussianKernel<T extends ComplexType<T> & NativeType<T>>
-	extends AbstractCreateKernelImg<T, DoubleType, ArrayImgFactory<DoubleType>>
-	implements Contingent
+	extends AbstractCreateKernelImg<T> implements Contingent
 {
 
 	@Parameter
