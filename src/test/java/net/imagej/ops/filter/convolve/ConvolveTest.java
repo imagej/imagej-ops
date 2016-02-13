@@ -33,12 +33,22 @@ package net.imagej.ops.filter.convolve;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
+import org.junit.Test;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.CreateFFTFilterMemory;
+import net.imagej.ops.filter.fft.CreateOutputFFTMethods;
+import net.imagej.ops.filter.pad.PadInputFFTMethods;
+import net.imagej.ops.filter.pad.PadShiftKernelFFTMethods;
+import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imglib2.Dimensions;
+import net.imglib2.FinalDimensions;
 import net.imglib2.Point;
 import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.region.hypersphere.HyperSphere;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
@@ -47,8 +57,7 @@ import net.imglib2.type.numeric.complex.ComplexFloatType;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.type.numeric.real.FloatType;
-
-import org.junit.Test;
+import net.imglib2.view.Views;
 
 /**
  * Tests involving convolvers.
@@ -59,34 +68,33 @@ public class ConvolveTest extends AbstractOpTest {
 	@Test
 	public void testConvolveMethodSelection() {
 
-		final Img<ByteType> in =
-			new ArrayImgFactory<ByteType>().create(new int[] { 20, 20 },
-				new ByteType());
+		final Img<ByteType> in = new ArrayImgFactory<ByteType>().create(new int[] {
+			20, 20 }, new ByteType());
 
 		// use a small kernel
 		int[] kernelSize = new int[] { 3, 3 };
-		Img<FloatType> kernel =
-			new ArrayImgFactory<FloatType>().create(kernelSize, new FloatType());
+		Img<FloatType> kernel = new ArrayImgFactory<FloatType>().create(kernelSize,
+			new FloatType());
 
 		Op op = ops.op(Ops.Filter.Convolve.class, in, kernel);
 
 		// we should get ConvolveNaive
-		assertSame(ConvolveNaiveImg.class, op.getClass());
+		assertSame(ConvolveNaiveF.class, op.getClass());
 
 		// make sure it runs
-		Img<FloatType> out = ops.filter().convolve(in, kernel);
+		RandomAccessibleInterval<FloatType> out = ops.filter().convolve(in, kernel);
 
 		assertEquals(out.dimension(0), 20);
 
 		// use a bigger kernel
 		kernelSize = new int[] { 30, 30 };
-		kernel =
-			new ArrayImgFactory<FloatType>().create(kernelSize, new FloatType());
+		kernel = new ArrayImgFactory<FloatType>().create(kernelSize,
+			new FloatType());
 
 		op = ops.op(Ops.Filter.Convolve.class, in, kernel);
 
 		// this time we should get ConvolveFFT
-		assertSame(ConvolveFFTImg.class, op.getClass());
+		assertSame(ConvolveFFTF.class, op.getClass());
 
 		// make sure it runs
 		out = ops.filter().convolve(in, kernel);
@@ -107,13 +115,13 @@ public class ConvolveTest extends AbstractOpTest {
 		long[] borderSize = new long[] { 10, 10 };
 
 		// create an input with a small sphere at the center
-		Img<FloatType> in =
-			new ArrayImgFactory<FloatType>().create(size, new FloatType());
+		Img<FloatType> in = new ArrayImgFactory<FloatType>().create(size,
+			new FloatType());
 		placeSphereInCenter(in);
 
 		// create a kernel with a small sphere in the center
-		Img<FloatType> kernel =
-			new ArrayImgFactory<FloatType>().create(kernelSize, new FloatType());
+		Img<FloatType> kernel = new ArrayImgFactory<FloatType>().create(kernelSize,
+			new FloatType());
 		placeSphereInCenter(kernel);
 
 		// create variables to hold the image sums
@@ -128,32 +136,65 @@ public class ConvolveTest extends AbstractOpTest {
 		ops.stats().sum(kernelSum, kernel);
 
 		// convolve and calculate the sum of output
-		Img<FloatType> out = ops.filter().convolve(null, in, kernel, borderSize);
+		RandomAccessibleInterval<FloatType> out = ops.filter().convolve(in, kernel,
+			borderSize);
 
 		// create an output for the next test
-		Img<FloatType> out2 =
-			new ArrayImgFactory<FloatType>().create(size, new FloatType());
+		Img<FloatType> out2 = new ArrayImgFactory<FloatType>().create(size,
+			new FloatType());
 
 		// create an output for the next test
-		Img<FloatType> out3 =
-			new ArrayImgFactory<FloatType>().create(size, new FloatType());
+		Img<FloatType> out3 = new ArrayImgFactory<FloatType>().create(size,
+			new FloatType());
 
-		// this time create reusable fft memory first
-		@SuppressWarnings("unchecked")
-		final CreateFFTFilterMemory<FloatType, FloatType, FloatType, ComplexFloatType> createMemory =
-			ops.op(CreateFFTFilterMemory.class, in, kernel);
+		// Op used to pad the input
+		final BinaryFunctionOp<RandomAccessibleInterval<FloatType>, Dimensions, RandomAccessibleInterval<FloatType>> padOp =
+			(BinaryFunctionOp) Functions.binary(ops, PadInputFFTMethods.class,
+				RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+				Dimensions.class, true);
 
-		createMemory.run();
+		// Op used to pad the kernel
+		final BinaryFunctionOp<RandomAccessibleInterval<FloatType>, Dimensions, RandomAccessibleInterval<FloatType>> padKernelOp =
+			(BinaryFunctionOp) Functions.binary(ops, PadShiftKernelFFTMethods.class,
+				RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+				Dimensions.class, true);
+
+		// Op used to create the complex FFTs
+		UnaryFunctionOp<Dimensions, RandomAccessibleInterval<ComplexFloatType>> createOp =
+			(UnaryFunctionOp) Functions.unary(ops, CreateOutputFFTMethods.class,
+				RandomAccessibleInterval.class, Dimensions.class,
+				new ComplexFloatType(), true);
+
+		final int numDimensions = in.numDimensions();
+
+		// 1. Calculate desired extended size of the image
+
+		final long[] paddedSize = new long[numDimensions];
+
+		// if no getBorderSize() was passed in, then extend based on kernel size
+		for (int d = 0; d < numDimensions; ++d) {
+			paddedSize[d] = (int) in.dimension(d) + (int) kernel.dimension(d) - 1;
+		}
+
+		RandomAccessibleInterval<FloatType> paddedInput = padOp.compute2(in,
+			new FinalDimensions(paddedSize));
+
+		RandomAccessibleInterval<FloatType> paddedKernel = padKernelOp.compute2(
+			kernel, new FinalDimensions(paddedSize));
+
+		RandomAccessibleInterval<ComplexFloatType> fftImage = createOp.compute1(
+			new FinalDimensions(paddedSize));
+
+		RandomAccessibleInterval<ComplexFloatType> fftKernel = createOp.compute1(
+			new FinalDimensions(paddedSize));
 
 		// run convolve using the rai version with the memory created above
-		ops.filter().convolve(createMemory.getRAIExtendedInput(),
-			createMemory.getRAIExtendedKernel(), createMemory.getFFTImg(),
-			createMemory.getFFTKernel(), out2);
+		ops.filter().convolve(out2, paddedInput, paddedKernel, fftImage, fftKernel);
 
-		ops.filter().convolve(createMemory.getRAIExtendedInput(), null,
-			createMemory.getFFTImg(), createMemory.getFFTKernel(), out3, true, false);
+		ops.filter().convolve(out3, paddedInput, paddedKernel, fftImage, fftKernel,
+			true, false);
 
-		ops.stats().sum(outSum, out);
+		ops.stats().sum(outSum, Views.iterable(out));
 		ops.stats().sum(outSum2, out2);
 		ops.stats().sum(outSum3, out3);
 
@@ -217,7 +258,7 @@ public class ConvolveTest extends AbstractOpTest {
 		Img<DoubleType> psf=(Img<DoubleType>)ops.create().kernelGauss(new long[]{5, 5, 5});
 
 		// convolve psf with phantom
-		Img<DoubleType> convolved=ops.filter().convolve(phantom, psf);
+		Img<DoubleType> convolved=(Img<DoubleType>)ops.filter().convolve(phantom, psf);
 		
 		DoubleType sum = new DoubleType();
 		DoubleType max = new DoubleType();

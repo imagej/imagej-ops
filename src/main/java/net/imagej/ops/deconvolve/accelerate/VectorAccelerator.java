@@ -30,6 +30,8 @@
 
 package net.imagej.ops.deconvolve.accelerate;
 
+import net.imagej.ops.Ops;
+import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
@@ -39,7 +41,9 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * Vector Accelerator implements acceleration scheme described in Acceleration
@@ -49,10 +53,11 @@ import org.scijava.plugin.Parameter;
  * @author bnorthan
  * @param <T>
  */
-//@Plugin(type = Op.class, name = "vectorAccelerate",
-//	priority = Priority.NORMAL_PRIORITY)
-public class VectorAccelerator<T extends RealType<T>> implements
-	Accelerator<T>
+@Plugin(type = Ops.Deconvolve.Accelerate.class,
+	priority = Priority.NORMAL_PRIORITY)
+public class VectorAccelerator<T extends RealType<T>> extends
+	AbstractUnaryInplaceOp<RandomAccessibleInterval<T>> implements
+	Ops.Deconvolve.Accelerate
 {
 
 	// TODO: should accelerator be an Op?? If so how do we keep track of current
@@ -78,23 +83,23 @@ public class VectorAccelerator<T extends RealType<T>> implements
 
 	double accelerationFactor = 0.0f;
 
-	public VectorAccelerator(ImgFactory<T> imgFactory) {
-		this.imgFactory = imgFactory;
-		// initialize();
-	}
-
-	/*	@Override
-		public void run() {
-	
-			Accelerate(yk_iterated_);
+	/*	public VectorAccelerator(ImgFactory<T> imgFactory) {
+			this.imgFactory = imgFactory;
+			// initialize();
 		}*/
+
+	@Override
+	public void mutate(RandomAccessibleInterval<T> yk_iterated) {
+
+		Accelerate(yk_iterated);
+	}
 
 	public void initialize(RandomAccessibleInterval<T> yk_iterated) {
 		if (yk_prediction == null) {
 			// long[] dimensions =
 			// new long[] { yk_iterated.dimension(0), yk_iterated.dimension(1),
 			// yk_iterated.dimension(2) };
-    
+
 			Type<T> type = Util.getTypeFromInterval(yk_iterated);
 			yk_prediction = imgFactory.create(yk_iterated, type.createVariable());
 			xkm1_previous = imgFactory.create(yk_iterated, type.createVariable());
@@ -106,7 +111,6 @@ public class VectorAccelerator<T extends RealType<T>> implements
 
 	}
 
-	@Override
 	public Img<T> Accelerate(RandomAccessibleInterval<T> yk_iterated) {
 
 		// use the iterated prediction and the previous value of the prediction
@@ -166,8 +170,7 @@ public class VectorAccelerator<T extends RealType<T>> implements
 
 	}
 
-	double computeAccelerationFactor(RandomAccessibleInterval<T> yk_iterated)
-	{
+	double computeAccelerationFactor(RandomAccessibleInterval<T> yk_iterated) {
 		// gk=StaticFunctions.Subtract(yk_iterated, yk_prediction);
 		Subtract(yk_iterated, yk_prediction, gk);
 
@@ -251,7 +254,6 @@ public class VectorAccelerator<T extends RealType<T>> implements
 		// Img<T> out = img1.factory().create(img1, img1.firstElement());
 
 		Type<T> outType = Util.getTypeFromInterval(img1);
-
 		Img<T> out = imgFactory.create(img1, outType.createVariable());
 
 		final Cursor<T> cursor1 = Views.iterable(img1).cursor();

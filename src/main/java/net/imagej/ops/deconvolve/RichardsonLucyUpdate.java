@@ -28,69 +28,65 @@
  * #L%
  */
 
-package net.imagej.ops.filter.fft;
+package net.imagej.ops.deconvolve;
 
 import net.imagej.ops.Ops;
-import net.imglib2.exception.IncompatibleTypeException;
-import net.imglib2.img.Img;
-import net.imglib2.img.ImgFactory;
+import net.imagej.ops.math.IIToIIOutputII;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.hybrid.BinaryHybridCF;
+import net.imagej.ops.special.hybrid.Hybrids;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.complex.ComplexFloatType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Forward FFT that operates on Img
+ * Implements update step for Richardson-Lucy algortihm (@link
+ * RandomAccessibleInterval) (Lucy, L. B. (1974).
+ * "An iterative technique for the rectification of observed distributions".)
  * 
  * @author Brian Northan
- * @param <T>
  * @param <I>
+ * @param <O>
+ * @param <K>
+ * @param <C>
  */
-@Plugin(type = Ops.Filter.FFT.class, priority = Priority.HIGH_PRIORITY)
-public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
-	AbstractFFTImg<T, I, ComplexFloatType, Img<ComplexFloatType>>
+@Plugin(type = Ops.Deconvolve.RichardsonLucyUpdate.class,
+	priority = Priority.HIGH_PRIORITY)
+public class RichardsonLucyUpdate<T extends RealType<T>, I extends RandomAccessibleInterval<T>>
+	extends AbstractUnaryComputerOp<I, I> implements
+	Ops.Deconvolve.RichardsonLucyUpdate
 {
 
-	private long[] paddedSize;
-
-	private long[] fftSize;
+	private BinaryHybridCF<I, I, I> mul = null;
 
 	@Override
-	protected void computeFFTFastSize(long[] inputSize) {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void initialize() {
 
-		paddedSize = new long[inputSize.length];
-		fftSize = new long[inputSize.length];
-
-		ops().filter().fftSize(inputSize, paddedSize, fftSize, true, true);
-
+		// TODO: comment in when problem with initialize is fixed
+		// mul = (BinaryHybridOp) Hybrids.binary(ops(),
+		// IIToIIOutputII.Multiply.class,
+		// RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+		// RandomAccessibleInterval.class);
 	}
 
+	/**
+	 * performs update step of the Richardson Lucy Algorithm
+	 */
 	@Override
-	protected void computeFFTSmallSize(long[] inputSize) {
+	public void compute1(I correction, I estimate) {
 
-		paddedSize = new long[inputSize.length];
-		fftSize = new long[inputSize.length];
+		// TODO: delte these lines when problem in initialization is fixed
+		if (mul == null) {
 
-		ops().filter().fftSize(inputSize, paddedSize, fftSize, true, false);
-
-	}
-
-	@Override
-	protected Img<ComplexFloatType> createFFTImg(ImgFactory<T> factory) {
-
-		try {
-			return factory.imgFactory(new ComplexFloatType()).create(fftSize,
-				new ComplexFloatType());
+			mul = Hybrids.binaryCF(ops(), IIToIIOutputII.Multiply.class, estimate,
+				correction, estimate);
 		}
-		// TODO: error handling?
-		catch (IncompatibleTypeException e) {
-			return null;
-		}
+
+		mul.compute2(estimate, correction, estimate);
+		// ops().run(Ops.Math.Multiply.class, estimate, estimate, correction);
 	}
 
-	@Override
-	public void compute1(final I input, final Img<ComplexFloatType> output) {
-		ops().filter().fft(output, input, getOBF(), paddedSize);
-	}
 }

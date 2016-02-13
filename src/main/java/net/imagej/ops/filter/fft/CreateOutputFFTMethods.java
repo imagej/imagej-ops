@@ -28,18 +28,45 @@
  * #L%
  */
 
-package net.imagej.ops.filter.ifft;
+package net.imagej.ops.filter.fft;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.create.img.DefaultCreateImg;
+import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
+import net.imglib2.Dimensions;
 import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract superclass for inverse fft implementations that operate on Img<C>.
- * 
+ * Function that creates an output for FFTMethods FFT
+ *
  * @author Brian Northan
+ * @param <T>
  */
-public abstract class AbstractIFFTImg<C, I extends Img<C>, T, O extends Img<T>>
-	extends AbstractIFFTIterable<C, T, I, O> implements Ops.Filter.IFFT
+@Plugin(type = Ops.Filter.CreateFFTOutput.class)
+public class CreateOutputFFTMethods<T> extends
+	AbstractBinaryFunctionOp<Dimensions, T, Img<T>> implements
+	Ops.Filter.CreateFFTOutput
 {
-	// NB: No implementation needed.
+
+	@Parameter(required = false)
+	private Boolean fast = true;
+
+	@Parameter(required = false)
+	private ImgFactory<T> fac;
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Img<T> compute2(Dimensions paddedDimensions, T outType) {
+
+		Dimensions paddedFFTMethodsFFTDimensions = FFTMethodsUtility
+			.getFFTDimensionsRealToComplex(fast, paddedDimensions);
+
+		return (Img<T>) ops().run(DefaultCreateImg.class,
+			paddedFFTMethodsFFTDimensions, outType, fac);
+	}
+
 }

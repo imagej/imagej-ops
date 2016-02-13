@@ -30,92 +30,55 @@
 
 package net.imagej.ops.filter;
 
-import net.imagej.ops.AbstractOp;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
-import net.imglib2.type.numeric.ComplexType;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
 
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract class for FFT based filters that operate on RAI
+ * Abstract class for FFT based filter computers
  * 
  * @author Brian Northan
  * @param <I>
- * @param <O>
+ * @param <O> gene
  * @param <K>
  * @param <C>
  */
-public abstract class AbstractFFTFilterRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractOp
+public abstract class AbstractFFTFilterC<I, O, K, C> extends
+	AbstractBinaryComputerOp<I, K, O>
 {
 
 	/**
-	 * input rai. If extension is desired it needs to be done before passing the
-	 * rai to the op
+	 * Buffer to be used to store FFTs for input. Size of fftInput must correspond
+	 * to the fft size of raiExtendedInput
 	 */
 	@Parameter
-	private RandomAccessibleInterval<I> raiExtendedInput;
+	private C fftInput;
 
 	/**
-	 * kernel rai. Needs to be the same size as the input rai
+	 * Buffer to be used to store FFTs for kernel. Size of fftKernel must
+	 * correspond to the fft size of raiExtendedKernel
 	 */
-	@Parameter(required = false)
-	private RandomAccessibleInterval<K> raiExtendedKernel;
+	@Parameter
+	private C fftKernel;
 
 	/**
-	 * Img to be used to store FFTs for input. Size of fftInput must correspond to
-	 * the fft size of raiExtendedInput
-	 */
-	@Parameter(required = false)
-	private Img<C> fftInput;
-
-	/**
-	 * Img to be used to store FFTs for kernel. Size of fftKernel must correspond
-	 * to the fft size of raiExtendedKernel
-	 */
-	@Parameter(required = false)
-	private Img<C> fftKernel;
-
-	/**
-	 * RAI to store output
-	 */
-	@Parameter(required = false)
-	private RandomAccessibleInterval<O> output;
-
-	/**
-	 * Boolean indicating that the input FFT has allready been calculated (use
-	 * when re-using an input with the same kernel size)
+	 * Boolean indicating that the input FFT has already been calculated
 	 */
 	@Parameter(required = false)
 	private boolean performInputFFT = true;
 
 	/**
-	 * Boolean indicating that the kernel FFT has allready been calculated (use
-	 * when re-using an input with the same kernel size)
+	 * Boolean indicating that the kernel FFT has already been calculated
 	 */
 	@Parameter(required = false)
 	private boolean performKernelFFT = true;
 
-	protected RandomAccessibleInterval<I> getRAIExtendedInput() {
-		return raiExtendedInput;
-	}
-
-	protected RandomAccessibleInterval<K> getRAIExtendedKernel() {
-		return raiExtendedKernel;
-	}
-
-	protected Img<C> getFFTInput() {
+	protected C getFFTInput() {
 		return fftInput;
 	}
 
-	protected Img<C> getFFTKernel() {
+	protected C getFFTKernel() {
 		return fftKernel;
-	}
-
-	protected RandomAccessibleInterval<O> getOutput() {
-		return output;
 	}
 
 	protected boolean getPerformInputFFT() {

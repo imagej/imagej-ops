@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2016 Board of Regents of the University of
+ * Copyright (C) 2014 - 2015 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -32,11 +32,14 @@ package net.imagej.ops.filter.convolve;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractFilterImg;
+import net.imagej.ops.filter.AbstractFilterF;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
+import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Intervals;
 import net.imglib2.util.Util;
@@ -49,41 +52,62 @@ import org.scijava.plugin.Plugin;
  * Convolves an image naively (no FFTs).
  */
 @Plugin(type = Ops.Filter.Convolve.class, priority = Priority.HIGH_PRIORITY)
-public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
-	extends AbstractFilterImg<I, O, K> implements Ops.Filter.Convolve, Contingent
+public class ConvolveNaiveF<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
+	extends AbstractFilterF<I, O, K> implements Ops.Filter.Convolve, Contingent
 {
 
+	UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> convolver;
+
 	@Override
-	public void compute1(final Img<I> img, final Img<O> out) {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void initialize() {
+		super.initialize();
+
+		convolver = (UnaryComputerOp) Computers.unary(ops(), ConvolveNaiveC.class,
+			RandomAccessibleInterval.class, RandomAccessibleInterval.class, in2());
+
+	}
+
+	@Override
+	public RandomAccessibleInterval<O> compute2(
+		final RandomAccessibleInterval<I> img,
+		final RandomAccessibleInterval<K> kernel)
+	{
+
+		RandomAccessibleInterval<O> out = createOutput(img, kernel);
+
 		if (getOBFInput() == null) {
-			setOBFInput(new OutOfBoundsConstantValueFactory<I, RandomAccessibleInterval<I>>(
-				Util.getTypeFromInterval(img).createVariable()));
+			setOBFInput(new OutOfBoundsMirrorFactory<>(Boundary.SINGLE));
 		}
 
-		if ((getOBFKernel() == null) && (getKernel() != null)) {
-			setOBFKernel(new OutOfBoundsConstantValueFactory<K, RandomAccessibleInterval<K>>(
-				Util.getTypeFromInterval(getKernel()).createVariable()));
+		if ((getOBFKernel() == null) && (kernel != null)) {
+			setOBFKernel(
+				new OutOfBoundsConstantValueFactory<K, RandomAccessibleInterval<K>>(Util
+					.getTypeFromInterval(kernel).createVariable()));
 		}
 
 		// extend the input
-		RandomAccessibleInterval<I> extendedIn =
-			Views.interval(Views.extend(img, getOBFInput()), img);
+		RandomAccessibleInterval<I> extendedIn = Views.interval(Views.extend(img,
+			getOBFInput()), img);
 
 		OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput =
-			new OutOfBoundsConstantValueFactory<>(Util
-				.getTypeFromInterval(out).createVariable());
+			new OutOfBoundsConstantValueFactory<>(Util.getTypeFromInterval(out)
+				.createVariable());
 
 		// extend the output
-		RandomAccessibleInterval<O> extendedOut =
-			Views.interval(Views.extend(out, obfOutput), out);
+		RandomAccessibleInterval<O> extendedOut = Views.interval(Views.extend(out,
+			obfOutput), out);
 
-		ops().filter().convolve(extendedOut, extendedIn, getKernel());
+		// ops().filter().convolve(extendedOut, extendedIn, kernel);
+		convolver.compute1(extendedIn, extendedOut);
+
+		return out;
 	}
 
 	@Override
 	public boolean conforms() {
 		// conforms only if the kernel is sufficiently small
-		return Intervals.numElements(getKernel()) <= 9;
+		return Intervals.numElements(in2()) <= 9;
 	}
 
 }

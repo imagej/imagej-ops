@@ -28,23 +28,22 @@
  * #L%
  */
 
-package net.imagej.ops.filter.convolve;
+package net.imagej.ops.filter.correlate;
 
-import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractFFTFilterImg;
-import net.imglib2.Interval;
+import net.imagej.ops.filter.AbstractFFTFilterC;
+import net.imagej.ops.filter.FFTMethodsLinearFFTFilterC;
+import net.imagej.ops.math.multiply.ComplexConjugateMultiply;
+import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Intervals;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Convolve op for (@link Img)
+ * Correlate op for (@link RandomAccessibleInterval)
  * 
  * @author Brian Northan
  * @param <I>
@@ -52,29 +51,42 @@ import org.scijava.plugin.Plugin;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Ops.Filter.Convolve.class, priority = Priority.HIGH_PRIORITY)
-public class ConvolveFFTImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterImg<I, O, K, C> implements Ops.Filter.Convolve,
-	Contingent
+@Plugin(type = Ops.Filter.Correlate.class)
+public class CorrelateFFTC<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	extends
+	AbstractFFTFilterC<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<C>>
+	implements Ops.Filter.Correlate
 {
 
+	BinaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> complexConjugateMul;
+
+	BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>> linearFilter;
+
+	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void initialize() {
+		super.initialize();
+
+		complexConjugateMul = (BinaryComputerOp) Computers.binary(ops(),
+			ComplexConjugateMultiply.class, getFFTInput(), getFFTKernel(),
+			getFFTInput());
+
+		linearFilter = (BinaryComputerOp) Computers.binary(ops(),
+			FFTMethodsLinearFFTFilterC.class, RandomAccessibleInterval.class,
+			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+			getFFTInput(), getFFTKernel(), getPerformInputFFT(),
+			getPerformKernelFFT(), complexConjugateMul);
+
+	}
+
 	/**
-	 * run the filter (ConvolveFFTRAI) on the rais
+	 * Perform correlation by conjugate multiplying the FFTs in the frequency
+	 * domain TODO use an op here??
 	 */
 	@Override
-	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
-		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
-		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
+	public void compute2(RandomAccessibleInterval<I> input,
+		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
-		ops().filter().convolve(raiExtendedInput, raiExtendedKernel, fftImg,
-			fftKernel, output);
+		linearFilter.compute2(input, kernel, out);
 	}
-
-	@Override
-	public boolean conforms() {
-		// TODO: only conforms if the kernel is sufficiently large (else the
-		// naive approach should be used) -> what is a good heuristic??
-		return Intervals.numElements(getKernel()) > 9;
-	}
-
 }

@@ -28,19 +28,26 @@
  * #L%
  */
 
-package net.imagej.ops.filter;
+package net.imagej.ops.filter.convolve;
 
+import net.imagej.ops.Contingent;
+import net.imagej.ops.Ops;
+import net.imagej.ops.filter.AbstractFFTFilterF;
+import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
-import net.imglib2.img.ImgFactory;
+import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
+import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Intervals;
 
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract class for FFT based filters that operate on Img.
+ * Convolve op for (@link Img)
  * 
  * @author Brian Northan
  * @param <I>
@@ -48,54 +55,44 @@ import org.scijava.plugin.Parameter;
  * @param <K>
  * @param <C>
  */
-public abstract class AbstractFFTFilterImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFilterImg<I, O, K>
+@Plugin(type = Ops.Filter.Convolve.class, priority = Priority.HIGH_PRIORITY)
+public class ConvolveFFTF<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	extends AbstractFFTFilterF<I, O, K, C> implements Ops.Filter.Convolve,
+	Contingent
 {
 
-	/**
-	 * FFT type
-	 */
-	@Parameter(required = false)
-	private ComplexType<C> fftType;
-
-	/**
-	 * Factory to create ffts Imgs
-	 */
-	@Parameter(required = false)
-	private ImgFactory<C> fftFactory;
-
-	/**
-	 * compute output by extending the input(s) and running the filter
-	 */
 	@Override
-	public void compute1(final Img<I> input, final Img<O> output) {
+	public void initialize() {
 
-		// run the op that extends the input and kernel and creates the Imgs
-		// required for the fft algorithm
-		final CreateFFTFilterMemory<I, O, K, C> createMemory =
-			ops().op(CreateFFTFilterMemory.class, input, getKernel(), getBorderSize());
+		// TODO: try and figure out if there is a better place to set the default OBF
+		if (this.getOBFInput() == null) {
+			setOBFInput(new OutOfBoundsMirrorFactory<>(Boundary.SINGLE));
+		}
 
-		createMemory.run();
+		super.initialize();
 
-		// run the filter, pass in the memory created above
-		runFilter(createMemory.getRAIExtendedInput(), createMemory
-			.getRAIExtendedKernel(), createMemory.getFFTImg(), createMemory
-			.getFFTKernel(), output, createMemory.getImgConvolutionInterval());
 	}
 
 	/**
-	 * This function is called after the RAIs and FFTs are set up and implements a
-	 * frequency filter.
-	 * 
-	 * @param raiExtendedInput
-	 * @param raiExtendedKernel
-	 * @param fftImg
-	 * @param fftKernel
-	 * @param output
-	 * @param imgConvolutionInterval
+	 * create a convolve filter
 	 */
-	abstract public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
-		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
-		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval);
+	@Override
+	public
+		BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>>
+		createFilter(RandomAccessibleInterval<I> raiExtendedInput,
+			RandomAccessibleInterval<K> raiExtendedKernel,
+			RandomAccessibleInterval<C> fftImg, RandomAccessibleInterval<C> fftKernel,
+			RandomAccessibleInterval<O> output, Interval imgConvolutionInterval)
+	{
+		return Computers.binary(ops(), ConvolveFFTC.class, output, raiExtendedInput,
+			raiExtendedKernel, fftImg, fftKernel);
+	}
+
+	@Override
+	public boolean conforms() {
+		// TODO: only conforms if the kernel is sufficiently large (else the
+		// naive approach should be used) -> what is a good heuristic??
+		return Intervals.numElements(in2()) > 9;
+	}
 
 }
