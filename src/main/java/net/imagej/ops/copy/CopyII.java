@@ -31,6 +31,7 @@
 package net.imagej.ops.copy;
 
 import net.imagej.ops.Contingent;
+import net.imagej.ops.OpUtils;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
@@ -53,6 +54,7 @@ public class CopyII<T> extends
 		AbstractUnaryHybridCF<IterableInterval<T>, IterableInterval<T>> implements
 		Ops.Copy.IterableInterval, Contingent {
 
+
 	// used internally
 	private UnaryComputerOp<IterableInterval<T>, IterableInterval<T>> map;
 	private UnaryFunctionOp<IterableInterval<T>, IterableInterval<T>> imgCreator;
@@ -60,9 +62,10 @@ public class CopyII<T> extends
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		map = Computers.unary(ops(), Ops.Map.class, in(), in(), Computers.unary(
-			ops(), Ops.Copy.Type.class, in().firstElement().getClass(), in()
-				.firstElement().getClass()));
+		final UnaryComputerOp<T, T> copyType = (UnaryComputerOp<T, T>) Computers
+			.unary(ops(), Ops.Copy.Type.class, in().firstElement().getClass(), in()
+				.firstElement().getClass());
+		map = (UnaryComputerOp) Computers.unary(ops(), Ops.Map.class, IterableInterval.class, in(), copyType);
 		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
 			IterableInterval.class, in(), in().firstElement());
 	}
@@ -82,9 +85,7 @@ public class CopyII<T> extends
 
 	@Override
 	public boolean conforms() {
-		if (out() != null) {
-			return Intervals.equalDimensions(in(), out());
-		}
-		return true;
+		if (OpUtils.isNullParam(out())) return true;
+		return Intervals.equalDimensions(in(), out());
 	}
 }

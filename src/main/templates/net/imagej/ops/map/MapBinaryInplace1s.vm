@@ -30,6 +30,7 @@
 package net.imagej.ops.map;
 
 import net.imagej.ops.Contingent;
+import net.imagej.ops.OpUtils;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
 import net.imagej.ops.thread.chunker.ChunkerOp;
@@ -69,7 +70,7 @@ public class MapBinaryInplace1s {
 	{
 		@Override
 		public boolean conforms() {
-			return out() == null || Maps.compatible(in1(), in2());
+			return OpUtils.isNullParam(out()) || Maps.compatible(in1(), in2());
 		}
 
 		@Override
@@ -94,7 +95,7 @@ public class MapBinaryInplace1s {
 	{
 		@Override
 		public boolean conforms() {
-			return out() == null || Maps.compatible(in1(), in2());
+			return OpUtils.isNullParam(out()) || Maps.compatible(in1(), in2());
 		}
 
 		@Override

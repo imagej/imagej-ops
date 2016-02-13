@@ -31,6 +31,7 @@
 package net.imagej.ops.copy;
 
 import net.imagej.ops.Contingent;
+import net.imagej.ops.OpUtils;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
@@ -61,7 +62,7 @@ public class CopyImg<T extends NativeType<T>> extends
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		copyComputer = Computers.unary(ops(), CopyII.class, in(), in());
+		copyComputer = Computers.unary(ops(), CopyII.class, out(), in());
 		createFunc = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
 			Img.class, in());
 	}
@@ -78,9 +79,7 @@ public class CopyImg<T extends NativeType<T>> extends
 
 	@Override
 	public boolean conforms() {
-		if (out() != null) {
-			return Intervals.equalDimensions(in(), out());
-		}
-		return true;
+		if (OpUtils.isNullParam(out())) return true;
+		return Intervals.equalDimensions(in(), out());
 	}
 }

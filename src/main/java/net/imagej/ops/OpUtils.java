@@ -243,6 +243,10 @@ public final class OpUtils {
 		return sb.toString();
 	}
 
+	public static boolean isNullParam(Object param) {
+		return param == null || param instanceof NoParam;
+	}
+
 	// -- Helper methods --
 
 	/** Helper method of {@link #opString(ModuleInfo, ModuleItem)}. */

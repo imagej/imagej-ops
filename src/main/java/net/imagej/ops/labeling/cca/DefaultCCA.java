@@ -33,6 +33,7 @@ package net.imagej.ops.labeling.cca;
 import java.util.Iterator;
 
 import net.imagej.ops.Contingent;
+import net.imagej.ops.OpUtils;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
@@ -102,7 +103,7 @@ public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 
 	@Override
 	public boolean conforms() {
-		if (out() == null) return true;
+		if (OpUtils.isNullParam(out())) return true;
 		return Intervals.equalDimensions(in(), out());
 	}
 

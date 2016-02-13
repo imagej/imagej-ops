@@ -55,11 +55,10 @@ public class DefaultMedian<I extends RealType<I>, O extends RealType<O>> extends
 
 	private UnaryComputerOp<Iterable<I>, O> op;
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		op = (UnaryComputerOp) Computers.unary(ops(), Ops.Stats.Quantile.class, out(),
-				in() == null ? Iterable.class : in(), 0.5d);
+		op = Computers.unary(ops(), Ops.Stats.Quantile.class, out(),
+				in(), 0.5d);
 	}
 
 	@Override

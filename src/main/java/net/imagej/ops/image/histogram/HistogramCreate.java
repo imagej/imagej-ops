@@ -60,7 +60,7 @@ public class HistogramCreate<T extends RealType<T>> extends
 	@Override
 	public void initialize() {
 		minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(), Ops.Stats.MinMax.class, Pair.class,
-				in() != null ? in() : Iterable.class);
+				in());
 	}
 
 	@Override

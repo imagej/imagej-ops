@@ -59,11 +59,10 @@ public class DefaultPercentile<I extends RealType<I>, O extends RealType<O>> ext
 
 	private UnaryComputerOp<Iterable<I>, O> op;
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		op = (UnaryComputerOp) Computers.unary(ops(), Ops.Stats.Quantile.class, out(),
-				in() == null ? Iterable.class : in(), percent / 100.0);
+		op = Computers.unary(ops(), Ops.Stats.Quantile.class, out(),
+				in(), percent / 100.0);
 	}
 
 	@Override

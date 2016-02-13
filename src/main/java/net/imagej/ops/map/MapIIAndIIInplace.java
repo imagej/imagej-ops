@@ -31,6 +31,7 @@
 package net.imagej.ops.map;
 
 import net.imagej.ops.Contingent;
+import net.imagej.ops.OpUtils;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.inplace.BinaryInplace1Op;
 import net.imglib2.IterableInterval;
@@ -51,7 +52,7 @@ public class MapIIAndIIInplace<EA> extends
 
 	@Override
 	public boolean conforms() {
-		return Maps.compatible(in1(), in2());
+		return OpUtils.isNullParam(in1()) || Maps.compatible(in1(), in2());
 	}
 
 	@Override
