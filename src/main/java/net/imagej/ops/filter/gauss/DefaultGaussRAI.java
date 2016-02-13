@@ -40,9 +40,9 @@ import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
+import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.FloatType;
-import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
@@ -53,14 +53,12 @@ import org.scijava.thread.ThreadService;
  * Gaussian filter, wrapping {@link Gauss3} of imglib2-algorithms.
  * 
  * @author Christian Dietz, University of Konstanz
- * @param <T> type of input
- * @param <V> type of output
+ * @param <T> type of input and output
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
 @Plugin(type = Ops.Filter.Gauss.class, priority = 1.0)
-public class DefaultGaussRAI<T extends RealType<T>, V extends RealType<V>>
-	extends
-	AbstractUnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<V>>
+public class DefaultGaussRAI<T extends RealType<T> & NativeType<T>> extends
+	AbstractUnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Filter.Gauss
 {
 
@@ -75,7 +73,7 @@ public class DefaultGaussRAI<T extends RealType<T>, V extends RealType<V>>
 
 	@Override
 	public void compute1(final RandomAccessibleInterval<T> input,
-		final RandomAccessibleInterval<V> output)
+		final RandomAccessibleInterval<T> output)
 	{
 
 		if (outOfBounds == null) outOfBounds =
@@ -95,11 +93,10 @@ public class DefaultGaussRAI<T extends RealType<T>, V extends RealType<V>>
 	}
 
 	@Override
-	public RandomAccessibleInterval<V> createOutput(
+	public RandomAccessibleInterval<T> createOutput(
 		final RandomAccessibleInterval<T> input)
 	{
-		return (RandomAccessibleInterval<V>) ops().create().img(input,
-			Util.getTypeFromInterval(input));
+		return ops().create().img(input);
 	}
 
 }
