@@ -74,7 +74,8 @@ public class CreateNamespace extends AbstractNamespace {
 	}
 
 	/**
-	 * Creates an {@link Img} of type {@link DoubleType} with the given dimensions.
+	 * Creates an {@link Img} of type {@link DoubleType} with the given
+	 * dimensions.
 	 */
 	public Img<DoubleType> img(final Integer... dims) {
 		int[] ints = new int[dims.length];
@@ -83,7 +84,8 @@ public class CreateNamespace extends AbstractNamespace {
 	}
 
 	/**
-	 * Creates an {@link Img} of type {@link DoubleType} with the given dimensions.
+	 * Creates an {@link Img} of type {@link DoubleType} with the given
+	 * dimensions.
 	 */
 	public Img<DoubleType> img(final Long... dims) {
 		long[] longs = new long[dims.length];
