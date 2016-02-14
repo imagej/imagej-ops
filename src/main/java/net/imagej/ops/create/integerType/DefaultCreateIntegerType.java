@@ -61,14 +61,14 @@ public class DefaultCreateIntegerType extends
 
 	@Override
 	public IntegerType compute0() {
-		if (maxValue <= 0) return new IntType();
-		if (maxValue <= 1) return new BitType();
-		if (maxValue <= Byte.MAX_VALUE) return new ByteType();
-		if (maxValue <= Byte.MAX_VALUE * 2 + 1) return new UnsignedByteType();
-		if (maxValue <= Short.MAX_VALUE) return new ShortType();
-		if (maxValue <= Short.MAX_VALUE * 2 + 1) return new UnsignedShortType();
-		if (maxValue <= Integer.MAX_VALUE) return new IntType();
-		if (maxValue <= Integer.MAX_VALUE * 2l + 1) return new UnsignedIntType();
+		if (maxValue <= 0L) return new IntType();
+		if (maxValue <= 1L) return new BitType();
+		if (maxValue <= 0x7fL) return new ByteType();
+		if (maxValue <= 0xffL) return new UnsignedByteType();
+		if (maxValue <= 0x7fffL) return new ShortType();
+		if (maxValue <= 0xffffL) return new UnsignedShortType();
+		if (maxValue <= 0x7fffffffL) return new IntType();
+		if (maxValue <= 0xffffffffL) return new UnsignedIntType();
 		return new LongType();
 	}
 
