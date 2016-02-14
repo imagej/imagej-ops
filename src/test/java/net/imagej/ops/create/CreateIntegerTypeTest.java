@@ -53,48 +53,48 @@ public class CreateIntegerTypeTest extends AbstractOpTest {
 
 	@Test
 	public void testUint1() {
-		assertEquals(BitType.class, ops.create().integerType(1).getClass());
+		assertType(BitType.class, 1);
 	}
 
 	@Test
 	public void testInt8() {
-		assertEquals(ByteType.class, ops.create().integerType(Byte.MAX_VALUE)
-			.getClass());
+		assertType(ByteType.class, Byte.MAX_VALUE);
 	}
 
 	@Test
 	public void testUint8() {
-		assertEquals(UnsignedByteType.class, ops.create().integerType(
-			Byte.MAX_VALUE * 2 + 1).getClass());
+		assertType(UnsignedByteType.class, Byte.MAX_VALUE * 2 + 1);
 	}
 
 	@Test
 	public void testInt16() {
-		assertEquals(ShortType.class, ops.create().integerType(Short.MAX_VALUE)
-			.getClass());
+		assertType(ShortType.class, Short.MAX_VALUE);
 	}
 
 	@Test
 	public void testUint16() {
-		assertEquals(UnsignedShortType.class, ops.create().integerType(
-			Short.MAX_VALUE * 2 + 1).getClass());
+		assertType(UnsignedShortType.class, Short.MAX_VALUE * 2 + 1);
 	}
 
 	@Test
 	public void testInt32() {
-		assertEquals(IntType.class, ops.create().integerType(Integer.MAX_VALUE)
-			.getClass());
+		assertType(IntType.class, Integer.MAX_VALUE);
 	}
 
 	@Test
 	public void testUint32() {
-		assertEquals(UnsignedIntType.class, ops.create().integerType(
-			Integer.MAX_VALUE * 2l + 1).getClass());
+		assertType(UnsignedIntType.class, Integer.MAX_VALUE * 2l + 1);
 	}
 
 	@Test
 	public void testInt64() {
-		assertEquals(LongType.class, ops.create().integerType(Long.MAX_VALUE)
-			.getClass());
+		assertType(LongType.class, Long.MAX_VALUE);
 	}
+
+	// -- Helper methods --
+
+	private void assertType(final Class<?> type, final long max) {
+		assertEquals(type, ops.create().integerType(max).getClass());
+	}
+
 }
