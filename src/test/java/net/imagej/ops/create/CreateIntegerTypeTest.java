@@ -45,11 +45,10 @@ import net.imglib2.type.numeric.integer.UnsignedShortType;
 import org.junit.Test;
 
 /**
- * Tests several ways to create an IntegerType
+ * Tests several ways to create an IntegerType.
  *
  * @author Christian Dietz (University of Konstanz)
  */
-
 public class CreateIntegerTypeTest extends AbstractOpTest {
 
 	@Test
