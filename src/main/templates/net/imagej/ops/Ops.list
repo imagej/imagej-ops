@@ -67,6 +67,7 @@ namespaces = ```
 		[name: "labelingMapping",             iface: "LabelingMapping"],
 		[name: "nativeImg",                   iface: "NativeImg"],
 		[name: "nativeType",                  iface: "NativeType"],
+		[name: "object",                      iface: "Object"],
 		[name: "type",                        iface: "Type"],
 	]],
 	[name: "deconvolve", iface: "Deconvolve", ops: [

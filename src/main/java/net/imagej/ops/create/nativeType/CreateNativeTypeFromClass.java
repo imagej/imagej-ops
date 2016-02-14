@@ -28,60 +28,33 @@
  * #L%
  */
 
-package net.imagej.ops.create.kernelGauss;
+package net.imagej.ops.create.nativeType;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.create.AbstractCreateGaussianKernel;
-import net.imglib2.Cursor;
+import net.imagej.ops.special.chain.FunctionViaFunction;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.type.NativeType;
-import net.imglib2.type.numeric.ComplexType;
-import net.imglib2.util.Util;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Gaussian filter ported from
- * org.knime.knip.core.algorithm.convolvers.filter.linear.Gaussian;
+ * Creates the {@link NativeType} given by the input {@link Class}.
  *
- * @author Christian Dietz (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
- * @author Michael Zinsmaier (University of Konstanz)
- * @author Stephan Sellien (University of Konstanz)
- * @author Brian Northan
- * @param <T>
+ * @author Daniel Seebacher (University of Konstanz)
+ * @author Tim-Oliver Buchholz (University of Konstanz)
+ * @author Curtis Rueden
  */
-@Plugin(type = Ops.Create.KernelGauss.class)
-public class CreateKernelGauss<T extends ComplexType<T> & NativeType<T>>
-	extends AbstractCreateGaussianKernel<T> implements Ops.Create.KernelGauss
+@Plugin(type = Ops.Create.NativeType.class)
+public class CreateNativeTypeFromClass<T extends NativeType<T>> extends
+	FunctionViaFunction<Class<T>, T> implements Ops.Create.NativeType
 {
 
 	@Override
-	protected void createKernel() {
-		final double[] sigmaPixels = new double[numDimensions];
-
-		final long[] dims = new long[numDimensions];
-		final double[][] kernelArrays = new double[numDimensions][];
-
-		for (int d = 0; d < numDimensions; d++) {
-			sigmaPixels[d] = sigma[d];
-
-			dims[d] = Math.max(3, (2 * (int) (3 * sigmaPixels[d] + 0.5) + 1));
-			kernelArrays[d] = Util.createGaussianKernel1DDouble(sigmaPixels[d], true);
-		}
-
-		createOutputImg(dims);
-
-		final Cursor<T> cursor = getOutput().cursor();
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			double result = 1.0f;
-			for (int d = 0; d < numDimensions; d++) {
-				result *= kernelArrays[d][cursor.getIntPosition(d)];
-			}
-
-			cursor.get().setReal(result);
-		}
-
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public UnaryFunctionOp<Class<T>, T> createWorker(final Class<T> in) {
+		return (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Object.class,
+			NativeType.class, Class.class);
 	}
 
 }

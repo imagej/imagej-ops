@@ -56,7 +56,7 @@ public abstract class AbstractFFTFilterImg<I extends RealType<I>, O extends Real
 	 * FFT type
 	 */
 	@Parameter(required = false)
-	private ComplexType<C> fftType;
+	private C fftType;
 
 	/**
 	 * Factory to create ffts Imgs

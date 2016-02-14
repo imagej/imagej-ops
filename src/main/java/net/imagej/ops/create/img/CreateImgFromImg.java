@@ -32,11 +32,8 @@ package net.imagej.ops.create.img;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
-import net.imagej.ops.special.function.Functions;
-import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
-import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
 
 import org.scijava.Priority;
@@ -47,25 +44,17 @@ import org.scijava.plugin.Plugin;
  * {@link Type} and {@link ImgFactory}.
  *
  * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  * @param <T>
  */
 @Plugin(type = Ops.Create.Img.class, priority = Priority.VERY_HIGH_PRIORITY)
-public class CreateImgFromImg<T extends NativeType<T>> extends
+public class CreateImgFromImg<T extends Type<T>> extends
 	AbstractUnaryFunctionOp<Img<T>, Img<T>> implements Ops.Create.Img
 {
 
-	private UnaryFunctionOp<Img<T>, Img<T>> imgCreator;
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void initialize() {
-		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
-			Img.class, in(), in().firstElement().createVariable(), in().factory());
-	}
-
 	@Override
 	public Img<T> compute1(final Img<T> input) {
-		return imgCreator.compute1(input);
+		return Imgs.create(input.factory(), input, input.firstElement());
 	}
 
 }

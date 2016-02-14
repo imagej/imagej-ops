@@ -35,8 +35,8 @@ import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.map.MapIterableInplace;
 import net.imagej.ops.map.MapIIInplaceParallel;
+import net.imagej.ops.map.MapIterableInplace;
 import net.imagej.ops.map.MapUnaryComputers.IIToII;
 import net.imagej.ops.map.MapUnaryComputers.IIToIIParallel;
 import net.imagej.ops.map.MapUnaryComputers.IIToRAI;

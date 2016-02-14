@@ -38,6 +38,7 @@ import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.multithreading.SimpleMultiThreading;
+import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
@@ -64,7 +65,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Deconvolve.RichardsonLucyTV.class,
 	priority = Priority.HIGH_PRIORITY)
-public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends RichardsonLucyRAI<I, O, K, C> implements Ops.Deconvolve.RichardsonLucyTV
 {
 

@@ -31,58 +31,33 @@
 package net.imagej.ops.create.img;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.chain.FunctionViaFunction;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.Interval;
 import net.imglib2.img.Img;
-import net.imglib2.img.ImgFactory;
-import net.imglib2.img.ImgView;
-import net.imglib2.type.Type;
-import net.imglib2.view.Views;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Creates an {@link Img} from an {@link Interval}. Minimum and maximum of
- * resulting {@link Img} are the same as the minimum and maximum of the incoming
- * {@link Interval}.
+ * Creates an {@link Img} from an {@link Interval} with no additional hints.
  *
- * @author Christian Dietz (University of Konstanz)
- * @param <T>
+ * @author Curtis Rueden
  */
-@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
-public class CreateImgFromInterval<T extends Type<T>> extends
-	AbstractUnaryFunctionOp<Interval, Img<T>> implements Ops.Create.Img
+@Plugin(type = Ops.Create.Img.class)
+public class CreateImgFromInterval extends
+	FunctionViaFunction<Interval, Img<DoubleType>> implements Ops.Create.Img
 {
 
-	@Parameter(required = false)
-	private T outType;
-
-	@Parameter(required = false)
-	private ImgFactory<T> fac;
-
-	private DefaultCreateImg<T> imgCreator;
-
-	@SuppressWarnings("unchecked")
 	@Override
-	public void initialize() {
-		imgCreator = ops().op(DefaultCreateImg.class, in(), outType, fac);
-	}
-
-	@Override
-	public Img<T> compute1(final Interval interval) {
-		Img<T> output = imgCreator.compute1(interval);
-		long[] min = new long[interval.numDimensions()];
-		interval.min(min);
-
-		for (int d = 0; d < min.length; d++) {
-			if (min[d] != 0) {
-				output = ImgView.wrap(Views.translate(output, min), output.factory());
-				break;
-			}
-		}
-		return output;
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	public UnaryFunctionOp<Interval, Img<DoubleType>> createWorker(
+		final Interval input)
+	{
+		// NB: Intended to match CreateImgFromDimsAndType.
+		return (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+			Img.class, input, new DoubleType());
 	}
 
 }

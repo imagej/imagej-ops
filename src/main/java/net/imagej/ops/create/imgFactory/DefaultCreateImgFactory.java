@@ -57,16 +57,6 @@ public class DefaultCreateImgFactory<T extends NativeType<T>> extends
 	@Parameter(required = false)
 	private Dimensions dims;
 
-	@Parameter(required = false)
-	private T outType;
-	
-	@Override
-	public void initialize() {
-		if (outType == null) {
-			outType = ops().create().<T> nativeType();
-		}
-	}
-
 	@Override
 	public ImgFactory<T> compute0() {
 		return (dims == null || Intervals.numElements(dims) <= Integer.MAX_VALUE)

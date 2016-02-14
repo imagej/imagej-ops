@@ -32,10 +32,8 @@ package net.imagej.ops.create.nativeType;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractNullaryFunctionOp;
-import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -46,39 +44,13 @@ import org.scijava.plugin.Plugin;
  * @author Curtis Rueden
  */
 @Plugin(type = Ops.Create.NativeType.class)
-public class DefaultCreateNativeType<T extends NativeType<T>> extends
-	AbstractNullaryFunctionOp<T> implements Ops.Create.NativeType
+public class DefaultCreateNativeType extends
+	AbstractNullaryFunctionOp<DoubleType> implements Ops.Create.NativeType
 {
 
-	@Parameter(required = false)
-	private Class<T> type;
-
 	@Override
-	public T compute0() {
-		return type != null ? createTypeFromClass() : createTypeFromScratch();
-	}
-
-	// -- Helper methods --
-
-	private T createTypeFromClass() {
-		try {
-			return type.newInstance();
-		}
-		catch (final InstantiationException exc) {
-			throw new IllegalArgumentException(exc);
-		}
-		catch (final IllegalAccessException exc) {
-			throw new IllegalStateException(exc);
-		}
-	}
-
-	private T createTypeFromScratch() {
-		// NB: No type given; we can only guess.
-		// HACK: For Java 6 compiler.
-		final Object o = new DoubleType();
-		@SuppressWarnings("unchecked")
-		final T t = (T) o;
-		return t;
+	public DoubleType compute0() {
+		return new DoubleType();
 	}
 
 }

@@ -28,60 +28,34 @@
  * #L%
  */
 
-package net.imagej.ops.create.kernelGauss;
+package net.imagej.ops.create.object;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.create.AbstractCreateGaussianKernel;
-import net.imglib2.Cursor;
-import net.imglib2.type.NativeType;
-import net.imglib2.type.numeric.ComplexType;
-import net.imglib2.util.Util;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Gaussian filter ported from
- * org.knime.knip.core.algorithm.convolvers.filter.linear.Gaussian;
+ * Instantiates an object given by the input {@link Class}.
  *
- * @author Christian Dietz (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
- * @author Michael Zinsmaier (University of Konstanz)
- * @author Stephan Sellien (University of Konstanz)
- * @author Brian Northan
- * @param <T>
+ * @author Curtis Rueden
  */
-@Plugin(type = Ops.Create.KernelGauss.class)
-public class CreateKernelGauss<T extends ComplexType<T> & NativeType<T>>
-	extends AbstractCreateGaussianKernel<T> implements Ops.Create.KernelGauss
+@Plugin(type = Ops.Create.Object.class)
+public class CreateObjectFromClass<T> extends
+	AbstractUnaryFunctionOp<Class<T>, T> implements Ops.Create.Object
 {
 
 	@Override
-	protected void createKernel() {
-		final double[] sigmaPixels = new double[numDimensions];
-
-		final long[] dims = new long[numDimensions];
-		final double[][] kernelArrays = new double[numDimensions][];
-
-		for (int d = 0; d < numDimensions; d++) {
-			sigmaPixels[d] = sigma[d];
-
-			dims[d] = Math.max(3, (2 * (int) (3 * sigmaPixels[d] + 0.5) + 1));
-			kernelArrays[d] = Util.createGaussianKernel1DDouble(sigmaPixels[d], true);
+	public T compute1(final Class<T> input) {
+		try {
+			return input.newInstance();
 		}
-
-		createOutputImg(dims);
-
-		final Cursor<T> cursor = getOutput().cursor();
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			double result = 1.0f;
-			for (int d = 0; d < numDimensions; d++) {
-				result *= kernelArrays[d][cursor.getIntPosition(d)];
-			}
-
-			cursor.get().setReal(result);
+		catch (final InstantiationException exc) {
+			throw new IllegalArgumentException(exc);
 		}
-
+		catch (final IllegalAccessException exc) {
+			throw new IllegalArgumentException(exc);
+		}
 	}
 
 }

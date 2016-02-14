@@ -48,7 +48,6 @@ import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
-import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.RealType;
@@ -221,7 +220,7 @@ public class FilterNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType)
+			final O outType)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
@@ -238,7 +237,7 @@ public class FilterNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory)
+			final O outType, final ImgFactory<O> outFactory)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
@@ -255,8 +254,8 @@ public class FilterNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory,
-			final ComplexType<C> fftType)
+			final O outType, final ImgFactory<O> outFactory,
+			final C fftType)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
@@ -274,8 +273,8 @@ public class FilterNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory,
-			final ComplexType<C> fftType, final ImgFactory<C> fftFactory)
+			final O outType, final ImgFactory<O> outFactory,
+			final C fftType, final ImgFactory<C> fftFactory)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
@@ -473,7 +472,7 @@ public class FilterNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType)
+			final O outType)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
@@ -490,7 +489,7 @@ public class FilterNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory)
+			final O outType, final ImgFactory<O> outFactory)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
@@ -507,8 +506,8 @@ public class FilterNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory,
-			final ComplexType<C> fftType)
+			final O outType, final ImgFactory<O> outFactory,
+			final C fftType)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
@@ -526,8 +525,8 @@ public class FilterNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory,
-			final ComplexType<C> fftType, final ImgFactory<C> fftFactory)
+			final O outType, final ImgFactory<O> outFactory,
+			final C fftType, final ImgFactory<C> fftFactory)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =

@@ -28,60 +28,41 @@
  * #L%
  */
 
-package net.imagej.ops.create.kernelGauss;
+package net.imagej.ops.create.img;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.create.AbstractCreateGaussianKernel;
-import net.imglib2.Cursor;
+import net.imagej.ops.special.chain.FunctionViaFunction;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.Img;
 import net.imglib2.type.NativeType;
-import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.util.Util;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Gaussian filter ported from
- * org.knime.knip.core.algorithm.convolvers.filter.linear.Gaussian;
+ * Create an {@link Img} from a {@link RandomAccessibleInterval} using its type
+ * {@code T}.
  *
- * @author Christian Dietz (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
- * @author Michael Zinsmaier (University of Konstanz)
- * @author Stephan Sellien (University of Konstanz)
- * @author Brian Northan
+ * @author Curtis Rueden
  * @param <T>
  */
-@Plugin(type = Ops.Create.KernelGauss.class)
-public class CreateKernelGauss<T extends ComplexType<T> & NativeType<T>>
-	extends AbstractCreateGaussianKernel<T> implements Ops.Create.KernelGauss
+@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
+public class CreateImgFromRAI<T extends NativeType<T>> extends
+	FunctionViaFunction<RandomAccessibleInterval<T>, Img<T>> implements
+	Ops.Create.Img
 {
 
 	@Override
-	protected void createKernel() {
-		final double[] sigmaPixels = new double[numDimensions];
-
-		final long[] dims = new long[numDimensions];
-		final double[][] kernelArrays = new double[numDimensions][];
-
-		for (int d = 0; d < numDimensions; d++) {
-			sigmaPixels[d] = sigma[d];
-
-			dims[d] = Math.max(3, (2 * (int) (3 * sigmaPixels[d] + 0.5) + 1));
-			kernelArrays[d] = Util.createGaussianKernel1DDouble(sigmaPixels[d], true);
-		}
-
-		createOutputImg(dims);
-
-		final Cursor<T> cursor = getOutput().cursor();
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			double result = 1.0f;
-			for (int d = 0; d < numDimensions; d++) {
-				result *= kernelArrays[d][cursor.getIntPosition(d)];
-			}
-
-			cursor.get().setReal(result);
-		}
-
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public UnaryFunctionOp<RandomAccessibleInterval<T>, Img<T>> createWorker(
+		final RandomAccessibleInterval<T> input)
+	{
+		// NB: Intended to match CreateImgFromDimsAndType.
+		return (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+			Img.class, input, Util.getTypeFromInterval(input));
 	}
 
 }

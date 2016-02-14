@@ -31,6 +31,7 @@
 package net.imagej.ops.create;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.type.logic.BitType;
@@ -45,32 +46,75 @@ import net.imglib2.type.numeric.integer.UnsignedShortType;
 import org.junit.Test;
 
 /**
- * Tests several ways to create an IntegerType
+ * Tests several ways to create an IntegerType.
  *
  * @author Christian Dietz (University of Konstanz)
  */
-
 public class CreateIntegerTypeTest extends AbstractOpTest {
 
 	@Test
-	public void testCreateIntegerType() {
-
-		assertEquals(ops.create().integerType(2).getClass(), BitType.class);
-		assertEquals(ops.create().integerType(Byte.MAX_VALUE + 1)
-			.getClass(), ByteType.class);
-		assertEquals(ops.create().integerType((Byte.MAX_VALUE + 1) * 2)
-			.getClass(), UnsignedByteType.class);
-		assertEquals(ops.create().integerType((Short.MAX_VALUE + 1))
-			.getClass(), ShortType.class);
-		assertEquals(ops.create().integerType((Short.MAX_VALUE + 1) * 2)
-			.getClass(), UnsignedShortType.class);
-		assertEquals(ops.create().integerType((Integer.MAX_VALUE + 1))
-			.getClass(), IntType.class);
-		assertEquals(ops
-			.create().integerType((Integer.MAX_VALUE + 1l) * 2l).getClass(),
-			UnsignedIntType.class);
-		assertEquals(ops.create().integerType(Long.MAX_VALUE).getClass(),
-			LongType.class);
-
+	public void testUint1() {
+		assertNotType(BitType.class, 0L);
+		assertType(BitType.class, 1L);
+		assertNotType(BitType.class, 2L);
 	}
+
+	@Test
+	public void testInt8() {
+		assertType(ByteType.class, 0x7eL);
+		assertType(ByteType.class, 0x7fL);
+		assertNotType(ByteType.class, 0x80L);
+	}
+
+	@Test
+	public void testUint8() {
+		assertType(UnsignedByteType.class, 0xfeL);
+		assertType(UnsignedByteType.class, 0xffL);
+		assertNotType(UnsignedByteType.class, 0x100L);
+	}
+
+	@Test
+	public void testInt16() {
+		assertType(ShortType.class, 0x7ffeL);
+		assertType(ShortType.class, 0x7fffL);
+		assertNotType(ShortType.class, 0x8000L);
+	}
+
+	@Test
+	public void testUint16() {
+		assertType(UnsignedShortType.class, 0xfffeL);
+		assertType(UnsignedShortType.class, 0xffffL);
+		assertNotType(UnsignedShortType.class, 0x10000L);
+	}
+
+	@Test
+	public void testInt32() {
+		assertType(IntType.class, 0x7ffffffeL);
+		assertType(IntType.class, 0x7fffffffL);
+		assertNotType(IntType.class, 0x80000000L);
+	}
+
+	@Test
+	public void testUint32() {
+		assertType(UnsignedIntType.class, 0xfffffffeL);
+		assertType(UnsignedIntType.class, 0xffffffffL);
+		assertNotType(UnsignedIntType.class, 0x100000000L);
+	}
+
+	@Test
+	public void testInt64() {
+		assertType(LongType.class, 0x7ffffffffffffffeL);
+		assertType(LongType.class, 0x7fffffffffffffffL);
+	}
+
+	// -- Helper methods --
+
+	private void assertType(final Class<?> type, final long max) {
+		assertEquals(type, ops.create().integerType(max).getClass());
+	}
+
+	private void assertNotType(final Class<?> type, final long max) {
+		assertNotEquals(type, ops.create().integerType(max).getClass());
+	}
+
 }

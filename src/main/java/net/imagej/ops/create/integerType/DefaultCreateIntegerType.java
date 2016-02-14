@@ -46,7 +46,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Create an IntegerType with at least maxValue maximum
+ * Create an IntegerType with at least {@code maxValue} maximum.
  *
  * @author Christian Dietz (University of Konstanz)
  */
@@ -61,33 +61,15 @@ public class DefaultCreateIntegerType extends
 
 	@Override
 	public IntegerType compute0() {
-		if (maxValue > 0) {
-			if (maxValue <= 2) {
-				return new BitType();
-			}
-			else if (maxValue <= Byte.MAX_VALUE + 1) {
-				return new ByteType();
-			}
-			else if (maxValue <= (Byte.MAX_VALUE + 1) * 2) {
-				return new UnsignedByteType();
-			}
-			else if (maxValue <= Short.MAX_VALUE + 1) {
-				return new ShortType();
-			}
-			else if (maxValue <= (Short.MAX_VALUE + 1) * 2) {
-				return new UnsignedShortType();
-			}
-			else if (maxValue <= Integer.MAX_VALUE + 1) {
-				return new IntType();
-			}
-			else if (maxValue <= (Integer.MAX_VALUE + 1l) * 2l) {
-				return new UnsignedIntType();
-			}
-			else {
-				return new LongType();
-			}
-		}
-		return new IntType();
+		if (maxValue <= 0L) return new IntType();
+		if (maxValue <= 1L) return new BitType();
+		if (maxValue <= 0x7fL) return new ByteType();
+		if (maxValue <= 0xffL) return new UnsignedByteType();
+		if (maxValue <= 0x7fffL) return new ShortType();
+		if (maxValue <= 0xffffL) return new UnsignedShortType();
+		if (maxValue <= 0x7fffffffL) return new IntType();
+		if (maxValue <= 0xffffffffL) return new UnsignedIntType();
+		return new LongType();
 	}
 
 }

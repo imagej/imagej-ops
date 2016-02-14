@@ -28,60 +28,45 @@
  * #L%
  */
 
-package net.imagej.ops.create.kernelGauss;
+package net.imagej.ops.create.img;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.create.AbstractCreateGaussianKernel;
-import net.imglib2.Cursor;
+import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
+import net.imglib2.Dimensions;
+import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
 import net.imglib2.type.NativeType;
-import net.imglib2.type.numeric.ComplexType;
-import net.imglib2.util.Util;
 
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Gaussian filter ported from
- * org.knime.knip.core.algorithm.convolvers.filter.linear.Gaussian;
+ * Creates an {@link Img} with the given {@link Dimensions} and
+ * {@link NativeType}.
  *
- * @author Christian Dietz (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
- * @author Michael Zinsmaier (University of Konstanz)
- * @author Stephan Sellien (University of Konstanz)
- * @author Brian Northan
+ * @author Curtis Rueden
  * @param <T>
  */
-@Plugin(type = Ops.Create.KernelGauss.class)
-public class CreateKernelGauss<T extends ComplexType<T> & NativeType<T>>
-	extends AbstractCreateGaussianKernel<T> implements Ops.Create.KernelGauss
+@Plugin(type = Ops.Create.Img.class)
+public class CreateImgFromDimsAndType<T extends NativeType<T>> extends
+	AbstractBinaryFunctionOp<Dimensions, T, Img<T>> implements
+	Ops.Create.Img
 {
 
+	@Parameter(required = false)
+	private ImgFactory<T> factory;
+
 	@Override
-	protected void createKernel() {
-		final double[] sigmaPixels = new double[numDimensions];
-
-		final long[] dims = new long[numDimensions];
-		final double[][] kernelArrays = new double[numDimensions][];
-
-		for (int d = 0; d < numDimensions; d++) {
-			sigmaPixels[d] = sigma[d];
-
-			dims[d] = Math.max(3, (2 * (int) (3 * sigmaPixels[d] + 0.5) + 1));
-			kernelArrays[d] = Util.createGaussianKernel1DDouble(sigmaPixels[d], true);
+	public void initialize() {
+		if (factory == null) {
+			factory = in1() == null ? ops().create().imgFactory() :
+				ops().create().imgFactory(in1());
 		}
+	}
 
-		createOutputImg(dims);
-
-		final Cursor<T> cursor = getOutput().cursor();
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			double result = 1.0f;
-			for (int d = 0; d < numDimensions; d++) {
-				result *= kernelArrays[d][cursor.getIntPosition(d)];
-			}
-
-			cursor.get().setReal(result);
-		}
-
+	@Override
+	public Img<T> compute2(final Dimensions input1, final T input2) {
+		return Imgs.create(factory, input1, input2);
 	}
 
 }

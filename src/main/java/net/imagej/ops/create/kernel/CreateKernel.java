@@ -33,10 +33,8 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.create.AbstractCreateKernelImg;
 import net.imglib2.Cursor;
-import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -49,7 +47,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.Kernel.class)
 public class CreateKernel<T extends ComplexType<T> & NativeType<T>>
-		extends AbstractCreateKernelImg<T, DoubleType, ArrayImgFactory<DoubleType>> implements Ops.Create.Kernel, Contingent {
+		extends AbstractCreateKernelImg<T> implements Ops.Create.Kernel, Contingent {
 
 	@Parameter
 	private double[][] values;
@@ -57,8 +55,7 @@ public class CreateKernel<T extends ComplexType<T> & NativeType<T>>
 	@Override
 	public void run() {
 		final long[] dims = {values.length, values[0].length};
-		createOutputImg(dims, getFac(), getOutType(),
-				new ArrayImgFactory<DoubleType>(), new DoubleType());
+		createOutputImg(dims);
 
 		final Cursor<T> cursor = getOutput().cursor();
 			for (int j = 0; j < values.length; j++) {
