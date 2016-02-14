@@ -54,29 +54,29 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Deconvolve.RichardsonLucyUpdate.class,
 	priority = Priority.HIGH_PRIORITY)
-public class RichardsonLucyUpdate<T extends RealType<T>, I extends RandomAccessibleInterval<T>>
-	extends AbstractUnaryComputerOp<I, I> implements
+public class RichardsonLucyUpdate<T extends RealType<T>>
+	extends AbstractUnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> implements
 	Ops.Deconvolve.RichardsonLucyUpdate
 {
 
-	private BinaryHybridCF<I, I, I> mul = null;
+	private BinaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> mul = null;
 
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initialize() {
 
 		// TODO: comment in when problem with initialize is fixed
-		// mul = (BinaryHybridOp) Hybrids.binary(ops(),
-		// IIToIIOutputII.Multiply.class,
-		// RandomAccessibleInterval.class, RandomAccessibleInterval.class,
-		// RandomAccessibleInterval.class);
+	//	 mul = (BinaryHybridCF)Hybrids.binaryCF(ops(),
+	//	 IIToIIOutputII.Multiply.class,
+	//	 RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+	//	 RandomAccessibleInterval.class);
 	}
 
 	/**
 	 * performs update step of the Richardson Lucy Algorithm
 	 */
 	@Override
-	public void compute1(I correction, I estimate) {
+	public void compute1(RandomAccessibleInterval<T> correction, RandomAccessibleInterval<T> estimate) {
 
 		// TODO: delte these lines when problem in initialization is fixed
 		if (mul == null) {

@@ -60,14 +60,6 @@ public class VectorAccelerator<T extends RealType<T>> extends
 	Ops.Deconvolve.Accelerate
 {
 
-	// TODO: should accelerator be an Op?? If so how do we keep track of current
-	// state?
-	// @Parameter
-	// private OpService ops;
-
-	// @Parameter
-	// private RandomAccessibleInterval<T> yk_iterated_;
-
 	/**
 	 * The ImgFactory used to create images
 	 */
@@ -83,23 +75,15 @@ public class VectorAccelerator<T extends RealType<T>> extends
 
 	double accelerationFactor = 0.0f;
 
-	/*	public VectorAccelerator(ImgFactory<T> imgFactory) {
-			this.imgFactory = imgFactory;
-			// initialize();
-		}*/
-
 	@Override
 	public void mutate(RandomAccessibleInterval<T> yk_iterated) {
 
-		Accelerate(yk_iterated);
+		accelerate(yk_iterated);
 	}
 
 	public void initialize(RandomAccessibleInterval<T> yk_iterated) {
 		if (yk_prediction == null) {
-			// long[] dimensions =
-			// new long[] { yk_iterated.dimension(0), yk_iterated.dimension(1),
-			// yk_iterated.dimension(2) };
-
+			
 			Type<T> type = Util.getTypeFromInterval(yk_iterated);
 			yk_prediction = imgFactory.create(yk_iterated, type.createVariable());
 			xkm1_previous = imgFactory.create(yk_iterated, type.createVariable());
@@ -111,20 +95,17 @@ public class VectorAccelerator<T extends RealType<T>> extends
 
 	}
 
-	public Img<T> Accelerate(RandomAccessibleInterval<T> yk_iterated) {
+	public void accelerate(RandomAccessibleInterval<T> yk_iterated) {
 
 		// use the iterated prediction and the previous value of the prediction
 		// to calculate the acceleration factor
 		if (yk_prediction != null) {
-			// StaticFunctions.showStats(yk_iterated);
-			// StaticFunctions.showStats(yk_prediction);
-
+			
 			accelerationFactor = computeAccelerationFactor(yk_iterated);
 
 			System.out.println("Acceleration Factor: " + accelerationFactor);
 
 			if ((accelerationFactor < 0)) {
-				// xkm1_previous = null;
 				gkm1 = null;
 				accelerationFactor = 0.0;
 			}
@@ -138,9 +119,7 @@ public class VectorAccelerator<T extends RealType<T>> extends
 		RandomAccessibleInterval<T> xk_estimate = yk_iterated;
 
 		// calculate the change vector between x and x previous
-		// if (xkm1_previous != null) {
 		if (accelerationFactor > 0) {
-			// hk_vector=StaticFunctions.Subtract(xk_estimate, xkm1_previous);
 			Subtract(xk_estimate, xkm1_previous, hk_vector);
 
 			// make the next prediction
@@ -148,9 +127,7 @@ public class VectorAccelerator<T extends RealType<T>> extends
 				(float) accelerationFactor);
 		}
 		else {
-			// can't make a prediction yet
-			// yk_prediction=xk_estimate.copy();
-
+		
 			// TODO: Revisit where initialization should be done
 			initialize(yk_iterated);
 
@@ -164,10 +141,6 @@ public class VectorAccelerator<T extends RealType<T>> extends
 		// HACK: TODO: look over how to transfer the memory
 		// copy prediction
 		Copy(yk_prediction, yk_iterated);
-
-		// return the prediction
-		return yk_prediction.copy();
-
 	}
 
 	double computeAccelerationFactor(RandomAccessibleInterval<T> yk_iterated) {
@@ -248,6 +221,7 @@ public class VectorAccelerator<T extends RealType<T>> extends
 		}
 	}
 
+	// TODO: replace with op
 	public Img<T> AddAndScale(final RandomAccessibleInterval<T> img1,
 		final Img<T> img2, final float a)
 	{

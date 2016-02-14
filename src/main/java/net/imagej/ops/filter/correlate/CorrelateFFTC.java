@@ -58,16 +58,16 @@ public class CorrelateFFTC<I extends RealType<I>, O extends RealType<O>, K exten
 	implements Ops.Filter.Correlate
 {
 
-	BinaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> complexConjugateMul;
+	private BinaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> complexConjugateMul;
 
-	BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>> linearFilter;
+	private BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>> linearFilter;
 
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initialize() {
 		super.initialize();
 
-		complexConjugateMul = (BinaryComputerOp) Computers.binary(ops(),
+		complexConjugateMul = Computers.binary(ops(),
 			ComplexConjugateMultiply.class, getFFTInput(), getFFTKernel(),
 			getFFTInput());
 

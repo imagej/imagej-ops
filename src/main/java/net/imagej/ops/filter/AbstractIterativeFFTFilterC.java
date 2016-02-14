@@ -53,7 +53,7 @@ public abstract class AbstractIterativeFFTFilterC<I extends RealType<I>, O exten
 	extends
 	AbstractFFTFilterC<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<C>>
 {
-
+	// TODO remove required=false? Can we always expect a Status Service?
 	@Parameter(required = false)
 	private StatusService status;
 
@@ -71,6 +71,7 @@ public abstract class AbstractIterativeFFTFilterC<I extends RealType<I>, O exten
 
 	/**
 	 * The ImgFactory used to create output and intermediate images
+	 * TODO: remove and rely on Create
 	 */
 	@Parameter
 	private ImgFactory<O> imgFactory;
@@ -99,11 +100,6 @@ public abstract class AbstractIterativeFFTFilterC<I extends RealType<I>, O exten
 
 	}
 
-	@Override
-	public void initialize() {
-		super.initialize();
-	}
-
 	abstract protected void preProcess(RandomAccessibleInterval<I> in,
 		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out);
 
@@ -113,16 +109,6 @@ public abstract class AbstractIterativeFFTFilterC<I extends RealType<I>, O exten
 	protected void postProcess(RandomAccessibleInterval<I> in,
 		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{}
-
-	/**
-	 * convolve estimate with kernel to create reblurred
-	 */
-	protected void createReblurred() {
-
-		ops().filter().convolve(raiExtendedReblurred, raiExtendedEstimate, in2(),
-			getFFTInput(), getFFTKernel(), true, false);
-
-	}
 
 	protected RandomAccessibleInterval<O> getRAIExtendedReblurred() {
 		return raiExtendedReblurred;

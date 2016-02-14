@@ -33,7 +33,7 @@ package net.imagej.ops.deconvolve;
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
-import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.inplace.UnaryInplaceOp;
 import net.imglib2.Dimensions;
 import net.imglib2.Interval;
@@ -366,7 +366,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final int maxIterations, final Interval imgConvolutionInterval,
 			final ImgFactory<O> imgFactory, final UnaryInplaceOp<O, O> accelerator,
 			final OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput,
-			AbstractUnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> update)
+			UnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> update)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
@@ -478,7 +478,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final int maxIterations, final Interval imgConvolutionInterval,
 			final ImgFactory<O> imgFactory, final UnaryInplaceOp<O, O> accelerator,
 			final Dimensions k, final Dimensions l,
-			final AbstractUnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> update)
+			final UnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> update)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
@@ -587,8 +587,8 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory, final int maxIterations,
-			final float regularizationFactor)
+			final Type<O> outType, final ImgFactory<O> outFactory,
+			final int maxIterations, final float regularizationFactor)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =

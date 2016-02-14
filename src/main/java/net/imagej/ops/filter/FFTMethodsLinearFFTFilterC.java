@@ -60,16 +60,17 @@ public class FFTMethodsLinearFFTFilterC<I extends RealType<I>, O extends RealTyp
 	implements Ops.Filter.LinearFilter
 {
 
+	// TODO: should this be a parameter? figure out best way to override frequencyOp 
 	@Parameter
-	BinaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> frequencyOp;
+	private BinaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> frequencyOp;
 
-	UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<C>> fftIn;
+	private UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<C>> fftIn;
 
-	UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<C>> fftKernel;
+	private UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<C>> fftKernel;
 
-	UnaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<O>> ifft;
+	private UnaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<O>> ifft;
 
-	BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>> linearFilter;
+	private BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>> linearFilter;
 
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })

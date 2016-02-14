@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -56,7 +56,7 @@ import org.scijava.plugin.Plugin;
  * Richardson Lucy with total variation function op that operates on (@link
  * RandomAccessibleInterval) (Richardson-Lucy algorithm with total variation
  * regularization for 3D confocal microscope deconvolution Microsc Res Rech 2006
- * Apr; 69(4)- 260-6)
+ * Apr; 69(4)- 260-6) <<<<<<< HEAD ======= >>>>>>> Iterate based on review
  * 
  * @author bnorthan
  * @param <I>
@@ -75,19 +75,19 @@ public class RichardsonLucyTVF<I extends RealType<I> & NativeType<I>, O extends 
 	  to avoid to much inheritance). */
 
 	@Parameter
-	OpService ops;
+	private OpService ops;
 
 	/**
 	 * max number of iterations
 	 */
 	@Parameter
-	int maxIterations;
+	private int maxIterations;
 
 	/**
 	 * the regularization factor determines smoothness of solution
 	 */
 	@Parameter
-	float regularizationFactor = 0.01f;
+	private float regularizationFactor = 0.01f;
 
 	/**
 	 * indicates whether to use non-circulant edge handling
@@ -140,13 +140,16 @@ public class RichardsonLucyTVF<I extends RealType<I> & NativeType<I>, O extends 
 	@SuppressWarnings("unchecked")
 	public
 		BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>>
-		createFilter(RandomAccessibleInterval<I> raiExtendedInput,
-			RandomAccessibleInterval<K> raiExtendedKernel,
-			RandomAccessibleInterval<C> fftImg, RandomAccessibleInterval<C> fftKernel,
-			RandomAccessibleInterval<O> output, Interval imgConvolutionInterval)
+		createFilter(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final RandomAccessibleInterval<C> fftImg,
+			final RandomAccessibleInterval<C> fftKernel,
+			final RandomAccessibleInterval<O> output,
+			final Interval imgConvolutionInterval)
 	{
 		UnaryInplaceOp<O, O> accelerator = null;
 
+		// TODO: make Accelerator a special op
 		if (accelerate == true) {
 			accelerator = ops.op(VectorAccelerator.class, output, getOutFactory());
 		}

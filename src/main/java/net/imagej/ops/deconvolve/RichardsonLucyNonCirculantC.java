@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -32,14 +32,21 @@ package net.imagej.ops.deconvolve;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractIterativeFFTFilterC;
+import net.imagej.ops.filter.convolve.ConvolveFFTC;
 import net.imagej.ops.filter.correlate.CorrelateFFTC;
+import net.imagej.ops.filter.fft.FFTMethodsOpC;
 import net.imagej.ops.math.divide.DivideHandleZero;
-import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.Hybrids;
+import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imglib2.Cursor;
 import net.imglib2.Dimensions;
 import net.imglib2.FinalInterval;
+import net.imglib2.Interval;
 import net.imglib2.Point;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
@@ -47,18 +54,22 @@ import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Util;
+import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
 import org.scijava.Priority;
 import org.scijava.app.StatusService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+import org.scijava.ui.UIService;
 
 /**
- * Non-circulant Richardson Lucy algorithm for (@link RandomAccessibleInterval).
- * Boundary conditions are handled by the scheme described at:
+ * TODO: This class repeats parts of RichardsonLucyC -- figure out best way to
+ * make it DRY Non-circulant Richardson Lucy algorithm for (@link
+ * RandomAccessibleInterval). Boundary conditions are handled by the scheme
+ * described at:
  * http://bigwww.epfl.ch/deconvolution/challenge2013/index.html?p=doc_math_rl)
- * 
+ *
  * @author Brian Northan
  * @param <I>
  * @param <O>
@@ -75,6 +86,9 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 
 	@Parameter(required = false)
 	private StatusService status;
+
+	@Parameter(required = false)
+	private UIService ui;
 
 	/**
 	 * TODO: review and document! - k is the size of the measurement window. That
@@ -99,11 +113,23 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 	 * Op that computes Richardson Lucy update
 	 */
 	@Parameter(required = false)
-	private AbstractUnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> update;
+	private UnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> update;
 
-	BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> rlCorrection;
+	private BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> rlCorrection;
 
-	BinaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> divide;
+	private BinaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> divide;
+
+	private UnaryFunctionOp<Interval, Img<O>> create;
+
+	private UnaryHybridCF<RandomAccessibleInterval<I>, O> sum;
+
+	private UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<C>> fftIn;
+
+	private UnaryComputerOp<RandomAccessibleInterval<K>, RandomAccessibleInterval<C>> fftKernel;
+
+	private BinaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>> convolver;
+
+	private UnaryHybridCF<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> copy;
 
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -111,7 +137,7 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 		super.initialize();
 
 		if (update == null) {
-			update = (AbstractUnaryComputerOp) Computers.unary(ops(),
+			update = (UnaryComputerOp) Computers.unary(ops(),
 				RichardsonLucyUpdate.class, RandomAccessibleInterval.class,
 				RandomAccessibleInterval.class);
 		}
@@ -125,20 +151,37 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
 			RandomAccessibleInterval.class);
 
+		fftIn = (UnaryComputerOp) Computers.unary(ops(), FFTMethodsOpC.class,
+			getFFTInput(), RandomAccessibleInterval.class);
+
+		fftKernel = (UnaryComputerOp) Computers.unary(ops(), FFTMethodsOpC.class,
+			getFFTKernel(), RandomAccessibleInterval.class);
+
+		copy = (UnaryHybridCF) Hybrids.unaryCF(ops(), Ops.Copy.RAI.class,
+			RandomAccessibleInterval.class, IntervalView.class);
+
+		create = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+			Img.class, Dimensions.class, Util.getTypeFromInterval(out()));
+
+		sum = (UnaryHybridCF) Hybrids.unaryCF(ops(), Ops.Stats.Sum.class, Util
+			.getTypeFromInterval(out()), RandomAccessibleInterval.class);
 	}
 
 	@Override
-	public void performIterations(RandomAccessibleInterval<I> in,
-		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
+	public void performIterations(final RandomAccessibleInterval<I> in,
+		final RandomAccessibleInterval<K> kernel,
+		final RandomAccessibleInterval<O> out)
 	{
-
-		createReblurred();
 
 		for (int i = 0; i < getMaxIterations(); i++) {
 
 			if (status != null) {
 				status.showProgress(i, getMaxIterations());
 			}
+
+			// create reblurred by convolving kernel with estimate
+			convolver.compute2(this.getRAIExtendedEstimate(), in2(), this
+				.getRAIExtendedReblurred());
 
 			// compute correction factor
 			rlCorrection.compute2(in, getRAIExtendedReblurred(),
@@ -155,55 +198,56 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 			if (getAccelerator() != null) {
 				getAccelerator().mutate(getRAIExtendedEstimate());
 			}
-
-			// create reblurred for the next iteration (so it is available for error
-			// calculation at this iteration)
-			createReblurred();
-
 		}
 	}
 
 	@Override
-	public void preProcess(RandomAccessibleInterval<I> in,
-		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void preProcess(final RandomAccessibleInterval<I> in,
+		final RandomAccessibleInterval<K> kernel,
+		final RandomAccessibleInterval<O> out)
 	{
 
-		Type<O> outType = Util.getTypeFromInterval(out);
+		final Type<O> outType = Util.getTypeFromInterval(out);
 
 		// create image for the estimate, this image is defined over the entire
 		// convolution interval
-		Img<O> estimate = this.getImgFactory().create(getImgConvolutionInterval(),
-			outType.createVariable());
+		final Img<O> estimate = create.compute1(getImgConvolutionInterval());
 
 		// set first guess to be a constant = to the average value
 
 		// so first compute the sum...
-		final O sum = ops().stats().<I, O> sum(Views.iterable(in));
+		final O s = sum.compute1(in);
 
 		// then the number of pixels
 		final long numPixels = k.dimension(0) * k.dimension(1) * k.dimension(2);
 
 		// then the average value...
-		final double average = sum.getRealDouble() / (numPixels);
+		final double average = s.getRealDouble() / (numPixels);
 
-		// set first guess as the average value computed above (TODO: make this an
-		// op)
+		// set first guess as the average value computed above (TODO: use fill op)
 		for (final O type : estimate) {
 			type.setReal(average);
 		}
 
 		// create image for the reblurred
-		Img<O> reblurred = this.getImgFactory().create(getImgConvolutionInterval(),
-			outType.createVariable());
+		final Img<O> reblurred = this.getImgFactory().create(
+			getImgConvolutionInterval(), outType.createVariable());
 
 		setRAIExtendedEstimate(estimate);
 		setRAIExtendedReblurred(reblurred);
 
 		// perform fft of input
-		ops().filter().fft(getFFTInput(), in);
+		fftIn.compute1(in, getFFTInput());
 
 		// perform fft of psfs
-		ops().filter().fft(getFFTKernel(), kernel);
+		fftKernel.compute1(kernel, getFFTKernel());
+
+		// now that the FFTs are computed use them to initialize a convolver
+		convolver = (BinaryComputerOp) Computers.binary(ops(), ConvolveFFTC.class,
+			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+			RandomAccessibleInterval.class, this.getFFTInput(), this.getFFTKernel(),
+			true, false);
 
 		normalization = getImgFactory().create(estimate, outType.createVariable());
 
@@ -212,29 +256,28 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 	}
 
 	/**
-	 * postProcess TODO: review this function
+	 * postProcess copy back to original size
 	 */
-	@Override 
-	protected void postProcess(RandomAccessibleInterval<I> in,
-		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
+	@Override
+	protected void postProcess(final RandomAccessibleInterval<I> in,
+		final RandomAccessibleInterval<K> kernel,
+		final RandomAccessibleInterval<O> out)
 	{
 
 		// when doing non circulant deconvolution we need to crop and copy back to
 		// the
 		// original image size
 
-		long[] start = new long[k.numDimensions()];
-		long[] end = new long[k.numDimensions()];
+		final long[] start = new long[k.numDimensions()];
+		final long[] end = new long[k.numDimensions()];
 
 		for (int d = 0; d < k.numDimensions(); d++) {
-			start[d] = (getRAIExtendedEstimate().dimension(d) - k.dimension(d)) / 2;
+			start[d] = 0;
 			end[d] = start[d] + k.dimension(d) - 1;
 		}
 
-		RandomAccessibleInterval<O> temp = ops().transform().crop(
-			getRAIExtendedEstimate(), new FinalInterval(start, end));
-
-		ops().copy().rai(out, temp);
+		copy.compute1(Views.interval(getRAIExtendedEstimate(), new FinalInterval(
+			start, end)), out);
 
 	}
 
@@ -243,14 +286,14 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 	 * http://bigwww.epfl.ch/deconvolution/challenge2013/index.html?p=doc_math_rl
 	 */
 	protected void createNormalizationImageSemiNonCirculant(
-		RandomAccessibleInterval<K> kernel)
+		final RandomAccessibleInterval<K> kernel)
 	{
 
 		// k is the window size (valid image region)
-		int length = k.numDimensions();
+		final int length = k.numDimensions();
 
-		long[] n = new long[length];
-		long[] nFFT = new long[length];
+		final long[] n = new long[length];
+		final long[] nFFT = new long[length];
 
 		// n is the valid image size plus the extended region
 		// also referred to as object space size
@@ -263,12 +306,11 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 		}
 
 		// create the normalization image
-		final O type = Util.getTypeFromInterval(getRAIExtendedReblurred());
-		normalization = getImgFactory().create(getRAIExtendedReblurred(), type);
+		normalization = create.compute1(getRAIExtendedReblurred());
 
 		// size of the measurement window
-		Point size = new Point(length);
-		long[] sizel = new long[length];
+		final Point size = new Point(length);
+		final long[] sizel = new long[length];
 
 		for (int d = 0; d < length; d++) {
 			size.setPosition(k.dimension(d), d);
@@ -276,9 +318,9 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 		}
 
 		// starting point of the measurement window when it is centered in fft space
-		Point start = new Point(length);
-		long[] startl = new long[length];
-		long[] endl = new long[length];
+		final Point start = new Point(length);
+		final long[] startl = new long[length];
+		final long[] endl = new long[length];
 
 		for (int d = 0; d < length; d++) {
 			start.setPosition((nFFT[d] - k.dimension(d)) / 2, d);
@@ -287,8 +329,8 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 		}
 
 		// size of the object space
-		Point maskSize = new Point(length);
-		long[] maskSizel = new long[length];
+		final Point maskSize = new Point(length);
+		final long[] maskSizel = new long[length];
 
 		for (int d = 0; d < length; d++) {
 			maskSize.setPosition(Math.min(n[d], nFFT[d]), d);
@@ -296,17 +338,17 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 		}
 
 		// starting point of the object space within the fft space
-		Point maskStart = new Point(length);
-		long[] maskStartl = new long[length];
+		final Point maskStart = new Point(length);
+		final long[] maskStartl = new long[length];
 
 		for (int d = 0; d < length; d++) {
 			maskStart.setPosition((Math.max(0, nFFT[d] - n[d]) / 2), d);
 			maskStartl[d] = (Math.max(0, nFFT[d] - n[d]) / 2);
 		}
 
-		RandomAccessibleInterval<O> temp = Views.interval(normalization,
+		final RandomAccessibleInterval<O> temp = Views.interval(normalization,
 			new FinalInterval(startl, endl));
-		Cursor<O> normCursor = Views.iterable(temp).cursor();
+		final Cursor<O> normCursor = Views.iterable(temp).cursor();
 
 		// draw a cube the size of the measurement space
 		while (normCursor.hasNext()) {
@@ -314,10 +356,11 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 			normCursor.get().setReal(1.0);
 		}
 
-		Img<O> tempImg = getImgFactory().create(normalization, normalization
-			.firstElement().createVariable());
+		final Img<O> tempImg = create.compute1(getRAIExtendedReblurred());
 
 		// 3. correlate psf with the output of step 2.
+		// TODO: Discuss how to initialize this and whether FFT filters should be
+		// unary...
 		ops().run(CorrelateFFTC.class, tempImg, normalization, kernel,
 			getFFTInput(), getFFTKernel(), true, false);
 

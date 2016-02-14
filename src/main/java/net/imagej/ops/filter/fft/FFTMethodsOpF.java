@@ -100,13 +100,11 @@ public class FFTMethodsOpF<T extends RealType<T>, C extends ComplexType<C>>
 	@Parameter(required = false)
 	private Type<C> fftType;
 
-	BinaryFunctionOp<RandomAccessibleInterval<T>, Dimensions, RandomAccessibleInterval<T>> padOp;
+	private BinaryFunctionOp<RandomAccessibleInterval<T>, Dimensions, RandomAccessibleInterval<T>> padOp;
 
-	UnaryFunctionOp<Dimensions, RandomAccessibleInterval<C>> createOp;
+	private UnaryFunctionOp<Dimensions, RandomAccessibleInterval<C>> createOp;
 
-	UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>> fftMethodsOp;
-
-	UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>> fftFunctionOp;
+	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>> fftMethodsOp;
 
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -130,10 +128,6 @@ public class FFTMethodsOpF<T extends RealType<T>, C extends ComplexType<C>>
 			FFTMethodsOpC.class, RandomAccessibleInterval.class,
 			RandomAccessibleInterval.class);
 
-		// TODO: revisit the concept of a super-generic FFT
-		/*	fftFunctionOp = (UnaryFunctionOp) Functions.unary(ops(), DefaultFFTOp.class,
-				RandomAccessibleInterval.class, RandomAccessibleInterval.class, padOp,
-				createOp, fftMethodsOp, borderSize);*/
 	}
 
 	@Override

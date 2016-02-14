@@ -61,9 +61,9 @@ public class ConvolveFFTC<I extends RealType<I>, O extends RealType<O>, K extend
 	implements Ops.Filter.Convolve
 {
 
-	BinaryHybridCF<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> mul;
+	private BinaryHybridCF<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> mul;
 
-	BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>> linearFilter;
+	private BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>> linearFilter;
 
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })

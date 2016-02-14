@@ -51,22 +51,24 @@ import org.scijava.plugin.Plugin;
 public class DefaultLinearFFTFilterC<I, O, K, C> extends
 	AbstractFFTFilterC<I, O, K, C> implements Ops.Filter.LinearFilter
 {
+	
+	// TODO: some of these should not be parameters
 
 	// FFT Op for input
 	@Parameter
-	UnaryComputerOp<I, C> fftInputOp;
+	private UnaryComputerOp<I, C> fftInputOp;
 
 	// FFT Op for kernel
 	@Parameter
-	UnaryComputerOp<K, C> fftKernelOp;
+	private UnaryComputerOp<K, C> fftKernelOp;
 
 	// Op that performs filter in frequency domain
 	@Parameter
-	BinaryComputerOp<C, C, C> frequencyOp;
+	private BinaryComputerOp<C, C, C> frequencyOp;
 
 	// Inverse fft op
 	@Parameter
-	UnaryComputerOp<C, O> ifftOp;
+	private UnaryComputerOp<C, O> ifftOp;
 
 	@Override
 	public void compute2(I in, K kernel, O out) {

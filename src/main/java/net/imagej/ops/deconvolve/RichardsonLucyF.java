@@ -71,7 +71,7 @@ public class RichardsonLucyF<I extends RealType<I> & NativeType<I>, O extends Re
 {
 
 	@Parameter
-	OpService ops;
+	private OpService ops;
 
 	/**
 	 * max number of iterations

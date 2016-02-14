@@ -57,7 +57,7 @@ public class ConvolveNaiveF<I extends RealType<I> & NativeType<I>, O extends Rea
 	extends AbstractFilterF<I, O, K> implements Ops.Filter.Convolve, Contingent
 {
 
-	UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> convolver;
+	private UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> convolver;
 
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })

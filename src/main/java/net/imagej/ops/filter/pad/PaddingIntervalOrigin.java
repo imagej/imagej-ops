@@ -30,7 +30,7 @@ public class PaddingIntervalOrigin<T extends RealType<T>, I extends RandomAccess
 {
 
 	@Parameter
-	Interval centeredInterval;
+	private Interval centeredInterval;
 
 	@Override
 	@SuppressWarnings("unchecked")

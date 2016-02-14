@@ -54,7 +54,9 @@ public class ConvolveNaiveC<I extends RealType<I>, K extends RealType<K>, O exte
 	AbstractUnaryComputerOp<RandomAccessible<I>, RandomAccessibleInterval<O>>
 	implements Ops.Filter.Convolve, Contingent
 {
-
+	// TODO: should this be binary so we can use different kernels??  Not sure.. what if someone tried to re-use
+	// with a big kernel that should be matched with ConvolveFFT
+	
 	@Parameter
 	private RandomAccessibleInterval<K> kernel;
 

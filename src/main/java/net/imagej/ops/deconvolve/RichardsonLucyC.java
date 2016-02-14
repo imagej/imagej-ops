@@ -32,18 +32,25 @@ package net.imagej.ops.deconvolve;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractIterativeFFTFilterC;
-import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.filter.convolve.ConvolveFFTC;
+import net.imagej.ops.filter.fft.FFTMethodsOpC;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
-import net.imglib2.Cursor;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.Hybrids;
+import net.imagej.ops.special.hybrid.UnaryHybridCF;
+import net.imglib2.Dimensions;
+import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
-import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Util;
+import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
 import org.scijava.Priority;
@@ -69,7 +76,7 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 	extends AbstractIterativeFFTFilterC<I, O, K, C> implements
 	Ops.Deconvolve.RichardsonLucy
 {
-
+	// TODO: think through whether we can always have a statusservice. 
 	@Parameter(required = false)
 	private StatusService status;
 
@@ -81,20 +88,32 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 
 	/**
 	 * Op that computes Richardson Lucy update
+	 * TODO: figure out best way to override for different algorithm (like RichardsonLucyTV) 
 	 */
 	@Parameter(required = false)
-	private AbstractUnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> update =
+	private UnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> update =
 		null;
 
-	BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> rlCorrection;
+	private BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> rlCorrection;
+
+	private UnaryFunctionOp<Interval, Img<O>> create;
+
+	private UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<C>> fftIn;
+
+	private UnaryComputerOp<RandomAccessibleInterval<K>, RandomAccessibleInterval<C>> fftKernel;
+
+	private BinaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>> convolver;
+
+	private UnaryHybridCF<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> copy;
 
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initialize() {
 		super.initialize();
 
+		// TODO: look into using RAIs here
 		if (update == null) {
-			update = (AbstractUnaryComputerOp) Computers.unary(ops(),
+			update = (UnaryComputerOp) Computers.unary(ops(),
 				RichardsonLucyUpdate.class, RandomAccessibleInterval.class,
 				RandomAccessibleInterval.class);
 		}
@@ -104,6 +123,18 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
 			getFFTInput(), getFFTKernel());
 
+		fftIn = (UnaryComputerOp) Computers.unary(ops(), FFTMethodsOpC.class,
+			getFFTInput(), RandomAccessibleInterval.class);
+
+		fftKernel = (UnaryComputerOp) Computers.unary(ops(), FFTMethodsOpC.class,
+			getFFTKernel(), RandomAccessibleInterval.class);
+
+		copy = (UnaryHybridCF) Hybrids.unaryCF(ops(), Ops.Copy.RAI.class,
+			RandomAccessibleInterval.class, IntervalView.class);
+
+		create = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+			Img.class, Dimensions.class, Util.getTypeFromInterval(out()));
+
 	}
 
 	@Override
@@ -111,13 +142,14 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
 
-		createReblurred();
-
 		for (int i = 0; i < getMaxIterations(); i++) {
 
 			if (status != null) {
 				status.showProgress(i, getMaxIterations());
 			}
+
+			convolver.compute2(this.getRAIExtendedEstimate(), in2(), this
+				.getRAIExtendedReblurred());
 
 			// compute correction factor
 			rlCorrection.compute2(in, getRAIExtendedReblurred(),
@@ -130,18 +162,15 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 			if (getAccelerator() != null) {
 				getAccelerator().mutate(getRAIExtendedEstimate());
 			}
-
-			// create reblurred for the next iteration (so it is available for error
-			// calculation at this iteration)
-			createReblurred();
-
 		}
 	}
 
 	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void preProcess(RandomAccessibleInterval<I> in,
 		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
+
 		// if no output out of bounds factory exists create the obf for output
 		if (obfOutput == null) {
 			obfOutput =
@@ -149,10 +178,8 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 					.getTypeFromInterval(out).createVariable());
 		}
 
-		Type<O> outType = Util.getTypeFromInterval(out);
-
 		// create image for the reblurred
-		Img<O> reblurred = getImgFactory().create(out, outType.createVariable());
+		Img<O> reblurred = create.compute1(out);
 
 		// extend the output and use it as a buffer to store the estimate
 		setRAIExtendedEstimate(Views.interval(Views.extend(out, obfOutput),
@@ -165,20 +192,19 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 		// set first guess of estimate
 		// TODO: implement logic for various first guesses.
 		// for now just set to original image
-		Cursor<O> c = Views.iterable(getRAIExtendedEstimate()).cursor();
-		Cursor<I> cIn = Views.iterable(in).cursor();
-
-		while (c.hasNext()) {
-			c.fwd();
-			cIn.fwd();
-			c.get().setReal(cIn.get().getRealFloat());
-		}
+		copy.compute1(in, getRAIExtendedEstimate());
 
 		// perform fft of input
-		ops().filter().fft(getFFTInput(), in);
+		fftIn.compute1(in, getFFTInput());
 
 		// perform fft of psf
-		ops().filter().fft(getFFTKernel(), kernel);
+		fftKernel.compute1(kernel, getFFTKernel());
+
+		// now that the FFTs are computed use them to initialize a convolver
+		convolver = (BinaryComputerOp) Computers.binary(ops(), ConvolveFFTC.class,
+			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+			RandomAccessibleInterval.class, this.getFFTInput(), this.getFFTKernel(),
+			true, false);
 	}
 
 }

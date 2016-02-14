@@ -48,7 +48,7 @@ import org.scijava.plugin.Parameter;
  * 
  * @author Brian Northan
  * @param <I>
- * @param <O>
+ * @param <O>DefaultCreateImg
  * @param <K>
  */
 public abstract class AbstractFilterF<I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>>

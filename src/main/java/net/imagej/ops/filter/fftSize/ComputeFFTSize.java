@@ -48,19 +48,19 @@ import org.scijava.plugin.Plugin;
 public class ComputeFFTSize extends AbstractOp implements Ops.Filter.FFTSize {
 
 	@Parameter
-	protected Dimensions inputDimensions;
+	private Dimensions inputDimensions;
 
 	@Parameter(type = ItemIO.BOTH)
-	protected long[] paddedSize;
+	private long[] paddedSize;
 
 	@Parameter(type = ItemIO.BOTH)
-	protected long[] fftSize;
+	private long[] fftSize;
 
 	@Parameter
-	protected Boolean forward;
+	private Boolean forward;
 
 	@Parameter
-	protected Boolean fast;
+	private Boolean fast;
 
 	@Override
 	public void run() {

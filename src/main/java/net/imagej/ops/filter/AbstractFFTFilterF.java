@@ -102,9 +102,9 @@ public abstract class AbstractFFTFilterF<I extends RealType<I> & NativeType<I>, 
 	public void initialize() {
 		super.initialize();
 
-		// if fftType, and/or fftFactory do not exist, create them using defaults
 		if (fftType == null) {
-			fftType = (ComplexType) (new ComplexFloatType().createVariable());
+			fftType = (ComplexType<C>) ops().create().nativeType(
+				ComplexFloatType.class);
 		}
 
 		if (this.getOBFInput() == null) {
