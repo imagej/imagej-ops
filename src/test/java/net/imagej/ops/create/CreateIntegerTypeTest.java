@@ -52,20 +52,48 @@ import org.junit.Test;
 public class CreateIntegerTypeTest extends AbstractOpTest {
 
 	@Test
-	public void testCreateIntegerType() {
+	public void testUint1() {
 		assertEquals(BitType.class, ops.create().integerType(1).getClass());
+	}
+
+	@Test
+	public void testInt8() {
 		assertEquals(ByteType.class, ops.create().integerType(Byte.MAX_VALUE)
 			.getClass());
+	}
+
+	@Test
+	public void testUint8() {
 		assertEquals(UnsignedByteType.class, ops.create().integerType(
 			Byte.MAX_VALUE * 2 + 1).getClass());
+	}
+
+	@Test
+	public void testInt16() {
 		assertEquals(ShortType.class, ops.create().integerType(Short.MAX_VALUE)
 			.getClass());
+	}
+
+	@Test
+	public void testUint16() {
 		assertEquals(UnsignedShortType.class, ops.create().integerType(
 			Short.MAX_VALUE * 2 + 1).getClass());
+	}
+
+	@Test
+	public void testInt32() {
 		assertEquals(IntType.class, ops.create().integerType(Integer.MAX_VALUE)
 			.getClass());
+	}
+
+	@Test
+	public void testUint32() {
 		assertEquals(UnsignedIntType.class, ops.create().integerType(
 			Integer.MAX_VALUE * 2l + 1).getClass());
+	}
+
+	@Test
+	public void testInt64() {
 		assertEquals(LongType.class, ops.create().integerType(Long.MAX_VALUE)
 			.getClass());
 	}
