@@ -71,7 +71,7 @@ public class MapNeighborhood<I, O> extends
 	public void initialize() {
 		map = (UnaryComputerOp) Computers.unary(ops(), Map.class,
 			IterableInterval.class, in() != null ? shape.neighborhoodsSafe(in())
-				: RandomAccessibleInterval.class, getOp());
+				: IterableInterval.class, getOp());
 	}
 
 	@Override
