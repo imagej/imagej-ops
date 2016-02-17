@@ -1012,6 +1012,31 @@ public class FilterNamespace extends AbstractNamespace {
 				net.imagej.ops.filter.gauss.GaussRAISingleSigma.class, in, sigma);
 		return result;
 	}
+	
+	// -- hessian --
+
+	@OpMethod(op = net.imagej.ops.filter.hessian.HessianRAI.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> hessian(
+		final RandomAccessibleInterval<T> in)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.filter.hessian.HessianRAI.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.filter.hessian.HessianRAI.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> hessian(
+		final RandomAccessibleInterval<T> out,
+		final RandomAccessibleInterval<T> in)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.filter.hessian.HessianRAI.class, out, in);
+		return result;
+	}
 
 	// -- ifft --
 
