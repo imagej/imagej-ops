@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2016 Board of Regents of the University of
+ * Copyright (C) 2014 - 2015 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -27,49 +27,52 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package net.imagej.ops.featuresets;
 
-package net.imagej.ops.imagemoments.normalizedcentralmoments;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.scijava.Priority;
+import org.scijava.command.CommandInfo;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.PluginService;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imagej.ops.imagemoments.AbstractImageMomentOp;
-import net.imagej.ops.special.chain.RTs;
-import net.imagej.ops.special.function.UnaryFunctionOp;
-import net.imglib2.IterableInterval;
+import net.imagej.ops.cached.CachedOpEnvironment;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.plugin.Plugin;
-
 /**
- * {@link Op} to calculate the {@code imageMoments.normalizedCentralMoment30}.
+ * In an {@link AbstractFeatureSet} intermediate results are cached during
+ * computation, avoiding redundant computations of the same feature @see
+ * {@link CachedOpEnvironment}.
  * 
- * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
- * @param <I> input type
- * @param <O> output type
+ * @param <I>
+ *            type of the input
+ * @param <O>
+ *            type of the output
  */
-@Plugin(type = Ops.ImageMoments.NormalizedCentralMoment30.class,
-	label = "Image Moment: NormalizedCentralMoment30")
-public class DefaultNormalizedCentralMoment30<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractImageMomentOp<I, O> implements Ops.ImageMoments.NormalizedCentralMoment30
-{
+public abstract class AbstractFeatureSet<I, O extends RealType<O>> extends AbstractUnaryFunctionOp<I, Map<NamedFeature, O>>
+		implements FeatureSet<I, O> {
 
-	private UnaryFunctionOp<IterableInterval<I>, O> centralMoment00Func;
+	@Parameter
+	private PluginService ps;
 
-	private UnaryFunctionOp<IterableInterval<I>, O> centralMoment30Func;
+	@Parameter(required=false)
+	private Class<? extends Op>[] prioritizedOps;
 
 	@Override
 	public void initialize() {
-		centralMoment00Func = RTs.function(ops(), Ops.ImageMoments.CentralMoment00.class, in());
-		centralMoment30Func = RTs.function(ops(), Ops.ImageMoments.CentralMoment30.class, in());
+		final List<CommandInfo> infos = new ArrayList<CommandInfo>();
+		if (prioritizedOps != null) {
+			for (final Class<? extends Op> prio : prioritizedOps) {
+				final CommandInfo info = new CommandInfo(prio);
+				info.setPriority(Priority.FIRST_PRIORITY);
+				infos.add(info);
+			}
+		}
 	}
 
-	@Override
-	public void compute1(final IterableInterval<I> input, final O output) {
-		double centralMoment00 = centralMoment00Func.compute1(input).getRealDouble();
-		double centralMoment30 = centralMoment30Func.compute1(input).getRealDouble();
-
-		output.setReal(centralMoment30 /
-			Math.pow(centralMoment00, 1 + ((3 + 0) / 2.0)));
-	}
 }
