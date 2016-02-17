@@ -89,6 +89,7 @@ namespaces = ```
 		[name: "addPoissonNoise",             iface: "AddPoissonNoise"],
 		[name: "convolve",                    iface: "Convolve"],
 		[name: "correlate",                   iface: "Correlate"],
+		[name: "directionalDerivative",       iface: "DirectionalDerivative"],
 		[name: "dog",                         iface: "DoG",                 aliases: ["differenceOfGaussian"]],
 		[name: "fft",                         iface: "FFT"],
 		[name: "fftSize",                     iface: "FFTSize"],
