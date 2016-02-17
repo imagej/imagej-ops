@@ -33,6 +33,7 @@ package net.imagej.ops.copy;
 import java.lang.reflect.Array;
 
 import net.imagej.ops.Contingent;
+import net.imagej.ops.OpUtils;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.img.array.ArrayImg;
@@ -81,7 +82,7 @@ public class CopyArrayImg<T extends NativeType<T>, A extends ArrayDataAccess<A>>
 
 	@Override
 	public boolean conforms() {
-		if (out() == null) return true;
+		if (OpUtils.isNullParam(out())) return true;
 		return Intervals.equalDimensions(in(), out());
 	}
 }

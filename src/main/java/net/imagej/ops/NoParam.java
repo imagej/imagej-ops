@@ -28,51 +28,15 @@
  * #L%
  */
 
-package net.imagej.ops.image.histogram;
+package net.imagej.ops;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
-import net.imagej.ops.special.function.Functions;
-import net.imagej.ops.special.function.UnaryFunctionOp;
-import net.imglib2.histogram.Histogram1d;
-import net.imglib2.histogram.Real1dBinMapper;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Pair;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.scijava.plugin.SciJavaPlugin;
 
 /**
- * @author Martin Horn (University of Konstanz)
- * @author Christian Dietz (University of Konstanz)
+ * Wrapper for null parameters in {@link Op}s.
+ * 
+ * @author Leon Yang
  */
-@Plugin(type = Ops.Image.Histogram.class)
-public class HistogramCreate<T extends RealType<T>> extends
-		AbstractUnaryFunctionOp<Iterable<T>, Histogram1d<T>> implements
-		Ops.Image.Histogram {
-
-	@Parameter(required = false)
-	private int numBins = 256;
-
-	private UnaryFunctionOp<Iterable<T>, Pair<T, T>> minMaxFunc;
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void initialize() {
-		minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(), Ops.Stats.MinMax.class, Pair.class,
-				in());
-	}
-
-	@Override
-	public Histogram1d<T> compute1(final Iterable<T> input) {
-		final Pair<T, T> res = minMaxFunc.compute1(input);
-
-		final Histogram1d<T> histogram1d = new Histogram1d<>(
-				new Real1dBinMapper<T>(res.getA().getRealDouble(), res.getB()
-						.getRealDouble(), numBins, false));
-
-		histogram1d.countData(input);
-
-		return histogram1d;
-	}
+public interface NoParam extends SciJavaPlugin {
+	// NB: Marker interface.
 }

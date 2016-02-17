@@ -51,6 +51,7 @@ import org.scijava.plugin.Plugin;
 import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
 import org.scijava.util.ConversionUtils;
+import org.scijava.util.GenericUtils;
 
 /**
  * Default service for finding {@link Op}s which match a request.
@@ -73,6 +74,9 @@ public class DefaultOpMatchingService extends AbstractService implements
 
 	@Parameter
 	private LogService log;
+
+	@Parameter
+	private NoParamService noParamService;
 
 	// -- OpMatchingService methods --
 
@@ -388,7 +392,9 @@ public class DefaultOpMatchingService extends AbstractService implements
 	private void assign(final Module module, final Object arg,
 		final ModuleItem<?> item)
 	{
-		if (arg != null) {
+		// NB: If an item is required, we want to populate it with NoParam for
+		// chain initialization, if there is any.
+		if (arg != null || item.isRequired()) {
 			final Type type = item.getGenericType();
 			final Object value = convert(arg, type);
 			module.setInput(item.getName(), value);
@@ -398,15 +404,21 @@ public class DefaultOpMatchingService extends AbstractService implements
 
 	/** Helper method of {@link #assign}. */
 	private Object convert(final Object arg, final Type type) {
+		if (arg == null) {
+			return noParamService.getNoParam(GenericUtils.getClass(type));
+		}
 		if (isMatchingClass(arg, type)) {
-			// NB: Class argument for matching; fill with null.
-			return null;
+			// NB: Class argument for matching; fill with NoParam.
+			return noParamService.getNoParam(arg);
 		}
 		return convertService.convert(arg, type);
 	}
 
 	/** Determines whether the argument is a matching class instance. */
 	private boolean isMatchingClass(final Object arg, final Type type) {
+		// NB: A NoParam contains essentially the same information as a Class object
+		if (arg instanceof NoParam)
+			return convertService.supports(arg.getClass(), type);
 		return arg instanceof Class &&
 			convertService.supports((Class<?>) arg, type);
 	}

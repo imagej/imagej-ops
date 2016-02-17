@@ -31,6 +31,7 @@
 package net.imagej.ops.copy;
 
 import net.imagej.ops.Contingent;
+import net.imagej.ops.OpUtils;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.chain.RAIs;
 import net.imagej.ops.special.computer.Computers;
@@ -71,7 +72,7 @@ public class CopyRAI<T> extends
 	@Override
 	public void initialize() {
 		final Class<?> outTypeClass =
-			out() == null ? Type.class : Util.getTypeFromInterval(out()).getClass();
+			OpUtils.isNullParam(out()) ? Type.class : Util.getTypeFromInterval(out()).getClass();
 		final T inType = Util.getTypeFromInterval(in());
 		final UnaryComputerOp<T, ?> typeComputer =
 			Computers.unary(ops(), Ops.Copy.Type.class, outTypeClass, inType);
@@ -88,7 +89,7 @@ public class CopyRAI<T> extends
 
 	@Override
 	public boolean conforms() {
-		if (out() == null) return true;
+		if (OpUtils.isNullParam(out())) return true;
 		return Intervals.equalDimensions(in(), out());
 	}
 

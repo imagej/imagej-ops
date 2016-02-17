@@ -31,6 +31,7 @@
 package net.imagej.ops.math;
 
 import net.imagej.ops.Contingent;
+import net.imagej.ops.OpUtils;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
@@ -95,7 +96,7 @@ public final class ConstantToIIOutputII {
 
 		@Override
 		public boolean conforms() {
-			if (out() == null) return true;
+			if (OpUtils.isNullParam(out())) return true;
 			return in().iterationOrder().equals(out().iterationOrder());
 		}
 

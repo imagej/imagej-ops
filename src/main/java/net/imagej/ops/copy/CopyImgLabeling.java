@@ -31,6 +31,7 @@
 package net.imagej.ops.copy;
 
 import net.imagej.ops.Contingent;
+import net.imagej.ops.OpUtils;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
@@ -87,14 +88,10 @@ public class CopyImgLabeling<T extends IntegerType<T> & NativeType<T>, L>
 
 	@Override
 	public boolean conforms() {
-		if (out() != null) {
-			return Intervals.equalDimensions(in(), out())
-					&& Util.getTypeFromInterval(in().getIndexImg()).getClass() == Util
-							.getTypeFromInterval(out().getIndexImg())
-							.getClass();
-		}
-
-		return true;
+		if (OpUtils.isNullParam(out())) return true;
+		return Intervals.equalDimensions(in(), out()) && Util.getTypeFromInterval(
+			in().getIndexImg()).getClass() == Util.getTypeFromInterval(out()
+				.getIndexImg()).getClass();
 	}
 
 }
