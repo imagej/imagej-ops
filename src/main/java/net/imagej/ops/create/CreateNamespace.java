@@ -577,6 +577,33 @@ public class CreateNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	// -- kernelSobel --
+
+	@OpMethod(op = net.imagej.ops.create.kernelSobel.CreateKernelSobelSeparated.class)
+	public <T extends ComplexType<T>> Img<T> kernelSobelSeparated() {
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			net.imagej.ops.create.kernelSobel.CreateKernelSobelSeparated.class);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.create.kernelSobel.CreateKernelSobelSeparated.class)
+	public <T extends ComplexType<T>> Img<T> kernelSobelSeparated(final T outType) {
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			net.imagej.ops.create.kernelSobel.CreateKernelSobelSeparated.class, outType);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.create.kernelSobel.CreateKernelSobelSeparated.class)
+	public <T extends ComplexType<T>> Img<T> kernelSobelSeparated(final T outType,
+		final ImgFactory<T> fac)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			net.imagej.ops.create.kernelSobel.CreateKernelSobelSeparated.class, outType, fac);
+		return result;
+	}
 
 	// -- labelingMapping --
 
