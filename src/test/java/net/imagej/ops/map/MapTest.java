@@ -60,6 +60,28 @@ public class MapTest extends AbstractOpTest {
 	private Op sub;
 
 	@Test
+	public void testIterable() {
+		final Img<ByteType> in = generateByteArrayTestImg(true, 10, 10);
+
+		Op nullary = Computers.nullary(ops, Ops.Math.Zero.class, ByteType.class);
+		ops.run(MapNullaryIterable.class, in, nullary);
+
+		for (ByteType ps : in)
+			assertEquals(ps.get(), 0);
+	}
+
+	@Test
+	public void testII() {
+		final Img<ByteType> in = generateByteArrayTestImg(true, 10, 10);
+
+		Op nullary = Computers.nullary(ops, Ops.Math.Zero.class, ByteType.class);
+		ops.run(MapNullaryII.class, in, nullary);
+
+		for (ByteType ps : in)
+			assertEquals(ps.get(), 0);
+	}
+
+	@Test
 	public void testIIAndIIInplace() {
 		final Img<ByteType> first = generateByteArrayTestImg(true, 10, 10);
 		final Img<ByteType> firstCopy = first.copy();
