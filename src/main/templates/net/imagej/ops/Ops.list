@@ -160,6 +160,7 @@ namespaces = ```
 		[name: "cooccurrencematrix",          iface:"CooccurrenceMatrix"],
 		[name: "crop",                        iface: "Crop",                aliases: ["slice"]],
 		[name: "equation",                    iface: "Equation"],
+		[name: "fill",                        iface: "Fill"],
 		[name: "histogram",                   iface: "Histogram"],
 		[name: "invert",                      iface: "Invert"],
 		[name: "normalize",                   iface: "Normalize",           aliases: ["norm"]],
