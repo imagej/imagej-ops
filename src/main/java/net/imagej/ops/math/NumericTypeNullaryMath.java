@@ -32,8 +32,10 @@ package net.imagej.ops.math;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.AbstractNullaryComputerOp;
+import net.imglib2.type.Type;
 import net.imglib2.type.numeric.NumericType;
 
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -46,6 +48,24 @@ public class NumericTypeNullaryMath {
 
 	private NumericTypeNullaryMath() {
 		// NB: Prevent instantiation of utility class.
+	}
+
+	/**
+	 * Sets the output to a constant.
+	 */
+	@Plugin(type = Ops.Math.Assign.class)
+	public static class Assign<T extends Type<T>> extends
+		AbstractNullaryComputerOp<T> implements Ops.Math.Assign
+	{
+		// NB: This class does not require output to be NumericType. Should consider
+		// move to else where.
+		@Parameter
+		private T constant;
+
+		@Override
+		public void compute0(final T output) {
+			output.set(constant);
+		}
 	}
 
 	/**
