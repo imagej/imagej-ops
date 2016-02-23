@@ -65,7 +65,7 @@ public class LabelingNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<L, I> result =
 			(ImgLabeling<L, I>) ops().run(
-				net.imagej.ops.labeling.cca.DefaultCCA.class, out, in, element,
+				net.imagej.ops.Ops.Labeling.CCA.class, out, in, element,
 				labelGenerator);
 		return result;
 	}
@@ -78,7 +78,7 @@ public class LabelingNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<L, I> result =
 			(ImgLabeling<L, I>) ops().run(
-				net.imagej.ops.labeling.cca.DefaultCCA.class, out, in, element);
+				net.imagej.ops.Ops.Labeling.CCA.class, out, in, element);
 		return result;
 	}
 
@@ -90,7 +90,7 @@ public class LabelingNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<L, I> result =
 			(ImgLabeling<L, I>) ops().run(
-				net.imagej.ops.labeling.cca.DefaultCCA.class, in, element);
+				net.imagej.ops.Ops.Labeling.CCA.class, in, element);
 		return result;
 	}
 

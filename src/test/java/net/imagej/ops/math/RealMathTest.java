@@ -219,7 +219,6 @@ public class RealMathTest extends AbstractOpTest {
 		final DoubleType out = new DoubleType();
 		ops.math().csch(out, in);
 		assertEquals(out.get(), 1 / Math.sinh(1234567890), 0.0);
-		ops.math().add(3, 43.0);
 	}
 
 	@Test

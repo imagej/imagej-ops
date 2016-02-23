@@ -68,7 +68,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class, null, in,
+			(Img<O>) ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class, null, in,
 				kernel, maxIterations);
 		return result;
 	}
@@ -80,7 +80,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class,
+			(Img<O>) ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class,
 				out, in, kernel, maxIterations);
 		return result;
 	}
@@ -93,7 +93,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class,
+			(Img<O>) ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class,
 				out, in, kernel, borderSize, maxIterations);
 		return result;
 	}
@@ -107,7 +107,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class,
+			(Img<O>) ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class,
 				out, in, kernel, borderSize, obfInput, maxIterations);
 		return result;
 	}
@@ -122,7 +122,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class,
+			(Img<O>) ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class,
 				out, in, kernel, borderSize, obfInput, obfKernel, maxIterations);
 		return result;
 	}
@@ -137,7 +137,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class,
+			(Img<O>) ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class,
 				out, in, kernel, borderSize, obfInput, obfKernel, outType,
 				maxIterations);
 		return result;
@@ -154,7 +154,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class,
+			(Img<O>) ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class,
 				out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory,
 				maxIterations);
 		return result;
@@ -172,7 +172,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class,
+			(Img<O>) ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class,
 				out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory,
 				fftType, maxIterations);
 		return result;
@@ -191,7 +191,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class,
+			(Img<O>) ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class,
 				out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory,
 				fftType, fftFactory, maxIterations);
 		return result;
@@ -210,7 +210,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class,
+			(Img<O>) ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class,
 				out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory,
 				fftType, fftFactory, maxIterations, nonCirculant);
 		return result;
@@ -230,7 +230,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class,
+			(Img<O>) ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class,
 				out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory,
 				fftType, fftFactory, maxIterations, nonCirculant, accelerate);
 		return result;
@@ -244,7 +244,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final int maxIterations, final Interval imgConvolutionInterval,
 			final ImgFactory<O> imgFactory)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class,
 			raiExtendedInput, maxIterations, imgConvolutionInterval, imgFactory);
 
 	}
@@ -257,7 +257,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final int maxIterations, final Interval imgConvolutionInterval,
 			final ImgFactory<O> imgFactory)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class,
 			raiExtendedInput, raiExtendedKernel, maxIterations,
 			imgConvolutionInterval, imgFactory);
 
@@ -271,7 +271,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final Img<C> fftInput, final int maxIterations,
 			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class,
 			raiExtendedInput, raiExtendedKernel, fftInput, maxIterations,
 			imgConvolutionInterval, imgFactory);
 
@@ -285,7 +285,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final Img<C> fftInput, final Img<C> fftKernel, final int maxIterations,
 			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class,
 			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, maxIterations,
 			imgConvolutionInterval, imgFactory);
 
@@ -300,7 +300,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<O> output, final int maxIterations,
 			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class,
 			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
 			maxIterations, imgConvolutionInterval, imgFactory);
 	}
@@ -315,7 +315,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final int maxIterations, final Interval imgConvolutionInterval,
 			final ImgFactory<O> imgFactory)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class,
 			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
 			performInputFFT, maxIterations, imgConvolutionInterval, imgFactory);
 
@@ -331,7 +331,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final boolean performKernelFFT, final int maxIterations,
 			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class,
 			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
 			performInputFFT, performKernelFFT, maxIterations, imgConvolutionInterval,
 			imgFactory);
@@ -348,7 +348,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			boolean performInputFFT, boolean performKernelFFT, int maxIterations,
 			Interval imgConvolutionInterval, ImgFactory<O> imgFactory, Dimensions k)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class,
 			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
 			performInputFFT, performKernelFFT, maxIterations, imgConvolutionInterval,
 			imgFactory, k);
@@ -366,7 +366,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			Interval imgConvolutionInterval, ImgFactory<O> imgFactory, Dimensions k,
 			Dimensions l)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class,
 			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
 			performInputFFT, performKernelFFT, maxIterations, imgConvolutionInterval,
 			imgFactory, k, l);
@@ -384,7 +384,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			Interval imgConvolutionInterval, ImgFactory<O> imgFactory, Dimensions k,
 			Dimensions l, boolean noncirculant)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class,
 			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
 			performInputFFT, performKernelFFT, maxIterations, imgConvolutionInterval,
 			imgFactory, k, l, noncirculant);
@@ -402,7 +402,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			Interval imgConvolutionInterval, ImgFactory<O> imgFactory, Dimensions k,
 			Dimensions l, boolean noncirculant, boolean accelerate)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class,
 			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
 			performInputFFT, performKernelFFT, maxIterations, imgConvolutionInterval,
 			imgFactory, k, l, noncirculant, accelerate);
@@ -420,7 +420,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			Dimensions l, boolean noncirculant, boolean accelerate,
 			OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class,
 			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
 			performInputFFT, performKernelFFT, maxIterations, imgConvolutionInterval,
 			imgFactory, k, l, noncirculant, accelerate, obfOutput);
@@ -442,7 +442,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVImg.class,
+			(Img<O>) ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 				in, kernel, maxIterations, regularizationFactor);
 		return result;
 	}
@@ -455,7 +455,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVImg.class,
+			(Img<O>) ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 				out, in, kernel, maxIterations, regularizationFactor);
 		return result;
 	}
@@ -468,7 +468,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVImg.class,
+			(Img<O>) ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 				out, in, kernel, borderSize, maxIterations, regularizationFactor);
 		return result;
 	}
@@ -482,7 +482,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVImg.class,
+			(Img<O>) ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 				out, in, kernel, borderSize, obfInput, maxIterations,
 				regularizationFactor);
 		return result;
@@ -498,7 +498,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVImg.class,
+			(Img<O>) ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 				out, in, kernel, borderSize, obfInput, obfKernel, maxIterations,
 				regularizationFactor);
 		return result;
@@ -515,7 +515,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVImg.class,
+			(Img<O>) ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 				out, in, kernel, borderSize, obfInput, obfKernel, outType,
 				maxIterations, regularizationFactor);
 		return result;
@@ -532,7 +532,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVImg.class,
+			(Img<O>) ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 				out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory,
 				maxIterations, regularizationFactor);
 		return result;
@@ -551,7 +551,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVImg.class,
+			(Img<O>) ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 				out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory,
 				fftType, maxIterations, regularizationFactor);
 		return result;
@@ -570,7 +570,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVImg.class,
+			(Img<O>) ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 				out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory,
 				fftType, fftFactory, maxIterations, regularizationFactor);
 		return result;
@@ -590,7 +590,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVImg.class,
+			(Img<O>) ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 				out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory,
 				fftType, fftFactory, maxIterations, regularizationFactor, nonCirculant);
 		return result;
@@ -610,7 +610,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVImg.class,
+			(Img<O>) ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 				out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory,
 				fftType, fftFactory, maxIterations, regularizationFactor, nonCirculant, accelerate);
 		return result;
@@ -623,7 +623,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final int maxIterations, final Interval imgConvolutionInterval,
 			final ImgFactory<O> imgFactory, final float regularizationFactor)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 			raiExtendedInput, maxIterations, imgConvolutionInterval, imgFactory,
 			regularizationFactor);
 	}
@@ -636,7 +636,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final int maxIterations, final Interval imgConvolutionInterval,
 			final ImgFactory<O> imgFactory, final float regularizationFactor)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 			raiExtendedInput, raiExtendedKernel, maxIterations,
 			imgConvolutionInterval, imgFactory, regularizationFactor);
 	}
@@ -650,7 +650,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory,
 			final float regularizationFactor)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 			raiExtendedInput, raiExtendedKernel, fftInput, maxIterations,
 			imgConvolutionInterval, imgFactory, regularizationFactor);
 	}
@@ -664,7 +664,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory,
 			final float regularizationFactor)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, maxIterations,
 			imgConvolutionInterval, imgFactory, regularizationFactor);
 	}
@@ -679,7 +679,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory,
 			final float regularizationFactor)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
 			maxIterations, imgConvolutionInterval, imgFactory, regularizationFactor);
 	}
@@ -694,7 +694,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final int maxIterations, final Interval imgConvolutionInterval,
 			final ImgFactory<O> imgFactory, final float regularizationFactor)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
 			performInputFFT, maxIterations, imgConvolutionInterval, imgFactory,
 			regularizationFactor);
@@ -711,7 +711,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory,
 			final float regularizationFactor)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
 			performInputFFT, performKernelFFT, maxIterations, imgConvolutionInterval,
 			imgFactory, regularizationFactor);
@@ -728,7 +728,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory,
 			final Dimensions k, final float regularizationFactor)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
 			performInputFFT, performKernelFFT, maxIterations, imgConvolutionInterval,
 			imgFactory, k, regularizationFactor);
@@ -745,7 +745,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory,
 			final Dimensions k, final Dimensions l, final float regularizationFactor)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
 			performInputFFT, performKernelFFT, maxIterations, imgConvolutionInterval,
 			imgFactory, k, l, regularizationFactor);
@@ -763,7 +763,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final Dimensions k, final Dimensions l, final boolean nonCirculant,
 			final float regularizationFactor)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
 			performInputFFT, performKernelFFT, maxIterations, imgConvolutionInterval,
 			imgFactory, k, l, nonCirculant, regularizationFactor);
@@ -781,7 +781,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final Dimensions k, final Dimensions l, final boolean nonCirculant,
 			final boolean accelerate, final float regularizationFactor)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
 			performInputFFT, performKernelFFT, maxIterations, imgConvolutionInterval,
 			imgFactory, k, l, nonCirculant, accelerate, regularizationFactor);
@@ -801,7 +801,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput,
 			final float regularizationFactor)
 	{
-		ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVRAI.class,
+		ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class,
 			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
 			performInputFFT, performKernelFFT, maxIterations, imgConvolutionInterval,
 			imgFactory, k, l, nonCirculant, accelerate, obfOutput,

@@ -37,6 +37,7 @@ import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 // NB - this plugin adapted from Gabriel Landini's code of his AutoThreshold
@@ -48,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = Ops.Threshold.IsoData.class)
+@Plugin(type = Ops.Threshold.IsoData.class, priority = Priority.HIGH_PRIORITY)
 public class ComputeIsoDataThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> implements Ops.Threshold.IsoData {
 

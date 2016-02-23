@@ -72,7 +72,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final Iterable<BitType> result =
 			(Iterable<BitType>) ops().run(
-				net.imagej.ops.threshold.apply.ApplyConstantThreshold.class,
+				net.imagej.ops.Ops.Threshold.Apply.class,
 				out, in, threshold);
 		return result;
 	}
@@ -85,7 +85,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.apply.ApplyManualThreshold.class, in,
+				net.imagej.ops.Ops.Threshold.Apply.class, in,
 				threshold);
 		return result;
 	}
@@ -98,7 +98,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.apply.ApplyManualThreshold.class, out,
+				net.imagej.ops.Ops.Threshold.Apply.class, out,
 				in, threshold);
 		return result;
 	}
@@ -110,7 +110,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	{
 		final BitType result =
 			(BitType) ops().run(
-				net.imagej.ops.threshold.apply.ApplyThresholdComparable.class,
+				net.imagej.ops.Ops.Threshold.Apply.class,
 				out, in, threshold);
 		return result;
 	}
@@ -122,7 +122,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	{
 		final BitType result =
 			(BitType) ops().run(
-				net.imagej.ops.threshold.apply.ApplyThresholdComparator.class,
+				net.imagej.ops.Ops.Threshold.Apply.class,
 				out, in, threshold, comparator);
 		return result;
 	}
@@ -141,7 +141,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final T result =
 			(T) ops()
 				.run(
-					net.imagej.ops.threshold.huang.ComputeHuangThreshold.class,
+					net.imagej.ops.Ops.Threshold.Huang.class,
 					in);
 		return result;
 	}
@@ -152,7 +152,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final T result =
 			(T) ops().run(
-				net.imagej.ops.threshold.huang.ComputeHuangThreshold.class,
+				net.imagej.ops.Ops.Threshold.Huang.class,
 				out, in);
 		return result;
 	}
@@ -163,7 +163,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.Huang.class, in);
+				net.imagej.ops.Ops.Threshold.Huang.class, in);
 		return result;
 	}
 
@@ -175,7 +175,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.Huang.class, out,
+				net.imagej.ops.Ops.Threshold.Huang.class, out,
 				in);
 		return result;
 	}
@@ -191,7 +191,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final T result =
 			(T) ops().run(
-				net.imagej.ops.threshold.ij1.ComputeIJ1Threshold.class, in);
+				net.imagej.ops.Ops.Threshold.IJ1.class, in);
 		return result;
 	}
 
@@ -201,7 +201,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final T result =
 			(T) ops().run(
-				net.imagej.ops.threshold.ij1.ComputeIJ1Threshold.class, out,
+				net.imagej.ops.Ops.Threshold.IJ1.class, out,
 				in);
 		return result;
 	}
@@ -213,7 +213,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.IJ1.class,
+				net.imagej.ops.Ops.Threshold.IJ1.class,
 				in);
 		return result;
 	}
@@ -227,7 +227,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.IJ1.class,
+				net.imagej.ops.Ops.Threshold.IJ1.class,
 				out, in);
 		return result;
 	}
@@ -245,7 +245,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final List<Object> result =
 			(List<Object>) ops()
 				.run(
-					net.imagej.ops.threshold.intermodes.ComputeIntermodesThreshold.class,
+					net.imagej.ops.Ops.Threshold.Intermodes.class,
 					in);
 		return result;
 	}
@@ -260,7 +260,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final List<Object> result =
 			(List<Object>) ops()
 				.run(
-					net.imagej.ops.threshold.intermodes.ComputeIntermodesThreshold.class,
+					net.imagej.ops.Ops.Threshold.Intermodes.class,
 					out, in);
 		return result;
 	}
@@ -272,7 +272,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.Intermodes.class,
+				net.imagej.ops.Ops.Threshold.Intermodes.class,
 				in);
 		return result;
 	}
@@ -286,7 +286,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.Intermodes.class,
+				net.imagej.ops.Ops.Threshold.Intermodes.class,
 				out, in);
 		return result;
 	}
@@ -303,7 +303,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops()
 				.run(
-					net.imagej.ops.threshold.ApplyThresholdMethod.IsoData.class,
+					net.imagej.ops.Ops.Threshold.IsoData.class,
 					in);
 		return result;
 	}
@@ -316,7 +316,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.IsoData.class,
+				net.imagej.ops.Ops.Threshold.IsoData.class,
 				out, in);
 		return result;
 	}
@@ -327,7 +327,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final List<Object> result =
 			(List<Object>) ops().run(
-				net.imagej.ops.threshold.isoData.ComputeIsoDataThreshold.class,
+				net.imagej.ops.Ops.Threshold.IsoData.class,
 				in);
 		return result;
 	}
@@ -340,7 +340,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final List<Object> result =
 			(List<Object>) ops().run(
-				net.imagej.ops.threshold.isoData.ComputeIsoDataThreshold.class,
+				net.imagej.ops.Ops.Threshold.IsoData.class,
 				out, in);
 		return result;
 	}
@@ -356,7 +356,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.Li.class, in);
+				net.imagej.ops.Ops.Threshold.Li.class, in);
 		return result;
 	}
 
@@ -368,7 +368,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops()
-				.run(net.imagej.ops.threshold.ApplyThresholdMethod.Li.class,
+				.run(net.imagej.ops.Ops.Threshold.Li.class,
 					out, in);
 		return result;
 	}
@@ -379,7 +379,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final T result =
 			(T) ops().run(
-				net.imagej.ops.threshold.li.ComputeLiThreshold.class, in);
+				net.imagej.ops.Ops.Threshold.Li.class, in);
 		return result;
 	}
 
@@ -389,7 +389,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final T result =
 			(T) ops().run(
-				net.imagej.ops.threshold.li.ComputeLiThreshold.class, out,
+				net.imagej.ops.Ops.Threshold.Li.class, out,
 				in);
 		return result;
 	}
@@ -403,7 +403,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
-			.run(net.imagej.ops.threshold.localContrast.LocalContrastThreshold.class,
+			.run(net.imagej.ops.Ops.Threshold.LocalContrastThreshold.class,
 				out, in, shape, outOfBounds);
 		return result;
 	}
@@ -416,7 +416,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
-			.run(net.imagej.ops.threshold.localContrast.LocalContrastThreshold.class,
+			.run(net.imagej.ops.Ops.Threshold.LocalContrastThreshold.class,
 				out, in, shape);
 		return result;
 	}
@@ -431,7 +431,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.localMean.LocalMeanThreshold.class, out, in, shape,
+				net.imagej.ops.Ops.Threshold.LocalMeanThreshold.class, out, in, shape,
 				outOfBounds, c);
 		return result;
 	}
@@ -444,7 +444,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.localMean.LocalMeanThreshold.class, out, in, shape,
+				net.imagej.ops.Ops.Threshold.LocalMeanThreshold.class, out, in, shape,
 				c);
 		return result;
 	}
@@ -459,7 +459,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
-			.run(net.imagej.ops.threshold.localMedian.LocalMedianThreshold.class, out,
+			.run(net.imagej.ops.Ops.Threshold.LocalMedianThreshold.class, out,
 				in, shape, outOfBounds, c);
 		return result;
 	}
@@ -472,7 +472,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
-			.run(net.imagej.ops.threshold.localMedian.LocalMedianThreshold.class, out,
+			.run(net.imagej.ops.Ops.Threshold.LocalMedianThreshold.class, out,
 				in, shape, c);
 		return result;
 	}
@@ -487,7 +487,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
-			.run(net.imagej.ops.threshold.localMidGrey.LocalMidGreyThreshold.class, out,
+			.run(net.imagej.ops.Ops.Threshold.LocalMidGreyThreshold.class, out,
 				in, shape, outOfBounds, c);
 		return result;
 	}
@@ -501,7 +501,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
-			.run(net.imagej.ops.threshold.localMidGrey.LocalMidGreyThreshold.class, out,
+			.run(net.imagej.ops.Ops.Threshold.LocalMidGreyThreshold.class, out,
 				in, shape, c);
 		return result;
 	}
@@ -516,7 +516,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
-			.run(net.imagej.ops.threshold.localNiblack.LocalNiblackThreshold.class, out,
+			.run(net.imagej.ops.Ops.Threshold.LocalNiblackThreshold.class, out,
 				in, shape, outOfBounds, c, k);
 		return result;
 	}
@@ -530,7 +530,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
-			.run(net.imagej.ops.threshold.localNiblack.LocalNiblackThreshold.class, out,
+			.run(net.imagej.ops.Ops.Threshold.LocalNiblackThreshold.class, out,
 				in, shape, c, k);
 		return result;
 	}
@@ -546,7 +546,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.localBernsen.LocalBernsenThreshold.class, out, in, shape,
+				net.imagej.ops.Ops.Threshold.LocalBernsenThreshold.class, out, in, shape,
 				outOfBounds, contrastThreshold, halfMaxValue);
 		return result;
 	}
@@ -561,7 +561,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.localBernsen.LocalBernsenThreshold.class, out, in, shape,
+				net.imagej.ops.Ops.Threshold.LocalBernsenThreshold.class, out, in, shape,
 				contrastThreshold, halfMaxValue);
 		return result;
 	}
@@ -577,7 +577,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
 			.run(
-				net.imagej.ops.threshold.localPhansalkar.LocalPhansalkarThreshold.class,
+				net.imagej.ops.Ops.Threshold.LocalPhansalkarThreshold.class,
 				out, in, shape, outOfBounds, k, r);
 		return result;
 	}
@@ -593,7 +593,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
 			.run(
-				net.imagej.ops.threshold.localPhansalkar.LocalPhansalkarThreshold.class,
+				net.imagej.ops.Ops.Threshold.LocalPhansalkarThreshold.class,
 				out, in, shape, outOfBounds, k);
 		return result;
 	}
@@ -608,7 +608,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
 			.run(
-				net.imagej.ops.threshold.localPhansalkar.LocalPhansalkarThreshold.class,
+				net.imagej.ops.Ops.Threshold.LocalPhansalkarThreshold.class,
 				out, in, shape, outOfBounds);
 		return result;
 	}
@@ -622,7 +622,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
 			.run(
-				net.imagej.ops.threshold.localPhansalkar.LocalPhansalkarThreshold.class,
+				net.imagej.ops.Ops.Threshold.LocalPhansalkarThreshold.class,
 				out, in, shape);
 		return result;
 	}
@@ -637,7 +637,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.localSauvola.LocalSauvolaThreshold.class, out, in, shape,
+				net.imagej.ops.Ops.Threshold.LocalSauvolaThreshold.class, out, in, shape,
 				outOfBounds, k, r);
 		return result;
 	}
@@ -652,7 +652,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.localSauvola.LocalSauvolaThreshold.class, out, in, shape,
+				net.imagej.ops.Ops.Threshold.LocalSauvolaThreshold.class, out, in, shape,
 				outOfBounds, k);
 		return result;
 	}
@@ -666,7 +666,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.localSauvola.LocalSauvolaThreshold.class, out, in, shape,
+				net.imagej.ops.Ops.Threshold.LocalSauvolaThreshold.class, out, in, shape,
 				outOfBounds);
 		return result;
 	}
@@ -679,7 +679,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.localSauvola.LocalSauvolaThreshold.class, out, in, shape);
+				net.imagej.ops.Ops.Threshold.LocalSauvolaThreshold.class, out, in, shape);
 		return result;
 	}
 	
@@ -695,7 +695,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.MaxEntropy.class,
+				net.imagej.ops.Ops.Threshold.MaxEntropy.class,
 				in);
 		return result;
 	}
@@ -709,7 +709,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.MaxEntropy.class,
+				net.imagej.ops.Ops.Threshold.MaxEntropy.class,
 				out, in);
 		return result;
 	}
@@ -722,7 +722,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final T result =
 			(T) ops()
 				.run(
-					net.imagej.ops.threshold.maxEntropy.ComputeMaxEntropyThreshold.class,
+					net.imagej.ops.Ops.Threshold.MaxEntropy.class,
 					in);
 		return result;
 	}
@@ -735,7 +735,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final T result =
 			(T) ops()
 				.run(
-					net.imagej.ops.threshold.maxEntropy.ComputeMaxEntropyThreshold.class,
+					net.imagej.ops.Ops.Threshold.MaxEntropy.class,
 					out, in);
 		return result;
 	}
@@ -753,7 +753,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops()
 				.run(
-					net.imagej.ops.threshold.ApplyThresholdMethod.MaxLikelihood.class,
+					net.imagej.ops.Ops.Threshold.MaxLikelihood.class,
 					in);
 		return result;
 	}
@@ -768,7 +768,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops()
 				.run(
-					net.imagej.ops.threshold.ApplyThresholdMethod.MaxLikelihood.class,
+					net.imagej.ops.Ops.Threshold.MaxLikelihood.class,
 					out, in);
 		return result;
 	}
@@ -782,7 +782,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final List<Object> result =
 			(List<Object>) ops()
 				.run(
-					net.imagej.ops.threshold.maxLikelihood.ComputeMaxLikelihoodThreshold.class,
+					net.imagej.ops.Ops.Threshold.MaxLikelihood.class,
 					in);
 		return result;
 	}
@@ -797,7 +797,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final List<Object> result =
 			(List<Object>) ops()
 				.run(
-					net.imagej.ops.threshold.maxLikelihood.ComputeMaxLikelihoodThreshold.class,
+					net.imagej.ops.Ops.Threshold.MaxLikelihood.class,
 					out, in);
 		return result;
 	}
@@ -813,7 +813,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.Mean.class, in);
+				net.imagej.ops.Ops.Threshold.Mean.class, in);
 		return result;
 	}
 
@@ -825,7 +825,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.Mean.class, out,
+				net.imagej.ops.Ops.Threshold.Mean.class, out,
 				in);
 		return result;
 	}
@@ -836,7 +836,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final T result =
 			(T) ops().run(
-				net.imagej.ops.threshold.mean.ComputeMeanThreshold.class, in);
+				net.imagej.ops.Ops.Threshold.Mean.class, in);
 		return result;
 	}
 
@@ -846,7 +846,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final T result =
 			(T) ops().run(
-				net.imagej.ops.threshold.mean.ComputeMeanThreshold.class,
+				net.imagej.ops.Ops.Threshold.Mean.class,
 				out, in);
 		return result;
 	}
@@ -862,7 +862,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.MinError.class,
+				net.imagej.ops.Ops.Threshold.MinError.class,
 				in);
 		return result;
 	}
@@ -875,7 +875,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.MinError.class,
+				net.imagej.ops.Ops.Threshold.MinError.class,
 				out, in);
 		return result;
 	}
@@ -887,7 +887,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final List<Object> result =
 			(List<Object>) ops().run(
-				net.imagej.ops.threshold.minError.ComputeMinErrorThreshold.class,
+				net.imagej.ops.Ops.Threshold.MinError.class,
 				in);
 		return result;
 	}
@@ -901,7 +901,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final List<Object> result =
 			(List<Object>) ops().run(
-				net.imagej.ops.threshold.minError.ComputeMinErrorThreshold.class,
+				net.imagej.ops.Ops.Threshold.MinError.class,
 				out, in);
 		return result;
 	}
@@ -918,7 +918,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops()
 				.run(
-					net.imagej.ops.threshold.ApplyThresholdMethod.Minimum.class,
+					net.imagej.ops.Ops.Threshold.Minimum.class,
 					in);
 		return result;
 	}
@@ -931,7 +931,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.Minimum.class,
+				net.imagej.ops.Ops.Threshold.Minimum.class,
 				out, in);
 		return result;
 	}
@@ -942,7 +942,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final List<Object> result =
 			(List<Object>) ops().run(
-				net.imagej.ops.threshold.minimum.ComputeMinimumThreshold.class,
+				net.imagej.ops.Ops.Threshold.Minimum.class,
 				in);
 		return result;
 	}
@@ -955,7 +955,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final List<Object> result =
 			(List<Object>) ops().run(
-				net.imagej.ops.threshold.minimum.ComputeMinimumThreshold.class,
+				net.imagej.ops.Ops.Threshold.Minimum.class,
 				out, in);
 		return result;
 	}
@@ -971,7 +971,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final T result =
 			(T) ops().run(
-				net.imagej.ops.threshold.moments.ComputeMomentsThreshold.class,
+				net.imagej.ops.Ops.Threshold.Moments.class,
 				in);
 		return result;
 	}
@@ -984,7 +984,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final T result =
 			(T) ops().run(
-				net.imagej.ops.threshold.moments.ComputeMomentsThreshold.class,
+				net.imagej.ops.Ops.Threshold.Moments.class,
 				out, in);
 		return result;
 	}
@@ -996,7 +996,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops()
 				.run(
-					net.imagej.ops.threshold.ApplyThresholdMethod.Moments.class,
+					net.imagej.ops.Ops.Threshold.Moments.class,
 					in);
 		return result;
 	}
@@ -1009,7 +1009,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.Moments.class,
+				net.imagej.ops.Ops.Threshold.Moments.class,
 				out, in);
 		return result;
 	}
@@ -1025,7 +1025,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final T result =
 			(T) ops().run(
-				net.imagej.ops.threshold.otsu.ComputeOtsuThreshold.class, in);
+				net.imagej.ops.Ops.Threshold.Otsu.class, in);
 		return result;
 	}
 
@@ -1035,7 +1035,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final T result =
 			(T) ops().run(
-				net.imagej.ops.threshold.otsu.ComputeOtsuThreshold.class,
+				net.imagej.ops.Ops.Threshold.Otsu.class,
 				out, in);
 		return result;
 	}
@@ -1046,7 +1046,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.Otsu.class, in);
+				net.imagej.ops.Ops.Threshold.Otsu.class, in);
 		return result;
 	}
 
@@ -1058,7 +1058,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.Otsu.class, out,
+				net.imagej.ops.Ops.Threshold.Otsu.class, out,
 				in);
 		return result;
 	}
@@ -1075,7 +1075,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.Percentile.class,
+				net.imagej.ops.Ops.Threshold.Percentile.class,
 				in);
 		return result;
 	}
@@ -1089,7 +1089,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.Percentile.class,
+				net.imagej.ops.Ops.Threshold.Percentile.class,
 				out, in);
 		return result;
 	}
@@ -1102,7 +1102,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final T result =
 			(T) ops()
 				.run(
-					net.imagej.ops.threshold.percentile.ComputePercentileThreshold.class,
+					net.imagej.ops.Ops.Threshold.Percentile.class,
 					in);
 		return result;
 	}
@@ -1115,7 +1115,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final T result =
 			(T) ops()
 				.run(
-					net.imagej.ops.threshold.percentile.ComputePercentileThreshold.class,
+					net.imagej.ops.Ops.Threshold.Percentile.class,
 					out, in);
 		return result;
 	}
@@ -1133,7 +1133,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops()
 				.run(
-					net.imagej.ops.threshold.ApplyThresholdMethod.RenyiEntropy.class,
+					net.imagej.ops.Ops.Threshold.RenyiEntropy.class,
 					in);
 		return result;
 	}
@@ -1148,7 +1148,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops()
 				.run(
-					net.imagej.ops.threshold.ApplyThresholdMethod.RenyiEntropy.class,
+					net.imagej.ops.Ops.Threshold.RenyiEntropy.class,
 					out, in);
 		return result;
 	}
@@ -1161,7 +1161,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final T result =
 			(T) ops()
 				.run(
-					net.imagej.ops.threshold.renyiEntropy.ComputeRenyiEntropyThreshold.class,
+					net.imagej.ops.Ops.Threshold.RenyiEntropy.class,
 					in);
 		return result;
 	}
@@ -1177,7 +1177,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final T result =
 			(T) ops()
 				.run(
-					net.imagej.ops.threshold.renyiEntropy.ComputeRenyiEntropyThreshold.class,
+					net.imagej.ops.Ops.Threshold.RenyiEntropy.class,
 					out, in);
 		return result;
 	}
@@ -1193,7 +1193,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.Shanbhag.class,
+				net.imagej.ops.Ops.Threshold.Shanbhag.class,
 				in);
 		return result;
 	}
@@ -1206,7 +1206,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.Shanbhag.class,
+				net.imagej.ops.Ops.Threshold.Shanbhag.class,
 				out, in);
 		return result;
 	}
@@ -1218,7 +1218,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final T result =
 			(T) ops().run(
-				net.imagej.ops.threshold.shanbhag.ComputeShanbhagThreshold.class,
+				net.imagej.ops.Ops.Threshold.Shanbhag.class,
 				in);
 		return result;
 	}
@@ -1230,7 +1230,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final T result =
 			(T) ops().run(
-				net.imagej.ops.threshold.shanbhag.ComputeShanbhagThreshold.class,
+				net.imagej.ops.Ops.Threshold.Shanbhag.class,
 				out, in);
 		return result;
 	}
@@ -1246,7 +1246,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.Triangle.class,
+				net.imagej.ops.Ops.Threshold.Triangle.class,
 				in);
 		return result;
 	}
@@ -1259,7 +1259,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.Triangle.class,
+				net.imagej.ops.Ops.Threshold.Triangle.class,
 				out, in);
 		return result;
 	}
@@ -1271,7 +1271,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final T result =
 			(T) ops().run(
-				net.imagej.ops.threshold.triangle.ComputeTriangleThreshold.class,
+				net.imagej.ops.Ops.Threshold.Triangle.class,
 				in);
 		return result;
 	}
@@ -1283,7 +1283,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final T result =
 			(T) ops().run(
-				net.imagej.ops.threshold.triangle.ComputeTriangleThreshold.class,
+				net.imagej.ops.Ops.Threshold.Triangle.class,
 				out, in);
 		return result;
 	}
@@ -1299,7 +1299,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final T result =
 			(T) ops().run(
-				net.imagej.ops.threshold.yen.ComputeYenThreshold.class, in);
+				net.imagej.ops.Ops.Threshold.Yen.class, in);
 		return result;
 	}
 
@@ -1309,7 +1309,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final T result =
 			(T) ops().run(
-				net.imagej.ops.threshold.yen.ComputeYenThreshold.class, out,
+				net.imagej.ops.Ops.Threshold.Yen.class, out,
 				in);
 		return result;
 	}
@@ -1320,7 +1320,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.Yen.class, in);
+				net.imagej.ops.Ops.Threshold.Yen.class, in);
 		return result;
 	}
 
@@ -1332,7 +1332,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.ApplyThresholdMethod.Yen.class, out,
+				net.imagej.ops.Ops.Threshold.Yen.class, out,
 				in);
 		return result;
 	}

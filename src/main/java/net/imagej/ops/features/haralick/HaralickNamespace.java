@@ -59,7 +59,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultASM.class, in, numGreyLevels,
+			net.imagej.ops.Ops.Haralick.ASM.class, in, numGreyLevels,
 			distance, orientation);
 		return result;
 	}
@@ -70,7 +70,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultASM.class, out, in, numGreyLevels,
+			net.imagej.ops.Ops.Haralick.ASM.class, out, in, numGreyLevels,
 			distance, orientation);
 		return result;
 	}
@@ -82,7 +82,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultClusterPromenence.class, in,
+			net.imagej.ops.Ops.Haralick.ClusterPromenence.class, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -94,7 +94,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final int distance, final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultClusterPromenence.class, out, in,
+			net.imagej.ops.Ops.Haralick.ClusterPromenence.class, out, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -105,7 +105,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultClusterShade.class, in,
+			net.imagej.ops.Ops.Haralick.ClusterShade.class, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -116,7 +116,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultClusterShade.class, out, in,
+			net.imagej.ops.Ops.Haralick.ClusterShade.class, out, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -127,7 +127,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultContrast.class, in, numGreyLevels,
+			net.imagej.ops.Ops.Haralick.Contrast.class, in, numGreyLevels,
 			distance, orientation);
 		return result;
 	}
@@ -138,7 +138,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultContrast.class, out, in,
+			net.imagej.ops.Ops.Haralick.Contrast.class, out, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -149,7 +149,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultCorrelation.class, in,
+			net.imagej.ops.Ops.Haralick.Correlation.class, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -160,7 +160,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultCorrelation.class, out, in,
+			net.imagej.ops.Ops.Haralick.Correlation.class, out, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -172,7 +172,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultDifferenceEntropy.class, in,
+			net.imagej.ops.Ops.Haralick.DifferenceEntropy.class, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -184,7 +184,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final int distance, final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultDifferenceEntropy.class, out, in,
+			net.imagej.ops.Ops.Haralick.DifferenceEntropy.class, out, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -196,7 +196,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultDifferenceVariance.class, in,
+			net.imagej.ops.Ops.Haralick.DifferenceVariance.class, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -208,7 +208,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final int distance, final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultDifferenceVariance.class, out, in,
+			net.imagej.ops.Ops.Haralick.DifferenceVariance.class, out, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -219,7 +219,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultEntropy.class, in, numGreyLevels,
+			net.imagej.ops.Ops.Haralick.Entropy.class, in, numGreyLevels,
 			distance, orientation);
 		return result;
 	}
@@ -230,7 +230,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultEntropy.class, out, in,
+			net.imagej.ops.Ops.Haralick.Entropy.class, out, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -241,7 +241,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultICM1.class, in, numGreyLevels,
+			net.imagej.ops.Ops.Haralick.ICM1.class, in, numGreyLevels,
 			distance, orientation);
 		return result;
 	}
@@ -252,7 +252,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultICM1.class, out, in,
+			net.imagej.ops.Ops.Haralick.ICM1.class, out, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -263,7 +263,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultICM2.class, in, numGreyLevels,
+			net.imagej.ops.Ops.Haralick.ICM2.class, in, numGreyLevels,
 			distance, orientation);
 		return result;
 	}
@@ -274,7 +274,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultICM2.class, out, in,
+			net.imagej.ops.Ops.Haralick.ICM2.class, out, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -285,7 +285,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultIFDM.class, in, numGreyLevels,
+			net.imagej.ops.Ops.Haralick.IFDM.class, in, numGreyLevels,
 			distance, orientation);
 		return result;
 	}
@@ -296,7 +296,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultIFDM.class, out, in,
+			net.imagej.ops.Ops.Haralick.IFDM.class, out, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -307,7 +307,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultMaxProbability.class, in,
+			net.imagej.ops.Ops.Haralick.MaxProbability.class, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -318,7 +318,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultMaxProbability.class, out, in,
+			net.imagej.ops.Ops.Haralick.MaxProbability.class, out, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -329,7 +329,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultSumAverage.class, in,
+			net.imagej.ops.Ops.Haralick.SumAverage.class, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -340,7 +340,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultSumAverage.class, out, in,
+			net.imagej.ops.Ops.Haralick.SumAverage.class, out, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -351,7 +351,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultSumEntropy.class, in,
+			net.imagej.ops.Ops.Haralick.SumEntropy.class, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -362,7 +362,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultSumEntropy.class, out, in,
+			net.imagej.ops.Ops.Haralick.SumEntropy.class, out, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -373,7 +373,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultSumVariance.class, in,
+			net.imagej.ops.Ops.Haralick.SumVariance.class, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -384,7 +384,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultSumVariance.class, out, in,
+			net.imagej.ops.Ops.Haralick.SumVariance.class, out, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -396,7 +396,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultTextureHomogeneity.class, in,
+			net.imagej.ops.Ops.Haralick.TextureHomogeneity.class, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -408,7 +408,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final int distance, final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultTextureHomogeneity.class, out, in,
+			net.imagej.ops.Ops.Haralick.TextureHomogeneity.class, out, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}
@@ -419,7 +419,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultVariance.class, in, numGreyLevels,
+			net.imagej.ops.Ops.Haralick.Variance.class, in, numGreyLevels,
 			distance, orientation);
 		return result;
 	}
@@ -430,7 +430,7 @@ public class HaralickNamespace extends AbstractNamespace {
 		final MatrixOrientation orientation)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.features.haralick.DefaultVariance.class, out, in,
+			net.imagej.ops.Ops.Haralick.Variance.class, out, in,
 			numGreyLevels, distance, orientation);
 		return result;
 	}

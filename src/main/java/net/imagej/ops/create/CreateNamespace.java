@@ -110,7 +110,7 @@ public class CreateNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<T> result = (Img<T>) ops().run(
-			net.imagej.ops.create.img.CreateImgFromDimsAndType.class, in1, in2);
+			net.imagej.ops.Ops.Create.Img.class, in1, in2);
 		return result;
 	}
 
@@ -120,7 +120,7 @@ public class CreateNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<T> result = (Img<T>) ops().run(
-			net.imagej.ops.create.img.CreateImgFromDimsAndType.class, in1, in2,
+			net.imagej.ops.Ops.Create.Img.class, in1, in2,
 			factory);
 		return result;
 	}
@@ -129,7 +129,7 @@ public class CreateNamespace extends AbstractNamespace {
 	public <T extends NativeType<T>> Img<T> img(final IterableInterval<T> in) {
 		@SuppressWarnings("unchecked")
 		final Img<T> result = (Img<T>) ops().run(
-			net.imagej.ops.create.img.CreateImgFromII.class, in);
+			net.imagej.ops.Ops.Create.Img.class, in);
 		return result;
 	}
 
@@ -139,7 +139,7 @@ public class CreateNamespace extends AbstractNamespace {
 	public <T extends NativeType<T>> Img<T> img(final Img<T> in) {
 		@SuppressWarnings("unchecked")
 		final Img<T> result = (Img<T>) ops().run(
-			net.imagej.ops.create.img.CreateImgFromImg.class, in);
+			net.imagej.ops.Ops.Create.Img.class, in);
 		return result;
 	}
 
@@ -147,7 +147,7 @@ public class CreateNamespace extends AbstractNamespace {
 	public Img<DoubleType> img(final Interval interval) {
 		@SuppressWarnings("unchecked")
 		final Img<DoubleType> result = (Img<DoubleType>) ops().run(
-			net.imagej.ops.create.img.CreateImgFromInterval.class, interval);
+			net.imagej.ops.Ops.Create.Img.class, interval);
 		return result;
 	}
 
@@ -157,7 +157,7 @@ public class CreateNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<T> result = (Img<T>) ops().run(
-			net.imagej.ops.create.img.CreateImgFromRAI.class, in);
+			net.imagej.ops.Ops.Create.Img.class, in);
 		return result;
 	}
 
@@ -174,7 +174,7 @@ public class CreateNamespace extends AbstractNamespace {
 		// https://github.com/imglib/imglib2/issues/91
 		@SuppressWarnings("unchecked")
 		final ImgFactory<T> result = (ImgFactory<T>) ops().run(
-			net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class);
+			net.imagej.ops.Ops.Create.ImgFactory.class);
 		return result;
 	}
 
@@ -215,7 +215,7 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<L, T> result =
 			(ImgLabeling<L, T>) ops().run(
-				net.imagej.ops.create.imgLabeling.DefaultCreateImgLabeling.class, dims);
+				Ops.Create.ImgLabeling.class, dims);
 		return result;
 	}
 
@@ -227,7 +227,7 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<L, T> result =
 			(ImgLabeling<L, T>) ops().run(
-				net.imagej.ops.create.imgLabeling.DefaultCreateImgLabeling.class, dims,
+				Ops.Create.ImgLabeling.class, dims,
 				outType);
 		return result;
 	}
@@ -240,7 +240,7 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<L, T> result =
 			(ImgLabeling<L, T>) ops().run(
-				net.imagej.ops.create.imgLabeling.DefaultCreateImgLabeling.class, dims,
+				Ops.Create.ImgLabeling.class, dims,
 				outType, fac);
 		return result;
 	}
@@ -254,7 +254,7 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<L, T> result =
 			(ImgLabeling<L, T>) ops().run(
-				net.imagej.ops.create.imgLabeling.DefaultCreateImgLabeling.class, dims,
+				Ops.Create.ImgLabeling.class, dims,
 				outType, fac, maxNumLabelSets);
 		return result;
 	}
@@ -267,7 +267,7 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<L, T> result =
 			(ImgLabeling<L, T>) ops().run(
-				net.imagej.ops.create.imgLabeling.CreateImgLabelingFromInterval.class,
+				Ops.Create.ImgLabeling.class,
 				interval);
 		return result;
 	}
@@ -280,7 +280,7 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<L, T> result =
 			(ImgLabeling<L, T>) ops().run(
-				net.imagej.ops.create.imgLabeling.CreateImgLabelingFromInterval.class,
+				Ops.Create.ImgLabeling.class,
 				interval, outType);
 		return result;
 	}
@@ -293,7 +293,7 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<L, T> result =
 			(ImgLabeling<L, T>) ops().run(
-				net.imagej.ops.create.imgLabeling.CreateImgLabelingFromInterval.class,
+				Ops.Create.ImgLabeling.class,
 				interval, outType, fac);
 		return result;
 	}
@@ -307,7 +307,7 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<L, T> result =
 			(ImgLabeling<L, T>) ops().run(
-				net.imagej.ops.create.imgLabeling.CreateImgLabelingFromInterval.class,
+				Ops.Create.ImgLabeling.class,
 				interval, outType, fac, maxNumLabelSets);
 		return result;
 	}
@@ -324,7 +324,7 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final ImgPlus<T> result =
 			(ImgPlus<T>) ops().run(
-				net.imagej.ops.create.imgPlus.DefaultCreateImgPlus.class, img);
+				Ops.Create.ImgPlus.class, img);
 		return result;
 	}
 
@@ -335,7 +335,7 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final ImgPlus<T> result =
 			(ImgPlus<T>) ops()
-				.run(net.imagej.ops.create.imgPlus.DefaultCreateImgPlus.class, img,
+				.run(Ops.Create.ImgPlus.class, img,
 					metadata);
 		return result;
 	}
@@ -352,7 +352,7 @@ public class CreateNamespace extends AbstractNamespace {
 	public IntegerType integerType() {
 		final IntegerType result =
 			(IntegerType) ops().run(
-				net.imagej.ops.create.integerType.DefaultCreateIntegerType.class);
+				Ops.Create.IntegerType.class);
 		return result;
 	}
 
@@ -361,7 +361,7 @@ public class CreateNamespace extends AbstractNamespace {
 	public IntegerType integerType(final long maxValue) {
 		final IntegerType result =
 			(IntegerType) ops().run(
-				net.imagej.ops.create.integerType.DefaultCreateIntegerType.class,
+				Ops.Create.IntegerType.class,
 				maxValue);
 		return result;
 	}
@@ -378,7 +378,7 @@ public class CreateNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.create.kernel.CreateKernel.class)
 	public <T extends ComplexType<T>> Img<T> kernel(final double[]... values) {
 		@SuppressWarnings("unchecked")
-		final Img<T> result = (Img<T>) ops().run(net.imagej.ops.create.kernel.CreateKernel.class,
+		final Img<T> result = (Img<T>) ops().run(net.imagej.ops.Ops.Create.Kernel.class, 
 				new Object[] { values });
 		return result;
 	}
@@ -387,7 +387,7 @@ public class CreateNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.create.kernel.CreateKernel.class)
 	public <T extends ComplexType<T>> Img<T> kernel(final T outType, final double[]... values) {
 		@SuppressWarnings("unchecked")
-		final Img<T> result = (Img<T>) ops().run(net.imagej.ops.create.kernel.CreateKernel.class, outType, values);
+		final Img<T> result = (Img<T>) ops().run(net.imagej.ops.Ops.Create.Kernel.class, outType, values);
 		return result;
 	}
 
@@ -396,7 +396,7 @@ public class CreateNamespace extends AbstractNamespace {
 	public <T extends ComplexType<T>> Img<T> kernel(final T outType, final ImgFactory<T> fac,
 			final double[]... values) {
 		@SuppressWarnings("unchecked")
-		final Img<T> result = (Img<T>) ops().run(net.imagej.ops.create.kernel.CreateKernel.class, outType, fac, values);
+		final Img<T> result = (Img<T>) ops().run(net.imagej.ops.Ops.Create.Kernel.class, outType, fac, values);
 		return result;
 	}
 
@@ -417,7 +417,7 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final Img<T> result =
 			(Img<T>) ops().run(
-				net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric.class,
+				Ops.Create.KernelGauss.class,
 				numDimensions, sigma);
 		return result;
 	}
@@ -431,7 +431,7 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final Img<T> result =
 			(Img<T>) ops().run(
-				net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric.class,
+				Ops.Create.KernelGauss.class,
 				outType, numDimensions, sigma);
 		return result;
 	}
@@ -445,7 +445,7 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final Img<T> result =
 			(Img<T>) ops().run(
-				net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric.class,
+				Ops.Create.KernelGauss.class,
 				outType, fac, numDimensions, sigma);
 		return result;
 	}
@@ -459,7 +459,7 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final Img<T> result =
 			(Img<T>) ops().run(
-				net.imagej.ops.create.kernelGauss.CreateKernelGauss.class, sigma);
+				Ops.Create.KernelGauss.class, sigma);
 		return result;
 	}
 
@@ -471,7 +471,7 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final Img<T> result =
 			(Img<T>) ops().run(
-				net.imagej.ops.create.kernelGauss.CreateKernelGauss.class, outType,
+				Ops.Create.KernelGauss.class, outType,
 				sigma);
 		return result;
 	}
@@ -484,7 +484,7 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final Img<T> result =
 			(Img<T>) ops().run(
-				net.imagej.ops.create.kernelGauss.CreateKernelGauss.class, outType,
+				Ops.Create.KernelGauss.class, outType,
 				fac, sigma);
 		return result;
 	}
@@ -508,7 +508,7 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final Img<T> result =
 			(Img<T>) ops().run(
-				net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric.class,
+				Ops.Create.KernelLog.class,
 				numDimensions, sigma);
 		return result;
 	}
@@ -522,7 +522,7 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final Img<T> result =
 			(Img<T>) ops().run(
-				net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric.class,
+				Ops.Create.KernelLog.class,
 				outType, numDimensions, sigma);
 		return result;
 	}
@@ -536,7 +536,7 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final Img<T> result =
 			(Img<T>) ops().run(
-				net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric.class,
+				Ops.Create.KernelLog.class,
 				outType, fac, numDimensions, sigma);
 		return result;
 	}
@@ -548,7 +548,7 @@ public class CreateNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<T> result =
-			(Img<T>) ops().run(net.imagej.ops.create.kernelLog.CreateKernelLog.class,
+			(Img<T>) ops().run(Ops.Create.KernelLog.class,
 				sigma);
 		return result;
 	}
@@ -560,7 +560,7 @@ public class CreateNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<T> result =
-			(Img<T>) ops().run(net.imagej.ops.create.kernelLog.CreateKernelLog.class,
+			(Img<T>) ops().run(Ops.Create.KernelLog.class,
 				outType, sigma);
 		return result;
 	}
@@ -572,7 +572,7 @@ public class CreateNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final Img<T> result =
-			(Img<T>) ops().run(net.imagej.ops.create.kernelLog.CreateKernelLog.class,
+			(Img<T>) ops().run(Ops.Create.KernelLog.class,
 				outType, fac, sigma);
 		return result;
 	}
@@ -593,7 +593,7 @@ public class CreateNamespace extends AbstractNamespace {
 		final LabelingMapping<L> result =
 			(LabelingMapping<L>) ops()
 				.run(
-					net.imagej.ops.create.labelingMapping.DefaultCreateLabelingMapping.class);
+					Ops.Create.LabelingMapping.class);
 		return result;
 	}
 
@@ -605,7 +605,7 @@ public class CreateNamespace extends AbstractNamespace {
 		final LabelingMapping<L> result =
 			(LabelingMapping<L>) ops()
 				.run(
-					net.imagej.ops.create.labelingMapping.DefaultCreateLabelingMapping.class,
+					Ops.Create.LabelingMapping.class,
 					maxNumSets);
 		return result;
 	}
@@ -615,7 +615,7 @@ public class CreateNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.create.nativeType.DefaultCreateNativeType.class)
 	public DoubleType nativeType() {
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.create.nativeType.DefaultCreateNativeType.class);
+			net.imagej.ops.Ops.Create.NativeType.class);
 		return result;
 	}
 
@@ -624,7 +624,7 @@ public class CreateNamespace extends AbstractNamespace {
 	public <T extends NativeType<T>> T nativeType(final Class<T> type) {
 		@SuppressWarnings("unchecked")
 		final T result = (T) ops().run(
-			net.imagej.ops.create.nativeType.CreateNativeTypeFromClass.class, type);
+			net.imagej.ops.Ops.Create.NativeType.class, type);
 		return result;
 	}
 
@@ -634,7 +634,7 @@ public class CreateNamespace extends AbstractNamespace {
 	public <T> T object(final Class<T> in) {
 		@SuppressWarnings("unchecked")
 		final T result = (T) ops().run(
-			net.imagej.ops.create.object.CreateObjectFromClass.class, in);
+			net.imagej.ops.Ops.Create.Object.class, in);
 		return result;
 	}
 

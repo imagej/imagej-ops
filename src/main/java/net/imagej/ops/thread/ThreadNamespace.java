@@ -57,7 +57,7 @@ public class ThreadNamespace extends AbstractNamespace {
 	@OpMethod(ops = { net.imagej.ops.thread.chunker.DefaultChunker.class,
 		net.imagej.ops.thread.chunker.ChunkerInterleaved.class })
 	public void chunker(final Chunk chunkable, final long numberOfElements) {
-		ops().run(net.imagej.ops.thread.chunker.DefaultChunker.class, chunkable,
+		ops().run(net.imagej.ops.Ops.Thread.Chunker.class, chunkable,
 			numberOfElements);
 	}
 
