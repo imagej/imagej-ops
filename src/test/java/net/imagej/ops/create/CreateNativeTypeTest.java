@@ -28,33 +28,48 @@
  * #L%
  */
 
-package net.imagej.ops.create.nativeType;
+package net.imagej.ops.create;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.special.chain.FunctionViaFunction;
-import net.imagej.ops.special.function.Functions;
-import net.imagej.ops.special.function.UnaryFunctionOp;
-import net.imglib2.type.NativeType;
+import static org.junit.Assert.assertEquals;
 
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.AbstractOpTest;
+import net.imglib2.type.numeric.complex.ComplexDoubleType;
+import net.imglib2.type.numeric.complex.ComplexFloatType;
+import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.type.numeric.real.FloatType;
+
+import org.junit.Test;
 
 /**
- * Creates the {@link NativeType} given by the input {@link Class}.
+ * Tests creating different NativeTypes.
  *
- * @author Daniel Seebacher (University of Konstanz)
- * @author Tim-Oliver Buchholz (University of Konstanz)
- * @author Curtis Rueden
+ * @author Brian Northan
  */
-@Plugin(type = Ops.Create.NativeType.class)
-public class CreateNativeTypeFromClass<T extends NativeType<T>> extends
-	FunctionViaFunction<Class<T>, T> implements Ops.Create.NativeType
-{
+public class CreateNativeTypeTest extends AbstractOpTest {
 
-	@Override
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public UnaryFunctionOp<Class<T>, T> createWorker(final Class<T> in) {
-		return (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Object.class,
-			Object.class, NativeType.class);
+	@Test
+	public void testCreateNativeType() {
+
+		// default
+		Object type = ops.create().nativeType();
+		assertEquals(type.getClass(), DoubleType.class);
+
+		// FloatType
+		type = ops.create().nativeType(FloatType.class);
+		assertEquals(type.getClass(), FloatType.class);
+
+		// ComplexFloatType
+		type = ops.create().nativeType(ComplexFloatType.class);
+		assertEquals(type.getClass(), ComplexFloatType.class);
+
+		// DoubleType
+		type = ops.create().nativeType(DoubleType.class);
+		assertEquals(type.getClass(), DoubleType.class);
+
+		// ComplexDoubleType
+		type = ops.create().nativeType(ComplexDoubleType.class);
+		assertEquals(type.getClass(), ComplexDoubleType.class);
+
 	}
 
 }
