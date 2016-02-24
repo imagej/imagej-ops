@@ -41,6 +41,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
+ * @author Curtis Rueden
  * @param <I> input type
  * @param <O> output type
  */
@@ -51,12 +52,10 @@ public class DefaultSize<I extends RealType<I>, O extends RealType<O>> extends
 
 	@Override
 	public void compute1(final Iterable<I> input, final O output) {
-		double size = 0;
+		output.setZero();
 
 		for (@SuppressWarnings("unused") final I i : input) {
-			size++;
+			output.inc();
 		}
-
-		output.setReal(size);
 	}
 }
