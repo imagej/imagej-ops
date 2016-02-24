@@ -382,6 +382,20 @@ public class StatsNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.stats.SumSameType.class)
+	public <T extends RealType<T>> T sum(final Iterable<T> in) {
+		final T result =
+			(T) ops().run(net.imagej.ops.stats.SumSameType.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.stats.SumSameType.class)
+	public <T extends RealType<T>> T sum(final T out, final Iterable<T> in) {
+		final T result =
+			(T) ops().run(net.imagej.ops.stats.SumSameType.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.stats.DefaultSumOfInverses.class)
 	public <T extends RealType<T>, O extends RealType<O>> O sumOfInverses(
 		final Iterable<T> in)
