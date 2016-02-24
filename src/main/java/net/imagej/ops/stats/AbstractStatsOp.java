@@ -50,6 +50,7 @@ public abstract class AbstractStatsOp<I, O extends RealType<O>> extends
 	@SuppressWarnings("unchecked")
 	@Override
 	public O createOutput(I input) {
+		// FIXME This cast is broken.
 		return (O) new DoubleType();
 	}
 
