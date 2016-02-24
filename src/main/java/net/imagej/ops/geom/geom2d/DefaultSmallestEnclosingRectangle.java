@@ -119,8 +119,7 @@ public class DefaultSmallestEnclosingRectangle extends
 					i).getDoublePosition(0) - ch.getVertices().get(i - 1)
 						.getDoublePosition(0));
 
-			// rotate the polygon in such a manner that the line has an angle of
-			// 0
+			// rotate the polygon in such a manner that the line has an angle of 0
 			final Polygon rotatedPoly = rotate(ch, -angle, cog);
 
 			// get the bounds
