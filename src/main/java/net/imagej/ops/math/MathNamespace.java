@@ -36,15 +36,7 @@ import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.array.ArrayImg;
-import net.imglib2.img.basictypeaccess.array.ArrayDataAccess;
-import net.imglib2.img.basictypeaccess.array.ByteArray;
-import net.imglib2.img.basictypeaccess.array.DoubleArray;
-import net.imglib2.img.basictypeaccess.array.FloatArray;
-import net.imglib2.img.basictypeaccess.array.IntArray;
-import net.imglib2.img.basictypeaccess.array.LongArray;
-import net.imglib2.img.basictypeaccess.array.ShortArray;
-import net.imglib2.img.planar.PlanarImg;
+import net.imglib2.img.Img;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.RealType;
@@ -109,84 +101,93 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.Ops.Math.Abs.class, args);
 	}
 
-	@OpMethod(ops = {
-		net.imagej.ops.math.ConstantToArrayImageP.MultiplyByte.class,
+	@OpMethod(ops = { //
 		net.imagej.ops.math.ConstantToArrayImage.MultiplyByte.class,
+		net.imagej.ops.math.ConstantToArrayImage.MultiplyUnsignedByte.class,
+		net.imagej.ops.math.ConstantToArrayImageP.MultiplyByte.class,
 		net.imagej.ops.math.ConstantToArrayImageP.MultiplyUnsignedByte.class,
-		net.imagej.ops.math.ConstantToArrayImage.MultiplyUnsignedByte.class })
-	public <B extends GenericByteType<B>> ArrayImg<B, ByteArray> multiply(
-		final ArrayImg<B, ByteArray> image, final byte value)
+		net.imagej.ops.math.ConstantToPlanarImage.MultiplyByte.class,
+		net.imagej.ops.math.ConstantToPlanarImage.MultiplyUnsignedByte.class })
+	public <B extends GenericByteType<B>> Img<B> multiply(final Img<B> image,
+		final byte value)
 	{
 		@SuppressWarnings("unchecked")
-		final ArrayImg<B, ByteArray> result = (ArrayImg<B, ByteArray>) ops().run(
-			Ops.Math.Multiply.NAME, image, value);
+		final Img<B> result = (Img<B>) ops().run(Ops.Math.Multiply.NAME, image,
+			value);
 		return result;
 	}
 
-	@OpMethod(ops = {
+	@OpMethod(ops = { //
+		net.imagej.ops.math.ConstantToArrayImage.MultiplyDouble.class,
 		net.imagej.ops.math.ConstantToArrayImageP.MultiplyDouble.class,
-		net.imagej.ops.math.ConstantToArrayImage.MultiplyDouble.class })
-	public ArrayImg<DoubleType, DoubleArray> multiply(
-		final ArrayImg<DoubleType, DoubleArray> image, final double value)
+		net.imagej.ops.math.ConstantToPlanarImage.MultiplyDouble.class })
+	public Img<DoubleType> multiply(final Img<DoubleType> image,
+		final double value)
 	{
 		@SuppressWarnings("unchecked")
-		final ArrayImg<DoubleType, DoubleArray> result =
-			(ArrayImg<DoubleType, DoubleArray>) ops().run(Ops.Math.Multiply.NAME,
-				image, value);
+		final Img<DoubleType> result = (Img<DoubleType>) ops().run(
+			Ops.Math.Multiply.NAME, image, value);
 		return result;
 	}
 
-	@OpMethod(ops = {
+	@OpMethod(ops = { //
+		net.imagej.ops.math.ConstantToArrayImage.MultiplyFloat.class,
 		net.imagej.ops.math.ConstantToArrayImageP.MultiplyFloat.class,
-		net.imagej.ops.math.ConstantToArrayImage.MultiplyFloat.class })
-	public ArrayImg<FloatType, FloatArray> multiply(
-		final ArrayImg<FloatType, FloatArray> image, final float value)
+		net.imagej.ops.math.ConstantToPlanarImage.MultiplyFloat.class })
+	public Img<FloatType> multiply(final Img<FloatType> image,
+		final float value)
 	{
 		@SuppressWarnings("unchecked")
-		final ArrayImg<FloatType, FloatArray> result =
-			(ArrayImg<FloatType, FloatArray>) ops().run(Ops.Math.Multiply.NAME, image,
-				value);
+		final Img<FloatType> result = (Img<FloatType>) ops().run(
+			Ops.Math.Multiply.NAME, image, value);
 		return result;
 	}
 
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.MultiplyInt.class,
+	@OpMethod(ops = { //
 		net.imagej.ops.math.ConstantToArrayImage.MultiplyInt.class,
+		net.imagej.ops.math.ConstantToArrayImage.MultiplyUnsignedInt.class,
+		net.imagej.ops.math.ConstantToArrayImageP.MultiplyInt.class,
 		net.imagej.ops.math.ConstantToArrayImageP.MultiplyUnsignedInt.class,
-		net.imagej.ops.math.ConstantToArrayImage.MultiplyUnsignedInt.class })
-	public <I extends GenericIntType<I>> ArrayImg<I, IntArray> multiply(
-		final ArrayImg<I, IntArray> image, final int value)
+		net.imagej.ops.math.ConstantToPlanarImage.MultiplyInt.class,
+		net.imagej.ops.math.ConstantToPlanarImage.MultiplyUnsignedInt.class })
+	public <I extends GenericIntType<I>> Img<I> multiply(final Img<I> image,
+		final int value)
 	{
 		@SuppressWarnings("unchecked")
-		final ArrayImg<I, IntArray> result = (ArrayImg<I, IntArray>) ops().run(
-			Ops.Math.Multiply.NAME, image, value);
+		final Img<I> result = (Img<I>) ops().run(Ops.Math.Multiply.NAME, image,
+			value);
 		return result;
 	}
 
-	@OpMethod(ops = {
-		net.imagej.ops.math.ConstantToArrayImageP.MultiplyLong.class,
+	@OpMethod(ops = { //
 		net.imagej.ops.math.ConstantToArrayImage.MultiplyLong.class,
+		net.imagej.ops.math.ConstantToArrayImage.MultiplyUnsignedLong.class,
+		net.imagej.ops.math.ConstantToArrayImageP.MultiplyLong.class,
 		net.imagej.ops.math.ConstantToArrayImageP.MultiplyUnsignedLong.class,
-		net.imagej.ops.math.ConstantToArrayImage.MultiplyUnsignedLong.class })
-	public <N extends NativeType<N>> ArrayImg<N, LongArray> multiply(
-		final ArrayImg<N, LongArray> image, final long value)
+		net.imagej.ops.math.ConstantToPlanarImage.MultiplyLong.class,
+		net.imagej.ops.math.ConstantToPlanarImage.MultiplyUnsignedLong.class })
+	public <N extends NativeType<N>> Img<N> multiply(final Img<N> image,
+		final long value)
 	{
 		@SuppressWarnings("unchecked")
-		final ArrayImg<N, LongArray> result = (ArrayImg<N, LongArray>) ops().run(
-			Ops.Math.Multiply.NAME, image, value);
+		final Img<N> result = (Img<N>) ops().run(Ops.Math.Multiply.NAME, image,
+			value);
 		return result;
 	}
 
-	@OpMethod(ops = {
-		net.imagej.ops.math.ConstantToArrayImageP.MultiplyShort.class,
+	@OpMethod(ops = { //
 		net.imagej.ops.math.ConstantToArrayImage.MultiplyShort.class,
+		net.imagej.ops.math.ConstantToArrayImage.MultiplyUnsignedShort.class,
+		net.imagej.ops.math.ConstantToArrayImageP.MultiplyShort.class,
 		net.imagej.ops.math.ConstantToArrayImageP.MultiplyUnsignedShort.class,
-		net.imagej.ops.math.ConstantToArrayImage.MultiplyUnsignedShort.class })
-	public <S extends GenericShortType<S>> ArrayImg<S, ShortArray> multiply(
-		final ArrayImg<S, ShortArray> image, final short value)
+		net.imagej.ops.math.ConstantToPlanarImage.MultiplyShort.class,
+		net.imagej.ops.math.ConstantToPlanarImage.MultiplyUnsignedShort.class })
+	public <S extends GenericShortType<S>> Img<S> multiply(final Img<S> image,
+		final short value)
 	{
 		@SuppressWarnings("unchecked")
-		final ArrayImg<S, ShortArray> result = (ArrayImg<S, ShortArray>) ops().run(
-			Ops.Math.Multiply.NAME, image, value);
+		final Img<S> result = (Img<S>) ops().run(Ops.Math.Multiply.NAME, image,
+			value);
 		return result;
 	}
 
@@ -305,72 +306,6 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.Ops.Math.Add.class)
 	public Object add(final Object... args) {
 		return ops().run(net.imagej.ops.Ops.Math.Add.class, args);
-	}
-
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToPlanarImage.AddByte.class,
-		net.imagej.ops.math.ConstantToPlanarImage.AddUnsignedByte.class })
-	public <B extends GenericByteType<B>> PlanarImg<B, ByteArray> add(
-		final PlanarImg<B, ByteArray> image, final byte value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<B, ByteArray> result = (PlanarImg<B, ByteArray>) ops().run(
-			Ops.Math.Add.NAME, image, value);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.AddDouble.class)
-	public PlanarImg<DoubleType, DoubleArray> add(
-		final PlanarImg<DoubleType, DoubleArray> image, final double value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<DoubleType, DoubleArray> result =
-			(PlanarImg<DoubleType, DoubleArray>) ops().run(
-				net.imagej.ops.Ops.Math.Add.class, image, value);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.AddFloat.class)
-	public PlanarImg<FloatType, FloatArray> add(
-		final PlanarImg<FloatType, FloatArray> image, final float value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<FloatType, FloatArray> result =
-			(PlanarImg<FloatType, FloatArray>) ops().run(
-				net.imagej.ops.Ops.Math.Add.class, image, value);
-		return result;
-	}
-
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToPlanarImage.AddInt.class,
-		net.imagej.ops.math.ConstantToPlanarImage.AddUnsignedInt.class })
-	public <I extends GenericIntType<I>> PlanarImg<I, IntArray> add(
-		final PlanarImg<I, IntArray> image, final int value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<I, IntArray> result = (PlanarImg<I, IntArray>) ops().run(
-			Ops.Math.Add.NAME, image, value);
-		return result;
-	}
-
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToPlanarImage.AddLong.class,
-		net.imagej.ops.math.ConstantToPlanarImage.AddUnsignedLong.class })
-	public <N extends NativeType<N>> PlanarImg<N, LongArray> add(
-		final PlanarImg<N, LongArray> image, final long value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<N, LongArray> result = (PlanarImg<N, LongArray>) ops().run(
-			Ops.Math.Add.NAME, image, value);
-		return result;
-	}
-
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToPlanarImage.AddShort.class,
-		net.imagej.ops.math.ConstantToPlanarImage.AddUnsignedShort.class })
-	public <S extends GenericShortType<S>> PlanarImg<S, ShortArray> add(
-		final PlanarImg<S, ShortArray> arg, final short value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<S, ShortArray> result = (PlanarImg<S, ShortArray>) ops()
-			.run(Ops.Math.Add.NAME, arg, value);
-		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.ConstantToIIOutputRAI.Add.class)
@@ -803,80 +738,91 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.Ops.Math.CubeRoot.class, args);
 	}
 
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.DivideByte.class,
+	@OpMethod(ops = { //
 		net.imagej.ops.math.ConstantToArrayImage.DivideByte.class,
+		net.imagej.ops.math.ConstantToArrayImage.DivideUnsignedByte.class,
+		net.imagej.ops.math.ConstantToArrayImageP.DivideByte.class,
 		net.imagej.ops.math.ConstantToArrayImageP.DivideUnsignedByte.class,
-		net.imagej.ops.math.ConstantToArrayImage.DivideUnsignedByte.class })
-	public <B extends GenericByteType<B>> ArrayImg<B, ByteArray> divide(
-		final ArrayImg<B, ByteArray> image, final byte value)
+		net.imagej.ops.math.ConstantToPlanarImage.DivideByte.class,
+		net.imagej.ops.math.ConstantToPlanarImage.DivideUnsignedByte.class })
+	public <B extends GenericByteType<B>> Img<B> divide(final Img<B> image,
+		final byte value)
 	{
 		@SuppressWarnings("unchecked")
-		final ArrayImg<B, ByteArray> result = (ArrayImg<B, ByteArray>) ops().run(
-			Ops.Math.Divide.NAME, image, value);
+		final Img<B> result = (Img<B>) ops().run(Ops.Math.Divide.NAME, image,
+			value);
 		return result;
 	}
 
-	@OpMethod(ops = {
+	@OpMethod(ops = { //
+		net.imagej.ops.math.ConstantToArrayImage.DivideDouble.class,
 		net.imagej.ops.math.ConstantToArrayImageP.DivideDouble.class,
-		net.imagej.ops.math.ConstantToArrayImage.DivideDouble.class })
-	public ArrayImg<DoubleType, DoubleArray> divide(
-		final ArrayImg<DoubleType, DoubleArray> image, final double value)
+		net.imagej.ops.math.ConstantToPlanarImage.DivideDouble.class })
+	public Img<DoubleType> divide(final Img<DoubleType> image,
+		final double value)
 	{
 		@SuppressWarnings("unchecked")
-		final ArrayImg<DoubleType, DoubleArray> result =
-			(ArrayImg<DoubleType, DoubleArray>) ops().run(Ops.Math.Divide.NAME, image,
-				value);
+		final Img<DoubleType> result = (Img<DoubleType>) ops().run(
+			Ops.Math.Divide.NAME, image, value);
 		return result;
 	}
 
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.DivideFloat.class,
-		net.imagej.ops.math.ConstantToArrayImage.DivideFloat.class })
-	public ArrayImg<FloatType, FloatArray> divide(
-		final ArrayImg<FloatType, FloatArray> image, final float value)
-	{
+	@OpMethod(ops = { //
+		net.imagej.ops.math.ConstantToArrayImage.DivideFloat.class,
+		net.imagej.ops.math.ConstantToArrayImageP.DivideFloat.class,
+		net.imagej.ops.math.ConstantToPlanarImage.DivideFloat.class })
+	public Img<FloatType> divide(final Img<FloatType> image, final float value) {
 		@SuppressWarnings("unchecked")
-		final ArrayImg<FloatType, FloatArray> result =
-			(ArrayImg<FloatType, FloatArray>) ops().run(Ops.Math.Divide.NAME, image,
-				value);
+		final Img<FloatType> result = (Img<FloatType>) ops().run(
+			Ops.Math.Divide.NAME, image, value);
 		return result;
 	}
 
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.DivideInt.class,
+	@OpMethod(ops = { //
 		net.imagej.ops.math.ConstantToArrayImage.DivideInt.class,
+		net.imagej.ops.math.ConstantToArrayImage.DivideUnsignedInt.class,
+		net.imagej.ops.math.ConstantToArrayImageP.DivideInt.class,
 		net.imagej.ops.math.ConstantToArrayImageP.DivideUnsignedInt.class,
-		net.imagej.ops.math.ConstantToArrayImage.DivideUnsignedInt.class })
-	public <I extends GenericIntType<I>> ArrayImg<I, IntArray> divide(
-		final ArrayImg<I, IntArray> image, final int value)
+		net.imagej.ops.math.ConstantToPlanarImage.DivideInt.class,
+		net.imagej.ops.math.ConstantToPlanarImage.DivideUnsignedInt.class })
+	public <I extends GenericIntType<I>> Img<I> divide(final Img<I> image,
+		final int value)
 	{
 		@SuppressWarnings("unchecked")
-		final ArrayImg<I, IntArray> result = (ArrayImg<I, IntArray>) ops().run(
-			Ops.Math.Divide.NAME, image, value);
+		final Img<I> result = (Img<I>) ops().run(Ops.Math.Divide.NAME, image,
+			value);
 		return result;
 	}
 
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.DivideLong.class,
+	@OpMethod(ops = { //
 		net.imagej.ops.math.ConstantToArrayImage.DivideLong.class,
+		net.imagej.ops.math.ConstantToArrayImage.DivideUnsignedLong.class,
+		net.imagej.ops.math.ConstantToArrayImageP.DivideLong.class,
 		net.imagej.ops.math.ConstantToArrayImageP.DivideUnsignedLong.class,
-		net.imagej.ops.math.ConstantToArrayImage.DivideUnsignedLong.class })
-	public <N extends NativeType<N>> ArrayImg<N, LongArray> divide(
-		final ArrayImg<N, LongArray> image, final long value)
+		net.imagej.ops.math.ConstantToPlanarImage.DivideLong.class,
+		net.imagej.ops.math.ConstantToPlanarImage.DivideUnsignedLong.class })
+	public <N extends NativeType<N>> Img<N> divide(final Img<N> image,
+		final long value)
 	{
 		@SuppressWarnings("unchecked")
-		final ArrayImg<N, LongArray> result = (ArrayImg<N, LongArray>) ops().run(
-			Ops.Math.Divide.NAME, image, value);
+		final Img<N> result = (Img<N>) ops().run(Ops.Math.Divide.NAME, image,
+			value);
 		return result;
 	}
 
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.DivideShort.class,
+	@OpMethod(ops = { //
 		net.imagej.ops.math.ConstantToArrayImage.DivideShort.class,
+		net.imagej.ops.math.ConstantToArrayImage.DivideUnsignedShort.class,
+		net.imagej.ops.math.ConstantToArrayImageP.DivideShort.class,
 		net.imagej.ops.math.ConstantToArrayImageP.DivideUnsignedShort.class,
-		net.imagej.ops.math.ConstantToArrayImage.DivideUnsignedShort.class })
-	public <S extends GenericShortType<S>> ArrayImg<S, ShortArray> divide(
-		final ArrayImg<S, ShortArray> image, final short value)
+		net.imagej.ops.math.ConstantToPlanarImage.DivideShort.class,
+		net.imagej.ops.math.ConstantToPlanarImage.DivideUnsignedShort.class })
+	public <S extends GenericShortType<S>> Img<S> divide(final Img<S> image,
+		final short value)
 	{
 		@SuppressWarnings("unchecked")
-		final ArrayImg<S, ShortArray> result = (ArrayImg<S, ShortArray>) ops().run(
-			Ops.Math.Divide.NAME, image, value);
+		final Img<S> result = (Img<S>) ops().run(Ops.Math.Divide.NAME, image,
+			value);
 		return result;
 	}
 
@@ -995,72 +941,6 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.Ops.Math.Divide.class)
 	public Object divide(final Object... args) {
 		return ops().run(net.imagej.ops.Ops.Math.Divide.class, args);
-	}
-
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToPlanarImage.DivideByte.class,
-		net.imagej.ops.math.ConstantToPlanarImage.DivideUnsignedByte.class })
-	public <B extends GenericByteType<B>> PlanarImg<B, ByteArray> divide(
-		final PlanarImg<B, ByteArray> image, final byte value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<B, ByteArray> result = (PlanarImg<B, ByteArray>) ops().run(
-			Ops.Math.Divide.NAME, image, value);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.DivideDouble.class)
-	public PlanarImg<DoubleType, DoubleArray> divide(
-		final PlanarImg<DoubleType, DoubleArray> image, final double value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<DoubleType, DoubleArray> result =
-			(PlanarImg<DoubleType, DoubleArray>) ops().run(
-				net.imagej.ops.Ops.Math.Divide.class, image, value);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.DivideFloat.class)
-	public PlanarImg<FloatType, FloatArray> divide(
-		final PlanarImg<FloatType, FloatArray> image, final float value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<FloatType, FloatArray> result =
-			(PlanarImg<FloatType, FloatArray>) ops().run(
-				net.imagej.ops.Ops.Math.Divide.class, image, value);
-		return result;
-	}
-
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToPlanarImage.DivideInt.class,
-		net.imagej.ops.math.ConstantToPlanarImage.DivideUnsignedInt.class })
-	public <I extends GenericIntType<I>> PlanarImg<I, IntArray> divide(
-		final PlanarImg<I, IntArray> image, final int value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<I, IntArray> result = (PlanarImg<I, IntArray>) ops().run(
-			Ops.Math.Divide.NAME, image, value);
-		return result;
-	}
-
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToPlanarImage.DivideLong.class,
-		net.imagej.ops.math.ConstantToPlanarImage.DivideUnsignedLong.class })
-	public <N extends NativeType<N>> PlanarImg<N, LongArray> divide(
-		final PlanarImg<N, LongArray> image, final long value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<N, LongArray> result = (PlanarImg<N, LongArray>) ops().run(
-			Ops.Math.Divide.NAME, image, value);
-		return result;
-	}
-
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToPlanarImage.DivideShort.class,
-		net.imagej.ops.math.ConstantToPlanarImage.DivideUnsignedShort.class })
-	public <S extends GenericShortType<S>> PlanarImg<S, ShortArray> divide(
-		final PlanarImg<S, ShortArray> arg, final short value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<S, ShortArray> result = (PlanarImg<S, ShortArray>) ops()
-			.run(Ops.Math.Divide.NAME, arg, value);
-		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.ConstantToIIOutputRAI.Divide.class)
@@ -1364,79 +1244,85 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.Ops.Math.Min.class, args);
 	}
 
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.AddByte.class,
+	@OpMethod(ops = { //
 		net.imagej.ops.math.ConstantToArrayImage.AddByte.class,
+		net.imagej.ops.math.ConstantToArrayImage.AddUnsignedByte.class,
+		net.imagej.ops.math.ConstantToArrayImageP.AddByte.class,
 		net.imagej.ops.math.ConstantToArrayImageP.AddUnsignedByte.class,
-		net.imagej.ops.math.ConstantToArrayImage.AddUnsignedByte.class })
-	public <B extends GenericByteType<B>> ArrayImg<B, ByteArray> add(
-		final ArrayImg<B, ByteArray> image, final byte value)
+		net.imagej.ops.math.ConstantToPlanarImage.AddByte.class,
+		net.imagej.ops.math.ConstantToPlanarImage.AddUnsignedByte.class })
+	public <B extends GenericByteType<B>> Img<B> add(final Img<B> image,
+		final byte value)
 	{
 		@SuppressWarnings("unchecked")
-		final ArrayImg<B, ByteArray> result = (ArrayImg<B, ByteArray>) ops().run(
+		final Img<B> result = (Img<B>) ops().run(Ops.Math.Add.NAME, image, value);
+		return result;
+	}
+
+	@OpMethod(ops = { //
+		net.imagej.ops.math.ConstantToArrayImage.AddDouble.class,
+		net.imagej.ops.math.ConstantToArrayImageP.AddDouble.class,
+		net.imagej.ops.math.ConstantToPlanarImage.AddDouble.class })
+	public Img<DoubleType> add(final Img<DoubleType> image, final double value) {
+		@SuppressWarnings("unchecked")
+		final Img<DoubleType> result = (Img<DoubleType>) ops().run(
 			Ops.Math.Add.NAME, image, value);
 		return result;
 	}
 
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.AddDouble.class,
-		net.imagej.ops.math.ConstantToArrayImage.AddDouble.class })
-	public ArrayImg<DoubleType, DoubleArray> add(
-		final ArrayImg<DoubleType, DoubleArray> image, final double value)
-	{
+	@OpMethod(ops = { //
+		net.imagej.ops.math.ConstantToArrayImage.AddFloat.class,
+		net.imagej.ops.math.ConstantToArrayImageP.AddFloat.class,
+		net.imagej.ops.math.ConstantToPlanarImage.AddFloat.class })
+	public Img<FloatType> add(final Img<FloatType> image, final float value) {
 		@SuppressWarnings("unchecked")
-		final ArrayImg<DoubleType, DoubleArray> result =
-			(ArrayImg<DoubleType, DoubleArray>) ops().run(Ops.Math.Add.NAME, image,
-				value);
+		final Img<FloatType> result = (Img<FloatType>) ops().run(Ops.Math.Add.NAME,
+			image, value);
 		return result;
 	}
 
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.AddFloat.class,
-		net.imagej.ops.math.ConstantToArrayImage.AddFloat.class })
-	public ArrayImg<FloatType, FloatArray> add(
-		final ArrayImg<FloatType, FloatArray> image, final float value)
-	{
-		@SuppressWarnings("unchecked")
-		final ArrayImg<FloatType, FloatArray> result =
-			(ArrayImg<FloatType, FloatArray>) ops().run(Ops.Math.Add.NAME, image,
-				value);
-		return result;
-	}
-
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.AddInt.class,
+	@OpMethod(ops = { //
 		net.imagej.ops.math.ConstantToArrayImage.AddInt.class,
+		net.imagej.ops.math.ConstantToArrayImage.AddUnsignedInt.class,
 		net.imagej.ops.math.ConstantToArrayImageP.AddUnsignedInt.class,
-		net.imagej.ops.math.ConstantToArrayImage.AddUnsignedInt.class })
-	public <I extends GenericIntType<I>> ArrayImg<I, IntArray> add(
-		final ArrayImg<I, IntArray> image, final int value)
+		net.imagej.ops.math.ConstantToArrayImageP.AddInt.class,
+		net.imagej.ops.math.ConstantToPlanarImage.AddInt.class,
+		net.imagej.ops.math.ConstantToPlanarImage.AddUnsignedInt.class })
+	public <I extends GenericIntType<I>> Img<I> add(final Img<I> image,
+		final int value)
 	{
 		@SuppressWarnings("unchecked")
-		final ArrayImg<I, IntArray> result = (ArrayImg<I, IntArray>) ops().run(
-			Ops.Math.Add.NAME, image, value);
+		final Img<I> result = (Img<I>) ops().run(Ops.Math.Add.NAME, image, value);
 		return result;
 	}
 
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.AddLong.class,
+	@OpMethod(ops = { //
 		net.imagej.ops.math.ConstantToArrayImage.AddLong.class,
+		net.imagej.ops.math.ConstantToArrayImage.AddUnsignedLong.class,
+		net.imagej.ops.math.ConstantToArrayImageP.AddLong.class,
 		net.imagej.ops.math.ConstantToArrayImageP.AddUnsignedLong.class,
-		net.imagej.ops.math.ConstantToArrayImage.AddUnsignedLong.class })
-	public <N extends NativeType<N>> ArrayImg<N, LongArray> add(
-		final ArrayImg<LongType, LongArray> image, final long value)
+		net.imagej.ops.math.ConstantToPlanarImage.AddLong.class,
+		net.imagej.ops.math.ConstantToPlanarImage.AddUnsignedLong.class, })
+	public <N extends NativeType<N>> Img<N> add(final Img<LongType> image,
+		final long value)
 	{
 		@SuppressWarnings("unchecked")
-		final ArrayImg<N, LongArray> result = (ArrayImg<N, LongArray>) ops().run(
-			Ops.Math.Add.NAME, image, value);
+		final Img<N> result = (Img<N>) ops().run(Ops.Math.Add.NAME, image, value);
 		return result;
 	}
 
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.AddShort.class,
+	@OpMethod(ops = { //
 		net.imagej.ops.math.ConstantToArrayImage.AddShort.class,
+		net.imagej.ops.math.ConstantToArrayImage.AddUnsignedShort.class,
+		net.imagej.ops.math.ConstantToArrayImageP.AddShort.class,
 		net.imagej.ops.math.ConstantToArrayImageP.AddUnsignedShort.class,
-		net.imagej.ops.math.ConstantToArrayImage.AddUnsignedShort.class })
-	public <S extends GenericShortType<S>> ArrayImg<S, ShortArray> add(
-		final ArrayImg<S, ShortArray> image, final short value)
+		net.imagej.ops.math.ConstantToPlanarImage.AddShort.class,
+		net.imagej.ops.math.ConstantToPlanarImage.AddUnsignedShort.class })
+	public <S extends GenericShortType<S>> Img<S> add(final Img<S> image,
+		final short value)
 	{
 		@SuppressWarnings("unchecked")
-		final ArrayImg<S, ShortArray> result = (ArrayImg<S, ShortArray>) ops().run(
-			Ops.Math.Add.NAME, image, value);
+		final Img<S> result = (Img<S>) ops().run(Ops.Math.Add.NAME, image, value);
 		return result;
 	}
 
@@ -1555,75 +1441,6 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.Ops.Math.Multiply.class)
 	public Object multiply(final Object... args) {
 		return ops().run(net.imagej.ops.Ops.Math.Multiply.class, args);
-	}
-
-	@OpMethod(ops = {
-		net.imagej.ops.math.ConstantToPlanarImage.MultiplyByte.class,
-		net.imagej.ops.math.ConstantToPlanarImage.MultiplyUnsignedByte.class })
-	public <B extends GenericByteType<B>> PlanarImg<B, ByteArray> multiply(
-		final PlanarImg<B, ByteArray> image, final byte value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<B, ByteArray> result = (PlanarImg<B, ByteArray>) ops().run(
-			Ops.Math.Divide.NAME, image, value);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.MultiplyDouble.class)
-	public PlanarImg<DoubleType, DoubleArray> multiply(
-		final PlanarImg<DoubleType, DoubleArray> image, final double value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<DoubleType, DoubleArray> result =
-			(PlanarImg<DoubleType, DoubleArray>) ops().run(
-				net.imagej.ops.Ops.Math.Multiply.class, image, value);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.MultiplyFloat.class)
-	public PlanarImg<FloatType, FloatArray> multiply(
-		final PlanarImg<FloatType, FloatArray> image, final float value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<FloatType, FloatArray> result =
-			(PlanarImg<FloatType, FloatArray>) ops().run(
-				net.imagej.ops.Ops.Math.Multiply.class, image, value);
-		return result;
-	}
-
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToPlanarImage.MultiplyInt.class,
-		net.imagej.ops.math.ConstantToPlanarImage.MultiplyUnsignedInt.class })
-	public <I extends GenericIntType<I>> PlanarImg<I, IntArray> multiply(
-		final PlanarImg<I, IntArray> image, final int value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<I, IntArray> result = (PlanarImg<I, IntArray>) ops().run(
-			Ops.Math.Multiply.NAME, image, value);
-		return result;
-	}
-
-	@OpMethod(ops = {
-		net.imagej.ops.math.ConstantToPlanarImage.MultiplyLong.class,
-		net.imagej.ops.math.ConstantToPlanarImage.MultiplyUnsignedLong.class })
-	public <N extends NativeType<N>> PlanarImg<N, LongArray> multiply(
-		final PlanarImg<N, LongArray> image, final long value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<N, LongArray> result = (PlanarImg<N, LongArray>) ops().run(
-			Ops.Math.Multiply.NAME, image, value);
-		return result;
-	}
-
-	@OpMethod(ops = {
-		net.imagej.ops.math.ConstantToPlanarImage.MultiplyShort.class,
-		net.imagej.ops.math.ConstantToPlanarImage.MultiplyUnsignedShort.class })
-	public <S extends GenericShortType<S>> PlanarImg<S, ShortArray> multiply(
-		final PlanarImg<S, ShortArray> arg, final short value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<S, ShortArray> result = (PlanarImg<S, ShortArray>) ops()
-			.run(Ops.Math.Multiply.NAME, arg, value);
-		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.ConstantToIIOutputRAI.Multiply.class)
@@ -2099,84 +1916,93 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.Ops.Math.Step.class, args);
 	}
 
-	@OpMethod(ops = {
-		net.imagej.ops.math.ConstantToArrayImageP.SubtractByte.class,
+	@OpMethod(ops = { //
 		net.imagej.ops.math.ConstantToArrayImage.SubtractByte.class,
+		net.imagej.ops.math.ConstantToArrayImage.SubtractUnsignedByte.class,
+		net.imagej.ops.math.ConstantToArrayImageP.SubtractByte.class,
 		net.imagej.ops.math.ConstantToArrayImageP.SubtractUnsignedByte.class,
-		net.imagej.ops.math.ConstantToArrayImage.SubtractUnsignedByte.class })
-	public <B extends GenericByteType<B>> ArrayImg<B, ByteArray> subtract(
-		final ArrayImg<B, ByteArray> image, final byte value)
+		net.imagej.ops.math.ConstantToPlanarImage.SubtractByte.class,
+		net.imagej.ops.math.ConstantToPlanarImage.SubtractUnsignedByte.class })
+	public <B extends GenericByteType<B>> Img<B> subtract(final Img<B> image,
+		final byte value)
 	{
 		@SuppressWarnings("unchecked")
-		final ArrayImg<B, ByteArray> result = (ArrayImg<B, ByteArray>) ops().run(
-			Ops.Math.Subtract.NAME, image, value);
+		final Img<B> result = (Img<B>) ops().run(Ops.Math.Subtract.NAME, image,
+			value);
 		return result;
 	}
 
-	@OpMethod(ops = {
+	@OpMethod(ops = { //
+		net.imagej.ops.math.ConstantToArrayImage.SubtractDouble.class,
 		net.imagej.ops.math.ConstantToArrayImageP.SubtractDouble.class,
-		net.imagej.ops.math.ConstantToArrayImage.SubtractDouble.class })
-	public ArrayImg<DoubleType, DoubleArray> subtract(
-		final ArrayImg<DoubleType, DoubleArray> image, final double value)
+		net.imagej.ops.math.ConstantToPlanarImage.SubtractDouble.class })
+	public Img<DoubleType> subtract(final Img<DoubleType> image,
+		final double value)
 	{
 		@SuppressWarnings("unchecked")
-		final ArrayImg<DoubleType, DoubleArray> result =
-			(ArrayImg<DoubleType, DoubleArray>) ops().run(Ops.Math.Subtract.NAME,
-				image, value);
+		final Img<DoubleType> result = (Img<DoubleType>) ops().run(
+			Ops.Math.Subtract.NAME, image, value);
 		return result;
 	}
 
-	@OpMethod(ops = {
+	@OpMethod(ops = { //
+		net.imagej.ops.math.ConstantToArrayImage.SubtractFloat.class,
 		net.imagej.ops.math.ConstantToArrayImageP.SubtractFloat.class,
-		net.imagej.ops.math.ConstantToArrayImage.SubtractFloat.class })
-	public ArrayImg<FloatType, FloatArray> subtract(
-		final ArrayImg<FloatType, FloatArray> image, final float value)
+		net.imagej.ops.math.ConstantToPlanarImage.SubtractFloat.class })
+	public Img<FloatType> subtract(final Img<FloatType> image,
+		final float value)
 	{
 		@SuppressWarnings("unchecked")
-		final ArrayImg<FloatType, FloatArray> result =
-			(ArrayImg<FloatType, FloatArray>) ops().run(Ops.Math.Subtract.NAME, image,
-				value);
+		final Img<FloatType> result = (Img<FloatType>) ops().run(
+			Ops.Math.Subtract.NAME, image, value);
 		return result;
 	}
 
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.SubtractInt.class,
+	@OpMethod(ops = { //
 		net.imagej.ops.math.ConstantToArrayImage.SubtractInt.class,
+		net.imagej.ops.math.ConstantToArrayImage.SubtractUnsignedInt.class,
+		net.imagej.ops.math.ConstantToArrayImageP.SubtractInt.class,
 		net.imagej.ops.math.ConstantToArrayImageP.SubtractUnsignedInt.class,
-		net.imagej.ops.math.ConstantToArrayImage.SubtractUnsignedInt.class })
-	public <I extends GenericIntType<I>> ArrayImg<I, IntArray> subtract(
-		final ArrayImg<I, IntArray> image, final int value)
+		net.imagej.ops.math.ConstantToPlanarImage.SubtractInt.class,
+		net.imagej.ops.math.ConstantToPlanarImage.SubtractUnsignedInt.class })
+	public <I extends GenericIntType<I>> Img<I> subtract(final Img<I> image,
+		final int value)
 	{
 		@SuppressWarnings("unchecked")
-		final ArrayImg<I, IntArray> result = (ArrayImg<I, IntArray>) ops().run(
-			Ops.Math.Subtract.NAME, image, value);
+		final Img<I> result = (Img<I>) ops().run(Ops.Math.Subtract.NAME, image,
+			value);
 		return result;
 	}
 
-	@OpMethod(ops = {
-		net.imagej.ops.math.ConstantToArrayImageP.SubtractLong.class,
+	@OpMethod(ops = { //
 		net.imagej.ops.math.ConstantToArrayImage.SubtractLong.class,
+		net.imagej.ops.math.ConstantToArrayImage.SubtractUnsignedLong.class,
+		net.imagej.ops.math.ConstantToArrayImageP.SubtractLong.class,
 		net.imagej.ops.math.ConstantToArrayImageP.SubtractUnsignedLong.class,
-		net.imagej.ops.math.ConstantToArrayImage.SubtractUnsignedLong.class })
-	public <N extends NativeType<N>> ArrayImg<N, LongArray> subtract(
-		final ArrayImg<N, LongArray> image, final long value)
+		net.imagej.ops.math.ConstantToPlanarImage.SubtractLong.class,
+		net.imagej.ops.math.ConstantToPlanarImage.SubtractUnsignedLong.class })
+	public <N extends NativeType<N>> Img<N> subtract(final Img<N> image,
+		final long value)
 	{
 		@SuppressWarnings("unchecked")
-		final ArrayImg<N, LongArray> result = (ArrayImg<N, LongArray>) ops().run(
-			Ops.Math.Subtract.NAME, image, value);
+		final Img<N> result = (Img<N>) ops().run(Ops.Math.Subtract.NAME, image,
+			value);
 		return result;
 	}
 
-	@OpMethod(ops = {
-		net.imagej.ops.math.ConstantToArrayImageP.SubtractShort.class,
+	@OpMethod(ops = { //
 		net.imagej.ops.math.ConstantToArrayImage.SubtractShort.class,
+		net.imagej.ops.math.ConstantToArrayImage.SubtractUnsignedShort.class,
+		net.imagej.ops.math.ConstantToArrayImageP.SubtractShort.class,
 		net.imagej.ops.math.ConstantToArrayImageP.SubtractUnsignedShort.class,
-		net.imagej.ops.math.ConstantToArrayImage.SubtractUnsignedShort.class })
-	public <S extends GenericShortType<S>> ArrayImg<S, ShortArray> subtract(
-		final ArrayImg<S, ShortArray> image, final short value)
+		net.imagej.ops.math.ConstantToPlanarImage.SubtractShort.class,
+		net.imagej.ops.math.ConstantToPlanarImage.SubtractUnsignedShort.class })
+	public <S extends GenericShortType<S>> Img<S> subtract(final Img<S> image,
+		final short value)
 	{
 		@SuppressWarnings("unchecked")
-		final ArrayImg<S, ShortArray> result = (ArrayImg<S, ShortArray>) ops().run(
-			Ops.Math.Subtract.NAME, image, value);
+		final Img<S> result = (Img<S>) ops().run(Ops.Math.Subtract.NAME, image,
+			value);
 		return result;
 	}
 
@@ -2295,75 +2121,6 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.Ops.Math.Subtract.class)
 	public Object subtract(final Object... args) {
 		return ops().run(net.imagej.ops.Ops.Math.Subtract.class, args);
-	}
-
-	@OpMethod(ops = {
-		net.imagej.ops.math.ConstantToPlanarImage.SubtractByte.class,
-		net.imagej.ops.math.ConstantToPlanarImage.SubtractUnsignedByte.class })
-	public <B extends GenericByteType<B>> PlanarImg<B, ByteArray> subtract(
-		final PlanarImg<B, ByteArray> image, final byte value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<B, ByteArray> result = (PlanarImg<B, ByteArray>) ops().run(
-			Ops.Math.Subtract.NAME, image, value);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.SubtractDouble.class)
-	public PlanarImg<DoubleType, DoubleArray> subtract(
-		final PlanarImg<DoubleType, DoubleArray> image, final double value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<DoubleType, DoubleArray> result =
-			(PlanarImg<DoubleType, DoubleArray>) ops().run(
-				net.imagej.ops.Ops.Math.Subtract.class, image, value);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.SubtractFloat.class)
-	public PlanarImg<FloatType, FloatArray> subtract(
-		final PlanarImg<FloatType, FloatArray> image, final float value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<FloatType, FloatArray> result =
-			(PlanarImg<FloatType, FloatArray>) ops().run(
-				net.imagej.ops.Ops.Math.Subtract.class, image, value);
-		return result;
-	}
-
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToPlanarImage.SubtractInt.class,
-		net.imagej.ops.math.ConstantToPlanarImage.SubtractUnsignedInt.class })
-	public <I extends GenericIntType<I>> PlanarImg<I, IntArray> subtract(
-		final PlanarImg<I, IntArray> image, final int value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<I, IntArray> result = (PlanarImg<I, IntArray>) ops().run(
-			Ops.Math.Subtract.NAME, image, value);
-		return result;
-	}
-
-	@OpMethod(ops = {
-		net.imagej.ops.math.ConstantToPlanarImage.SubtractLong.class,
-		net.imagej.ops.math.ConstantToPlanarImage.SubtractUnsignedLong.class })
-	public <N extends NativeType<N>, A extends ArrayDataAccess<A>> PlanarImg<N, A>
-		subtract(final PlanarImg<N, A> image, final long value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<N, A> result = (PlanarImg<N, A>) ops().run(
-			Ops.Math.Subtract.NAME, image, value);
-		return result;
-	}
-
-	@OpMethod(ops = {
-		net.imagej.ops.math.ConstantToPlanarImage.SubtractShort.class,
-		net.imagej.ops.math.ConstantToPlanarImage.SubtractUnsignedShort.class })
-	public <S extends GenericShortType<S>> PlanarImg<S, ShortArray> subtract(
-		final PlanarImg<S, ShortArray> image, final short value)
-	{
-		@SuppressWarnings("unchecked")
-		final PlanarImg<S, ShortArray> result = (PlanarImg<S, ShortArray>) ops()
-			.run(Ops.Math.Subtract.NAME, image, value);
-		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.ConstantToIIOutputRAI.Subtract.class)
