@@ -36,8 +36,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import net.imagej.ops.features.AbstractFeatureTest;
-import net.imagej.ops.image.cooccurrencematrix.MatrixOrientation2D;
-import net.imagej.ops.image.cooccurrencematrix.MatrixOrientation3D;
+import net.imagej.ops.image.cooccurrenceMatrix.MatrixOrientation2D;
+import net.imagej.ops.image.cooccurrenceMatrix.MatrixOrientation3D;
 
 /**
  * Testing implementations of {@link HaralickFeature}

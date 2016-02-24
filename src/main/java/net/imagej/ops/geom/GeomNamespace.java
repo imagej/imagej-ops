@@ -66,7 +66,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultSurfacePixelCount.class)
-	public DoubleType boundarypixelcount(final Mesh in) {
+	public DoubleType boundaryPixelCount(final Mesh in) {
 		final DoubleType result = (DoubleType) ops().run(
 			net.imagej.ops.Ops.Geometric.BoundaryPixelCount.class, in);
 		return result;
@@ -74,7 +74,7 @@ public class GeomNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.geom.geom2d.BoundaryPixelCountConvexHullPolygon.class)
-	public DoubleType boundarypixelcountconvexhull(final Polygon in) {
+	public DoubleType boundaryPixelCountConvexHull(final Polygon in) {
 		final DoubleType result = (DoubleType) ops().run(
 			net.imagej.ops.Ops.Geometric.BoundaryPixelCountConvexHull.class, in);
 		return result;
@@ -82,35 +82,35 @@ public class GeomNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.geom.geom3d.BoundaryPixelCountConvexHullMesh.class)
-	public DoubleType boundarypixelcountconvexhull(final Mesh in) {
+	public DoubleType boundaryPixelCountConvexHull(final Mesh in) {
 		final DoubleType result = (DoubleType) ops().run(
 			net.imagej.ops.Ops.Geometric.BoundaryPixelCountConvexHull.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultSurfaceArea.class)
-	public DoubleType boundarysize(final Mesh in) {
+	public DoubleType boundarySize(final Mesh in) {
 		final DoubleType result = (DoubleType) ops().run(
 			net.imagej.ops.Ops.Geometric.BoundarySize.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultPerimeterLength.class)
-	public DoubleType boundarysize(final Polygon in) {
+	public DoubleType boundarySize(final Polygon in) {
 		final DoubleType result = (DoubleType) ops().run(
 			net.imagej.ops.Ops.Geometric.BoundarySize.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.BoundarySizeConvexHullPolygon.class)
-	public DoubleType boundarysizeconvexhull(final Polygon in) {
+	public DoubleType boundarySizeConvexHull(final Polygon in) {
 		final DoubleType result = (DoubleType) ops().run(
 			net.imagej.ops.Ops.Geometric.BoundarySizeConvexHull.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom3d.BoundarySizeConvexHullMesh.class)
-	public DoubleType boundarysizeconvexhull(final Mesh in) {
+	public DoubleType boundarySizeConvexHull(final Mesh in) {
 		final DoubleType result = (DoubleType) ops().run(
 			net.imagej.ops.Ops.Geometric.BoundarySizeConvexHull.class, in);
 		return result;
@@ -184,14 +184,14 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = DefaultConvexHull2D.class)
-	public Polygon convexhull(final Polygon in) {
+	public Polygon convexHull(final Polygon in) {
 		final Polygon result = (Polygon) ops().run(
 			net.imagej.ops.Ops.Geometric.ConvexHull.class, in);
 		return result;
 	}
 
 	@OpMethod(op = DefaultConvexHull3D.class)
-	public Mesh convexhull(final Mesh in) {
+	public Mesh convexHull(final Mesh in) {
 		final Mesh result = (Mesh) ops().run(
 			net.imagej.ops.Ops.Geometric.ConvexHull.class, in);
 		return result;
@@ -228,21 +228,21 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultFeretsAngle.class)
-	public DoubleType feretsangle(final Polygon in) {
+	public DoubleType feretsAngle(final Polygon in) {
 		final DoubleType result = (DoubleType) ops().run(
 			net.imagej.ops.Ops.Geometric.FeretsAngle.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultFeretsDiameter.class)
-	public DoubleType feretsdiameter(final Polygon in) {
+	public DoubleType feretsDiameter(final Polygon in) {
 		final DoubleType result = (DoubleType) ops().run(
 			net.imagej.ops.Ops.Geometric.FeretsDiameter.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultMainElongation.class)
-	public <B extends BooleanType<B>> DoubleType mainelongation(
+	public <B extends BooleanType<B>> DoubleType mainElongation(
 		final IterableRegion<B> in)
 	{
 		final DoubleType result = (DoubleType) ops().run(
@@ -251,21 +251,21 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultElongation.class)
-	public DoubleType mainelongation(final Polygon in) {
+	public DoubleType mainElongation(final Polygon in) {
 		final DoubleType result = (DoubleType) ops().run(
 			net.imagej.ops.Ops.Geometric.MainElongation.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMajorAxis.class)
-	public DoubleType majoraxis(final Polygon in) {
+	public DoubleType majorAxis(final Polygon in) {
 		final DoubleType result = (DoubleType) ops().run(
 			net.imagej.ops.Ops.Geometric.MajorAxis.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultMarchingCubes.class)
-	public <T extends Type<T>> Mesh marchingcubes(
+	public <T extends Type<T>> Mesh marchingCubes(
 		final RandomAccessibleInterval<T> in)
 	{
 		final Mesh result = (Mesh) ops().run(
@@ -274,7 +274,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultMarchingCubes.class)
-	public <T extends Type<T>> Mesh marchingcubes(
+	public <T extends Type<T>> Mesh marchingCubes(
 		final RandomAccessibleInterval<T> in, final double isolevel)
 	{
 		final Mesh result = (Mesh) ops().run(
@@ -283,7 +283,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultMarchingCubes.class)
-	public <T extends Type<T>> Mesh marchingcubes(
+	public <T extends Type<T>> Mesh marchingCubes(
 		final RandomAccessibleInterval<T> in, final double isolevel,
 		final VertexInterpolator interpolatorClass)
 	{
@@ -294,7 +294,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultMedianElongation.class)
-	public <B extends BooleanType<B>> DoubleType medianelongation(
+	public <B extends BooleanType<B>> DoubleType medianElongation(
 		final IterableRegion<B> in)
 	{
 		final DoubleType result = (DoubleType) ops().run(
@@ -303,7 +303,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMinorAxis.class)
-	public DoubleType minoraxis(final Polygon in) {
+	public DoubleType minorAxis(final Polygon in) {
 		final DoubleType result = (DoubleType) ops().run(
 			net.imagej.ops.Ops.Geometric.MinorAxis.class, in);
 		return result;
@@ -331,7 +331,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMinorMajorAxis.class)
-	public Pair<DoubleType, DoubleType> secondmultivariate(final Polygon in) {
+	public Pair<DoubleType, DoubleType> secondMultiVariate(final Polygon in) {
 		@SuppressWarnings("unchecked")
 		final Pair<DoubleType, DoubleType> result =
 			(Pair<DoubleType, DoubleType>) ops().run(
@@ -341,7 +341,7 @@ public class GeomNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultSecondMultiVariate3D.class)
 	public <B extends BooleanType<B>> CovarianceOf2ndMultiVariate3D
-		secondmultivariate(final IterableRegion<B> in)
+		secondMultiVariate(final IterableRegion<B> in)
 	{
 		final CovarianceOf2ndMultiVariate3D result =
 			(CovarianceOf2ndMultiVariate3D) ops().run(
@@ -371,14 +371,14 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom3d.SizeConvexHullMesh.class)
-	public DoubleType sizeconvexhull(final Mesh in) {
+	public DoubleType sizeConvexHull(final Mesh in) {
 		final DoubleType result = (DoubleType) ops().run(
 			net.imagej.ops.Ops.Geometric.SizeConvexHull.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.SizeConvexHullPolygon.class)
-	public DoubleType sizeconvexhull(final Polygon in) {
+	public DoubleType sizeConvexHull(final Polygon in) {
 		final DoubleType result = (DoubleType) ops().run(
 			net.imagej.ops.Ops.Geometric.SizeConvexHull.class, in);
 		return result;
@@ -386,7 +386,7 @@ public class GeomNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.geom.geom2d.DefaultSmallestEnclosingRectangle.class)
-	public Polygon smallestenclosingboundingbox(final Polygon in) {
+	public Polygon smallestEnclosingBoundingBox(final Polygon in) {
 		final Polygon result = (Polygon) ops().run(
 			net.imagej.ops.Ops.Geometric.SmallestEnclosingBoundingBox.class, in);
 		return result;
@@ -423,7 +423,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultBoundingBox.class)
-	public Polygon boundingbox(final Polygon in) {
+	public Polygon boundingBox(final Polygon in) {
 		final Polygon result = (Polygon) ops().run(
 			net.imagej.ops.Ops.Geometric.BoundingBox.class, in);
 		return result;
@@ -431,7 +431,7 @@ public class GeomNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.geom.geom3d.mesh.DefaultVertexInterpolator.class)
-	public double[] vertexinterpolator(final int[] p1, final int[] p2,
+	public double[] vertexInterpolator(final int[] p1, final int[] p2,
 		final double p1Value, final double p2Value, final double isolevel)
 	{
 		final double[] result = (double[]) ops().run(
@@ -442,7 +442,7 @@ public class GeomNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.geom.geom3d.mesh.BitTypeVertexInterpolator.class)
-	public double[] vertexinterpolator(final int[] p1, final int[] p2,
+	public double[] vertexInterpolator(final int[] p1, final int[] p2,
 		final double p1Value, final double p2Value)
 	{
 		final double[] result = (double[]) ops().run(
@@ -452,7 +452,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.DefaultCenterOfGravity.class)
-	public <T extends RealType<T>> RealLocalizable centerofgravity(final IterableInterval<T> in) {
+	public <T extends RealType<T>> RealLocalizable centerOfGravity(final IterableInterval<T> in) {
 		final RealLocalizable result = (RealLocalizable) ops().run(net.imagej.ops.Ops.Geometric.CenterOfGravity.class,
 				in);
 		return result;

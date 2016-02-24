@@ -57,14 +57,14 @@ public class DefaultSmallestEnclosingRectangle extends
 	Ops.Geometric.SmallestEnclosingBoundingBox
 {
 
-	private UnaryFunctionOp<Polygon, Polygon> convexhullFunc;
+	private UnaryFunctionOp<Polygon, Polygon> convexHullFunc;
 	private UnaryFunctionOp<Polygon, RealLocalizable> centroidFunc;
 	private UnaryFunctionOp<Polygon, DoubleType> areaFunc;
 	private UnaryFunctionOp<Polygon, Polygon> boundingBoxFunc;
 
 	@Override
 	public void initialize() {
-		convexhullFunc = Functions.unary(ops(), Ops.Geometric.ConvexHull.class, Polygon.class, in());
+		convexHullFunc = Functions.unary(ops(), Ops.Geometric.ConvexHull.class, Polygon.class, in());
 		centroidFunc = Functions.unary(ops(), Ops.Geometric.Centroid.class, RealLocalizable.class, in());
 		areaFunc = Functions.unary(ops(), Ops.Geometric.Size.class, DoubleType.class, in());
 		boundingBoxFunc = Functions.unary(ops(), Ops.Geometric.BoundingBox.class, Polygon.class, in());
@@ -107,7 +107,7 @@ public class DefaultSmallestEnclosingRectangle extends
 
 	@Override
 	public Polygon compute1(final Polygon input) {
-		Polygon ch = convexhullFunc.compute1(input);
+		Polygon ch = convexHullFunc.compute1(input);
 		RealLocalizable cog = centroidFunc.compute1(ch);
 
 		Polygon minBounds = null;

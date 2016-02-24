@@ -33,7 +33,7 @@ package net.imagej.ops.features.haralick;
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
-import net.imagej.ops.image.cooccurrencematrix.MatrixOrientation;
+import net.imagej.ops.image.cooccurrenceMatrix.MatrixOrientation;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -77,7 +77,7 @@ public class HaralickNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.features.haralick.DefaultClusterPromenence.class)
-	public <T extends RealType<T>> DoubleType clusterpromenence(
+	public <T extends RealType<T>> DoubleType clusterPromenence(
 		final IterableInterval<T> in, final int numGreyLevels, final int distance,
 		final MatrixOrientation orientation)
 	{
@@ -89,7 +89,7 @@ public class HaralickNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.features.haralick.DefaultClusterPromenence.class)
-	public <T extends RealType<T>> DoubleType clusterpromenence(
+	public <T extends RealType<T>> DoubleType clusterPromenence(
 		final DoubleType out, final IterableInterval<T> in, final int numGreyLevels,
 		final int distance, final MatrixOrientation orientation)
 	{
@@ -100,7 +100,7 @@ public class HaralickNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.features.haralick.DefaultClusterShade.class)
-	public <T extends RealType<T>> DoubleType clustershade(
+	public <T extends RealType<T>> DoubleType clusterShade(
 		final IterableInterval<T> in, final int numGreyLevels, final int distance,
 		final MatrixOrientation orientation)
 	{
@@ -111,7 +111,7 @@ public class HaralickNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.features.haralick.DefaultClusterShade.class)
-	public <T extends RealType<T>> DoubleType clustershade(final DoubleType out,
+	public <T extends RealType<T>> DoubleType clusterShade(final DoubleType out,
 		final IterableInterval<T> in, final int numGreyLevels, final int distance,
 		final MatrixOrientation orientation)
 	{
@@ -167,7 +167,7 @@ public class HaralickNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.features.haralick.DefaultDifferenceEntropy.class)
-	public <T extends RealType<T>> DoubleType differenceentropy(
+	public <T extends RealType<T>> DoubleType differenceEntropy(
 		final IterableInterval<T> in, final int numGreyLevels, final int distance,
 		final MatrixOrientation orientation)
 	{
@@ -179,7 +179,7 @@ public class HaralickNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.features.haralick.DefaultDifferenceEntropy.class)
-	public <T extends RealType<T>> DoubleType differenceentropy(
+	public <T extends RealType<T>> DoubleType differenceEntropy(
 		final DoubleType out, final IterableInterval<T> in, final int numGreyLevels,
 		final int distance, final MatrixOrientation orientation)
 	{
@@ -191,7 +191,7 @@ public class HaralickNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.features.haralick.DefaultDifferenceVariance.class)
-	public <T extends RealType<T>> DoubleType differencevariance(
+	public <T extends RealType<T>> DoubleType differenceVariance(
 		final IterableInterval<T> in, final int numGreyLevels, final int distance,
 		final MatrixOrientation orientation)
 	{
@@ -203,7 +203,7 @@ public class HaralickNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.features.haralick.DefaultDifferenceVariance.class)
-	public <T extends RealType<T>> DoubleType differencevariance(
+	public <T extends RealType<T>> DoubleType differenceVariance(
 		final DoubleType out, final IterableInterval<T> in, final int numGreyLevels,
 		final int distance, final MatrixOrientation orientation)
 	{
@@ -302,7 +302,7 @@ public class HaralickNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.features.haralick.DefaultMaxProbability.class)
-	public <T extends RealType<T>> DoubleType maxprobability(
+	public <T extends RealType<T>> DoubleType maxProbability(
 		final IterableInterval<T> in, final int numGreyLevels, final int distance,
 		final MatrixOrientation orientation)
 	{
@@ -313,7 +313,7 @@ public class HaralickNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.features.haralick.DefaultMaxProbability.class)
-	public <T extends RealType<T>> DoubleType maxprobability(final DoubleType out,
+	public <T extends RealType<T>> DoubleType maxProbability(final DoubleType out,
 		final IterableInterval<T> in, final int numGreyLevels, final int distance,
 		final MatrixOrientation orientation)
 	{
@@ -324,7 +324,7 @@ public class HaralickNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.features.haralick.DefaultSumAverage.class)
-	public <T extends RealType<T>> DoubleType sumaverage(
+	public <T extends RealType<T>> DoubleType sumAverage(
 		final IterableInterval<T> in, final int numGreyLevels, final int distance,
 		final MatrixOrientation orientation)
 	{
@@ -335,7 +335,7 @@ public class HaralickNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.features.haralick.DefaultSumAverage.class)
-	public <T extends RealType<T>> DoubleType sumaverage(final DoubleType out,
+	public <T extends RealType<T>> DoubleType sumAverage(final DoubleType out,
 		final IterableInterval<T> in, final int numGreyLevels, final int distance,
 		final MatrixOrientation orientation)
 	{
@@ -346,7 +346,7 @@ public class HaralickNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.features.haralick.DefaultSumEntropy.class)
-	public <T extends RealType<T>> DoubleType sumentropy(
+	public <T extends RealType<T>> DoubleType sumEntropy(
 		final IterableInterval<T> in, final int numGreyLevels, final int distance,
 		final MatrixOrientation orientation)
 	{
@@ -357,7 +357,7 @@ public class HaralickNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.features.haralick.DefaultSumEntropy.class)
-	public <T extends RealType<T>> DoubleType sumentropy(final DoubleType out,
+	public <T extends RealType<T>> DoubleType sumEntropy(final DoubleType out,
 		final IterableInterval<T> in, final int numGreyLevels, final int distance,
 		final MatrixOrientation orientation)
 	{
@@ -368,7 +368,7 @@ public class HaralickNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.features.haralick.DefaultSumVariance.class)
-	public <T extends RealType<T>> DoubleType sumvariance(
+	public <T extends RealType<T>> DoubleType sumVariance(
 		final IterableInterval<T> in, final int numGreyLevels, final int distance,
 		final MatrixOrientation orientation)
 	{
@@ -379,7 +379,7 @@ public class HaralickNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.features.haralick.DefaultSumVariance.class)
-	public <T extends RealType<T>> DoubleType sumvariance(final DoubleType out,
+	public <T extends RealType<T>> DoubleType sumVariance(final DoubleType out,
 		final IterableInterval<T> in, final int numGreyLevels, final int distance,
 		final MatrixOrientation orientation)
 	{
@@ -391,7 +391,7 @@ public class HaralickNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.features.haralick.DefaultTextureHomogeneity.class)
-	public <T extends RealType<T>> DoubleType texturehomogeneity(
+	public <T extends RealType<T>> DoubleType textureHomogeneity(
 		final IterableInterval<T> in, final int numGreyLevels, final int distance,
 		final MatrixOrientation orientation)
 	{
@@ -403,7 +403,7 @@ public class HaralickNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.features.haralick.DefaultTextureHomogeneity.class)
-	public <T extends RealType<T>> DoubleType texturehomogeneity(
+	public <T extends RealType<T>> DoubleType textureHomogeneity(
 		final DoubleType out, final IterableInterval<T> in, final int numGreyLevels,
 		final int distance, final MatrixOrientation orientation)
 	{

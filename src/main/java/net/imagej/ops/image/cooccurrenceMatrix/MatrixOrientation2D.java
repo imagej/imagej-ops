@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.image.cooccurrencematrix;
+package net.imagej.ops.image.cooccurrenceMatrix;
 
 /**
  * Orientation of a {@link CooccurrenceMatrix2D}

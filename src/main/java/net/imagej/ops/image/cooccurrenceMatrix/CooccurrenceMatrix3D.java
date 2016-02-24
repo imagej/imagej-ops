@@ -27,9 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.image.cooccurrencematrix;
-
-import java.util.Arrays;
+package net.imagej.ops.image.cooccurrenceMatrix;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
@@ -46,14 +44,14 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Calculates coocccurrence matrix from an 2D-{@link IterableInterval}.
+ * Calculates coocccurrence matrix from an 3D-{@link IterableInterval}.
  * 
  * @author Stephan Sellien, University of Konstanz
- * @author Christian Dietz, University of Konstanz
  * @author Andreas Graumann, University of Konstanz
+ * @author Christian Dietz, University of Konstanz
  */
 @Plugin(type = Ops.Image.CooccurrenceMatrix.class)
-public class CooccurrenceMatrix2D<T extends RealType<T>> extends
+public class CooccurrenceMatrix3D<T extends RealType<T>> extends
 		AbstractUnaryFunctionOp<IterableInterval<T>, double[][]> implements
 		Ops.Image.CooccurrenceMatrix, Contingent {
 
@@ -74,76 +72,82 @@ public class CooccurrenceMatrix2D<T extends RealType<T>> extends
 		super.initialize();
 		minmax = (UnaryFunctionOp) Functions.unary(ops(), MinMax.class, Pair.class, in());
 	}
-
+	
 	@Override
 	public double[][] compute1(final IterableInterval<T> input) {
 
-		final double[][] output = new double[nrGreyLevels][nrGreyLevels];
+		double[][] matrix = new double[nrGreyLevels][nrGreyLevels];
 
-		final Cursor<? extends RealType<?>> cursor = input.localizingCursor();
+		final Cursor<T> cursor = input.localizingCursor();
+	  final Pair<T, T> minMax = minmax.compute1(input);
 
-		final Pair<T, T> minMax = minmax.compute1(input);
+		double localMin = minMax.getA().getRealDouble();
+		double localMax = minMax.getB().getRealDouble();
 
-		final double localMin = minMax.getA().getRealDouble();
-		final double localMax = minMax.getB().getRealDouble();
-
-		final int[][] pixels = new int[(int) input.dimension(1)][(int) input
-				.dimension(0)];
-
-		for (int i = 0; i < pixels.length; i++) {
-			Arrays.fill(pixels[i], Integer.MAX_VALUE);
-		}
+		final int[][][] pixels = new int[(int) input.dimension(2)][(int) input
+				.dimension(1)][(int) input.dimension(0)];
 
 		final int minimumX = (int) input.min(0);
 		final int minimumY = (int) input.min(1);
+		final int minimumZ = (int) input.min(2);
+		
 		final double diff = localMax - localMin;
 		while (cursor.hasNext()) {
 			cursor.fwd();
-			pixels[cursor.getIntPosition(1) - minimumY][cursor.getIntPosition(0) -
-				minimumX] = (int) (((cursor.get().getRealDouble() - localMin) / diff) *
-					(nrGreyLevels - 1));
+			pixels[cursor.getIntPosition(2) - minimumZ][cursor
+					.getIntPosition(1) - minimumY][cursor
+					.getIntPosition(0) - minimumX] = (int) (((cursor
+					.get().getRealDouble() - localMin) / diff) * (nrGreyLevels - 1));
 		}
+
+		
+		final double orientationAtX = orientation.getValueAtDim(0) * distance;
+		final double orientationAtY = orientation.getValueAtDim(1) * distance;
+		final double orientationAtZ = orientation.getValueAtDim(2) * distance;
 
 		int nrPairs = 0;
+		for (int z = 0; z < pixels.length; z++) {
+			for (int y = 0; y < pixels[z].length; y++) {
+				for (int x = 0; x < pixels[z][y].length; x++) {
 
-		final int orientationAtX = orientation.getValueAtDim(0) * distance;
-		final int orientationAtY = orientation.getValueAtDim(1) * distance;
-		for (int y = 0; y < pixels.length; y++) {
-			for (int x = 0; x < pixels[y].length; x++) {
-				// ignore pixels not in mask
-				if (pixels[y][x] == Integer.MAX_VALUE) {
-					continue;
+					// ignore pixels not in mask
+					if (pixels[z][y][x] == Integer.MAX_VALUE) {
+						continue;
+					}
+
+					// get second pixel
+					final int sx = (int) (x + orientationAtX);
+					final int sy = (int) (y + orientationAtY);
+					final int sz = (int) (z + orientationAtZ);
+
+					// second pixel in interval and mask
+					if (sx >= 0 && sy >= 0 && sz >= 0 && sz < pixels.length
+							&& sy < pixels[sz].length
+							&& sx < pixels[sz][sy].length) {
+
+						matrix[pixels[z][y][x]][pixels[sz][sy][sx]]++;
+						nrPairs++;
+
+					}
 				}
-
-				// // get second pixel
-				final int sx =  x + orientationAtX;
-				final int sy =  y + orientationAtY;
-
-				// second pixel in interval and mask
-				if (sx >= 0 && sy >= 0 && sy < pixels.length
-						&& sx < pixels[sy].length
-						&& pixels[sy][sx] != Integer.MAX_VALUE) {
-					output[pixels[y][x]][pixels[sy][sx]]++;
-					nrPairs++;
-				}
-
 			}
 		}
 
+		// normalize matrix
 		if (nrPairs > 0) {
 			double divisor = 1.0 / nrPairs;
-			for (int row = 0; row < output.length; row++) {
-				for (int col = 0; col < output[row].length; col++) {
-					output[row][col] *= divisor;
+			for (int row = 0; row < matrix.length; row++) {
+				for (int col = 0; col < matrix[row].length; col++) {
+					matrix[row][col] *= divisor;
 				}
 			}
 		}
 
-		return output;
+		return matrix;
 	}
 
 	@Override
 	public boolean conforms() {
-		return in().numDimensions() == 2 && orientation.isCompatible(2);
+		return in().numDimensions() == 3 && orientation.isCompatible(3);
 	}
 }
