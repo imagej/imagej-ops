@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.copy;
 
 import static org.junit.Assert.assertEquals;
@@ -46,17 +47,17 @@ import org.junit.Test;
 
 /**
  * Test {@link CopyRAI}.
- * 
- * @author Tim-Oliver Buchholz, University of Konstanz
  *
+ * @author Tim-Oliver Buchholz, University of Konstanz
  */
 public class CopyRAITest extends AbstractOpTest {
+
 	private Img<UnsignedByteType> input;
 
 	@Before
 	public void createData() {
 		input = new ArrayImgFactory<UnsignedByteType>().create(new int[] { 120,
-				100 }, new UnsignedByteType());
+			100 }, new UnsignedByteType());
 
 		final Random r = new Random(System.currentTimeMillis());
 
@@ -70,8 +71,9 @@ public class CopyRAITest extends AbstractOpTest {
 	@Test
 	public void copyRAINoOutputTest() {
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<UnsignedByteType> output = (RandomAccessibleInterval<UnsignedByteType>) ops
-				.run(CopyRAI.class, input);
+		final RandomAccessibleInterval<UnsignedByteType> output =
+			(RandomAccessibleInterval<UnsignedByteType>) ops.run(CopyRAI.class,
+				input);
 
 		final Cursor<UnsignedByteType> inc = input.localizingCursor();
 		final RandomAccess<UnsignedByteType> outRA = output.randomAccess();
@@ -85,8 +87,8 @@ public class CopyRAITest extends AbstractOpTest {
 
 	@Test
 	public void copyRAIWithOutputTest() {
-		final Img<UnsignedByteType> output = input.factory().create(input,
-				input.firstElement());
+		final Img<UnsignedByteType> output = input.factory().create(input, input
+			.firstElement());
 
 		ops.run(CopyRAI.class, output, input);
 
