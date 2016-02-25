@@ -38,6 +38,7 @@ import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
 import net.imglib2.util.Intervals;
 import net.imglib2.util.Util;
@@ -70,13 +71,17 @@ public class CopyRAI<T> extends
 
 	@Override
 	public void initialize() {
-		final Class<?> outTypeClass =
-			out() == null ? Type.class : Util.getTypeFromInterval(out()).getClass();
-		final T inType = Util.getTypeFromInterval(in());
-		final UnaryComputerOp<T, ?> typeComputer =
-			Computers.unary(ops(), Ops.Copy.Type.class, outTypeClass, inType);
+		final Object outType = out() == null ? Type.class : Util
+			.getTypeFromInterval(out());
+
+		final Object inType = in() == null ? NativeType.class : Util
+			.getTypeFromInterval(in());
+
+		final UnaryComputerOp<?, ?> typeComputer = Computers.unary(ops(),
+			Ops.Copy.Type.class, outType, inType);
 		mapComputer = RAIs.computer(ops(), Ops.Map.class, in(), typeComputer);
 		createFunc = RAIs.function(ops(), Ops.Create.Img.class, in(), inType);
+
 	}
 
 	@Override
