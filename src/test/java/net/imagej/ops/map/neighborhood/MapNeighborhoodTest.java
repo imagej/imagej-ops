@@ -35,10 +35,12 @@ import static org.junit.Assert.assertEquals;
 import java.util.Iterator;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.ExtendedRAI;
 import net.imagej.ops.Op;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.img.Img;
+import net.imglib2.outofbounds.OutOfBoundsBorderFactory;
 import net.imglib2.type.numeric.integer.ByteType;
 
 import org.junit.Before;
@@ -52,12 +54,13 @@ import org.junit.Test;
  */
 public class MapNeighborhoodTest extends AbstractOpTest {
 
-	private Img<ByteType> in;
+	private ExtendedRAI<ByteType, Img<ByteType>> in;
 	private Img<ByteType> out;
 
 	@Before
 	public void initImg() {
-		in = generateByteArrayTestImg(true, 11, 10);
+		in = new ExtendedRAI<>(generateByteArrayTestImg(true, 11, 10),
+			new OutOfBoundsBorderFactory<>());
 		out = generateByteArrayTestImg(false, 11, 10);
 	}
 
@@ -108,7 +111,7 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 			assertEquals(9, t.get());
 		}
 
-		for (final ByteType t : in) {
+		for (final ByteType t : in.getSource()) {
 			assertEquals(9, t.get());
 		}
 	}

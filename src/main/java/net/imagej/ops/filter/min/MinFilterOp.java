@@ -30,6 +30,7 @@
 
 package net.imagej.ops.filter.min;
 
+import net.imagej.ops.ExtendedRAI;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.IterableInterval;
@@ -41,7 +42,7 @@ import net.imglib2.RandomAccessibleInterval;
  * @author Jonathan Hale (University of Konstanz)
  */
 public interface MinFilterOp<T, V> extends Ops.Filter.Min,
-	UnaryComputerOp<RandomAccessibleInterval<T>, IterableInterval<V>>
+	UnaryComputerOp<ExtendedRAI<T, RandomAccessibleInterval<T>>, IterableInterval<V>>
 {
 	// NB: Marker interface.
 }

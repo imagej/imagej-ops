@@ -30,8 +30,7 @@
 
 package net.imagej.ops.filter;
 
-import org.scijava.plugin.Parameter;
-
+import net.imagej.ops.ExtendedRAI;
 import net.imagej.ops.Ops.Map;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
@@ -39,39 +38,30 @@ import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
-import net.imglib2.outofbounds.OutOfBoundsBorderFactory;
-import net.imglib2.outofbounds.OutOfBoundsFactory;
-import net.imglib2.view.Views;
+
+import org.scijava.plugin.Parameter;
 
 public abstract class AbstractNeighborhoodBasedFilter<I, O> extends
-	AbstractUnaryComputerOp<RandomAccessibleInterval<I>, IterableInterval<O>>
+	AbstractUnaryComputerOp<ExtendedRAI<I, RandomAccessibleInterval<I>>, IterableInterval<O>>
 {
 
 	@Parameter
 	private Shape shape;
 
-	@Parameter(required = false)
-	private OutOfBoundsFactory<I, RandomAccessibleInterval<I>> outOfBoundsFactory =
-		new OutOfBoundsBorderFactory<I, RandomAccessibleInterval<I>>();
-
 	private UnaryComputerOp<Iterable<I>, O> filterOp;
 
-	private UnaryComputerOp<RandomAccessibleInterval<I>, IterableInterval<O>> map;
+	private UnaryComputerOp<ExtendedRAI<I, RandomAccessibleInterval<I>>, IterableInterval<O>> map;
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
 		filterOp = unaryComputer(out().firstElement());
-		map = (UnaryComputerOp) Computers.unary(ops(), Map.class, out(), in(),
-			filterOp, shape);
+		map = Computers.unary(ops(), Map.class, out(), in(), filterOp, shape);
 	}
 
 	@Override
-	public void compute1(RandomAccessibleInterval<I> input,
-		IterableInterval<O> output)
+	public void compute1(ExtendedRAI<I, RandomAccessibleInterval<I>> input, IterableInterval<O> output)
 	{
-		map.compute1(Views.interval(Views.extend(input, outOfBoundsFactory), input),
-			output);
+		map.compute1(input, output);
 	}
 
 	/**

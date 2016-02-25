@@ -33,6 +33,7 @@ package net.imagej.ops.threshold.apply;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.ExtendedRAI;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imagej.ops.threshold.localBernsen.LocalBernsenThreshold;
@@ -85,55 +86,31 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testOpMethods() {
-		ops.threshold().localMeanThreshold(out, in, new RectangleShape(3, false),
-			0.0);
-		ops.threshold().localMeanThreshold(out, in, new RectangleShape(3, false),
+		ops.threshold().localMeanThreshold(out, new ExtendedRAI<>(in,
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
-				Boundary.SINGLE), 0.0);
-
-		ops.threshold().localBernsenThreshold(out, in, new RectangleShape(3, false),
-			1.0, Double.MAX_VALUE * 0.5);
-		ops.threshold().localBernsenThreshold(out, in, new RectangleShape(3, false),
+				Boundary.SINGLE)), new RectangleShape(3, false), 0.0);
+		ops.threshold().localBernsenThreshold(out, new ExtendedRAI<>(in,
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
-				Boundary.SINGLE), 1.0, Double.MAX_VALUE * 0.5);
-
-		ops.threshold().localContrastThreshold(out, in, new RectangleShape(3,
-			false));
-		ops.threshold().localContrastThreshold(out, in, new RectangleShape(3,
-			false),
+				Boundary.SINGLE)), new RectangleShape(3, false), 1.0, Double.MAX_VALUE *
+					0.5);
+		ops.threshold().localContrastThreshold(out, new ExtendedRAI<>(in,
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
-				Boundary.SINGLE));
-
-		ops.threshold().localMedianThreshold(out, in, new RectangleShape(3, false),
-			1.0);
-		ops.threshold().localMedianThreshold(out, in, new RectangleShape(3, false),
+				Boundary.SINGLE)), new RectangleShape(3, false));
+		ops.threshold().localMedianThreshold(out, new ExtendedRAI<>(in,
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
-				Boundary.SINGLE), 1.0);
-
-		ops.threshold().localMidGreyThreshold(out, in, new RectangleShape(3, false),
-			1.0);
-		ops.threshold().localMidGreyThreshold(out, in, new RectangleShape(3, false),
+				Boundary.SINGLE)), new RectangleShape(3, false), 1.0);
+		ops.threshold().localMidGreyThreshold(out, new ExtendedRAI<>(in,
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
-				Boundary.SINGLE), 1.0);
-
-		ops.threshold().localNiblackThreshold(out, in, new RectangleShape(3, false),
-			1.0, 2.0);
-		ops.threshold().localNiblackThreshold(out, in, new RectangleShape(3, false),
+				Boundary.SINGLE)), new RectangleShape(3, false), 1.0);
+		ops.threshold().localNiblackThreshold(out, new ExtendedRAI<>(in,
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
-				Boundary.SINGLE), 1.0, 2.0);
-
-		ops.threshold().localPhansalkarThreshold(out, in, new RectangleShape(3,
-			false),
+				Boundary.SINGLE)), new RectangleShape(3, false), 1.0, 2.0);
+		ops.threshold().localPhansalkarThreshold(out, new ExtendedRAI<>(in,
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
-				Boundary.SINGLE), 0.25, 0.5);
-		ops.threshold().localPhansalkarThreshold(out, in, new RectangleShape(3,
-			false));
-
-		ops.threshold().localSauvolaThreshold(out, in, new RectangleShape(3, false),
+				Boundary.SINGLE)), new RectangleShape(3, false), 0.25, 0.5);
+		ops.threshold().localSauvolaThreshold(out, new ExtendedRAI<>(in,
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
-				Boundary.SINGLE), 0.5, 0.5);
-		ops.threshold().localSauvolaThreshold(out, in, new RectangleShape(3,
-			false));
+				Boundary.SINGLE)), new RectangleShape(3, false), 0.5, 0.5);
 	}
 
 	/**
@@ -141,9 +118,10 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testLocalBernsenThreshold() {
-		ops.run(LocalBernsenThreshold.class, out, in, new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE), 1.0,
-			Double.MAX_VALUE * 0.5);
+		ops.run(LocalBernsenThreshold.class, out, new ExtendedRAI<>(in,
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
+				Boundary.SINGLE)), new RectangleShape(3, false), 1.0, Double.MAX_VALUE *
+					0.5);
 
 		assertEquals(out.firstElement().get(), true);
 	}
@@ -153,8 +131,9 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testLocalContrastThreshold() {
-		ops.run(LocalContrastThreshold.class, out, in, new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+		ops.run(LocalContrastThreshold.class, out, new ExtendedRAI<>(in,
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE)),
+			new RectangleShape(3, false));
 
 		assertEquals(out.firstElement().get(), false);
 	}
@@ -164,9 +143,9 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testLocalThresholdMean() {
-		ops.run(LocalMeanThreshold.class, out, in, new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
-			0.0);
+		ops.run(LocalMeanThreshold.class, out, new ExtendedRAI<>(in,
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE)),
+			new RectangleShape(3, false), 0.0);
 
 		assertEquals(out.firstElement().get(), true);
 	}
@@ -176,9 +155,9 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testLocalMedianThreshold() {
-		ops.run(LocalMedianThreshold.class, out, in, new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
-			0.0);
+		ops.run(LocalMedianThreshold.class, out, new ExtendedRAI<>(in,
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE)),
+			new RectangleShape(3, false), 0.0);
 
 		assertEquals(out.firstElement().get(), true);
 	}
@@ -188,9 +167,10 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testLocalMidGreyThreshold() {
-		ops.run(LocalMidGreyThreshold.class, out, in, new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE), 0.0);
-		
+		ops.run(LocalMidGreyThreshold.class, out, new ExtendedRAI<>(in,
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE)),
+			new RectangleShape(3, false), 0.0);
+
 		assertEquals(out.firstElement().get(), true);
 	}
 
@@ -199,9 +179,9 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testLocalNiblackThreshold() {
-		ops.run(LocalNiblackThreshold.class, out, in, new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
-			0.0, 0.0);
+		ops.run(LocalNiblackThreshold.class, out, new ExtendedRAI<>(in,
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE)),
+			new RectangleShape(3, false), 0.0, 0.0);
 
 		assertEquals(out.firstElement().get(), true);
 	}
@@ -211,9 +191,9 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testLocalPhansalkar() {
-		ops.run(LocalPhansalkarThreshold.class, out, in, new RectangleShape(3,
-			false), new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(
-				Boundary.SINGLE), 0.0, 0.0);
+		ops.run(LocalPhansalkarThreshold.class, out, new ExtendedRAI<>(in,
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE)),
+			new RectangleShape(3, false), 0.0, 0.0);
 
 		assertEquals(out.firstElement().get(), false);
 	}
@@ -223,9 +203,9 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testLocalSauvola() {
-		ops.run(LocalSauvolaThreshold.class, out, in, new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
-			0.0, 0.0);
+		ops.run(LocalSauvolaThreshold.class, out, new ExtendedRAI<>(in,
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE)),
+			new RectangleShape(3, false), 0.0, 0.0);
 
 		assertEquals(out.firstElement().get(), false);
 	}

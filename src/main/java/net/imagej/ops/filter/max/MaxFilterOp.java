@@ -30,6 +30,7 @@
 
 package net.imagej.ops.filter.max;
 
+import net.imagej.ops.ExtendedRAI;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.IterableInterval;
@@ -41,7 +42,7 @@ import net.imglib2.RandomAccessibleInterval;
  * @author Jonathan Hale (University of Konstanz)
  */
 public interface MaxFilterOp<I, O> extends Ops.Filter.Max,
-	UnaryComputerOp<RandomAccessibleInterval<I>, IterableInterval<O>>
+	UnaryComputerOp<ExtendedRAI<I, RandomAccessibleInterval<I>>, IterableInterval<O>>
 {
 	// NB: Marker interface.
 }
