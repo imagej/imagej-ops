@@ -47,9 +47,9 @@ import org.scijava.plugin.Plugin;
  * @author Jonathan Hale (University of Konstanz)
  * @author Curtis Rueden
  */
-public final class RealMath {
+public final class UnaryRealTypeMath {
 
-	private RealMath() {
+	private UnaryRealTypeMath() {
 		// NB: Prevent instantiation of utility class.
 	}
 

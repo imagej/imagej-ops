@@ -43,13 +43,13 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 /**
- * Tests {@link RealMath}.
+ * Tests {@link UnaryRealTypeMath}.
  *
  * @author Leon Yang
  * @author Alison Walter
  * @author Curtis Rueden
  */
-public class RealMathTest extends AbstractOpTest {
+public class UnaryRealTypeMathTest extends AbstractOpTest {
 
 	// NB: long number LARGE_NUM is rounded to double 9007199254740992.0.
 	final static private long LARGE_NUM = 9007199254740993L;
@@ -596,8 +596,8 @@ public class RealMathTest extends AbstractOpTest {
 		final DoubleType out = new DoubleType();
 		final long seed = 0xcafebabe12345678L;
 		@SuppressWarnings("unchecked")
-		final RealMath.RandomGaussian<DoubleType, DoubleType> op = ops.op(
-			RealMath.RandomGaussian.class, in.createVariable(), in, seed);
+		final UnaryRealTypeMath.RandomGaussian<DoubleType, DoubleType> op = ops.op(
+			UnaryRealTypeMath.RandomGaussian.class, in.createVariable(), in, seed);
 		op.compute1(in, out);
 		assertEquals(o, out.get(), 0);
 		in.set(i2);
@@ -627,8 +627,8 @@ public class RealMathTest extends AbstractOpTest {
 		final DoubleType out = new DoubleType();
 		final long seed = 0xcafebabe12345678L;
 		@SuppressWarnings("unchecked")
-		final RealMath.RandomUniform<DoubleType, DoubleType> op = ops.op(
-			RealMath.RandomUniform.class, in.createVariable(), in, seed);
+		final UnaryRealTypeMath.RandomUniform<DoubleType, DoubleType> op = ops.op(
+			UnaryRealTypeMath.RandomUniform.class, in.createVariable(), in, seed);
 		op.compute1(in, out);
 		assertEquals(o, out.get(), 0);
 		in.set(i2);
