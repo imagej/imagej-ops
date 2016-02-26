@@ -60,17 +60,16 @@ public class FFTMethodsLinearFFTFilterC<I extends RealType<I>, O extends RealTyp
 	implements Ops.Filter.LinearFilter
 {
 
-	// TODO: should this be a parameter? figure out best way to override frequencyOp 
+	// TODO: should this be a parameter? figure out best way to override
+	// frequencyOp
 	@Parameter
 	private BinaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> frequencyOp;
 
 	private UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<C>> fftIn;
 
-	private UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<C>> fftKernel;
+	private UnaryComputerOp<RandomAccessibleInterval<K>, RandomAccessibleInterval<C>> fftKernel;
 
 	private UnaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<O>> ifft;
-
-	private BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>> linearFilter;
 
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -80,18 +79,11 @@ public class FFTMethodsLinearFFTFilterC<I extends RealType<I>, O extends RealTyp
 		fftIn = (UnaryComputerOp) Computers.unary(ops(), FFTMethodsOpC.class,
 			getFFTInput(), RandomAccessibleInterval.class);
 
-		fftKernel = (UnaryComputerOp) Computers.unary(ops(),
-			FFTMethodsOpC.class, getFFTKernel(),
-			RandomAccessibleInterval.class);
+		fftKernel = (UnaryComputerOp) Computers.unary(ops(), FFTMethodsOpC.class,
+			getFFTKernel(), RandomAccessibleInterval.class);
 
 		ifft = (UnaryComputerOp) Computers.unary(ops(), IFFTComputerOp.class,
 			RandomAccessibleInterval.class, getFFTKernel());
-
-		linearFilter = (BinaryComputerOp) Computers.binary(ops(),
-			DefaultLinearFFTFilterC.class, RandomAccessibleInterval.class,
-			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
-			getFFTInput(), getFFTKernel(), getPerformInputFFT(),
-			getPerformKernelFFT(), fftIn, fftKernel, frequencyOp, ifft);
 
 	}
 
@@ -102,6 +94,23 @@ public class FFTMethodsLinearFFTFilterC<I extends RealType<I>, O extends RealTyp
 	public void compute2(RandomAccessibleInterval<I> in,
 		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
-		linearFilter.compute2(in, kernel, out);
+		// perform input FFT if needed
+		if (getPerformInputFFT()) {
+			fftIn.compute1(in, getFFTInput());
+		}
+
+		// perform kernel FFT if needed
+		if (getPerformKernelFFT()) {
+			fftKernel.compute1(kernel, getFFTKernel());
+		}
+
+		// perform the operation in frequency domain (ie multiplication for
+		// convolution, complex conjugate multiplication for correlation,
+		// Wiener Filter, etc.)
+		frequencyOp.compute2(getFFTInput(), getFFTKernel(), getFFTInput());
+
+		// perform inverse fft
+		ifft.compute1(getFFTInput(), out);
+		// linearFilter.compute2(in, kernel, out);
 	}
 }

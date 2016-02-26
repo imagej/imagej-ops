@@ -934,55 +934,6 @@ public class FilterNamespace extends AbstractNamespace {
 	// -- linear filter --
 
 	/** Executes the "linearFilter" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.DefaultLinearFFTFilterC.class)
-	public <I, O, K, C> O linearFilter(final O out, final I in1, final K in2,
-		final C fftInput, final C fftKernel, final UnaryComputerOp<I, C> fftInputOp,
-		final UnaryComputerOp<K, C> fftKernelOp,
-		final BinaryComputerOp<C, C, C> frequencyOp,
-		final UnaryComputerOp<C, O> ifftOp)
-	{
-		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(
-			net.imagej.ops.filter.DefaultLinearFFTFilterC.class, out, in1, in2,
-			fftInput, fftKernel, fftInputOp, fftKernelOp, frequencyOp, ifftOp);
-		return result;
-	}
-
-	/** Executes the "linearFilter" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.DefaultLinearFFTFilterC.class)
-	public <I, O, K, C> O linearFilter(final O out, final I in1, final K in2,
-		final C fftInput, final C fftKernel, final boolean performInputFFT,
-		final UnaryComputerOp<I, C> fftInputOp,
-		final UnaryComputerOp<K, C> fftKernelOp,
-		final BinaryComputerOp<C, C, C> frequencyOp,
-		final UnaryComputerOp<C, O> ifftOp)
-	{
-		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(
-			net.imagej.ops.filter.DefaultLinearFFTFilterC.class, out, in1, in2,
-			fftInput, fftKernel, performInputFFT, fftInputOp, fftKernelOp,
-			frequencyOp, ifftOp);
-		return result;
-	}
-
-	/** Executes the "linearFilter" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.DefaultLinearFFTFilterC.class)
-	public <I, O, K, C> O linearFilter(final O out, final I in1, final K in2,
-		final C fftInput, final C fftKernel, final boolean performInputFFT,
-		final boolean performKernelFFT, final UnaryComputerOp<I, C> fftInputOp,
-		final UnaryComputerOp<K, C> fftKernelOp,
-		final BinaryComputerOp<C, C, C> frequencyOp,
-		final UnaryComputerOp<C, O> ifftOp)
-	{
-		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(
-			net.imagej.ops.filter.DefaultLinearFFTFilterC.class, out, in1, in2,
-			fftInput, fftKernel, performInputFFT, performKernelFFT, fftInputOp,
-			fftKernelOp, frequencyOp, ifftOp);
-		return result;
-	}
-
-	/** Executes the "linearFilter" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.FFTMethodsLinearFFTFilterC.class)
 	public <
 		I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
