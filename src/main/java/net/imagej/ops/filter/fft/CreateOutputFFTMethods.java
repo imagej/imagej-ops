@@ -53,7 +53,7 @@ public class CreateOutputFFTMethods<T> extends
 {
 
 	@Parameter(required = false)
-	private Boolean fast = true;
+	private boolean fast = true;
 
 	@Parameter(required = false)
 	private ImgFactory<T> fac;

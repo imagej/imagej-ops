@@ -559,7 +559,7 @@ public class FilterNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.filter.fft.CreateOutputFFTMethods.class)
 	public <T> Img<T> createFFTOutput(final Dimensions in1, final T in2,
-		final Boolean fast)
+		final boolean fast)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<T> result = (Img<T>) ops().run(
@@ -569,7 +569,7 @@ public class FilterNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.filter.fft.CreateOutputFFTMethods.class)
 	public <T> Img<T> createFFTOutput(final Dimensions in1, final T in2,
-		final Boolean fast, final ImgFactory<T> fac)
+		final boolean fast, final ImgFactory<T> fac)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<T> result = (Img<T>) ops().run(
@@ -612,7 +612,7 @@ public class FilterNamespace extends AbstractNamespace {
 	public <
 		T extends RealType<T>, I extends RandomAccessibleInterval<T>, C extends ComplexType<C>, O extends RandomAccessibleInterval<C>>
 		RandomAccessibleInterval<C> fft(final RandomAccessibleInterval<T> in,
-			final long[] borderSize, final Boolean fast)
+			final long[] borderSize, final boolean fast)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<C> result =
@@ -626,7 +626,7 @@ public class FilterNamespace extends AbstractNamespace {
 	public <
 		T extends RealType<T>, I extends RandomAccessibleInterval<T>, C extends ComplexType<C>, O extends RandomAccessibleInterval<C>>
 		RandomAccessibleInterval<C> fft(final RandomAccessibleInterval<T> in,
-			final long[] borderSize, final Boolean fast,
+			final long[] borderSize, final boolean fast,
 			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf)
 	{
 		@SuppressWarnings("unchecked")
@@ -642,7 +642,7 @@ public class FilterNamespace extends AbstractNamespace {
 	public <
 		T extends RealType<T>, I extends RandomAccessibleInterval<T>, C extends ComplexType<C>, O extends RandomAccessibleInterval<C>>
 		RandomAccessibleInterval<C> fft(final RandomAccessibleInterval<T> in,
-			final long[] borderSize, final Boolean fast,
+			final long[] borderSize, final boolean fast,
 			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf,
 			ImgFactory<C> factory)
 	{
@@ -659,7 +659,7 @@ public class FilterNamespace extends AbstractNamespace {
 	public <
 		T extends RealType<T>, I extends RandomAccessibleInterval<T>, C extends ComplexType<C>, O extends RandomAccessibleInterval<C>>
 		RandomAccessibleInterval<C> fft(final RandomAccessibleInterval<T> in,
-			final long[] borderSize, final Boolean fast,
+			final long[] borderSize, final boolean fast,
 			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf,
 			ImgFactory<C> factory, Type<C> fftType)
 	{
@@ -689,8 +689,8 @@ public class FilterNamespace extends AbstractNamespace {
 	/** Executes the "fftSize" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.fftSize.ComputeFFTSize.class)
 	public List<long[]> fftSize(final Dimensions inputSize,
-		final long[] paddedSize, final long[] fftSize, final Boolean forward,
-		final Boolean fast)
+		final long[] paddedSize, final long[] fftSize, final boolean forward,
+		final boolean fast)
 	{
 		@SuppressWarnings("unchecked")
 		final List<long[]> result = (List<long[]>) ops().run(
@@ -1182,7 +1182,7 @@ public class FilterNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.filter.pad.PadInputFFTMethods.class)
 	public <T extends RealType<T>> RandomAccessibleInterval<T> padFFTInput(
 		final RandomAccessibleInterval<T> in1, final Dimensions in2,
-		final Boolean fast)
+		final boolean fast)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
@@ -1197,7 +1197,7 @@ public class FilterNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.filter.pad.PadInputFFTMethods.class)
 	public <T extends RealType<T>> RandomAccessibleInterval<T> padFFTInput(
 		final RandomAccessibleInterval<T> in1, final Dimensions in2,
-		final Boolean fast,
+		final boolean fast,
 		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf)
 	{
 		@SuppressWarnings("unchecked")
@@ -1230,7 +1230,7 @@ public class FilterNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.filter.pad.PadShiftKernelFFTMethods.class)
 	public <T extends RealType<T>> RandomAccessibleInterval<T> padShiftFFTKernel(
 		final RandomAccessibleInterval<T> in1, final Dimensions in2,
-		final Boolean fast)
+		final boolean fast)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =

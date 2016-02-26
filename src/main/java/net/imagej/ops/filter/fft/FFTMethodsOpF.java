@@ -80,7 +80,7 @@ public class FFTMethodsOpF<T extends RealType<T>, C extends ComplexType<C>>
 	 * nearest size that is supported.
 	 */
 	@Parameter(required = false)
-	private Boolean fast = true;
+	private boolean fast = true;
 
 	/**
 	 * The OutOfBoundsFactory used to extend the image

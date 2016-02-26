@@ -32,7 +32,7 @@ public class PadInputFFTMethods<T extends RealType<T>, I extends RandomAccessibl
 {
 
 	@Parameter(required = false)
-	private Boolean fast = true;
+	private boolean fast = true;
 
 	/**
 	 * The OutOfBoundsFactory used to extend the image

@@ -57,10 +57,10 @@ public class ComputeFFTSize extends AbstractOp implements Ops.Filter.FFTSize {
 	private long[] fftSize;
 
 	@Parameter
-	private Boolean forward;
+	private boolean forward;
 
 	@Parameter
-	private Boolean fast;
+	private boolean fast;
 
 	@Override
 	public void run() {

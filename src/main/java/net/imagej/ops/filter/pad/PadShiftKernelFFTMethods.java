@@ -32,7 +32,7 @@ public class PadShiftKernelFFTMethods<T extends RealType<T>, I extends RandomAcc
 {
 
 	@Parameter(required = false)
-	private Boolean fast = true;
+	private boolean fast = true;
 
 	@Override
 	@SuppressWarnings("unchecked")

@@ -62,13 +62,13 @@ public abstract class AbstractFFTFilterC<I, O, K, C> extends
 	private C fftKernel;
 
 	/**
-	 * Boolean indicating that the input FFT has already been calculated
+	 * boolean indicating that the input FFT has already been calculated
 	 */
 	@Parameter(required = false)
 	private boolean performInputFFT = true;
 
 	/**
-	 * Boolean indicating that the kernel FFT has already been calculated
+	 * boolean indicating that the kernel FFT has already been calculated
 	 */
 	@Parameter(required = false)
 	private boolean performKernelFFT = true;
