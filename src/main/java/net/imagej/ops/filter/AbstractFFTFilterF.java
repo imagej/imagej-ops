@@ -182,7 +182,7 @@ public abstract class AbstractFFTFilterF<I extends RealType<I> & NativeType<I>, 
 		// TODO: in this case it is difficult to match the filter op in the
 		// 'initialize' as we don't know the size yet, thus we can't create memory
 		// for the FFTs
-		filter = createFilter(paddedInput, paddedKernel, fftImage, fftKernel,
+		filter = createFilterComputer(paddedInput, paddedKernel, fftImage, fftKernel,
 			output, paddedInput);
 
 		filter.compute2(paddedInput, paddedKernel, output);
@@ -193,7 +193,7 @@ public abstract class AbstractFFTFilterF<I extends RealType<I> & NativeType<I>, 
 
 	/**
 	 * This function is called after the RAIs and FFTs are set up and create the
-	 * frequency filter.
+	 * frequency filter computer.
 	 * 
 	 * @param raiExtendedInput
 	 * @param raiExtendedKernel
@@ -204,7 +204,7 @@ public abstract class AbstractFFTFilterF<I extends RealType<I> & NativeType<I>, 
 	 */
 	abstract public
 		BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>>
-		createFilter(RandomAccessibleInterval<I> raiExtendedInput,
+		createFilterComputer(RandomAccessibleInterval<I> raiExtendedInput,
 			RandomAccessibleInterval<K> raiExtendedKernel,
 			RandomAccessibleInterval<C> fftImg, RandomAccessibleInterval<C> fftKernel,
 			RandomAccessibleInterval<O> output, Interval imgConvolutionInterval);
