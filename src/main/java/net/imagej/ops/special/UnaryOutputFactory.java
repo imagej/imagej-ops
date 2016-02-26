@@ -31,8 +31,7 @@
 package net.imagej.ops.special;
 
 /**
- * Factory which creates an output object of type <O> given the input of type
- * <I>
+ * Factory which creates a typed output object given a typed input.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
