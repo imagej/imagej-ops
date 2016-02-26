@@ -46,9 +46,7 @@ import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 /**
  * Tests for {@link MapBinaryInplace1}s.
@@ -59,17 +57,12 @@ public class MapBinaryInplace1sTest extends AbstractOpTest {
 
 	private Img<ByteType> in1;
 	private Img<ByteType> in2;
-	private Img<ByteType> in2DiffDims;
 	private Op add;
-
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
 
 	@Before
 	public void initImg() {
 		in1 = generateByteArrayTestImg(true, 10, 10);
 		in2 = generateByteArrayTestImg(false, 10, 10);
-		in2DiffDims = generateByteArrayTestImg(false, 10, 10, 2);
 		for (ByteType px : in2)
 			px.set((byte) 1);
 		add = Computers.binary(ops, Ops.Math.Add.class, ByteType.class,
@@ -88,10 +81,6 @@ public class MapBinaryInplace1sTest extends AbstractOpTest {
 		final Img<ByteType> in1Copy = in1.copy();
 		ops.run(${className}.class, in1Copy, in2, add);
 		assertImgAddEquals(in1, in2, in1Copy);
-
-		// Expect exception when in2 has different dimensions
-		thrown.expect(IllegalArgumentException.class);
-		ops.op(${className}.class, in1, in2DiffDims, add);
 	}
 
 #end
