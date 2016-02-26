@@ -684,32 +684,6 @@ public class FilterNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	/** Executes the "fft" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.fft.DefaultFFTOp.class)
-	public <I extends Dimensions, O extends Dimensions> O fft(final I in,
-		final BinaryFunctionOp<I, Dimensions, I> padOp,
-		final UnaryFunctionOp<Dimensions, O> createOp,
-		final UnaryComputerOp<I, O> fftOp)
-	{
-		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.filter.fft.DefaultFFTOp.class,
-			in, padOp, createOp, fftOp);
-		return result;
-	}
-
-	/** Executes the "fft" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.fft.DefaultFFTOp.class)
-	public <I extends Dimensions, O extends Dimensions> O fft(final I in,
-		final BinaryFunctionOp<I, Dimensions, I> padOp,
-		final UnaryFunctionOp<Dimensions, O> createOp,
-		final UnaryComputerOp<I, O> fftOp, final long... borderSize)
-	{
-		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.filter.fft.DefaultFFTOp.class,
-			in, padOp, createOp, fftOp, borderSize);
-		return result;
-	}
-
 	// -- fftSize --
 
 	/** Executes the "fftSize" operation on the given arguments. */

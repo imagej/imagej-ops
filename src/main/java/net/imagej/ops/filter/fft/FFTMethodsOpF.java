@@ -159,8 +159,6 @@ public class FFTMethodsOpF<T extends RealType<T>, C extends ComplexType<C>>
 
 		return output;
 
-		// TODO: revisit the concept of a super-generic FFT
-		// return fftFunctionOp.compute1(input);
 	}
 
 }
