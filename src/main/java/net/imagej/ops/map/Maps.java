@@ -63,13 +63,13 @@ public class Maps {
 	public static <I, O> boolean compatible(final IterableInterval<I> a,
 		final RandomAccessibleInterval<O> b)
 	{
-		return Intervals.equalDimensions(a, b);
+		return Intervals.contains(b, a);
 	}
 
 	public static <I, O> boolean compatible(final RandomAccessibleInterval<I> a,
 		final IterableInterval<O> b)
 	{
-		return Intervals.equalDimensions(a, b);
+		return Intervals.contains(a, b);
 	}
 
 	public static <I1, I2, O> boolean compatible(final IterableInterval<I1> a,
@@ -83,14 +83,14 @@ public class Maps {
 		final IterableInterval<I2> b, final RandomAccessibleInterval<O> c)
 	{
 		return a.iterationOrder().equals(b.iterationOrder()) && Intervals
-			.equalDimensions(a, c);
+			.contains(c, a);
 	}
 
 	public static <I1, I2, O> boolean compatible(final IterableInterval<I1> a,
 		final RandomAccessibleInterval<I2> b, final IterableInterval<O> c)
 	{
 		return a.iterationOrder().equals(c.iterationOrder()) && Intervals
-			.equalDimensions(a, b);
+			.contains(b, a);
 	}
 
 	public static <I1, I2, O> boolean compatible(
@@ -98,27 +98,27 @@ public class Maps {
 		final IterableInterval<O> c)
 	{
 		return b.iterationOrder().equals(c.iterationOrder()) && Intervals
-			.equalDimensions(a, b);
+			.contains(a, b);
 	}
 
 	public static <I1, I2, O> boolean compatible(final IterableInterval<I1> a,
 		final RandomAccessibleInterval<I2> b, final RandomAccessibleInterval<O> c)
 	{
-		return Intervals.equalDimensions(a, b) && Intervals.equalDimensions(a, c);
+		return Intervals.contains(b, a) && Intervals.contains(c, a);
 	}
 
 	public static <I1, I2, O> boolean compatible(
 		final RandomAccessibleInterval<I1> a, final IterableInterval<I2> b,
 		final RandomAccessibleInterval<O> c)
 	{
-		return Intervals.equalDimensions(a, b) && Intervals.equalDimensions(a, c);
+		return Intervals.contains(a, b) && Intervals.contains(c, b);
 	}
 
 	public static <I1, I2, O> boolean compatible(
 		final RandomAccessibleInterval<I1> a, final RandomAccessibleInterval<I2> b,
 		final IterableInterval<O> c)
 	{
-		return Intervals.equalDimensions(a, b) && Intervals.equalDimensions(a, c);
+		return Intervals.contains(a, c) && Intervals.contains(b, c);
 	}
 
 	// -- Unary Maps --
