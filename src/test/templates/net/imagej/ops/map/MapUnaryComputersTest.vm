@@ -47,9 +47,7 @@ import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 /**
  * Tests for {@link MapUnaryComputers}.
@@ -61,17 +59,12 @@ public class MapUnaryComputersTest extends AbstractOpTest {
 
 	private Img<ByteType> in;
 	private Img<ByteType> out;
-	private Img<ByteType> outDiffDims;
 	private Op add;
-
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
 
 	@Before
 	public void initImg() {
 		in = generateByteArrayTestImg(true, 10, 10);
 		out = generateByteArrayTestImg(false, 10, 10);
-		outDiffDims = generateByteArrayTestImg(false, 10, 10, 2);
 		add = Computers.unary(ops, Ops.Math.Add.class, ByteType.class, ByteType.class,
 			new ByteType((byte) 1));
 	}
@@ -87,10 +80,6 @@ public class MapUnaryComputersTest extends AbstractOpTest {
 	public void test${className}() {
 		ops.run(${className}.class, out, in, add);
 		assertImgAddOneEquals(in, out);
-
-		// Expect exception when output has different dimensions
-		thrown.expect(IllegalArgumentException.class);
-		ops.op(${className}.class, outDiffDims, in, add);
 	}
 
 #end
