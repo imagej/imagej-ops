@@ -282,16 +282,6 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.math.UnaryRealTypeMath.Add.class)
-	public <I extends RealType<I>, O extends RealType<O>> O add(final O out,
-		final I in, final double constant)
-	{
-		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Add.class, out, in,
-			constant);
-		return result;
-	}
-
 	@OpMethod(op = net.imagej.ops.math.BinaryRealTypeMath.Add.class)
 	public <
 		I1 extends RealType<I1>, I2 extends RealType<I2>, O extends RealType<O>> O
@@ -414,16 +404,6 @@ public class MathNamespace extends AbstractNamespace {
 	public long and(final long a, final long b) {
 		final long result = (Long) ops().run(
 			net.imagej.ops.math.PrimitiveMath.LongAnd.class, a, b);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.math.UnaryRealTypeMath.AndConstant.class)
-	public <I extends RealType<I>, O extends RealType<O>> O and(final O out,
-		final I in, final long constant)
-	{
-		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.Ops.Math.And.class, out, in,
-			constant);
 		return result;
 	}
 
@@ -985,16 +965,6 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.math.UnaryRealTypeMath.Divide.class)
-	public <I extends RealType<I>, O extends RealType<O>> O divide(final O out,
-		final I in, final double constant, final double dbzVal)
-	{
-		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Divide.class, out,
-			in, constant, dbzVal);
-		return result;
-	}
-
 	@OpMethod(op = net.imagej.ops.math.BinaryRealTypeMath.Divide.class)
 	public <
 		I1 extends RealType<I1>, I2 extends RealType<I2>, O extends RealType<O>> O
@@ -1545,16 +1515,6 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.math.UnaryRealTypeMath.Multiply.class)
-	public <I extends RealType<I>, O extends RealType<O>> O multiply(final O out,
-		final I in, final double constant)
-	{
-		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Multiply.class, out,
-			in, constant);
-		return result;
-	}
-
 	@OpMethod(op = net.imagej.ops.math.BinaryRealTypeMath.Multiply.class)
 	public <
 		I1 extends RealType<I1>, I2 extends RealType<I2>, O extends RealType<O>> O
@@ -1739,16 +1699,6 @@ public class MathNamespace extends AbstractNamespace {
 	public long or(final long a, final long b) {
 		final long result = (Long) ops().run(
 			net.imagej.ops.math.PrimitiveMath.LongOr.class, a, b);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.math.UnaryRealTypeMath.OrConstant.class)
-	public <I extends RealType<I>, O extends RealType<O>> O or(final O out,
-		final I in, final long constant)
-	{
-		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Or.class, out, in,
-			constant);
 		return result;
 	}
 
@@ -2285,16 +2235,6 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.math.UnaryRealTypeMath.Subtract.class)
-	public <I extends RealType<I>, O extends RealType<O>> O subtract(final O out,
-		final I in, final double constant)
-	{
-		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Subtract.class, out,
-			in, constant);
-		return result;
-	}
-
 	@OpMethod(op = net.imagej.ops.math.BinaryRealTypeMath.Subtract.class)
 	public <
 		I1 extends RealType<I1>, I2 extends RealType<I2>, O extends RealType<O>> O
@@ -2497,16 +2437,6 @@ public class MathNamespace extends AbstractNamespace {
 	public long xor(final long a, final long b) {
 		final long result = (Long) ops().run(
 			net.imagej.ops.math.PrimitiveMath.LongXor.class, a, b);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.math.UnaryRealTypeMath.XorConstant.class)
-	public <I extends RealType<I>, O extends RealType<O>> O xor(final O out,
-		final I in, final long constant)
-	{
-		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Xor.class, out, in,
-			constant);
 		return result;
 	}
 

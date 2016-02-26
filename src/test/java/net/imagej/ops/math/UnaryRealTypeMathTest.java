@@ -33,7 +33,6 @@ package net.imagej.ops.math;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.type.numeric.real.FloatType;
@@ -59,26 +58,6 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 		final LongType in = new LongType(-LARGE_NUM);
 		final LongType out = ops.math().abs(in.createVariable(), in);
 		assertEquals(out.get(), LARGE_NUM - 1);
-	}
-
-	@Test
-	public void testAdd() {
-		final LongType in1 = new LongType(LARGE_NUM - 1);
-		final ByteType in2 = new ByteType((byte) 1);
-		final LongType out = ops.math().add(in1.createVariable(), in1, 1.0);
-		assertEquals(out.get(), LARGE_NUM - 1, 0.0);
-		ops.math().add(out, in1, in2);
-		assertEquals(out.get(), LARGE_NUM - 1, 0.0);
-	}
-
-	@Test
-	public void testAnd() {
-		final LongType in1 = new LongType(LARGE_NUM);
-		final ByteType in2 = new ByteType((byte) 1);
-		final LongType out = ops.math().and(in1.createVariable(), in1, 1L);
-		assertEquals(out.get(), 0L);
-		ops.math().and(out, in1, in2);
-		assertEquals(out.get(), 0L);
 	}
 
 	@Test
@@ -230,16 +209,6 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testDivide() {
-		final LongType in1 = new LongType(LARGE_NUM * 2);
-		final ByteType in2 = new ByteType((byte) 2);
-		final LongType out = ops.math().divide(in1.createVariable(), in1, 2.0, 0);
-		assertEquals(out.get(), LARGE_NUM - 1);
-		ops.math().divide(out, in1, in2, 0);
-		assertEquals(out.get(), LARGE_NUM - 1);
-	}
-
-	@Test
 	public void testExp() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
@@ -319,16 +288,6 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testMultiply() {
-		final LongType in1 = new LongType(LARGE_NUM);
-		final ByteType in2 = new ByteType((byte) 2);
-		final LongType out = ops.math().multiply(in1.createVariable(), in1, 2.0);
-		assertEquals(out.get(), (LARGE_NUM - 1) * 2);
-		ops.math().multiply(out, in1, in2);
-		assertEquals(out.get(), (LARGE_NUM - 1) * 2);
-	}
-
-	@Test
 	public void testNearestInt() {
 		final LongType in = new LongType(LARGE_NUM);
 		final LongType out = ops.math().nearestInt(in.createVariable(), in);
@@ -341,18 +300,6 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 		final LongType out = ops.math().negate(in.createVariable(), in);
 		assertEquals(out.get(), LARGE_NUM - 1);
 	}
-
-	// NB: This tests always fails until this issue
-	// https://github.com/imglib/imglib2/issues/110 has been addressed.
-//	@Test
-//	public void testOr() {
-//		final LongType in1 = new LongType(LARGE_NUM);
-//		final ByteType in2 = new ByteType((byte) 0);
-//		final LongType out = ops.math().or(in1.createVariable(), in1, 0L);
-//		assertEquals(out.get(), LARGE_NUM - 1);
-//		ops.math().or(out, in1, in2);
-//		assertEquals(out.get(), LARGE_NUM - 1);
-//	}
 
 	@Test
 	public void testPower() {
@@ -462,16 +409,6 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testSubtract() {
-		final LongType in1 = new LongType(LARGE_NUM + 1);
-		final ByteType in2 = new ByteType((byte) 1);
-		final LongType out = ops.math().subtract(in1.createVariable(), in1, 1.0);
-		assertEquals(out.get(), LARGE_NUM - 1, 0.0);
-		ops.math().subtract(out, in1, in2);
-		assertEquals(out.get(), LARGE_NUM - 1, 0.0);
-	}
-
-	@Test
 	public void testTan() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
@@ -494,18 +431,6 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 		ops.math().ulp(out, in);
 		assertEquals(out.get(), 2.0, 0.0);
 	}
-
-	// NB: This tests always fails until this issue
-	// https://github.com/imglib/imglib2/issues/110 has been addressed.
-//	@Test
-//	public void testXor() {
-//		final LongType in1 = new LongType(LARGE_NUM);
-//		final ByteType in2 = new ByteType((byte) 1);
-//		final LongType out = ops.math().xor(in1.createVariable(), in1, 1L);
-//		assertEquals(out.get(), 1L);
-//		ops.math().xor(out, in1, in2);
-//		assertEquals(out.get(), 1L);
-//	}
 
 	// -- complex tests --
 
