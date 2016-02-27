@@ -231,8 +231,7 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 		}
 
 		// create image for the reblurred
-		final Img<O> reblurred = this.getImgFactory().create(
-			getImgConvolutionInterval(), outType.createVariable());
+		final Img<O> reblurred = create.compute1(getImgConvolutionInterval());
 
 		setRAIExtendedEstimate(estimate);
 		setRAIExtendedReblurred(reblurred);
@@ -249,7 +248,7 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 			RandomAccessibleInterval.class, this.getFFTInput(), this.getFFTKernel(),
 			true, false);
 
-		normalization = getImgFactory().create(estimate, outType.createVariable());
+		normalization = create.compute1(estimate);
 
 		this.createNormalizationImageSemiNonCirculant(kernel);
 

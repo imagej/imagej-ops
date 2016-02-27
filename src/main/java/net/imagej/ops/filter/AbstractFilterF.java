@@ -32,7 +32,6 @@ package net.imagej.ops.filter;
 
 import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.ImgFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
@@ -81,11 +80,6 @@ public abstract class AbstractFilterF<I extends RealType<I> & NativeType<I>, O e
 	@Parameter(required = false)
 	private Type<O> outType;
 
-	/**
-	 * Factory to create output Img. If null a default output factory will be used
-	 */
-	@Parameter(required = false)
-	private ImgFactory<O> outFactory;
 
 	/**
 	 * protected RandomAccessibleInterval<K> getKernel() { return kernel; } Create
@@ -114,11 +108,7 @@ public abstract class AbstractFilterF<I extends RealType<I> & NativeType<I>, O e
 			}
 		}
 
-		if (outFactory == null) {
-			outFactory = (ImgFactory<O>) (ops().create().imgFactory(input));
-		}
-
-		return ops().create().img(input, outType.createVariable(), outFactory);
+		return ops().create().img(input, outType.createVariable());
 	}
 
 	protected long[] getBorderSize() {
@@ -143,10 +133,6 @@ public abstract class AbstractFilterF<I extends RealType<I> & NativeType<I>, O e
 		OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel)
 	{
 		this.obfKernel = obfKernel;
-	}
-
-	protected ImgFactory<O> getOutFactory() {
-		return outFactory;
 	}
 
 }

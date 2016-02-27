@@ -41,7 +41,6 @@ import net.imglib2.Dimensions;
 import net.imglib2.FinalDimensions;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.ImgFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.NativeType;
@@ -70,12 +69,6 @@ public abstract class AbstractFFTFilterF<I extends RealType<I> & NativeType<I>, 
 	 */
 	@Parameter(required = false)
 	private ComplexType<C> fftType;
-
-	/**
-	 * Factory to create FFT Imgs
-	 */
-	@Parameter(required = false)
-	private ImgFactory<C> fftFactory;
 
 	/**
 	 * Op used to pad the input

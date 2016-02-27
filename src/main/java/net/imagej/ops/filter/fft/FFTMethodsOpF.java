@@ -41,7 +41,6 @@ import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.Dimensions;
 import net.imglib2.FinalDimensions;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.ImgFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
@@ -87,12 +86,6 @@ public class FFTMethodsOpF<T extends RealType<T>, C extends ComplexType<C>>
 	 */
 	@Parameter(required = false)
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf;
-
-	/**
-	 * The ImgFactory used to create the output
-	 */
-	@Parameter(required = false)
-	private ImgFactory<?> factory;
 
 	/**
 	 * The complex type of the output

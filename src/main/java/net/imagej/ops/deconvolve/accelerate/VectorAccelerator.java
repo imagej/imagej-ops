@@ -31,18 +31,19 @@
 package net.imagej.ops.deconvolve.accelerate;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
 import net.imglib2.Cursor;
+import net.imglib2.Dimensions;
+import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
-import net.imglib2.img.ImgFactory;
-import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -60,12 +61,6 @@ public class VectorAccelerator<T extends RealType<T>> extends
 	Ops.Deconvolve.Accelerate
 {
 
-	/**
-	 * The ImgFactory used to create images
-	 */
-	@Parameter
-	private ImgFactory<T> imgFactory;
-
 	Img<T> xkm1_previous = null;
 	Img<T> yk_prediction = null;
 	Img<T> hk_vector = null;
@@ -73,23 +68,33 @@ public class VectorAccelerator<T extends RealType<T>> extends
 	Img<T> gk;
 	Img<T> gkm1;
 
+	private UnaryFunctionOp<Interval, Img<T>> create;
+
 	double accelerationFactor = 0.0f;
 
 	@Override
-	public void mutate(RandomAccessibleInterval<T> yk_iterated) {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void initialize() {
+		super.initialize();
 
+		create = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+			Img.class, Dimensions.class, Util.getTypeFromInterval(out()), Util
+				.getTypeFromInterval(out()));
+	}
+
+	@Override
+	public void mutate(RandomAccessibleInterval<T> yk_iterated) {
 		accelerate(yk_iterated);
 	}
 
 	public void initialize(RandomAccessibleInterval<T> yk_iterated) {
 		if (yk_prediction == null) {
-			
-			Type<T> type = Util.getTypeFromInterval(yk_iterated);
-			yk_prediction = imgFactory.create(yk_iterated, type.createVariable());
-			xkm1_previous = imgFactory.create(yk_iterated, type.createVariable());
-			yk_prediction = imgFactory.create(yk_iterated, type.createVariable());
-			gk = imgFactory.create(yk_iterated, type.createVariable());
-			hk_vector = imgFactory.create(yk_iterated, type.createVariable());
+
+			yk_prediction = create.compute1(yk_iterated);
+			xkm1_previous = create.compute1(yk_iterated);
+			yk_prediction = create.compute1(yk_iterated);
+			gk = create.compute1(yk_iterated);
+			hk_vector = create.compute1(yk_iterated);
 
 		}
 
@@ -100,7 +105,7 @@ public class VectorAccelerator<T extends RealType<T>> extends
 		// use the iterated prediction and the previous value of the prediction
 		// to calculate the acceleration factor
 		if (yk_prediction != null) {
-			
+
 			accelerationFactor = computeAccelerationFactor(yk_iterated);
 
 			System.out.println("Acceleration Factor: " + accelerationFactor);
@@ -127,7 +132,7 @@ public class VectorAccelerator<T extends RealType<T>> extends
 				(float) accelerationFactor);
 		}
 		else {
-		
+
 			// TODO: Revisit where initialization should be done
 			initialize(yk_iterated);
 
@@ -225,10 +230,7 @@ public class VectorAccelerator<T extends RealType<T>> extends
 	public Img<T> AddAndScale(final RandomAccessibleInterval<T> img1,
 		final Img<T> img2, final float a)
 	{
-		// Img<T> out = img1.factory().create(img1, img1.firstElement());
-
-		Type<T> outType = Util.getTypeFromInterval(img1);
-		Img<T> out = imgFactory.create(img1, outType.createVariable());
+		Img<T> out = create.compute1(img1);
 
 		final Cursor<T> cursor1 = Views.iterable(img1).cursor();
 		final Cursor<T> cursor2 = img2.cursor();

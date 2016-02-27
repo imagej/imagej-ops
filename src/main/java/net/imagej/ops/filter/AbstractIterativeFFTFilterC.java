@@ -33,7 +33,6 @@ package net.imagej.ops.filter;
 import net.imagej.ops.special.inplace.UnaryInplaceOp;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.ImgFactory;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
@@ -68,13 +67,6 @@ public abstract class AbstractIterativeFFTFilterC<I extends RealType<I>, O exten
 	 */
 	@Parameter
 	private Interval imgConvolutionInterval;
-
-	/**
-	 * The ImgFactory used to create output and intermediate images
-	 * TODO: remove and rely on Create
-	 */
-	@Parameter
-	private ImgFactory<O> imgFactory;
 
 	/**
 	 * TODO: make this an op?? A boolean which indicates whether to perform
@@ -128,10 +120,6 @@ public abstract class AbstractIterativeFFTFilterC<I extends RealType<I>, O exten
 		RandomAccessibleInterval<O> raiExtendedEstimate)
 	{
 		this.raiExtendedEstimate = raiExtendedEstimate;
-	}
-
-	protected ImgFactory<O> getImgFactory() {
-		return imgFactory;
 	}
 
 	public Interval getImgConvolutionInterval() {

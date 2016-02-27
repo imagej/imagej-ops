@@ -151,19 +151,19 @@ public class RichardsonLucyTVF<I extends RealType<I> & NativeType<I>, O extends 
 
 		// TODO: make Accelerator a special op
 		if (accelerate == true) {
-			accelerator = ops.op(VectorAccelerator.class, output, getOutFactory());
+			accelerator = ops.op(VectorAccelerator.class, output);
 		}
 
 		if (nonCirculant == false) {
 			return Computers.binary(ops(), RichardsonLucyC.class, output,
 				raiExtendedInput, raiExtendedKernel, fftImg, fftKernel, true, true,
-				maxIterations, imgConvolutionInterval, getOutFactory(), accelerator,
+				maxIterations, imgConvolutionInterval, accelerator,
 				null, computeEstimateOp);
 		}
 
 		return Computers.binary(ops(), RichardsonLucyNonCirculantC.class, output,
 			raiExtendedInput, raiExtendedKernel, fftImg, fftKernel, true, true,
-			maxIterations, imgConvolutionInterval, getOutFactory(), accelerator, in(),
+			maxIterations, imgConvolutionInterval, accelerator, in(),
 			in2(), computeEstimateOp);
 	}
 }
