@@ -43,7 +43,7 @@ import net.imagej.ops.special.computer.BinaryComputerOp;
  * @param <O> type of output
  */
 public interface CenterAwareComputerOp<I, O> extends
-	BinaryComputerOp<I, Iterable<I>, O>
+	BinaryComputerOp<Iterable<I>, I, O>
 {
 	// NB: Marker interface.
 }

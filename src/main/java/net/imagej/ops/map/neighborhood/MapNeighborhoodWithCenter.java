@@ -60,20 +60,20 @@ public class MapNeighborhoodWithCenter<I, O> extends
 	AbstractMapNeighborhood<I, O, RandomAccessibleInterval<I>, IterableInterval<O>, CenterAwareComputerOp<I, O>>
 {
 
-	private BinaryComputerOp<RandomAccessibleInterval<I>, IterableInterval<Neighborhood<I>>, IterableInterval<O>> map;
+	private BinaryComputerOp<IterableInterval<Neighborhood<I>>, RandomAccessibleInterval<I>, IterableInterval<O>> map;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
 		map = (BinaryComputerOp) Computers.binary(ops(), Map.class, IterableInterval.class,
-			RandomAccessibleInterval.class, IterableInterval.class, getOp());
+			IterableInterval.class, RandomAccessibleInterval.class, getOp());
 	}
 
 	@Override
 	public void compute2(final RandomAccessibleInterval<I> in1, final Shape in2,
 		final IterableInterval<O> out)
 	{
-		map.compute2(in1, in2.neighborhoodsSafe(in1), out);
+		map.compute2(in2.neighborhoodsSafe(in1), in1, out);
 	}
 
 }

@@ -66,7 +66,7 @@ public class LocalMedianThreshold<T extends RealType<T>> extends LocalThreshold<
 			private UnaryComputerOp<Iterable<T>, DoubleType> median;
 
 			@Override
-			public void compute2(T center, Iterable<T> neighborhood, BitType output) {
+			public void compute2(final Iterable<T> neighborhood, final T center, final BitType output) {
 
 				if (median == null) {
 					median = Computers

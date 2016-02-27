@@ -144,7 +144,7 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 	{
 
 		@Override
-		public void compute2(final ByteType center, final Iterable<ByteType> neighborhood,
+		public void compute2(final Iterable<ByteType> neighborhood, final ByteType center,
 			final ByteType output)
 		{
 			ByteType a = center;
