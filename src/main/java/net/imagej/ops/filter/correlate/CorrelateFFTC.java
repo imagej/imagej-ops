@@ -71,6 +71,8 @@ public class CorrelateFFTC<I extends RealType<I>, O extends RealType<O>, K exten
 			ComplexConjugateMultiply.class, getFFTInput(), getFFTKernel(),
 			getFFTInput());
 
+		// create a correlater by creating a linear filter and passing the complex conjugate multiplier
+		// as the frequency operation
 		linearFilter = (BinaryComputerOp) Computers.binary(ops(),
 			FFTMethodsLinearFFTFilterC.class, RandomAccessibleInterval.class,
 			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
@@ -80,8 +82,7 @@ public class CorrelateFFTC<I extends RealType<I>, O extends RealType<O>, K exten
 	}
 
 	/**
-	 * Perform correlation by conjugate multiplying the FFTs in the frequency
-	 * domain TODO use an op here??
+	 * Call the linear filter that is set up to perform correlation
 	 */
 	@Override
 	public void compute2(RandomAccessibleInterval<I> input,

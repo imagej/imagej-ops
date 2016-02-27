@@ -65,7 +65,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Deconvolve.RichardsonLucy.class,
 	priority = Priority.HIGH_PRIORITY)
-public class RichardsonLucyF<I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C>>
+public class RichardsonLucyF<I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
 	extends AbstractFFTFilterF<I, O, K, C> implements
 	Ops.Deconvolve.RichardsonLucy
 {
@@ -142,14 +142,14 @@ public class RichardsonLucyF<I extends RealType<I> & NativeType<I>, O extends Re
 		if (!nonCirculant) {
 			return Computers.binary(ops(), RichardsonLucyC.class, output,
 				raiExtendedInput, raiExtendedKernel, fftImg, fftKernel, true, true,
-				maxIterations, imgConvolutionInterval, accelerator,
-				null, computeEstimateOp);
+				maxIterations, imgConvolutionInterval, accelerator, null,
+				computeEstimateOp);
 		}
 
 		return Computers.binary(ops(), RichardsonLucyNonCirculantC.class, output,
 			raiExtendedInput, raiExtendedKernel, fftImg, fftKernel, true, true,
-			maxIterations, imgConvolutionInterval, accelerator, in(),
-			in2(), computeEstimateOp);
+			maxIterations, imgConvolutionInterval, accelerator, in(), in2(),
+			computeEstimateOp);
 
 	}
 
