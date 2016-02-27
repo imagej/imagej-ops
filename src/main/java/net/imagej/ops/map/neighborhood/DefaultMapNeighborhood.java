@@ -30,11 +30,9 @@
 
 package net.imagej.ops.map.neighborhood;
 
-import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Map;
-import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
@@ -44,36 +42,34 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Evaluates a {@link CenterAwareComputerOp} for each {@link Neighborhood} on
- * the input {@link RandomAccessibleInterval} and sets the value of the
- * corresponding pixel on the output {@link IterableInterval}. Similar
- * to {@link DefaultMapNeighborhood}, but passes the center pixel to the op as well.
+ * Evaluates a {@link UnaryComputerOp} for each {@link Neighborhood} on the
+ * input {@link RandomAccessibleInterval}.
  * 
- * @author Jonathan Hale (University of Konstanz)
- * @author Stefan Helfrich (University of Konstanz)
- * @see OpEnvironment#map(IterableInterval, RandomAccessibleInterval, Shape,
- *      CenterAwareComputerOp)
- * @see CenterAwareComputerOp
+ * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
+ * @param <I> input type
+ * @param <O> output type
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 1)
-public class MapNeighborhoodWithCenter<I, O> extends
-	AbstractMapNeighborhood<I, O, RandomAccessibleInterval<I>, IterableInterval<O>, CenterAwareComputerOp<I, O>>
+@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
+public class DefaultMapNeighborhood<I, O> extends
+	AbstractMapNeighborhood<I, O, RandomAccessibleInterval<I>, IterableInterval<O>, UnaryComputerOp<Iterable<I>, O>>
 {
 
-	private BinaryComputerOp<RandomAccessibleInterval<I>, IterableInterval<Neighborhood<I>>, IterableInterval<O>> map;
+	private UnaryComputerOp<IterableInterval<Neighborhood<I>>, IterableInterval<O>> map;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		map = (BinaryComputerOp) Computers.binary(ops(), Map.class, IterableInterval.class,
-			RandomAccessibleInterval.class, IterableInterval.class, getOp());
+		map = (UnaryComputerOp) Computers.unary(ops(), Ops.Map.class,
+			IterableInterval.class, in1() == null ? IterableInterval.class : in2()
+				.neighborhoods(in()), getOp());
 	}
 
 	@Override
 	public void compute2(final RandomAccessibleInterval<I> in1, final Shape in2,
 		final IterableInterval<O> out)
 	{
-		map.compute2(in1, in2.neighborhoodsSafe(in1), out);
+		map.compute1(in2.neighborhoodsSafe(in1), out);
 	}
 
 }

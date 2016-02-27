@@ -58,12 +58,10 @@ public abstract class AbstractNeighborhoodBasedFilter<I, O> extends
 
 	private UnaryComputerOp<RandomAccessibleInterval<I>, IterableInterval<O>> map;
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
 		filterOp = unaryComputer(out().firstElement());
-		map = (UnaryComputerOp) Computers.unary(ops(), Map.class, out(), in(),
-			filterOp, shape);
+		map = Computers.unary(ops(), Map.class, out(), in(), shape, filterOp);
 	}
 
 	@Override
@@ -84,10 +82,6 @@ public abstract class AbstractNeighborhoodBasedFilter<I, O> extends
 	}
 
 	/**
-	 * @param inClass Class of the type in the input
-	 *          {@link RandomAccessibleInterval}
-	 * @param outClass Class of the type in the output
-	 *          {@link RandomAccessibleInterval}
 	 * @return the Computer to map to all neighborhoods of input to output.
 	 */
 	protected abstract UnaryComputerOp<Iterable<I>, O> unaryComputer(
