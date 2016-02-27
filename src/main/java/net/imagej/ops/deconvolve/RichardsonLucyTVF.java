@@ -154,16 +154,16 @@ public class RichardsonLucyTVF<I extends RealType<I> & NativeType<I>, O extends 
 			accelerator = ops.op(VectorAccelerator.class, output);
 		}
 
-		if (nonCirculant == false) {
-			return Computers.binary(ops(), RichardsonLucyC.class, output,
+		if (nonCirculant) {
+			return Computers.binary(ops(), RichardsonLucyNonCirculantC.class, output,
 				raiExtendedInput, raiExtendedKernel, fftImg, fftKernel, true, true,
-				maxIterations, imgConvolutionInterval, accelerator, null,
+				maxIterations, imgConvolutionInterval, accelerator, in(), in2(),
 				computeEstimateOp);
 		}
 
-		return Computers.binary(ops(), RichardsonLucyNonCirculantC.class, output,
+		return Computers.binary(ops(), RichardsonLucyC.class, output,
 			raiExtendedInput, raiExtendedKernel, fftImg, fftKernel, true, true,
-			maxIterations, imgConvolutionInterval, accelerator, in(), in2(),
+			maxIterations, imgConvolutionInterval, accelerator, null,
 			computeEstimateOp);
 	}
 }
