@@ -28,62 +28,43 @@
  * #L%
  */
 
-package net.imagej.ops.math;
+package net.imagej.ops.image.fill;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.AbstractNullaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.NullaryComputerOp;
+import net.imglib2.IterableInterval;
 import net.imglib2.type.Type;
-import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Nullary Ops of the {@code math} namespace which operate on
- * {@link NumericType}s.
+ * Fill an {@link IterableInterval} with some constant value.
  * 
  * @author Leon Yang
  */
-public class NumericTypeNullaryMath {
+@Plugin(type = Ops.Image.Fill.class)
+public class DefaultFill<T extends Type<T>> extends
+	AbstractNullaryComputerOp<Iterable<T>> implements Ops.Image.Fill
+{
 
-	private NumericTypeNullaryMath() {
-		// NB: Prevent instantiation of utility class.
+	@Parameter
+	private T constant;
+
+	private NullaryComputerOp<T> assigner;
+	private NullaryComputerOp<Iterable<T>> map;
+
+	@Override
+	public void initialize() {
+		assigner = Computers.nullary(ops(), Ops.Math.Assign.class, constant
+			.createVariable(), constant);
+		map = Computers.nullary(ops(), Ops.Map.class, out(), assigner);
 	}
 
-	/**
-	 * Sets the output to a constant.
-	 */
-	@Plugin(type = Ops.Math.Assign.class)
-	public static class Assign<T extends Type<T>> extends
-		AbstractNullaryComputerOp<T> implements Ops.Math.Assign
-	{
-		// NB: This class does not require output to be NumericType. Should consider
-		// move to else where.
-		@Parameter
-		private T constant;
-
-		@Override
-		public void compute0(final T output) {
-			output.set(constant);
-		}
-	}
-
-	/**
-	 * Sets the output to zero.
-	 */
-	@Plugin(type = Ops.Math.Zero.class)
-	public static class Zero<T extends NumericType<T>> extends
-		AbstractNullaryComputerOp<T> implements Ops.Math.Zero
-	{
-
-		@Override
-		public void compute0(final T output) {
-			output.setZero();
-		}
-
-		@Override
-		public Zero<T> getIndependentInstance() {
-			return this;
-		}
+	@Override
+	public void compute0(final Iterable<T> output) {
+		map.compute0(output);
 	}
 }

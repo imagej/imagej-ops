@@ -57,6 +57,7 @@ import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.special.SpecialOp;
 import net.imagej.ops.special.UnaryOutputFactory;
 import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imagej.ops.special.computer.NullaryComputerOp;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.inplace.BinaryInplace1Op;
 import net.imagej.ops.special.inplace.BinaryInplaceOp;
@@ -509,6 +510,28 @@ public interface OpEnvironment extends Contextual {
 	@OpMethod(op = Ops.Map.class)
 	default Object map(final Object... args) {
 		return run(Ops.Map.NAME, args);
+	}
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.map.MapNullaryIterable.class)
+	default <EO> Iterable<EO> map(final Iterable<EO> out,
+		final NullaryComputerOp<EO> op)
+	{
+		@SuppressWarnings("unchecked")
+		final Iterable<EO> result = (Iterable<EO>) run(net.imagej.ops.Ops.Map.class,
+			out, op);
+		return result;
+	}
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.map.MapNullaryII.class)
+	default <EO> Iterable<EO> map(final IterableInterval<EO> out,
+		final NullaryComputerOp<EO> op)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<EO> result = (IterableInterval<EO>) run(
+			net.imagej.ops.Ops.Map.class, out, op);
+		return result;
 	}
 
 	/** Executes the "map" operation on the given arguments. */

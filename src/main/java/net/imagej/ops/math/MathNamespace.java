@@ -46,6 +46,7 @@ import net.imglib2.img.basictypeaccess.array.LongArray;
 import net.imglib2.img.basictypeaccess.array.ShortArray;
 import net.imglib2.img.planar.PlanarImg;
 import net.imglib2.type.NativeType;
+import net.imglib2.type.Type;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.GenericByteType;
@@ -641,6 +642,19 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.Ops.Math.Arctanh.class)
 	public Object arctanh(final Object... args) {
 		return ops().run(net.imagej.ops.Ops.Math.Arctanh.class, args);
+	}
+
+	@OpMethod(op = net.imagej.ops.math.NumericTypeNullaryMath.Assign.class)
+	public <T extends Type<T>> T assign(final T out, final T constant) {
+		@SuppressWarnings("unchecked")
+		final T result = (T) ops().run(
+			net.imagej.ops.math.NumericTypeNullaryMath.Assign.class, out, constant);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.Ops.Math.Assign.class)
+	public Object assign(final Object... args) {
+		return ops().run(net.imagej.ops.Ops.Math.Assign.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleCeil.class)

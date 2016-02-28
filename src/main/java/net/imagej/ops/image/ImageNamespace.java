@@ -185,6 +185,25 @@ public class ImageNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	// -- fill --
+
+	/** Executes the "fill" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.Ops.Image.Fill.class)
+	public Object fill(final Object... args) {
+		return ops().run(Ops.Image.Fill.class, args);
+	}
+
+	/** Executes the "fill" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.image.fill.DefaultFill.class)
+	public <T extends Type<T>> Iterable<T> fill(final Iterable<T> out,
+		final T in)
+	{
+		@SuppressWarnings("unchecked")
+		final Iterable<T> result = (Iterable<T>) ops().run(
+			net.imagej.ops.Ops.Image.Fill.class, out, in);
+		return result;
+	}
+
 	// -- histogram --
 
 	/** Executes the "histogram" operation on the given arguments. */

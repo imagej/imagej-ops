@@ -28,62 +28,19 @@
  * #L%
  */
 
-package net.imagej.ops.math;
+package net.imagej.ops.map;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.special.computer.AbstractNullaryComputerOp;
-import net.imglib2.type.Type;
-import net.imglib2.type.numeric.NumericType;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.special.computer.NullaryComputerOp;
 
 /**
- * Nullary Ops of the {@code math} namespace which operate on
- * {@link NumericType}s.
+ * Typed interface for "map" {@link NullaryComputerOp}s.
  * 
  * @author Leon Yang
+ * @param <EO> element type of outputs
+ * @param <OP> type of {@link NullaryComputerOp} which processes the elements
  */
-public class NumericTypeNullaryMath {
-
-	private NumericTypeNullaryMath() {
-		// NB: Prevent instantiation of utility class.
-	}
-
-	/**
-	 * Sets the output to a constant.
-	 */
-	@Plugin(type = Ops.Math.Assign.class)
-	public static class Assign<T extends Type<T>> extends
-		AbstractNullaryComputerOp<T> implements Ops.Math.Assign
-	{
-		// NB: This class does not require output to be NumericType. Should consider
-		// move to else where.
-		@Parameter
-		private T constant;
-
-		@Override
-		public void compute0(final T output) {
-			output.set(constant);
-		}
-	}
-
-	/**
-	 * Sets the output to zero.
-	 */
-	@Plugin(type = Ops.Math.Zero.class)
-	public static class Zero<T extends NumericType<T>> extends
-		AbstractNullaryComputerOp<T> implements Ops.Math.Zero
-	{
-
-		@Override
-		public void compute0(final T output) {
-			output.setZero();
-		}
-
-		@Override
-		public Zero<T> getIndependentInstance() {
-			return this;
-		}
-	}
+public interface MapNullaryComputer<EO, OP extends NullaryComputerOp<EO>>
+	extends MapOp<OP>
+{
+	// NB: Marker interface.
 }

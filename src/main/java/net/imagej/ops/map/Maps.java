@@ -31,6 +31,7 @@
 package net.imagej.ops.map;
 
 import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imagej.ops.special.computer.NullaryComputerOp;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.inplace.BinaryInplace1Op;
 import net.imagej.ops.special.inplace.BinaryInplaceOp;
@@ -119,6 +120,29 @@ public class Maps {
 		final IterableInterval<O> c)
 	{
 		return Intervals.contains(a, c) && Intervals.contains(b, c);
+	}
+
+	// -- Nullary Maps --
+
+	public static <O> void map(final Iterable<O> a,
+		final NullaryComputerOp<O> op)
+	{
+		for (O e : a)
+			op.compute0(e);
+	}
+
+	public static <O> void map(final IterableInterval<O> a,
+		final NullaryComputerOp<O> op, final int startIndex, final int stepSize,
+		final int numSteps)
+	{
+		final Cursor<O> aCursor = a.cursor();
+		aCursor.jumpFwd(startIndex + 1);
+		int ctr = 0;
+		while (ctr < numSteps) {
+			op.compute0(aCursor.get());
+			aCursor.jumpFwd(stepSize);
+			ctr++;
+		}
 	}
 
 	// -- Unary Maps --
