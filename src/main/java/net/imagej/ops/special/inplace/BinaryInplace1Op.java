@@ -39,6 +39,10 @@ import net.imagej.ops.special.hybrid.BinaryHybridCFI1;
  * A binary <em>inplace</em> operation which computes a result from two given
  * arguments, storing it back into the <em>first</em> input (i.e., mutating it).
  * <p>
+ * It is a less powerful version of {@link BinaryInplaceOp}, which can mutate
+ * <em>either</em> of its inputs.
+ * </p>
+ * <p>
  * Note that the {@code <I1>} and {@code <O>} type parameters are kept distinct
  * for special hybrid ops, which may <em>allow</em> inplace mutation without
  * <em>requiring</em> it; see e.g. {@link BinaryHybridCFI1}.
