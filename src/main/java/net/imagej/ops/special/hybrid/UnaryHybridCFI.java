@@ -48,9 +48,10 @@ import net.imagej.ops.special.inplace.UnaryInplaceOp;
  * @author Curtis Rueden
  * @param <A> type of input + output
  * @see UnaryHybridCF
+ * @see UnaryHybridCI
  */
 public interface UnaryHybridCFI<A> extends UnaryHybridCF<A, A>,
-	UnaryInplaceOp<A>
+	UnaryHybridCI<A>
 {
 
 	// -- UnaryOp methods --
@@ -59,7 +60,7 @@ public interface UnaryHybridCFI<A> extends UnaryHybridCF<A, A>,
 	default A run(final A input, final A output) {
 		if (input == output) {
 			// run as an inplace
-			return UnaryInplaceOp.super.run(input, output);
+			return UnaryHybridCI.super.run(input, output);
 		}
 		// run as a hybrid CF
 		return UnaryHybridCF.super.run(input, output);
@@ -70,6 +71,13 @@ public interface UnaryHybridCFI<A> extends UnaryHybridCF<A, A>,
 	@Override
 	default A run(final A output) {
 		return UnaryHybridCF.super.run(output);
+	}
+
+	// -- Runnable methods --
+
+	@Override
+	default void run() {
+		setOutput(run(in(), out()));
 	}
 
 	// -- Threadable methods --

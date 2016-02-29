@@ -67,6 +67,13 @@ public interface BinaryHybridCFI1<A, I> extends BinaryHybridCF<A, I, A>,
 		return BinaryHybridCF.super.run(input1, input2, output);
 	}
 
+	// -- UnaryInplaceOp methods --
+
+	@Override
+	default void mutate(final A arg) {
+		BinaryInplace1Op.super.mutate(arg);
+	}
+
 	// -- Runnable methods --
 
 	@Override
