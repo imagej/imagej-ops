@@ -42,6 +42,7 @@ import org.scijava.plugin.Plugin;
 
 /**
  * Creates an {@link Img} from an {@link Interval} with no additional hints.
+ * {@link Interval} contents are not copied.
  *
  * @author Curtis Rueden
  */
