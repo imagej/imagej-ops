@@ -30,53 +30,14 @@
 
 package net.imagej.ops.special.hybrid;
 
-import net.imagej.ops.special.AbstractUnaryOp;
-
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-
 /**
  * Abstract superclass for {@link UnaryHybridCI} implementations.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public abstract class AbstractUnaryHybridCI<I> extends AbstractUnaryOp<I, I>
-	implements UnaryHybridCI<I>
+public abstract class AbstractUnaryHybridCI<I> extends
+	AbstractUnaryHybridC<I, I> implements UnaryHybridCI<I>
 {
-
-	// -- Parameters --
-
-	@Parameter(type = ItemIO.BOTH, required = false)
-	private I out;
-
-	@Parameter
-	private I in;
-
-	// -- UnaryInput methods --
-
-	@Override
-	public I in() {
-		return in;
-	}
-
-	@Override
-	public void setInput(final I input) {
-		in = input;
-	}
-
-	// -- Output methods --
-
-	@Override
-	public I out() {
-		return out;
-	}
-
-	// -- OutputMutable methods --
-
-	@Override
-	public void setOutput(final I output) {
-		out = output;
-	}
-
+	// NB: No implementation needed.
 }
