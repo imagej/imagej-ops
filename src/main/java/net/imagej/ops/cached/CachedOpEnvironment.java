@@ -67,9 +67,8 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		final Collection<? extends OpInfo> prioritizedInfos)
 	{
 		super(parent, prioritizedInfos);
-		
-		if (prioritizedInfos != null) 
-			for (final OpInfo info : prioritizedInfos) {
+
+		if (prioritizedInfos != null) for (final OpInfo info : prioritizedInfos) {
 			info.cInfo().setPriority(Priority.FIRST_PRIORITY);
 		}
 	}
@@ -122,14 +121,16 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	// -- Helper classes --
 
 	/**
-	 * Wraps a {@link UnaryFunctionOp} and caches the results. New inputs will result
-	 * in re-computation of the result.
+	 * Wraps a {@link UnaryFunctionOp} and caches the results. New inputs will
+	 * result in re-computation of the result.
 	 * 
 	 * @author Christian Dietz, University of Konstanz
 	 * @param <I>
 	 * @param <O>
 	 */
-	class CachedFunctionOp<I, O> extends AbstractOp implements UnaryFunctionOp<I, O> {
+	class CachedFunctionOp<I, O> extends AbstractOp implements
+		UnaryFunctionOp<I, O>
+	{
 
 		@Parameter
 		private CacheService cache;
@@ -193,8 +194,9 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	}
 
 	/**
-	 * Wraps a {@link UnaryHybridCF} and caches the results. New inputs will result in
-	 * re-computation if {@link UnaryHybridCF} is used as {@link UnaryFunctionOp}.
+	 * Wraps a {@link UnaryHybridCF} and caches the results. New inputs will
+	 * result in re-computation if {@link UnaryHybridCF} is used as
+	 * {@link UnaryFunctionOp}.
 	 * 
 	 * @author Christian Dietz, University of Konstanz
 	 * @param <I>
@@ -211,7 +213,9 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 
 		private final Object[] args;
 
-		public CachedHybridOp(final UnaryHybridCF<I, O> delegate, final Object[] args) {
+		public CachedHybridOp(final UnaryHybridCF<I, O> delegate,
+			final Object[] args)
+		{
 			super(delegate, args);
 			this.delegate = delegate;
 			this.args = args;
