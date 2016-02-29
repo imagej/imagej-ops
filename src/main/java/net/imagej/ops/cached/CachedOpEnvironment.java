@@ -58,24 +58,41 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 
 	@Parameter
 	private CacheService cs;
+	private Collection<Class<?>> ignoredOps;
 
 	public CachedOpEnvironment(final OpEnvironment parent) {
-		this(parent, null);
+		this(parent, null, new ArrayList<>());
 	}
 
 	public CachedOpEnvironment(final OpEnvironment parent,
 		final Collection<? extends OpInfo> prioritizedInfos)
+	{
+		this(parent, prioritizedInfos, new ArrayList<>());
+	}
+
+	public CachedOpEnvironment(final OpEnvironment parent,
+		final Collection<? extends OpInfo> prioritizedInfos,
+		final Collection<Class<?>> ignoredOps)
 	{
 		super(parent, prioritizedInfos);
 
 		if (prioritizedInfos != null) for (final OpInfo info : prioritizedInfos) {
 			info.cInfo().setPriority(Priority.FIRST_PRIORITY);
 		}
+
+		this.ignoredOps = ignoredOps;
 	}
 
 	@Override
 	public Op op(final OpRef<?> ref) {
 		final Op op = super.op(ref);
+
+		for (final Class<?> ignored : ignoredOps) {
+			if (ignored.isAssignableFrom(ref.getType())) {
+				return op;
+			}
+		}
+
 		final Op cachedOp;
 		if (op instanceof UnaryHybridCF) {
 			cachedOp = wrapUnaryHybrid((UnaryHybridCF<?, ?>) op);
