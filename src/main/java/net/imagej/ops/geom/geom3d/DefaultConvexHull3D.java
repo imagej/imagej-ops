@@ -44,6 +44,8 @@ import net.imagej.ops.geom.geom3d.mesh.TriangularFacet;
 import net.imagej.ops.geom.geom3d.mesh.Vertex;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.RealLocalizable;
+import net.imglib2.util.Pair;
+import net.imglib2.util.ValuePair;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.scijava.plugin.Plugin;
@@ -63,26 +65,6 @@ public class DefaultConvexHull3D extends AbstractUnaryFunctionOp<Mesh, Mesh>
 {
 
 	/**
-	 * Vertices which are not part of the convex hull.
-	 */
-	private Set<Vertex> vertices;
-
-	/**
-	 * Created facets.
-	 */
-	private List<TriangularFacet> facets;
-
-	/**
-	 * Facets with points in front.
-	 */
-	private List<TriangularFacet> facetsWithPointInFront;
-
-	/**
-	 * Minimum distance between a point and a facet.
-	 */
-	private double epsilon;
-
-	/**
 	 * Precision of a double.
 	 */
 	private final double DOUBLE_PREC = 2.2204460492503131e-16;
@@ -90,14 +72,15 @@ public class DefaultConvexHull3D extends AbstractUnaryFunctionOp<Mesh, Mesh>
 	@Override
 	public Mesh compute1(final Mesh input) {
 		DefaultMesh output = new DefaultMesh();
-		vertices = new LinkedHashSet<>();
+		Set<Vertex> vertices = new LinkedHashSet<>();
 		for (final RealLocalizable v : input.getVertices()) {
 			vertices.add(new Vertex(v.getDoublePosition(0), v.getDoublePosition(1), v
 				.getDoublePosition(2)));
 		}
-		facets = new ArrayList<>();
-		facetsWithPointInFront = new ArrayList<>();
-		computeHull();
+		List<TriangularFacet> facets = new ArrayList<>();
+		List<TriangularFacet> facetsWithPointInFront = new ArrayList<>();
+		final double epsilon = computeHull(vertices, facets,
+			facetsWithPointInFront);
 		for (TriangularFacet f : facets) {
 			output.addFace(f);
 		}
@@ -107,13 +90,21 @@ public class DefaultConvexHull3D extends AbstractUnaryFunctionOp<Mesh, Mesh>
 
 	/**
 	 * Compute the convex hull.
+	 * 
+	 * @param facetsWithPointInFront
 	 */
-	private void computeHull() {
-		createSimplex();
+	private double computeHull(final Set<Vertex> vertices,
+		final List<TriangularFacet> facets,
+		final List<TriangularFacet> facetsWithPointInFront)
+	{
+		final double epsilon = createSimplex(vertices, facets,
+			facetsWithPointInFront);
 		while (!facetsWithPointInFront.isEmpty()) {
-			TriangularFacet next = facetsWithPointInFront.remove(0);
-			replaceFacet(next);
+			replaceFacet(epsilon, vertices, facets, facetsWithPointInFront,
+				facetsWithPointInFront.remove(0));
 		}
+
+		return epsilon;
 	}
 
 	/**
@@ -122,11 +113,16 @@ public class DefaultConvexHull3D extends AbstractUnaryFunctionOp<Mesh, Mesh>
 	 * @param facet the facet to replace. At least one point must be in front of
 	 *          next.
 	 */
-	private void replaceFacet(final TriangularFacet facet) {
-		Vertex v = facet.getMaximumDistanceVertex();
-		Horizon horizon = computeHorizon(facet, v);
-		List<TriangularFacet> newFaces = createFacets(horizon, v);
-		assignPointsToFacets(newFaces);
+	private void replaceFacet(final double epsilon, final Set<Vertex> vertices,
+		final List<TriangularFacet> facets,
+		final List<TriangularFacet> facetsPointInFront,
+		final TriangularFacet facet)
+	{
+		final Vertex v = facet.getMaximumDistanceVertex();
+		final Horizon horizon = computeHorizon(epsilon, vertices, facets,
+			facetsPointInFront, facet, v);
+		assignPointsToFacets(epsilon, vertices, createFacets(horizon, v), facets,
+			facetsPointInFront);
 	}
 
 	/**
@@ -212,8 +208,10 @@ public class DefaultConvexHull3D extends AbstractUnaryFunctionOp<Mesh, Mesh>
 	 * @param vTop a point outside of the convex hull
 	 * @return facet containing all facets which are in front of vTop
 	 */
-	private Horizon computeHorizon(final TriangularFacet frontFacet,
-		final Vertex vTop)
+	private Horizon computeHorizon(final double epsilon,
+		final Set<Vertex> vertices, final List<TriangularFacet> facets,
+		final List<TriangularFacet> facetsWithPointInFront,
+		final TriangularFacet frontFacet, final Vertex vTop)
 	{
 		// Points which are in front have to be reassigned after all new facets
 		// are constructed.
@@ -223,7 +221,7 @@ public class DefaultConvexHull3D extends AbstractUnaryFunctionOp<Mesh, Mesh>
 		facets.remove(frontFacet);
 
 		Horizon h = new Horizon(frontFacet);
-		TriangularFacet merge = nextFacetToMerge(h, vTop);
+		TriangularFacet merge = nextFacetToMerge(epsilon, h, vTop);
 		while (merge != null) {
 			// This points have to be reassigned as well.
 			vertices.addAll(merge.getVerticesInFront());
@@ -241,7 +239,7 @@ public class DefaultConvexHull3D extends AbstractUnaryFunctionOp<Mesh, Mesh>
 				updateNeighbors(frontFacet, merge);
 				h.simpleMerge(merge);
 			}
-			merge = nextFacetToMerge(h, vTop);
+			merge = nextFacetToMerge(epsilon, h, vTop);
 		}
 
 		return h;
@@ -271,8 +269,8 @@ public class DefaultConvexHull3D extends AbstractUnaryFunctionOp<Mesh, Mesh>
 	 * @param vTop point which is added to the convex hull
 	 * @return neighboring facet of front or null if no facet is in front
 	 */
-	private TriangularFacet nextFacetToMerge(final Horizon frontFacet,
-		final Vertex vTop)
+	private TriangularFacet nextFacetToMerge(final double epsilon,
+		final Horizon frontFacet, final Vertex vTop)
 	{
 		Iterator<TriangularFacet> it = frontFacet.getNeighbors().iterator();
 		while (it.hasNext()) {
@@ -324,8 +322,13 @@ public class DefaultConvexHull3D extends AbstractUnaryFunctionOp<Mesh, Mesh>
 	 * hull.
 	 * 
 	 * @param newFacets which could have a point in front
+	 * @param facetsWithPointInFront
 	 */
-	private void assignPointsToFacets(final List<TriangularFacet> newFacets) {
+	private void assignPointsToFacets(final double epsilon,
+		final Set<Vertex> vertices, final List<TriangularFacet> newFacets,
+		final List<TriangularFacet> facets,
+		final List<TriangularFacet> facetsWithPointInFront)
+	{
 		Iterator<Vertex> vertexIt = vertices.iterator();
 		while (vertexIt.hasNext()) {
 			Vertex v = vertexIt.next();
@@ -366,21 +369,27 @@ public class DefaultConvexHull3D extends AbstractUnaryFunctionOp<Mesh, Mesh>
 	 * dimension. v2 is the point with the largest distance to v0----v1. v3 is the
 	 * point with the largest distance to the plane described by v0, v1, v2.
 	 */
-	private void createSimplex() {
-		Vertex[] minMax = computeMinMax();
-		int i = getMaxDistPointIndex(minMax);
+	private double createSimplex(final Set<Vertex> vertices,
+		final List<TriangularFacet> facets,
+		final List<TriangularFacet> facetsWithPointInFront)
+	{
 
-		Vertex v0 = minMax[i];
-		Vertex v1 = minMax[i + 3];
+		final Pair<Double, Vertex[]> minMax = computeMinMax(vertices);
+		final double epsilon = minMax.getA();
+
+		int i = getMaxDistPointIndex(minMax.getB());
+
+		Vertex v0 = minMax.getB()[i];
+		Vertex v1 = minMax.getB()[i + 3];
 
 		vertices.remove(v0);
 		vertices.remove(v1);
 
-		Vertex v2 = getV2(v0, v1);
+		Vertex v2 = getV2(epsilon, vertices, v0, v1);
 
 		vertices.remove(v2);
 
-		Vertex v3 = getV3(v0, v1, v2);
+		Vertex v3 = getV3(epsilon, vertices, v0, v1, v2);
 
 		vertices.remove(v3);
 
@@ -427,7 +436,10 @@ public class DefaultConvexHull3D extends AbstractUnaryFunctionOp<Mesh, Mesh>
 		newFacets.add(f1);
 		newFacets.add(f2);
 		newFacets.add(f3);
-		assignPointsToFacets(newFacets);
+		assignPointsToFacets(epsilon, vertices, newFacets, facets,
+			facetsWithPointInFront);
+
+		return epsilon;
 	}
 
 	/**
@@ -439,15 +451,15 @@ public class DefaultConvexHull3D extends AbstractUnaryFunctionOp<Mesh, Mesh>
 	 * @param v2 Vertex of the plane.
 	 * @return Vertex with the largest distance.
 	 */
-	private Vertex getV3(final Vertex v0, final Vertex v1, final Vertex v2) {
+	private Vertex getV3(final double epsilon, final Set<Vertex> vertices,
+		final Vertex v0, final Vertex v1, final Vertex v2)
+	{
 		double distPlanePoint = epsilon;
 		Vertex v3 = null;
-		Iterator<Vertex> it = vertices.iterator();
 		Vector3D d0 = v1.subtract(v0);
 		Vector3D d1 = v2.subtract(v0);
 		Vector3D normal = d0.crossProduct(d1).normalize();
-		while (it.hasNext()) {
-			Vertex v = it.next();
+		for (final Vertex v : vertices) {
 			double d = Math.abs(normal.dotProduct(v.subtract(v0)));
 			if (d > distPlanePoint) {
 				distPlanePoint = d;
@@ -464,7 +476,9 @@ public class DefaultConvexHull3D extends AbstractUnaryFunctionOp<Mesh, Mesh>
 	 * @param v1 Vertex of the line.
 	 * @return Vertex with the largest distance.
 	 */
-	private Vertex getV2(final Vertex v0, final Vertex v1) {
+	private Vertex getV2(final double epsilon, final Set<Vertex> vertices,
+		final Vertex v0, final Vertex v1)
+	{
 		Iterator<Vertex> it = vertices.iterator();
 
 		// v0 -------------------------------------v1
@@ -521,7 +535,7 @@ public class DefaultConvexHull3D extends AbstractUnaryFunctionOp<Mesh, Mesh>
 	 * 
 	 * @return min and max vertices of each dimension
 	 */
-	private Vertex[] computeMinMax() {
+	private Pair<Double, Vertex[]> computeMinMax(final Set<Vertex> vertices) {
 		Vertex[] minMax = new Vertex[6];
 		double maxX, maxY, maxZ;
 		double minX, minY, minZ;
@@ -565,11 +579,11 @@ public class DefaultConvexHull3D extends AbstractUnaryFunctionOp<Mesh, Mesh>
 
 		// This epsilon formula comes from John Lloyd's quickhull
 		// implementation http://www.cs.ubc.ca/~lloyd/java/quickhull3d.html
-		epsilon = 3 * DOUBLE_PREC * (Math.max(Math.abs(maxX), Math.abs(minX)) + Math
-			.max(Math.abs(maxY), Math.abs(minY)) + Math.max(Math.abs(maxZ), Math.abs(
-				minZ)));
+		final double epsilon = 3 * DOUBLE_PREC * (Math.max(Math.abs(maxX), Math.abs(
+			minX)) + Math.max(Math.abs(maxY), Math.abs(minY)) + Math.max(Math.abs(
+				maxZ), Math.abs(minZ)));
 
-		return minMax;
+		return new ValuePair<>(epsilon, minMax);
 	}
 
 }
