@@ -77,7 +77,6 @@ public interface UnaryHybridCF<I, O> extends UnaryComputerOp<I, O>,
 		return output;
 	}
 
-
 	// -- NullaryFunctionOp methods --
 
 	@Override

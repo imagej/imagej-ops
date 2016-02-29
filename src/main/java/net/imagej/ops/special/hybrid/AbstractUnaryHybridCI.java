@@ -30,64 +30,14 @@
 
 package net.imagej.ops.special.hybrid;
 
-import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imagej.ops.special.function.UnaryFunctionOp;
-import net.imagej.ops.special.inplace.UnaryInplaceOp;
-
 /**
- * A hybrid unary operation which can be used as a {@link UnaryComputerOp},
- * {@link UnaryFunctionOp} or {@link UnaryInplaceOp}.
- * <p>
- * To populate a preallocated output object, call
- * {@link UnaryComputerOp#compute1}; to compute a new output object, call
- * {@link UnaryFunctionOp#compute1}; to mutate an object inplace, call
- * {@link UnaryInplaceOp#mutate}. To do any of these things as appropriate, call
- * {@link #run(Object, Object)}.
- * </p>
+ * Abstract superclass for {@link UnaryHybridCI} implementations.
  * 
+ * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
- * @param <A> type of input + output
- * @see UnaryHybridCF
- * @see UnaryHybridCI
  */
-public interface UnaryHybridCFI<A> extends UnaryHybridCF<A, A>,
-	UnaryHybridCI<A>
+public abstract class AbstractUnaryHybridCI<I> extends
+	AbstractUnaryHybridC<I, I> implements UnaryHybridCI<I>
 {
-
-	// -- UnaryOp methods --
-
-	@Override
-	default A run(final A input, final A output) {
-		if (input == output) {
-			// run as an inplace
-			return UnaryHybridCI.super.run(input, output);
-		}
-		// run as a hybrid CF
-		return UnaryHybridCF.super.run(input, output);
-	}
-
-	// -- NullaryOp methods --
-
-	@Override
-	default A run(final A output) {
-		return UnaryHybridCF.super.run(output);
-	}
-
-	// -- Runnable methods --
-
-	@Override
-	default void run() {
-		setOutput(run(in(), out()));
-	}
-
-	// -- Threadable methods --
-
-	@Override
-	default UnaryHybridCFI<A> getIndependentInstance() {
-		// NB: We assume the op instance is thread-safe by default.
-		// Individual implementations can override this assumption if they
-		// have state (such as buffers) that cannot be shared across threads.
-		return this;
-	}
-
+	// NB: No implementation needed.
 }

@@ -30,64 +30,55 @@
 
 package net.imagej.ops.special.hybrid;
 
-import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imagej.ops.special.function.UnaryFunctionOp;
-import net.imagej.ops.special.inplace.UnaryInplaceOp;
+import net.imagej.ops.special.AbstractUnaryOp;
+import net.imagej.ops.special.OutputMutable;
+
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 
 /**
- * A hybrid unary operation which can be used as a {@link UnaryComputerOp},
- * {@link UnaryFunctionOp} or {@link UnaryInplaceOp}.
- * <p>
- * To populate a preallocated output object, call
- * {@link UnaryComputerOp#compute1}; to compute a new output object, call
- * {@link UnaryFunctionOp#compute1}; to mutate an object inplace, call
- * {@link UnaryInplaceOp#mutate}. To do any of these things as appropriate, call
- * {@link #run(Object, Object)}.
- * </p>
+ * Abstract superclass for {@link UnaryHybridCF} and {@link UnaryHybridCI}
+ * implementations.
  * 
+ * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
- * @param <A> type of input + output
- * @see UnaryHybridCF
- * @see UnaryHybridCI
  */
-public interface UnaryHybridCFI<A> extends UnaryHybridCF<A, A>,
-	UnaryHybridCI<A>
+public abstract class AbstractUnaryHybridC<I, O> extends AbstractUnaryOp<I, O>
+	implements OutputMutable<O>
 {
 
-	// -- UnaryOp methods --
+	// -- Parameters --
+
+	@Parameter(type = ItemIO.BOTH, required = false)
+	private O out;
+
+	@Parameter
+	private I in;
+
+	// -- UnaryInput methods --
 
 	@Override
-	default A run(final A input, final A output) {
-		if (input == output) {
-			// run as an inplace
-			return UnaryHybridCI.super.run(input, output);
-		}
-		// run as a hybrid CF
-		return UnaryHybridCF.super.run(input, output);
+	public I in() {
+		return in;
 	}
 
-	// -- NullaryOp methods --
-
 	@Override
-	default A run(final A output) {
-		return UnaryHybridCF.super.run(output);
+	public void setInput(final I input) {
+		in = input;
 	}
 
-	// -- Runnable methods --
+	// -- Output methods --
 
 	@Override
-	default void run() {
-		setOutput(run(in(), out()));
+	public O out() {
+		return out;
 	}
 
-	// -- Threadable methods --
+	// -- OutputMutable methods --
 
 	@Override
-	default UnaryHybridCFI<A> getIndependentInstance() {
-		// NB: We assume the op instance is thread-safe by default.
-		// Individual implementations can override this assumption if they
-		// have state (such as buffers) that cannot be shared across threads.
-		return this;
+	public void setOutput(final O output) {
+		out = output;
 	}
 
 }

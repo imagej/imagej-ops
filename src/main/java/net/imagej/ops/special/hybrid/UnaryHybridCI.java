@@ -30,61 +30,66 @@
 
 package net.imagej.ops.special.hybrid;
 
-import net.imagej.ops.special.computer.BinaryComputerOp;
-import net.imagej.ops.special.function.BinaryFunctionOp;
-import net.imagej.ops.special.inplace.BinaryInplace1Op;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
 /**
- * A hybrid binary operation which can be used as a {@link BinaryComputerOp},
- * {@link BinaryFunctionOp} or {@link BinaryInplace1Op}.
+ * A hybrid unary operation which can be used as a {@link UnaryComputerOp} or
+ * {@link UnaryInplaceOp}.
  * <p>
  * To populate a preallocated output object, call
- * {@link BinaryComputerOp#compute2}; to compute a new output object, call
- * {@link BinaryFunctionOp#compute2}; to mutate the first input inplace, call
- * {@link BinaryInplace1Op#mutate1}. To do any of these things as appropriate,
- * call {@link #run(Object, Object, Object)}.
+ * {@link UnaryComputerOp#compute1}; to compute inplace, call
+ * {@link UnaryInplaceOp#mutate}. To do any of these things as appropriate, call
+ * {@link #run(Object, Object)}.
  * </p>
  * 
  * @author Curtis Rueden
- * @param <A> type of first input + output
- * @param <I> type of second input
- * @see BinaryHybridCF
- * @see BinaryHybridCFI
+ * @author Christian Dietz (University of Konstanz)
+ * @param <I> type of input
+ * @see UnaryHybridCI
  */
-public interface BinaryHybridCFI1<A, I> extends BinaryHybridCF<A, I, A>,
-	BinaryInplace1Op<A, I>, UnaryHybridCFI<A>
+public interface UnaryHybridCI<I> extends UnaryComputerOp<I, I>,
+	UnaryInplaceOp<I>
 {
-
-	// -- BinaryOp methods --
-
-	@Override
-	default A run(final A input1, final I input2, final A output) {
-		if (input1 == output) {
-			// run as an inplace (1st input)
-			return BinaryInplace1Op.super.run(input1, input2, output);
-		}
-		// run as a hybrid CF
-		return BinaryHybridCF.super.run(input1, input2, output);
-	}
 
 	// -- UnaryInplaceOp methods --
 
 	@Override
-	default void mutate(final A arg) {
-		BinaryInplace1Op.super.mutate(arg);
+	default void mutate(final I input) {
+		compute1(input, input);
+	}
+
+	@Override
+	default I run(final I output) {
+		return UnaryInplaceOp.super.run(output);
+	}
+
+	// -- UnaryOp methods --
+
+	@Override
+	default I run(final I input, final I output) {
+		if (output == input) {
+			// run inplace
+			mutate(input);
+			return input;
+		}
+
+		// run as a computer
+		compute1(input, output);
+		return output;
 	}
 
 	// -- Runnable methods --
 
 	@Override
 	default void run() {
-		setOutput(run(in1(), in2(), out()));
+		setOutput(run(in(), out()));
 	}
 
 	// -- Threadable methods --
 
 	@Override
-	default BinaryHybridCFI1<A, I> getIndependentInstance() {
+	default UnaryHybridCI<I> getIndependentInstance() {
 		// NB: We assume the op instance is thread-safe by default.
 		// Individual implementations can override this assumption if they
 		// have state (such as buffers) that cannot be shared across threads.

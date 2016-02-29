@@ -182,6 +182,85 @@ public final class Hybrids {
 	}
 
 	/**
+	 * Gets the best {@link UnaryHybridCI} implementation for the given types and
+	 * arguments, populating its inputs.
+	 *
+	 * @param ops The {@link OpEnvironment} to search for a matching op.
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link UnaryHybridCI}s share this type (e.g., the type is an
+	 *          interface which multiple {@link UnaryHybridCI}s implement), then
+	 *          the best {@link UnaryHybridCI} implementation to use will be
+	 *          selected automatically from the type and arguments.
+	 * @param argType The {@link Class} of the {@link UnaryHybridCI} typed
+	 *          arguments.
+	 * @param otherArgs The operation's arguments, excluding the typed input and
+	 *          output values.
+	 * @return A {@link UnaryHybridCI} with populated inputs, ready to use.
+	 */
+	public static <A, OP extends Op> UnaryHybridCI<A> unaryCI(
+		final OpEnvironment ops, final Class<OP> opType, final Class<A> argType,
+		final Object... otherArgs)
+	{
+		@SuppressWarnings("unchecked")
+		final UnaryHybridCI<A> op = SpecialOp.op(ops, opType, UnaryHybridCI.class,
+			null, OpUtils.args(otherArgs, argType, argType));
+		return op;
+	}
+
+	/**
+	 * Gets the best {@link UnaryHybridCI} implementation for the given types and
+	 * arguments, populating its inputs.
+	 *
+	 * @param ops The {@link OpEnvironment} to search for a matching op.
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link UnaryHybridCI}s share this type (e.g., the type is an
+	 *          interface which multiple {@link UnaryHybridCI}s implement), then
+	 *          the best {@link UnaryHybridCI} implementation to use will be
+	 *          selected automatically from the type and arguments.
+	 * @param argType The {@link Class} of the {@link UnaryHybridCI} typed
+	 *          arguments.
+	 * @param in The typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed input and
+	 *          output values.
+	 * @return A {@link UnaryHybridCI} with populated inputs, ready to use.
+	 */
+	public static <A, OP extends Op> UnaryHybridCI<A> unaryCI(
+		final OpEnvironment ops, final Class<OP> opType, final Class<A> argType,
+		final A in, final Object... otherArgs)
+	{
+		@SuppressWarnings("unchecked")
+		final UnaryHybridCI<A> op = SpecialOp.op(ops, opType, UnaryHybridCI.class,
+			null, OpUtils.args(otherArgs, argType, in));
+		return op;
+	}
+
+	/**
+	 * Gets the best {@link UnaryHybridCI} implementation for the given types and
+	 * arguments, populating its inputs.
+	 *
+	 * @param ops The {@link OpEnvironment} to search for a matching op.
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link UnaryHybridCI}s share this type (e.g., the type is an
+	 *          interface which multiple {@link UnaryHybridCI}s implement), then
+	 *          the best {@link UnaryHybridCI} implementation to use will be
+	 *          selected automatically from the type and arguments.
+	 * @param out The typed output.
+	 * @param in The typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed input and
+	 *          output values.
+	 * @return A {@link UnaryHybridCI} with populated inputs, ready to use.
+	 */
+	public static <A, OP extends Op> UnaryHybridCI<A> unaryCI(
+		final OpEnvironment ops, final Class<OP> opType, final A out, final A in,
+		final Object... otherArgs)
+	{
+		@SuppressWarnings("unchecked")
+		final UnaryHybridCI<A> op = SpecialOp.op(ops, opType, UnaryHybridCI.class,
+			null, OpUtils.args(otherArgs, out, in));
+		return op;
+	}
+
+	/**
 	 * Gets the best {@link UnaryHybridCFI} implementation for the given types and
 	 * arguments, populating its inputs.
 	 *

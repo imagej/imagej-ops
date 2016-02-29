@@ -53,6 +53,7 @@ import net.imagej.ops.special.hybrid.BinaryHybridCFI1;
 import net.imagej.ops.special.hybrid.NullaryHybridCF;
 import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imagej.ops.special.hybrid.UnaryHybridCFI;
+import net.imagej.ops.special.hybrid.UnaryHybridCI;
 import net.imagej.ops.special.inplace.BinaryInplaceOp;
 import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
@@ -182,12 +183,37 @@ import org.scijava.InstantiableException;
  * {@code void compute2(O, I1, I2)}</td>
  * </tr>
  * <tr style="border-top: 1px solid gray">
+ * <th rowspan=3>hybrid CI</th>
+ * <td style="vertical-align: top" rowspan=3>An op which is capable of behaving
+ * as either a <em>computer</em> or an <em>inplace</em>, providing the API for
+ * both.</td>
+ * <td style="vertical-align: top" rowspan=3>Same as <em>computer</em> and
+ * <em>inplace</em> respectively.</td>
+ * <td rowspan=3>BOTH (optional)</td>
+ * <td>1</td>
+ * <td>{@link UnaryHybridCI}</th>
+ * <td style="white-space: nowrap">{@code void compute1(A, A)} +
+ * {@code A compute1(A)} + {@code void mutate(A)}</td>
+ * </tr>
+ * <tr>
+ * <td>2</td>
+ * <td>{@code BinaryHybridCI1} (unimplemented)</th>
+ * <td style="white-space: nowrap">{@code void compute2(A, I, A)} +
+ * {@code void mutate1(A, I)}</td>
+ * </tr>
+ * <tr>
+ * <td>2</td>
+ * <td>{@code BinaryHybridCI} (unimplemented)</th>
+ * <td style="white-space: nowrap">{@code void compute2(A, A, A)} +
+ * {@code void mutate1(A, A)} + {@code void mutate2(A, A)}</td>
+ * </tr>
+ * <tr style="border-top: 1px solid gray">
  * <th rowspan=3>hybrid CFI</th>
  * <td style="vertical-align: top" rowspan=3>An op which is capable of behaving
  * as either a <em>computer</em>, a <em>function</em> or an <em>inplace</em>,
  * providing the API for all three.</td>
- * <td style="vertical-align: top" rowspan=3>Same as <em>computer</em> and
- * <em>function</em> respectively.</td>
+ * <td style="vertical-align: top" rowspan=3>Same as <em>computer</em>,
+ * <em>function</em> and <em>inplace</em> respectively.</td>
  * <td rowspan=3>BOTH (optional)</td>
  * <td>1</td>
  * <td>{@link UnaryHybridCFI}</th>
@@ -203,8 +229,8 @@ import org.scijava.InstantiableException;
  * <tr>
  * <td>2</td>
  * <td>{@link BinaryHybridCFI}</th>
- * <td style="white-space: nowrap">{@code void compute(A, A, A)} +
- * {@code A compute(A, A)} + {@code void mutate1(A, A)} +
+ * <td style="white-space: nowrap">{@code void compute2(A, A, A)} +
+ * {@code A compute2(A, A)} + {@code void mutate1(A, A)} +
  * {@code void mutate2(A, A)}</td>
  * </tr>
  * </table>
