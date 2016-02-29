@@ -146,10 +146,37 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	/** Executes the "convolve" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTF.class,
-		net.imagej.ops.filter.convolve.ConvolveNaiveF.class })
-	public <
-		I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>>
+	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveNaiveF.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
+		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
+			final RandomAccessibleInterval<K> kernel,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obf)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.NAME, in,
+				kernel, obf);
+		return result;
+	}
+
+	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveNaiveF.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
+		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
+			final RandomAccessibleInterval<K> kernel,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obf,
+			final Type<O> outType)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.NAME, in,
+				kernel, obf, outType);
+		return result;
+	}
+
+	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTF.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel, final long... borderSize)
 	{
@@ -161,10 +188,8 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	/** Executes the "convolve" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTF.class,
-		net.imagej.ops.filter.convolve.ConvolveNaiveF.class })
-	public <
-		I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>>
+	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTF.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput)
@@ -177,10 +202,8 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	/** Executes the "convolve" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTF.class,
-		net.imagej.ops.filter.convolve.ConvolveNaiveF.class })
-	public <
-		I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>>
+	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTF.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
@@ -194,10 +217,8 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	/** Executes the "convolve" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTF.class,
-		net.imagej.ops.filter.convolve.ConvolveNaiveF.class })
-	public <
-		I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>>
+	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTF.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,

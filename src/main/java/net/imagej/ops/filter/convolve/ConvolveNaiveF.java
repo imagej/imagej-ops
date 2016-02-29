@@ -32,30 +32,48 @@ package net.imagej.ops.filter.convolve;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractFilterF;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.NativeType;
+import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.util.Intervals;
 import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
  * Convolves an image naively (no FFTs).
  */
 @Plugin(type = Ops.Filter.Convolve.class, priority = Priority.HIGH_PRIORITY + 1)
-public class ConvolveNaiveF<I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>>
-	extends AbstractFilterF<I, O, K> implements Ops.Filter.Convolve, Contingent
+public class ConvolveNaiveF<I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>>
+	extends
+	AbstractBinaryFunctionOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>>
+	implements Ops.Filter.Convolve, Contingent
 {
+
+	/**
+	 * Defines the out of bounds strategy for the extended area of the
+	 * input>>>>>>> Delete AbstractFilterF
+	 */
+	@Parameter(required = false)
+	private OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obf;
+
+	/**
+	 * The output type. If null a default output type will be used.
+	 */
+	@Parameter(required = false)
+	private Type<O> outType;
 
 	private UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> convolver;
 
@@ -69,6 +87,36 @@ public class ConvolveNaiveF<I extends RealType<I> & NativeType<I>, O extends Rea
 
 	}
 
+	/**
+	 * protected RandomAccessibleInterval<K> getKernel() { return kernel; } Create
+	 * the output using the outFactory and outType if they exist. If these are
+	 * null use a default factory and type
+	 */
+	@SuppressWarnings("unchecked")
+	public RandomAccessibleInterval<O> createOutput(
+		RandomAccessibleInterval<I> input, RandomAccessibleInterval<K> kernel)
+	{
+
+		if (outType == null) {
+
+			// if the input type and kernel type are the same use this type
+			if (Util.getTypeFromInterval(input).getClass() == Util
+				.getTypeFromInterval(kernel).getClass())
+			{
+				Object temp = Util.getTypeFromInterval(input).createVariable();
+				outType = (Type<O>) temp;
+
+			}
+			// otherwise default to float
+			else {
+				Object temp = new FloatType();
+				outType = (Type<O>) temp;
+			}
+		}
+
+		return ops().create().img(input, outType.createVariable());
+	}
+
 	@Override
 	public RandomAccessibleInterval<O> compute2(
 		final RandomAccessibleInterval<I> img,
@@ -77,19 +125,13 @@ public class ConvolveNaiveF<I extends RealType<I> & NativeType<I>, O extends Rea
 
 		RandomAccessibleInterval<O> out = createOutput(img, kernel);
 
-		if (getOBFInput() == null) {
-			setOBFInput(new OutOfBoundsMirrorFactory<>(Boundary.SINGLE));
-		}
-
-		if ((getOBFKernel() == null) && (kernel != null)) {
-			setOBFKernel(
-				new OutOfBoundsConstantValueFactory<K, RandomAccessibleInterval<K>>(Util
-					.getTypeFromInterval(kernel).createVariable()));
+		if (obf == null) {
+			obf = new OutOfBoundsMirrorFactory<>(Boundary.SINGLE);
 		}
 
 		// extend the input
 		RandomAccessibleInterval<I> extendedIn = Views.interval(Views.extend(img,
-			getOBFInput()), img);
+			obf), img);
 
 		OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput =
 			new OutOfBoundsConstantValueFactory<>(Util.getTypeFromInterval(out)
