@@ -58,25 +58,41 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 
 	@Parameter
 	private CacheService cs;
+	private Collection<Class<?>> ignoredOps;
 
 	public CachedOpEnvironment(final OpEnvironment parent) {
-		this(parent, null);
+		this(parent, null, new ArrayList<>());
 	}
 
 	public CachedOpEnvironment(final OpEnvironment parent,
 		final Collection<? extends OpInfo> prioritizedInfos)
 	{
+		this(parent, prioritizedInfos, new ArrayList<>());
+	}
+
+	public CachedOpEnvironment(final OpEnvironment parent,
+		final Collection<? extends OpInfo> prioritizedInfos,
+		final Collection<Class<?>> ignoredOps)
+	{
 		super(parent, prioritizedInfos);
-		
-		if (prioritizedInfos != null) 
-			for (final OpInfo info : prioritizedInfos) {
+
+		if (prioritizedInfos != null) for (final OpInfo info : prioritizedInfos) {
 			info.cInfo().setPriority(Priority.FIRST_PRIORITY);
 		}
+
+		this.ignoredOps = ignoredOps;
 	}
 
 	@Override
 	public Op op(final OpRef<?> ref) {
 		final Op op = super.op(ref);
+
+		for (final Class<?> ignored : ignoredOps) {
+			if (ignored.isAssignableFrom(ref.getType())) {
+				return op;
+			}
+		}
+
 		final Op cachedOp;
 		if (op instanceof UnaryHybridCF) {
 			cachedOp = wrapUnaryHybrid((UnaryHybridCF<?, ?>) op);
@@ -122,14 +138,16 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	// -- Helper classes --
 
 	/**
-	 * Wraps a {@link UnaryFunctionOp} and caches the results. New inputs will result
-	 * in re-computation of the result.
+	 * Wraps a {@link UnaryFunctionOp} and caches the results. New inputs will
+	 * result in re-computation of the result.
 	 * 
 	 * @author Christian Dietz, University of Konstanz
 	 * @param <I>
 	 * @param <O>
 	 */
-	class CachedFunctionOp<I, O> extends AbstractOp implements UnaryFunctionOp<I, O> {
+	class CachedFunctionOp<I, O> extends AbstractOp implements
+		UnaryFunctionOp<I, O>
+	{
 
 		@Parameter
 		private CacheService cache;
@@ -193,8 +211,9 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	}
 
 	/**
-	 * Wraps a {@link UnaryHybridCF} and caches the results. New inputs will result in
-	 * re-computation if {@link UnaryHybridCF} is used as {@link UnaryFunctionOp}.
+	 * Wraps a {@link UnaryHybridCF} and caches the results. New inputs will
+	 * result in re-computation if {@link UnaryHybridCF} is used as
+	 * {@link UnaryFunctionOp}.
 	 * 
 	 * @author Christian Dietz, University of Konstanz
 	 * @param <I>
@@ -211,7 +230,9 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 
 		private final Object[] args;
 
-		public CachedHybridOp(final UnaryHybridCF<I, O> delegate, final Object[] args) {
+		public CachedHybridOp(final UnaryHybridCF<I, O> delegate,
+			final Object[] args)
+		{
 			super(delegate, args);
 			this.delegate = delegate;
 			this.args = args;
