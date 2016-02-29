@@ -186,8 +186,8 @@ import org.scijava.InstantiableException;
  * <td style="vertical-align: top" rowspan=3>An op which is capable of behaving
  * as either a <em>computer</em>, a <em>function</em> or an <em>inplace</em>,
  * providing the API for all three.</td>
- * <td style="vertical-align: top" rowspan=3>Same as <em>computer</em> and
- * <em>function</em> respectively.</td>
+ * <td style="vertical-align: top" rowspan=3>Same as <em>computer</em>,
+ * <em>function</em> and <em>inplace</em> respectively.</td>
  * <td rowspan=3>BOTH (optional)</td>
  * <td>1</td>
  * <td>{@link UnaryHybridCFI}</th>
@@ -203,8 +203,8 @@ import org.scijava.InstantiableException;
  * <tr>
  * <td>2</td>
  * <td>{@link BinaryHybridCFI}</th>
- * <td style="white-space: nowrap">{@code void compute(A, A, A)} +
- * {@code A compute(A, A)} + {@code void mutate1(A, A)} +
+ * <td style="white-space: nowrap">{@code void compute2(A, A, A)} +
+ * {@code A compute2(A, A)} + {@code void mutate1(A, A)} +
  * {@code void mutate2(A, A)}</td>
  * </tr>
  * </table>
