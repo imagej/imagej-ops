@@ -33,6 +33,9 @@ import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.AbstractFeatureTest;
+import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImgs;
+import net.imglib2.type.numeric.integer.ByteType;
 
 import org.junit.Test;
 
@@ -61,6 +64,12 @@ public class Tamura2dFeatureTest extends AbstractFeatureTest {
 	public void testCoarsenessFeature() {
 		assertEquals(Ops.Tamura.Coarseness.NAME, 43.614, ops.tamura().coarseness(
 			random).getRealDouble(), 1e-3);
+
+		// NB: according to the implementation, this 2x2 image should have exactly 0
+		// coarseness.
+		byte[] arr = new byte[] {0, -1, 0, 0};
+		Img<ByteType> in = ArrayImgs.bytes(arr, 2, 2);
+		assertEquals(Ops.Tamura.Coarseness.NAME, 0.0, ops.tamura().coarseness(in).getRealDouble(), 0.0);
 	}
 
 }
