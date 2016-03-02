@@ -114,7 +114,7 @@ public class ComputeShanbhagThreshold<T extends RealType<T>> extends
 		// Calculate the total entropy each gray-level
 		// and find the threshold that maximizes it
 		threshold = -1;
-		min_ent = Double.MAX_VALUE;
+		min_ent = Double.POSITIVE_INFINITY;
 
 		for (it = first_bin; it <= last_bin; it++) {
 			/* Entropy of the background pixels */

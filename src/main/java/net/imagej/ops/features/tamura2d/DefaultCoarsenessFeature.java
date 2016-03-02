@@ -112,7 +112,8 @@ public class DefaultCoarsenessFeature<I extends RealType<I>, O extends RealType<
 
 			cursor.next();
 
-			double max = Double.MIN_VALUE;
+			// NB: the smallest possible value for maxDiff is 0
+			double maxDiff = 0;
 
 			for (int i = 1; i <= 5; i++) {
 
@@ -133,12 +134,12 @@ public class DefaultCoarsenessFeature<I extends RealType<I>, O extends RealType<
 						double val2 = ra2.get().getRealDouble();
 
 						double diff = Math.abs(val2 - val1);
-						max = diff >= max ? diff : max;
+						maxDiff = diff >= maxDiff ? diff : maxDiff;
 					}
 				}
 			}
 
-			maxDifferences.add(max);
+			maxDifferences.add(maxDiff);
 		}
 		return maxDifferences;
 	}
