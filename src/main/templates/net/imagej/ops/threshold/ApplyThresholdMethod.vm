@@ -31,8 +31,8 @@
 package net.imagej.ops.threshold;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.Functions;
-import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
@@ -60,13 +60,13 @@ public final class ApplyThresholdMethod {
 		implements ${iface}
 	{
 
-		private UnaryFunctionOp<Histogram1d<T>, T> thresholdFunc;
+		private UnaryComputerOp<Histogram1d<T>, T> thresholdComp;
 
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		@Override
 		public void initialize() {
 			super.initialize();
-			thresholdFunc = (UnaryFunctionOp) Functions.unary(ops(),
+			thresholdComp = (UnaryComputerOp) Computers.unary(ops(),
 				Ops.Threshold.${method.iface}.class, in().firstElement().getClass(),
 				Histogram1d.class);
 		}
@@ -74,7 +74,9 @@ public final class ApplyThresholdMethod {
 		@Override
 		public T getThreshold(final IterableInterval<T> input) {
 			final Histogram1d<T> hist = histCreator.compute1(input);
-			return thresholdFunc.compute1(hist);
+			final T type = input.firstElement().createVariable();
+			thresholdComp.compute1(hist, type);
+			return type;
 		}
 	}
 #end
