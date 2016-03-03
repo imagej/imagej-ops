@@ -75,9 +75,12 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 
 	@Test
 	public void testCast() {
+		
+		//works
 		final UnaryComputerOp<Apple, Apple> unaryComputerAF = Computers.unary(ops,
 			UnaryHybridAF.class, Apple.class, Apple.class);
 
+		// doesnt
 		final UnaryFunctionOp<Apple, Apple> unaryFunctionAF = Functions.unary(ops,
 			UnaryHybridAF.class, Apple.class, Apple.class);
 	}
