@@ -57,11 +57,13 @@ public class ApplyConstantThreshold<T extends RealType<T>> extends
 	private BinaryComputerOp<T, T, BitType> applyThreshold;
 	private UnaryComputerOp<Iterable<T>, Iterable<BitType>> mapper;
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
 		applyThreshold = Computers.binary(ops(), ApplyThresholdComparable.class,
 			BitType.class, in2(), in2());
-		mapper = Computers.unary(ops(), Ops.Map.class, out(), in(), applyThreshold);
+		mapper = (UnaryComputerOp) Computers.unary(ops(), Ops.Map.class, out() == null
+			? Iterable.class : out(), in1(), applyThreshold);
 	}
 
 	@Override
