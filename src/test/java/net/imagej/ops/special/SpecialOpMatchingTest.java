@@ -73,9 +73,17 @@ import org.scijava.plugin.Plugin;
  */
 public class SpecialOpMatchingTest extends AbstractOpTest {
 
+	@Test
+	public void testCast() {
+		final UnaryComputerOp<Apple, Apple> unaryComputerAF = Computers.unary(ops,
+			UnaryHybridAF.class, Apple.class, Apple.class);
+
+		final UnaryFunctionOp<Apple, Apple> unaryFunctionAF = Functions.unary(ops,
+			UnaryHybridAF.class, Apple.class, Apple.class);
+	}
+
 	/**
-	 * Tests
-	 * {@link Computers#nullary(OpEnvironment, Class, Class, Object...)}
+	 * Tests {@link Computers#nullary(OpEnvironment, Class, Class, Object...)}
 	 * (i.e.: without the output specified).
 	 */
 	@Test
@@ -90,8 +98,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	}
 
 	/**
-	 * Tests
-	 * {@link Computers#nullary(OpEnvironment, Class, Object, Object...)}
+	 * Tests {@link Computers#nullary(OpEnvironment, Class, Object, Object...)}
 	 * (i.e.: with the output specified).
 	 */
 	@Test
@@ -285,7 +292,8 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	}
 
 	/**
-	 * Tests {@link Hybrids#unaryCF(OpEnvironment, Class, Class, Class, Object...)}
+	 * Tests
+	 * {@link Hybrids#unaryCF(OpEnvironment, Class, Class, Class, Object...)}
 	 * (i.e.: with neither output nor input specified).
 	 */
 	@Test
@@ -308,7 +316,8 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	}
 
 	/**
-	 * Tests {@link Hybrids#unaryCF(OpEnvironment, Class, Class, Object, Object...)}
+	 * Tests
+	 * {@link Hybrids#unaryCF(OpEnvironment, Class, Class, Object, Object...)}
 	 * (i.e.: with the input specified).
 	 */
 	@Test
@@ -384,10 +393,12 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		final Apple a = new Apple();
 		final Orange o = new Orange();
 
-		final UnaryInplaceOp<Apple> inplaceA = Inplaces.unary(ops, FruitOp.class, a);
+		final UnaryInplaceOp<Apple> inplaceA = Inplaces.unary(ops, FruitOp.class,
+			a);
 		assertSame(inplaceA.getClass(), InplaceA.class);
 
-		final UnaryInplaceOp<Orange> inplaceO = Inplaces.unary(ops, FruitOp.class, o);
+		final UnaryInplaceOp<Orange> inplaceO = Inplaces.unary(ops, FruitOp.class,
+			o);
 		assertSame(inplaceO.getClass(), InplaceO.class);
 	}
 
@@ -528,16 +539,16 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testBinaryHybrid() {
-		final BinaryHybridCF<Apple, Apple, Lemon> binaryHybridAAL = Hybrids.binaryCF(
-			ops, FruitOp.class, Lemon.class, Apple.class, Apple.class);
+		final BinaryHybridCF<Apple, Apple, Lemon> binaryHybridAAL = Hybrids
+			.binaryCF(ops, FruitOp.class, Lemon.class, Apple.class, Apple.class);
 		assertSame(binaryHybridAAL.getClass(), BinaryHybridAAL.class);
 
-		final BinaryHybridCF<Apple, Orange, Lemon> binaryHybridAOL = Hybrids.binaryCF(
-			ops, FruitOp.class, Lemon.class, Apple.class, Orange.class);
+		final BinaryHybridCF<Apple, Orange, Lemon> binaryHybridAOL = Hybrids
+			.binaryCF(ops, FruitOp.class, Lemon.class, Apple.class, Orange.class);
 		assertSame(binaryHybridAOL.getClass(), BinaryHybridAOL.class);
 
-		final BinaryHybridCF<Orange, Apple, Lemon> binaryHybridOAL = Hybrids.binaryCF(
-			ops, FruitOp.class, Lemon.class, Orange.class, Apple.class);
+		final BinaryHybridCF<Orange, Apple, Lemon> binaryHybridOAL = Hybrids
+			.binaryCF(ops, FruitOp.class, Lemon.class, Orange.class, Apple.class);
 		assertSame(binaryHybridOAL.getClass(), BinaryHybridOAL.class);
 
 		final BinaryHybridCF<Orange, Orange, Lemon> binaryHybridOOL = Hybrids
@@ -555,16 +566,16 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		final Apple a = new Apple();
 		final Orange o = new Orange();
 
-		final BinaryHybridCF<Apple, Apple, Lemon> binaryHybridAAL = Hybrids.binaryCF(
-			ops, FruitOp.class, Lemon.class, a, a);
+		final BinaryHybridCF<Apple, Apple, Lemon> binaryHybridAAL = Hybrids
+			.binaryCF(ops, FruitOp.class, Lemon.class, a, a);
 		assertSame(binaryHybridAAL.getClass(), BinaryHybridAAL.class);
 
-		final BinaryHybridCF<Apple, Orange, Lemon> binaryHybridAOL = Hybrids.binaryCF(
-			ops, FruitOp.class, Lemon.class, a, o);
+		final BinaryHybridCF<Apple, Orange, Lemon> binaryHybridAOL = Hybrids
+			.binaryCF(ops, FruitOp.class, Lemon.class, a, o);
 		assertSame(binaryHybridAOL.getClass(), BinaryHybridAOL.class);
 
-		final BinaryHybridCF<Orange, Apple, Lemon> binaryHybridOAL = Hybrids.binaryCF(
-			ops, FruitOp.class, Lemon.class, o, a);
+		final BinaryHybridCF<Orange, Apple, Lemon> binaryHybridOAL = Hybrids
+			.binaryCF(ops, FruitOp.class, Lemon.class, o, a);
 		assertSame(binaryHybridOAL.getClass(), BinaryHybridOAL.class);
 
 		final BinaryHybridCF<Orange, Orange, Lemon> binaryHybridOOL = Hybrids
@@ -583,34 +594,38 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		final Orange o = new Orange();
 		final Lemon l = new Lemon();
 
-		final BinaryHybridCF<Apple, Apple, Lemon> binaryHybridAAL = Hybrids.binaryCF(ops,
-			FruitOp.class, l, a, a);
+		final BinaryHybridCF<Apple, Apple, Lemon> binaryHybridAAL = Hybrids
+			.binaryCF(ops, FruitOp.class, l, a, a);
 		assertSame(binaryHybridAAL.getClass(), BinaryHybridAAL.class);
 
-		final BinaryHybridCF<Apple, Orange, Lemon> binaryHybridAOL = Hybrids.binaryCF(ops,
-			FruitOp.class, l, a, o);
+		final BinaryHybridCF<Apple, Orange, Lemon> binaryHybridAOL = Hybrids
+			.binaryCF(ops, FruitOp.class, l, a, o);
 		assertSame(binaryHybridAOL.getClass(), BinaryHybridAOL.class);
 
-		final BinaryHybridCF<Orange, Apple, Lemon> binaryHybridOAL = Hybrids.binaryCF(ops,
-			FruitOp.class, l, o, a);
+		final BinaryHybridCF<Orange, Apple, Lemon> binaryHybridOAL = Hybrids
+			.binaryCF(ops, FruitOp.class, l, o, a);
 		assertSame(binaryHybridOAL.getClass(), BinaryHybridOAL.class);
 
-		final BinaryHybridCF<Orange, Orange, Lemon> binaryHybridOOL = Hybrids.binaryCF(ops,
-			FruitOp.class, l, o, o);
+		final BinaryHybridCF<Orange, Orange, Lemon> binaryHybridOOL = Hybrids
+			.binaryCF(ops, FruitOp.class, l, o, o);
 		assertSame(binaryHybridOOL.getClass(), BinaryHybridOOL.class);
 	}
 
 	// -- Helper classes --
 
-	public static class Apple {
+	public static interface Fruit {
 		// NB: No implementation needed.
 	}
 
-	public static class Orange {
+	public static class Apple implements Fruit {
 		// NB: No implementation needed.
 	}
 
-	public static class Lemon {
+	public static class Orange implements Fruit {
+		// NB: No implementation needed.
+	}
+
+	public static class Lemon implements Fruit {
 		// NB: No implementation needed.
 	}
 
@@ -741,17 +756,23 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	}
 
 	@Plugin(type = FruitOp.class, name = "test.unaryComputerAO")
-	public static class UnaryComputerAO extends UnaryFruitComputer<Apple, Orange> {
+	public static class UnaryComputerAO extends
+		UnaryFruitComputer<Apple, Orange>
+	{
 		// NB: No implementation needed.
 	}
 
 	@Plugin(type = FruitOp.class, name = "test.unaryComputerOA")
-	public static class UnaryComputerOA extends UnaryFruitComputer<Orange, Apple> {
+	public static class UnaryComputerOA extends
+		UnaryFruitComputer<Orange, Apple>
+	{
 		// NB: No implementation needed.
 	}
 
 	@Plugin(type = FruitOp.class, name = "test.unaryComputerOO")
-	public static class UnaryComputerOO extends UnaryFruitComputer<Orange, Orange> {
+	public static class UnaryComputerOO extends
+		UnaryFruitComputer<Orange, Orange>
+	{
 		// NB: No implementation needed.
 	}
 
@@ -762,18 +783,30 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	}
 
 	@Plugin(type = FruitOp.class, name = "test.unaryFunctionAO")
-	public static class UnaryFunctionAO extends UnaryFruitFunction<Apple, Orange> {
+	public static class UnaryFunctionAO extends
+		UnaryFruitFunction<Apple, Orange>
+	{
 		// NB: No implementation needed.
 	}
 
 	@Plugin(type = FruitOp.class, name = "test.unaryFunctionOA")
-	public static class UnaryFunctionOA extends UnaryFruitFunction<Orange, Apple> {
+	public static class UnaryFunctionOA extends
+		UnaryFruitFunction<Orange, Apple>
+	{
 		// NB: No implementation needed.
 	}
 
 	@Plugin(type = FruitOp.class, name = "test.unaryFunctionOO",
 		priority = Priority.HIGH_PRIORITY)
-	public static class UnaryFunctionOO extends UnaryFruitFunction<Orange, Orange> {
+	public static class UnaryFunctionOO extends
+		UnaryFruitFunction<Orange, Orange>
+	{
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.unaryHybridAF",
+		priority = Priority.LOW_PRIORITY)
+	public static class UnaryHybridAF extends UnaryFruitHybrid<Apple, Fruit> {
 		// NB: No implementation needed.
 	}
 
