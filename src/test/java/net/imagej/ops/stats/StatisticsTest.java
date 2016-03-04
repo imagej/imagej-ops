@@ -33,6 +33,7 @@ package net.imagej.ops.stats;
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
+import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.basictypeaccess.array.FloatArray;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -150,6 +151,10 @@ public class StatisticsTest extends AbstractOpTest {
 	public void testMax() {
 		Assert.assertEquals("Max", 254d, ops.stats().max(randomlyFilledImg)
 			.getRealDouble(), 0.00001d);
+
+		// NB: should work with negative numbers
+		Assert.assertEquals("Max", -1.0, ops.stats().max(ArrayImgs.bytes(new byte[] {
+			-1, -2, -4, -3 }, 2, 2)).getRealDouble(), 0.0);
 	}
 
 	@Test

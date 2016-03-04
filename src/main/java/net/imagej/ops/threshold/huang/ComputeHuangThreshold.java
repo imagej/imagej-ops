@@ -92,7 +92,7 @@ public class ComputeHuangThreshold<T extends RealType<T>> extends
 
 		// calculate the threshold
 		int bestThreshold = 0;
-		double bestEntropy = Double.MAX_VALUE;
+		double bestEntropy = Double.POSITIVE_INFINITY;
 		for (int threshold = first; threshold <= last; threshold++) {
 			double entropy = 0;
 			int mu = (int) Math.round(W[threshold] / S[threshold]);

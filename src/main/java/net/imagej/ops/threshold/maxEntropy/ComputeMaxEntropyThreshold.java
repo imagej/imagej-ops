@@ -114,7 +114,7 @@ public class ComputeMaxEntropyThreshold<T extends RealType<T>> extends
 
 		// Calculate the total entropy each gray-level
 		// and find the threshold that maximizes it
-		max_ent = Double.MIN_VALUE;
+		max_ent = Double.NEGATIVE_INFINITY;
 
 		for (it = first_bin; it <= last_bin; it++) {
 			/* Entropy of the background pixels */
