@@ -30,6 +30,7 @@
 
 package net.imagej.ops.filter.sigma;
 
+import net.imagej.ops.ExtendedRAI;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.IterableInterval;
@@ -41,7 +42,7 @@ import net.imglib2.RandomAccessibleInterval;
  * @author Jonathan Hale (University of Konstanz)
  */
 public interface SigmaFilterOp<T, V> extends Ops.Filter.Sigma,
-	UnaryComputerOp<RandomAccessibleInterval<T>, IterableInterval<V>>
+	UnaryComputerOp<ExtendedRAI<T, RandomAccessibleInterval<T>>, IterableInterval<V>>
 {
 	// NB: Marker interface.
 }

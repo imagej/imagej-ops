@@ -30,6 +30,7 @@
 
 package net.imagej.ops.map.neighborhood;
 
+import net.imagej.ops.ExtendedRAI;
 import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Map;
@@ -58,7 +59,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 1)
 public class MapNeighborhoodWithCenter<I, O> extends
-	AbstractMapCenterAwareComputer<I, O, RandomAccessibleInterval<I>, IterableInterval<O>>
+	AbstractMapCenterAwareComputer<I, O, ExtendedRAI<I, RandomAccessibleInterval<I>>, IterableInterval<O>>
 {
 
 	@Parameter
@@ -74,10 +75,10 @@ public class MapNeighborhoodWithCenter<I, O> extends
 	}
 
 	@Override
-	public void compute1(final RandomAccessibleInterval<I> input,
+	public void compute1(final ExtendedRAI<I, RandomAccessibleInterval<I>> input,
 		final IterableInterval<O> output)
 	{
-		map.compute2(input, shape.neighborhoodsSafe(input), output);
+		map.compute2(input.getSource(), shape.neighborhoodsSafe(input), output);
 	}
 
 }

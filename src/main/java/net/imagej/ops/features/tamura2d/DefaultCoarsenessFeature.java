@@ -32,6 +32,7 @@ package net.imagej.ops.features.tamura2d;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import net.imagej.ops.ExtendedRAI;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.mean.MeanFilterOp;
 import net.imglib2.Cursor;
@@ -44,7 +45,6 @@ import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Intervals;
 
@@ -161,10 +161,11 @@ public class DefaultCoarsenessFeature<I extends RealType<I>, O extends RealType<
 		final byte[] array = new byte[(int) Intervals.numElements(new FinalInterval(dims))];
 		Img<I> meanImg = (Img<I>) ArrayImgs.unsignedBytes(array, dims);
 
-		OutOfBoundsMirrorFactory<ByteType, Img<ByteType>> oobFactory = new OutOfBoundsMirrorFactory<>(
-				Boundary.SINGLE);
+		OutOfBoundsMirrorFactory<I, RandomAccessibleInterval<I>> oobFactory =
+			new OutOfBoundsMirrorFactory<>(Boundary.SINGLE);
 
-		ops().run(MeanFilterOp.class, meanImg, input, new RectangleShape(i, true), oobFactory);
+		ops().run(MeanFilterOp.class, meanImg, new ExtendedRAI<>(input, oobFactory),
+			new RectangleShape(i, true));
 
 		return meanImg;
 	}

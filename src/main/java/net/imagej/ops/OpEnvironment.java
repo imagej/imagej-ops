@@ -728,7 +728,7 @@ public interface OpEnvironment extends Contextual {
 	@OpMethod(op = net.imagej.ops.map.neighborhood.MapNeighborhood.class)
 	default <I, O> IterableInterval<O> map(
 		final IterableInterval<O> out,
-		final RandomAccessibleInterval<I> in, final UnaryComputerOp<Iterable<I>, O> op,
+		final ExtendedRAI<I, RandomAccessibleInterval<I>> in, final UnaryComputerOp<Iterable<I>, O> op,
 		final Shape shape)
 	{
 		@SuppressWarnings("unchecked")
@@ -742,7 +742,7 @@ public interface OpEnvironment extends Contextual {
 	@OpMethod(
 		op = net.imagej.ops.map.neighborhood.MapNeighborhoodWithCenter.class)
 	default <I, O> IterableInterval<O> map(
-		final IterableInterval<O> out, final RandomAccessibleInterval<I> in,
+		final IterableInterval<O> out, final ExtendedRAI<I, RandomAccessibleInterval<I>> in,
 		final CenterAwareComputerOp<I, O> func, final Shape shape)
 	{
 		@SuppressWarnings("unchecked")
