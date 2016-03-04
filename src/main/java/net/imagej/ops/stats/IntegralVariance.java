@@ -43,7 +43,7 @@ import net.imglib2.converter.Converter;
 import net.imglib2.converter.RealDoubleConverter;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.util.Pair;
+import net.imglib2.view.composite.Composite;
 
 /**
  * {@link Op} to calculate the {@code stats.variance} from an integral image using a
@@ -54,18 +54,17 @@ import net.imglib2.util.Pair;
  */
 @Plugin(type = Ops.Stats.IntegralVariance.class)
 public class IntegralVariance<I extends RealType<I>> extends
-	AbstractBinaryComputerOp<Pair<RectangleNeighborhood<I>, RectangleNeighborhood<I>>, Interval, DoubleType>
+	AbstractBinaryComputerOp<RectangleNeighborhood<Composite<I>>, Interval, DoubleType>
 	implements Ops.Stats.IntegralVariance
 {
 
 	@Override
-	public void compute2(Pair<RectangleNeighborhood<I>, RectangleNeighborhood<I>> input1, Interval input2,
+	public void compute2(RectangleNeighborhood<Composite<I>> input1, Interval input2,
 		DoubleType output)
 	{
 		// computation according to	https://en.wikipedia.org/wiki/Summed_area_table
-		final IntegralCursor<I> cursorS1 = new IntegralCursor<>(input1.getA());
-		final IntegralCursor<I> cursorS2 = new IntegralCursor<>(input1.getB());
-		int dimensions = input1.getA().numDimensions();
+		final IntegralCursor<Composite<I>> cursorS1 = new IntegralCursor<>(input1);
+		int dimensions = input1.numDimensions();
 		
 		// Compute \sum (-1)^{dim - ||cornerVector||_{1}} * I(x^{cornerVector})
 		final DoubleType sum1 = new DoubleType();
@@ -74,11 +73,16 @@ public class IntegralVariance<I extends RealType<I>> extends
 		// Convert from input to return type
 		final Converter<I, DoubleType> conv = new RealDoubleConverter<>();
 		
+		// Compute \sum (-1)^{dim - ||cornerVector||_{1}} * I(x^{cornerVector})
+		final DoubleType sum2 = new DoubleType();
+		sum2.setZero();
+		
 		while ( cursorS1.hasNext() )
 		{
 			// Obtain the cursor position encoded as corner vector
 			int cornerInteger1 = cursorS1.getCornerRepresentation();
-			final I value1 = cursorS1.next().copy();
+			final Composite<I> compositeValue = cursorS1.next();
+			final I value1 = compositeValue.get(0).copy();
 			final DoubleType value1AsDoubleType = new DoubleType();
 			conv.convert(value1, value1AsDoubleType);
 			
@@ -87,30 +91,20 @@ public class IntegralVariance<I extends RealType<I>> extends
 			value1AsDoubleType.mul(factor);
 			
 			sum1.add(value1AsDoubleType);
-		}
-		
-		// Compute \sum (-1)^{dim - ||cornerVector||_{1}} * I(x^{cornerVector})
-		final DoubleType sum2 = new DoubleType();
-		sum2.setZero();
-
-		while (cursorS2.hasNext()) {
-			// Obtain the cursor position encoded as corner vector
-			int cornerInteger2 = cursorS2.getCornerRepresentation();
-			final I value2 = cursorS2.next().copy();
+			
+			final I value2 = compositeValue.get(1).copy();
 			final DoubleType value2AsDoubleType = new DoubleType();
 			conv.convert(value2, value2AsDoubleType);
 
 			// Determine if the value has to be added (factor==1) or subtracted
 			// (factor==-1)
-			DoubleType factor = new DoubleType(Math.pow(-1.0d, dimensions - norm(
-				cornerInteger2)));
 			value2AsDoubleType.mul(factor);
 
 			sum2.add(value2AsDoubleType);
 		}
 
 		// Compute overlap
-		int area = overlap(correctNeighborhoodInterval(input1.getA()), input2);
+		int area = overlap(correctNeighborhoodInterval(input1), input2);
 
 		sum1.mul(sum1);
 		sum1.div(new DoubleType(area));

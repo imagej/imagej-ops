@@ -42,6 +42,7 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.integral.IntegralImg;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
+import net.imglib2.algorithm.neighborhood.RectangleShape.NeighborhoodsIterableInterval;
 import net.imglib2.converter.RealDoubleConverter;
 import net.imglib2.outofbounds.OutOfBoundsBorderFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
@@ -49,6 +50,10 @@ import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.Views;
+import net.imglib2.view.composite.Composite;
+import net.imglib2.view.composite.CompositeIntervalView;
+import net.imglib2.view.composite.GenericComposite;
+import net.imglib2.view.composite.RealComposite;
 
 /**
  * Apply a local thresholding method to an image using integral images for speed
@@ -69,7 +74,7 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 
 	private CenterAwareIntegralComputerOp<I, BitType> filterOp;
 
-	private BinaryComputerOp<RandomAccessibleInterval<I>, IterableInterval<Neighborhood<DoubleType>>, IterableInterval<BitType>> map;
+	private BinaryComputerOp<RandomAccessibleInterval<I>, NeighborhoodsIterableInterval<? extends Composite<DoubleType>>, IterableInterval<BitType>> map;
 
 	private IntegralImg<I, DoubleType> integralImg;
 	
@@ -88,24 +93,32 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 		IterableInterval<BitType> output)
 	{
 		
+		// Let the implementor determine the order of integral images required
 		final RandomAccessibleInterval<DoubleType> extendedImg = getIntegralImage(
-			input);
+			input, 1);
+		
+		final RandomAccessibleInterval<DoubleType> extendedImg2 = getIntegralImage(
+			input, 2);
+		
+		// Composite image of integral images of order 1 and 2
+		RandomAccessibleInterval<DoubleType> stacked = Views.stack(extendedImg, extendedImg2);
+		RandomAccessibleInterval<? extends GenericComposite<DoubleType>> rai = Views.collapse(stacked);
 		
 		if (map == null)
 		{
-		map = (BinaryComputerOp) ops().op(Map.class, out(), in(),
-			shape.neighborhoodsSafe(extendedImg), filterOp);
+			map = (BinaryComputerOp) ops().op(Map.class, out(), in(), shape
+				.neighborhoodsSafe(rai), filterOp);
 		}
-		
-		map.compute2(input, shape.neighborhoodsSafe(extendedImg), output);
+
+		map.compute2(input, shape.neighborhoodsSafe(rai), output);
 	}
 
 	private RandomAccessibleInterval<DoubleType> getIntegralImage(
-		RandomAccessibleInterval<I> input)
+		RandomAccessibleInterval<I> input, int order)
 	{
 		// Create IntegralImg from input
 		integralImg = new IntegralImg<>(input, new DoubleType(),
-			new RealDoubleConverter<I>());
+			new RealDoubleConverter<I>(), order);
 
 		// integralImg will be larger by one pixel in each dimension than input due
 		// to the computation of the integral image

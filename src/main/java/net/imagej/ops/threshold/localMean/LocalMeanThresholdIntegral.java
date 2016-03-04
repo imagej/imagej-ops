@@ -47,6 +47,7 @@ import net.imglib2.converter.RealDoubleConverter;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.view.composite.Composite;
 
 /**
  * LocalThresholdMethod using mean.
@@ -79,7 +80,7 @@ public class LocalMeanThresholdIntegral<T extends RealType<T>> extends
 	 * @author Stefan Helfrich (University of Konstanz)
 	 */
 	private class LocalMeanThresholdComputer<I extends RealType<I>> extends
-		AbstractBinaryComputerOp<I, RectangleNeighborhood<DoubleType>, BitType> implements
+		AbstractBinaryComputerOp<I, RectangleNeighborhood<Composite<DoubleType>>, BitType> implements
 		CenterAwareIntegralComputerOp<I, BitType>
 	{
 
@@ -95,7 +96,7 @@ public class LocalMeanThresholdIntegral<T extends RealType<T>> extends
 		}
 
 		@Override
-		public void compute2(I center, RectangleNeighborhood<DoubleType> neighborhood,
+		public void compute2(I center, RectangleNeighborhood<Composite<DoubleType>> neighborhood,
 			BitType output)
 		{
 

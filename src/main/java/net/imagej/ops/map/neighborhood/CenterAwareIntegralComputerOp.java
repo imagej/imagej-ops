@@ -33,6 +33,7 @@ package net.imagej.ops.map.neighborhood;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.view.composite.Composite;
 
 /**
  * TODO Documentation
@@ -40,7 +41,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @author Stefan Helfrich (University of Konstanz)
  */
 public interface CenterAwareIntegralComputerOp<I, O> extends
-	BinaryComputerOp<I, RectangleNeighborhood<DoubleType>, O>
+	BinaryComputerOp<I, RectangleNeighborhood<Composite<DoubleType>>, O>
 {
 	// NB: Marker interface.
 }

@@ -43,6 +43,7 @@ import net.imglib2.converter.Converter;
 import net.imglib2.converter.RealDoubleConverter;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.view.composite.Composite;
 
 /**
  * {@link Op} to calculate the {@code stats.mean} from an integral image using a
@@ -53,16 +54,16 @@ import net.imglib2.type.numeric.real.DoubleType;
  */
 @Plugin(type = Ops.Stats.IntegralMean.class)
 public class IntegralMean<I extends RealType<I>> extends
-	AbstractBinaryComputerOp<RectangleNeighborhood<I>, Interval, DoubleType>
+	AbstractBinaryComputerOp<RectangleNeighborhood<Composite<I>>, Interval, DoubleType>
 	implements Ops.Stats.IntegralMean
 {
 
 	@Override
-	public void compute2(RectangleNeighborhood<I> input1, Interval input2,
+	public void compute2(RectangleNeighborhood<Composite<I>> input1, Interval input2,
 		DoubleType output)
 	{
 		// computation according to	https://en.wikipedia.org/wiki/Summed_area_table
-		final IntegralCursor<I> cursor = new IntegralCursor<>(input1);
+		final IntegralCursor<Composite<I>> cursor = new IntegralCursor<>(input1);
 		int dimensions = input1.numDimensions();
 		
 		// Compute \sum (-1)^{dim - ||cornerVector||_{1}} * I(x^{cornerVector})
@@ -74,7 +75,7 @@ public class IntegralMean<I extends RealType<I>> extends
 		
 		while ( cursor.hasNext() )
 		{
-			final I value = cursor.next().copy();
+			final I value = cursor.next().get(0).copy();
 			final DoubleType valueAsDoubleType = new DoubleType();
 			conv.convert(value, valueAsDoubleType);
 			
