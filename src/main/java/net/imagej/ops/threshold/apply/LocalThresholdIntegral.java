@@ -49,6 +49,8 @@ import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.view.ExtendedRandomAccessibleInterval;
+import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 import net.imglib2.view.composite.Composite;
 import net.imglib2.view.composite.CompositeIntervalView;
@@ -101,16 +103,20 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 			input, 2);
 		
 		// Composite image of integral images of order 1 and 2
-		RandomAccessibleInterval<DoubleType> stacked = Views.stack(extendedImg, extendedImg2);
-		RandomAccessibleInterval<? extends GenericComposite<DoubleType>> rai = Views.collapse(stacked);
+		RandomAccessibleInterval<DoubleType> stacked = Views.stack(extendedImg,
+			extendedImg2);
+		RandomAccessibleInterval<? extends GenericComposite<DoubleType>> compositeRAI =
+			Views.collapse(stacked);
+		RandomAccessibleInterval<? extends GenericComposite<DoubleType>> extendedCompositeRAI =
+			Views.offsetInterval(Views.extendBorder(compositeRAI), compositeRAI);
 		
 		if (map == null)
 		{
 			map = (BinaryComputerOp) ops().op(Map.class, out(), in(), shape
-				.neighborhoodsSafe(rai), filterOp);
+				.neighborhoodsSafe(compositeRAI), filterOp);
 		}
 
-		map.compute2(input, shape.neighborhoodsSafe(rai), output);
+		map.compute2(input, shape.neighborhoodsSafe(extendedCompositeRAI), output);
 	}
 
 	private RandomAccessibleInterval<DoubleType> getIntegralImage(
