@@ -48,6 +48,7 @@ import net.imagej.ops.threshold.localNiblack.LocalNiblackThresholdIntegral;
 import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkarThreshold;
 import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkarThresholdIntegral;
 import net.imagej.ops.threshold.localSauvola.LocalSauvolaThreshold;
+import net.imagej.ops.threshold.localSauvola.LocalSauvolaThresholdIntegral;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
@@ -399,6 +400,58 @@ public class LocalThresholdTest extends AbstractOpTest {
 			0.0, 0.0);
 
 		assertEquals(out.firstElement().get(), false);
+	}
+
+	/**
+	 * @see LocalSauvolaThresholdIntegral
+	 */
+	@Test
+	public void testLocalSauvolaIntegral() {
+		ops.run(LocalSauvolaThresholdIntegral.class, out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
+			0.0, 0.0);
+
+		assertEquals(out.firstElement().get(), false);
+	}
+
+	/**
+	 * @see LocalSauvolaThresholdIntegral
+	 * @see LocalSauvolaThreshold
+	 */
+	@Test
+	public void testLocalSauvolaResultsConsistency() {
+		Img<BitType> out2 = null;
+		Img<BitType> out3 = null;
+		try {
+			out2 = in.factory().imgFactory(new BitType()).create(in, new BitType());
+			out3 = in.factory().imgFactory(new BitType()).create(in, new BitType());
+		}
+		catch (IncompatibleTypeException exc) {
+			exc.printStackTrace();
+		}
+		
+		// Default implementation
+		ops.run(LocalSauvolaThreshold.class, out2, in, new RectangleShape(1, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
+			0.0, 0.0);
+		
+		// Integral image-based implementation
+		ops.run(LocalSauvolaThresholdIntegral.class,
+			out3,
+			in,
+			new RectangleShape(1, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
+			0.0, 0.0);
+		
+		// Test for pixel-wise equality of the results
+		Cursor<BitType> cursorOut2 = out2.cursor();
+		Cursor<BitType> cursorOut3 = out3.cursor();
+		while	(cursorOut2.hasNext()  && cursorOut3.hasNext()) {
+			BitType valueOut2 = cursorOut2.next();
+			BitType valueOut3 = cursorOut3.next();
+			
+			assertEquals(valueOut2, valueOut3);
+		}
 	}
 
 	public ArrayImg<ByteType, ByteArray> generateKnownByteArrayTestImgSmall() {
