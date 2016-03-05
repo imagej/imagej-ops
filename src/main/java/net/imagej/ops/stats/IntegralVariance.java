@@ -79,12 +79,13 @@ public class IntegralVariance<I extends RealType<I>> extends
 		
 		while ( cursorS1.hasNext() )
 		{
-			// Obtain the cursor position encoded as corner vector
-			int cornerInteger1 = cursorS1.getCornerRepresentation();
 			final Composite<I> compositeValue = cursorS1.next();
 			final I value1 = compositeValue.get(0).copy();
 			final DoubleType value1AsDoubleType = new DoubleType();
 			conv.convert(value1, value1AsDoubleType);
+			
+			// Obtain the cursor position encoded as corner vector
+			int cornerInteger1 = cursorS1.getCornerRepresentation();
 			
 			// Determine if the value has to be added (factor==1) or subtracted (factor==-1)
 			DoubleType factor = new DoubleType(Math.pow(-1.0d, dimensions - norm(cornerInteger1)));
