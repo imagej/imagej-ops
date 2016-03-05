@@ -42,19 +42,13 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.integral.IntegralImg;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
-import net.imglib2.algorithm.neighborhood.RectangleShape.NeighborhoodsIterableInterval;
 import net.imglib2.converter.RealDoubleConverter;
 import net.imglib2.outofbounds.OutOfBoundsBorderFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.view.ExtendedRandomAccessibleInterval;
-import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
-import net.imglib2.view.composite.Composite;
-import net.imglib2.view.composite.CompositeIntervalView;
-import net.imglib2.view.composite.GenericComposite;
 import net.imglib2.view.composite.RealComposite;
 
 /**
@@ -76,7 +70,7 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 
 	private CenterAwareIntegralComputerOp<I, BitType> filterOp;
 
-	private BinaryComputerOp<RandomAccessibleInterval<I>, NeighborhoodsIterableInterval<? extends Composite<DoubleType>>, IterableInterval<BitType>> map;
+	private BinaryComputerOp<RandomAccessibleInterval<I>, IterableInterval<Neighborhood<RealComposite<DoubleType>>>, IterableInterval<BitType>> map;
 
 	private IntegralImg<I, DoubleType> integralImg;
 	
@@ -95,7 +89,7 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 		IterableInterval<BitType> output)
 	{
 		
-		// Let the implementor determine the order of integral images required
+		// TODO Let the implementor determine the order of integral images required
 		final RandomAccessibleInterval<DoubleType> extendedImg = getIntegralImage(
 			input, 1);
 		
@@ -105,20 +99,29 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 		// Composite image of integral images of order 1 and 2
 		RandomAccessibleInterval<DoubleType> stacked = Views.stack(extendedImg,
 			extendedImg2);
-		RandomAccessibleInterval<? extends GenericComposite<DoubleType>> compositeRAI =
-			Views.collapse(stacked);
-		RandomAccessibleInterval<? extends GenericComposite<DoubleType>> extendedCompositeRAI =
-			Views.offsetInterval(Views.extendBorder(compositeRAI), compositeRAI);
+		RandomAccessibleInterval<RealComposite<DoubleType>> compositeRAI =
+			Views.collapseReal(stacked);
+		RandomAccessibleInterval<RealComposite<DoubleType>> extendedCompositeRAI =
+			removeLeadingZeros(compositeRAI);
 		
-		if (map == null)
-		{
-			map = (BinaryComputerOp) ops().op(Map.class, out(), in(), shape
-				.neighborhoodsSafe(compositeRAI), filterOp);
+		IterableInterval<Neighborhood<RealComposite<DoubleType>>> neighborhoods =
+			shape.neighborhoodsSafe(extendedCompositeRAI);
+		
+		if (map == null) {
+			map = (BinaryComputerOp) ops().op(Map.class, out(), in(), neighborhoods,
+				filterOp);
 		}
-
-		map.compute2(input, shape.neighborhoodsSafe(extendedCompositeRAI), output);
+		
+		map.compute2(input, neighborhoods, output);
 	}
 
+	/**
+	 * TODO Documentation
+	 * 
+	 * @param input
+	 * @param order
+	 * @return
+	 */
 	private RandomAccessibleInterval<DoubleType> getIntegralImage(
 		RandomAccessibleInterval<I> input, int order)
 	{
@@ -133,20 +136,32 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 			img = integralImg.getResult();
 		}
 
+		return img;
+	}
+
+	/**
+	 * TODO Documentation
+	 * 
+	 * @param input
+	 * @return
+	 */
+	private <T> RandomAccessibleInterval<T> removeLeadingZeros(
+		RandomAccessibleInterval<T> input)
+	{
 		// Remove 0s from integralImg by shifting its interval by +1
 		final long[] min = new long[input.numDimensions()];
 		final long[] max = new long[input.numDimensions()];
 
 		for (int d = 0; d < input.numDimensions(); ++d) {
 			min[d] = input.min(d) + 1;
-			max[d] = input.max(d) + 1;
+			max[d] = input.max(d);
 		}
 
 		// Define the Interval on the infinite random accessibles
 		final FinalInterval interval = new FinalInterval(min, max);
 		
-		final RandomAccessibleInterval<DoubleType> extendedImg = Views
-			.offsetInterval(Views.extendBorder(img), interval);
+		final RandomAccessibleInterval<T> extendedImg = Views
+			.offsetInterval(Views.extendBorder(input), interval);
 		return extendedImg;
 	}
 
