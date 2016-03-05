@@ -36,8 +36,11 @@ import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.composite.Composite;
 
 /**
- * TODO Documentation
+ * A <em>center-aware computer</em> calculates a result from a given input and
+ * the surrounding rectangular neighborhood in (multiple) integral images. The
+ * computed value is stored in the specified output reference.
  * 
+ * @see CenterAwareComputerOp
  * @author Stefan Helfrich (University of Konstanz)
  */
 public interface CenterAwareIntegralComputerOp<I, O> extends
