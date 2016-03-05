@@ -21,11 +21,20 @@ import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.composite.Composite;
 
 /**
- * TODO Documentation
+ * <p>
+ * Niblack's local thresholding algorithm.
+ * </p>
+ * <p>
+ * This implementation improves execution speed by using integral images for the
+ * computations of mean and standard deviation in the local windows. A
+ * significant improvement can be observed for increased window sizes (
+ * {@code span > 10}).
+ * </p>
  * 
+ * @see LocalNiblackThreshold
  * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.LocalNiblackThreshold.class, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Threshold.LocalNiblackThreshold.class)
 public class LocalNiblackThresholdIntegral<T extends RealType<T>> extends
 	LocalThresholdIntegral<T> implements Ops.Threshold.LocalNiblackThreshold
 {
@@ -35,11 +44,10 @@ public class LocalNiblackThresholdIntegral<T extends RealType<T>> extends
 
 	@Parameter
 	private double k;
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
-	protected CenterAwareIntegralComputerOp<T, BitType> unaryComputer()
-	{
+	protected CenterAwareIntegralComputerOp<T, BitType> unaryComputer() {
 		final CenterAwareIntegralComputerOp<T, BitType> op =
 			new LocalNiblackThresholdComputer<>(in(), ops().op(IntegralMean.class,
 				DoubleType.class, RectangleNeighborhood.class, Interval.class), ops()
@@ -49,15 +57,10 @@ public class LocalNiblackThresholdIntegral<T extends RealType<T>> extends
 		op.setEnvironment(ops());
 		return op;
 	}
-	
-	/**
-	 * TODO Documentation
-	 * 
-	 * @author Stefan Helfrich (University of Konstanz)
-	 */
+
 	private class LocalNiblackThresholdComputer<I extends RealType<I>> extends
-		AbstractBinaryComputerOp<I, RectangleNeighborhood<Composite<DoubleType>>, BitType> implements
-		CenterAwareIntegralComputerOp<I, BitType>
+		AbstractBinaryComputerOp<I, RectangleNeighborhood<Composite<DoubleType>>, BitType>
+		implements CenterAwareIntegralComputerOp<I, BitType>
 	{
 
 		RandomAccessibleInterval<I> source;
@@ -65,7 +68,8 @@ public class LocalNiblackThresholdIntegral<T extends RealType<T>> extends
 		private IntegralVariance<DoubleType> integralVariance;
 
 		public LocalNiblackThresholdComputer(RandomAccessibleInterval<I> source,
-			IntegralMean<DoubleType> integralMean, IntegralVariance<DoubleType> integralVariance)
+			IntegralMean<DoubleType> integralMean,
+			IntegralVariance<DoubleType> integralVariance)
 		{
 			super();
 			this.source = source;
@@ -74,28 +78,29 @@ public class LocalNiblackThresholdIntegral<T extends RealType<T>> extends
 		}
 
 		@Override
-		public void compute2(I center, RectangleNeighborhood<Composite<DoubleType>> neighborhood,
+		public void compute2(I center,
+			RectangleNeighborhood<Composite<DoubleType>> neighborhood,
 			BitType output)
 		{
 
 			final DoubleType threshold = new DoubleType(0.0d);
-			
+
 			final DoubleType mean = new DoubleType();
 			integralMean.compute2(neighborhood, source, mean);
-			
+
 			threshold.add(mean);
-			
+
 			final DoubleType variance = new DoubleType();
 			integralVariance.compute2(neighborhood, source, variance);
-			
+
 			final DoubleType stdDev = new DoubleType(Math.sqrt(variance.get()));
 			stdDev.mul(k);
 
 			threshold.add(stdDev);
-			
+
 			// Subtract the contrast
 			threshold.sub(new DoubleType(c));
-			
+
 			// Set value
 			final Converter<I, DoubleType> conv = new RealDoubleConverter<>();
 			final DoubleType centerPixelAsDoubleType = new DoubleType();
@@ -103,6 +108,12 @@ public class LocalNiblackThresholdIntegral<T extends RealType<T>> extends
 
 			output.set(centerPixelAsDoubleType.compareTo(threshold) > 0);
 		}
-		
-	}	
+
+	}
+
+	@Override
+	protected int[] requiredIntegralImages() {
+		return new int[] { 1, 2 };
+	}
+
 }

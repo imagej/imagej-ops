@@ -40,6 +40,7 @@ import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
 import net.imagej.ops.stats.IntegralMean;
 import net.imagej.ops.threshold.apply.LocalThresholdIntegral;
 import net.imglib2.Interval;
+import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
 import net.imglib2.converter.Converter;
@@ -114,6 +115,11 @@ public class LocalMeanThresholdIntegral<T extends RealType<T>> extends
 			output.set(centerPixelAsDoubleType.compareTo(sum) > 0);
 		}
 		
+	}
+
+	@Override
+	protected int[] requiredIntegralImages() {
+		return new int[]{1};
 	}	
 	
 }

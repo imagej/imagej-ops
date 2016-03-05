@@ -30,6 +30,9 @@
 
 package net.imagej.ops.threshold.apply;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.scijava.plugin.Parameter;
 
 import net.imagej.ops.Ops.Map;
@@ -89,16 +92,15 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 		IterableInterval<BitType> output)
 	{
 		
-		// TODO Let the implementor determine the order of integral images required
-		final RandomAccessibleInterval<DoubleType> extendedImg = getIntegralImage(
-			input, 1);
-		
-		final RandomAccessibleInterval<DoubleType> extendedImg2 = getIntegralImage(
-			input, 2);
+		List<RandomAccessibleInterval<DoubleType>> listOfIntegralImages = new ArrayList<>();		
+		for (int order : requiredIntegralImages()) {
+			RandomAccessibleInterval<DoubleType> requiredIntegralImg = getIntegralImage(
+				input, order);
+			listOfIntegralImages.add(requiredIntegralImg);
+		}
 		
 		// Composite image of integral images of order 1 and 2
-		RandomAccessibleInterval<DoubleType> stacked = Views.stack(extendedImg,
-			extendedImg2);
+		RandomAccessibleInterval<DoubleType> stacked = Views.stack(listOfIntegralImages);
 		RandomAccessibleInterval<RealComposite<DoubleType>> compositeRAI =
 			Views.collapseReal(stacked);
 		RandomAccessibleInterval<RealComposite<DoubleType>> extendedCompositeRAI =
@@ -179,5 +181,5 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 	 */
 	protected abstract CenterAwareIntegralComputerOp<I, BitType> unaryComputer();
 
-	
+	protected abstract int[] requiredIntegralImages();
 }
