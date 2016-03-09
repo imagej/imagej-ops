@@ -62,7 +62,6 @@ namespaces = ```
 		[name: "imgPlus",                     iface: "ImgPlus"],
 		[name: "integerType",                 iface: "IntegerType"],
 		[name: "integralImg",                 iface: "IntegralImg"],
-		[name: "integralAdd",                 iface: "IntegralAdd"],
 	[name: "kernel",                      iface: "Kernel"],
 		[name: "kernelGauss",                 iface: "KernelGauss"],
 		[name: "kernelLog",                   iface: "KernelLog"],

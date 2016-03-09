@@ -39,6 +39,8 @@ import net.imagej.ops.Ops.Slicewise;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCI;
+import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
@@ -71,16 +73,13 @@ public class DefaultCreateIntegralImg<I extends RealType<I>> extends
 
 	@Parameter(required = false)
 	private int order = 1;
-
 	
-	private UnaryComputerOp<RandomAccessibleInterval<? extends RealType>, RandomAccessibleInterval<? extends RealType>> integralAdd;
+	private IntegralAddComputer integralAdd;
 	private UnaryComputerOp[] slicewiseOps;
 	
-	@SuppressWarnings({ "unchecked" })
 	@Override
 	public void initialize() {
-		// TODO Move from dedicated op to inner class (which implements Computer)
-		integralAdd = (UnaryComputerOp) Computers.unary(ops(), IntegralAddition.class, IterableInterval.class, IterableInterval.class, order);
+		integralAdd = new IntegralAddComputer();
 		
 		if (in() != null) {
 			slicewiseOps = new UnaryComputerOp[in().numDimensions()];
@@ -141,6 +140,53 @@ public class DefaultCreateIntegralImg<I extends RealType<I>> extends
 		}
 
 		return new FinalInterval(imgMinimum, imgMaximum);
+	}
+	
+	/**
+	 * Implements the row-wise addition required for computations of integral
+	 * images. Uses the {@code order} provided to the surrounding class.
+	 * 
+	 * @author Stefan Helfrich (University of Konstanz)
+	 * @param <T>
+	 */
+	private class IntegralAddComputer<T extends RealType<T>> extends
+		AbstractUnaryHybridCI<IterableInterval<T>>
+	{
+
+		@Override
+		public void compute1(final IterableInterval<T> input,
+			final IterableInterval<T> output)
+		{
+			// TODO Input should just be one-dimensional (check!)
+
+			Cursor<T> inputCursor = input.cursor();
+			Cursor<T> outputCursor = output.cursor();
+
+			T previousOutputValue = null;
+
+			while (outputCursor.hasNext()) {
+				// TODO Second cursor which is one position behind
+
+				T inputValue = inputCursor.next();
+				T outputValue = outputCursor.next();
+
+				if (previousOutputValue == null) {
+					// TODO Test speed of copy vs. 2nd cursor
+					previousOutputValue = outputValue.copy();
+					continue;
+				}
+
+				// Compute inputValue^order
+				for (int ord = 1; ord < order; ++ord) {
+					inputValue.mul(inputValue);
+				}
+
+				previousOutputValue.add(inputValue);
+
+				outputValue.set(previousOutputValue.copy());
+			}
+		}
+
 	}
 
 }
