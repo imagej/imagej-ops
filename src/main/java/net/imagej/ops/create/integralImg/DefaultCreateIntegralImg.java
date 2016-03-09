@@ -62,8 +62,9 @@ import net.imglib2.view.Views;
  * @param <I> The type of the input image.
  * @author Stefan Helfrich (University of Konstanz)
  */
+@SuppressWarnings("rawtypes")
 @Plugin(type = Ops.Create.IntegralImg.class, priority = Priority.LOW_PRIORITY)
-public class CreateIntegralImgFromImg<I extends RealType<I>> extends
+public class DefaultCreateIntegralImg<I extends RealType<I>> extends
 	AbstractUnaryFunctionOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<DoubleType>>
 	implements Ops.Create.IntegralImg
 {
@@ -71,9 +72,11 @@ public class CreateIntegralImgFromImg<I extends RealType<I>> extends
 	@Parameter(required = false)
 	private int order = 1;
 
+	
 	private UnaryComputerOp<RandomAccessibleInterval<? extends RealType>, RandomAccessibleInterval<? extends RealType>> integralAdd;
 	private UnaryComputerOp[] slicewiseOps;
 	
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	public void initialize() {
 		// TODO Move from dedicated op to inner class (which implements Computer)
@@ -90,7 +93,7 @@ public class CreateIntegralImgFromImg<I extends RealType<I>> extends
 		}
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	public RandomAccessibleInterval<DoubleType> compute1(
 		final RandomAccessibleInterval<I> input)
@@ -112,7 +115,7 @@ public class CreateIntegralImgFromImg<I extends RealType<I>> extends
 			.img(extendInterval(input), new DoubleType()));
 
 		for (int i=0; i < input.numDimensions(); ++i) {
-			// Slicewise addition in one direction
+			// Slicewise integral addition in one direction
 			slicewiseOps[i].compute1(extendedInput, output);
 			extendedInput = output;
 		}
