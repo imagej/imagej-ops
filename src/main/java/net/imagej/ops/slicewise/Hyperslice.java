@@ -34,6 +34,8 @@ import java.util.Iterator;
 
 import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
 import net.imglib2.AbstractInterval;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
@@ -58,12 +60,10 @@ public class Hyperslice<T> extends AbstractInterval implements
 
 	private final Interval slice;
 
-	private final OpEnvironment opEnvironment;
+	private final RandomAccessibleInterval<T> source;
 
-	private final RandomAccessibleInterval<?> source;
-
-	private final boolean dropSingleDimensions;
-
+	private final BinaryFunctionOp<RandomAccessibleInterval<T>, Interval, RandomAccessibleInterval<T>> cropOp;
+	
 	/**
 	 * @param opEnvironment {@link OpEnvironment} used
 	 * @param source {@link RandomAccessibleInterval} which will be virtually
@@ -73,6 +73,7 @@ public class Hyperslice<T> extends AbstractInterval implements
 	 * @param dropSingleDimensions if true, dimensions of size one will be
 	 *          discarded in the hyper-sliced images
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Hyperslice(final OpEnvironment opEnvironment,
 		final RandomAccessibleInterval<T> source, final int[] axesOfInterest,
 		final boolean dropSingleDimensions)
@@ -90,9 +91,8 @@ public class Hyperslice<T> extends AbstractInterval implements
 		}
 
 		this.slice = new FinalInterval(sliceMin, sliceMax);
-		this.opEnvironment = opEnvironment;
 		this.source = source;
-		this.dropSingleDimensions = dropSingleDimensions;
+		this.cropOp = (BinaryFunctionOp) Functions.binary(opEnvironment, Ops.Image.Crop.class, RandomAccessibleInterval.class, RandomAccessibleInterval.class, Interval.class, dropSingleDimensions);
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class Hyperslice<T> extends AbstractInterval implements
 
 	@Override
 	public Cursor<RandomAccessibleInterval<T>> cursor() {
-		return new HyperSliceCursor(source, opEnvironment, this, slice);
+		return new HyperSliceCursor(source, this, slice);
 	}
 
 	@Override
@@ -170,17 +170,16 @@ public class Hyperslice<T> extends AbstractInterval implements
 	{
 
 		private final long[] tmpPosition;
-		private final OpEnvironment environment;
-		private final RandomAccessibleInterval<?> src;
+		private final RandomAccessibleInterval<T> src;
 		private final long[] sliceMax;
 		private final long[] sliceMin;
-
-		public HyperSliceCursor(final RandomAccessibleInterval<?> src,
-			final OpEnvironment environment, final Interval fixedAxes, final Interval slice)
+		
+		
+		public HyperSliceCursor(final RandomAccessibleInterval<T> src,
+			final Interval fixedAxes, final Interval slice)
 		{
 			super(fixedAxes);
 
-			this.environment = environment;
 			this.src = src;
 			this.tmpPosition = new long[fixedAxes.numDimensions()];
 			this.sliceMax = new long[slice.numDimensions()];
@@ -193,7 +192,6 @@ public class Hyperslice<T> extends AbstractInterval implements
 		private HyperSliceCursor(final HyperSliceCursor cursor) {
 			super(cursor);
 
-			this.environment = cursor.environment;
 			this.src = cursor.src;
 			this.sliceMax = cursor.sliceMax;
 			this.sliceMin = cursor.sliceMin;
@@ -203,7 +201,6 @@ public class Hyperslice<T> extends AbstractInterval implements
 			jumpFwd(cursor.index);
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public RandomAccessibleInterval<T> get() {
 			localize(tmpPosition);
@@ -214,9 +211,8 @@ public class Hyperslice<T> extends AbstractInterval implements
 				maxPos[d] += sliceMax[d];
 				minPos[d] += sliceMin[d];
 			}
-
-			return (RandomAccessibleInterval<T>) environment.run(Ops.Image.Crop.class,
-				src, new FinalInterval(minPos, maxPos), dropSingleDimensions);
+			
+			return cropOp.compute2(src, new FinalInterval(minPos, maxPos));
 		}
 
 		@Override

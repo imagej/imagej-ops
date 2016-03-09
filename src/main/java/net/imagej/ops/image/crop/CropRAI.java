@@ -31,7 +31,7 @@
 package net.imagej.ops.image.crop;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.util.Intervals;
@@ -45,22 +45,20 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
+ * @author Stefan Helfrich (University of Konstanz)
  */
 @Plugin(type = Ops.Image.Crop.class, priority = Priority.LOW_PRIORITY)
 public class CropRAI<T> extends
-	AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	AbstractBinaryFunctionOp<RandomAccessibleInterval<T>, Interval, RandomAccessibleInterval<T>>
 	implements Ops.Image.Crop
 {
-
-	@Parameter
-	protected Interval interval;
 
 	@Parameter(required = false)
 	private boolean dropSingleDimensions = true;
 
 	@Override
-	public RandomAccessibleInterval<T> compute1(
-		final RandomAccessibleInterval<T> input)
+	public RandomAccessibleInterval<T> compute2(
+		final RandomAccessibleInterval<T> input, final Interval interval)
 	{
 		boolean oneSizedDims = false;
 
