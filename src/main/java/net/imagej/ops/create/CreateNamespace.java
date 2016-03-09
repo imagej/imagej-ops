@@ -366,33 +366,6 @@ public class CreateNamespace extends AbstractNamespace {
 				maxValue);
 		return result;
 	}
-
-	// -- integralImg --
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@OpMethod(ops = {
-		net.imagej.ops.create.integralImg.DefaultCreateIntegralImg.class,
-		net.imagej.ops.create.integralImg.WrappedCreateIntegralImg.class })
-	public <T extends RealType<T>> RandomAccessibleInterval<DoubleType>
-		integralImg(final RandomAccessibleInterval<T> in)
-	{
-		final RandomAccessibleInterval<DoubleType> result =
-			(RandomAccessibleInterval) ops().run(Ops.Create.IntegralImg.class, in);
-		return result;
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@OpMethod(ops = {
-		net.imagej.ops.create.integralImg.DefaultCreateIntegralImg.class,
-		net.imagej.ops.create.integralImg.WrappedCreateIntegralImg.class })
-	public <T extends RealType<T>> RandomAccessibleInterval<DoubleType>
-		integralImg(final RandomAccessibleInterval<T> in, final int order)
-	{
-		final RandomAccessibleInterval<DoubleType> result =
-			(RandomAccessibleInterval) ops().run(Ops.Create.IntegralImg.class, in,
-				order);
-		return result;
-	}
 	
 	// -- kernel --
 

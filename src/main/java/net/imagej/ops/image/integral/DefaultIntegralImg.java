@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.create.integralImg;
+package net.imagej.ops.image.integral;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -65,10 +65,10 @@ import net.imglib2.view.Views;
  * @author Stefan Helfrich (University of Konstanz)
  */
 @SuppressWarnings("rawtypes")
-@Plugin(type = Ops.Create.IntegralImg.class, priority = Priority.LOW_PRIORITY+1)
-public class DefaultCreateIntegralImg<I extends RealType<I>> extends
+@Plugin(type = Ops.Image.Integral.class, priority = Priority.LOW_PRIORITY+1)
+public class DefaultIntegralImg<I extends RealType<I>> extends
 	AbstractUnaryFunctionOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<DoubleType>>
-	implements Ops.Create.IntegralImg
+	implements Ops.Image.Integral
 {
 
 	@Parameter(required = false)

@@ -1,11 +1,11 @@
-package net.imagej.ops.create;
+package net.imagej.ops.image.integral;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.Ops.Create.IntegralImg;
-import net.imagej.ops.create.integralImg.DefaultCreateIntegralImg;
+import net.imagej.ops.Ops;
+import net.imagej.ops.image.integral.DefaultIntegralImg;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
@@ -15,11 +15,9 @@ import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
- * TODO Documentation
- * 
  * @author Stefan Helfrich (University of Konstanz)
  */
-public class CreateIntegralImgTest extends AbstractOpTest  {
+public class IntegralImgTest extends AbstractOpTest  {
 
 	Img<ByteType> in;
 	RandomAccessibleInterval<DoubleType> out;
@@ -35,12 +33,12 @@ public class CreateIntegralImgTest extends AbstractOpTest  {
 	}
 	
 	/**
-	 * @see DefaultCreateIntegralImg
+	 * @see DefaultIntegralImg
 	 */
 	@SuppressWarnings({ "unchecked" })
 	@Test
 	public void testIntegralImageCreation() {
-		out = (RandomAccessibleInterval<DoubleType>) ops.run(IntegralImg.class, in);
+		out = (RandomAccessibleInterval<DoubleType>) ops.run(Ops.Image.Integral.class, in);
 	}
 	
 	public ArrayImg<ByteType, ByteArray> generateKnownByteArrayTestImgLarge() {

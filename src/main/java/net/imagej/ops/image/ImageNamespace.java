@@ -46,6 +46,7 @@ import net.imglib2.img.Img;
 import net.imglib2.interpolation.InterpolatorFactory;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
 
@@ -232,6 +233,33 @@ public class ImageNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	//-- integral --
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@OpMethod(ops = {
+		net.imagej.ops.image.integral.DefaultIntegralImg.class,
+		net.imagej.ops.image.integral.WrappedIntegralImg.class })
+	public <T extends RealType<T>> RandomAccessibleInterval<DoubleType>
+		integral(final RandomAccessibleInterval<T> in)
+	{
+		final RandomAccessibleInterval<DoubleType> result =
+			(RandomAccessibleInterval) ops().run(Ops.Image.Integral.class, in);
+		return result;
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@OpMethod(ops = {
+		net.imagej.ops.image.integral.DefaultIntegralImg.class,
+		net.imagej.ops.image.integral.WrappedIntegralImg.class })
+	public <T extends RealType<T>> RandomAccessibleInterval<DoubleType>
+		integral(final RandomAccessibleInterval<T> in, final int order)
+	{
+		final RandomAccessibleInterval<DoubleType> result =
+			(RandomAccessibleInterval) ops().run(Ops.Image.Integral.class, in,
+				order);
+		return result;
+	}
+	
 	// -- invert --
 
 	/** Executes the "invert" operation on the given arguments. */
