@@ -77,7 +77,7 @@ public class CreateIntegralImgFromImg<I extends RealType<I>> extends
 	@Override
 	public void initialize() {
 		// TODO Move from dedicated op to inner class (which implements Computer)
-		integralAdd = (UnaryComputerOp) Computers.unary(ops(), IntegralAddition.class, IterableInterval.class, IterableInterval.class);
+		integralAdd = (UnaryComputerOp) Computers.unary(ops(), IntegralAddition.class, IterableInterval.class, IterableInterval.class, order);
 		
 		if (in() != null) {
 			slicewiseOps = new UnaryComputerOp[in().numDimensions()];

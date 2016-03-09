@@ -31,6 +31,7 @@
 package net.imagej.ops.create.integralImg;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Ops;
@@ -49,6 +50,9 @@ public class IntegralAddition<I extends RealType<I>> extends
 	AbstractUnaryHybridCI<IterableInterval<I>> implements Ops.Create.IntegralAdd
 {
 
+	@Parameter
+	private int order;
+	
 	@Override
 	public void compute1(final IterableInterval<I> input,
 		final IterableInterval<I> output)
@@ -71,7 +75,12 @@ public class IntegralAddition<I extends RealType<I>> extends
 				previousOutputValue = outputValue.copy();
 				continue;
 			}
-
+			
+			// Compute inputValue^order
+			for (int ord=1; ord<order; ++ord) {
+				inputValue.mul(inputValue);
+			}
+			
 			previousOutputValue.add(inputValue);
 
 			outputValue.set(previousOutputValue.copy());
