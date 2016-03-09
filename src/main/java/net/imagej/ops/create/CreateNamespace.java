@@ -49,6 +49,7 @@ import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.IntegerType;
+import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
@@ -366,6 +367,33 @@ public class CreateNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	// -- integralImg --
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@OpMethod(ops = {
+		net.imagej.ops.create.integralImg.DefaultCreateIntegralImg.class,
+		net.imagej.ops.create.integralImg.WrappedCreateIntegralImg.class })
+	public <T extends RealType<T>> RandomAccessibleInterval<DoubleType>
+		integralImg(final RandomAccessibleInterval<T> in)
+	{
+		final RandomAccessibleInterval<DoubleType> result =
+			(RandomAccessibleInterval) ops().run(Ops.Create.IntegralImg.class, in);
+		return result;
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@OpMethod(ops = {
+		net.imagej.ops.create.integralImg.DefaultCreateIntegralImg.class,
+		net.imagej.ops.create.integralImg.WrappedCreateIntegralImg.class })
+	public <T extends RealType<T>> RandomAccessibleInterval<DoubleType>
+		integralImg(final RandomAccessibleInterval<T> in, final int order)
+	{
+		final RandomAccessibleInterval<DoubleType> result =
+			(RandomAccessibleInterval) ops().run(Ops.Create.IntegralImg.class, in,
+				order);
+		return result;
+	}
+	
 	// -- kernel --
 
 	/** Executes the "kernel" operation on the given arguments. */
