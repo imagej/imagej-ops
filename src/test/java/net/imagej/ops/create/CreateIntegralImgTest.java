@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Ops.Create.IntegralImg;
 import net.imagej.ops.create.integralImg.DefaultCreateIntegralImg;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
@@ -30,19 +31,16 @@ public class CreateIntegralImgTest extends AbstractOpTest  {
 	 */
 	@Before
 	public void before() throws Exception {
-//		in = generateByteArrayTestImg(true, new long[] { 10, 10 });
-		in = generateKnownByteArrayTestImgLarge();
-
-//		out = in.factory().imgFactory(new DoubleType()).create(in, new DoubleType());
+		in = generateByteArrayTestImg(true, new long[] { 10, 10 });
 	}
 	
 	/**
 	 * @see DefaultCreateIntegralImg
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
 	@Test
 	public void testIntegralImageCreation() {
-		out = (RandomAccessibleInterval<DoubleType>) ops.run(DefaultCreateIntegralImg.class, in);
+		out = (RandomAccessibleInterval<DoubleType>) ops.run(IntegralImg.class, in);
 	}
 	
 	public ArrayImg<ByteType, ByteArray> generateKnownByteArrayTestImgLarge() {

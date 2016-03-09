@@ -63,7 +63,7 @@ import net.imglib2.view.Views;
  * @author Stefan Helfrich (University of Konstanz)
  */
 @SuppressWarnings("rawtypes")
-@Plugin(type = Ops.Create.IntegralImg.class, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Ops.Create.IntegralImg.class, priority = Priority.LOW_PRIORITY+1)
 public class DefaultCreateIntegralImg<I extends RealType<I>> extends
 	AbstractUnaryFunctionOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<DoubleType>>
 	implements Ops.Create.IntegralImg
