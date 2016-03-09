@@ -34,20 +34,21 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Slicewise;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCI;
 import net.imglib2.Cursor;
-import net.imglib2.FinalInterval;
-import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.numeric.IntegerType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.view.Views;
+import net.imglib2.util.Util;
 
 /**
  * <p>
@@ -67,8 +68,8 @@ import net.imglib2.view.Views;
 @SuppressWarnings("rawtypes")
 @Plugin(type = Ops.Image.Integral.class, priority = Priority.LOW_PRIORITY+1)
 public class DefaultIntegralImg<I extends RealType<I>> extends
-	AbstractUnaryFunctionOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<DoubleType>>
-	implements Ops.Image.Integral
+	AbstractUnaryHybridCF<RandomAccessibleInterval<I>, RandomAccessibleInterval<RealType<?>>>
+	implements Ops.Image.Integral, Contingent
 {
 
 	@Parameter(required = false)
@@ -92,101 +93,81 @@ public class DefaultIntegralImg<I extends RealType<I>> extends
 		}
 	}
 
-	@SuppressWarnings({ "unchecked" })
+
 	@Override
-	public RandomAccessibleInterval<DoubleType> compute1(
-		final RandomAccessibleInterval<I> input)
+	public void compute1(RandomAccessibleInterval<I> input,
+		RandomAccessibleInterval<RealType<?>> output)
 	{
 		if (slicewiseOps == null) {
 			slicewiseOps = new UnaryComputerOp[in().numDimensions()];
-			
+
 			for (int i = 0; i < in().numDimensions(); ++i) {
-				slicewiseOps[i] = Computers.unary(ops(), Slicewise.class, RandomAccessibleInterval.class, RandomAccessibleInterval.class, integralAdd, i);
+				slicewiseOps[i] = Computers.unary(ops(), Slicewise.class,
+					RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+					integralAdd, i);
 			}
 		}
 		
-		// Extend input in each dimension and fill with zeros
-		RandomAccessibleInterval<? extends RealType> extendedInput = Views
-			.zeroMin(Views.interval(Views.extendZero(input), extendInterval(input)));
-
+		RandomAccessibleInterval<? extends RealType<?>> generalizedInput = input; // FIXME
+		
 		// Create integral image
-		RandomAccessibleInterval<DoubleType> output = Views.zeroMin(ops().create()
-			.img(extendInterval(input), new DoubleType()));
-
 		for (int i=0; i < input.numDimensions(); ++i) {
 			// Slicewise integral addition in one direction
-			slicewiseOps[i].compute1(extendedInput, output);
-			extendedInput = output;
+			slicewiseOps[i].compute1(generalizedInput, output);
+			generalizedInput = output;
 		}
-
-		return output;
-	}
-
-	/**
-	 * Extend an interval by one in each dimension (only the minimum)
-	 * 
-	 * @param interval {@code Interval} that is to be extended and later converted
-	 *          to an integral image
-	 * @return {@code Interval} extended by one in each dimension
-	 */
-	private Interval extendInterval(Interval interval) {
-		final long[] imgMinimum = new long[interval.numDimensions()];
-		interval.min(imgMinimum);
-		final long[] imgMaximum = new long[interval.numDimensions()];
-		interval.max(imgMaximum);
-
-		for (int d = 0; d < interval.numDimensions(); d++) {
-			imgMinimum[d] = imgMinimum[d] - 1;
-		}
-
-		return new FinalInterval(imgMinimum, imgMaximum);
-	}
 	
+	}
+
+	@Override
+	public RandomAccessibleInterval<RealType<?>> createOutput(
+		RandomAccessibleInterval<I> input)
+	{
+		// Create integral image
+		if (Util.getTypeFromInterval(input) instanceof IntegerType) {
+			return (RandomAccessibleInterval) ops().create().img(input, new LongType());
+		}
+		
+		return (RandomAccessibleInterval) ops().create().img(input, new DoubleType());
+	}
+
 	/**
 	 * Implements the row-wise addition required for computations of integral
 	 * images. Uses the {@code order} provided to the surrounding class.
 	 * 
 	 * @author Stefan Helfrich (University of Konstanz)
-	 * @param <T>
 	 */
-	private class IntegralAddComputer<T extends RealType<T>> extends
-		AbstractUnaryHybridCI<IterableInterval<T>>
+	private class IntegralAddComputer extends
+		AbstractUnaryHybridCI<IterableInterval<RealType<?>>>
 	{
 
 		@Override
-		public void compute1(final IterableInterval<T> input,
-			final IterableInterval<T> output)
+		public void compute1(final IterableInterval<RealType<?>> input,
+			final IterableInterval<RealType<?>> output)
 		{
-			// TODO Input should just be one-dimensional (check!)
 
-			Cursor<T> inputCursor = input.cursor();
-			Cursor<T> outputCursor = output.cursor();
+			Cursor<RealType<?>> inputCursor = input.cursor();
+			Cursor<RealType<?>> outputCursor = output.cursor();
 
-			T previousOutputValue = null;
-
+			double tmp = 0.0d;
 			while (outputCursor.hasNext()) {
-				// TODO Second cursor which is one position behind
 
-				T inputValue = inputCursor.next();
-				T outputValue = outputCursor.next();
-
-				if (previousOutputValue == null) {
-					// TODO Test speed of copy vs. 2nd cursor
-					previousOutputValue = outputValue.copy();
-					continue;
-				}
-
+				RealType<?> inputValue = inputCursor.next();
+				RealType<?> outputValue = outputCursor.next();
+				
 				// Compute inputValue^order
-				for (int ord = 1; ord < order; ++ord) {
-					inputValue.mul(inputValue);
-				}
-
-				previousOutputValue.add(inputValue);
-
-				outputValue.set(previousOutputValue.copy());
+				tmp += Math.pow(inputValue.getRealDouble(), order);
+				
+				outputValue.setReal(tmp);
 			}
 		}
 
+	}
+
+	@Override
+	public boolean conforms() {
+		// TODO Check for size matches instead of dimension
+		return in().numDimensions() == out().numDimensions();
 	}
 
 }
