@@ -33,9 +33,9 @@ package net.imagej.ops.image.crop;
 import net.imagej.ImgPlus;
 import net.imagej.ops.MetadataUtil;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.chain.RAIs;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
-import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
+import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.ImgView;
@@ -48,29 +48,28 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
+ * @author Stefan Helfrich (University of Konstanz)
  */
 @Plugin(type = Ops.Image.Crop.class, priority = Priority.LOW_PRIORITY + 1)
 public class CropImgPlus<T extends Type<T>> extends
-	AbstractUnaryFunctionOp<ImgPlus<T>, ImgPlus<T>> implements Ops.Image.Crop
+	AbstractBinaryFunctionOp<ImgPlus<T>, Interval, ImgPlus<T>> implements Ops.Image.Crop
 {
-
-	@Parameter
-	protected Interval interval;
 
 	@Parameter(required = false)
 	private boolean dropSingleDimensions = true;
 
-	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> cropper;
+	private BinaryFunctionOp<RandomAccessibleInterval<T>, Interval, RandomAccessibleInterval<T>> cropper;
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		cropper = RAIs.function(ops(), CropRAI.class, in(), interval,
-			dropSingleDimensions);
+		cropper = (BinaryFunctionOp) Functions.binary(ops(), CropRAI.class, RandomAccessibleInterval.class,
+				RandomAccessibleInterval.class, Interval.class, dropSingleDimensions);
 	}
 
 	@Override
-	public ImgPlus<T> compute1(final ImgPlus<T> input) {
-		final ImgPlus<T> out = new ImgPlus<>(ImgView.wrap(cropper.compute1(input),
+	public ImgPlus<T> compute2(final ImgPlus<T> input, final Interval interval) {
+		final ImgPlus<T> out = new ImgPlus<>(ImgView.wrap(cropper.compute2(input, interval),
 			input.factory()));
 
 		// TODO remove metadata-util

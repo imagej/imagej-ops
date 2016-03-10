@@ -71,7 +71,7 @@ public class GlobalThresholder<T extends RealType<T>> extends AbstractOp {
         Op threshold = ops().op("threshold", out, in, method);
 
         // TODO actually map axes to int array
-        ops().slicewise(out, in, threshold, new int[]{0, 1});
+        ops().slice(out, in, threshold, new int[]{0, 1});
     }
     
     // TODO call otsu: out = ops.run(GlobalThresholder.class, ops.ops(Otsu...),in).

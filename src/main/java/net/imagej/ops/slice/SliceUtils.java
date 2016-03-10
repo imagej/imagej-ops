@@ -27,23 +27,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.slicewise;
+
+package net.imagej.ops.slice;
 
 import net.imagej.axis.AxisType;
 import net.imagej.space.TypedSpace;
 
-public class SlicewiseUtils {
+public class SliceUtils {
 
 	/**
-	 * @param input
-	 *            for which the {@link AxisType}s indices will be determined
-	 * @param axisTypes
-	 *            which will be used to determine the indices
+	 * @param input for which the {@link AxisType}s indices will be determined
+	 * @param axisTypes which will be used to determine the indices
 	 */
 	public static synchronized int[] getAxesIndices(final TypedSpace<?> input,
-			final AxisType[] axisTypes) {
-		if (axisTypes == null)
-			return null;
+		final AxisType[] axisTypes)
+	{
+		if (axisTypes == null) return null;
 
 		int[] indices = new int[axisTypes.length];
 
@@ -53,7 +52,7 @@ public class SlicewiseUtils {
 			if (indices[i] == -1) {
 				// TODO nicer exception handling
 				throw new IllegalArgumentException(
-						"AxisType not available in TypedSpace<?>");
+					"AxisType not available in TypedSpace<?>");
 			}
 		}
 
