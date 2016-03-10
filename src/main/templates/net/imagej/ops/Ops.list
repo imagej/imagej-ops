@@ -17,7 +17,7 @@ ops = ```
 	[name: "map",         iface: "Map"],
 	[name: "op",          iface: "Lookup"],
 	[name: "run",         iface: "Run"],
-	[name: "slicewise",   iface: "Slicewise"],
+	[name: "slice",   iface: "Slice"],
 ]
 ```
 namespaces = ```

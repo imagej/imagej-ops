@@ -28,59 +28,22 @@
  * #L%
  */
 
-package net.imagej.ops.slicewise;
+package net.imagej.ops.slice;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
-import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imglib2.RandomAccessibleInterval;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
- * {@link SlicewiseOp} implementation for {@link RandomAccessibleInterval} input
- * and {@link RandomAccessibleInterval} output. </br>
- * The input {@link RandomAccessibleInterval} will be wrapped into a
- * {@link Hyperslice}, so that the given Op can compute on a per-slice base.
+ * A typed "slice" function.
+ * <p>
+ * Allows running {@link UnaryComputerOp}s on orthogonal subsets of the <I>. The
+ * subsets can for example be defined by the axes of an image. For each subset
+ * the {@link UnaryComputerOp} will be executed.
+ * </p>
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Ops.Slicewise.class, priority = Priority.VERY_HIGH_PRIORITY)
-public class SlicewiseRAI2RAI<I, O> extends
-	AbstractUnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
-	implements
-	SlicewiseOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
-{
-
-	@Parameter
-	private UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> op;
-
-	@Parameter
-	private int[] axisIndices;
-
-	@Parameter(required = false)
-	private boolean dropSingleDimensions = true;
-
-	private UnaryComputerOp<Hyperslice<I>, Hyperslice<O>> mapper;
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public void initialize() {
-		mapper = (UnaryComputerOp) Computers.unary(ops(), Ops.Map.class,
-			Hyperslice.class, Hyperslice.class, op);
-	}
-
-	@Override
-	public void compute1(final RandomAccessibleInterval<I> input,
-		final RandomAccessibleInterval<O> output)
-	{
-		mapper.compute1(new Hyperslice<>(ops(), input, axisIndices,
-			dropSingleDimensions), new Hyperslice<>(ops(), output, axisIndices,
-				dropSingleDimensions));
-	}
-
+public interface SliceOp<I, O> extends Ops.Slice, UnaryComputerOp<I, O> {
+	// NB: Marker interface.
 }

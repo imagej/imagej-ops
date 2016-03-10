@@ -812,14 +812,14 @@ public interface OpEnvironment extends Contextual {
 	}
 
 	/** Executes the "slicewise" operation on the given arguments. */
-	@OpMethod(op = Ops.Slicewise.class)
-	default Object slicewise(final Object... args) {
-		return run(Ops.Slicewise.NAME, args);
+	@OpMethod(op = Ops.Slice.class)
+	default Object slice(final Object... args) {
+		return run(Ops.Slice.NAME, args);
 	}
 
 	/** Executes the "slicewise" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.slicewise.SlicewiseRAI2RAI.class)
-	default <I, O> RandomAccessibleInterval<O> slicewise(
+	@OpMethod(op = net.imagej.ops.slice.SliceRAI2RAI.class)
+	default <I, O> RandomAccessibleInterval<O> slice(
 		final RandomAccessibleInterval<O> out, final RandomAccessibleInterval<I> in,
 		final UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> op,
 		final int... axisIndices)
@@ -827,14 +827,14 @@ public interface OpEnvironment extends Contextual {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) run(
-				net.imagej.ops.Ops.Slicewise.class, out, in, op,
+				net.imagej.ops.Ops.Slice.class, out, in, op,
 				axisIndices);
 		return result;
 	}
 
 	/** Executes the "slicewise" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.slicewise.SlicewiseRAI2RAI.class)
-	default <I, O> RandomAccessibleInterval<O> slicewise(
+	@OpMethod(op = net.imagej.ops.slice.SliceRAI2RAI.class)
+	default <I, O> RandomAccessibleInterval<O> slice(
 		final RandomAccessibleInterval<O> out, final RandomAccessibleInterval<I> in,
 		final UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> op,
 		final int[] axisIndices, final boolean dropSingleDimensions)
@@ -842,7 +842,7 @@ public interface OpEnvironment extends Contextual {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) run(
-				net.imagej.ops.Ops.Slicewise.class, out, in, op,
+				net.imagej.ops.Ops.Slice.class, out, in, op,
 				axisIndices, dropSingleDimensions);
 		return result;
 	}

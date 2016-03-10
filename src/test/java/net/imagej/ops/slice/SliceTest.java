@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.slicewise;
+package net.imagej.ops.slice;
 
 import static org.junit.Assert.assertEquals;
 
@@ -59,7 +59,7 @@ import org.scijava.Context;
  * @author Christian Dietz (University of Konstanz)
  * @author Brian Northan
  */
-public class HypersliceTest extends AbstractOpTest {
+public class SliceTest extends AbstractOpTest {
 
 	private Img<ByteType> in;
 
@@ -88,17 +88,18 @@ public class HypersliceTest extends AbstractOpTest {
 		// selected interval XY
 		final int[] xyAxis = new int[] { 0, 1 };
 
-		ops.slicewise(out, in, new DummyOp(), xyAxis);
+		ops.slice(out, in, new DummyOp(), xyAxis);
 
 		for (final Cursor<ByteType> cur = out.cursor(); cur.hasNext();) {
 			cur.fwd();
 			assertEquals(cur.getIntPosition(2), cur.get().getRealDouble(), 0);
 		}
 	}
-	
+
 	@Test
 	public void testXYZCropping() {
-		// the slices can end up being processed in parallel.  So try with a few different timepoint values
+		// the slices can end up being processed in parallel. So try with a few
+		// different timepoint values
 		// in order to test the chunker with various chunk sizes
 		testXYZCropping(1);
 		testXYZCropping(5);
@@ -106,22 +107,22 @@ public class HypersliceTest extends AbstractOpTest {
 		testXYZCropping(17);
 		testXYZCropping(27);
 	}
-	
+
 	private void testXYZCropping(int t) {
-		
-		Img<ByteType> inSequence=ArrayImgs.bytes(20, 20, 21, t);
-		ArrayImg<ByteType, ByteArray> outSequence=ArrayImgs.bytes(20, 20, 21, t);
-		
+
+		Img<ByteType> inSequence = ArrayImgs.bytes(20, 20, 21, t);
+		ArrayImg<ByteType, ByteArray> outSequence = ArrayImgs.bytes(20, 20, 21, t);
+
 		// fill array img with values (plane position = value in px);
 		for (final Cursor<ByteType> cur = inSequence.cursor(); cur.hasNext();) {
 			cur.fwd();
 			cur.get().set((byte) cur.getIntPosition(2));
 		}
-		
+
 		// selected interval XYZ
 		final int[] xyAxis = new int[] { 0, 1, 2 };
 
-		ops.slicewise(outSequence, inSequence, new DummyOp(), xyAxis);
+		ops.slice(outSequence, inSequence, new DummyOp(), xyAxis);
 
 		for (final Cursor<ByteType> cur = outSequence.cursor(); cur.hasNext();) {
 			cur.fwd();
@@ -133,16 +134,15 @@ public class HypersliceTest extends AbstractOpTest {
 	public void testNonZeroMinimumInterval() {
 
 		Img<ByteType> img3D = ArrayImgs.bytes(50, 50, 3);
-		IntervalView<ByteType> interval2D =
-			Views.interval(img3D, new FinalInterval(new long[] { 25, 25, 2 },
-				new long[] { 35, 35, 2 }));
+		IntervalView<ByteType> interval2D = Views.interval(img3D,
+				new FinalInterval(new long[] { 25, 25, 2 }, new long[] { 35, 35, 2 }));
 		final int[] xyAxis = new int[] { 0, 1 };
 
 		// iterate through every slice, should return a single
 		// RandomAccessibleInterval<?> from 25, 25, 2 to 35, 35, 2
 
-		final Hyperslice hyperSlices = new Hyperslice(ops, interval2D, xyAxis, true);
-		final Cursor<RandomAccessibleInterval<?>> c = hyperSlices.cursor();
+		final SlicesII<ByteType> hyperSlices = new SlicesII<ByteType>(interval2D, xyAxis, true);
+		final Cursor<RandomAccessibleInterval<ByteType>> c = hyperSlices.cursor();
 		int i = 0;
 		while (c.hasNext()) {
 			c.next();
@@ -152,7 +152,6 @@ public class HypersliceTest extends AbstractOpTest {
 		assertEquals(1, i);
 	}
 
-
 	@Test
 	public void LoopThroughHyperSlicesTest() {
 		final int xSize = 40;
@@ -161,8 +160,8 @@ public class HypersliceTest extends AbstractOpTest {
 		final int numSlices = 25;
 		final int numTimePoints = 5;
 
-		final Img<UnsignedByteType> testImage = generateUnsignedByteArrayTestImg(
-				true, xSize, ySize, numChannels, numSlices, numTimePoints);
+		final Img<UnsignedByteType> testImage = generateUnsignedByteArrayTestImg(true, xSize, ySize, numChannels,
+				numSlices, numTimePoints);
 
 		final int[] axisIndices = new int[3];
 
@@ -172,10 +171,9 @@ public class HypersliceTest extends AbstractOpTest {
 		axisIndices[1] = 1;
 		axisIndices[2] = 3;
 
-		final Hyperslice hyperSlices = new Hyperslice(
-				ops, testImage, axisIndices, true);
+		final SlicesII<UnsignedByteType> hyperSlices = new SlicesII<UnsignedByteType>(testImage, axisIndices, true);
 
-		final Cursor<RandomAccessibleInterval<?>> c = hyperSlices.cursor();
+		final Cursor<RandomAccessibleInterval<UnsignedByteType>> c = hyperSlices.cursor();
 
 		int numHyperSlices = 0;
 		while (c.hasNext()) {
@@ -183,7 +181,7 @@ public class HypersliceTest extends AbstractOpTest {
 			c.fwd();
 			numHyperSlices++;
 			try {
-				final RandomAccessibleInterval<?> hyperSlice = c.get();
+				final RandomAccessibleInterval<UnsignedByteType> hyperSlice = c.get();
 
 				assertEquals(3, hyperSlice.numDimensions());
 				assertEquals(hyperSlice.dimension(0), xSize);
@@ -199,13 +197,10 @@ public class HypersliceTest extends AbstractOpTest {
 
 	}
 
-	class DummyOp extends
-			AbstractUnaryComputerOp<Iterable<ByteType>, Iterable<ByteType>> {
+	class DummyOp extends AbstractUnaryComputerOp<Iterable<ByteType>, Iterable<ByteType>> {
 
 		@Override
-		public void compute1(final Iterable<ByteType> input,
-			final Iterable<ByteType> output)
-		{
+		public void compute1(final Iterable<ByteType> input, final Iterable<ByteType> output) {
 			final Iterator<ByteType> itA = input.iterator();
 			final Iterator<ByteType> itB = output.iterator();
 

@@ -28,22 +28,53 @@
  * #L%
  */
 
-package net.imagej.ops.slicewise;
+package net.imagej.ops.slice;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imglib2.RandomAccessibleInterval;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * A typed "slicewise" function.
- * <p>
- * Allows running {@link UnaryComputerOp}s on orthogonal subsets of the <I>. The
- * subsets can for example be defined by the axes of an image. For each subset
- * the {@link UnaryComputerOp} will be executed.
- * </p>
+ * {@link SliceOp} implementation for {@link RandomAccessibleInterval} input and
+ * {@link RandomAccessibleInterval} output. </br>
+ * The input {@link RandomAccessibleInterval} will be wrapped into a
+ * {@link SlicesII}, so that the given Op can compute on a per-slice base.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  */
-public interface SlicewiseOp<I, O> extends Ops.Slicewise, UnaryComputerOp<I, O> {
-	// NB: Marker interface.
+@Plugin(type = Ops.Slice.class, priority = Priority.VERY_HIGH_PRIORITY)
+public class SliceRAI2RAI<I, O>
+		extends AbstractUnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+		implements SliceOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> {
+
+	@Parameter
+	private UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> op;
+
+	@Parameter
+	private int[] axisIndices;
+
+	@Parameter(required = false)
+	private boolean dropSingleDimensions = true;
+
+	private UnaryComputerOp<SlicesII<I>, SlicesII<O>> mapper;
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void initialize() {
+		mapper = (UnaryComputerOp) Computers.unary(ops(), Ops.Map.class, SlicesII.class, SlicesII.class, op);
+	}
+
+	@Override
+	public void compute1(final RandomAccessibleInterval<I> input, final RandomAccessibleInterval<O> output) {
+		mapper.compute1(new SlicesII<>(input, axisIndices, dropSingleDimensions),
+				new SlicesII<>(output, axisIndices, dropSingleDimensions));
+	}
+
 }

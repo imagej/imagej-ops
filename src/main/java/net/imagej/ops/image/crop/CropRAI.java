@@ -48,18 +48,15 @@ import org.scijava.plugin.Plugin;
  * @author Stefan Helfrich (University of Konstanz)
  */
 @Plugin(type = Ops.Image.Crop.class, priority = Priority.LOW_PRIORITY)
-public class CropRAI<T> extends
-	AbstractBinaryFunctionOp<RandomAccessibleInterval<T>, Interval, RandomAccessibleInterval<T>>
-	implements Ops.Image.Crop
-{
+public class CropRAI<T>
+		extends AbstractBinaryFunctionOp<RandomAccessibleInterval<T>, Interval, RandomAccessibleInterval<T>>
+		implements Ops.Image.Crop {
 
 	@Parameter(required = false)
 	private boolean dropSingleDimensions = true;
 
 	@Override
-	public RandomAccessibleInterval<T> compute2(
-		final RandomAccessibleInterval<T> input, final Interval interval)
-	{
+	public RandomAccessibleInterval<T> compute2(final RandomAccessibleInterval<T> input, final Interval interval) {
 		boolean oneSizedDims = false;
 
 		if (dropSingleDimensions) {
@@ -71,9 +68,10 @@ public class CropRAI<T> extends
 			}
 		}
 
-		if (Intervals.equals(input, interval) && !oneSizedDims) return input;
-		if (!Intervals.contains(input, interval)) throw new RuntimeException(
-			"Intervals don't match!");
+		if (Intervals.equals(input, interval) && !oneSizedDims)
+			return input;
+		if (!Intervals.contains(input, interval))
+			throw new RuntimeException("Intervals don't match!");
 		IntervalView<T> res = Views.offsetInterval(input, interval);
 		return oneSizedDims ? Views.dropSingletonDimensions(res) : res;
 	}
