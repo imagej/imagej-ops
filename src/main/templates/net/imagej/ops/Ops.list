@@ -293,6 +293,9 @@ namespaces = ```
 		[name: "contrast",                    iface: "Contrast"],
 		[name: "directionality",              iface: "Directionality"],
 	]],
+	[name: "shape", iface: "Shape", ops: [
+		[name: "shapeIndex",               iface: "ShapeIndex"],
+	]],
 	[name: "stats", iface: "Stats", ops: [
 		[name: "geometricMean",               iface: "GeometricMean"],
 		[name: "harmonicMean",                iface: "HarmonicMean"],
