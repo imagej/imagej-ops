@@ -31,7 +31,6 @@
 package net.imagej.ops.image.integral;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Ops;
@@ -54,9 +53,6 @@ public class WrappedIntegralImg<I extends RealType<I>> extends
 	AbstractUnaryFunctionOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<DoubleType>>
 	implements Ops.Image.Integral
 {
-
-	@Parameter(required = false)
-	private int order = 1;
 	
 	private IntegralImg<I, DoubleType> integralImg;
 	
