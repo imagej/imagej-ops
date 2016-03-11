@@ -236,30 +236,50 @@ public class ImageNamespace extends AbstractNamespace {
 	//-- integral --
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@OpMethod(ops = {
-		net.imagej.ops.image.integral.DefaultIntegralImg.class,
-		net.imagej.ops.image.integral.WrappedIntegralImg.class })
-	public <T extends RealType<T>> RandomAccessibleInterval<DoubleType>
-		integral(final RandomAccessibleInterval<T> in)
+	@OpMethod(op = net.imagej.ops.image.integral.DefaultIntegralImg.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<RealType> integral(
+		final RandomAccessibleInterval<T> in, final int order)
 	{
-		final RandomAccessibleInterval<DoubleType> result =
+		final RandomAccessibleInterval<RealType> result =
+			(RandomAccessibleInterval) ops().run(Ops.Image.Integral.class, in, order);
+		return result;
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@OpMethod(ops = { net.imagej.ops.image.integral.DefaultIntegralImg.class,
+		net.imagej.ops.image.integral.WrappedIntegralImg.class })
+	public <T extends RealType<T>> RandomAccessibleInterval<RealType> integral(
+		final RandomAccessibleInterval<T> in)
+	{
+		final RandomAccessibleInterval<RealType> result =
 			(RandomAccessibleInterval) ops().run(Ops.Image.Integral.class, in);
 		return result;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@OpMethod(ops = {
-		net.imagej.ops.image.integral.DefaultIntegralImg.class,
-		net.imagej.ops.image.integral.WrappedIntegralImg.class })
-	public <T extends RealType<T>> RandomAccessibleInterval<DoubleType>
-		integral(final RandomAccessibleInterval<T> in, final int order)
+	@OpMethod(op = net.imagej.ops.image.integral.DefaultIntegralImg.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<RealType> integral(
+		final RandomAccessibleInterval<RealType> out,
+		final RandomAccessibleInterval<T> in, final int order)
 	{
-		final RandomAccessibleInterval<DoubleType> result =
-			(RandomAccessibleInterval) ops().run(Ops.Image.Integral.class, in,
-				order);
+		final RandomAccessibleInterval<RealType> result =
+			(RandomAccessibleInterval) ops().run(
+				net.imagej.ops.image.integral.DefaultIntegralImg.class, out, in, order);
 		return result;
 	}
-	
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@OpMethod(op = net.imagej.ops.image.integral.DefaultIntegralImg.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<RealType> integral(
+		final RandomAccessibleInterval<RealType> out,
+		final RandomAccessibleInterval<T> in)
+	{
+		final RandomAccessibleInterval<RealType> result =
+			(RandomAccessibleInterval) ops().run(
+				net.imagej.ops.image.integral.DefaultIntegralImg.class, out, in);
+		return result;
+	}
+
 	// -- invert --
 
 	/** Executes the "invert" operation on the given arguments. */
