@@ -49,6 +49,7 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Util;
+import net.imglib2.view.Views;
 
 /**
  * <p>
@@ -131,6 +132,12 @@ public class DefaultIntegralImg<I extends RealType<I>> extends
 		return (RandomAccessibleInterval) ops().create().img(input, new DoubleType());
 	}
 
+	@Override
+	public boolean conforms() {
+		return (in() != null && out() != null) ? Views.iterable(in())
+			.iterationOrder().equals(Views.iterable(out())) : true;
+	}
+	
 	/**
 	 * Implements the row-wise addition required for computations of integral
 	 * images. Uses the {@code order} provided to the surrounding class.
@@ -162,12 +169,6 @@ public class DefaultIntegralImg<I extends RealType<I>> extends
 			}
 		}
 
-	}
-
-	@Override
-	public boolean conforms() {
-		// TODO Check for size matches instead of dimension
-		return in().numDimensions() == out().numDimensions();
 	}
 
 }
