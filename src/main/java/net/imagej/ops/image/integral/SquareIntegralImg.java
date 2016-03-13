@@ -41,17 +41,18 @@ import net.imglib2.type.numeric.RealType;
 
 /**
  * <p>
- * <i>n</i>-dimensional integral image that stores sums using
- * {@code RealType}. Care must be taken that sums do not overflow the
- * capacity of {@code RealType}.
+ * <i>n</i>-dimensional squared integral image that stores sums using
+ * {@code RealType}. Care must be taken that sums do not overflow the capacity
+ * of {@code RealType}. Instead of the sum of values the sum of squared values
+ * is computed.
  * </p>
  * 
  * @param <I> The type of the input image.
  * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Image.Integral.class, priority = Priority.LOW_PRIORITY+1)
-public class DefaultIntegralImg<I extends RealType<I>> extends
-	AbstractIntegralImg<I> implements Ops.Image.Integral
+@Plugin(type = Ops.Image.SquareIntegral.class, priority = Priority.LOW_PRIORITY+1)
+public class SquareIntegralImg<I extends RealType<I>> extends
+	AbstractIntegralImg<I> implements Ops.Image.SquareIntegral
 {
 	
 	@Override
@@ -60,8 +61,8 @@ public class DefaultIntegralImg<I extends RealType<I>> extends
 	}
 
 	/**
-	 * Implements the row-wise addition required for computations of integral
-	 * images of order=1.
+	 * Implements the row-wise addition required for computations of squared
+	 * integral images.
 	 * 
 	 * @author Stefan Helfrich (University of Konstanz)
 	 */
@@ -84,7 +85,7 @@ public class DefaultIntegralImg<I extends RealType<I>> extends
 				RealType<?> outputValue = outputCursor.next();
 				
 				// Compute inputValue^order
-				tmp += inputValue.getRealDouble();
+				tmp += Math.pow(inputValue.getRealDouble(), 2);
 				
 				outputValue.setReal(tmp);
 			}

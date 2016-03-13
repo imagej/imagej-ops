@@ -167,6 +167,7 @@ namespaces = ```
 		[name: "normalize",                   iface: "Normalize",           aliases: ["norm"]],
 		[name: "project",                     iface: "Project"],
 		[name: "scale",                       iface: "Scale",               aliases: ["resize"]],
+		[name: "squareIntegral",              iface: "SquareIntegral"],
 	]],
 	[name: "imagemoments", iface: "ImageMoments", ops: [
 		[name: "centralMoment00",             iface: "CentralMoment00"],

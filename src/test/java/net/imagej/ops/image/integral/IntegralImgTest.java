@@ -34,11 +34,13 @@ public class IntegralImgTest extends AbstractOpTest  {
 	
 	/**
 	 * @see DefaultIntegralImg
+	 * @see SquareIntegralImg
 	 */
 	@SuppressWarnings({ "unchecked" })
 	@Test
 	public void testIntegralImageCreation() {
 		out = (RandomAccessibleInterval<DoubleType>) ops.run(Ops.Image.Integral.class, in);
+		out = (RandomAccessibleInterval<DoubleType>) ops.run(Ops.Image.SquareIntegral.class, in);
 	}
 	
 	public ArrayImg<ByteType, ByteArray> generateKnownByteArrayTestImgLarge() {
