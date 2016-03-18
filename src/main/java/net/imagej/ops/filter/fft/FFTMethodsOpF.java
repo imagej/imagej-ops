@@ -106,7 +106,7 @@ public class FFTMethodsOpF<T extends RealType<T>, C extends ComplexType<C>>
 
 		// if no type was passed in the default is ComplexFloatType
 		if (fftType == null) {
-			fftType = (C) new ComplexFloatType();
+			fftType = (C)ops().create().nativeType(ComplexFloatType.class);
 		}
 
 		padOp = (BinaryFunctionOp) Functions.binary(ops(), PadInputFFTMethods.class,
