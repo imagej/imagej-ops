@@ -3,6 +3,8 @@ package net.imagej.ops.filter.pad;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
 import net.imglib2.Dimensions;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
@@ -31,7 +33,19 @@ public class PadInput<T extends RealType<T>, I extends RandomAccessibleInterval<
 {
 
 	@Parameter
-	Dimensions paddedDimensions;
+	private Dimensions paddedDimensions;
+
+	private BinaryFunctionOp<I, Dimensions, O> paddingIntervalCentered;
+
+	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void initialize() {
+		super.initialize();
+
+		paddingIntervalCentered = (BinaryFunctionOp) Functions.unary(ops(),
+			PaddingIntervalCentered.class, Interval.class,
+			RandomAccessibleInterval.class, paddedDimensions.getClass());
+	}
 
 	/**
 	 * The OutOfBoundsFactory used to extend the image
@@ -48,7 +62,7 @@ public class PadInput<T extends RealType<T>, I extends RandomAccessibleInterval<
 				Util.getTypeFromInterval(input).createVariable());
 		}
 
-		Interval inputInterval = ops().filter().paddingIntervalCentered(input,
+		Interval inputInterval = paddingIntervalCentered.compute2(input,
 			paddedDimensions);
 
 		return (O) Views.interval(Views.extend(input, obf), inputInterval);

@@ -2,14 +2,13 @@
 package net.imagej.ops.filter.pad;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
 import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -25,16 +24,13 @@ import org.scijava.plugin.Plugin;
 	name = Ops.Filter.PaddingIntervalOrigin.NAME,
 	priority = Priority.HIGH_PRIORITY)
 public class PaddingIntervalOrigin<T extends RealType<T>, I extends RandomAccessibleInterval<T>, O extends Interval>
-	extends AbstractUnaryFunctionOp<I, O> implements
+	extends AbstractBinaryFunctionOp<I, Interval, O> implements
 	Ops.Filter.PaddingIntervalOrigin
 {
 
-	@Parameter
-	private Interval centeredInterval;
-
 	@Override
 	@SuppressWarnings("unchecked")
-	public O compute1(final I input) {
+	public O compute2(final I input, final Interval centeredInterval) {
 
 		int numDimensions = input.numDimensions();
 

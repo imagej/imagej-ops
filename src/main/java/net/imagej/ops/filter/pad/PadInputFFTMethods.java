@@ -4,6 +4,8 @@ package net.imagej.ops.filter.pad;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.fft.FFTMethodsUtility;
 import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
+import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
 import net.imglib2.Dimensions;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
@@ -34,6 +36,18 @@ public class PadInputFFTMethods<T extends RealType<T>, I extends RandomAccessibl
 	@Parameter(required = false)
 	private boolean fast = true;
 
+	private BinaryFunctionOp<I, Dimensions, O> paddingIntervalCentered;
+
+	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void initialize() {
+		super.initialize();
+
+		paddingIntervalCentered = (BinaryFunctionOp) Functions.unary(ops(),
+			PaddingIntervalCentered.class, Interval.class,
+			RandomAccessibleInterval.class, Dimensions.class);
+	}
+
 	/**
 	 * The OutOfBoundsFactory used to extend the image
 	 */
@@ -52,7 +66,7 @@ public class PadInputFFTMethods<T extends RealType<T>, I extends RandomAccessibl
 				Util.getTypeFromInterval(input).createVariable());
 		}
 
-		Interval inputInterval = ops().filter().paddingIntervalCentered(input,
+		Interval inputInterval = paddingIntervalCentered.compute2(input,
 			paddedFFTMethodsInputDimensions);
 
 		return (O) Views.interval(Views.extend(input, obf), inputInterval);

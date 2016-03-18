@@ -4,6 +4,8 @@ package net.imagej.ops.filter.pad;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.fft.FFTMethodsUtility;
 import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
+import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
 import net.imglib2.Dimensions;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
@@ -34,6 +36,24 @@ public class PadShiftKernelFFTMethods<T extends RealType<T>, I extends RandomAcc
 	@Parameter(required = false)
 	private boolean fast = true;
 
+	private BinaryFunctionOp<I, Dimensions, O> paddingIntervalCentered;
+
+	private BinaryFunctionOp<I, Interval, O> paddingIntervalOrigin;
+
+	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void initialize() {
+		super.initialize();
+
+		paddingIntervalCentered = (BinaryFunctionOp) Functions.unary(ops(),
+			PaddingIntervalCentered.class, Interval.class,
+			RandomAccessibleInterval.class, Dimensions.class);
+
+		paddingIntervalOrigin = (BinaryFunctionOp) Functions.unary(ops(),
+			PaddingIntervalOrigin.class, Interval.class,
+			RandomAccessibleInterval.class, Interval.class);
+	}
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public O compute2(final I kernel, final Dimensions paddedDimensions) {
@@ -45,14 +65,12 @@ public class PadShiftKernelFFTMethods<T extends RealType<T>, I extends RandomAcc
 		// coordinate in the center
 		// of the kernel is shifted to position (0,0).
 
-		final Interval kernelConvolutionInterval = ops().filter()
-			.paddingIntervalCentered(kernel, paddedFFTMethodsInputDimensions);
+		final Interval kernelConvolutionInterval = paddingIntervalCentered.compute2(
+			kernel, paddedFFTMethodsInputDimensions);
 
-		final Interval kernelConvolutionIntervalOrigin = ops().filter()
-			.paddingIntervalOrigin(kernel, kernelConvolutionInterval);
+		final Interval kernelConvolutionIntervalOrigin = paddingIntervalOrigin
+			.compute2(kernel, kernelConvolutionInterval);
 
-		// assemble the kernel (size of the input + extended periodic +
-		// top left at center of input kernel)
 		return (O) Views.interval(Views.extendPeriodic(Views.interval(Views
 			.extendValue(kernel, Util.getTypeFromInterval(kernel).createVariable()),
 			kernelConvolutionInterval)), kernelConvolutionIntervalOrigin);

@@ -2,7 +2,7 @@
 package net.imagej.ops.filter.pad;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
 import net.imglib2.Dimensions;
 import net.imglib2.FinalDimensions;
 import net.imglib2.Interval;
@@ -11,7 +11,6 @@ import net.imglib2.algorithm.fft2.FFTMethods;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -27,16 +26,13 @@ import org.scijava.plugin.Plugin;
 	name = Ops.Filter.PaddingIntervalCentered.NAME,
 	priority = Priority.HIGH_PRIORITY)
 public class PaddingIntervalCentered<T extends RealType<T>, I extends RandomAccessibleInterval<T>, O extends Interval>
-	extends AbstractUnaryFunctionOp<I, O> implements
+	extends AbstractBinaryFunctionOp<I, Dimensions, O> implements
 	Ops.Filter.PaddingIntervalCentered
 {
 
-	@Parameter
-	Dimensions paddedDimensions;
-
 	@Override
 	@SuppressWarnings("unchecked")
-	public O compute1(final I input) {
+	public O compute2(final I input, final Dimensions paddedDimensions) {
 
 		final long[] paddedSize = new long[paddedDimensions.numDimensions()];
 		paddedDimensions.dimensions(paddedSize);
