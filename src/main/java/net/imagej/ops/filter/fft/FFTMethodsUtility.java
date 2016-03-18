@@ -7,13 +7,14 @@ import net.imglib2.algorithm.fft2.FFTMethods;
 
 /**
  * Utility class that interacts with FFTMethods
- * 
+ *
  * @author bnorthan
  */
 public class FFTMethodsUtility {
 
-	public static void dimensionsRealToComplex(boolean fast,
-		Dimensions inputDimensions, long[] paddedDimensions, long[] fftDimensions)
+	public static void dimensionsRealToComplex(final boolean fast,
+		final Dimensions inputDimensions, final long[] paddedDimensions,
+		final long[] fftDimensions)
 	{
 		if (fast) {
 			FFTMethods.dimensionsRealToComplexFast(inputDimensions, paddedDimensions,
@@ -25,11 +26,11 @@ public class FFTMethodsUtility {
 		}
 	}
 
-	public static Dimensions getPaddedInputDimensionsRealToComplex(boolean fast,
-		Dimensions inputDimensions)
+	public static Dimensions getPaddedInputDimensionsRealToComplex(
+		final boolean fast, final Dimensions inputDimensions)
 	{
-		long[] paddedSize = new long[inputDimensions.numDimensions()];
-		long[] fftSize = new long[inputDimensions.numDimensions()];
+		final long[] paddedSize = new long[inputDimensions.numDimensions()];
+		final long[] fftSize = new long[inputDimensions.numDimensions()];
 
 		dimensionsRealToComplex(fast, inputDimensions, paddedSize, fftSize);
 
@@ -37,11 +38,11 @@ public class FFTMethodsUtility {
 
 	}
 
-	public static Dimensions getFFTDimensionsRealToComplex(boolean fast,
-		Dimensions inputDimensions)
+	public static Dimensions getFFTDimensionsRealToComplex(final boolean fast,
+		final Dimensions inputDimensions)
 	{
-		long[] paddedSize = new long[inputDimensions.numDimensions()];
-		long[] fftSize = new long[inputDimensions.numDimensions()];
+		final long[] paddedSize = new long[inputDimensions.numDimensions()];
+		final long[] fftSize = new long[inputDimensions.numDimensions()];
 
 		dimensionsRealToComplex(fast, inputDimensions, paddedSize, fftSize);
 
