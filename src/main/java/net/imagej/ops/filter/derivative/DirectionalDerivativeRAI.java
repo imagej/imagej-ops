@@ -39,15 +39,11 @@ public class DirectionalDerivativeRAI<T extends RealType<T>>
 
 	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> createRAI;
 
-	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> kernelBConvolverRotated;
-
 	private BinaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> addOp;
 
 	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> kernelBConvolver;
 
-	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> kernelAConvolver;
-
-	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>[] kernelAConvolverRotatedArray;
+	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>[] kernelAConvolverArray;
 
 	@Override
 	public void initialize() {
@@ -76,28 +72,33 @@ public class DirectionalDerivativeRAI<T extends RealType<T>>
 			kernelB = Views.interval(expandedKernelB, kernelInterval);
 		}
 
-		// rotate kernel B to dimension
 		long[] dims = new long[in().numDimensions()];
-		for (int j = 0; j < in().numDimensions(); j++) {
-			dims[j] = 1;
+		if (dimension == 0) {
+			kernelBConvolver = RAIs.computer(ops(), Ops.Filter.Convolve.class, in(), kernelB);
+		} else {
+			// rotate kernel B to dimension
+			for (int j = 0; j < in().numDimensions(); j++) {
+				dims[j] = 1;
+			}
+			dims[dimension] = 3;
+			Img<DoubleType> kernelInterval = ops().create().img(dims);
+			// rotate kernelB to required dimension
+			IntervalView<T> tempRotation = kernelB;
+			for (int i = 0; i < dimension; i++) {
+				tempRotation = Views.rotate(tempRotation, i, i + 1);
+			}
+			
+			IntervalView<T> rotatedKernelB = Views.interval(tempRotation, kernelInterval);
+			kernelBConvolver = RAIs.computer(ops(), Ops.Filter.Convolve.class, in(), rotatedKernelB);
 		}
-		dims[dimension] = 3;
-		Img<DoubleType> kernelInterval = ops().create().img(dims);
-		// rotate kernel to required dimension
-		IntervalView<T> tempRotation = kernelB;
-		for(int i = 0; i < dimension; i++) {
-			tempRotation = Views.rotate(tempRotation, i, i+1);
-		}
-
-		IntervalView<T> rotatedKernelB = Views.interval(tempRotation, kernelInterval);
-		kernelBConvolver = RAIs.computer(ops(), Ops.Filter.Convolve.class, in(), kernelB);
-		kernelBConvolverRotated = RAIs.computer(ops(), Ops.Filter.Convolve.class, in(), rotatedKernelB);
 
 		dims = null;
 
-		kernelAConvolver = RAIs.computer(ops(), Ops.Filter.Convolve.class, in(), kernelA);
 		// rotate kernel A to all other dimensions
-		kernelAConvolverRotatedArray = new UnaryComputerOp[in().numDimensions()];
+		kernelAConvolverArray = new UnaryComputerOp[in().numDimensions()];
+		if (dimension != 0) {
+			kernelAConvolverArray[0] = RAIs.computer(ops(), Ops.Filter.Convolve.class, in(), kernelA);
+		}
 		IntervalView<T> rotatedKernelA = null;
 		for (int i = 1; i < in().numDimensions(); i++) {
 			if (i != dimension) {
@@ -109,9 +110,9 @@ public class DirectionalDerivativeRAI<T extends RealType<T>>
 						dims[j] = 1;
 					}
 				}
-				kernelInterval = ops().create().img(dims);
+				Img<DoubleType> kernelInterval = ops().create().img(dims);
 				rotatedKernelA = Views.interval(Views.rotate(kernelA, 0, i), kernelInterval);
-				kernelAConvolverRotatedArray[i] = RAIs.computer(ops(), Ops.Filter.Convolve.class, in(), rotatedKernelA);
+				kernelAConvolverArray[i] = RAIs.computer(ops(), Ops.Filter.Convolve.class, in(), rotatedKernelA);
 			}
 		}
 
@@ -129,20 +130,11 @@ public class DirectionalDerivativeRAI<T extends RealType<T>>
 
 		for (int i = input.numDimensions() - 1; i >= 0; i--) {
 			RandomAccessibleInterval<T> derivative = createRAI.compute1(input);
-			if (i != 0) {
-				if (dimension == i) {
-					kernelBConvolverRotated.compute1(Views.interval(Views.extendMirrorDouble(in), input), derivative);
-				} else {
-					kernelAConvolverRotatedArray[i].compute1(Views.interval(Views.extendMirrorDouble(in), input),
-							derivative);
-				}
-			} else {
 				if (dimension == i) {
 					kernelBConvolver.compute1(Views.interval(Views.extendMirrorDouble(in), input), derivative);
 				} else {
-					kernelAConvolver.compute1(Views.interval(Views.extendMirrorDouble(in), input), derivative);
+					kernelAConvolverArray[i].compute1(Views.interval(Views.extendMirrorDouble(in), input), derivative);
 				}
-			}
 			in = derivative;
 		}
 		addOp.compute2(output, in, output);
