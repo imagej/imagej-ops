@@ -623,26 +623,6 @@ public class FilterNamespace extends AbstractNamespace {
 			performInputFFT, performKernelFFT);
 	}
 	
-	// -- directional derivative --
-	
-	/** Executes the "directional derivative" operation on the given arguments */
-	@OpMethod(op = net.imagej.ops.filter.derivative.DirectionalDerivativeRAI.class)
-	public <T extends RealType<T>> RandomAccessibleInterval<T> directionalDerivative(final RandomAccessibleInterval<T> in, final int dimension) {
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(net.imagej.ops.filter.derivative.DirectionalDerivativeRAI.class, in, dimension);
-		return result;
-	}
-
-	/** Executes the "directional derivative" operation on the given arguments */
-	@OpMethod(op = net.imagej.ops.filter.derivative.DirectionalDerivativeRAI.class)
-	public <T extends RealType<T>> RandomAccessibleInterval<T> directionalDerivative(final RandomAccessibleInterval<T> out, final RandomAccessibleInterval<T> in, final int dimension) {
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(net.imagej.ops.filter.derivative.DirectionalDerivativeRAI.class, out, in, dimension);
-		return result;
-	}
-
 	// -- fft --
 
 	/** Executes the "fft" operation on the given arguments. */
@@ -1183,6 +1163,26 @@ public class FilterNamespace extends AbstractNamespace {
 			(IterableInterval<T>) ops().run(
 				net.imagej.ops.filter.min.DefaultMinFilter.class, out, in, shape,
 				outOfBoundsFactory);
+		return result;
+	}
+	
+	// -- partial derivative --
+	
+	/** Executes the "directional derivative" operation on the given arguments */
+	@OpMethod(op = net.imagej.ops.filter.derivative.PartialDerivativeRAI.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> partialDerivative(final RandomAccessibleInterval<T> in, final int dimension) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(net.imagej.ops.filter.derivative.PartialDerivativeRAI.class, in, dimension);
+		return result;
+	}
+
+	/** Executes the "directional derivative" operation on the given arguments */
+	@OpMethod(op = net.imagej.ops.filter.derivative.PartialDerivativeRAI.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> partialDerivative(final RandomAccessibleInterval<T> out, final RandomAccessibleInterval<T> in, final int dimension) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(net.imagej.ops.filter.derivative.PartialDerivativeRAI.class, out, in, dimension);
 		return result;
 	}
 

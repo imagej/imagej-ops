@@ -46,7 +46,7 @@ public class HessianRAI<T extends RealType<T>>
 
 		derivativeComputers = new UnaryComputerOp[in().numDimensions()];
 		for (int i = 0; i < in().numDimensions(); i++) {
-			derivativeComputers[i] = RAIs.computer(ops(), Ops.Filter.DirectionalDerivative.class, in(), i);
+			derivativeComputers[i] = RAIs.computer(ops(), Ops.Filter.PartialDerivative.class, in(), i);
 		}
 	}
 

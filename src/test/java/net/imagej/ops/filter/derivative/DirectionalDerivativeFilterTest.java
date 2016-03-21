@@ -39,7 +39,7 @@ public class DirectionalDerivativeFilterTest extends AbstractOpTest {
 			}
 		}
 
-		RandomAccessibleInterval<FloatType> out = ops.filter().directionalDerivative(img, 0);
+		RandomAccessibleInterval<FloatType> out = ops.filter().partialDerivative(img, 0);
 
 		FloatType type = Util.getTypeFromInterval(out).createVariable();
 		type.set(4.0f);

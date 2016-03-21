@@ -1,7 +1,7 @@
 package net.imagej.ops.filter.derivative;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Filter.DirectionalDerivative;
+import net.imagej.ops.Ops.Filter.PartialDerivative;
 import net.imagej.ops.special.chain.RAIs;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.UnaryComputerOp;
@@ -27,10 +27,9 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  *            type of input
  */
-@Plugin(type = Ops.Filter.DirectionalDerivative.class, name = Ops.Filter.DirectionalDerivative.NAME)
-public class DirectionalDerivativeRAI<T extends RealType<T>>
-		extends AbstractUnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
-		implements DirectionalDerivative {
+@Plugin(type = Ops.Filter.PartialDerivative.class, name = Ops.Filter.PartialDerivative.NAME)
+public class PartialDerivativeRAI<T extends RealType<T>> extends
+		AbstractUnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> implements PartialDerivative {
 
 	@Parameter
 	private int dimension;
