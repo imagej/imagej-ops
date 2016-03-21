@@ -31,7 +31,7 @@
 package net.imagej.ops.image.integral;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Ops.Slicewise;
+import net.imagej.ops.Ops.Slice;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
@@ -68,7 +68,7 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 			slicewiseOps = new UnaryComputerOp[in().numDimensions()];
 
 			for (int i = 0; i < in().numDimensions(); ++i) {
-				slicewiseOps[i] = Computers.unary(ops(), Slicewise.class,
+				slicewiseOps[i] = Computers.unary(ops(), Slice.class,
 					RandomAccessibleInterval.class, RandomAccessibleInterval.class,
 					integralAdd, i);
 			}
@@ -76,6 +76,7 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 	}
 
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void compute1(RandomAccessibleInterval<I> input,
 		RandomAccessibleInterval<RealType<?>> output)
@@ -84,7 +85,7 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 			slicewiseOps = new UnaryComputerOp[in().numDimensions()];
 
 			for (int i = 0; i < in().numDimensions(); ++i) {
-				slicewiseOps[i] = Computers.unary(ops(), Slicewise.class,
+				slicewiseOps[i] = Computers.unary(ops(), Slice.class,
 					RandomAccessibleInterval.class, RandomAccessibleInterval.class,
 					integralAdd, i);
 			}
@@ -101,6 +102,7 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 	
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public RandomAccessibleInterval<RealType<?>> createOutput(
 		RandomAccessibleInterval<I> input)
