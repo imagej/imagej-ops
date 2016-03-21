@@ -25,6 +25,8 @@ import org.scijava.plugin.Plugin;
 public class CreateKernelSobelSeparated<T extends ComplexType<T> & NativeType<T>>
 		extends AbstractCreateKernelImg<T> implements Contingent {
 
+	private static final float[] values = { 1.0f, 2.0f, 1.0f, -1.0f, 0.0f, 1.0f };
+	
 	@Override
 	public void run() {
 
@@ -42,7 +44,6 @@ public class CreateKernelSobelSeparated<T extends ComplexType<T> & NativeType<T>
 		createOutputImg(dim);
 		final Cursor<T> cursor = getOutput().cursor();
 		int i = 0;
-		float[] values = { 1.0f, 2.0f, 1.0f, -1.0f, 0.0f, 1.0f };
 		while (cursor.hasNext()) {
 			cursor.fwd();
 			cursor.get().setReal(values[i]);
