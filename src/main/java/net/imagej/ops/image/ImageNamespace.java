@@ -36,6 +36,7 @@ import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
 import net.imagej.ops.image.cooccurrenceMatrix.MatrixOrientation;
+import net.imagej.ops.image.integral.SquareIntegralImg;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
@@ -46,6 +47,7 @@ import net.imglib2.img.Img;
 import net.imglib2.interpolation.InterpolatorFactory;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
 
@@ -229,6 +231,54 @@ public class ImageNamespace extends AbstractNamespace {
 		final Histogram1d<T> result = (Histogram1d<T>) ops().run(
 				net.imagej.ops.Ops.Image.Histogram.class, in,
 				numBins);
+		return result;
+	}
+
+	//-- integral --
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@OpMethod(op = net.imagej.ops.image.integral.DefaultIntegralImg.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<RealType> integral(
+		final RandomAccessibleInterval<RealType> out,
+		final RandomAccessibleInterval<T> in)
+	{
+		final RandomAccessibleInterval<RealType> result =
+			(RandomAccessibleInterval) ops().run(
+				net.imagej.ops.image.integral.DefaultIntegralImg.class, out, in);
+		return result;
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@OpMethod(ops = { net.imagej.ops.image.integral.DefaultIntegralImg.class,
+		net.imagej.ops.image.integral.WrappedIntegralImg.class })
+	public <T extends RealType<T>> RandomAccessibleInterval<RealType> integral(
+		final RandomAccessibleInterval<T> in)
+	{
+		final RandomAccessibleInterval<RealType> result =
+			(RandomAccessibleInterval) ops().run(
+				Ops.Image.Integral.class, in);
+		return result;
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@OpMethod(op = net.imagej.ops.image.integral.SquareIntegralImg.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<RealType>
+		squareIntegral(final RandomAccessibleInterval<RealType> out,
+			final RandomAccessibleInterval<T> in)
+	{
+		final RandomAccessibleInterval<RealType> result =
+			(RandomAccessibleInterval) ops().run(Ops.Image.SquareIntegral.class, out,
+				in);
+		return result;
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@OpMethod(op = net.imagej.ops.image.integral.SquareIntegralImg.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<RealType>
+		squareIntegral(final RandomAccessibleInterval<T> in)
+	{
+		final RandomAccessibleInterval<RealType> result =
+			(RandomAccessibleInterval) ops().run(Ops.Image.SquareIntegral.class, in);
 		return result;
 	}
 

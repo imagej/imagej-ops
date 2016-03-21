@@ -49,6 +49,7 @@ import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.IntegerType;
+import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
@@ -365,7 +366,7 @@ public class CreateNamespace extends AbstractNamespace {
 				maxValue);
 		return result;
 	}
-
+	
 	// -- kernel --
 
 	/** Executes the "kernel" operation on the given arguments. */
