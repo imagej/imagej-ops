@@ -76,7 +76,7 @@ public class IntegralCursorTest {
 		cursor.fwd();
 		cursor.fwd();
 
-		IntegralCursor<ByteType> integralCursor = new IntegralCursor<>(
+		IntegralCursor<ByteType> integralCursor = new IntegralCursor<ByteType>(img.randomAccess(), 
 			(RectangleNeighborhood) cursor.get());
 
 		assertEquals(integralCursor.next(), new ByteType((byte) 1));
@@ -109,7 +109,7 @@ public class IntegralCursorTest {
 		cursor.fwd();
 		cursor.fwd();
 
-		IntegralCursor<ByteType> integralCursor = new IntegralCursor<>(
+		IntegralCursor<ByteType> integralCursor = new IntegralCursor<>(img.randomAccess(), 
 			(RectangleNeighborhood) cursor.get());
 		assertEquals(integralCursor.next(), new ByteType((byte) 1));
 		assertEquals(integralCursor.next(), new ByteType((byte) 2));
