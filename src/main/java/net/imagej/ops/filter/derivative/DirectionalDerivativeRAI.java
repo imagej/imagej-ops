@@ -35,8 +35,6 @@ public class DirectionalDerivativeRAI<T extends RealType<T>>
 	@Parameter
 	private int dimension;
 
-	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> copyRAI;
-
 	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> createRAI;
 
 	private BinaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> addOp;
@@ -119,24 +117,20 @@ public class DirectionalDerivativeRAI<T extends RealType<T>>
 				for (int j = 0; j < i; j++) {
 					rotatedKernelA = Views.rotate(rotatedKernelA, j, j + 1);
 				}
-		
-				kernelAConvolverArray[i] = RAIs.computer(ops(), Ops.Filter.Convolve.class, in(), Views.interval(rotatedKernelA,kernelInterval));
+
+				kernelAConvolverArray[i] = RAIs.computer(ops(), Ops.Filter.Convolve.class, in(),
+						Views.interval(rotatedKernelA, kernelInterval));
 				rotatedKernelA = kernelA;
 			}
 		}
 
 		addOp = RAIs.binaryComputer(ops(), Ops.Math.Add.class, in(), in());
-
-		copyRAI = RAIs.computer(ops(), Ops.Copy.RAI.class, in());
 		createRAI = RAIs.function(ops(), Ops.Create.Img.class, in());
 	}
 
 	@Override
 	public void compute1(RandomAccessibleInterval<T> input, RandomAccessibleInterval<T> output) {
-
-		RandomAccessibleInterval<T> in = createRAI.compute1(input);
-		copyRAI.compute1(input, in);
-
+		RandomAccessibleInterval<T> in = input;
 		for (int i = input.numDimensions() - 1; i >= 0; i--) {
 			RandomAccessibleInterval<T> derivative = createRAI.compute1(input);
 			if (dimension == i) {
