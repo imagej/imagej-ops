@@ -33,8 +33,11 @@ package net.imagej.ops.image.scale;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imglib2.FinalDimensions;
 import net.imglib2.RandomAccess;
 import net.imglib2.img.Img;
+import net.imglib2.img.cell.CellImg;
+import net.imglib2.img.cell.CellImgFactory;
 import net.imglib2.interpolation.randomaccess.NLinearInterpolatorFactory;
 import net.imglib2.type.numeric.integer.ByteType;
 
@@ -63,4 +66,31 @@ public class ScaleImgTest extends AbstractOpTest {
 		assertEquals(inRA.get().get(), outRA.get().get());
 
 	}
+
+	/**
+	 * A small {@link CellImg} is given, and a different type of image is expected
+	 * as output.
+	 */
+	@Test
+	public void testDiffImgTypes() {
+		Img<ByteType> in = new CellImgFactory<ByteType>(5).create(
+			new FinalDimensions(10, 10), new ByteType());
+		RandomAccess<ByteType> inRA = in.randomAccess();
+		inRA.setPosition(new long[] { 5, 5 });
+		inRA.get().set((byte) 10);
+		
+		double[] scaleFactors = new double[] { 2, 2 };
+		Img<ByteType> out = ops.image().scale(in, scaleFactors,
+			new NLinearInterpolatorFactory<ByteType>());
+
+		assertEquals(out.dimension(0), 20);
+		assertEquals(out.dimension(1), 20);
+		
+		assertEquals(out instanceof CellImg, false);
+		
+		RandomAccess<ByteType> outRA = out.randomAccess();
+		outRA.setPosition(new long[] { 10, 10 });
+		assertEquals(outRA.get().get(), 10);
+	}
+
 }
