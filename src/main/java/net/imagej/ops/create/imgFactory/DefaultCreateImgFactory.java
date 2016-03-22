@@ -33,11 +33,11 @@ package net.imagej.ops.create.imgFactory;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractNullaryFunctionOp;
 import net.imglib2.Dimensions;
+import net.imglib2.FinalDimensions;
 import net.imglib2.img.ImgFactory;
-import net.imglib2.img.array.ArrayImgFactory;
-import net.imglib2.img.cell.CellImgFactory;
 import net.imglib2.type.NativeType;
-import net.imglib2.util.Intervals;
+import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.util.Util;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -54,13 +54,26 @@ public class DefaultCreateImgFactory<T extends NativeType<T>> extends
 	AbstractNullaryFunctionOp<ImgFactory<T>> implements Ops.Create.ImgFactory
 {
 
+	/**
+	 * Dummy default dimensions.
+	 */
 	@Parameter(required = false)
-	private Dimensions dims;
+	private Dimensions dims = new FinalDimensions(1);
+
+	@SuppressWarnings("unchecked")
+	@Parameter(required = false)
+	private T type = (T) new DoubleType();
+
+	/**
+	 * This default cell size will force the utility method to calculate another
+	 * appropriate cell size depending on dims and type.
+	 */
+	@Parameter(required = false)
+	private int targetCellSize = Integer.MAX_VALUE;
 
 	@Override
 	public ImgFactory<T> compute0() {
-		return (dims == null || Intervals.numElements(dims) <= Integer.MAX_VALUE)
-			? new ArrayImgFactory<>() : new CellImgFactory<>();
+		return Util.getArrayOrCellImgFactory(dims, targetCellSize, type);
 	}
 
 }

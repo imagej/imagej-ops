@@ -59,8 +59,8 @@ public class CreateImgFromDimsAndType<T extends NativeType<T>> extends
 	@Override
 	public void initialize() {
 		if (factory == null) {
-			factory = in1() == null ? ops().create().imgFactory() :
-				ops().create().imgFactory(in1());
+			factory = in1() instanceof Img ? ops().create().imgFactory(in1()) :
+				ops().create().imgFactory(in1(), in2());
 		}
 	}
 
