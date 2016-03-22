@@ -32,10 +32,12 @@ package net.imagej.ops.deconvolve;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.correlate.CorrelateFFTC;
-import net.imagej.ops.math.divide.DivideHandleZero;
+import net.imagej.ops.math.divide.DivideHandleZeroMap1;
 import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.inplace.BinaryInplace1Op;
+import net.imagej.ops.special.inplace.Inplaces;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
@@ -52,7 +54,6 @@ import org.scijava.plugin.Plugin;
  * @author Brian Northan
  * @param <I>
  * @param <O>
- * @param <K>
  * @param <C>
  */
 @Plugin(type = Ops.Deconvolve.RichardsonLucyCorrection.class,
@@ -71,7 +72,7 @@ public class RichardsonLucyCorrection<I extends RealType<I>, O extends RealType<
 	@Parameter
 	private RandomAccessibleInterval<C> fftKernel;
 
-	private BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> divide;
+	private BinaryInplace1Op<RandomAccessibleInterval<O>, RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> divide;
 
 	private BinaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> correlate;
 
@@ -79,8 +80,8 @@ public class RichardsonLucyCorrection<I extends RealType<I>, O extends RealType<
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initialize() {
 
-		divide = (BinaryComputerOp) Computers.binary(ops(), DivideHandleZero.class,
-			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+		divide = (BinaryInplace1Op) Inplaces.binary1(ops(),
+			DivideHandleZeroMap1.class, RandomAccessibleInterval.class,
 			RandomAccessibleInterval.class);
 
 		correlate = (BinaryComputerOp) Computers.binary(ops(), CorrelateFFTC.class,
@@ -98,8 +99,8 @@ public class RichardsonLucyCorrection<I extends RealType<I>, O extends RealType<
 		RandomAccessibleInterval<O> correction)
 	{
 		// divide observed image by reblurred
-
-		divide.compute2(observed, reblurred, reblurred);
+		//divide.mutate1(observed, reblurred);
+		divide.mutate1(reblurred,observed);
 
 		// correlate with psf to compute the correction factor
 		correlate.compute2(reblurred, reblurred, correction);

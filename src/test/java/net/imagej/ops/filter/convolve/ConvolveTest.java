@@ -273,15 +273,13 @@ public class ConvolveTest extends AbstractOpTest {
 		DoubleType max = new DoubleType();
 		DoubleType min = new DoubleType();
 
-		// TODO: Fix after finished rebase
+		ops.stats().sum(sum, Views.iterable(convolved));
+		ops.stats().max(max, Views.iterable(convolved));
+		ops.stats().min(min, Views.iterable(convolved));
 
-		// ops.stats().sum(sum, convolved);
-		// ops.stats().max(max, convolved);
-		// ops.stats().min(min, convolved);
-
-		// assertEquals(sum.getRealDouble(), 8750.00, 0.001);
-		// assertEquals(max.getRealDouble(), 3.155, 0.001);
-		// assertEquals(min.getRealDouble(), 2.978E-7, 0.001);
+		assertEquals(sum.getRealDouble(), 8750.00, 0.001);
+		assertEquals(max.getRealDouble(), 3.155, 0.001);
+		assertEquals(min.getRealDouble(), 2.978E-7, 0.001);
 
 	}
 

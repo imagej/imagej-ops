@@ -35,7 +35,7 @@ import net.imagej.ops.filter.AbstractIterativeFFTFilterC;
 import net.imagej.ops.filter.convolve.ConvolveFFTC;
 import net.imagej.ops.filter.correlate.CorrelateFFTC;
 import net.imagej.ops.filter.fft.FFTMethodsOpC;
-import net.imagej.ops.math.divide.DivideHandleZero;
+import net.imagej.ops.math.divide.DivideHandleZeroMap;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
@@ -43,10 +43,12 @@ import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.Hybrids;
 import net.imagej.ops.special.hybrid.UnaryHybridCF;
+import net.imagej.ops.special.inplace.BinaryInplace1Op;
+import net.imagej.ops.special.inplace.Inplaces;
 import net.imglib2.Cursor;
 import net.imglib2.Dimensions;
+import net.imglib2.FinalDimensions;
 import net.imglib2.FinalInterval;
-import net.imglib2.Interval;
 import net.imglib2.Point;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
@@ -117,9 +119,9 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 
 	private BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> rlCorrection;
 
-	private BinaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> divide;
+	private BinaryInplace1Op<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>,RandomAccessibleInterval<O>> divide;
 
-	private UnaryFunctionOp<Interval, Img<O>> create;
+	private UnaryFunctionOp<Dimensions, Img<O>> create;
 
 	private UnaryHybridCF<RandomAccessibleInterval<I>, O> sum;
 
@@ -147,9 +149,8 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
 			getFFTInput(), getFFTKernel());
 
-		divide = (BinaryComputerOp) Computers.binary(ops(), DivideHandleZero.class,
-			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
-			RandomAccessibleInterval.class);
+		divide = (BinaryInplace1Op) Inplaces.binary1(ops(), DivideHandleZeroMap.class,
+			RandomAccessibleInterval.class,RandomAccessibleInterval.class);
 
 		fftIn = (UnaryComputerOp) Computers.unary(ops(), FFTMethodsOpC.class,
 			getFFTInput(), RandomAccessibleInterval.class);
@@ -191,9 +192,8 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 			update.compute1(getRAIExtendedReblurred(), getRAIExtendedEstimate());
 
 			// normalize for non-circulant deconvolution
-			divide.compute2(getRAIExtendedEstimate(), normalization,
-				getRAIExtendedEstimate());
-
+			divide.mutate1(normalization, getRAIExtendedEstimate());
+			
 			// accelerate
 			if (getAccelerator() != null) {
 				getAccelerator().mutate(getRAIExtendedEstimate());
@@ -207,8 +207,6 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 		final RandomAccessibleInterval<K> kernel,
 		final RandomAccessibleInterval<O> out)
 	{
-
-		final Type<O> outType = Util.getTypeFromInterval(out);
 
 		// create image for the estimate, this image is defined over the entire
 		// convolution interval
@@ -304,8 +302,10 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 			nFFT[d] = getRAIExtendedReblurred().dimension(d);
 		}
 
+		FinalDimensions fd = new FinalDimensions(nFFT);
+
 		// create the normalization image
-		normalization = create.compute1(getRAIExtendedReblurred());
+		normalization = create.compute1(fd);
 
 		// size of the measurement window
 		final Point size = new Point(length);
@@ -355,7 +355,7 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 			normCursor.get().setReal(1.0);
 		}
 
-		final Img<O> tempImg = create.compute1(getRAIExtendedReblurred());
+		final Img<O> tempImg = create.compute1(fd);
 
 		// 3. correlate psf with the output of step 2.
 		// TODO: Discuss how to initialize this and whether FFT filters should be

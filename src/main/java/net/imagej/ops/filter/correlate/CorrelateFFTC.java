@@ -33,7 +33,7 @@ package net.imagej.ops.filter.correlate;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractFFTFilterC;
 import net.imagej.ops.filter.FFTMethodsLinearFFTFilterC;
-import net.imagej.ops.math.multiply.ComplexConjugateMultiply;
+import net.imagej.ops.math.multiply.ComplexConjugateMultiplyMap;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imglib2.RandomAccessibleInterval;
@@ -68,7 +68,7 @@ public class CorrelateFFTC<I extends RealType<I>, O extends RealType<O>, K exten
 		super.initialize();
 
 		complexConjugateMul = Computers.binary(ops(),
-			ComplexConjugateMultiply.class, getFFTInput(), getFFTKernel(),
+			ComplexConjugateMultiplyMap.class, getFFTInput(), getFFTKernel(),
 			getFFTInput());
 
 		// create a correlater by creating a linear filter and passing the complex conjugate multiplier

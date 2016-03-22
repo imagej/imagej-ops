@@ -6,7 +6,7 @@ import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.benchmark.AbstractOpBenchmark;
-import net.imagej.ops.math.divide.DivideHandleZero;
+import net.imagej.ops.math.divide.DivideHandleZeroMap;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
@@ -88,24 +88,6 @@ public class MathBenchmarkTest extends AbstractOpBenchmark {
 		ops.run(Ops.Math.Divide.class, img3, img2, img1);
 	}
 
-	/*@Test
-	public void testDivideMap() {
-		ops.run(MapIterableIntervalToIterableInterval.class, img3, img2, ops.create(
-			Divide.class));
-	}
-
-	@Plugin(type = Ops.Math.Divide.class)
-	public static class Divide<T extends RealType<T>> extends
-		AbstractUnaryComputerOp<T, T> implements Ops.Math.Divide
-	{
-
-		@Override
-		public void compute1(final T input, final T output) {
-
-			output.div(input);
-		}
-	}*/
-
 	@Test
 	public void testDivideIterableIntervalToImg() {
 		ops.run(IIToIIOutputII.Divide.class, img3, img2, img1);
@@ -113,7 +95,7 @@ public class MathBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void testDivideHandleZero() {
-		ops.run(DivideHandleZero.class, img3, img2, img1);
+		ops.run(DivideHandleZeroMap.class, img1, img2);
 	}
 
 	@Test
