@@ -36,9 +36,11 @@ import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
 import net.imglib2.Cursor;
 import net.imglib2.Dimensions;
-import net.imglib2.Interval;
+import net.imglib2.FinalDimensions;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Util;
 import net.imglib2.view.Views;
@@ -56,7 +58,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Deconvolve.Accelerate.class,
 	priority = Priority.NORMAL_PRIORITY)
-public class VectorAccelerator<T extends RealType<T>> extends
+public class VectorAccelerator<T extends RealType<T> & NativeType<T>> extends
 	AbstractUnaryInplaceOp<RandomAccessibleInterval<T>> implements
 	Ops.Deconvolve.Accelerate
 {
@@ -68,18 +70,21 @@ public class VectorAccelerator<T extends RealType<T>> extends
 	Img<T> gk;
 	Img<T> gkm1;
 
-	private UnaryFunctionOp<Interval, Img<T>> create;
+	private UnaryFunctionOp<Dimensions, Img<T>> create;
 
 	double accelerationFactor = 0.0f;
+
+	ArrayImgFactory<T> factory;
 
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initialize() {
 		super.initialize();
 
+		factory = new ArrayImgFactory<T>();
+
 		create = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
-			Img.class, Dimensions.class, Util.getTypeFromInterval(out()), Util
-				.getTypeFromInterval(out()));
+			Img.class, Dimensions.class, Util.getTypeFromInterval(out()), factory);
 	}
 
 	@Override
@@ -90,11 +95,16 @@ public class VectorAccelerator<T extends RealType<T>> extends
 	public void initialize(RandomAccessibleInterval<T> yk_iterated) {
 		if (yk_prediction == null) {
 
-			yk_prediction = create.compute1(yk_iterated);
-			xkm1_previous = create.compute1(yk_iterated);
-			yk_prediction = create.compute1(yk_iterated);
-			gk = create.compute1(yk_iterated);
-			hk_vector = create.compute1(yk_iterated);
+			long[] temp = new long[yk_iterated.numDimensions()];
+			yk_iterated.dimensions(temp);
+
+			FinalDimensions dims = new FinalDimensions(temp);
+
+			yk_prediction = create.compute1(dims);
+			xkm1_previous = create.compute1(dims);
+			yk_prediction = create.compute1(dims);
+			gk = create.compute1(dims);
+			hk_vector = create.compute1(dims);
 
 		}
 
@@ -108,7 +118,7 @@ public class VectorAccelerator<T extends RealType<T>> extends
 
 			accelerationFactor = computeAccelerationFactor(yk_iterated);
 
-			System.out.println("Acceleration Factor: " + accelerationFactor);
+			System.out.println("Acceleration Factor is: " + accelerationFactor);
 
 			if ((accelerationFactor < 0)) {
 				gkm1 = null;
@@ -140,11 +150,9 @@ public class VectorAccelerator<T extends RealType<T>> extends
 		}
 
 		// make a copy of the estimate to use as previous next time
-		// xkm1_previous=xk_estimate.copy();
 		Copy(xk_estimate, xkm1_previous);
 
 		// HACK: TODO: look over how to transfer the memory
-		// copy prediction
 		Copy(yk_prediction, yk_iterated);
 	}
 
@@ -157,7 +165,6 @@ public class VectorAccelerator<T extends RealType<T>> extends
 			double denominator = DotProduct(gkm1, gkm1);
 
 			gkm1 = gk.copy();
-
 			return numerator / denominator;
 
 		}
