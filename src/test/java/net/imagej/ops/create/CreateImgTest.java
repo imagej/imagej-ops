@@ -41,6 +41,7 @@ import net.imglib2.FinalDimensions;
 import net.imglib2.FinalInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.img.cell.CellImg;
 import net.imglib2.img.cell.CellImgFactory;
 import net.imglib2.img.planar.PlanarImgs;
 import net.imglib2.type.logic.BitType;
@@ -235,6 +236,32 @@ public class CreateImgTest extends AbstractOpTest {
 
 		for (int i=0; i<dims.length; i++) {
 			assertEquals("Image Dimension " + i + ": ", dims[i].longValue(), res
+				.dimension(i));
+		}
+	}
+
+	/**
+	 * Make sure a {@link CellImg} with appropriate cell size is created given
+	 * large dimensions, i.e. number of elements more than 2^31-1. If default cell
+	 * size is used, this test will not pass in reasonable time.
+	 */
+	@Test
+	public void testCreateCellImg() {
+		// 2^28 is the estimation of the BitType CellImg size
+		if (Runtime.getRuntime().maxMemory() < (1 << 28)) {
+			System.out.println(
+				"Not enought heap memory for creating the minimum CellImg");
+			return;
+		}
+
+		final Dimensions dims = new FinalInterval(1 << 15, 1 << 16);
+
+		final Img<BitType> res = ops.create().img(dims, new BitType());
+
+		assertEquals("Image type is not CellImg", res instanceof CellImg, true);
+
+		for (int i = 0; i < dims.numDimensions(); i++) {
+			assertEquals("Image Dimension " + i + ": ", dims.dimension(i), res
 				.dimension(i));
 		}
 	}
