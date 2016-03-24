@@ -58,6 +58,20 @@ public interface OpMatchingService extends ImageJService {
 	public <OP extends Op> Module findModule(OpEnvironment ops, OpRef<OP> ref);
 
 	/**
+	 * Finds and initializes the best module matching the given op name and/or
+	 * type + arguments.
+	 * 
+	 * @param ops The pool from which candidate ops should be drawn.
+	 * @param refs The op references describing the op to match.
+	 * @return A {@link Module} wrapping the best {@link Op}, with populated
+	 *         inputs, ready to run.
+	 * @throws IllegalArgumentException if there is no match, or if there is more
+	 *           than one match at the same priority.
+	 */
+	public <OP extends Op> Module findModule(OpEnvironment ops,
+		List<OpRef<OP>> refs);
+
+	/**
 	 * Builds a list of candidate ops which might match the given op reference.
 	 * 
 	 * @param ops The pool from which candidate ops should be drawn.
@@ -66,6 +80,17 @@ public interface OpMatchingService extends ImageJService {
 	 */
 	<OP extends Op> List<OpCandidate<OP>> findCandidates(OpEnvironment ops,
 		OpRef<OP> ref);
+
+	/**
+	 * Builds a list of candidate ops which might match one of the given op
+	 * references.
+	 * 
+	 * @param ops The pool from which candidate ops should be drawn.
+	 * @param refs The op references describing the op to match.
+	 * @return The list of candidate operations.
+	 */
+	<OP extends Op> List<OpCandidate<OP>> findCandidates(OpEnvironment ops,
+		List<OpRef<OP>> refs);
 
 	/**
 	 * Filters a list of ops to those matching the given arguments.

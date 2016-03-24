@@ -33,6 +33,7 @@ package net.imagej.ops;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -80,9 +81,16 @@ public class DefaultOpMatchingService extends AbstractService implements
 	public <OP extends Op> Module findModule(final OpEnvironment ops,
 		final OpRef<OP> ref)
 	{
+		return findModule(ops, Collections.singletonList(ref));
+	}
+
+	@Override
+	public <OP extends Op> Module findModule(final OpEnvironment ops,
+		final List<OpRef<OP>> refs)
+	{
 		// find candidates with matching name & type
-		final List<OpCandidate<OP>> candidates = findCandidates(ops, ref);
-		assertCandidates(candidates, ref);
+		final List<OpCandidate<OP>> candidates = findCandidates(ops, refs);
+		assertCandidates(candidates, refs.get(0));
 
 		// narrow down candidates to the exact matches
 		final List<OpCandidate<OP>> matches = filterMatches(candidates);
@@ -94,10 +102,19 @@ public class DefaultOpMatchingService extends AbstractService implements
 	public <OP extends Op> List<OpCandidate<OP>> findCandidates(
 		final OpEnvironment ops, final OpRef<OP> ref)
 	{
+		return findCandidates(ops, Collections.singletonList(ref));
+	}
+
+	@Override
+	public <OP extends Op> List<OpCandidate<OP>> findCandidates(
+		final OpEnvironment ops, final List<OpRef<OP>> refs)
+	{
 		final ArrayList<OpCandidate<OP>> candidates = new ArrayList<>();
 		for (final OpInfo info : ops.infos()) {
-			if (isCandidate(info, ref)) {
-				candidates.add(new OpCandidate<>(ops, ref, info));
+			for (final OpRef<OP> ref : refs) {
+				if (isCandidate(info, ref)) {
+					candidates.add(new OpCandidate<>(ops, ref, info));
+				}
 			}
 		}
 		return candidates;
