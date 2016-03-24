@@ -130,7 +130,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 		final ArrayList<Module> matches = new ArrayList<>();
 
 		double priority = Double.NaN;
-		for (final OpCandidate<?> candidate : candidates) {
+		for (final OpCandidate<OP> candidate : candidates) {
 			final ModuleInfo info = candidate.cInfo();
 			final double p = info.getPriority();
 			if (p != priority && !matches.isEmpty()) {
