@@ -82,10 +82,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	{
 		// find candidates with matching name & type
 		final List<OpCandidate<OP>> candidates = findCandidates(ops, ref);
-		if (candidates.isEmpty()) {
-			throw new IllegalArgumentException("No candidate '" + ref.getLabel() +
-				"' ops");
-		}
+		assertCandidates(candidates, ref);
 
 		// narrow down candidates to the exact matches
 		final List<OpCandidate<OP>> matches = filterMatches(candidates);
@@ -215,6 +212,16 @@ public class DefaultOpMatchingService extends AbstractService implements
 		}
 
 		return ref.typesMatch(opClass);
+	}
+
+	/** Helper method of {@link #findModule}. */
+	private <OP extends Op> void assertCandidates(
+		final List<OpCandidate<OP>> candidates, final OpRef<OP> ref)
+	{
+		if (candidates.isEmpty()) {
+			throw new IllegalArgumentException("No candidate '" + ref.getLabel() +
+				"' ops");
+		}
 	}
 
 	/**
