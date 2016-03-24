@@ -191,14 +191,17 @@ public final class OpUtils {
 	 * </p>
 	 * 
 	 * @param candidates The list of candidates from which a match was desired.
-	 * @param matches The list of matching modules.
+	 * @param matches The list of matching candidates with attached {@link Module}
+	 *          instances.
 	 * @return A multi-line string describing the situation: 1) the type of match
 	 *         failure; 2) the list of matching ops (if any); 3) the request
 	 *         itself; and 4) the list of candidates including status (i.e.,
 	 *         whether it matched, and if not, why not).
+	 * @see OpMatchingService#filterMatches(List)
 	 */
 	public static <OP extends Op> String matchInfo(
-		final List<OpCandidate<OP>> candidates, final List<Module> matches)
+		final List<OpCandidate<OP>> candidates,
+		final List<OpCandidate<OP>> matches)
 	{
 		final StringBuilder sb = new StringBuilder();
 
@@ -209,13 +212,13 @@ public final class OpUtils {
 		}
 		else {
 			// multiple matches
-			final double priority = matches.get(0).getInfo().getPriority();
+			final double priority = matches.get(0).cInfo().getPriority();
 			sb.append("Multiple '" + ref.getLabel() + "' ops of priority " +
 				priority + ":\n");
 			int count = 0;
-			for (final Module module : matches) {
+			for (final OpCandidate<OP> match : matches) {
 				sb.append(++count + ". ");
-				sb.append(opString(module.getInfo()) + "\n");
+				sb.append(opString(match.getModule().getInfo()) + "\n");
 			}
 		}
 

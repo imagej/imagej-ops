@@ -150,10 +150,11 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 	private void assertMatches(final String name, Class<?>... opTypes) {
 		final List<OpCandidate<Op>> candidates =
 			matcher.findCandidates(ops, OpRef.create(name));
-		final List<Module> matches = matcher.findMatches(candidates);
+		final List<OpCandidate<Op>> matches = matcher.filterMatches(candidates);
 		assertEquals(opTypes.length, matches.size());
 		for (int i=0; i<opTypes.length; i++) {
-			assertSame(opTypes[i], matches.get(i).getDelegateObject().getClass());
+			final Module m = matches.get(i).getModule();
+			assertSame(opTypes[i], m.getDelegateObject().getClass());
 		}
 	}
 
