@@ -124,10 +124,10 @@ public class DefaultOpMatchingService extends AbstractService implements
 	}
 
 	@Override
-	public <OP extends Op> List<Module> findMatches(
+	public <OP extends Op> List<OpCandidate<OP>> filterMatches(
 		final List<OpCandidate<OP>> candidates)
 	{
-		final ArrayList<Module> matches = new ArrayList<>();
+		final ArrayList<OpCandidate<OP>> matches = new ArrayList<>();
 
 		double priority = Double.NaN;
 		for (final OpCandidate<OP> candidate : candidates) {
@@ -141,7 +141,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 
 			final Module module = match(candidate);
 
-			if (module != null) matches.add(module);
+			if (module != null) matches.add(candidate);
 		}
 
 		return matches;
@@ -409,5 +409,20 @@ public class DefaultOpMatchingService extends AbstractService implements
 	private boolean isMatchingClass(final Object arg, final Type type) {
 		return arg instanceof Class &&
 			convertService.supports((Class<?>) arg, type);
+	}
+
+	// -- Deprecated methods --
+
+	@Deprecated
+	@Override
+	public <OP extends Op> List<Module> findMatches(
+		final List<OpCandidate<OP>> candidates)
+	{
+		final List<OpCandidate<OP>> matches = filterMatches(candidates);
+		final List<Module> modules = new ArrayList<>(matches.size());
+		for (OpCandidate<OP> match : matches) {
+			modules.add(match.getModule());
+		}
+		return modules;
 	}
 }

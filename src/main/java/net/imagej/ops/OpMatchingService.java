@@ -71,9 +71,11 @@ public interface OpMatchingService extends ImageJService {
 	 * Filters a list of ops to those matching the given arguments.
 	 * 
 	 * @param candidates The list of op candidates to scan for matches.
-	 * @return The list of matching ops as {@link Module} instances.
+	 * @return The list of matching op candidates, with associated {@link Module}
+	 *         instances attached.
 	 */
-	<OP extends Op> List<Module> findMatches(List<OpCandidate<OP>> candidates);
+	<OP extends Op> List<OpCandidate<OP>> filterMatches(
+		List<OpCandidate<OP>> candidates);
 
 	/**
 	 * Attempts to match the given arguments to the {@link Op} described by the
@@ -95,5 +97,11 @@ public interface OpMatchingService extends ImageJService {
 
 	/** Assigns arguments into the given module's inputs. */
 	Module assignInputs(Module module, Object... args);
+
+	// -- Deprecated methods --
+
+	/** @deprecated Use {@link #filterMatches} instead. */
+	@Deprecated
+	<OP extends Op> List<Module> findMatches(List<OpCandidate<OP>> candidates);
 
 }
