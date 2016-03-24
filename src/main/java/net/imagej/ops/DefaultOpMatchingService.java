@@ -90,24 +90,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 		// narrow down candidates to the exact matches
 		final List<OpCandidate<OP>> matches = filterMatches(candidates);
 
-		if (matches.size() == 1) {
-			// a single match: initialize and return it
-			final Module m = matches.get(0).getModule();
-			if (log.isDebug()) {
-				log.debug("Selected '" + matches.get(0).getRef().getLabel() + "' op: " +
-					m.getDelegateObject().getClass().getName());
-			}
-
-			// initialize the op, if appropriate
-			if (m.getDelegateObject() instanceof Initializable) {
-				((Initializable) m.getDelegateObject()).initialize();
-			}
-
-			return m;
-		}
-
-		final String analysis = OpUtils.matchInfo(candidates, matches);
-		throw new IllegalArgumentException(analysis);
+		return singleMatch(candidates, matches).getModule();
 	}
 
 	@Override
@@ -232,6 +215,46 @@ public class DefaultOpMatchingService extends AbstractService implements
 		}
 
 		return ref.typesMatch(opClass);
+	}
+
+	/**
+	 * Extracts and returns the single match from the given list of matches,
+	 * executing the linked {@link Module}'s initializer if applicable. If there
+	 * is not exactly one match, an {@link IllegalArgumentException} is thrown
+	 * with an analysis of the problem(s).
+	 * <p>
+	 * Helper method of {@link #findModule}.
+	 * </p>
+	 * 
+	 * @param candidates The original unfiltered list of candidates, used during
+	 *          the analysis if there was a problem finding exactly one match.
+	 * @param matches The list of matching candidates.
+	 * @return The single matching candidate, with its module initialized.
+	 * @throws IllegalArgumentException If there is not exactly one matching
+	 *           candidate.
+	 */
+	private <OP extends Op> OpCandidate<OP> singleMatch(
+		final List<OpCandidate<OP>> candidates,
+		final List<OpCandidate<OP>> matches)
+	{
+		if (matches.size() == 1) {
+			// a single match: initialize and return it
+			final Module m = matches.get(0).getModule();
+			if (log.isDebug()) {
+				log.debug("Selected '" + matches.get(0).getRef().getLabel() + "' op: " +
+					m.getDelegateObject().getClass().getName());
+			}
+
+			// initialize the op, if appropriate
+			if (m.getDelegateObject() instanceof Initializable) {
+				((Initializable) m.getDelegateObject()).initialize();
+			}
+
+			return matches.get(0);
+		}
+
+		final String analysis = OpUtils.matchInfo(candidates, matches);
+		throw new IllegalArgumentException(analysis);
 	}
 
 	/**
