@@ -129,6 +129,16 @@ public class FilterNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.filter.addPoissonNoise.AddPoissonNoiseMap.class)
+	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O>
+		addPoissonNoise(final IterableInterval<O> out, final IterableInterval<I> in)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
+			net.imagej.ops.filter.addPoissonNoise.AddPoissonNoiseMap.class, out, in);
+		return result;
+	}
+
 	// -- convolve --
 	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTF.class,
