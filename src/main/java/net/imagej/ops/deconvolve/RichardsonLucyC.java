@@ -76,7 +76,8 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 	extends AbstractIterativeFFTFilterC<I, O, K, C> implements
 	Ops.Deconvolve.RichardsonLucy
 {
-	// TODO: think through whether we can always have a statusservice. 
+
+	// TODO: think through whether we can always have a statusservice.
 	@Parameter(required = false)
 	private StatusService status;
 
@@ -87,8 +88,8 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 	private OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput;
 
 	/**
-	 * Op that computes Richardson Lucy update
-	 * TODO: figure out best way to override for different algorithm (like RichardsonLucyTV) 
+	 * Op that computes Richardson Lucy update TODO: figure out best way to
+	 * override for different algorithm (like RichardsonLucyTV)
 	 */
 	@Parameter(required = false)
 	private UnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> update =
@@ -148,17 +149,20 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 				status.showProgress(i, getMaxIterations());
 			}
 
-			convolver.compute2(this.getRAIExtendedEstimate(), in2(), this
+			// create reblurred by convolving kernel with estimate
+			// NOTE: the FFT of the PSF of the kernel is performed in "preprocess" so
+			// no need to pass it in here.
+			convolver.compute1(this.getRAIExtendedEstimate(), this
 				.getRAIExtendedReblurred());
 
 			// compute correction factor
 			rlCorrection.compute2(in, getRAIExtendedReblurred(),
 				getRAIExtendedReblurred());
 
-			// perform update
+			// perform update to calculate new estimate
 			update.compute1(getRAIExtendedReblurred(), getRAIExtendedEstimate());
 
-			// accelerate
+			// accelerate (take larger step)
 			if (getAccelerator() != null) {
 				getAccelerator().mutate(getRAIExtendedEstimate());
 			}

@@ -103,7 +103,8 @@ public class RichardsonLucyCorrection<I extends RealType<I>, O extends RealType<
 		divide.mutate1(reblurred,observed);
 
 		// correlate with psf to compute the correction factor
-		correlate.compute2(reblurred, reblurred, correction);
+		// Note: FFT of psf is pre-computed
+		correlate.compute1(reblurred, correction);
 
 	}
 

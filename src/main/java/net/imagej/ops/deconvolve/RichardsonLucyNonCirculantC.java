@@ -181,20 +181,22 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 			}
 
 			// create reblurred by convolving kernel with estimate
-			convolver.compute2(this.getRAIExtendedEstimate(), in2(), this
+			// NOTE: the FFT of the PSF of the kernel is performed in "preprocess" so 
+			// no need to pass it in here. 
+			convolver.compute1(this.getRAIExtendedEstimate(), this
 				.getRAIExtendedReblurred());
 
 			// compute correction factor
 			rlCorrection.compute2(in, getRAIExtendedReblurred(),
 				getRAIExtendedReblurred());
 
-			// perform update
+			// perform update to calculate new estimate
 			update.compute1(getRAIExtendedReblurred(), getRAIExtendedEstimate());
 
 			// normalize for non-circulant deconvolution
 			divide.mutate1(normalization, getRAIExtendedEstimate());
 			
-			// accelerate
+			// accelerate (take larger step)
 			if (getAccelerator() != null) {
 				getAccelerator().mutate(getRAIExtendedEstimate());
 			}

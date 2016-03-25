@@ -126,14 +126,7 @@ public abstract class AbstractIterativeFFTFilterC<I extends RealType<I>, O exten
 		return imgConvolutionInterval;
 	}
 
-	public void setImgConvolutionInterval(Interval imgConvolutionInterval) {
-		this.imgConvolutionInterval = imgConvolutionInterval;
-	}
-
-	public
-		UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>
-		getAccelerator()
-	{
+	public UnaryInplaceOp<RandomAccessibleInterval<O>,RandomAccessibleInterval<O>> getAccelerator() {
 		return accelerator;
 	}
 
