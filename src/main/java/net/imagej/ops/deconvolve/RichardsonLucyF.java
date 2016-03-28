@@ -148,7 +148,7 @@ public class RichardsonLucyF<I extends RealType<I> & NativeType<I>, O extends Re
 
 		return Computers.binary(ops(), RichardsonLucyC.class, output,
 			raiExtendedInput, raiExtendedKernel, fftImg, fftKernel, true, true,
-			maxIterations, imgConvolutionInterval, accelerator, null,
+			maxIterations, imgConvolutionInterval, accelerator, this.getOBFInput(),
 			computeEstimateOp);
 	}
 

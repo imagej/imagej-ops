@@ -42,6 +42,7 @@ import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.Hybrids;
 import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imglib2.Dimensions;
+import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
@@ -107,6 +108,8 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 
 	private UnaryHybridCF<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> copy;
 
+	private UnaryHybridCF<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> copy2;
+
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initialize() {
@@ -131,6 +134,9 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 			getFFTKernel(), RandomAccessibleInterval.class);
 
 		copy = (UnaryHybridCF) Hybrids.unaryCF(ops(), Ops.Copy.RAI.class,
+			RandomAccessibleInterval.class, IntervalView.class);
+
+		copy2 = (UnaryHybridCF) Hybrids.unaryCF(ops(), Ops.Copy.RAI.class,
 			RandomAccessibleInterval.class, IntervalView.class);
 
 		create = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
@@ -167,6 +173,18 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 				getAccelerator().mutate(getRAIExtendedEstimate());
 			}
 		}
+
+		// crop padded back to original size
+		final long[] start = new long[out.numDimensions()];
+		final long[] end = new long[out.numDimensions()];
+
+		for (int d = 0; d < out.numDimensions(); d++) {
+			start[d] = 0;
+			end[d] = start[d] + out.dimension(d) - 1;
+		}
+
+		copy2.compute1(Views.interval(getRAIExtendedEstimate(), new FinalInterval(
+			start, end)), out);
 	}
 
 	@Override
@@ -182,16 +200,15 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 					.getTypeFromInterval(out).createVariable());
 		}
 
+		// create image for the estimate, this image is defined over the entire
+		// convolution interval
+		final Img<O> estimate = create.compute1(getImgConvolutionInterval());
+
 		// create image for the reblurred
-		Img<O> reblurred = create.compute1(out);
+		final Img<O> reblurred = create.compute1(getImgConvolutionInterval());
 
-		// extend the output and use it as a buffer to store the estimate
-		setRAIExtendedEstimate(Views.interval(Views.extend(out, obfOutput),
-			getImgConvolutionInterval()));
-
-		// assemble the extended view of the reblurred
-		setRAIExtendedReblurred(Views.interval(Views.extend(reblurred, obfOutput),
-			getImgConvolutionInterval()));
+		setRAIExtendedEstimate(estimate);
+		setRAIExtendedReblurred(reblurred);
 
 		// set first guess of estimate
 		// TODO: implement logic for various first guesses.

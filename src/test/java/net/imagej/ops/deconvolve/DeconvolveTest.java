@@ -36,10 +36,13 @@ import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.filter.convolve.ConvolveFFTF;
 import net.imglib2.Cursor;
 import net.imglib2.Point;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.region.hypersphere.HyperSphere;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.type.numeric.real.FloatType;
+import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
 import org.junit.Test;
@@ -70,8 +73,10 @@ public class DeconvolveTest extends AbstractOpTest {
 			ConvolveFFTF.class, in, kernel);
 
 		@SuppressWarnings("unchecked")
-		final Img<FloatType> deconvolved2 = (Img<FloatType>) ops.run(
-			RichardsonLucyF.class, convolved, kernel, 10);
+		final RandomAccessibleInterval<FloatType> deconvolved2 =
+			(RandomAccessibleInterval<FloatType>) ops.run(RichardsonLucyF.class,
+				convolved, kernel, null, new OutOfBoundsConstantValueFactory<>(Util
+					.getTypeFromInterval(in).createVariable()), 10);
 
 		assertEquals(size[0], deconvolved2.dimension(0));
 		assertEquals(size[1], deconvolved2.dimension(1));
