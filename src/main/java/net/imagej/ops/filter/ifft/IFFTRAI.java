@@ -69,6 +69,8 @@ public class IFFTRAI<C extends ComplexType<C>, T extends RealType<T>>
 
 		FFTMethods.complexToReal(input, output, FFTMethods
 			.unpaddingIntervalCentered(input, output), 0, true, service);
+		
+		service.shutdown();
 	}
 
 }
