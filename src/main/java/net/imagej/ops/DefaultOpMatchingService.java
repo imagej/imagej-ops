@@ -227,7 +227,9 @@ public class DefaultOpMatchingService extends AbstractService implements
 			opClass = info.cInfo().loadClass();
 		}
 		catch (final InstantiableException exc) {
-			log.error("Invalid op: " + info.cInfo().getClassName());
+			final String msg = "Invalid op: " + info.cInfo().getClassName();
+			if (log.isDebug()) log.debug(msg, exc);
+			else log.error(msg);
 			return false;
 		}
 
