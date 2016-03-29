@@ -30,17 +30,19 @@
 
 package net.imagej.ops.eval;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.List;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.Ops;
 
-import org.scijava.sjep.Function;
 import org.scijava.sjep.Operator;
 import org.scijava.sjep.Operators;
-import org.scijava.sjep.Verb;
+import org.scijava.sjep.Variable;
 import org.scijava.sjep.eval.AbstractStandardStackEvaluator;
 import org.scijava.sjep.eval.Evaluator;
 
@@ -65,6 +67,11 @@ public class OpEvaluator extends AbstractStandardStackEvaluator {
 
 		// -- dot --
 		//opMap.put(Operators.DOT, "dot");
+
+		// -- groups --
+		//opMap.put(Operators.PARENS, "parens");
+		//opMap.put(Operators.BRACKETS, "brackets");
+		//opMap.put(Operators.BRACES, "braces");
 
 		// -- transpose, power --
 		//opMap.put(Operators.TRANSPOSE, "transpose");
@@ -121,10 +128,15 @@ public class OpEvaluator extends AbstractStandardStackEvaluator {
 	// -- OpEvaluator methods --
 
 	/**
-	 * Executes the given {@link Verb operation} (typically an {@link Operator} or
-	 * a {@link Function}) with the specified argument list.
+	 * Executes the given {@link Operator operation} with the specified argument
+	 * list.
 	 */
-	public Object execute(final Verb verb, final Object... args) {
+	public Object execute(final Operator op, final Object... args) {
+		return execute(getOpName(op), args);
+	}
+
+	/** Executes the given op with the specified argument list. */
+	public Object execute(final String opName, final Object... args) {
 		// Unwrap the arguments.
 		final Object[] argValues = new Object[args.length];
 		for (int i=0; i<args.length; i++) {
@@ -132,21 +144,50 @@ public class OpEvaluator extends AbstractStandardStackEvaluator {
 		}
 
 		// Try executing the op.
-		return ops.run(getOpName(verb), argValues);
+		return ops.run(opName, argValues);
 	}
 
-	/** Gets the op name associated with the given {@link Verb}. */
-	public String getOpName(final Verb verb) {
-		return opMap.containsKey(verb) ? opMap.get(verb) : verb.getToken();
+	/** Gets the op name associated with the given {@link Operator}. */
+	public String getOpName(final Operator op) {
+		return opMap.containsKey(op) ? opMap.get(op) : op.getToken();
 	}
 
 	// -- StandardEvaluator methods --
+
+	// -- function --
+
+	@Override
+	public Object function(final Object a, final Object b) {
+		if (a instanceof Variable) {
+			// NB: Execute the op whose name matches the given variable token.
+			return execute(((Variable) a).getToken(), list(b).toArray());
+		}
+		return null;
+	}
 
 	// -- dot --
 
 	@Override
 	public Object dot(final Object a, final Object b) {
 		return execute(Operators.DOT, a, b);
+	}
+
+	// -- groups --
+
+	@Override
+	public Object parens(final Object[] args) {
+		if (args.length == 1) return args[0];
+		return Arrays.asList(args);
+	}
+
+	@Override
+	public Object brackets(final Object[] args) {
+		return Arrays.asList(args);
+	}
+
+	@Override
+	public Object braces(final Object[] args) {
+		return Arrays.asList(args);
 	}
 
 	// -- transpose, power --
@@ -332,9 +373,9 @@ public class OpEvaluator extends AbstractStandardStackEvaluator {
 	// -- StackEvaluator methods --
 
 	@Override
-	public Object execute(final Verb verb, final Deque<Object> stack) {
+	public Object execute(final Operator op, final Deque<Object> stack) {
 		// Pop the arguments.
-		final int arity = verb.getArity();
+		final int arity = op.getArity();
 		final Object[] args = new Object[arity];
 		for (int i = args.length - 1; i >= 0; i--) {
 			args[i] = stack.pop();
@@ -345,7 +386,7 @@ public class OpEvaluator extends AbstractStandardStackEvaluator {
 		for (int i = 0; i < args.length; i++) {
 			stack.push(args[i]);
 		}
-		final Object result = super.execute(verb, stack);
+		final Object result = super.execute(op, stack);
 		if (result != null) return result;
 
 		// Unwrap the arguments.
@@ -353,7 +394,14 @@ public class OpEvaluator extends AbstractStandardStackEvaluator {
 			args[i] = value(args[i]);
 		}
 
-		return execute(verb, args);
+		return execute(op, args);
+	}
+
+	// -- Helper methods --
+
+	private List<?> list(final Object o) {
+		if (o instanceof List) return (List<?>) o;
+		return Collections.singletonList(o);
 	}
 
 }
