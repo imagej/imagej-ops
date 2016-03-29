@@ -159,6 +159,7 @@ namespaces = ```
 		[name: "ascii",                       iface: "ASCII"],
 		[name: "cooccurrenceMatrix",          iface:"CooccurrenceMatrix"],
 		[name: "crop",                        iface: "Crop",                aliases: ["slice"]],
+		[name: "distancetransform",           iface: "DistanceTransform",   aliases: ["DistanceMap"]],
 		[name: "equation",                    iface: "Equation"],
 		[name: "fill",                        iface: "Fill"],
 		[name: "histogram",                   iface: "Histogram"],
