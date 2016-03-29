@@ -113,9 +113,11 @@ public class FFTRAI<T extends RealType<T>, C extends ComplexType<C>>
 		final ExecutorService service = Executors.newFixedThreadPool(numThreads);
 
 		FFTMethods.realToComplex(inputRAI, output, 0, false, service);
-
+				
 		for (int d = 1; d < input.numDimensions(); d++)
 			FFTMethods.complexToComplex(output, d, true, false, service);
+		
+		service.shutdown();
 	}
 
 }
