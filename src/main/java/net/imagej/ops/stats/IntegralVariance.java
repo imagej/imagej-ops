@@ -34,10 +34,10 @@ import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
+import net.imagej.ops.image.integral.IntegralCursor;
 import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
 import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
-import net.imglib2.algorithm.integral.IntegralCursor;
 import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
 import net.imglib2.converter.Converter;
 import net.imglib2.converter.RealDoubleConverter;

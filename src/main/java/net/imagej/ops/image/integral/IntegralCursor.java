@@ -70,10 +70,10 @@ public class IntegralCursor<T> extends AbstractEuclideanSpace implements
 
 	private final RectangleNeighborhood<T> neighborhood;
 
-	public IntegralCursor(final RandomAccess<T> src, final RectangleNeighborhood<T> neighborhood) {
+	public IntegralCursor(final RectangleNeighborhood<T> neighborhood) {
 		super(neighborhood.numDimensions());
 		this.neighborhood = neighborhood;
-		source = src;
+		source = neighborhood.getSourceRandomAccess();
 		maxIndex = ((int) Math.round(Math.pow(2, neighborhood.numDimensions()))) -
 			1;
 		reset();

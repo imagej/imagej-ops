@@ -32,7 +32,7 @@ package net.imagej.ops.stats;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imglib2.algorithm.integral.IntegralCursor;
+import net.imagej.ops.image.integral.IntegralCursor;
 import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
 import net.imglib2.converter.Converter;
 import net.imglib2.converter.RealDoubleConverter;
