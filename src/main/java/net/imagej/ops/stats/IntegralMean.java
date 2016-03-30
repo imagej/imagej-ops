@@ -99,12 +99,13 @@ public class IntegralMean<I extends RealType<I>> extends
 	}
 
 	/**
-	 * TODO Documentation
-	 * FIXME Move to central place?
+	 * Computes the overlap between to intervals.
+	 * 
+	 * TODO Move to central place and/or imglib2
 	 * 
 	 * @param interval1
 	 * @param interval2
-	 * @return area/volume/?
+	 * @return area/volume/etc
 	 */
 	private int overlap(Interval interval1, Interval interval2)
 	{
@@ -123,10 +124,11 @@ public class IntegralMean<I extends RealType<I>> extends
 	}
 
 	/**
-	 * TODO Documentation
+	 * Correct the provided {@link Interval} for the increased neighborhood size
+	 * that is necessary to work with {@link IntegralCursor}.
 	 * 
 	 * @param neighborhood
-	 * @return Blubb
+	 * @return size-corrected {@link Interval}.
 	 */
 	private Interval correctNeighborhoodInterval(Interval neighborhood) {	
 		final long[] neighborhoodMinimum = new long[neighborhood.numDimensions()];

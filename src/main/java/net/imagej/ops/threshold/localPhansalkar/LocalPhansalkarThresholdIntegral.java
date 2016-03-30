@@ -58,10 +58,13 @@ import net.imglib2.view.composite.Composite;
  * This implementation improves execution speed by using integral images for the
  * computations of mean and standard deviation in the local windows. A
  * significant improvement can be observed for increased window sizes (
- * {@code span > 10}).
+ * {@code span > 10}). It operates on {@link RandomAccessibleInterval}s of
+ * {@link RealType}, i.e. explicit conversion to an integral image is <b>not</b>
+ * required.
  * </p>
  * 
  * @see LocalPhansalkarThreshold
+ * @see LocalThresholdIntegral
  * @author Stefan Helfrich (University of Konstanz)
  */
 @Plugin(type = Ops.Threshold.LocalPhansalkarThreshold.class,

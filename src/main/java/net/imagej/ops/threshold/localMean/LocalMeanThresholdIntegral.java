@@ -40,7 +40,6 @@ import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
 import net.imagej.ops.stats.IntegralMean;
 import net.imagej.ops.threshold.apply.LocalThresholdIntegral;
 import net.imglib2.Interval;
-import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
 import net.imglib2.converter.Converter;
@@ -51,8 +50,21 @@ import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.composite.Composite;
 
 /**
- * LocalThresholdMethod using mean.
+ * <p>
+ * Local threshold method that uses the {@link IntegralMean} for the threshold
+ * computation.
+ * </p>
+ * <p>
+ * This implementation improves execution speed by using integral images for the
+ * computations of mean and standard deviation in the local windows. A
+ * significant improvement can be observed for increased window sizes (
+ * {@code span > 10}). It operates on {@link RandomAccessibleInterval}s of
+ * {@link RealType}, i.e. explicit conversion to an integral image is <b>not</b>
+ * required.
+ * </p>
  *
+ * @see LocalMeanThreshold
+ * @see LocalThresholdIntegral
  * @author Stefan Helfrich (University of Konstanz)
  */
 @Plugin(type = Ops.Threshold.LocalMeanThreshold.class,
@@ -76,11 +88,6 @@ public class LocalMeanThresholdIntegral<T extends RealType<T>> extends
 		return op;
 	}
 	
-	/**
-	 * TODO Documentation
-	 * 
-	 * @author Stefan Helfrich (University of Konstanz)
-	 */
 	private class LocalMeanThresholdComputer<I extends RealType<I>> extends
 		AbstractBinaryComputerOp<I, RectangleNeighborhood<Composite<DoubleType>>, BitType> implements
 		CenterAwareIntegralComputerOp<I, BitType>
