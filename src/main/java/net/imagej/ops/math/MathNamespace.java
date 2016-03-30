@@ -940,7 +940,7 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.math.NumericTypeBinaryMath.Divide.class)
+	@OpMethod(ops = net.imagej.ops.math.NumericTypeBinaryMath.Divide.class)
 	public <T extends NumericType<T>> T divide(final T in, final T b) {
 		@SuppressWarnings("unchecked")
 		final T result = (T) ops().run(net.imagej.ops.Ops.Math.Divide.class, in, b);
