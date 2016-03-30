@@ -32,7 +32,7 @@ package net.imagej.ops.filter;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.fft.FFTMethodsOpC;
-import net.imagej.ops.filter.ifft.IFFTComputerOp;
+import net.imagej.ops.filter.ifft.IFFTMethodsOpC;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
@@ -82,7 +82,7 @@ public class FFTMethodsLinearFFTFilterC<I extends RealType<I>, O extends RealTyp
 		fftKernel = (UnaryComputerOp) Computers.unary(ops(), FFTMethodsOpC.class,
 			getFFTKernel(), RandomAccessibleInterval.class);
 
-		ifft = (UnaryComputerOp) Computers.unary(ops(), IFFTComputerOp.class,
+		ifft = (UnaryComputerOp) Computers.unary(ops(), IFFTMethodsOpC.class,
 			RandomAccessibleInterval.class, getFFTKernel());
 
 	}

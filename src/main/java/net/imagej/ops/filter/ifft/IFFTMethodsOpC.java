@@ -53,7 +53,7 @@ import org.scijava.thread.ThreadService;
  * @param <T>
  */
 @Plugin(type = Ops.Filter.IFFT.class)
-public class IFFTComputerOp<C extends ComplexType<C>, T extends RealType<T>>
+public class IFFTMethodsOpC<C extends ComplexType<C>, T extends RealType<T>>
 	extends
 	AbstractUnaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<T>>
 	implements Ops.Filter.IFFT, Contingent

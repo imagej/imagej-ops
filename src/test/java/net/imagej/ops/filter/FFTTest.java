@@ -34,7 +34,7 @@ import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.filter.fft.FFTMethodsOpF;
 import net.imagej.ops.filter.fftSize.ComputeFFTSize;
-import net.imagej.ops.filter.ifft.IFFTComputerOp;
+import net.imagej.ops.filter.ifft.IFFTMethodsOpC;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.Point;
@@ -79,7 +79,7 @@ public class FFTTest extends AbstractOpTest {
 			@SuppressWarnings("unchecked")
 			final Img<ComplexFloatType> out = (Img<ComplexFloatType>) ops.run(
 				FFTMethodsOpF.class, in);
-			ops.run(IFFTComputerOp.class, inverse, out);
+			ops.run(IFFTMethodsOpC.class, inverse, out);
 
 			assertImagesEqual(in, inverse, .00005f);
 		}
@@ -157,18 +157,18 @@ public class FFTTest extends AbstractOpTest {
 				fastDimensions);
 
 			// invert the "small" FFT
-			ops.run(IFFTComputerOp.class, inverseOriginalSmall, fft1);
+			ops.run(IFFTMethodsOpC.class, inverseOriginalSmall, fft1);
 
 			// invert the "fast" FFT. The inverse will should be the original
 			// size.
-			ops.run(IFFTComputerOp.class, inverseOriginalFast, fft2);
+			ops.run(IFFTMethodsOpC.class, inverseOriginalFast, fft2);
 
 			// invert the "fast" FFT that was acheived by explicitly using an
 			// image
 			// that had "fast" dimensions. The inverse will be the fast size
 			// this
 			// time.
-			ops.run(IFFTComputerOp.class, inverseFast, fft3);
+			ops.run(IFFTMethodsOpC.class, inverseFast, fft3);
 
 			// assert that the inverse images are equal to the original
 			assertImagesEqual(inverseOriginalSmall, inOriginal, .0001f);
