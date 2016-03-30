@@ -43,6 +43,7 @@ import net.imglib2.converter.Converter;
 import net.imglib2.converter.RealDoubleConverter;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.util.Intervals;
 import net.imglib2.view.composite.Composite;
 
 /**
@@ -83,14 +84,14 @@ public class IntegralMean<I extends RealType<I>> extends
 			int cornerInteger = cursor.getCornerRepresentation();
 			
 			// Determine if the value has to be added (factor==1) or subtracted (factor==-1)
-			DoubleType factor = new DoubleType(Math.pow(-1.0d, dimensions - norm(cornerInteger)));
+			DoubleType factor = new DoubleType(Math.pow(-1.0d, dimensions - IntegralMean.norm(cornerInteger)));
 			valueAsDoubleType.mul(factor);
 			
 			sum.add(valueAsDoubleType);
 		}
 
 		// Compute overlap
-		int area = overlap(correctNeighborhoodInterval(input1), input2);
+		int area = IntegralMean.overlap(IntegralMean.correctNeighborhoodInterval(input1), input2);
 
 		// Compute mean by dividing the sum divided by the number of elements
 		sum.div(new DoubleType(area));
@@ -99,28 +100,16 @@ public class IntegralMean<I extends RealType<I>> extends
 	}
 
 	/**
-	 * Computes the overlap between to intervals.
-	 * 
-	 * TODO Move to central place and/or imglib2
+	 * Compute the overlap between to intervals.
 	 * 
 	 * @param interval1
 	 * @param interval2
 	 * @return area/volume/etc
 	 */
-	private int overlap(Interval interval1, Interval interval2)
+	public static int overlap(Interval interval1, Interval interval2)
 	{
-		assert(interval1.numDimensions() == interval2.numDimensions());		
-		int area = 1;
-		
-		for (int d = 0; d < interval1.numDimensions(); d++)
-		{
-			long upperLimit = Math.min(interval1.max(d), interval2.max(d));
-			long lowerLimit = Math.max(interval1.min(d), interval2.min(d));
-			
-			area *= (upperLimit + 1) - lowerLimit;
-		}
-		
-		return area;
+		Interval intersection = Intervals.intersect(interval1, interval2);
+		return (int) Intervals.numElements(intersection);
 	}
 
 	/**
@@ -130,7 +119,7 @@ public class IntegralMean<I extends RealType<I>> extends
 	 * @param neighborhood
 	 * @return size-corrected {@link Interval}.
 	 */
-	private Interval correctNeighborhoodInterval(Interval neighborhood) {	
+	public static Interval correctNeighborhoodInterval(Interval neighborhood) {	
 		final long[] neighborhoodMinimum = new long[neighborhood.numDimensions()];
 		neighborhood.min(neighborhoodMinimum);
 		final long[] neighborhoodMaximum = new long[neighborhood.numDimensions()];
@@ -153,7 +142,7 @@ public class IntegralMean<I extends RealType<I>> extends
 	 *          as integer
 	 * @return L1 norm of the position
 	 */
-	private int norm(int cornerPosition) {
+	public static int norm(int cornerPosition) {
 		return Integer.bitCount(cornerPosition);
 	}
 	

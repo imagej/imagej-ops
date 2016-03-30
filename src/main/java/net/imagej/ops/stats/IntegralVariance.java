@@ -36,7 +36,6 @@ import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.image.integral.IntegralCursor;
 import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
-import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
 import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
 import net.imglib2.converter.Converter;
@@ -88,7 +87,7 @@ public class IntegralVariance<I extends RealType<I>> extends
 			int cornerInteger1 = cursorS1.getCornerRepresentation();
 			
 			// Determine if the value has to be added (factor==1) or subtracted (factor==-1)
-			DoubleType factor = new DoubleType(Math.pow(-1.0d, dimensions - norm(cornerInteger1)));
+			DoubleType factor = new DoubleType(Math.pow(-1.0d, dimensions - IntegralMean.norm(cornerInteger1)));
 			value1AsDoubleType.mul(factor);
 			
 			sum1.add(value1AsDoubleType);
@@ -105,7 +104,7 @@ public class IntegralVariance<I extends RealType<I>> extends
 		}
 
 		// Compute overlap
-		int area = overlap(correctNeighborhoodInterval(input1), input2);
+		int area = IntegralMean.overlap(IntegralMean.correctNeighborhoodInterval(input1), input2);
 
 		sum1.mul(sum1);
 		sum1.div(new DoubleType(area));
@@ -114,65 +113,6 @@ public class IntegralVariance<I extends RealType<I>> extends
 		sum2.div(new DoubleType(area));
 
 		output.set(sum2);
-	}
-
-	/**
-	 * Computes the overlap between to intervals.
-	 * 
-	 * TODO Move to central place and/or imglib2
-	 * 
-	 * @param interval1
-	 * @param interval2
-	 * @return area/volume/etc
-	 */
-	private int overlap(Interval interval1, Interval interval2)
-	{
-		assert(interval1.numDimensions() == interval2.numDimensions());		
-		int area = 1;
-		
-		for (int d = 0; d < interval1.numDimensions(); d++)
-		{
-			long upperLimit = Math.min(interval1.max(d), interval2.max(d));
-			long lowerLimit = Math.max(interval1.min(d), interval2.min(d));
-			
-			area *= (upperLimit + 1) - lowerLimit;
-		}
-		
-		return area;
-	}
-
-	/**
-	 * Correct the provided {@link Interval} for the increased neighborhood size
-	 * that is necessary to work with {@link IntegralCursor}.
-	 * 
-	 * @param neighborhood
-	 * @return size-corrected {@link Interval}.
-	 */
-	private Interval correctNeighborhoodInterval(Interval neighborhood) {	
-		final long[] neighborhoodMinimum = new long[neighborhood.numDimensions()];
-		neighborhood.min(neighborhoodMinimum);
-		final long[] neighborhoodMaximum = new long[neighborhood.numDimensions()];
-		neighborhood.max(neighborhoodMaximum);
-		
-		for (int d = 0; d < neighborhood.numDimensions(); d++)
-		{
-			neighborhoodMinimum[d] = neighborhoodMinimum[d] + 1;		
-			neighborhoodMaximum[d] = neighborhoodMaximum[d] - 1;
-		}
-		
-		return new FinalInterval(neighborhoodMinimum, neighborhoodMaximum);
-	}
-	
-	/**
-	 * Computes L1 norm of the position of an {@code IntegralCursor}. Computation
-	 * is based on determining the number of 1 bits in the position.
-	 * 
-	 * @param cornerPosition position vector of an {@code IntegralCursor} encoded
-	 *          as integer
-	 * @return L1 norm of the position
-	 */
-	private int norm(int cornerPosition) {
-		return Integer.bitCount(cornerPosition);
 	}
 	
 }
