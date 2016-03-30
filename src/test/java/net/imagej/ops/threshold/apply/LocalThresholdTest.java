@@ -32,8 +32,6 @@ package net.imagej.ops.threshold.apply;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Random;
-
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.ThresholdNamespace;
@@ -51,7 +49,7 @@ import net.imagej.ops.threshold.localSauvola.LocalSauvolaThreshold;
 import net.imagej.ops.threshold.localSauvola.LocalSauvolaThresholdIntegral;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.Cursor;
-import net.imglib2.FinalInterval;
+import net.imglib2.algorithm.neighborhood.DiamondShape;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
@@ -62,7 +60,6 @@ import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.ByteType;
-import net.imglib2.util.Intervals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -103,7 +100,12 @@ public class LocalThresholdTest extends AbstractOpTest {
 		ops.threshold().localMeanThreshold(out, in, new RectangleShape(3, false),
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
 				Boundary.SINGLE), 0.0);
-
+		ops.threshold().localMeanThreshold(out, in, new DiamondShape(3),
+			0.0);
+		ops.threshold().localMeanThreshold(out, in, new DiamondShape(3),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
+				Boundary.SINGLE), 0.0);
+		
 		ops.threshold().localBernsenThreshold(out, in, new RectangleShape(3, false),
 			1.0, Double.MAX_VALUE * 0.5);
 		ops.threshold().localBernsenThreshold(out, in, new RectangleShape(3, false),
@@ -203,6 +205,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 * @see LocalMeanThresholdIntegral
 	 * @see LocalMeanThreshold
 	 */
+	@SuppressWarnings("null")
 	@Test
 	public void testLocalMeanResultsConsistency() {
 		Img<BitType> out2 = null;
@@ -290,6 +293,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 * @see LocalNiblackThresholdIntegral
 	 * @see LocalNiblackThreshold
 	 */
+	@SuppressWarnings("null")
 	@Test
 	public void testLocalNiblackResultsConsistency() {
 		Img<BitType> out2 = null;
@@ -354,6 +358,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 * @see LocalPhansalkarThresholdIntegral
 	 * @see LocalPhansalkarThreshold
 	 */
+	@SuppressWarnings("null")
 	@Test
 	public void testLocalPhansalkarResultsConsistency() {
 		Img<BitType> out2 = null;
@@ -418,6 +423,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 * @see LocalSauvolaThresholdIntegral
 	 * @see LocalSauvolaThreshold
 	 */
+	@SuppressWarnings("null")
 	@Test
 	public void testLocalSauvolaResultsConsistency() {
 		Img<BitType> out2 = null;
