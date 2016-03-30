@@ -45,6 +45,7 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.img.Img;
 import net.imglib2.interpolation.InterpolatorFactory;
+import net.imglib2.type.BooleanType;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -157,6 +158,32 @@ public class ImageNamespace extends AbstractNamespace {
 		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
 				.run(net.imagej.ops.Ops.Image.Crop.class, in, interval,
 						dropSingleDimensions);
+		return result;
+	}
+	
+	// -- distance transform --
+
+	/** Executes the "distancetransform" operation on the given arguments. */
+	@OpMethod(ops = { net.imagej.ops.image.distancetransform.DefaultDistanceTransform.class,
+			net.imagej.ops.image.distancetransform.DistanceTransform2D.class,
+			net.imagej.ops.image.distancetransform.DistanceTransform3D.class })
+	public <B extends BooleanType<B>, T extends RealType<T>> RandomAccessibleInterval<T> distancetransform(
+			final RandomAccessibleInterval<B> in, final RandomAccessibleInterval<T> out) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
+				.run(Ops.Image.DistanceTransform.class, in, out);
+		return result;
+	}
+	
+	/** Executes the "distancetransform" operation on the given arguments. */
+	@OpMethod(ops = { net.imagej.ops.image.distancetransform.DefaultDistanceTransform.class,
+			net.imagej.ops.image.distancetransform.DistanceTransform2D.class,
+			net.imagej.ops.image.distancetransform.DistanceTransform3D.class })
+	public <B extends BooleanType<B>, T extends RealType<T>> RandomAccessibleInterval<T> distancetransform(
+			final RandomAccessibleInterval<B> in) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
+				.run(Ops.Image.DistanceTransform.class, in);
 		return result;
 	}
 
