@@ -30,6 +30,7 @@
 
 package net.imagej.ops.threshold.localPhansalkar;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -69,7 +70,8 @@ import net.imglib2.type.numeric.real.DoubleType;
  * 
  * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.LocalPhansalkarThreshold.class)
+@Plugin(type = Ops.Threshold.LocalPhansalkarThreshold.class,
+	priority = Priority.LOW_PRIORITY)
 public class LocalPhansalkarThreshold<T extends RealType<T>> extends
 	LocalThreshold<T> implements Ops.Threshold.LocalPhansalkarThreshold
 {

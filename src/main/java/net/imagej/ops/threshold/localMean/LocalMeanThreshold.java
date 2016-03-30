@@ -51,7 +51,8 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @author Martin Horn (University of Konstanz)
  * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.LocalMeanThreshold.class, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Ops.Threshold.LocalMeanThreshold.class,
+	priority = Priority.LOW_PRIORITY)
 public class LocalMeanThreshold<T extends RealType<T>> extends
 	LocalThreshold<T>	implements Ops.Threshold.LocalMeanThreshold
 {

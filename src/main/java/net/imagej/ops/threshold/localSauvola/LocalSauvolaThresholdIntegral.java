@@ -30,6 +30,7 @@
 
 package net.imagej.ops.threshold.localSauvola;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -63,7 +64,8 @@ import net.imglib2.view.composite.Composite;
  * @see LocalSauvolaThreshold
  * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.LocalSauvolaThreshold.class)
+@Plugin(type = Ops.Threshold.LocalSauvolaThreshold.class,
+	priority = Priority.LOW_PRIORITY - 1)
 public class LocalSauvolaThresholdIntegral<T extends RealType<T>> extends LocalThresholdIntegral<T>
 	implements Ops.Threshold.LocalSauvolaThreshold
 {

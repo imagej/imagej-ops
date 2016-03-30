@@ -55,7 +55,8 @@ import net.imglib2.view.composite.Composite;
  *
  * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.LocalMeanThreshold.class, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Threshold.LocalMeanThreshold.class,
+	priority = Priority.LOW_PRIORITY - 1)
 public class LocalMeanThresholdIntegral<T extends RealType<T>> extends
 	LocalThresholdIntegral<T> implements Ops.Threshold.LocalMeanThreshold
 {

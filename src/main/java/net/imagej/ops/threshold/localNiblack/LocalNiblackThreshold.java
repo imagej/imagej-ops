@@ -30,6 +30,7 @@
 
 package net.imagej.ops.threshold.localNiblack;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -49,7 +50,8 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @author Jonathan Hale
  * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.LocalNiblackThreshold.class)
+@Plugin(type = Ops.Threshold.LocalNiblackThreshold.class,
+	priority = Priority.LOW_PRIORITY)
 public class LocalNiblackThreshold<T extends RealType<T>> extends LocalThreshold<T>
 	implements Ops.Threshold.LocalNiblackThreshold
 {

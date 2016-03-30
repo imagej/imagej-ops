@@ -34,7 +34,8 @@ import net.imglib2.view.composite.Composite;
  * @see LocalNiblackThreshold
  * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.LocalNiblackThreshold.class)
+@Plugin(type = Ops.Threshold.LocalNiblackThreshold.class,
+	priority = Priority.LOW_PRIORITY - 1)
 public class LocalNiblackThresholdIntegral<T extends RealType<T>> extends
 	LocalThresholdIntegral<T> implements Ops.Threshold.LocalNiblackThreshold
 {
