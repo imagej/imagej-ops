@@ -30,8 +30,6 @@
 
 package net.imagej.ops.filter.ifft;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
@@ -40,7 +38,9 @@ import net.imglib2.algorithm.fft2.FFTMethods;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+import org.scijava.thread.ThreadService;
 
 /**
  * Inverse FFT computer that operates on an RAI and wraps FFTMethods. The input
@@ -59,6 +59,9 @@ public class IFFTComputerOp<C extends ComplexType<C>, T extends RealType<T>>
 	implements Ops.Filter.IFFT, Contingent
 {
 
+	@Parameter
+	ThreadService ts;
+
 	/**
 	 * Compute an ND inverse FFT
 	 */
@@ -66,15 +69,13 @@ public class IFFTComputerOp<C extends ComplexType<C>, T extends RealType<T>>
 	public void compute1(final RandomAccessibleInterval<C> input,
 		final RandomAccessibleInterval<T> output)
 	{
-		// TODO: proper use of Executor service
-		final int numThreads = Runtime.getRuntime().availableProcessors();
-		final ExecutorService service = Executors.newFixedThreadPool(numThreads);
-
 		for (int d = input.numDimensions() - 1; d > 0; d--)
-			FFTMethods.complexToComplex(input, d, false, true, service);
+			FFTMethods.complexToComplex(input, d, false, true, ts
+				.getExecutorService());
 
 		FFTMethods.complexToReal(input, output, FFTMethods
-			.unpaddingIntervalCentered(input, output), 0, true, service);
+			.unpaddingIntervalCentered(input, output), 0, true, ts
+				.getExecutorService());
 	}
 
 	/**

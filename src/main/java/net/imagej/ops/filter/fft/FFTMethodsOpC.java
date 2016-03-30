@@ -30,9 +30,6 @@
 
 package net.imagej.ops.filter.fft;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
@@ -42,7 +39,9 @@ import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+import org.scijava.thread.ThreadService;
 
 /**
  * Forward FFT computer that operates on an RAI and wraps FFTMethods. The input
@@ -61,6 +60,9 @@ public class FFTMethodsOpC<T extends RealType<T>, C extends ComplexType<C>>
 	implements Ops.Filter.FFT, Contingent
 {
 
+	@Parameter
+	ThreadService ts;
+
 	/**
 	 * Computes an ND FFT using FFTMethods
 	 */
@@ -69,16 +71,13 @@ public class FFTMethodsOpC<T extends RealType<T>, C extends ComplexType<C>>
 		final RandomAccessibleInterval<C> output)
 	{
 
-		// TODO: proper use of Executor service
-		final int numThreads = Runtime.getRuntime().availableProcessors();
-		final ExecutorService service = Executors.newFixedThreadPool(numThreads);
-
 		// perform a real to complex FFT in the first dimension
-		FFTMethods.realToComplex(input, output, 0, false, service);
+		FFTMethods.realToComplex(input, output, 0, false, ts.getExecutorService());
 
 		// loop and perform complex to complex FFT in the remaining dimensions
 		for (int d = 1; d < input.numDimensions(); d++)
-			FFTMethods.complexToComplex(output, d, true, false, service);
+			FFTMethods.complexToComplex(output, d, true, false, ts
+				.getExecutorService());
 	}
 
 	/**
