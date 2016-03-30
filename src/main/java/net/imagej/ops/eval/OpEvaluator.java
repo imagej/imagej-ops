@@ -169,6 +169,12 @@ public class OpEvaluator extends AbstractStandardStackEvaluator {
 
 	@Override
 	public Object dot(final Object a, final Object b) {
+		if (a instanceof Variable && b instanceof Variable) {
+			// NB: Concatenate variable names, for namespace support
+			final String namespace = ((Variable) a).getToken();
+			final String opName = ((Variable) b).getToken();
+			return new Variable(namespace + "." + opName);
+		}
 		return execute(Operators.DOT, a, b);
 	}
 
