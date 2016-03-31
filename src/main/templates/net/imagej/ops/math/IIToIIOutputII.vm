@@ -59,8 +59,8 @@ public final class IIToIIOutputII {
 	
 	@Plugin(type = ${iface}.class, priority = Priority.HIGH_PRIORITY)
 	public static class ${op.name}<T extends NumericType<T>> extends
-		AbstractBinaryHybridCFI<IterableInterval<T>> implements $iface,
-		Contingent
+		AbstractBinaryHybridCFI<IterableInterval<T>, IterableInterval<T>>
+		implements $iface, Contingent
 	{
 
 		private UnaryFunctionOp<IterableInterval<T>, IterableInterval<T>> outputCreator;

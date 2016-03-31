@@ -35,8 +35,8 @@ package net.imagej.ops.special.hybrid;
  * 
  * @author Curtis Rueden
  */
-public abstract class AbstractBinaryHybridCFI<A> extends
-	AbstractBinaryHybridCFI1<A, A> implements BinaryHybridCFI<A>
+public abstract class AbstractBinaryHybridCFI<I, O extends I> extends
+	AbstractBinaryHybridCFI1<I, I, O> implements BinaryHybridCFI<I, O>
 {
 	// NB: No implementation needed.
 }

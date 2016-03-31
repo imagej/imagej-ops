@@ -88,9 +88,9 @@ public final class IIs {
 			in == null ? IterableInterval.class : in, otherArgs);
 	}
 
-	public static <T> UnaryInplaceOp<IterableInterval<T>> inplace(
-		final OpEnvironment ops, final Class<? extends Op> opType,
-		final IterableInterval<T> arg, final Object... otherArgs)
+	public static <T> UnaryInplaceOp<? super IterableInterval<T>, IterableInterval<T>>
+		inplace(final OpEnvironment ops, final Class<? extends Op> opType,
+			final IterableInterval<T> arg, final Object... otherArgs)
 	{
 		return Inplaces.unary(ops, opType, arg, otherArgs);
 	}

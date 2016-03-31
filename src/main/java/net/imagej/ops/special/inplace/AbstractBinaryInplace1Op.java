@@ -36,12 +36,12 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract superclass for {@link BinaryInplace1Op} implementations.
+ * Abstract superclass for {@link BinaryInplace1OnlyOp} implementations.
  * 
  * @author Curtis Rueden
  */
 public abstract class AbstractBinaryInplace1Op<A, I> extends
-	AbstractBinaryOp<A, I, A> implements BinaryInplace1Op<A, I>
+	AbstractBinaryOp<A, I, A> implements BinaryInplace1OnlyOp<A, I>
 {
 
 	// -- Parameters --
@@ -55,11 +55,6 @@ public abstract class AbstractBinaryInplace1Op<A, I> extends
 	// -- BinaryInput methods --
 
 	@Override
-	public A in1() {
-		return arg;
-	}
-
-	@Override
 	public I in2() {
 		return in;
 	}
@@ -67,12 +62,18 @@ public abstract class AbstractBinaryInplace1Op<A, I> extends
 	@Override
 	public void setInput1(final A input1) {
 		arg = input1;
-		
 	}
 
 	@Override
 	public void setInput2(final I input2) {
 		in = input2;
+	}
+
+	// -- Output methods --
+
+	@Override
+	public A out() {
+		return arg;
 	}
 
 }

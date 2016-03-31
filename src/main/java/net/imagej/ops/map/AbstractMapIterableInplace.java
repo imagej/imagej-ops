@@ -35,11 +35,12 @@ package net.imagej.ops.map;
  * {@link Iterable}s.
  * 
  * @author Christian Dietz (University of Konstanz)
- * @param <EA> element type of inplace arguments
+ * @param <EI> element input type
+ * @param <EO> element output type
  * @param <PA> producer of arguments
  */
-public abstract class AbstractMapIterableInplace<EA, PA extends Iterable<EA>>
-	extends AbstractMapInplace<EA, PA>
+public abstract class AbstractMapIterableInplace<EI, EO extends EI, PA extends Iterable<EI>>
+	extends AbstractMapInplace<EI, EO, PA>
 {
 	// NB: No implementation needed.
 }

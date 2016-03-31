@@ -475,18 +475,18 @@ public class Maps {
 
 	// -- Unary Inplace Maps --
 
-	public static <A> void inplace(final Iterable<A> arg,
-		final UnaryInplaceOp<A> op)
+	public static <I, O extends I> void inplace(final Iterable<O> arg,
+		final UnaryInplaceOp<I, O> op)
 	{
-		for (A e : arg)
+		for (final O e : arg)
 			op.mutate(e);
 	}
 
-	public static <A> void inplace(final IterableInterval<A> arg,
-		final UnaryInplaceOp<A> op, final int startIndex, final int stepSize,
+	public static <I, O extends I> void inplace(final IterableInterval<O> arg,
+		final UnaryInplaceOp<I, O> op, final int startIndex, final int stepSize,
 		final int numSteps)
 	{
-		final Cursor<A> argCursor = arg.cursor();
+		final Cursor<O> argCursor = arg.cursor();
 		argCursor.jumpFwd(startIndex + 1);
 		int ctr = 0;
 		while (ctr < numSteps) {
@@ -498,21 +498,23 @@ public class Maps {
 
 	// -- Binary Inplace Maps --
 
-	public static <A, I> void inplace(final IterableInterval<A> arg,
-		final IterableInterval<I> in, final BinaryInplace1Op<A, I> op)
+	public static <I1, I2, O extends I1> void inplace(
+		final IterableInterval<O> arg, final IterableInterval<I2> in,
+		final BinaryInplace1Op<I1, I2, O> op)
 	{
-		final Cursor<A> argCursor = arg.cursor();
-		final Cursor<I> inCursor = in.cursor();
+		final Cursor<O> argCursor = arg.cursor();
+		final Cursor<I2> inCursor = in.cursor();
 		while (argCursor.hasNext()) {
 			op.mutate1(argCursor.next(), inCursor.next());
 		}
 	}
 
-	public static <A, I> void inplace(final IterableInterval<A> arg,
-		final RandomAccessibleInterval<I> in, final BinaryInplace1Op<A, I> op)
+	public static <I1, I2, O extends I1> void inplace(
+		final IterableInterval<O> arg, final RandomAccessibleInterval<I2> in,
+		final BinaryInplace1Op<I1, I2, O> op)
 	{
-		final Cursor<A> argCursor = arg.localizingCursor();
-		final RandomAccess<I> inAccess = in.randomAccess();
+		final Cursor<O> argCursor = arg.localizingCursor();
+		final RandomAccess<I2> inAccess = in.randomAccess();
 		while (argCursor.hasNext()) {
 			argCursor.fwd();
 			inAccess.setPosition(argCursor);
@@ -521,7 +523,7 @@ public class Maps {
 	}
 
 	public static <A, I> void inplace(final RandomAccessibleInterval<A> arg,
-		final IterableInterval<I> in, final BinaryInplace1Op<A, I> op)
+		final IterableInterval<I> in, final BinaryInplace1Op<A, I, A> op)
 	{
 		final RandomAccess<A> argAccess = arg.randomAccess();
 		final Cursor<I> inCursor = in.localizingCursor();
@@ -533,7 +535,7 @@ public class Maps {
 	}
 
 	public static <A, I> void inplace(final IterableInterval<A> arg,
-		final IterableInterval<I> in, final BinaryInplace1Op<A, I> op,
+		final IterableInterval<I> in, final BinaryInplace1Op<A, I, A> op,
 		final int startIndex, final int stepSize, final int numSteps)
 	{
 		final Cursor<A> argCursor = arg.cursor();
@@ -550,7 +552,7 @@ public class Maps {
 	}
 
 	public static <A, I> void inplace(final IterableInterval<A> arg,
-		final RandomAccessibleInterval<I> in, final BinaryInplace1Op<A, I> op,
+		final RandomAccessibleInterval<I> in, final BinaryInplace1Op<A, I, A> op,
 		final int startIndex, final int stepSize, final int numSteps)
 	{
 		final Cursor<A> argCursor = arg.localizingCursor();
@@ -566,7 +568,7 @@ public class Maps {
 	}
 
 	public static <A, I> void inplace(final RandomAccessibleInterval<A> arg,
-		final IterableInterval<I> in, final BinaryInplace1Op<A, I> op,
+		final IterableInterval<I> in, final BinaryInplace1Op<A, I, A> op,
 		final int startIndex, final int stepSize, final int numSteps)
 	{
 		final RandomAccess<A> argAccess = arg.randomAccess();
@@ -582,7 +584,7 @@ public class Maps {
 	}
 
 	public static <A> void inplace(final IterableInterval<A> arg,
-		final IterableInterval<A> in, final BinaryInplaceOp<A> op)
+		final IterableInterval<A> in, final BinaryInplaceOp<A, A> op)
 	{
 		final Cursor<A> argCursor = arg.cursor();
 		final Cursor<A> inCursor = in.cursor();
@@ -592,7 +594,7 @@ public class Maps {
 	}
 
 	public static <A> void inplace(final IterableInterval<A> arg,
-		final IterableInterval<A> in, final BinaryInplaceOp<A> op,
+		final IterableInterval<A> in, final BinaryInplaceOp<A, A> op,
 		final int startIndex, final int stepSize, final int numSteps)
 	{
 		final Cursor<A> argCursor = arg.cursor();

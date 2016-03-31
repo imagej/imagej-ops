@@ -39,11 +39,13 @@ import net.imagej.ops.special.inplace.UnaryInplaceOp;
  * 
  * @author Curtis Rueden
  */
-public abstract class InplaceViaInplace<A> extends AbstractUnaryInplaceOp<A> {
+public abstract class InplaceViaInplace<I, O extends I> extends
+	AbstractUnaryInplaceOp<O>
+{
 
-	private UnaryInplaceOp<A> worker;
+	private UnaryInplaceOp<I, O> worker;
 
-	public abstract UnaryInplaceOp<A> createWorker(A t);
+	public abstract UnaryInplaceOp<I, O> createWorker(I t);
 
 	@Override
 	public void initialize() {
@@ -51,7 +53,7 @@ public abstract class InplaceViaInplace<A> extends AbstractUnaryInplaceOp<A> {
 	}
 
 	@Override
-	public void mutate(final A arg) {
+	public void mutate(final O arg) {
 		worker.mutate(arg);
 	}
 

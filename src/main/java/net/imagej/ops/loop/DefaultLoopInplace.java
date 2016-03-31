@@ -45,11 +45,11 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Loop.class)
 public class DefaultLoopInplace<A> extends AbstractUnaryInplaceOp<A> implements
-	LoopInplace<A>
+	LoopInplace<A, A>
 {
 
 	@Parameter
-	private UnaryInplaceOp<A> op;
+	private UnaryInplaceOp<A, A> op;
 
 	@Parameter
 	private int n;
@@ -57,12 +57,12 @@ public class DefaultLoopInplace<A> extends AbstractUnaryInplaceOp<A> implements
 	// -- LoopOp methods --
 
 	@Override
-	public UnaryInplaceOp<A> getOp() {
+	public UnaryInplaceOp<A, A> getOp() {
 		return op;
 	}
 
 	@Override
-	public void setOp(final UnaryInplaceOp<A> op) {
+	public void setOp(final UnaryInplaceOp<A, A> op) {
 		this.op = op;
 	}
 

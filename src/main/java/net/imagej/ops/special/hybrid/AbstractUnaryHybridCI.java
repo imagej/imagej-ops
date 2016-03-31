@@ -36,8 +36,8 @@ package net.imagej.ops.special.hybrid;
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public abstract class AbstractUnaryHybridCI<I> extends
-	AbstractUnaryHybridC<I, I> implements UnaryHybridCI<I>
+public abstract class AbstractUnaryHybridCI<I, O extends I> extends
+	AbstractUnaryHybridC<I, O> implements UnaryHybridCI<I, O>
 {
 	// NB: No implementation needed.
 }

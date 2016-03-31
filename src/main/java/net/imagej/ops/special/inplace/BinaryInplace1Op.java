@@ -33,19 +33,26 @@ package net.imagej.ops.special.inplace;
 import net.imagej.ops.special.BinaryOp;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.hybrid.BinaryHybridCFI1;
 
 /**
  * A binary <em>inplace</em> operation which computes a result from two given
  * arguments, storing it back into the <em>first</em> input (i.e., mutating it).
+ * <p>
+ * Note that the {@code <I1>} and {@code <O>} type parameters are kept distinct
+ * for special hybrid ops, which may <em>allow</em> inplace mutation without
+ * <em>requiring</em> it; see e.g. {@link BinaryHybridCFI1}.
+ * </p>
  * 
  * @author Curtis Rueden
- * @param <A> type of first input + output
- * @param <I> type of second input
+ * @param <I1> type of first input
+ * @param <I2> type of second input
+ * @param <O> type of output
  * @see BinaryComputerOp
  * @see BinaryFunctionOp
  */
-public interface BinaryInplace1Op<A, I> extends BinaryOp<A, I, A>,
-	UnaryInplaceOp<A>
+public interface BinaryInplace1Op<I1, I2, O extends I1> extends
+	BinaryOp<I1, I2, O>, UnaryInplaceOp<I1, O>
 {
 
 	/**
@@ -56,12 +63,12 @@ public interface BinaryInplace1Op<A, I> extends BinaryOp<A, I, A>,
 	 * @param in Second argument of the {@link BinaryInplace1Op}, which will
 	 *          <em>not</em> be mutated.
 	 */
-	void mutate1(A arg, I in);
+	void mutate1(O arg, I2 in);
 
 	// -- BinaryOp methods --
 
 	@Override
-	default A run(final A input1, final I input2, final A output) {
+	default O run(final I1 input1, final I2 input2, final O output) {
 		// check inplace preconditions
 		if (input1 == null) throw new NullPointerException("input1 is null");
 		if (input2 == null) throw new NullPointerException("input2 is null");
@@ -73,15 +80,29 @@ public interface BinaryInplace1Op<A, I> extends BinaryOp<A, I, A>,
 		}
 
 		// compute the result
-		mutate1(input1, input2);
+		mutate1(output, input2);
 		return output;
+	}
+
+	// -- BinaryInput methods --
+
+	@Override
+	default I1 in1() {
+		return out();
 	}
 
 	// -- UnaryInplaceOp methods --
 
 	@Override
-	default void mutate(final A arg) {
+	default void mutate(final O arg) {
 		mutate1(arg, in2());
+	}
+
+	// -- UnaryInput methods --
+
+	@Override
+	default I1 in() {
+		return BinaryOp.super.in();
 	}
 
 	// -- Runnable methods --
@@ -94,7 +115,7 @@ public interface BinaryInplace1Op<A, I> extends BinaryOp<A, I, A>,
 	// -- Threadable methods --
 
 	@Override
-	default BinaryInplace1Op<A, I> getIndependentInstance() {
+	default BinaryInplace1Op<I1, I2, O> getIndependentInstance() {
 		// NB: We assume the op instance is thread-safe by default.
 		// Individual implementations can override this assumption if they
 		// have state (such as buffers) that cannot be shared across threads.

@@ -39,24 +39,25 @@ import org.scijava.plugin.Parameter;
  * Abstract base class for {@link MapBinaryInplace} implementations.
  * 
  * @author Leon Yang
- * @param <EA> element type of first, second inputs, and the outputs
+ * @param <EI> element type of first, second inputs
+ * @param <EO> element type of output
  * @param <PA> producer of first, second inputs, and the outputs
  */
-public abstract class AbstractMapBinaryInplace<EA, PA> extends
+public abstract class AbstractMapBinaryInplace<EI, EO extends EI, PA> extends
 	AbstractBinaryInplaceOp<PA> implements
-	MapBinaryInplace<EA, BinaryInplaceOp<EA>>
+	MapBinaryInplace<EI, EO, BinaryInplaceOp<EI, EO>>
 {
 
 	@Parameter
-	private BinaryInplaceOp<EA> op;
+	private BinaryInplaceOp<EI, EO> op;
 
 	@Override
-	public BinaryInplaceOp<EA> getOp() {
+	public BinaryInplaceOp<EI, EO> getOp() {
 		return op;
 	}
 
 	@Override
-	public void setOp(final BinaryInplaceOp<EA> op) {
+	public void setOp(final BinaryInplaceOp<EI, EO> op) {
 		this.op = op;
 	}
 }

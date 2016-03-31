@@ -43,35 +43,35 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Ops.Join.class)
-public class DefaultJoin2Inplaces<A> extends AbstractUnaryInplaceOp<A> implements
-	Join2Inplaces<A>
+public class DefaultJoin2Inplaces<A> extends
+	AbstractUnaryInplaceOp<A> implements Join2Inplaces<A, A, A>
 {
 
 	@Parameter
-	private UnaryInplaceOp<A> first;
+	private UnaryInplaceOp<A, A> first;
 
 	@Parameter
-	private UnaryInplaceOp<A> second;
+	private UnaryInplaceOp<A, A> second;
 
 	// -- Join2Ops methods --
 
 	@Override
-	public UnaryInplaceOp<A> getFirst() {
+	public UnaryInplaceOp<A, A> getFirst() {
 		return first;
 	}
 
 	@Override
-	public void setFirst(final UnaryInplaceOp<A> first) {
+	public void setFirst(final UnaryInplaceOp<A, A> first) {
 		this.first = first;
 	}
 
 	@Override
-	public UnaryInplaceOp<A> getSecond() {
+	public UnaryInplaceOp<A, A> getSecond() {
 		return second;
 	}
 
 	@Override
-	public void setSecond(final UnaryInplaceOp<A> second) {
+	public void setSecond(final UnaryInplaceOp<A, A> second) {
 		this.second = second;
 	}
 
@@ -82,8 +82,8 @@ public class DefaultJoin2Inplaces<A> extends AbstractUnaryInplaceOp<A> implement
 		final DefaultJoin2Inplaces<A> joiner =
 			new DefaultJoin2Inplaces<>();
 
-		joiner.setFirst(getFirst());
-		joiner.setSecond(getSecond());
+		joiner.setFirst(getFirst().getIndependentInstance());
+		joiner.setSecond(getSecond().getIndependentInstance());
 
 		return joiner;
 	}

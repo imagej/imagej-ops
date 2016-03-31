@@ -64,7 +64,7 @@ public class MapBinaryInplace1s {
 	 */
 	@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + $priority)
 	public static class ${argType.alias}And${inType.alias}<EA, EI> extends
-		AbstractMapBinaryInplace1<EA, EI, ${argType.name}<EA>, ${inType.name}<EI>>
+		AbstractMapBinaryInplace1<EA, EI, EA, ${argType.name}<EA>, ${inType.name}<EI>>
 		implements Contingent
 	{
 		@Override
@@ -89,7 +89,7 @@ public class MapBinaryInplace1s {
 	 */
 	@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + $paraPrio)
 	public static class ${argType.alias}And${inType.alias}Parallel<EA, EI> extends
-		AbstractMapBinaryInplace1<EA, EI, ${argType.name}<EA>, ${inType.name}<EI>>
+		AbstractMapBinaryInplace1<EA, EI, EA, ${argType.name}<EA>, ${inType.name}<EI>>
 		implements Contingent, Parallel
 	{
 		@Override

@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 10)
 public class MapIIAndIIInplaceParallel<EA> extends
-	AbstractMapBinaryInplace<EA, IterableInterval<EA>> implements Contingent,
+	AbstractMapBinaryInplace<EA, EA, IterableInterval<EA>> implements Contingent,
 	Parallel
 {
 
@@ -68,7 +68,7 @@ public class MapIIAndIIInplaceParallel<EA> extends
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				Maps.inplace(arg, in, (BinaryInplace1Op<EA, EA>) getOp(),
+				Maps.inplace(arg, in, (BinaryInplace1Op<EA, EA, EA>) getOp(),
 					startIndex, stepSize, numSteps);
 			}
 		}, arg.size());

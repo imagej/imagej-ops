@@ -31,12 +31,12 @@
 package net.imagej.ops.special.inplace;
 
 /**
- * Abstract superclass for {@link BinaryInplaceOp} implementations.
+ * Abstract superclass for {@link BinaryInplaceOnlyOp} implementations.
  * 
  * @author Curtis Rueden
  */
 public abstract class AbstractBinaryInplaceOp<A> extends
-	AbstractBinaryInplace1Op<A, A> implements BinaryInplaceOp<A>
+	AbstractBinaryInplace1Op<A, A> implements BinaryInplaceOnlyOp<A>
 {
 	// NB: No implementation needed.
 }

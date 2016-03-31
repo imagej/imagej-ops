@@ -30,10 +30,15 @@
 
 package net.imagej.ops.special.inplace;
 
+import java.util.Arrays;
+
 import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
+import net.imagej.ops.OpRef;
 import net.imagej.ops.OpUtils;
-import net.imagej.ops.special.SpecialOp;
+import net.imagej.ops.special.hybrid.BinaryHybridCI;
+import net.imagej.ops.special.hybrid.BinaryHybridCI1;
+import net.imagej.ops.special.hybrid.UnaryHybridCI;
 
 /**
  * Utility class for looking up inplace ops in a type-safe way.
@@ -63,13 +68,18 @@ public final class Inplaces {
 	 *          value.
 	 * @return An {@link UnaryInplaceOp} with populated inputs, ready to use.
 	 */
-	public static <A, OP extends Op> UnaryInplaceOp<A> unary(
-		final OpEnvironment ops, final Class<OP> opType, final Class<A> argType,
+	public static <O, OP extends Op> UnaryInplaceOp<? super O, O> unary(
+		final OpEnvironment ops, final Class<OP> opType, final Class<O> argType,
 		final Object... otherArgs)
 	{
+		final OpRef<?>[] refs = new OpRef<?>[2];
+		refs[0] = OpRef.createTypes(opType, UnaryInplaceOnlyOp.class, null, OpUtils
+			.args(otherArgs, argType));
+		refs[1] = OpRef.createTypes(opType, UnaryHybridCI.class, null, OpUtils.args(
+			otherArgs, null, argType));
 		@SuppressWarnings("unchecked")
-		final UnaryInplaceOp<A> op = SpecialOp.op(ops, opType, UnaryInplaceOp.class,
-			null, OpUtils.args(otherArgs, argType));
+		final UnaryInplaceOp<? super O, O> op = (UnaryInplaceOp<? super O, O>) ops
+			.op(Arrays.asList(refs));
 		return op;
 	}
 
@@ -88,13 +98,18 @@ public final class Inplaces {
 	 *          value.
 	 * @return An {@link UnaryInplaceOp} with populated inputs, ready to use.
 	 */
-	public static <A, OP extends Op> UnaryInplaceOp<A> unary(
-		final OpEnvironment ops, final Class<OP> opType, final A arg,
+	public static <O, OP extends Op> UnaryInplaceOp<? super O, O> unary(
+		final OpEnvironment ops, final Class<OP> opType, final O arg,
 		final Object... otherArgs)
 	{
+		final OpRef<?>[] refs = new OpRef<?>[2];
+		refs[0] = OpRef.createTypes(opType, UnaryInplaceOnlyOp.class, null, OpUtils
+			.args(otherArgs, arg));
+		refs[1] = OpRef.createTypes(opType, UnaryHybridCI.class, null, OpUtils.args(
+			otherArgs, null, arg));
 		@SuppressWarnings("unchecked")
-		final UnaryInplaceOp<A> op = SpecialOp.op(ops, opType, UnaryInplaceOp.class,
-			null, OpUtils.args(otherArgs, arg));
+		final UnaryInplaceOp<? super O, O> op = (UnaryInplaceOp<? super O, O>) ops
+			.op(Arrays.asList(refs));
 		return op;
 	}
 
@@ -116,13 +131,20 @@ public final class Inplaces {
 	 *          values.
 	 * @return An {@link BinaryInplace1Op} with populated inputs, ready to use.
 	 */
-	public static <A, I, OP extends Op> BinaryInplace1Op<A, I> binary1(
-		final OpEnvironment ops, final Class<OP> opType, final Class<A> argType,
-		final Class<I> inType, final Object... otherArgs)
+
+	public static <I2, O, OP extends Op> BinaryInplace1Op<? super O, I2, O>
+		binary1(final OpEnvironment ops, final Class<OP> opType,
+			final Class<O> argType, final Class<I2> inType,
+			final Object... otherArgs)
 	{
+		final OpRef<?>[] refs = new OpRef<?>[2];
+		refs[0] = OpRef.createTypes(opType, BinaryInplace1OnlyOp.class, null,
+			OpUtils.args(otherArgs, argType, inType));
+		refs[1] = OpRef.createTypes(opType, BinaryHybridCI1.class, null, OpUtils
+			.args(otherArgs, null, argType, inType));
 		@SuppressWarnings("unchecked")
-		final BinaryInplace1Op<A, I> op = SpecialOp.op(ops, opType,
-			BinaryInplace1Op.class, null, OpUtils.args(otherArgs, argType, inType));
+		final BinaryInplace1Op<? super O, I2, O> op =
+			(BinaryInplace1Op<? super O, I2, O>) ops.op(Arrays.asList(refs));
 		return op;
 	}
 
@@ -142,13 +164,18 @@ public final class Inplaces {
 	 *          values.
 	 * @return An {@link BinaryInplace1Op} with populated inputs, ready to use.
 	 */
-	public static <A, I, OP extends Op> BinaryInplace1Op<A, I> binary1(
-		final OpEnvironment ops, final Class<OP> opType, final A arg, final I in,
-		final Object... otherArgs)
+	public static <I2, O, OP extends Op> BinaryInplace1Op<? super O, I2, O>
+		binary1(final OpEnvironment ops, final Class<OP> opType, final O arg,
+			final I2 in, final Object... otherArgs)
 	{
+		final OpRef<?>[] refs = new OpRef<?>[2];
+		refs[0] = OpRef.createTypes(opType, BinaryInplace1OnlyOp.class, null,
+			OpUtils.args(otherArgs, arg, in));
+		refs[1] = OpRef.createTypes(opType, BinaryHybridCI1.class, null, OpUtils
+			.args(otherArgs, null, arg, in));
 		@SuppressWarnings("unchecked")
-		final BinaryInplace1Op<A, I> op = SpecialOp.op(ops, opType,
-			BinaryInplace1Op.class, null, OpUtils.args(otherArgs, arg, in));
+		final BinaryInplace1Op<? super O, I2, O> op =
+			(BinaryInplace1Op<? super O, I2, O>) ops.op(Arrays.asList(refs));
 		return op;
 	}
 
@@ -168,13 +195,18 @@ public final class Inplaces {
 	 *          values.
 	 * @return An {@link BinaryInplaceOp} with populated inputs, ready to use.
 	 */
-	public static <A, OP extends Op> BinaryInplaceOp<A> binary(
-		final OpEnvironment ops, final Class<OP> opType, final Class<A> argType,
+	public static <O, OP extends Op> BinaryInplaceOp<? super O, O> binary(
+		final OpEnvironment ops, final Class<OP> opType, final Class<O> argType,
 		final Object... otherArgs)
 	{
+		final OpRef<?>[] refs = new OpRef<?>[2];
+		refs[0] = OpRef.createTypes(opType, BinaryInplaceOnlyOp.class, null, OpUtils
+			.args(otherArgs, argType, argType));
+		refs[1] = OpRef.createTypes(opType, BinaryHybridCI.class, null, OpUtils
+			.args(otherArgs, null, argType, argType));
 		@SuppressWarnings("unchecked")
-		final BinaryInplaceOp<A> op = SpecialOp.op(ops, opType,
-			BinaryInplaceOp.class, null, OpUtils.args(otherArgs, argType, argType));
+		final BinaryInplaceOp<? super O, O> op = (BinaryInplaceOp<? super O, O>) ops
+			.op(Arrays.asList(refs));
 		return op;
 	}
 
@@ -194,13 +226,18 @@ public final class Inplaces {
 	 *          values.
 	 * @return An {@link BinaryInplaceOp} with populated inputs, ready to use.
 	 */
-	public static <A, OP extends Op> BinaryInplaceOp<A> binary(
-		final OpEnvironment ops, final Class<OP> opType, final A arg1, final A arg2,
+	public static <O, OP extends Op> BinaryInplaceOp<? super O, O> binary(
+		final OpEnvironment ops, final Class<OP> opType, final O arg1, final O arg2,
 		final Object... otherArgs)
 	{
+		final OpRef<?>[] refs = new OpRef<?>[2];
+		refs[0] = OpRef.createTypes(opType, BinaryInplaceOnlyOp.class, null, OpUtils
+			.args(otherArgs, arg1, arg2));
+		refs[1] = OpRef.createTypes(opType, BinaryHybridCI.class, null, OpUtils
+			.args(otherArgs, null, arg1, arg2));
 		@SuppressWarnings("unchecked")
-		final BinaryInplaceOp<A> op = SpecialOp.op(ops, opType,
-			BinaryInplaceOp.class, null, OpUtils.args(otherArgs, arg1, arg2));
+		final BinaryInplaceOp<? super O, O> op = (BinaryInplaceOp<? super O, O>) ops
+			.op(Arrays.asList(refs));
 		return op;
 	}
 

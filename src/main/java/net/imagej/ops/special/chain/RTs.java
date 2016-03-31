@@ -82,7 +82,7 @@ public final class RTs {
 		return (UnaryHybridCF) Hybrids.unaryCF(ops, opType, RealType.class, in, otherArgs);
 	}
 
-	public static <A extends RealType<A>> UnaryInplaceOp<A> inplace(
+	public static <A extends RealType<A>> UnaryInplaceOp<? super A, A> inplace(
 		final OpEnvironment ops, final Class<? extends Op> opType, final A arg,
 		final Object... otherArgs)
 	{

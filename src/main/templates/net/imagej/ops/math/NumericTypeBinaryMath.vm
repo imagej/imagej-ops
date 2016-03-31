@@ -66,7 +66,7 @@ public final class NumericTypeBinaryMath {
 	/** Op that $op.verbs two NumericType values. */
 	@Plugin(type = ${iface}.class, priority = Priority.HIGH_PRIORITY)
 	public static class $op.name<T extends NumericType<T>> extends
-		AbstractBinaryHybridCFI<T> implements $iface, Contingent
+		AbstractBinaryHybridCFI<T, T> implements $iface, Contingent
 	{
 
 		@Override

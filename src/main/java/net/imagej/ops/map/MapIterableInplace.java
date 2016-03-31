@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
 public class MapIterableInplace<A> extends
-	AbstractMapIterableInplace<A, Iterable<A>>
+	AbstractMapIterableInplace<A, A, Iterable<A>>
 {
 
 	@Override

@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
 public class MapIIAndIIInplace<EA> extends
-	AbstractMapBinaryInplace<EA, IterableInterval<EA>> implements Contingent
+	AbstractMapBinaryInplace<EA, EA, IterableInterval<EA>> implements Contingent
 {
 
 	@Override
@@ -58,7 +58,7 @@ public class MapIIAndIIInplace<EA> extends
 	public void mutate1(final IterableInterval<EA> arg,
 		final IterableInterval<EA> in)
 	{
-		Maps.inplace(arg, in, (BinaryInplace1Op<EA, EA>) getOp());
+		Maps.inplace(arg, in, (BinaryInplace1Op<EA, EA, EA>) getOp());
 	}
 
 	@Override
