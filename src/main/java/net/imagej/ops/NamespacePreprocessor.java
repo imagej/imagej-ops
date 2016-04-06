@@ -51,8 +51,13 @@ public class NamespacePreprocessor extends AbstractPreprocessorPlugin {
 	@Parameter(required = false)
 	private NamespaceService nsService;
 
+	@Parameter(required = false)
+	private OpService ops;
+
 	@Override
 	public void process(final Module module) {
+		if (nsService == null || ops == null) return;
+
 		for (final ModuleItem<?> input : module.getInfo().inputs()) {
 			assignNamespace(module, input);
 		}
@@ -68,7 +73,7 @@ public class NamespacePreprocessor extends AbstractPreprocessorPlugin {
 		T defaultValue = null;
 		
 		if (Namespace.class.isAssignableFrom(item.getType())) {
-			defaultValue = (T) nsService.create((Class<? extends Namespace>)item.getType());
+			defaultValue = (T) nsService.create((Class<? extends Namespace>)item.getType(), ops);
 		}
 		if (defaultValue == null) return;
 
