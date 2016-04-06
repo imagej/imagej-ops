@@ -56,7 +56,7 @@ public interface OpMatchingService extends ImageJService {
 	 * @throws IllegalArgumentException if there is no match, or if there is more
 	 *           than one match at the same priority.
 	 */
-	public <OP extends Op> OpCandidate<OP> findMatch(OpEnvironment ops, OpRef<OP> ref);
+	<OP extends Op> OpCandidate<OP> findMatch(OpEnvironment ops, OpRef<OP> ref);
 
 	/**
 	 * Finds and initializes the best module matching any of the given op name
@@ -70,33 +70,7 @@ public interface OpMatchingService extends ImageJService {
 	 * @throws IllegalArgumentException if there is no match, or if there is more
 	 *           than one match at the same priority.
 	 */
-	public OpCandidate<?> findMatch(OpEnvironment ops, List<OpRef<?>> refs);
-
-	/**
-	 * Finds and initializes the best module matching the given op name and/or
-	 * type + arguments.
-	 * 
-	 * @param ops The pool from which candidate ops should be drawn.
-	 * @param ref The op reference describing the op to match.
-	 * @return A {@link Module} wrapping the best {@link Op}, with populated
-	 *         inputs, ready to run.
-	 * @throws IllegalArgumentException if there is no match, or if there is more
-	 *           than one match at the same priority.
-	 */
-	public <OP extends Op> Module findModule(OpEnvironment ops, OpRef<OP> ref);
-
-	/**
-	 * Finds and initializes the best module matching the given op name and/or
-	 * type + arguments.
-	 * 
-	 * @param ops The pool from which candidate ops should be drawn.
-	 * @param refs The op references describing the op to match.
-	 * @return A {@link Module} wrapping the best {@link Op}, with populated
-	 *         inputs, ready to run.
-	 * @throws IllegalArgumentException if there is no match, or if there is more
-	 *           than one match at the same priority.
-	 */
-	public Module findModule(OpEnvironment ops, List<OpRef<?>> refs);
+	OpCandidate<?> findMatch(OpEnvironment ops, List<OpRef<?>> refs);
 
 	/**
 	 * Builds a list of candidate ops which might match the given op reference.
@@ -150,6 +124,10 @@ public interface OpMatchingService extends ImageJService {
 	Module assignInputs(Module module, Object... args);
 
 	// -- Deprecated methods --
+
+	/** @deprecated Use {@link #findMatch} instead. */
+	@Deprecated
+	<OP extends Op> Module findModule(OpEnvironment ops, OpRef<OP> ref);
 
 	/** @deprecated Use {@link #filterMatches} instead. */
 	@Deprecated

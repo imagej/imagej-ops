@@ -99,20 +99,6 @@ public class DefaultOpMatchingService extends AbstractService implements
 		return singleMatch(candidates, matches);
 	}
 
-	@Override
-	public <OP extends Op> Module findModule(final OpEnvironment ops,
-		final OpRef<OP> ref)
-	{
-		return findMatch(ops, ref).getModule();
-	}
-
-	@Override
-	public Module findModule(final OpEnvironment ops,
-		final List<OpRef<?>> refs)
-	{
-		return findMatch(ops, refs).getModule();
-	}
-
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public <OP extends Op> List<OpCandidate<OP>> findCandidates(
@@ -475,6 +461,14 @@ public class DefaultOpMatchingService extends AbstractService implements
 	}
 
 	// -- Deprecated methods --
+
+	@Deprecated
+	@Override
+	public <OP extends Op> Module findModule(final OpEnvironment ops,
+		final OpRef<OP> ref)
+	{
+		return findMatch(ops, ref).getModule();
+	}
 
 	@Deprecated
 	@Override
