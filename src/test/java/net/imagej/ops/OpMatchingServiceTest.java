@@ -54,13 +54,13 @@ import org.scijava.plugin.Plugin;
  */
 public class OpMatchingServiceTest extends AbstractOpTest {
 
-	/** Tests {@link OpMatchingService#findModule}. */
+	/** Tests {@link OpMatchingService#findMatch}. */
 	@Test
-	public void testFindModule() {
+	public void testFindMatch() {
 		final DoubleType value = new DoubleType(123.456);
 
 		final Module moduleByName =
-			matcher.findModule(ops, OpRef.create("test.nan", value));
+			matcher.findMatch(ops, OpRef.create("test.nan", value)).getModule();
 		assertSame(value, moduleByName.getInput("arg"));
 
 		assertFalse(Double.isNaN(value.get()));
@@ -69,7 +69,7 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 
 		value.set(987.654);
 		final Module moduleByType =
-			matcher.findModule(ops, OpRef.create(NaNOp.class, value));
+			matcher.findMatch(ops, OpRef.create(NaNOp.class, value)).getModule();
 		assertSame(value, moduleByType.getInput("arg"));
 
 		assertFalse(Double.isNaN(value.get()));
@@ -128,7 +128,7 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 	// -- Helper methods --
 
 	private Module optionalParamsModule(Object... args) {
-		return matcher.findModule(ops, OpRef.create(OptionalParams.class, args));
+		return matcher.findMatch(ops, OpRef.create(OptionalParams.class, args)).getModule();
 	}
 
 	private void assertValues(final Module m, final int a, final int b,
