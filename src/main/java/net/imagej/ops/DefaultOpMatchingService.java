@@ -33,6 +33,7 @@ package net.imagej.ops;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -76,58 +77,56 @@ public class DefaultOpMatchingService extends AbstractService implements
 
 	// -- OpMatchingService methods --
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public <OP extends Op> Module findModule(final OpEnvironment ops,
+	public <OP extends Op> OpCandidate<OP> findMatch(final OpEnvironment ops,
 		final OpRef<OP> ref)
 	{
-		// find candidates with matching name & type
-		final List<OpCandidate<OP>> candidates = findCandidates(ops, ref);
-		if (candidates.isEmpty()) {
-			throw new IllegalArgumentException("No candidate '" + ref.getLabel() +
-				"' ops");
-		}
-
-		// narrow down candidates to the exact matches
-		final List<Module> matches = findMatches(candidates);
-
-		if (matches.size() == 1) {
-			// a single match: initialize and return it
-			if (log.isDebug()) {
-				log.debug("Selected '" + ref.getLabel() + "' op: " +
-					matches.get(0).getDelegateObject().getClass().getName());
-			}
-			final Module m = matches.get(0);
-
-			// initialize the op, if appropriate
-			if (m.getDelegateObject() instanceof Initializable) {
-				((Initializable) m.getDelegateObject()).initialize();
-			}
-
-			return m;
-		}
-
-		final String analysis = OpUtils.matchInfo(candidates, matches);
-		throw new IllegalArgumentException(analysis);
+		return (OpCandidate<OP>) findMatch(ops, Collections.singletonList(ref));
 	}
 
+	@Override
+	public OpCandidate<?> findMatch(final OpEnvironment ops,
+		final List<OpRef<?>> refs)
+	{
+		// find candidates with matching name & type
+		final List<OpCandidate<?>> candidates = findCandidates(ops, refs);
+		assertCandidates(candidates, refs.get(0));
+
+		// narrow down candidates to the exact matches
+		final List<OpCandidate<?>> matches = filterMatches(candidates);
+
+		return singleMatch(candidates, matches);
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public <OP extends Op> List<OpCandidate<OP>> findCandidates(
 		final OpEnvironment ops, final OpRef<OP> ref)
 	{
-		final ArrayList<OpCandidate<OP>> candidates = new ArrayList<>();
+		return (List) findCandidates(ops, Collections.singletonList(ref));
+	}
+
+	@Override
+	public List<OpCandidate<?>> findCandidates(
+		final OpEnvironment ops, final List<OpRef<?>> refs)
+	{
+		final ArrayList<OpCandidate<?>> candidates = new ArrayList<>();
 		for (final OpInfo info : ops.infos()) {
-			if (isCandidate(info, ref)) {
-				candidates.add(new OpCandidate<>(ops, ref, info));
+			for (final OpRef<?> ref : refs) {
+				if (isCandidate(info, ref)) {
+					candidates.add(new OpCandidate<>(ops, ref, info));
+				}
 			}
 		}
 		return candidates;
 	}
 
 	@Override
-	public <OP extends Op> List<Module> findMatches(
-		final List<OpCandidate<OP>> candidates)
+	public List<OpCandidate<?>> filterMatches(
+		final List<OpCandidate<?>> candidates)
 	{
-		final ArrayList<Module> matches = new ArrayList<>();
+		final ArrayList<OpCandidate<?>> matches = new ArrayList<>();
 
 		double priority = Double.NaN;
 		for (final OpCandidate<?> candidate : candidates) {
@@ -141,7 +140,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 
 			final Module module = match(candidate);
 
-			if (module != null) matches.add(module);
+			if (module != null) matches.add(candidate);
 		}
 
 		return matches;
@@ -234,6 +233,56 @@ public class DefaultOpMatchingService extends AbstractService implements
 		}
 
 		return ref.typesMatch(opClass);
+	}
+
+	/** Helper method of {@link #findModule}. */
+	private <OP extends Op> void assertCandidates(
+		final List<OpCandidate<?>> candidates, final OpRef<OP> ref)
+	{
+		if (candidates.isEmpty()) {
+			throw new IllegalArgumentException("No candidate '" + ref.getLabel() +
+				"' ops");
+		}
+	}
+
+	/**
+	 * Extracts and returns the single match from the given list of matches,
+	 * executing the linked {@link Module}'s initializer if applicable. If there
+	 * is not exactly one match, an {@link IllegalArgumentException} is thrown
+	 * with an analysis of the problem(s).
+	 * <p>
+	 * Helper method of {@link #findModule}.
+	 * </p>
+	 * 
+	 * @param candidates The original unfiltered list of candidates, used during
+	 *          the analysis if there was a problem finding exactly one match.
+	 * @param matches The list of matching candidates.
+	 * @return The single matching candidate, with its module initialized.
+	 * @throws IllegalArgumentException If there is not exactly one matching
+	 *           candidate.
+	 */
+	private OpCandidate<?> singleMatch(
+		final List<OpCandidate<?>> candidates,
+		final List<OpCandidate<?>> matches)
+	{
+		if (matches.size() == 1) {
+			// a single match: initialize and return it
+			final Module m = matches.get(0).getModule();
+			if (log.isDebug()) {
+				log.debug("Selected '" + matches.get(0).getRef().getLabel() + "' op: " +
+					m.getDelegateObject().getClass().getName());
+			}
+
+			// initialize the op, if appropriate
+			if (m.getDelegateObject() instanceof Initializable) {
+				((Initializable) m.getDelegateObject()).initialize();
+			}
+
+			return matches.get(0);
+		}
+
+		final String analysis = OpUtils.matchInfo(candidates, matches);
+		throw new IllegalArgumentException(analysis);
 	}
 
 	/**
@@ -411,5 +460,29 @@ public class DefaultOpMatchingService extends AbstractService implements
 	private boolean isMatchingClass(final Object arg, final Type type) {
 		return arg instanceof Class &&
 			convertService.supports((Class<?>) arg, type);
+	}
+
+	// -- Deprecated methods --
+
+	@Deprecated
+	@Override
+	public <OP extends Op> Module findModule(final OpEnvironment ops,
+		final OpRef<OP> ref)
+	{
+		return findMatch(ops, ref).getModule();
+	}
+
+	@Deprecated
+	@Override
+	public <OP extends Op> List<Module> findMatches(
+		final List<OpCandidate<OP>> candidates)
+	{
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		final List<OpCandidate<?>> matches = filterMatches((List) candidates);
+		final List<Module> modules = new ArrayList<>(matches.size());
+		for (OpCandidate<?> match : matches) {
+			modules.add(match.getModule());
+		}
+		return modules;
 	}
 }

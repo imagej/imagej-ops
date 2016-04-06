@@ -216,8 +216,26 @@ public interface OpEnvironment extends Contextual {
 	 * @return The matched op.
 	 */
 	default Op op(final OpRef<?> ref) {
-		final Module module = matcher().findModule(this, ref);
-		return OpUtils.unwrap(module, ref);
+		return op(Collections.singletonList(ref));
+	}
+
+	/**
+	 * Looks up an op whose constraints are specified by the given list of
+	 * {@link OpRef} descriptor.
+	 * <p>
+	 * NB: While it is typically the case that the returned {@link Op} instance is
+	 * of the requested type(s), it may differ in certain circumstances. For
+	 * example, the {@link CachedOpEnvironment} wraps the matching {@link Op}
+	 * instance in some cases so that the values it computes can be cached for
+	 * performance reasons.
+	 * </p>
+	 * 
+	 * @param refs The list of {@link OpRef}s describing the op to match.
+	 * @return The matched op.
+	 */
+	default Op op(final List<OpRef<?>> refs) {
+		final OpCandidate<?> match = matcher().findMatch(this, refs);
+		return OpUtils.unwrap(match.getModule(), match.getRef());
 	}
 
 	/**
@@ -230,7 +248,7 @@ public interface OpEnvironment extends Contextual {
 	 *         inputs, ready to run.
 	 */
 	default Module module(final String name, final Object... args) {
-		return matcher().findModule(this, OpRef.create(name, args));
+		return matcher().findMatch(this, OpRef.create(name, args)).getModule();
 	}
 
 	/**
@@ -248,7 +266,7 @@ public interface OpEnvironment extends Contextual {
 	default <OP extends Op> Module module(final Class<OP> type,
 		final Object... args)
 	{
-		return matcher().findModule(this, OpRef.create(type, args));
+		return matcher().findMatch(this, OpRef.create(type, args)).getModule();
 	}
 
 	/**

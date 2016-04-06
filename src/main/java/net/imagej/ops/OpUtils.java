@@ -191,31 +191,33 @@ public final class OpUtils {
 	 * </p>
 	 * 
 	 * @param candidates The list of candidates from which a match was desired.
-	 * @param matches The list of matching modules.
+	 * @param matches The list of matching candidates with attached {@link Module}
+	 *          instances.
 	 * @return A multi-line string describing the situation: 1) the type of match
 	 *         failure; 2) the list of matching ops (if any); 3) the request
 	 *         itself; and 4) the list of candidates including status (i.e.,
 	 *         whether it matched, and if not, why not).
+	 * @see OpMatchingService#filterMatches(List)
 	 */
-	public static <OP extends Op> String matchInfo(
-		final List<OpCandidate<OP>> candidates, final List<Module> matches)
+	public static String matchInfo(final List<OpCandidate<?>> candidates,
+		final List<OpCandidate<?>> matches)
 	{
 		final StringBuilder sb = new StringBuilder();
 
-		final OpRef<OP> ref = candidates.get(0).getRef();
+		final OpRef<?> ref = candidates.get(0).getRef();
 		if (matches.isEmpty()) {
 			// no matches
 			sb.append("No matching '" + ref.getLabel() + "' op\n");
 		}
 		else {
 			// multiple matches
-			final double priority = matches.get(0).getInfo().getPriority();
+			final double priority = matches.get(0).cInfo().getPriority();
 			sb.append("Multiple '" + ref.getLabel() + "' ops of priority " +
 				priority + ":\n");
 			int count = 0;
-			for (final Module module : matches) {
+			for (final OpCandidate<?> match : matches) {
 				sb.append(++count + ". ");
-				sb.append(opString(module.getInfo()) + "\n");
+				sb.append(opString(match.getModule().getInfo()) + "\n");
 			}
 		}
 
@@ -226,7 +228,7 @@ public final class OpUtils {
 		sb.append("\n");
 		sb.append("Candidates:\n");
 		int count = 0;
-		for (final OpCandidate<OP> candidate : candidates) {
+		for (final OpCandidate<?> candidate : candidates) {
 			final ModuleInfo info = candidate.opInfo().cInfo();
 			sb.append(++count + ". ");
 			sb.append("\t" + opString(info, candidate.getStatusItem()) + "\n");

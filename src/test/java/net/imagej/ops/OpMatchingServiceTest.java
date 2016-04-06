@@ -54,13 +54,13 @@ import org.scijava.plugin.Plugin;
  */
 public class OpMatchingServiceTest extends AbstractOpTest {
 
-	/** Tests {@link OpMatchingService#findModule}. */
+	/** Tests {@link OpMatchingService#findMatch}. */
 	@Test
-	public void testFindModule() {
+	public void testFindMatch() {
 		final DoubleType value = new DoubleType(123.456);
 
 		final Module moduleByName =
-			matcher.findModule(ops, OpRef.create("test.nan", value));
+			matcher.findMatch(ops, OpRef.create("test.nan", value)).getModule();
 		assertSame(value, moduleByName.getInput("arg"));
 
 		assertFalse(Double.isNaN(value.get()));
@@ -69,7 +69,7 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 
 		value.set(987.654);
 		final Module moduleByType =
-			matcher.findModule(ops, OpRef.create(NaNOp.class, value));
+			matcher.findMatch(ops, OpRef.create(NaNOp.class, value)).getModule();
 		assertSame(value, moduleByType.getInput("arg"));
 
 		assertFalse(Double.isNaN(value.get()));
@@ -128,7 +128,7 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 	// -- Helper methods --
 
 	private Module optionalParamsModule(Object... args) {
-		return matcher.findModule(ops, OpRef.create(OptionalParams.class, args));
+		return matcher.findMatch(ops, OpRef.create(OptionalParams.class, args)).getModule();
 	}
 
 	private void assertValues(final Module m, final int a, final int b,
@@ -150,10 +150,12 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 	private void assertMatches(final String name, Class<?>... opTypes) {
 		final List<OpCandidate<Op>> candidates =
 			matcher.findCandidates(ops, OpRef.create(name));
-		final List<Module> matches = matcher.findMatches(candidates);
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		final List<OpCandidate<?>> matches = matcher.filterMatches((List) candidates);
 		assertEquals(opTypes.length, matches.size());
 		for (int i=0; i<opTypes.length; i++) {
-			assertSame(opTypes[i], matches.get(i).getDelegateObject().getClass());
+			final Module m = matches.get(i).getModule();
+			assertSame(opTypes[i], m.getDelegateObject().getClass());
 		}
 	}
 
