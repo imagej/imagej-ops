@@ -85,33 +85,34 @@ public class DefaultOpMatchingService extends AbstractService implements
 	}
 
 	@Override
-	public <OP extends Op> Module findModule(final OpEnvironment ops,
-		final List<OpRef<OP>> refs)
+	public Module findModule(final OpEnvironment ops,
+		final List<OpRef<?>> refs)
 	{
 		// find candidates with matching name & type
-		final List<OpCandidate<OP>> candidates = findCandidates(ops, refs);
+		final List<OpCandidate<?>> candidates = findCandidates(ops, refs);
 		assertCandidates(candidates, refs.get(0));
 
 		// narrow down candidates to the exact matches
-		final List<OpCandidate<OP>> matches = filterMatches(candidates);
+		final List<OpCandidate<?>> matches = filterMatches(candidates);
 
 		return singleMatch(candidates, matches).getModule();
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public <OP extends Op> List<OpCandidate<OP>> findCandidates(
 		final OpEnvironment ops, final OpRef<OP> ref)
 	{
-		return findCandidates(ops, Collections.singletonList(ref));
+		return (List) findCandidates(ops, Collections.singletonList(ref));
 	}
 
 	@Override
-	public <OP extends Op> List<OpCandidate<OP>> findCandidates(
-		final OpEnvironment ops, final List<OpRef<OP>> refs)
+	public List<OpCandidate<?>> findCandidates(
+		final OpEnvironment ops, final List<OpRef<?>> refs)
 	{
-		final ArrayList<OpCandidate<OP>> candidates = new ArrayList<>();
+		final ArrayList<OpCandidate<?>> candidates = new ArrayList<>();
 		for (final OpInfo info : ops.infos()) {
-			for (final OpRef<OP> ref : refs) {
+			for (final OpRef<?> ref : refs) {
 				if (isCandidate(info, ref)) {
 					candidates.add(new OpCandidate<>(ops, ref, info));
 				}
@@ -121,13 +122,13 @@ public class DefaultOpMatchingService extends AbstractService implements
 	}
 
 	@Override
-	public <OP extends Op> List<OpCandidate<OP>> filterMatches(
-		final List<OpCandidate<OP>> candidates)
+	public List<OpCandidate<?>> filterMatches(
+		final List<OpCandidate<?>> candidates)
 	{
-		final ArrayList<OpCandidate<OP>> matches = new ArrayList<>();
+		final ArrayList<OpCandidate<?>> matches = new ArrayList<>();
 
 		double priority = Double.NaN;
-		for (final OpCandidate<OP> candidate : candidates) {
+		for (final OpCandidate<?> candidate : candidates) {
 			final ModuleInfo info = candidate.cInfo();
 			final double p = info.getPriority();
 			if (p != priority && !matches.isEmpty()) {
@@ -233,7 +234,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 
 	/** Helper method of {@link #findModule}. */
 	private <OP extends Op> void assertCandidates(
-		final List<OpCandidate<OP>> candidates, final OpRef<OP> ref)
+		final List<OpCandidate<?>> candidates, final OpRef<OP> ref)
 	{
 		if (candidates.isEmpty()) {
 			throw new IllegalArgumentException("No candidate '" + ref.getLabel() +
@@ -257,9 +258,9 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * @throws IllegalArgumentException If there is not exactly one matching
 	 *           candidate.
 	 */
-	private <OP extends Op> OpCandidate<OP> singleMatch(
-		final List<OpCandidate<OP>> candidates,
-		final List<OpCandidate<OP>> matches)
+	private OpCandidate<?> singleMatch(
+		final List<OpCandidate<?>> candidates,
+		final List<OpCandidate<?>> matches)
 	{
 		if (matches.size() == 1) {
 			// a single match: initialize and return it
@@ -465,9 +466,10 @@ public class DefaultOpMatchingService extends AbstractService implements
 	public <OP extends Op> List<Module> findMatches(
 		final List<OpCandidate<OP>> candidates)
 	{
-		final List<OpCandidate<OP>> matches = filterMatches(candidates);
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		final List<OpCandidate<?>> matches = filterMatches((List) candidates);
 		final List<Module> modules = new ArrayList<>(matches.size());
-		for (OpCandidate<OP> match : matches) {
+		for (OpCandidate<?> match : matches) {
 			modules.add(match.getModule());
 		}
 		return modules;

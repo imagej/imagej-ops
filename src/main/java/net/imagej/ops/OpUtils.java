@@ -199,13 +199,12 @@ public final class OpUtils {
 	 *         whether it matched, and if not, why not).
 	 * @see OpMatchingService#filterMatches(List)
 	 */
-	public static <OP extends Op> String matchInfo(
-		final List<OpCandidate<OP>> candidates,
-		final List<OpCandidate<OP>> matches)
+	public static String matchInfo(final List<OpCandidate<?>> candidates,
+		final List<OpCandidate<?>> matches)
 	{
 		final StringBuilder sb = new StringBuilder();
 
-		final OpRef<OP> ref = candidates.get(0).getRef();
+		final OpRef<?> ref = candidates.get(0).getRef();
 		if (matches.isEmpty()) {
 			// no matches
 			sb.append("No matching '" + ref.getLabel() + "' op\n");
@@ -216,7 +215,7 @@ public final class OpUtils {
 			sb.append("Multiple '" + ref.getLabel() + "' ops of priority " +
 				priority + ":\n");
 			int count = 0;
-			for (final OpCandidate<OP> match : matches) {
+			for (final OpCandidate<?> match : matches) {
 				sb.append(++count + ". ");
 				sb.append(opString(match.getModule().getInfo()) + "\n");
 			}
@@ -229,7 +228,7 @@ public final class OpUtils {
 		sb.append("\n");
 		sb.append("Candidates:\n");
 		int count = 0;
-		for (final OpCandidate<OP> candidate : candidates) {
+		for (final OpCandidate<?> candidate : candidates) {
 			final ModuleInfo info = candidate.opInfo().cInfo();
 			sb.append(++count + ". ");
 			sb.append("\t" + opString(info, candidate.getStatusItem()) + "\n");

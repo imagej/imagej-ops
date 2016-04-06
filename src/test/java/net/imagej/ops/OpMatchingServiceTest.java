@@ -150,7 +150,8 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 	private void assertMatches(final String name, Class<?>... opTypes) {
 		final List<OpCandidate<Op>> candidates =
 			matcher.findCandidates(ops, OpRef.create(name));
-		final List<OpCandidate<Op>> matches = matcher.filterMatches(candidates);
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		final List<OpCandidate<?>> matches = matcher.filterMatches((List) candidates);
 		assertEquals(opTypes.length, matches.size());
 		for (int i=0; i<opTypes.length; i++) {
 			final Module m = matches.get(i).getModule();

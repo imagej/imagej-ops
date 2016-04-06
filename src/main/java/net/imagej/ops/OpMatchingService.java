@@ -68,8 +68,7 @@ public interface OpMatchingService extends ImageJService {
 	 * @throws IllegalArgumentException if there is no match, or if there is more
 	 *           than one match at the same priority.
 	 */
-	public <OP extends Op> Module findModule(OpEnvironment ops,
-		List<OpRef<OP>> refs);
+	public Module findModule(OpEnvironment ops, List<OpRef<?>> refs);
 
 	/**
 	 * Builds a list of candidate ops which might match the given op reference.
@@ -89,8 +88,8 @@ public interface OpMatchingService extends ImageJService {
 	 * @param refs The op references describing the op to match.
 	 * @return The list of candidate operations.
 	 */
-	<OP extends Op> List<OpCandidate<OP>> findCandidates(OpEnvironment ops,
-		List<OpRef<OP>> refs);
+	List<OpCandidate<?>> findCandidates(OpEnvironment ops,
+		List<OpRef<?>> refs);
 
 	/**
 	 * Filters a list of ops to those matching the given arguments.
@@ -99,8 +98,7 @@ public interface OpMatchingService extends ImageJService {
 	 * @return The list of matching op candidates, with associated {@link Module}
 	 *         instances attached.
 	 */
-	<OP extends Op> List<OpCandidate<OP>> filterMatches(
-		List<OpCandidate<OP>> candidates);
+	List<OpCandidate<?>> filterMatches(List<OpCandidate<?>> candidates);
 
 	/**
 	 * Attempts to match the given arguments to the {@link Op} described by the
