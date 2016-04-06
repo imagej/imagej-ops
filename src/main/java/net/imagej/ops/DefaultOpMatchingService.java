@@ -77,15 +77,16 @@ public class DefaultOpMatchingService extends AbstractService implements
 
 	// -- OpMatchingService methods --
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public <OP extends Op> Module findModule(final OpEnvironment ops,
+	public <OP extends Op> OpCandidate<OP> findMatch(final OpEnvironment ops,
 		final OpRef<OP> ref)
 	{
-		return findModule(ops, Collections.singletonList(ref));
+		return (OpCandidate<OP>) findMatch(ops, Collections.singletonList(ref));
 	}
 
 	@Override
-	public Module findModule(final OpEnvironment ops,
+	public OpCandidate<?> findMatch(final OpEnvironment ops,
 		final List<OpRef<?>> refs)
 	{
 		// find candidates with matching name & type
@@ -95,7 +96,21 @@ public class DefaultOpMatchingService extends AbstractService implements
 		// narrow down candidates to the exact matches
 		final List<OpCandidate<?>> matches = filterMatches(candidates);
 
-		return singleMatch(candidates, matches).getModule();
+		return singleMatch(candidates, matches);
+	}
+
+	@Override
+	public <OP extends Op> Module findModule(final OpEnvironment ops,
+		final OpRef<OP> ref)
+	{
+		return findMatch(ops, ref).getModule();
+	}
+
+	@Override
+	public Module findModule(final OpEnvironment ops,
+		final List<OpRef<?>> refs)
+	{
+		return findMatch(ops, refs).getModule();
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
