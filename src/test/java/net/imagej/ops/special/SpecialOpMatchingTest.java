@@ -50,13 +50,29 @@ import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.NullaryFunctionOp;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractBinaryHybridCF;
+import net.imagej.ops.special.hybrid.AbstractBinaryHybridCFI;
+import net.imagej.ops.special.hybrid.AbstractBinaryHybridCFI1;
+import net.imagej.ops.special.hybrid.AbstractBinaryHybridCI;
+import net.imagej.ops.special.hybrid.AbstractBinaryHybridCI1;
 import net.imagej.ops.special.hybrid.AbstractNullaryHybridCF;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCFI;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCI;
 import net.imagej.ops.special.hybrid.BinaryHybridCF;
+import net.imagej.ops.special.hybrid.BinaryHybridCFI;
+import net.imagej.ops.special.hybrid.BinaryHybridCFI1;
+import net.imagej.ops.special.hybrid.BinaryHybridCI;
+import net.imagej.ops.special.hybrid.BinaryHybridCI1;
 import net.imagej.ops.special.hybrid.Hybrids;
 import net.imagej.ops.special.hybrid.NullaryHybridCF;
 import net.imagej.ops.special.hybrid.UnaryHybridCF;
+import net.imagej.ops.special.hybrid.UnaryHybridCFI;
+import net.imagej.ops.special.hybrid.UnaryHybridCI;
+import net.imagej.ops.special.inplace.AbstractBinaryInplace1Op;
+import net.imagej.ops.special.inplace.AbstractBinaryInplaceOp;
 import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
+import net.imagej.ops.special.inplace.BinaryInplace1Op;
+import net.imagej.ops.special.inplace.BinaryInplaceOp;
 import net.imagej.ops.special.inplace.Inplaces;
 import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
@@ -361,34 +377,183 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	}
 
 	/**
+	 * Tests {@link Hybrids#unaryCI(OpEnvironment, Class, Class, Class, Object...)}
+	 * (i.e.: with neither output nor input specified).
+	 */
+	@Test
+	public void testUnaryHybridCI() {
+		final UnaryHybridCI<Apple, Apple> unaryHybridCIAA = Hybrids.unaryCI(ops,
+			FruitOp.class, Apple.class, Apple.class);
+		assertSame(unaryHybridCIAA.getClass(), UnaryHybridCIAA.class);
+
+		final UnaryHybridCI<Orange, Orange> unaryHybridCIOO = Hybrids.unaryCI(ops,
+			FruitOp.class, Orange.class, Orange.class);
+		assertSame(unaryHybridCIOO.getClass(), UnaryHybridCIOO.class);
+
+		final UnaryHybridCI<Lemon, Lemon> unaryHybridCILL = Hybrids.unaryCI(ops,
+			FruitOp.class, Lemon.class, Lemon.class);
+		// CFI is expected because of its higher priority, which is for inplace test
+		assertSame(unaryHybridCILL.getClass(), UnaryHybridCFILL.class);
+	}
+
+	/**
+	 * Tests {@link Hybrids#unaryCI(OpEnvironment, Class, Class, Object, Object...)}
+	 * (i.e.: with the input specified).
+	 */
+	@Test
+	public void testUnaryHybridCIIn() {
+		final Apple a = new Apple();
+		final Orange o = new Orange();
+		final Lemon l = new Lemon();
+
+		final UnaryHybridCI<Apple, Apple> unaryHybridCIAA = Hybrids.unaryCI(ops,
+			FruitOp.class, Apple.class, a);
+		assertSame(unaryHybridCIAA.getClass(), UnaryHybridCIAA.class);
+
+		final UnaryHybridCI<Orange, Orange> unaryHybridCIOO = Hybrids.unaryCI(ops,
+			FruitOp.class, Orange.class, o);
+		assertSame(unaryHybridCIOO.getClass(), UnaryHybridCIOO.class);
+
+		final UnaryHybridCI<Lemon, Lemon> unaryHybridCILL = Hybrids.unaryCI(ops,
+			FruitOp.class, Lemon.class, l);
+		// CFI is expected because of its higher priority, which is for inplace test
+		assertSame(unaryHybridCILL.getClass(), UnaryHybridCFILL.class);
+	}
+
+	/**
+	 * Tests
+	 * {@link Hybrids#unaryCI(OpEnvironment, Class, Object, Object, Object...)}
+	 * (i.e.: with the output and input specified).
+	 */
+	@Test
+	public void testUnaryHybridCIOutIn() {
+		final Apple a = new Apple();
+		final Orange o = new Orange();
+		final Lemon l = new Lemon();
+
+		final UnaryHybridCI<Apple, Apple> unaryHybridCIAA = Hybrids.unaryCI(ops,
+			FruitOp.class, a, a);
+		assertSame(unaryHybridCIAA.getClass(), UnaryHybridCIAA.class);
+
+		final UnaryHybridCI<Orange, Orange> unaryHybridCIOO = Hybrids.unaryCI(ops,
+			FruitOp.class, o, o);
+		assertSame(unaryHybridCIOO.getClass(), UnaryHybridCIOO.class);
+
+		final UnaryHybridCI<Lemon, Lemon> unaryHybridCILL = Hybrids.unaryCI(ops,
+			FruitOp.class, l, l);
+		// CFI is expected because of its higher priority, which is for inplace test
+		assertSame(unaryHybridCILL.getClass(), UnaryHybridCFILL.class);
+	}
+
+	/**
+	 * Tests {@link Hybrids#unaryCFI(OpEnvironment, Class, Class, Class, Object...)}
+	 * (i.e.: with neither output nor input speCFIfied).
+	 */
+	@Test
+	public void testUnaryHybridCFI() {
+		final UnaryHybridCFI<Apple, Apple> unaryHybridCFIAA = Hybrids.unaryCFI(ops,
+			FruitOp.class, Apple.class, Apple.class);
+		assertSame(unaryHybridCFIAA.getClass(), UnaryHybridCFIAA.class);
+
+		final UnaryHybridCFI<Orange, Orange> unaryHybridCFIOO = Hybrids.unaryCFI(ops,
+			FruitOp.class, Orange.class, Orange.class);
+		assertSame(unaryHybridCFIOO.getClass(), UnaryHybridCFIOO.class);
+
+		final UnaryHybridCFI<Lemon, Lemon> unaryHybridCFILL = Hybrids.unaryCFI(ops,
+			FruitOp.class, Lemon.class, Lemon.class);
+		assertSame(unaryHybridCFILL.getClass(), UnaryHybridCFILL.class);
+	}
+
+	/**
+	 * Tests {@link Hybrids#unaryCFI(OpEnvironment, Class, Class, Object, Object...)}
+	 * (i.e.: with the input speCFIfied).
+	 */
+	@Test
+	public void testUnaryHybridCFIIn() {
+		final Apple a = new Apple();
+		final Orange o = new Orange();
+		final Lemon l = new Lemon();
+
+		final UnaryHybridCFI<Apple, Apple> unaryHybridCFIAA = Hybrids.unaryCFI(ops,
+			FruitOp.class, Apple.class, a);
+		assertSame(unaryHybridCFIAA.getClass(), UnaryHybridCFIAA.class);
+
+		final UnaryHybridCFI<Orange, Orange> unaryHybridCFIOO = Hybrids.unaryCFI(ops,
+			FruitOp.class, Orange.class, o);
+		assertSame(unaryHybridCFIOO.getClass(), UnaryHybridCFIOO.class);
+
+		final UnaryHybridCFI<Lemon, Lemon> unaryHybridCFILL = Hybrids.unaryCFI(ops,
+			FruitOp.class, Lemon.class, l);
+		assertSame(unaryHybridCFILL.getClass(), UnaryHybridCFILL.class);
+	}
+
+	/**
+	 * Tests
+	 * {@link Hybrids#unaryCFI(OpEnvironment, Class, Object, Object, Object...)}
+	 * (i.e.: with the output and input speCFIfied).
+	 */
+	@Test
+	public void testUnaryHybridCFIOutIn() {
+		final Apple a = new Apple();
+		final Orange o = new Orange();
+		final Lemon l = new Lemon();
+
+		final UnaryHybridCFI<Apple, Apple> unaryHybridCFIAA = Hybrids.unaryCFI(ops,
+			FruitOp.class, a, a);
+		assertSame(unaryHybridCFIAA.getClass(), UnaryHybridCFIAA.class);
+
+		final UnaryHybridCFI<Orange, Orange> unaryHybridCFIOO = Hybrids.unaryCFI(ops,
+			FruitOp.class, o, o);
+		assertSame(unaryHybridCFIOO.getClass(), UnaryHybridCFIOO.class);
+
+		final UnaryHybridCFI<Lemon, Lemon> unaryHybridCFILL = Hybrids.unaryCFI(ops,
+			FruitOp.class, l, l);
+		assertSame(unaryHybridCFILL.getClass(), UnaryHybridCFILL.class);
+	}
+
+	/**
 	 * Tests {@link Inplaces#unary(OpEnvironment, Class, Class, Object...)} (i.e.:
-	 * without the argument specified).
+	 * without the argument specified). UnaryHybridCI/CFI should be matched if
+	 * types are matched and it has higher priority. 
 	 */
 	@Test
 	public void testInplace() {
-		final UnaryInplaceOp<Apple> inplaceA = Inplaces.unary(ops, FruitOp.class,
-			Apple.class);
+		final UnaryInplaceOp<? super Apple, Apple> inplaceA = Inplaces.unary(ops, FruitOp.class,
+			Apple.class, String.class);
 		assertSame(inplaceA.getClass(), InplaceA.class);
 
-		final UnaryInplaceOp<Orange> inplaceO = Inplaces.unary(ops, FruitOp.class,
-			Orange.class);
-		assertSame(inplaceO.getClass(), InplaceO.class);
+		final UnaryInplaceOp<? super Orange, Orange> inplaceO = Inplaces.unary(ops, FruitOp.class,
+			Orange.class, String.class);
+		assertSame(inplaceO.getClass(), UnaryHybridCIOO.class);
+
+		final UnaryInplaceOp<? super Lemon, Lemon> inplaceL = Inplaces.unary(ops, FruitOp.class,
+			Lemon.class, String.class);
+		assertSame(inplaceL.getClass(), UnaryHybridCFILL.class);
 	}
 
 	/**
 	 * Tests {@link Inplaces#unary(OpEnvironment, Class, Object, Object...)}
-	 * (i.e.: with the argument specified).
+	 * (i.e.: with the argument specified). UnaryHybridCI/CFI should be matched if
+	 * types are matched and it has higher priority.
 	 */
 	@Test
 	public void testInplaceIn() {
 		final Apple a = new Apple();
 		final Orange o = new Orange();
+		final Lemon l = new Lemon();
+		final String foo = "optional parameter placeholder";
 
-		final UnaryInplaceOp<Apple> inplaceA = Inplaces.unary(ops, FruitOp.class, a);
+		final UnaryInplaceOp<? super Apple, Apple> inplaceA = Inplaces.unary(ops,
+			FruitOp.class, a, foo);
 		assertSame(inplaceA.getClass(), InplaceA.class);
 
-		final UnaryInplaceOp<Orange> inplaceO = Inplaces.unary(ops, FruitOp.class, o);
-		assertSame(inplaceO.getClass(), InplaceO.class);
+		final UnaryInplaceOp<? super Orange, Orange> inplaceO = Inplaces.unary(ops,
+			FruitOp.class, o, foo);
+		assertSame(inplaceO.getClass(), UnaryHybridCIOO.class);
+
+		final UnaryInplaceOp<? super Lemon, Lemon> inplaceL = Inplaces.unary(ops,
+			FruitOp.class, l, foo);
+		assertSame(inplaceL.getClass(), UnaryHybridCFILL.class);
 	}
 
 	/**
@@ -600,6 +765,387 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		assertSame(binaryHybridOOL.getClass(), BinaryHybridOOL.class);
 	}
 
+	/**
+	 * Tests
+	 * {@link Hybrids#binaryCI1(OpEnvironment, Class, Class, Class, Class, Object...)}
+	 * (i.e.: with neither output nor inputs specified).
+	 */
+	@Test
+	public void testBinaryHybridCI1() {
+		final BinaryHybridCI1<Apple, Orange, Apple> binaryHybridCI1AOA = Hybrids
+			.binaryCI1(ops, FruitOp.class, Apple.class, Apple.class, Orange.class);
+		assertSame(binaryHybridCI1AOA.getClass(), BinaryHybridCI1AOA.class);
+
+		final BinaryHybridCI1<Orange, Lemon, Orange> binaryHybridCI1OLO = Hybrids
+			.binaryCI1(ops, FruitOp.class, Orange.class, Orange.class, Lemon.class);
+		assertSame(binaryHybridCI1OLO.getClass(), BinaryHybridCI1OLO.class);
+
+		final BinaryHybridCI1<Lemon, Apple, Lemon> binaryHybridCI1LAL = Hybrids
+			.binaryCI1(ops, FruitOp.class, Lemon.class, Lemon.class, Apple.class);
+		// CFI is expected because of its higher priority, which is for inplace test
+		assertSame(binaryHybridCI1LAL.getClass(), BinaryHybridCFI1LAL.class);
+	}
+
+	/**
+	 * Tests
+	 * {@link Hybrids#binaryCI1(OpEnvironment, Class, Class, Object, Object, Object...)}
+	 * (i.e.: with the inputs specified).
+	 */
+	@Test
+	public void testBinaryHybridCI1In() {
+		final Apple a = new Apple();
+		final Orange o = new Orange();
+		final Lemon l = new Lemon();
+
+		final BinaryHybridCI1<Apple, Orange, Apple> binaryHybridCI1AOA = Hybrids
+			.binaryCI1(ops, FruitOp.class, Apple.class, a, o);
+		assertSame(binaryHybridCI1AOA.getClass(), BinaryHybridCI1AOA.class);
+
+		final BinaryHybridCI1<Orange, Lemon, Orange> binaryHybridCI1OLO = Hybrids
+			.binaryCI1(ops, FruitOp.class, Orange.class, o, l);
+		assertSame(binaryHybridCI1OLO.getClass(), BinaryHybridCI1OLO.class);
+
+		final BinaryHybridCI1<Lemon, Apple, Lemon> binaryHybridCI1LAL = Hybrids
+			.binaryCI1(ops, FruitOp.class, Lemon.class, l, a);
+		// CFI is expected because of its higher priority, which is for inplace test
+		assertSame(binaryHybridCI1LAL.getClass(), BinaryHybridCFI1LAL.class);
+	}
+
+	/**
+	 * Tests
+	 * {@link Hybrids#binaryCI1(OpEnvironment, Class, Object, Object, Object, Object...)}
+	 * (i.e.: with the output and inputs specified).
+	 */
+	@Test
+	public void testBinaryHybridCI1OutIn() {
+		final Apple a = new Apple();
+		final Orange o = new Orange();
+		final Lemon l = new Lemon();
+
+		final BinaryHybridCI1<Apple, Orange, Apple> binaryHybridAOA = Hybrids
+			.binaryCI1(ops, FruitOp.class, a, a, o);
+		assertSame(binaryHybridAOA.getClass(), BinaryHybridCI1AOA.class);
+
+		final BinaryHybridCI1<Orange, Lemon, Orange> binaryHybridOLO = Hybrids
+			.binaryCI1(ops, FruitOp.class, o, o, l);
+		assertSame(binaryHybridOLO.getClass(), BinaryHybridCI1OLO.class);
+
+		final BinaryHybridCI1<Lemon, Apple, Lemon> binaryHybridOAL = Hybrids
+			.binaryCI1(ops, FruitOp.class, l, l, a);
+		// CFI is expected because of its higher priority, which is for inplace test
+		assertSame(binaryHybridOAL.getClass(), BinaryHybridCFI1LAL.class);
+	}
+
+	/**
+	 * Tests
+	 * {@link Hybrids#binaryCFI1(OpEnvironment, Class, Class, Class, Class, Object...)}
+	 * (i.e.: with neither output nor inputs speCFIfied).
+	 */
+	@Test
+	public void testBinaryHybridCFI1() {
+		final BinaryHybridCFI1<Apple, Orange, Apple> binaryHybridCFI1AOA = Hybrids
+			.binaryCFI1(ops, FruitOp.class, Apple.class, Apple.class, Orange.class);
+		assertSame(binaryHybridCFI1AOA.getClass(), BinaryHybridCFI1AOA.class);
+
+		final BinaryHybridCFI1<Orange, Lemon, Orange> binaryHybridCFI1OLO = Hybrids
+			.binaryCFI1(ops, FruitOp.class, Orange.class, Orange.class, Lemon.class);
+		assertSame(binaryHybridCFI1OLO.getClass(), BinaryHybridCFI1OLO.class);
+
+		final BinaryHybridCFI1<Lemon, Apple, Lemon> binaryHybridCFI1LAL = Hybrids
+			.binaryCFI1(ops, FruitOp.class, Lemon.class, Lemon.class, Apple.class);
+		// CFI is expected because of its higher priority, which is for inplace test
+		assertSame(binaryHybridCFI1LAL.getClass(), BinaryHybridCFI1LAL.class);
+	}
+
+	/**
+	 * Tests
+	 * {@link Hybrids#binaryCFI1(OpEnvironment, Class, Class, Object, Object, Object...)}
+	 * (i.e.: with the inputs speCFIfied).
+	 */
+	@Test
+	public void testBinaryHybridCFI1In() {
+		final Apple a = new Apple();
+		final Orange o = new Orange();
+		final Lemon l = new Lemon();
+
+		final BinaryHybridCFI1<Apple, Orange, Apple> binaryHybridCFI1AOA = Hybrids
+			.binaryCFI1(ops, FruitOp.class, Apple.class, a, o);
+		assertSame(binaryHybridCFI1AOA.getClass(), BinaryHybridCFI1AOA.class);
+
+		final BinaryHybridCFI1<Orange, Lemon, Orange> binaryHybridCFI1OLO = Hybrids
+			.binaryCFI1(ops, FruitOp.class, Orange.class, o, l);
+		assertSame(binaryHybridCFI1OLO.getClass(), BinaryHybridCFI1OLO.class);
+
+		final BinaryHybridCFI1<Lemon, Apple, Lemon> binaryHybridCFI1LAL = Hybrids
+			.binaryCFI1(ops, FruitOp.class, Lemon.class, l, a);
+		// CFI is expected because of its higher priority, which is for inplace test
+		assertSame(binaryHybridCFI1LAL.getClass(), BinaryHybridCFI1LAL.class);
+	}
+
+	/**
+	 * Tests
+	 * {@link Hybrids#binaryCFI1(OpEnvironment, Class, Object, Object, Object, Object...)}
+	 * (i.e.: with the output and inputs speCFIfied).
+	 */
+	@Test
+	public void testBinaryHybridCFI1OutIn() {
+		final Apple a = new Apple();
+		final Orange o = new Orange();
+		final Lemon l = new Lemon();
+
+		final BinaryHybridCFI1<Apple, Orange, Apple> binaryHybridAOA = Hybrids
+			.binaryCFI1(ops, FruitOp.class, a, a, o);
+		assertSame(binaryHybridAOA.getClass(), BinaryHybridCFI1AOA.class);
+
+		final BinaryHybridCFI1<Orange, Lemon, Orange> binaryHybridOLO = Hybrids
+			.binaryCFI1(ops, FruitOp.class, o, o, l);
+		assertSame(binaryHybridOLO.getClass(), BinaryHybridCFI1OLO.class);
+
+		final BinaryHybridCFI1<Lemon, Apple, Lemon> binaryHybridOAL = Hybrids
+			.binaryCFI1(ops, FruitOp.class, l, l, a);
+		// CFI is expected because of its higher priority, which is for inplace test
+		assertSame(binaryHybridOAL.getClass(), BinaryHybridCFI1LAL.class);
+	}
+
+	/**
+	 * Tests
+	 * {@link Hybrids#binaryCI(OpEnvironment, Class, Class, Class, Class, Object...)}
+	 * (i.e.: with neither output nor inputs specified).
+	 */
+	@Test
+	public void testBinaryHybridCI() {
+		final BinaryHybridCI<Apple, Apple> binaryHybridCIAA = Hybrids
+			.binaryCI(ops, FruitOp.class, Apple.class, Apple.class);
+		assertSame(binaryHybridCIAA.getClass(), BinaryHybridCIAA.class);
+
+		final BinaryHybridCI<Orange, Orange> binaryHybridCIOO = Hybrids
+			.binaryCI(ops, FruitOp.class, Orange.class, Orange.class);
+		assertSame(binaryHybridCIOO.getClass(), BinaryHybridCIOO.class);
+
+		final BinaryHybridCI<Lemon, Lemon> binaryHybridCILL = Hybrids
+			.binaryCI(ops, FruitOp.class, Lemon.class, Lemon.class);
+		// CFI is expected because of its higher priority, which is for inplace test
+		assertSame(binaryHybridCILL.getClass(), BinaryHybridCFILL.class);
+	}
+
+	/**
+	 * Tests
+	 * {@link Hybrids#binaryCI(OpEnvironment, Class, Class, Object, Object, Object...)}
+	 * (i.e.: with the inputs specified).
+	 */
+	@Test
+	public void testBinaryHybridCIIn() {
+		final Apple a = new Apple();
+		final Orange o = new Orange();
+		final Lemon l = new Lemon();
+
+		final BinaryHybridCI<Apple, Apple> binaryHybridCIAA = Hybrids
+			.binaryCI(ops, FruitOp.class, Apple.class, a, a);
+		assertSame(binaryHybridCIAA.getClass(), BinaryHybridCIAA.class);
+
+		final BinaryHybridCI<Orange, Orange> binaryHybridCIOO = Hybrids
+			.binaryCI(ops, FruitOp.class, Orange.class, o, o);
+		assertSame(binaryHybridCIOO.getClass(), BinaryHybridCIOO.class);
+
+		final BinaryHybridCI<Lemon, Lemon> binaryHybridCILL = Hybrids
+			.binaryCI(ops, FruitOp.class, Lemon.class, l, l);
+		// CFI is expected because of its higher priority, which is for inplace test
+		assertSame(binaryHybridCILL.getClass(), BinaryHybridCFILL.class);
+	}
+
+	/**
+	 * Tests
+	 * {@link Hybrids#binaryCI(OpEnvironment, Class, Object, Object, Object, Object...)}
+	 * (i.e.: with the output and inputs specified).
+	 */
+	@Test
+	public void testBinaryHybridCIOutIn() {
+		final Apple a = new Apple();
+		final Orange o = new Orange();
+		final Lemon l = new Lemon();
+
+		final BinaryHybridCI<Apple, Apple> binaryHybridAA = Hybrids
+			.binaryCI(ops, FruitOp.class, a, a, a);
+		assertSame(binaryHybridAA.getClass(), BinaryHybridCIAA.class);
+
+		final BinaryHybridCI<Orange, Orange> binaryHybridOO = Hybrids
+			.binaryCI(ops, FruitOp.class, o, o, o);
+		assertSame(binaryHybridOO.getClass(), BinaryHybridCIOO.class);
+
+		final BinaryHybridCI<Lemon, Lemon> binaryHybridOAL = Hybrids
+			.binaryCI(ops, FruitOp.class, l, l, l);
+		// CFI is expected because of its higher priority, which is for inplace test
+		assertSame(binaryHybridOAL.getClass(), BinaryHybridCFILL.class);
+	}
+
+	/**
+	 * Tests
+	 * {@link Hybrids#binaryCFI(OpEnvironment, Class, Class, Class, Class, Object...)}
+	 * (i.e.: with neither output nor inputs speCFIfied).
+	 */
+	@Test
+	public void testBinaryHybridCFI() {
+		final BinaryHybridCFI<Apple, Apple> binaryHybridCFIAA = Hybrids
+			.binaryCFI(ops, FruitOp.class, Apple.class, Apple.class);
+		assertSame(binaryHybridCFIAA.getClass(), BinaryHybridCFIAA.class);
+
+		final BinaryHybridCFI<Orange, Orange> binaryHybridCFIOO = Hybrids
+			.binaryCFI(ops, FruitOp.class, Orange.class, Orange.class);
+		assertSame(binaryHybridCFIOO.getClass(), BinaryHybridCFIOO.class);
+
+		final BinaryHybridCFI<Lemon, Lemon> binaryHybridCFILL = Hybrids
+			.binaryCFI(ops, FruitOp.class, Lemon.class, Lemon.class);
+		assertSame(binaryHybridCFILL.getClass(), BinaryHybridCFILL.class);
+	}
+
+	/**
+	 * Tests
+	 * {@link Hybrids#binaryCFI(OpEnvironment, Class, Class, Object, Object, Object...)}
+	 * (i.e.: with the inputs speCFIfied).
+	 */
+	@Test
+	public void testBinaryHybridCFIIn() {
+		final Apple a = new Apple();
+		final Orange o = new Orange();
+		final Lemon l = new Lemon();
+
+		final BinaryHybridCFI<Apple, Apple> binaryHybridCFIAA = Hybrids
+			.binaryCFI(ops, FruitOp.class, Apple.class, a, a);
+		assertSame(binaryHybridCFIAA.getClass(), BinaryHybridCFIAA.class);
+
+		final BinaryHybridCFI<Orange, Orange> binaryHybridCFIOO = Hybrids
+			.binaryCFI(ops, FruitOp.class, Orange.class, o, o);
+		assertSame(binaryHybridCFIOO.getClass(), BinaryHybridCFIOO.class);
+
+		final BinaryHybridCFI<Lemon, Lemon> binaryHybridCFILL = Hybrids
+			.binaryCFI(ops, FruitOp.class, Lemon.class, l, l);
+		assertSame(binaryHybridCFILL.getClass(), BinaryHybridCFILL.class);
+	}
+
+	/**
+	 * Tests
+	 * {@link Hybrids#binaryCFI(OpEnvironment, Class, Object, Object, Object, Object...)}
+	 * (i.e.: with the output and inputs speCFIfied).
+	 */
+	@Test
+	public void testBinaryHybridCFIOutIn() {
+		final Apple a = new Apple();
+		final Orange o = new Orange();
+		final Lemon l = new Lemon();
+
+		final BinaryHybridCFI<Apple, Apple> binaryHybridAA = Hybrids
+			.binaryCFI(ops, FruitOp.class, a, a, a);
+		assertSame(binaryHybridAA.getClass(), BinaryHybridCFIAA.class);
+
+		final BinaryHybridCFI<Orange, Orange> binaryHybridOO = Hybrids
+			.binaryCFI(ops, FruitOp.class, o, o, o);
+		assertSame(binaryHybridOO.getClass(), BinaryHybridCFIOO.class);
+
+		final BinaryHybridCFI<Lemon, Lemon> binaryHybridOAL = Hybrids
+			.binaryCFI(ops, FruitOp.class, l, l, l);
+		assertSame(binaryHybridOAL.getClass(), BinaryHybridCFILL.class);
+	}
+
+	/**
+	 * Tests
+	 * {@link Inplaces#binary1(OpEnvironment, Class, Class, Class, Object...)}
+	 * (i.e.: without the argument specified).
+	 */
+	@Test
+	public void testBinaryInplace1() {
+		// NB: Need "? super Apple" instead of "?" to make javac happy.
+		final BinaryInplace1Op<? super Apple, Orange, Apple> binaryInplace1AOA = Inplaces
+			.binary1(ops, FruitOp.class, Apple.class, Orange.class);
+		assertSame(binaryInplace1AOA.getClass(), BinaryInplace1AO.class);
+
+		// NB: Need "? super Orange" instead of "?" to make javac happy.
+		final BinaryInplace1Op<? super Orange, Lemon, Orange> binaryInplace1OLO = Inplaces
+			.binary1(ops, FruitOp.class, Orange.class, Lemon.class);
+		assertSame(binaryInplace1OLO.getClass(), BinaryHybridCI1OLO.class);
+
+		// NB: Need "? super Lemon" instead of "?" to make javac happy.
+		final BinaryInplace1Op<? super Lemon, Apple, Lemon> binaryInplace1LAL = Inplaces
+			.binary1(ops, FruitOp.class, Lemon.class, Apple.class);
+		assertSame(binaryInplace1LAL.getClass(), BinaryHybridCFI1LAL.class);
+	}
+
+	/**
+	 * Tests
+	 * {@link Inplaces#binary1(OpEnvironment, Class, Object, Object, Object...)}
+	 * (i.e.: with the argument specified).
+	 */
+	@Test
+	public void testBinaryInplace1In() {
+		final Apple a = new Apple();
+		final Orange o = new Orange();
+		final Lemon l = new Lemon();
+
+		// NB: Need "? super Apple" instead of "?" to make javac happy.
+		final BinaryInplace1Op<? super Apple, Orange, Apple> binaryInplace1AOA =
+			Inplaces.binary1(ops, FruitOp.class, a, o);
+		assertSame(binaryInplace1AOA.getClass(), BinaryInplace1AO.class);
+
+		// NB: Need "? super Orange" instead of "?" to make javac happy.
+		final BinaryInplace1Op<? super Orange, Lemon, Orange> binaryInplace1OLO =
+			Inplaces.binary1(ops, FruitOp.class, o, l);
+		assertSame(binaryInplace1OLO.getClass(), BinaryHybridCI1OLO.class);
+
+		// NB: Need "? super Lemon" instead of "?" to make javac happy.
+		final BinaryInplace1Op<? super Lemon, Apple, Lemon> binaryInplace1LAL =
+			Inplaces.binary1(ops, FruitOp.class, l, a);
+		assertSame(binaryInplace1LAL.getClass(), BinaryHybridCFI1LAL.class);
+	}
+
+	/**
+	 * Tests
+	 * {@link Inplaces#binary(OpEnvironment, Class, Class, Object...)}
+	 * (i.e.: without the argument specified).
+	 */
+	@Test
+	public void testBinaryInplace() {
+		// NB: Need "? super Apple" instead of "?" to make javac happy.
+		final BinaryInplaceOp<? super Apple, Apple> binaryInplaceA = //
+			Inplaces.binary(ops, FruitOp.class, Apple.class);
+		assertSame(binaryInplaceA.getClass(), BinaryInplaceA.class);
+
+		// NB: Need "? super Orange" instead of "?" to make javac happy.
+		final BinaryInplaceOp<? super Orange, Orange> binaryInplaceO = //
+			Inplaces.binary(ops, FruitOp.class, Orange.class);
+		assertSame(binaryInplaceO.getClass(), BinaryHybridCIOO.class);
+
+		// NB: Need "? super Lemon" instead of "?" to make javac happy.
+		final BinaryInplaceOp<? super Lemon, Lemon> binaryInplaceL = //
+			Inplaces.binary(ops, FruitOp.class, Lemon.class);
+		assertSame(binaryInplaceL.getClass(), BinaryHybridCFILL.class);
+	}
+
+	/**
+	 * Tests
+	 * {@link Inplaces#binary(OpEnvironment, Class, Object, Object, Object...)}
+	 * (i.e.: with the argument specified).
+	 */
+	@Test
+	public void testBinaryInplaceIn() {
+		final Apple a = new Apple();
+		final Orange o = new Orange();
+		final Lemon l = new Lemon();
+
+		// NB: Need "? super Apple" instead of "?" to make javac happy.
+		final BinaryInplaceOp<? super Apple, Apple> binaryInplaceA = //
+			Inplaces.binary(ops, FruitOp.class, a, a);
+		assertSame(binaryInplaceA.getClass(), BinaryInplaceA.class);
+
+		// NB: Need "? super Orange" instead of "?" to make javac happy.
+		final BinaryInplaceOp<? super Orange, Orange> binaryInplaceO = //
+			Inplaces.binary(ops, FruitOp.class, o, o);
+		assertSame(binaryInplaceO.getClass(), BinaryHybridCIOO.class);
+
+		// NB: Need "? super Lemon" instead of "?" to make javac happy.
+		final BinaryInplaceOp<? super Lemon, Lemon> binaryInplaceL = //
+			Inplaces.binary(ops, FruitOp.class, l, l);
+		assertSame(binaryInplaceL.getClass(), BinaryHybridCFILL.class);
+	}
+
 	// -- Helper classes --
 
 	public static class Apple {
@@ -688,9 +1234,43 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		}
 	}
 
+	public abstract static class UnaryFruitHybridCI<I, O extends I> extends
+		AbstractUnaryHybridCI<I, O> implements FruitOp
+	{
+
+		@Parameter(required = false)
+		private String foo;
+
+		@Override
+		public void compute1(final I in, final O out) {
+		// NB: No implementation needed.
+		}
+	}
+
+	public abstract static class UnaryFruitHybridCFI<I, O extends I> extends
+		AbstractUnaryHybridCFI<I, O> implements FruitOp
+	{
+
+		@Parameter(required = false)
+		private String foo;
+
+		@Override
+		public O createOutput(final I input) {
+			return null;
+		}
+
+		@Override
+		public void compute1(final I in, final O out) {
+		// NB: No implementation needed.
+		}
+	}
+
 	public abstract static class FruitInplace<A> extends AbstractUnaryInplaceOp<A>
 		implements FruitOp
 	{
+
+		@Parameter(required = false)
+		private String foo;
 
 		@Override
 		public void mutate(final A arg) {
@@ -801,15 +1381,57 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		// NB: No implementation needed.
 	}
 
+	@Plugin(type = FruitOp.class, name = "test.unaryHybridCIAA",
+		priority = Priority.VERY_LOW_PRIORITY + 20)
+	public static class UnaryHybridCIAA extends UnaryFruitHybridCI<Apple, Apple> {
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.unaryHybridCIOO",
+		priority = Priority.VERY_LOW_PRIORITY + 21)
+	public static class UnaryHybridCIOO extends UnaryFruitHybridCI<Orange, Orange> {
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.unaryHybridCILL",
+		priority = Priority.VERY_LOW_PRIORITY + 20)
+	public static class UnaryHybridCILL extends UnaryFruitHybridCI<Lemon, Lemon> {
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.unaryHybridCFIAA",
+		priority = Priority.VERY_LOW_PRIORITY + 15)
+	public static class UnaryHybridCFIAA extends UnaryFruitHybridCFI<Apple, Apple> {
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.unaryHybridCFIOO",
+		priority = Priority.VERY_LOW_PRIORITY + 15)
+	public static class UnaryHybridCFIOO extends UnaryFruitHybridCFI<Orange, Orange> {
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.unaryHybridCFILL",
+		priority = Priority.VERY_LOW_PRIORITY + 21)
+	public static class UnaryHybridCFILL extends UnaryFruitHybridCFI<Lemon, Lemon> {
+		// NB: No implementation needed.
+	}
+
 	@Plugin(type = FruitOp.class, name = "test.inplaceA",
-		priority = Priority.VERY_LOW_PRIORITY)
+		priority = Priority.VERY_LOW_PRIORITY + 21)
 	public static class InplaceA extends FruitInplace<Apple> {
 		// NB: No implementation needed.
 	}
 
 	@Plugin(type = FruitOp.class, name = "test.inplaceO",
-		priority = Priority.VERY_LOW_PRIORITY)
+		priority = Priority.VERY_LOW_PRIORITY + 20)
 	public static class InplaceO extends FruitInplace<Orange> {
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.inplaceL",
+		priority = Priority.VERY_LOW_PRIORITY + 20)
+	public static class InplaceL extends FruitInplace<Lemon> {
 		// NB: No implementation needed.
 	}
 
@@ -972,6 +1594,112 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		}
 	}
 
+	public abstract static class BinaryFruitHybridCI1<I1, I2, O extends I1>
+		extends AbstractBinaryHybridCI1<I1, I2, O> implements FruitOp
+	{
+
+		@Override
+		public void compute2(final I1 in1, final I2 in2, final O out) {
+			// NB: No implementation needed.
+		}
+
+		@Override
+		public void mutate1(final O arg, final I2 in) {
+			// NB: No implementation needed.
+		}
+	}
+
+	public abstract static class BinaryFruitHybridCFI1<I1, I2, O extends I1>
+		extends AbstractBinaryHybridCFI1<I1, I2, O> implements FruitOp
+	{
+
+		@Override
+		public O createOutput(final I1 in1, final I2 in2) {
+			return null;
+		}
+
+		@Override
+		public void compute2(final I1 in1, final I2 in2, final O out) {
+			// NB: No implementation needed.
+		}
+
+		@Override
+		public void mutate1(final O arg, final I2 in) {
+			// NB: No implementation needed.
+		}
+
+	}
+
+	public abstract static class BinaryFruitHybridCI<I, O extends I> extends
+		AbstractBinaryHybridCI<I, O> implements FruitOp
+	{
+
+		@Override
+		public void compute2(final I in1, final I in2, final O out) {
+			// NB: No implementation needed.
+		}
+
+		@Override
+		public void mutate1(final O arg, final I in) {
+			// NB: No implementation needed.
+		}
+
+		@Override
+		public void mutate2(final I in, final O arg) {
+			// NB: No implementation needed.
+		}
+	}
+
+	public abstract static class BinaryFruitHybridCFI<I, O extends I> extends
+		AbstractBinaryHybridCFI<I, O> implements FruitOp
+	{
+
+		@Override
+		public O createOutput(final I in1, final I in2) {
+			return null;
+		}
+
+		@Override
+		public void compute2(final I in1, final I in2, final O out) {
+			// NB: No implementation needed.
+		}
+
+		@Override
+		public void mutate1(final O arg, final I in) {
+			// NB: No implementation needed.
+		}
+
+		@Override
+		public void mutate2(final I in, final O arg) {
+			// NB: No implementation needed.
+		}
+	}
+
+	public abstract static class BinaryFruitInplace1<A, I> extends
+		AbstractBinaryInplace1Op<A, I> implements FruitOp
+	{
+
+		@Override
+		public void mutate1(final A arg, final I in) {
+			// NB: No implementation needed.
+		}
+	}
+
+	public abstract static class BinaryFruitInplace<A> extends
+		AbstractBinaryInplaceOp<A> implements FruitOp
+	{
+
+		@Override
+		public void mutate1(final A arg, final A in) {
+			// NB: No implementation needed.
+		}
+
+		@Override
+		public void mutate2(final A in, final A arg) {
+			// NB: No implementation needed.
+		}
+	}
+
 	@Plugin(type = FruitOp.class, name = "test.binaryComputerAAL")
 	public static class BinaryComputerAAL extends
 		BinaryFruitComputer<Apple, Apple, Lemon>
@@ -1059,6 +1787,144 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	public static class BinaryHybridOOL extends
 		BinaryFruitHybrid<Orange, Orange, Lemon>
 	{
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.binaryHybridCI1AOA",
+		priority = Priority.VERY_LOW_PRIORITY + 10)
+	public static class BinaryHybridCI1AOA extends
+		BinaryFruitHybridCI1<Apple, Orange, Apple>
+	{
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.binaryHybridCI1OLO",
+		priority = Priority.VERY_LOW_PRIORITY + 11)
+	public static class BinaryHybridCI1OLO extends
+		BinaryFruitHybridCI1<Orange, Lemon, Orange>
+	{
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.binaryHybridCI1LAL",
+		priority = Priority.VERY_LOW_PRIORITY + 10)
+	public static class BinaryHybridCI1LAL extends
+		BinaryFruitHybridCI1<Lemon, Apple, Lemon>
+	{
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.binaryHybridCFI1AOA",
+		priority = Priority.VERY_LOW_PRIORITY + 5)
+	public static class BinaryHybridCFI1AOA extends
+		BinaryFruitHybridCFI1<Apple, Orange, Apple>
+	{
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.binaryHybridCFI1OLO",
+		priority = Priority.VERY_LOW_PRIORITY + 5)
+	public static class BinaryHybridCFI1OLO extends
+		BinaryFruitHybridCFI1<Orange, Lemon, Orange>
+	{
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.binaryHybridCFI1LAL",
+		priority = Priority.VERY_LOW_PRIORITY + 11)
+	public static class BinaryHybridCFI1LAL extends
+		BinaryFruitHybridCFI1<Lemon, Apple, Lemon>
+	{
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.binaryHybridCIAA",
+		priority = Priority.VERY_LOW_PRIORITY + 5)
+	public static class BinaryHybridCIAA extends
+		BinaryFruitHybridCI<Apple, Apple>
+	{
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.binaryHybridCIOO",
+		priority = Priority.VERY_LOW_PRIORITY + 11)
+	public static class BinaryHybridCIOO extends
+		BinaryFruitHybridCI<Orange, Orange>
+	{
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.binaryHybridCILL",
+		priority = Priority.VERY_LOW_PRIORITY + 5)
+	public static class BinaryHybridCILL extends
+		BinaryFruitHybridCI<Lemon, Lemon>
+	{
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.binaryHybridCFIAA",
+		priority = Priority.VERY_LOW_PRIORITY)
+	public static class BinaryHybridCFIAA extends
+		BinaryFruitHybridCFI<Apple, Apple>
+	{
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.binaryHybridCFIOO",
+		priority = Priority.VERY_LOW_PRIORITY)
+	public static class BinaryHybridCFIOO extends
+		BinaryFruitHybridCFI<Orange, Orange>
+	{
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.binaryHybridCFILL",
+		priority = Priority.VERY_LOW_PRIORITY + 11)
+	public static class BinaryHybridCFILL extends
+		BinaryFruitHybridCFI<Lemon, Lemon>
+	{
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.binaryInplace1AO",
+		priority = Priority.VERY_LOW_PRIORITY + 11)
+	public static class BinaryInplace1AO extends
+		BinaryFruitInplace1<Apple, Orange>
+	{
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.binaryInplace1OL",
+		priority = Priority.VERY_LOW_PRIORITY + 5)
+	public static class BinaryInplace1OL extends
+		BinaryFruitInplace1<Orange, Lemon>
+	{
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.binaryInplace1LA",
+		priority = Priority.VERY_LOW_PRIORITY + 5)
+	public static class BinaryInplace1LA extends
+		BinaryFruitInplace1<Lemon, Apple>
+	{
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.binaryInplaceA",
+		priority = Priority.VERY_LOW_PRIORITY + 11)
+	public static class BinaryInplaceA extends BinaryFruitInplace<Apple> {
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.binaryInplaceO",
+		priority = Priority.VERY_LOW_PRIORITY)
+	public static class BinaryInplaceO extends BinaryFruitInplace<Orange> {
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.binaryInplaceL",
+		priority = Priority.VERY_LOW_PRIORITY)
+	public static class BinaryInplaceL extends BinaryFruitInplace<Lemon> {
 		// NB: No implementation needed.
 	}
 

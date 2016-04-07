@@ -46,37 +46,40 @@ import net.imagej.ops.special.inplace.UnaryInplaceOp;
  * @author Curtis Rueden
  * @author Christian Dietz (University of Konstanz)
  * @param <I> type of input
+ * @param <O> type of output
  * @see UnaryHybridCI
  */
-public interface UnaryHybridCI<I> extends UnaryComputerOp<I, I>,
-	UnaryInplaceOp<I>
+public interface UnaryHybridCI<I, O extends I> extends UnaryComputerOp<I, O>,
+	UnaryInplaceOp<I, O>
 {
 
 	// -- UnaryInplaceOp methods --
 
 	@Override
-	default void mutate(final I input) {
-		compute1(input, input);
-	}
-
-	@Override
-	default I run(final I output) {
-		return UnaryInplaceOp.super.run(output);
+	default void mutate(final O arg) {
+		compute1(arg, arg);
 	}
 
 	// -- UnaryOp methods --
 
 	@Override
-	default I run(final I input, final I output) {
+	default O run(final I input, final O output) {
 		if (output == input) {
 			// run inplace
-			mutate(input);
-			return input;
+			mutate(output);
+			return output;
 		}
 
 		// run as a computer
 		compute1(input, output);
 		return output;
+	}
+
+	// -- NullaryOp methods --
+
+	@Override
+	default O run(final O output) {
+		return UnaryInplaceOp.super.run(output);
 	}
 
 	// -- Runnable methods --
@@ -89,7 +92,7 @@ public interface UnaryHybridCI<I> extends UnaryComputerOp<I, I>,
 	// -- Threadable methods --
 
 	@Override
-	default UnaryHybridCI<I> getIndependentInstance() {
+	default UnaryHybridCI<I, O> getIndependentInstance() {
 		// NB: We assume the op instance is thread-safe by default.
 		// Individual implementations can override this assumption if they
 		// have state (such as buffers) that cannot be shared across threads.

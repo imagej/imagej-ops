@@ -38,6 +38,6 @@ import net.imagej.ops.special.inplace.UnaryInplaceOp;
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public interface JoinNInplaces<A> extends UnaryInplaceOp<A>, JoinNOps<UnaryInplaceOp<A>> {
+public interface JoinNInplaces<I, O extends I> extends UnaryInplaceOp<I, O>, JoinNOps<UnaryInplaceOp<I, O>> {
 	// NB: Marker interface.
 }

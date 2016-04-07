@@ -31,7 +31,7 @@
 package net.imagej.ops.special.hybrid;
 
 import net.imagej.ops.special.AbstractUnaryOp;
-import net.imagej.ops.special.OutputMutable;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -44,7 +44,7 @@ import org.scijava.plugin.Parameter;
  * @author Curtis Rueden
  */
 public abstract class AbstractUnaryHybridC<I, O> extends AbstractUnaryOp<I, O>
-	implements OutputMutable<O>
+	implements UnaryComputerOp<I, O>
 {
 
 	// -- Parameters --

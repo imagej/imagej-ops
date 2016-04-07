@@ -45,14 +45,14 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Join.class)
 public class DefaultJoinComputerAndInplace<A, B> extends
-	AbstractUnaryComputerOp<A, B> implements JoinComputerAndInplace<A, B>
+	AbstractUnaryComputerOp<A, B> implements JoinComputerAndInplace<A, B, B>
 {
 
 	@Parameter
 	private UnaryComputerOp<A, B> first;
 
 	@Parameter
-	private UnaryInplaceOp<B> second;
+	private UnaryInplaceOp<B, B> second;
 
 	// -- Join2Ops methods --
 
@@ -67,12 +67,12 @@ public class DefaultJoinComputerAndInplace<A, B> extends
 	}
 
 	@Override
-	public UnaryInplaceOp<B> getSecond() {
+	public UnaryInplaceOp<B, B> getSecond() {
 		return second;
 	}
 
 	@Override
-	public void setSecond(final UnaryInplaceOp<B> second) {
+	public void setSecond(final UnaryInplaceOp<B, B> second) {
 		this.second = second;
 	}
 

@@ -116,8 +116,9 @@ public class ConvertIIsTest extends AbstractOpTest {
 	}
 
 	private void addNoise(final Iterable<ShortType> image) {
-		final UnaryInplaceOp<ShortType> noiseOp = Inplaces.unary(ops,
-			Ops.Filter.AddNoise.class, ShortType.class, -32768, 32767, 10000);
+		// NB: Need "? super ShortType" instead of "?" to make javac happy.
+		final UnaryInplaceOp<? super ShortType, ShortType> noiseOp = Inplaces.unary(
+			ops, Ops.Filter.AddNoise.class, ShortType.class, -32768, 32767, 10000);
 		ops.map(image, noiseOp);
 	}
 

@@ -28,62 +28,15 @@
  * #L%
  */
 
-package net.imagej.ops.loop;
-
-import net.imagej.ops.Ops;
-import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
-import net.imagej.ops.special.inplace.UnaryInplaceOp;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+package net.imagej.ops.special.hybrid;
 
 /**
- * Default implementation of a {@link LoopInplace}.
+ * Abstract superclass for {@link BinaryHybridCI} implementations.
  * 
- * @author Christian Dietz (University of Konstanz)
- * @author Curtis Rueden
+ * @author Leon Yang
  */
-@Plugin(type = Ops.Loop.class)
-public class DefaultLoopInplace<A> extends AbstractUnaryInplaceOp<A> implements
-	LoopInplace<A, A>
+public abstract class AbstractBinaryHybridCI<I, O extends I> extends
+	AbstractBinaryHybridCI1<I, I, O> implements BinaryHybridCI<I, O>
 {
-
-	@Parameter
-	private UnaryInplaceOp<A, A> op;
-
-	@Parameter
-	private int n;
-
-	// -- LoopOp methods --
-
-	@Override
-	public UnaryInplaceOp<A, A> getOp() {
-		return op;
-	}
-
-	@Override
-	public void setOp(final UnaryInplaceOp<A, A> op) {
-		this.op = op;
-	}
-
-	@Override
-	public int getLoopCount() {
-		return n;
-	}
-
-	@Override
-	public void setLoopCount(final int n) {
-		this.n = n;
-	}
-
-	// -- Threadable methods --
-
-	@Override
-	public DefaultLoopInplace<A> getIndependentInstance() {
-		final DefaultLoopInplace<A> looper = new DefaultLoopInplace<>();
-		looper.setOp(getOp().getIndependentInstance());
-		looper.setLoopCount(getLoopCount());
-		return looper;
-	}
-
+	// NB: No implementation needed.
 }

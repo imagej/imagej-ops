@@ -444,12 +444,11 @@ public interface OpEnvironment extends Contextual {
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoin2Inplaces.class)
-	default <A> A join(final A arg, final UnaryInplaceOp<A> first,
-		final UnaryInplaceOp<A> second)
+	default <A, B extends A, C extends B> C join(final C arg,
+		final UnaryInplaceOp<A, B> first, final UnaryInplaceOp<B, C> second)
 	{
 		@SuppressWarnings("unchecked")
-		final A result = (A) run(net.imagej.ops.Ops.Join.class,
-			arg, first, second);
+		final C result = (C) run(net.imagej.ops.Ops.Join.class, arg, first, second);
 		return result;
 	}
 
@@ -467,33 +466,32 @@ public interface OpEnvironment extends Contextual {
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinNInplaces.class)
-	default <A> A join(final A arg, final List<? extends UnaryInplaceOp<A>> ops) {
+	default <I, O extends I> O join(final O arg,
+		final List<? extends UnaryInplaceOp<I, O>> ops)
+	{
 		@SuppressWarnings("unchecked")
-		final A result = (A) run(net.imagej.ops.Ops.Join.class,
-			arg, ops);
+		final O result = (O) run(net.imagej.ops.Ops.Join.class, arg, ops);
 		return result;
 	}
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceAndComputer.class)
-	default <A, B> B join(final B out, final A in, final UnaryInplaceOp<A> first,
-		final UnaryComputerOp<A, B> second)
+	default <AI, AO extends AI, B> B join(final B out, final AO in,
+		final UnaryInplaceOp<AI, AO> first, final UnaryComputerOp<AO, B> second)
 	{
 		@SuppressWarnings("unchecked")
-		final B result = (B) run(
-			net.imagej.ops.Ops.Join.class, out, in, first,
+		final B result = (B) run(net.imagej.ops.Ops.Join.class, out, in, first,
 			second);
 		return result;
 	}
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputerAndInplace.class)
-	default <A, B> B join(final B out, final A in,
-		final UnaryComputerOp<A, B> first, final UnaryInplaceOp<B> second)
+	default <A, BI, BO extends BI> BO join(final BO out, final A in,
+		final UnaryComputerOp<A, BO> first, final UnaryInplaceOp<BI, BO> second)
 	{
 		@SuppressWarnings("unchecked")
-		final B result = (B) run(
-			net.imagej.ops.Ops.Join.class, out, in, first,
+		final BO result = (BO) run(net.imagej.ops.Ops.Join.class, out, in, first,
 			second);
 		return result;
 	}
@@ -506,10 +504,11 @@ public interface OpEnvironment extends Contextual {
 
 	/** Executes the "loop" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.loop.DefaultLoopInplace.class)
-	default <A> A loop(final A arg, final UnaryInplaceOp<A> op, final int n) {
+	default <I, O extends I> O loop(final O arg, final UnaryInplaceOp<I, O> op,
+		final int n)
+	{
 		@SuppressWarnings("unchecked")
-		final A result = (A) run(net.imagej.ops.Ops.Loop.class, arg,
-			op, n);
+		final O result = (O) run(net.imagej.ops.Ops.Loop.class, arg, op, n);
 		return result;
 	}
 
@@ -724,34 +723,36 @@ public interface OpEnvironment extends Contextual {
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapIIInplaceParallel.class)
-	default <A> IterableInterval<A> map(final IterableInterval<A> arg,
-		final UnaryInplaceOp<A> op)
+	default <EI, EO extends EI> IterableInterval<EO> map(
+		final IterableInterval<EO> arg, final UnaryInplaceOp<EI, EO> op)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<A> result = (IterableInterval<A>) run(
+		final IterableInterval<EO> result = (IterableInterval<EO>) run(
 			net.imagej.ops.Ops.Map.class, arg, op);
 		return result;
 	}
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapIterableInplace.class)
-	default <A> Iterable<A> map(final Iterable<A> arg, final UnaryInplaceOp<A> op) {
+	default <EI, EO extends EI> Iterable<EO> map(final Iterable<EO> arg,
+		final UnaryInplaceOp<EI, EO> op)
+	{
 		@SuppressWarnings("unchecked")
-		final Iterable<A> result = (Iterable<A>) run(
-			net.imagej.ops.Ops.Map.class, arg, op);
+		final Iterable<EO> result = (Iterable<EO>) run(net.imagej.ops.Ops.Map.class,
+			arg, op);
 		return result;
 	}
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.neighborhood.MapNeighborhood.class)
-	default <I, O> IterableInterval<O> map(
-		final IterableInterval<O> out,
-		final RandomAccessibleInterval<I> in, final UnaryComputerOp<Iterable<I>, O> op,
+	default <EI, EO> IterableInterval<EO> map(
+		final IterableInterval<EO> out,
+		final RandomAccessibleInterval<EI> in, final UnaryComputerOp<Iterable<EI>, EO> op,
 		final Shape shape)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<O> result =
-			(IterableInterval<O>) run(
+		final IterableInterval<EO> result =
+			(IterableInterval<EO>) run(
 				net.imagej.ops.Ops.Map.class, out, in, op, shape);
 		return result;
 	}
@@ -759,13 +760,13 @@ public interface OpEnvironment extends Contextual {
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.map.neighborhood.MapNeighborhoodWithCenter.class)
-	default <I, O> IterableInterval<O> map(
-		final IterableInterval<O> out, final RandomAccessibleInterval<I> in,
-		final CenterAwareComputerOp<I, O> func, final Shape shape)
+	default <EI, EO> IterableInterval<EO> map(
+		final IterableInterval<EO> out, final RandomAccessibleInterval<EI> in,
+		final CenterAwareComputerOp<EI, EO> func, final Shape shape)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<O> result =
-			(IterableInterval<O>) run(
+		final IterableInterval<EO> result =
+			(IterableInterval<EO>) run(
 				net.imagej.ops.Ops.Map.class, out, in, func, shape);
 		return result;
 	}
@@ -776,19 +777,20 @@ public interface OpEnvironment extends Contextual {
 		final Iterable<EI> in, final UnaryComputerOp<EI, EO> op)
 	{
 		@SuppressWarnings("unchecked")
-		final Iterable<EO> result = (Iterable<EO>) run(
-			net.imagej.ops.Ops.Map.class, out, in, op);
+		final Iterable<EO> result = (Iterable<EO>) run(net.imagej.ops.Ops.Map.class,
+			out, in, op);
 		return result;
 	}
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(ops = { net.imagej.ops.map.MapIIAndIIInplaceParallel.class,
 		net.imagej.ops.map.MapIIAndIIInplace.class })
-	default <EA> IterableInterval<EA> map(final IterableInterval<EA> arg,
-		final IterableInterval<EA> in, final BinaryInplaceOp<EA> op)
+	default <EI, EO extends EI> IterableInterval<EO> map(
+		final IterableInterval<EO> arg, final IterableInterval<EO> in,
+		final BinaryInplaceOp<EI, EO> op)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<EA> result = (IterableInterval<EA>) run(
+		final IterableInterval<EO> result = (IterableInterval<EO>) run(
 			net.imagej.ops.Ops.Map.class, arg, in, op);
 		return result;
 	}
@@ -796,36 +798,41 @@ public interface OpEnvironment extends Contextual {
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(ops = { net.imagej.ops.map.MapBinaryInplace1s.IIAndIIParallel.class,
 		net.imagej.ops.map.MapBinaryInplace1s.IIAndII.class })
-	default <EA, EI> IterableInterval<EA> map(final IterableInterval<EA> arg,
-		final IterableInterval<EI> in, final BinaryInplace1Op<EA, EI> op)
+	default <EI1, EI2, EO extends EI1> IterableInterval<EO> map(
+		final IterableInterval<EO> arg, final IterableInterval<EI2> in,
+		final BinaryInplace1Op<EI1, EI2, EO> op)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<EA> result = (IterableInterval<EA>) run(
+		final IterableInterval<EO> result = (IterableInterval<EO>) run(
 			Ops.Map.class, arg, in, op);
 		return result;
 	}
 
 	/** Executes the "map" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.map.MapBinaryInplace1s.IIAndRAIParallel.class,
+	@OpMethod(ops = {
+		net.imagej.ops.map.MapBinaryInplace1s.IIAndRAIParallel.class,
 		net.imagej.ops.map.MapBinaryInplace1s.IIAndRAI.class })
-	default <EA, EI> IterableInterval<EA> map(final IterableInterval<EA> arg,
-		final RandomAccessibleInterval<EI> in, final BinaryInplace1Op<EA, EI> op)
+	default <EI1, EI2, EO extends EI1> IterableInterval<EO> map(
+		final IterableInterval<EO> arg, final RandomAccessibleInterval<EI2> in,
+		final BinaryInplace1Op<EI1, EI2, EO> op)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<EA> result = (IterableInterval<EA>) run(
+		final IterableInterval<EO> result = (IterableInterval<EO>) run(
 			Ops.Map.class, arg, in, op);
 		return result;
 	}
 
 	/** Executes the "map" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.map.MapBinaryInplace1s.RAIAndIIParallel.class,
+	@OpMethod(ops = {
+		net.imagej.ops.map.MapBinaryInplace1s.RAIAndIIParallel.class,
 		net.imagej.ops.map.MapBinaryInplace1s.RAIAndII.class })
-	default <EA, EI> RandomAccessibleInterval<EA> map(final RandomAccessibleInterval<EA> arg,
-		final IterableInterval<EI> in, final BinaryInplace1Op<EA, EI> op)
+	default <EI1, EI2, EO extends EI1> RandomAccessibleInterval<EO> map(
+		final RandomAccessibleInterval<EO> arg, final IterableInterval<EI2> in,
+		final BinaryInplace1Op<EI1, EI2, EO> op)
 	{
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<EA> result = (RandomAccessibleInterval<EA>) run(
-			Ops.Map.class, arg, in, op);
+		final RandomAccessibleInterval<EO> result =
+			(RandomAccessibleInterval<EO>) run(Ops.Map.class, arg, in, op);
 		return result;
 	}
 

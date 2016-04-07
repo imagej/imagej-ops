@@ -36,9 +36,12 @@ import net.imagej.ops.special.inplace.UnaryInplaceOp;
  * Typed interface for "map" {@link UnaryInplaceOp}s.
  * 
  * @author Curtis Rueden
- * @param <EA> element type of inplace arguments
+ * @param <EI> element input type
+ * @param <EO> element output type
  * @param <OP> type of {@link UnaryInplaceOp} which processes each element
  */
-public interface MapInplace<EA, OP extends UnaryInplaceOp<EA>> extends MapOp<OP> {
+public interface MapInplace<EI, EO extends EI, OP extends UnaryInplaceOp<EI, EO>>
+	extends MapOp<OP>
+{
 	// NB: Marker interface.
 }

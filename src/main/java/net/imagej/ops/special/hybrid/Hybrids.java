@@ -191,25 +191,26 @@ public final class Hybrids {
 	 *          interface which multiple {@link UnaryHybridCI}s implement), then
 	 *          the best {@link UnaryHybridCI} implementation to use will be
 	 *          selected automatically from the type and arguments.
-	 * @param argType The {@link Class} of the {@link UnaryHybridCI} typed
-	 *          arguments.
+	 * @param outType The {@link Class} of the {@link UnaryHybridCI} typed
+	 *          output.
+	 * @param inType The {@link Class} of the {@link UnaryHybridCI} typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed input and
 	 *          output values.
 	 * @return A {@link UnaryHybridCI} with populated inputs, ready to use.
 	 */
-	public static <A, OP extends Op> UnaryHybridCI<A> unaryCI(
-		final OpEnvironment ops, final Class<OP> opType, final Class<A> argType,
-		final Object... otherArgs)
+	public static <I, O extends I, OP extends Op> UnaryHybridCI<I, O> unaryCI(
+		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
+		final Class<I> inType, final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
-		final UnaryHybridCI<A> op = SpecialOp.op(ops, opType, UnaryHybridCI.class,
-			null, OpUtils.args(otherArgs, argType, argType));
+		final UnaryHybridCI<I, O> op = SpecialOp.op(ops, opType,
+			UnaryHybridCI.class, null, OpUtils.args(otherArgs, outType, inType));
 		return op;
 	}
 
 	/**
-	 * Gets the best {@link UnaryHybridCI} implementation for the given types and
-	 * arguments, populating its inputs.
+	 * Gets the best {@link UnaryHybridCI} implementation for the given types
+	 * and arguments, populating its inputs.
 	 *
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
@@ -217,26 +218,26 @@ public final class Hybrids {
 	 *          interface which multiple {@link UnaryHybridCI}s implement), then
 	 *          the best {@link UnaryHybridCI} implementation to use will be
 	 *          selected automatically from the type and arguments.
-	 * @param argType The {@link Class} of the {@link UnaryHybridCI} typed
-	 *          arguments.
+	 * @param outType The {@link Class} of the {@link UnaryHybridCI} typed
+	 *          output.
 	 * @param in The typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed input and
 	 *          output values.
 	 * @return A {@link UnaryHybridCI} with populated inputs, ready to use.
 	 */
-	public static <A, OP extends Op> UnaryHybridCI<A> unaryCI(
-		final OpEnvironment ops, final Class<OP> opType, final Class<A> argType,
-		final A in, final Object... otherArgs)
+	public static <I, O extends I, OP extends Op> UnaryHybridCI<I, O> unaryCI(
+		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
+		final I in, final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
-		final UnaryHybridCI<A> op = SpecialOp.op(ops, opType, UnaryHybridCI.class,
-			null, OpUtils.args(otherArgs, argType, in));
+		final UnaryHybridCI<I, O> op = SpecialOp.op(ops, opType,
+			UnaryHybridCI.class, null, OpUtils.args(otherArgs, outType, in));
 		return op;
 	}
 
 	/**
-	 * Gets the best {@link UnaryHybridCI} implementation for the given types and
-	 * arguments, populating its inputs.
+	 * Gets the best {@link UnaryHybridCI} implementation for the given types
+	 * and arguments, populating its inputs.
 	 *
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
@@ -250,13 +251,13 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link UnaryHybridCI} with populated inputs, ready to use.
 	 */
-	public static <A, OP extends Op> UnaryHybridCI<A> unaryCI(
-		final OpEnvironment ops, final Class<OP> opType, final A out, final A in,
+	public static <I, O extends I, OP extends Op> UnaryHybridCI<I, O> unaryCI(
+		final OpEnvironment ops, final Class<OP> opType, final O out, final I in,
 		final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
-		final UnaryHybridCI<A> op = SpecialOp.op(ops, opType, UnaryHybridCI.class,
-			null, OpUtils.args(otherArgs, out, in));
+		final UnaryHybridCI<I, O> op = SpecialOp.op(ops, opType,
+			UnaryHybridCI.class, null, OpUtils.args(otherArgs, out, in));
 		return op;
 	}
 
@@ -270,25 +271,26 @@ public final class Hybrids {
 	 *          interface which multiple {@link UnaryHybridCFI}s implement), then
 	 *          the best {@link UnaryHybridCFI} implementation to use will be
 	 *          selected automatically from the type and arguments.
-	 * @param argType The {@link Class} of the {@link UnaryHybridCFI} typed
-	 *          arguments.
+	 * @param outType The {@link Class} of the {@link UnaryHybridCFI} typed
+	 *          output.
+	 * @param inType The {@link Class} of the {@link UnaryHybridCFI} typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed input and
 	 *          output values.
 	 * @return A {@link UnaryHybridCFI} with populated inputs, ready to use.
 	 */
-	public static <A, OP extends Op> UnaryHybridCFI<A> unaryCFI(
-		final OpEnvironment ops, final Class<OP> opType, final Class<A> argType,
-		final Object... otherArgs)
+	public static <I, O extends I, OP extends Op> UnaryHybridCFI<I, O> unaryCFI(
+		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
+		final Class<I> inType, final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
-		final UnaryHybridCFI<A> op = SpecialOp.op(ops, opType, UnaryHybridCFI.class,
-			null, OpUtils.args(otherArgs, argType, argType));
+		final UnaryHybridCFI<I, O> op = SpecialOp.op(ops, opType,
+			UnaryHybridCFI.class, null, OpUtils.args(otherArgs, outType, inType));
 		return op;
 	}
 
 	/**
-	 * Gets the best {@link UnaryHybridCFI} implementation for the given types and
-	 * arguments, populating its inputs.
+	 * Gets the best {@link UnaryHybridCFI} implementation for the given types
+	 * and arguments, populating its inputs.
 	 *
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
@@ -296,26 +298,26 @@ public final class Hybrids {
 	 *          interface which multiple {@link UnaryHybridCFI}s implement), then
 	 *          the best {@link UnaryHybridCFI} implementation to use will be
 	 *          selected automatically from the type and arguments.
-	 * @param argType The {@link Class} of the {@link UnaryHybridCFI} typed
-	 *          arguments.
+	 * @param outType The {@link Class} of the {@link UnaryHybridCFI} typed
+	 *          output.
 	 * @param in The typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed input and
 	 *          output values.
 	 * @return A {@link UnaryHybridCFI} with populated inputs, ready to use.
 	 */
-	public static <A, OP extends Op> UnaryHybridCFI<A> unaryCFI(
-		final OpEnvironment ops, final Class<OP> opType, final Class<A> argType,
-		final A in, final Object... otherArgs)
+	public static <I, O extends I, OP extends Op> UnaryHybridCFI<I, O> unaryCFI(
+		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
+		final I in, final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
-		final UnaryHybridCFI<A> op = SpecialOp.op(ops, opType, UnaryHybridCFI.class,
-			null, OpUtils.args(otherArgs, argType, in));
+		final UnaryHybridCFI<I, O> op = SpecialOp.op(ops, opType,
+			UnaryHybridCFI.class, null, OpUtils.args(otherArgs, outType, in));
 		return op;
 	}
 
 	/**
-	 * Gets the best {@link UnaryHybridCFI} implementation for the given types and
-	 * arguments, populating its inputs.
+	 * Gets the best {@link UnaryHybridCFI} implementation for the given types
+	 * and arguments, populating its inputs.
 	 *
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
@@ -329,13 +331,13 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link UnaryHybridCFI} with populated inputs, ready to use.
 	 */
-	public static <A, OP extends Op> UnaryHybridCFI<A> unaryCFI(
-		final OpEnvironment ops, final Class<OP> opType, final A out, final A in,
+	public static <I, O extends I, OP extends Op> UnaryHybridCFI<I, O> unaryCFI(
+		final OpEnvironment ops, final Class<OP> opType, final O out, final I in,
 		final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
-		final UnaryHybridCFI<A> op = SpecialOp.op(ops, opType, UnaryHybridCFI.class,
-			null, OpUtils.args(otherArgs, out, in));
+		final UnaryHybridCFI<I, O> op = SpecialOp.op(ops, opType,
+			UnaryHybridCFI.class, null, OpUtils.args(otherArgs, out, in));
 		return op;
 	}
 
@@ -429,6 +431,97 @@ public final class Hybrids {
 	}
 
 	/**
+	 * Gets the best {@link BinaryHybridCI1} implementation for the given types
+	 * and arguments, populating its inputs.
+	 *
+	 * @param ops The {@link OpEnvironment} to search for a matching op.
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link BinaryHybridCI1}s share this type (e.g., the type is an
+	 *          interface which multiple {@link BinaryHybridCI1}s implement),
+	 *          then the best {@link BinaryHybridCI1} implementation to use will
+	 *          be selected automatically from the type and arguments.
+	 * @param outType The {@link Class} of the {@link BinaryHybridCI1} typed
+	 *          output.
+	 * @param in1Type The {@link Class} of the {@link BinaryHybridCI1} first
+	 *          typed input.
+	 * @param in2Type The {@link Class} of the {@link BinaryHybridCI1} second
+	 *          typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed inputs and
+	 *          output values.
+	 * @return A {@link BinaryHybridCI1} with populated inputs, ready to use.
+	 */
+	public static <I1, I2, O extends I1, OP extends Op>
+		BinaryHybridCI1<I1, I2, O> binaryCI1(final OpEnvironment ops,
+			final Class<OP> opType, final Class<O> outType, final Class<I1> in1Type,
+			final Class<I2> in2Type, final Object... otherArgs)
+	{
+		final Object[] args = OpUtils.args(otherArgs, outType, in1Type, in2Type);
+		@SuppressWarnings("unchecked")
+		final BinaryHybridCI1<I1, I2, O> op = SpecialOp.op(ops, opType,
+			BinaryHybridCI1.class, null, args);
+		return op;
+	}
+
+	/**
+	 * Gets the best {@link BinaryHybridCI1} implementation for the given types
+	 * and arguments, populating its inputs.
+	 *
+	 * @param ops The {@link OpEnvironment} to search for a matching op.
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link BinaryHybridCI1}s share this type (e.g., the type is an
+	 *          interface which multiple {@link BinaryHybridCI1}s implement),
+	 *          then the best {@link BinaryHybridCI1} implementation to use will
+	 *          be selected automatically from the type and arguments.
+	 * @param outType The {@link Class} of the {@link BinaryHybridCI1} typed
+	 *          output.
+	 * @param in1 The first typed input.
+	 * @param in2 The second typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed inputs and
+	 *          output values.
+	 * @return A {@link BinaryHybridCI1} with populated inputs, ready to use.
+	 */
+	public static <I1, I2, O extends I1, OP extends Op>
+		BinaryHybridCI1<I1, I2, O> binaryCI1(final OpEnvironment ops,
+			final Class<OP> opType, final Class<O> outType, final I1 in1,
+			final I2 in2, final Object... otherArgs)
+	{
+		final Object[] args = OpUtils.args(otherArgs, outType, in1, in2);
+		@SuppressWarnings("unchecked")
+		final BinaryHybridCI1<I1, I2, O> op = SpecialOp.op(ops, opType,
+			BinaryHybridCI1.class, null, args);
+		return op;
+	}
+
+	/**
+	 * Gets the best {@link BinaryHybridCI1} implementation for the given types
+	 * and arguments, populating its inputs.
+	 *
+	 * @param ops The {@link OpEnvironment} to search for a matching op.
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link BinaryHybridCI1}s share this type (e.g., the type is an
+	 *          interface which multiple {@link BinaryHybridCI1}s implement),
+	 *          then the best {@link BinaryHybridCI1} implementation to use will
+	 *          be selected automatically from the type and arguments.
+	 * @param out The typed output.
+	 * @param in1 The first typed input.
+	 * @param in2 The second typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed inputs and
+	 *          output values.
+	 * @return A {@link BinaryHybridCI1} with populated inputs, ready to use.
+	 */
+	public static <I1, I2, O extends I1, OP extends Op>
+		BinaryHybridCI1<I1, I2, O> binaryCI1(final OpEnvironment ops,
+			final Class<OP> opType, final O out, final I1 in1, final I2 in2,
+			final Object... otherArgs)
+	{
+		final Object[] args = OpUtils.args(otherArgs, out, in1, in2);
+		@SuppressWarnings("unchecked")
+		final BinaryHybridCI1<I1, I2, O> op = SpecialOp.op(ops, opType,
+			BinaryHybridCI1.class, null, args);
+		return op;
+	}
+
+	/**
 	 * Gets the best {@link BinaryHybridCFI1} implementation for the given types
 	 * and arguments, populating its inputs.
 	 *
@@ -438,21 +531,24 @@ public final class Hybrids {
 	 *          interface which multiple {@link BinaryHybridCFI1}s implement),
 	 *          then the best {@link BinaryHybridCFI1} implementation to use will
 	 *          be selected automatically from the type and arguments.
-	 * @param argType The {@link Class} of the {@link BinaryHybridCFI1} typed
-	 *          output and first input.
+	 * @param outType The {@link Class} of the {@link BinaryHybridCFI1} typed
+	 *          output.
+	 * @param in1Type The {@link Class} of the {@link BinaryHybridCFI1} first
+	 *          typed input.
 	 * @param in2Type The {@link Class} of the {@link BinaryHybridCFI1} second
 	 *          typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed inputs and
 	 *          output values.
 	 * @return A {@link BinaryHybridCFI1} with populated inputs, ready to use.
 	 */
-	public static <A, I, OP extends Op> BinaryHybridCFI1<A, I> binaryCFI1(
-		final OpEnvironment ops, final Class<OP> opType, final Class<A> argType,
-		final Class<I> in2Type, final Object... otherArgs)
+	public static <I1, I2, O extends I1, OP extends Op>
+		BinaryHybridCFI1<I1, I2, O> binaryCFI1(final OpEnvironment ops,
+			final Class<OP> opType, final Class<O> outType, final Class<I1> in1Type,
+			final Class<I2> in2Type, final Object... otherArgs)
 	{
-		final Object[] args = OpUtils.args(otherArgs, argType, argType, in2Type);
+		final Object[] args = OpUtils.args(otherArgs, outType, in1Type, in2Type);
 		@SuppressWarnings("unchecked")
-		final BinaryHybridCFI1<A, I> op = SpecialOp.op(ops, opType,
+		final BinaryHybridCFI1<I1, I2, O> op = SpecialOp.op(ops, opType,
 			BinaryHybridCFI1.class, null, args);
 		return op;
 	}
@@ -467,21 +563,22 @@ public final class Hybrids {
 	 *          interface which multiple {@link BinaryHybridCFI1}s implement),
 	 *          then the best {@link BinaryHybridCFI1} implementation to use will
 	 *          be selected automatically from the type and arguments.
-	 * @param argType The {@link Class} of the {@link BinaryHybridCFI1} typed
-	 *          output and first input.
+	 * @param outType The {@link Class} of the {@link BinaryHybridCFI1} typed
+	 *          output.
 	 * @param in1 The first typed input.
 	 * @param in2 The second typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed inputs and
 	 *          output values.
 	 * @return A {@link BinaryHybridCFI1} with populated inputs, ready to use.
 	 */
-	public static <A, I, OP extends Op> BinaryHybridCFI1<A, I> binaryCFI1(
-		final OpEnvironment ops, final Class<OP> opType, final Class<A> argType,
-		final A in1, final I in2, final Object... otherArgs)
+	public static <I1, I2, O extends I1, OP extends Op>
+		BinaryHybridCFI1<I1, I2, O> binaryCFI1(final OpEnvironment ops,
+			final Class<OP> opType, final Class<O> outType, final I1 in1,
+			final I2 in2, final Object... otherArgs)
 	{
-		final Object[] args = OpUtils.args(otherArgs, argType, in1, in2);
+		final Object[] args = OpUtils.args(otherArgs, outType, in1, in2);
 		@SuppressWarnings("unchecked")
-		final BinaryHybridCFI1<A, I> op = SpecialOp.op(ops, opType,
+		final BinaryHybridCFI1<I1, I2, O> op = SpecialOp.op(ops, opType,
 			BinaryHybridCFI1.class, null, args);
 		return op;
 	}
@@ -503,14 +600,101 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link BinaryHybridCFI1} with populated inputs, ready to use.
 	 */
-	public static <A, I, OP extends Op> BinaryHybridCFI1<A, I> binaryCFI1(
-		final OpEnvironment ops, final Class<OP> opType, final A out, final A in1,
+	public static <I1, I2, O extends I1, OP extends Op>
+		BinaryHybridCFI1<I1, I2, O> binaryCFI1(final OpEnvironment ops,
+			final Class<OP> opType, final O out, final I1 in1, final I2 in2,
+			final Object... otherArgs)
+	{
+		final Object[] args = OpUtils.args(otherArgs, out, in1, in2);
+		@SuppressWarnings("unchecked")
+		final BinaryHybridCFI1<I1, I2, O> op = SpecialOp.op(ops, opType,
+			BinaryHybridCFI1.class, null, args);
+		return op;
+	}
+
+	/**
+	 * Gets the best {@link BinaryHybridCI} implementation for the given types
+	 * and arguments, populating its inputs.
+	 *
+	 * @param ops The {@link OpEnvironment} to search for a matching op.
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link BinaryHybridCI}s share this type (e.g., the type is an
+	 *          interface which multiple {@link BinaryHybridCI}s implement), then
+	 *          the best {@link BinaryHybridCI} implementation to use will be
+	 *          selected automatically from the type and arguments.
+	 * @param outType The {@link Class} of the {@link BinaryHybridCI} typed
+	 *          output.
+	 * @param inType The {@link Class} of the {@link BinaryHybridCI} typed
+	 *          inputs.
+	 * @param otherArgs The operation's arguments, excluding the typed inputs and
+	 *          output values.
+	 * @return A {@link BinaryHybridCI} with populated inputs, ready to use.
+	 */
+	public static <I, O extends I, OP extends Op> BinaryHybridCI<I, O> binaryCI(
+		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
+		final Class<I> inType, final Object... otherArgs)
+	{
+		final Object[] args = OpUtils.args(otherArgs, outType, inType, inType);
+		@SuppressWarnings("unchecked")
+		final BinaryHybridCI<I, O> op = SpecialOp.op(ops, opType,
+			BinaryHybridCI.class, null, args);
+		return op;
+	}
+
+	/**
+	 * Gets the best {@link BinaryHybridCI} implementation for the given types
+	 * and arguments, populating its inputs.
+	 *
+	 * @param ops The {@link OpEnvironment} to search for a matching op.
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link BinaryHybridCI}s share this type (e.g., the type is an
+	 *          interface which multiple {@link BinaryHybridCI}s implement), then
+	 *          the best {@link BinaryHybridCI} implementation to use will be
+	 *          selected automatically from the type and arguments.
+	 * @param outType The {@link Class} of the {@link BinaryHybridCI} typed
+	 *          output.
+	 * @param in1 The first typed input.
+	 * @param in2 The second typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed inputs and
+	 *          output values.
+	 * @return A {@link BinaryHybridCI} with populated inputs, ready to use.
+	 */
+	public static <I, O extends I, OP extends Op> BinaryHybridCI<I, O> binaryCI(
+		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
+		final I in1, final I in2, final Object... otherArgs)
+	{
+		final Object[] args = OpUtils.args(otherArgs, outType, in1, in2);
+		@SuppressWarnings("unchecked")
+		final BinaryHybridCI<I, O> op = SpecialOp.op(ops, opType,
+			BinaryHybridCI.class, null, args);
+		return op;
+	}
+
+	/**
+	 * Gets the best {@link BinaryHybridCI} implementation for the given types
+	 * and arguments, populating its inputs.
+	 *
+	 * @param ops The {@link OpEnvironment} to search for a matching op.
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link BinaryHybridCI}s share this type (e.g., the type is an
+	 *          interface which multiple {@link BinaryHybridCI}s implement), then
+	 *          the best {@link BinaryHybridCI} implementation to use will be
+	 *          selected automatically from the type and arguments.
+	 * @param out The typed output.
+	 * @param in1 The first typed input.
+	 * @param in2 The second typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed inputs and
+	 *          output values.
+	 * @return A {@link BinaryHybridCI} with populated inputs, ready to use.
+	 */
+	public static <I, O extends I, OP extends Op> BinaryHybridCI<I, O> binaryCI(
+		final OpEnvironment ops, final Class<OP> opType, final O out, final I in1,
 		final I in2, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in1, in2);
 		@SuppressWarnings("unchecked")
-		final BinaryHybridCFI1<A, I> op = SpecialOp.op(ops, opType,
-			BinaryHybridCFI1.class, null, args);
+		final BinaryHybridCI<I, O> op = SpecialOp.op(ops, opType,
+			BinaryHybridCI.class, null, args);
 		return op;
 	}
 
@@ -524,19 +708,21 @@ public final class Hybrids {
 	 *          interface which multiple {@link BinaryHybridCFI}s implement), then
 	 *          the best {@link BinaryHybridCFI} implementation to use will be
 	 *          selected automatically from the type and arguments.
-	 * @param argType The {@link Class} of the {@link BinaryHybridCFI} typed
-	 *          arguments.
+	 * @param outType The {@link Class} of the {@link BinaryHybridCFI} typed
+	 *          output.
+	 * @param inType The {@link Class} of the {@link BinaryHybridCFI} typed
+	 *          inputs.
 	 * @param otherArgs The operation's arguments, excluding the typed inputs and
 	 *          output values.
 	 * @return A {@link BinaryHybridCFI} with populated inputs, ready to use.
 	 */
-	public static <A, I, OP extends Op> BinaryHybridCFI<A> binaryCFI(
-		final OpEnvironment ops, final Class<OP> opType, final Class<A> argType,
-		final Object... otherArgs)
+	public static <I, O extends I, OP extends Op> BinaryHybridCFI<I, O> binaryCFI(
+		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
+		final Class<I> inType, final Object... otherArgs)
 	{
-		final Object[] args = OpUtils.args(otherArgs, argType, argType, argType);
+		final Object[] args = OpUtils.args(otherArgs, outType, inType, inType);
 		@SuppressWarnings("unchecked")
-		final BinaryHybridCFI<A> op = SpecialOp.op(ops, opType,
+		final BinaryHybridCFI<I, O> op = SpecialOp.op(ops, opType,
 			BinaryHybridCFI.class, null, args);
 		return op;
 	}
@@ -551,21 +737,21 @@ public final class Hybrids {
 	 *          interface which multiple {@link BinaryHybridCFI}s implement), then
 	 *          the best {@link BinaryHybridCFI} implementation to use will be
 	 *          selected automatically from the type and arguments.
-	 * @param argType The {@link Class} of the {@link BinaryHybridCFI} typed
-	 *          arguments.
+	 * @param outType The {@link Class} of the {@link BinaryHybridCFI} typed
+	 *          output.
 	 * @param in1 The first typed input.
 	 * @param in2 The second typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed inputs and
 	 *          output values.
 	 * @return A {@link BinaryHybridCFI} with populated inputs, ready to use.
 	 */
-	public static <A, I, OP extends Op> BinaryHybridCFI<A> binaryCFI(
-		final OpEnvironment ops, final Class<OP> opType, final Class<A> argType,
-		final A in1, final I in2, final Object... otherArgs)
+	public static <I, O extends I, OP extends Op> BinaryHybridCFI<I, O> binaryCFI(
+		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
+		final I in1, final I in2, final Object... otherArgs)
 	{
-		final Object[] args = OpUtils.args(otherArgs, argType, in1, in2);
+		final Object[] args = OpUtils.args(otherArgs, outType, in1, in2);
 		@SuppressWarnings("unchecked")
-		final BinaryHybridCFI<A> op = SpecialOp.op(ops, opType,
+		final BinaryHybridCFI<I, O> op = SpecialOp.op(ops, opType,
 			BinaryHybridCFI.class, null, args);
 		return op;
 	}
@@ -587,13 +773,13 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link BinaryHybridCFI} with populated inputs, ready to use.
 	 */
-	public static <A, I, OP extends Op> BinaryHybridCFI<A> binaryCFI(
-		final OpEnvironment ops, final Class<OP> opType, final A out, final A in1,
+	public static <I, O extends I, OP extends Op> BinaryHybridCFI<I, O> binaryCFI(
+		final OpEnvironment ops, final Class<OP> opType, final O out, final I in1,
 		final I in2, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in1, in2);
 		@SuppressWarnings("unchecked")
-		final BinaryHybridCFI<A> op = SpecialOp.op(ops, opType,
+		final BinaryHybridCFI<I, O> op = SpecialOp.op(ops, opType,
 			BinaryHybridCFI.class, null, args);
 		return op;
 	}

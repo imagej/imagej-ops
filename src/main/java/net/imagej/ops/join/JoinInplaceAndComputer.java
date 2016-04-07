@@ -38,14 +38,14 @@ import net.imagej.ops.special.inplace.UnaryInplaceOp;
  * 
  * @author Curtis Rueden
  */
-public interface JoinInplaceAndComputer<A, B> extends
-	UnaryComputerOp<A, B>, Join2Ops<UnaryInplaceOp<A>, UnaryComputerOp<A, B>>
+public interface JoinInplaceAndComputer<AI, AO extends AI, B> extends
+	UnaryComputerOp<AO, B>, Join2Ops<UnaryInplaceOp<AI, AO>, UnaryComputerOp<AO, B>>
 {
 
 	// -- UnaryComputerOp methods --
 
 	@Override
-	default void compute1(final A input, final B output) {
+	default void compute1(final AO input, final B output) {
 		getFirst().mutate(input);
 		getSecond().compute1(input, output);
 	}

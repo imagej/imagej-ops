@@ -28,62 +28,36 @@
  * #L%
  */
 
-package net.imagej.ops.loop;
+package net.imagej.ops.special.inplace;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
-import net.imagej.ops.special.inplace.UnaryInplaceOp;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.special.hybrid.BinaryHybridCFI;
 
 /**
- * Default implementation of a {@link LoopInplace}.
+ * A {@link BinaryInplaceOp} which is <em>not</em> a hybrid.
+ * <p>
+ * Like its supertype {@link BinaryInplace1OnlyOp}, even though it is a binary
+ * op, it has only <em>TWO</em> inputs: {@code arg} (the first input, which is
+ * also the output) and {@code in} (the second input). In contrast, a
+ * {@link BinaryHybridCFI} has <em>THREE</em> inputs: {@code out} (the output,
+ * which is of type BOTH), {@code in1} (the first input) and {@code in2} (the
+ * second input).
+ * </p>
  * 
- * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
+ * @param <A> type of inputs + output
  */
-@Plugin(type = Ops.Loop.class)
-public class DefaultLoopInplace<A> extends AbstractUnaryInplaceOp<A> implements
-	LoopInplace<A, A>
+public interface BinaryInplaceOnlyOp<A> extends BinaryInplaceOp<A, A>,
+	BinaryInplace1OnlyOp<A, A>
 {
-
-	@Parameter
-	private UnaryInplaceOp<A, A> op;
-
-	@Parameter
-	private int n;
-
-	// -- LoopOp methods --
-
-	@Override
-	public UnaryInplaceOp<A, A> getOp() {
-		return op;
-	}
-
-	@Override
-	public void setOp(final UnaryInplaceOp<A, A> op) {
-		this.op = op;
-	}
-
-	@Override
-	public int getLoopCount() {
-		return n;
-	}
-
-	@Override
-	public void setLoopCount(final int n) {
-		this.n = n;
-	}
 
 	// -- Threadable methods --
 
 	@Override
-	public DefaultLoopInplace<A> getIndependentInstance() {
-		final DefaultLoopInplace<A> looper = new DefaultLoopInplace<>();
-		looper.setOp(getOp().getIndependentInstance());
-		looper.setLoopCount(getLoopCount());
-		return looper;
+	default BinaryInplaceOnlyOp<A> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
 	}
 
 }

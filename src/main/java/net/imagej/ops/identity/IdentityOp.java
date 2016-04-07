@@ -31,13 +31,13 @@
 package net.imagej.ops.identity;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.inplace.UnaryInplaceOp;
+import net.imagej.ops.special.inplace.UnaryInplaceOnlyOp;
 
 /**
  * A typed "identity" function.
  * 
  * @author Curtis Rueden
  */
-public interface IdentityOp<A> extends Ops.Identity, UnaryInplaceOp<A> {
+public interface IdentityOp<A> extends Ops.Identity, UnaryInplaceOnlyOp<A> {
 	// NB: Marker interface.
 }

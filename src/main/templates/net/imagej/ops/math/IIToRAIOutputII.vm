@@ -61,7 +61,7 @@ public final class IIToRAIOutputII {
 
 	@Plugin(type = ${iface}.class)
 	public static class ${op.name}<T extends NumericType<T>> extends
-		AbstractBinaryHybridCFI1<IterableInterval<T>, RandomAccessibleInterval<T>>
+		AbstractBinaryHybridCFI1<IterableInterval<T>, RandomAccessibleInterval<T>, IterableInterval<T>>
 		implements $iface, Contingent
 	{
 

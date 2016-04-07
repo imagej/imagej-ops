@@ -46,22 +46,24 @@ import net.imagej.ops.special.inplace.BinaryInplace1Op;
  * </p>
  * 
  * @author Curtis Rueden
- * @param <A> type of first input + output
- * @param <I> type of second input
+ * @param <I1> type of first input
+ * @param <I2> type of second input
+ * @param <O> type of output
  * @see BinaryHybridCF
  * @see BinaryHybridCFI
  */
-public interface BinaryHybridCFI1<A, I> extends BinaryHybridCF<A, I, A>,
-	BinaryInplace1Op<A, I>, UnaryHybridCFI<A>
+public interface BinaryHybridCFI1<I1, I2, O extends I1> extends
+	BinaryHybridCF<I1, I2, O>, BinaryHybridCI1<I1, I2, O>,
+	UnaryHybridCFI<I1, O>
 {
 
 	// -- BinaryOp methods --
 
 	@Override
-	default A run(final A input1, final I input2, final A output) {
+	default O run(final I1 input1, final I2 input2, final O output) {
 		if (input1 == output) {
 			// run as an inplace (1st input)
-			return BinaryInplace1Op.super.run(input1, input2, output);
+			return BinaryHybridCI1.super.run(input1, input2, output);
 		}
 		// run as a hybrid CF
 		return BinaryHybridCF.super.run(input1, input2, output);
@@ -70,8 +72,8 @@ public interface BinaryHybridCFI1<A, I> extends BinaryHybridCF<A, I, A>,
 	// -- UnaryInplaceOp methods --
 
 	@Override
-	default void mutate(final A arg) {
-		BinaryInplace1Op.super.mutate(arg);
+	default void mutate(final O arg) {
+		BinaryHybridCI1.super.mutate(arg);
 	}
 
 	// -- Runnable methods --
@@ -84,7 +86,7 @@ public interface BinaryHybridCFI1<A, I> extends BinaryHybridCF<A, I, A>,
 	// -- Threadable methods --
 
 	@Override
-	default BinaryHybridCFI1<A, I> getIndependentInstance() {
+	default BinaryHybridCFI1<I1, I2, O> getIndependentInstance() {
 		// NB: We assume the op instance is thread-safe by default.
 		// Individual implementations can override this assumption if they
 		// have state (such as buffers) that cannot be shared across threads.

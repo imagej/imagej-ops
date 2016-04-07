@@ -56,7 +56,7 @@ public class SquareIntegralImg<I extends RealType<I>> extends
 {
 	
 	@Override
-	public AbstractUnaryHybridCI<IterableInterval<RealType<?>>> getComputer() {
+	public AbstractUnaryHybridCI<IterableInterval<RealType<?>>, IterableInterval<RealType<?>>> getComputer() {
 		return new IntegralAddComputer();
 	}
 
@@ -67,7 +67,7 @@ public class SquareIntegralImg<I extends RealType<I>> extends
 	 * @author Stefan Helfrich (University of Konstanz)
 	 */
 	private class IntegralAddComputer extends
-		AbstractUnaryHybridCI<IterableInterval<RealType<?>>>
+		AbstractUnaryHybridCI<IterableInterval<RealType<?>>, IterableInterval<RealType<?>>>
 	{
 
 		@Override

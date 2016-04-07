@@ -116,7 +116,7 @@ public final class RAIs {
 				in == null ? RandomAccessibleInterval.class : in, otherArgs);
 	}
 
-	public static <T> UnaryInplaceOp<RandomAccessibleInterval<T>> inplace(final OpEnvironment ops,
+	public static <T> UnaryInplaceOp<? super RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> inplace(final OpEnvironment ops,
 			final Class<? extends Op> opType, final RandomAccessibleInterval<T> arg, final Object... otherArgs) {
 		return Inplaces.unary(ops, opType, arg, otherArgs);
 	}

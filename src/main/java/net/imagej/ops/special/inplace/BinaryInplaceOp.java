@@ -32,6 +32,7 @@ package net.imagej.ops.special.inplace;
 
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.hybrid.BinaryHybridCFI;
 
 /**
  * A binary <em>inplace</em> operation is an op which computes a result from two
@@ -41,13 +42,25 @@ import net.imagej.ops.special.function.BinaryFunctionOp;
  * It is a special case of {@link BinaryInplace1Op}, which can mutate
  * <em>only</em> the first input.
  * </p>
+ * <p>
+ * Note that the {@code <I>} and {@code <O>} type parameters are kept distinct
+ * for special hybrid ops, which may <em>allow</em> inplace mutation without
+ * <em>requiring</em> it; see e.g. {@link BinaryHybridCFI}. However, due to
+ * limitations of Java generics, the {@code <I1>} and {@code <I2>} parameters
+ * <em>must</em> be collapsed into a single {@code <I>}, since it is not legal
+ * to write {@code <I1, I2, O extends I1 & I2>} (&quot;Cannot specify any
+ * additional bound I2 when first bound is a type parameter&quot;).
+ * </p>
  * 
  * @author Curtis Rueden
- * @param <A> type of inputs + output
+ * @param <I> type of inputs
+ * @param <O> type of output
  * @see BinaryComputerOp
  * @see BinaryFunctionOp
  */
-public interface BinaryInplaceOp<A> extends BinaryInplace1Op<A, A> {
+public interface BinaryInplaceOp<I, O extends I> extends
+	BinaryInplace1Op<I, I, O>
+{
 
 	/**
 	 * Mutates the second argument in-place.
@@ -57,12 +70,12 @@ public interface BinaryInplaceOp<A> extends BinaryInplace1Op<A, A> {
 	 * @param arg Second argument of the {@link BinaryInplaceOp}, which
 	 *          <em>will</em> be mutated.
 	 */
-	void mutate2(A in, A arg);
+	void mutate2(I in, O arg);
 
 	// -- BinaryOp methods --
 
 	@Override
-	default A run(final A input1, final A input2, final A output) {
+	default O run(final I input1, final I input2, final O output) {
 		// check inplace preconditions
 		if (input1 == null) throw new NullPointerException("input1 is null");
 		if (input2 == null) throw new NullPointerException("input2 is null");
@@ -75,15 +88,15 @@ public interface BinaryInplaceOp<A> extends BinaryInplace1Op<A, A> {
 		}
 
 		// compute the result
-		if (input1 == output) mutate1(input1, input2);
-		else mutate2(input1, input2);
+		if (input1 == output) mutate1(output, input2);
+		else mutate2(input1, output);
 		return output;
 	}
 
 	// -- Threadable methods --
 
 	@Override
-	default BinaryInplaceOp<A> getIndependentInstance() {
+	default BinaryInplaceOp<I, O> getIndependentInstance() {
 		// NB: We assume the op instance is thread-safe by default.
 		// Individual implementations can override this assumption if they
 		// have state (such as buffers) that cannot be shared across threads.

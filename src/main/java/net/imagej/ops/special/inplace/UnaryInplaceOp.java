@@ -33,28 +33,35 @@ package net.imagej.ops.special.inplace;
 import net.imagej.ops.special.UnaryOp;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.UnaryHybridCI;
 
 /**
  * A unary <em>inplace</em> operation is an op which mutates a parameter.
+ * <p>
+ * Note that the {@code <I>} and {@code <O>} type parameters are kept distinct
+ * for special hybrid ops, which may <em>allow</em> inplace mutation without
+ * <em>requiring</em> it; see e.g. {@link UnaryHybridCI}.
+ * </p>
  * 
  * @author Curtis Rueden
- * @param <A> type of argument
+ * @param <I> type of input
+ * @param <O> type of output
  * @see UnaryComputerOp
  * @see UnaryFunctionOp
  */
-public interface UnaryInplaceOp<A> extends UnaryOp<A, A> {
+public interface UnaryInplaceOp<I, O extends I> extends UnaryOp<I, O> {
 
 	/**
 	 * Mutates the given input argument in-place.
 	 * 
 	 * @param arg of the {@link UnaryInplaceOp}
 	 */
-	void mutate(A arg);
+	void mutate(O arg);
 
 	// -- UnaryOp methods --
 
 	@Override
-	default A run(final A input, final A output) {
+	default O run(final I input, final O output) {
 		// check inplace preconditions
 		if (input == null) throw new NullPointerException("input is null");
 		if (input != output) {
@@ -62,14 +69,14 @@ public interface UnaryInplaceOp<A> extends UnaryOp<A, A> {
 		}
 
 		// compute the result
-		mutate(input);
+		mutate(output);
 		return output;
 	}
 
 	// -- NullaryOp methods --
 
 	@Override
-	default A run(final A output) {
+	default O run(final O output) {
 		// check inplace preconditions
 		if (output == null) throw new NullPointerException("output is null");
 
@@ -78,17 +85,17 @@ public interface UnaryInplaceOp<A> extends UnaryOp<A, A> {
 		return output;
 	}
 
-	// -- Output methods --
+	// -- UnaryInput methods --
 
 	@Override
-	default A out() {
-		return in();
+	default I in() {
+		return out();
 	}
 
 	// -- Threadable methods --
 
 	@Override
-	default UnaryInplaceOp<A> getIndependentInstance() {
+	default UnaryInplaceOp<I, O> getIndependentInstance() {
 		// NB: We assume the op instance is thread-safe by default.
 		// Individual implementations can override this assumption if they
 		// have state (such as buffers) that cannot be shared across threads.

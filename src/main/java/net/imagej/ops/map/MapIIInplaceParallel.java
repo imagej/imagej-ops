@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 5)
 public class MapIIInplaceParallel<A> extends
-	AbstractMapIterableInplace<A, IterableInterval<A>> implements Parallel
+	AbstractMapIterableInplace<A, A, IterableInterval<A>> implements Parallel
 {
 
 	@Override

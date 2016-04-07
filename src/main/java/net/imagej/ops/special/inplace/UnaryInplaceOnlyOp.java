@@ -28,62 +28,24 @@
  * #L%
  */
 
-package net.imagej.ops.loop;
-
-import net.imagej.ops.Ops;
-import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
-import net.imagej.ops.special.inplace.UnaryInplaceOp;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+package net.imagej.ops.special.inplace;
 
 /**
- * Default implementation of a {@link LoopInplace}.
+ * A {@link UnaryInplaceOp} which is <em>not</em> a hybrid.
  * 
- * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
+ * @param <A> type of input + output
  */
-@Plugin(type = Ops.Loop.class)
-public class DefaultLoopInplace<A> extends AbstractUnaryInplaceOp<A> implements
-	LoopInplace<A, A>
-{
-
-	@Parameter
-	private UnaryInplaceOp<A, A> op;
-
-	@Parameter
-	private int n;
-
-	// -- LoopOp methods --
-
-	@Override
-	public UnaryInplaceOp<A, A> getOp() {
-		return op;
-	}
-
-	@Override
-	public void setOp(final UnaryInplaceOp<A, A> op) {
-		this.op = op;
-	}
-
-	@Override
-	public int getLoopCount() {
-		return n;
-	}
-
-	@Override
-	public void setLoopCount(final int n) {
-		this.n = n;
-	}
+public interface UnaryInplaceOnlyOp<A> extends UnaryInplaceOp<A, A> {
 
 	// -- Threadable methods --
 
 	@Override
-	public DefaultLoopInplace<A> getIndependentInstance() {
-		final DefaultLoopInplace<A> looper = new DefaultLoopInplace<>();
-		looper.setOp(getOp().getIndependentInstance());
-		looper.setLoopCount(getLoopCount());
-		return looper;
+	default UnaryInplaceOnlyOp<A> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
 	}
 
 }

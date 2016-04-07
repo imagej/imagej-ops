@@ -28,62 +28,69 @@
  * #L%
  */
 
-package net.imagej.ops.loop;
+package net.imagej.ops.special.hybrid;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
-import net.imagej.ops.special.inplace.UnaryInplaceOp;
+import net.imagej.ops.special.AbstractBinaryOp;
+import net.imagej.ops.special.computer.BinaryComputerOp;
 
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
- * Default implementation of a {@link LoopInplace}.
+ * Abstract superclass for {@link BinaryHybridCF} and {@link BinaryHybridCI1}
+ * implementations.
  * 
- * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-@Plugin(type = Ops.Loop.class)
-public class DefaultLoopInplace<A> extends AbstractUnaryInplaceOp<A> implements
-	LoopInplace<A, A>
+public abstract class AbstractBinaryHybridC<I1, I2, O> extends
+	AbstractBinaryOp<I1, I2, O> implements BinaryComputerOp<I1, I2, O>
 {
 
-	@Parameter
-	private UnaryInplaceOp<A, A> op;
+	// -- Parameters --
+
+	@Parameter(type = ItemIO.BOTH, required = false)
+	private O out;
 
 	@Parameter
-	private int n;
+	private I1 in1;
 
-	// -- LoopOp methods --
+	@Parameter
+	private I2 in2;
+
+	// -- BinaryInput methods --
 
 	@Override
-	public UnaryInplaceOp<A, A> getOp() {
-		return op;
+	public I1 in1() {
+		return in1;
 	}
 
 	@Override
-	public void setOp(final UnaryInplaceOp<A, A> op) {
-		this.op = op;
+	public I2 in2() {
+		return in2;
 	}
 
 	@Override
-	public int getLoopCount() {
-		return n;
+	public void setInput1(final I1 input1) {
+		in1 = input1;
 	}
 
 	@Override
-	public void setLoopCount(final int n) {
-		this.n = n;
+	public void setInput2(final I2 input2) {
+		in2 = input2;
 	}
 
-	// -- Threadable methods --
+	// -- Output methods --
 
 	@Override
-	public DefaultLoopInplace<A> getIndependentInstance() {
-		final DefaultLoopInplace<A> looper = new DefaultLoopInplace<>();
-		looper.setOp(getOp().getIndependentInstance());
-		looper.setLoopCount(getLoopCount());
-		return looper;
+	public O out() {
+		return out;
+	}
+
+	// -- OutputMutable methods --
+
+	@Override
+	public void setOutput(final O output) {
+		out = output;
 	}
 
 }

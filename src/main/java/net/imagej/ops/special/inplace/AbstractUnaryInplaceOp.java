@@ -36,12 +36,12 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract superclass for {@link UnaryInplaceOp} implementations.
+ * Abstract superclass for {@link UnaryInplaceOnlyOp} implementations.
  * 
  * @author Curtis Rueden
  */
 public abstract class AbstractUnaryInplaceOp<A> extends AbstractUnaryOp<A, A>
-	implements UnaryInplaceOp<A>
+	implements UnaryInplaceOnlyOp<A>
 {
 
 	// -- Parameters --
@@ -49,16 +49,18 @@ public abstract class AbstractUnaryInplaceOp<A> extends AbstractUnaryOp<A, A>
 	@Parameter(type = ItemIO.BOTH)
 	private A arg;
 
-	// -- UnaryInplaceOp methods --
-
-	@Override
-	public A in() {
-		return arg;
-	}
+	// -- UnaryInput methods --
 
 	@Override
 	public void setInput(final A in) {
 		this.arg = in;
+	}
+
+	// -- Output methods --
+
+	@Override
+	public A out() {
+		return arg;
 	}
 
 }

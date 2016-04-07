@@ -28,62 +28,69 @@
  * #L%
  */
 
-package net.imagej.ops.loop;
+package net.imagej.ops.special.hybrid;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
-import net.imagej.ops.special.inplace.UnaryInplaceOp;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imagej.ops.special.inplace.BinaryInplace1Op;
 
 /**
- * Default implementation of a {@link LoopInplace}.
+ * A hybrid binary operation which can be used as a {@link BinaryComputerOp}, or
+ * {@link BinaryInplace1Op}.
+ * <p>
+ * To populate a preallocated output object, call
+ * {@link BinaryComputerOp#compute2}; to mutate the first input inplace, call
+ * {@link BinaryInplace1Op#mutate1}. To do any of these things as appropriate,
+ * call {@link #run(Object, Object, Object)}.
+ * </p>
  * 
- * @author Christian Dietz (University of Konstanz)
- * @author Curtis Rueden
+ * @author Leon Yang
+ * @param <I1> type of first input
+ * @param <I2> type of second input
+ * @param <O> type of output
+ * @see BinaryHybridCF
+ * @see BinaryHybridCFI
  */
-@Plugin(type = Ops.Loop.class)
-public class DefaultLoopInplace<A> extends AbstractUnaryInplaceOp<A> implements
-	LoopInplace<A, A>
+public interface BinaryHybridCI1<I1, I2, O extends I1> extends
+	BinaryComputerOp<I1, I2, O>, BinaryInplace1Op<I1, I2, O>,
+	UnaryHybridCI<I1, O>
 {
 
-	@Parameter
-	private UnaryInplaceOp<A, A> op;
-
-	@Parameter
-	private int n;
-
-	// -- LoopOp methods --
+	// -- UnaryInplaceOp methods --
 
 	@Override
-	public UnaryInplaceOp<A, A> getOp() {
-		return op;
+	default void mutate(final O arg) {
+		compute2(arg, in2(), arg);
 	}
 
-	@Override
-	public void setOp(final UnaryInplaceOp<A, A> op) {
-		this.op = op;
-	}
+	// -- UnaryOp methods --
 
 	@Override
-	public int getLoopCount() {
-		return n;
+	default O run(final I1 input1, final I2 input2, final O output) {
+		if (output == input1) {
+			// run inplace
+			mutate(output);
+			return output;
+		}
+
+		// run as a computer
+		compute2(input1, input2, output);
+		return output;
 	}
+	// -- Runnable methods --
 
 	@Override
-	public void setLoopCount(final int n) {
-		this.n = n;
+	default void run() {
+		setOutput(run(in1(), in2(), out()));
 	}
 
 	// -- Threadable methods --
 
 	@Override
-	public DefaultLoopInplace<A> getIndependentInstance() {
-		final DefaultLoopInplace<A> looper = new DefaultLoopInplace<>();
-		looper.setOp(getOp().getIndependentInstance());
-		looper.setLoopCount(getLoopCount());
-		return looper;
+	default BinaryHybridCI1<I1, I2, O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
 	}
 
 }

@@ -36,11 +36,12 @@ import net.imagej.ops.special.inplace.BinaryInplaceOp;
  * Typed interface for "map" {@link BinaryInplaceOp}s.
  * 
  * @author Leon Yang
- * @param <EA> element type of inputs + outputs
+ * @param <EI> element type of inputs
+ * @param <EO> element type of outputs
  * @param <OP> type of {@link BinaryInplaceOp} which processes each element
  */
-public interface MapBinaryInplace<EA, OP extends BinaryInplaceOp<EA>> extends
-	MapOp<OP>
+public interface MapBinaryInplace<EI, EO extends EI, OP extends BinaryInplaceOp<EI, EO>>
+	extends MapOp<OP>
 {
 	// NB: Marker interface.
 }

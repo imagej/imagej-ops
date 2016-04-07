@@ -48,17 +48,17 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Join.class)
 public class DefaultJoinNInplaces<A> extends AbstractUnaryInplaceOp<A> implements
-	JoinNInplaces<A>
+	JoinNInplaces<A, A>
 {
 
 	@Parameter
-	private List<? extends UnaryInplaceOp<A>> ops;
+	private List<? extends UnaryInplaceOp<A, A>> ops;
 
 	// -- UnaryInplaceOp methods --
 
 	@Override
 	public void mutate(final A input) {
-		for (final UnaryInplaceOp<A> inplace : getOps()) {
+		for (final UnaryInplaceOp<A, A> inplace : getOps()) {
 			inplace.mutate(input);
 		}
 	}
@@ -66,12 +66,12 @@ public class DefaultJoinNInplaces<A> extends AbstractUnaryInplaceOp<A> implement
 	// -- JoinNOps methods --
 
 	@Override
-	public void setOps(final List<? extends UnaryInplaceOp<A>> ops) {
+	public void setOps(final List<? extends UnaryInplaceOp<A, A>> ops) {
 		this.ops = ops;
 	}
 
 	@Override
-	public List<? extends UnaryInplaceOp<A>> getOps() {
+	public List<? extends UnaryInplaceOp<A, A>> getOps() {
 		return ops;
 	}
 
@@ -81,8 +81,8 @@ public class DefaultJoinNInplaces<A> extends AbstractUnaryInplaceOp<A> implement
 	public DefaultJoinNInplaces<A> getIndependentInstance() {
 		final DefaultJoinNInplaces<A> joiner = new DefaultJoinNInplaces<>();
 
-		final ArrayList<UnaryInplaceOp<A>> opsCopy = new ArrayList<>();
-		for (final UnaryInplaceOp<A> func : getOps()) {
+		final ArrayList<UnaryInplaceOp<A, A>> opsCopy = new ArrayList<>();
+		for (final UnaryInplaceOp<A, A> func : getOps()) {
 			opsCopy.add(func.getIndependentInstance());
 		}
 

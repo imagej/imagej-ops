@@ -46,18 +46,19 @@ import net.imagej.ops.special.inplace.UnaryInplaceOp;
  * </p>
  * 
  * @author Curtis Rueden
- * @param <A> type of input + output
+ * @param <I> type of input
+ * @param <O> type of output
  * @see UnaryHybridCF
  * @see UnaryHybridCI
  */
-public interface UnaryHybridCFI<A> extends UnaryHybridCF<A, A>,
-	UnaryHybridCI<A>
+public interface UnaryHybridCFI<I, O extends I> extends UnaryHybridCF<I, O>,
+	UnaryHybridCI<I, O>
 {
 
 	// -- UnaryOp methods --
 
 	@Override
-	default A run(final A input, final A output) {
+	default O run(final I input, final O output) {
 		if (input == output) {
 			// run as an inplace
 			return UnaryHybridCI.super.run(input, output);
@@ -69,7 +70,7 @@ public interface UnaryHybridCFI<A> extends UnaryHybridCF<A, A>,
 	// -- NullaryOp methods --
 
 	@Override
-	default A run(final A output) {
+	default O run(final O output) {
 		return UnaryHybridCF.super.run(output);
 	}
 
@@ -83,7 +84,7 @@ public interface UnaryHybridCFI<A> extends UnaryHybridCF<A, A>,
 	// -- Threadable methods --
 
 	@Override
-	default UnaryHybridCFI<A> getIndependentInstance() {
+	default UnaryHybridCFI<I, O> getIndependentInstance() {
 		// NB: We assume the op instance is thread-safe by default.
 		// Individual implementations can override this assumption if they
 		// have state (such as buffers) that cannot be shared across threads.

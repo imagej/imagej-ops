@@ -57,7 +57,7 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 	implements Contingent
 {
 
-	private AbstractUnaryHybridCI<IterableInterval<RealType<?>>> integralAdd;
+	private AbstractUnaryHybridCI<IterableInterval<RealType<?>>, IterableInterval<RealType<?>>> integralAdd;
 	private UnaryComputerOp[] slicewiseOps;
 	
 	@Override
@@ -125,6 +125,6 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 	 * Implements the row-wise addition required for computations of integral
 	 * images.
 	 */
-	public abstract AbstractUnaryHybridCI<IterableInterval<RealType<?>>> getComputer();
+	public abstract AbstractUnaryHybridCI<IterableInterval<RealType<?>>, IterableInterval<RealType<?>>> getComputer();
 
 }

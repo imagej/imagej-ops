@@ -48,7 +48,7 @@ import org.junit.rules.ExpectedException;
 
 /**
  * Tests for {@link MapOp}s that are not covered in the auto generated tests.
- *  
+ * 
  * @author Leon Yang
  * @author Christian Dietz (University of Konstanz)
  */
@@ -92,10 +92,9 @@ public class MapTest extends AbstractOpTest {
 		final Img<ByteType> secondDiffDims = generateByteArrayTestImg(false, 10, 10,
 			2);
 
-		sub = Inplaces.binary(ops, Ops.Math.Subtract.class, ByteType.class,
-			ByteType.class);
-		final BinaryInplaceOp<Img<ByteType>> map = Inplaces.binary(ops,
-			MapIIAndIIInplaceParallel.class, firstCopy, second, sub);
+		sub = Inplaces.binary(ops, Ops.Math.Subtract.class, ByteType.class);
+		final BinaryInplaceOp<? super Img<ByteType>, Img<ByteType>> map = Inplaces
+			.binary(ops, MapIIAndIIInplaceParallel.class, firstCopy, second, sub);
 		map.run(firstCopy, second, firstCopy);
 		map.run(first, secondCopy, secondCopy);
 
@@ -118,10 +117,9 @@ public class MapTest extends AbstractOpTest {
 		final Img<ByteType> secondDiffDims = generateByteArrayTestImg(false, 10, 10,
 			2);
 
-		sub = Inplaces.binary(ops, Ops.Math.Subtract.class, ByteType.class,
-			ByteType.class);
-		final BinaryInplaceOp<Img<ByteType>> map = Inplaces.binary(ops,
-			MapIIAndIIInplaceParallel.class, firstCopy, second, sub);
+		sub = Inplaces.binary(ops, Ops.Math.Subtract.class, ByteType.class);
+		final BinaryInplaceOp<? super Img<ByteType>, Img<ByteType>> map = Inplaces
+			.binary(ops, MapIIAndIIInplaceParallel.class, firstCopy, second, sub);
 		map.run(firstCopy, second, firstCopy);
 		map.run(first, secondCopy, secondCopy);
 
@@ -139,7 +137,7 @@ public class MapTest extends AbstractOpTest {
 		final Img<ByteType> argCopy = arg.copy();
 
 		sub = Inplaces.unary(ops, Ops.Math.Subtract.class, ByteType.class,
-			ByteType.class, new ByteType((byte) 1));
+			new ByteType((byte) 1));
 		ops.run(MapIIInplaceParallel.class, argCopy, sub);
 
 		assertImgSubOneEquals(arg, argCopy);
@@ -151,7 +149,7 @@ public class MapTest extends AbstractOpTest {
 		final Img<ByteType> argCopy = arg.copy();
 
 		sub = Inplaces.unary(ops, Ops.Math.Subtract.class, ByteType.class,
-			ByteType.class, new ByteType((byte) 1));
+			new ByteType((byte) 1));
 		ops.run(MapIterableInplace.class, argCopy, sub);
 
 		assertImgSubOneEquals(arg, argCopy);
@@ -163,7 +161,7 @@ public class MapTest extends AbstractOpTest {
 		final Img<ByteType> out = generateByteArrayTestImg(false, 10, 10);
 
 		sub = Computers.unary(ops, Ops.Math.Subtract.class, ByteType.class,
-			ByteType.class, new ByteType((byte) 1));
+			new ByteType((byte) 1));
 		ops.run(MapIterableToIterable.class, out, in, sub);
 
 		assertImgSubOneEquals(in, out);
