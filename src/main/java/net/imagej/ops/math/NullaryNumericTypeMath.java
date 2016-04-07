@@ -44,9 +44,9 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Leon Yang
  */
-public class NumericTypeNullaryMath {
+public class NullaryNumericTypeMath {
 
-	private NumericTypeNullaryMath() {
+	private NullaryNumericTypeMath() {
 		// NB: Prevent instantiation of utility class.
 	}
 

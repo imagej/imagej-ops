@@ -47,9 +47,9 @@ import org.scijava.plugin.Plugin;
  * @author Jonathan Hale (University of Konstanz)
  * @author Curtis Rueden
  */
-public final class RealMath {
+public final class UnaryRealTypeMath {
 
-	private RealMath() {
+	private UnaryRealTypeMath() {
 		// NB: Prevent instantiation of utility class.
 	}
 
@@ -65,42 +65,6 @@ public final class RealMath {
 		@Override
 		public void compute1(final I input, final O output) {
 			output.setReal(Math.abs(input.getRealDouble()));
-		}
-	}
-
-	/**
-	 * Sets the real component of an output real number to the addition of the
-	 * real component of an input real number with a constant value.
-	 */
-	@Plugin(type = Ops.Math.Add.class)
-	public static class Add<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractUnaryComputerOp<I, O> implements Ops.Math.Add
-	{
-
-		@Parameter
-		private double constant;
-
-		@Override
-		public void compute1(final I input, final O output) {
-			output.setReal(input.getRealDouble() + constant);
-		}
-	}
-
-	/**
-	 * Sets the real component of an output real number to the logical AND of the
-	 * real component of an input real number with a constant value.
-	 */
-	@Plugin(type = Ops.Math.And.class)
-	public static class AndConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.And
-	{
-
-		@Parameter
-		private long constant;
-
-		@Override
-		public void compute1(final I input, final O output) {
-			output.setReal(constant & (long) input.getRealDouble());
 		}
 	}
 
@@ -450,31 +414,6 @@ public final class RealMath {
 	}
 
 	/**
-	 * Sets the real component of an output real number to the division of the
-	 * real component of an input real number by a constant value.
-	 */
-	@Plugin(type = Ops.Math.Divide.class)
-	public static class Divide<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Divide
-	{
-
-		@Parameter
-		private double constant;
-		@Parameter
-		private double dbzVal;
-
-		@Override
-		public void compute1(final I input, final O output) {
-			if (constant == 0) {
-				output.setReal(dbzVal);
-			}
-			else {
-				output.setReal(input.getRealDouble() / constant);
-			}
-		}
-	}
-
-	/**
 	 * Sets the real component of an output real number to the exponentiation of
 	 * the real component of an input real number. (e raised to a power)
 	 */
@@ -666,24 +605,6 @@ public final class RealMath {
 	}
 
 	/**
-	 * Sets the real component of an output real number to the multiplication of
-	 * the real component of an input real number with a constant value.
-	 */
-	@Plugin(type = Ops.Math.Multiply.class)
-	public static class Multiply<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Multiply
-	{
-
-		@Parameter
-		private double constant;
-
-		@Override
-		public void compute1(final I input, final O output) {
-			output.setReal(input.getRealDouble() * constant);
-		}
-	}
-
-	/**
 	 * Sets the real component of an output real number to the nearest integral
 	 * value of the real component of an input real number.
 	 */
@@ -710,24 +631,6 @@ public final class RealMath {
 		@Override
 		public void compute1(final I input, final O output) {
 			output.setReal(-input.getRealDouble());
-		}
-	}
-
-	/**
-	 * Sets the real component of an output real number to the logical OR of the
-	 * real component of an input real number with a constant value.
-	 */
-	@Plugin(type = Ops.Math.Or.class)
-	public static class OrConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Or
-	{
-
-		@Parameter
-		private long constant;
-
-		@Override
-		public void compute1(final I input, final O output) {
-			output.setReal(constant | (long) input.getRealDouble());
 		}
 	}
 
@@ -1012,24 +915,6 @@ public final class RealMath {
 	}
 
 	/**
-	 * Sets the real component of an output real number to the subtraction from
-	 * the real component of an input real number a constant value.
-	 */
-	@Plugin(type = Ops.Math.Subtract.class)
-	public static class Subtract<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Subtract
-	{
-
-		@Parameter
-		private double constant;
-
-		@Override
-		public void compute1(final I input, final O output) {
-			output.setReal(input.getRealDouble() - constant);
-		}
-	}
-
-	/**
 	 * Sets the real component of an output real number to the tangent of the real
 	 * component of an input real number.
 	 */
@@ -1073,24 +958,6 @@ public final class RealMath {
 		@Override
 		public void compute1(final I input, final O output) {
 			output.setReal(Math.ulp(input.getRealDouble()));
-		}
-	}
-
-	/**
-	 * Sets the real component of an output real number to the logical XOR of the
-	 * real component of an input real number with a constant value.
-	 */
-	@Plugin(type = Ops.Math.Xor.class)
-	public static class XorConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Xor
-	{
-
-		@Parameter
-		private long constant;
-
-		@Override
-		public void compute1(final I input, final O output) {
-			output.setReal(constant ^ (long) input.getRealDouble());
 		}
 	}
 

@@ -42,9 +42,9 @@ import org.scijava.plugin.Plugin;
  *
  * @author Leon Yang
  */
-public class RealBinaryMath {
+public class BinaryRealTypeMath {
 
-	private RealBinaryMath() {
+	private BinaryRealTypeMath() {
 		// NB: Prevent instantiation of utility class.
 	}
 

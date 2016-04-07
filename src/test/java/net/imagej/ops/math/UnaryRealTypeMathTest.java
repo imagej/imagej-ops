@@ -33,7 +33,6 @@ package net.imagej.ops.math;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.type.numeric.real.FloatType;
@@ -43,13 +42,13 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 /**
- * Tests {@link RealMath}.
+ * Tests {@link UnaryRealTypeMath}.
  *
  * @author Leon Yang
  * @author Alison Walter
  * @author Curtis Rueden
  */
-public class RealMathTest extends AbstractOpTest {
+public class UnaryRealTypeMathTest extends AbstractOpTest {
 
 	// NB: long number LARGE_NUM is rounded to double 9007199254740992.0.
 	final static private long LARGE_NUM = 9007199254740993L;
@@ -59,26 +58,6 @@ public class RealMathTest extends AbstractOpTest {
 		final LongType in = new LongType(-LARGE_NUM);
 		final LongType out = ops.math().abs(in.createVariable(), in);
 		assertEquals(out.get(), LARGE_NUM - 1);
-	}
-
-	@Test
-	public void testAdd() {
-		final LongType in1 = new LongType(LARGE_NUM - 1);
-		final ByteType in2 = new ByteType((byte) 1);
-		final LongType out = ops.math().add(in1.createVariable(), in1, 1.0);
-		assertEquals(out.get(), LARGE_NUM - 1, 0.0);
-		ops.math().add(out, in1, in2);
-		assertEquals(out.get(), LARGE_NUM - 1, 0.0);
-	}
-
-	@Test
-	public void testAnd() {
-		final LongType in1 = new LongType(LARGE_NUM);
-		final ByteType in2 = new ByteType((byte) 1);
-		final LongType out = ops.math().and(in1.createVariable(), in1, 1L);
-		assertEquals(out.get(), 0L);
-		ops.math().and(out, in1, in2);
-		assertEquals(out.get(), 0L);
 	}
 
 	@Test
@@ -230,16 +209,6 @@ public class RealMathTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testDivide() {
-		final LongType in1 = new LongType(LARGE_NUM * 2);
-		final ByteType in2 = new ByteType((byte) 2);
-		final LongType out = ops.math().divide(in1.createVariable(), in1, 2.0, 0);
-		assertEquals(out.get(), LARGE_NUM - 1);
-		ops.math().divide(out, in1, in2, 0);
-		assertEquals(out.get(), LARGE_NUM - 1);
-	}
-
-	@Test
 	public void testExp() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
@@ -319,16 +288,6 @@ public class RealMathTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testMultiply() {
-		final LongType in1 = new LongType(LARGE_NUM);
-		final ByteType in2 = new ByteType((byte) 2);
-		final LongType out = ops.math().multiply(in1.createVariable(), in1, 2.0);
-		assertEquals(out.get(), (LARGE_NUM - 1) * 2);
-		ops.math().multiply(out, in1, in2);
-		assertEquals(out.get(), (LARGE_NUM - 1) * 2);
-	}
-
-	@Test
 	public void testNearestInt() {
 		final LongType in = new LongType(LARGE_NUM);
 		final LongType out = ops.math().nearestInt(in.createVariable(), in);
@@ -341,18 +300,6 @@ public class RealMathTest extends AbstractOpTest {
 		final LongType out = ops.math().negate(in.createVariable(), in);
 		assertEquals(out.get(), LARGE_NUM - 1);
 	}
-
-	// NB: This tests always fails until this issue
-	// https://github.com/imglib/imglib2/issues/110 has been addressed.
-//	@Test
-//	public void testOr() {
-//		final LongType in1 = new LongType(LARGE_NUM);
-//		final ByteType in2 = new ByteType((byte) 0);
-//		final LongType out = ops.math().or(in1.createVariable(), in1, 0L);
-//		assertEquals(out.get(), LARGE_NUM - 1);
-//		ops.math().or(out, in1, in2);
-//		assertEquals(out.get(), LARGE_NUM - 1);
-//	}
 
 	@Test
 	public void testPower() {
@@ -462,16 +409,6 @@ public class RealMathTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testSubtract() {
-		final LongType in1 = new LongType(LARGE_NUM + 1);
-		final ByteType in2 = new ByteType((byte) 1);
-		final LongType out = ops.math().subtract(in1.createVariable(), in1, 1.0);
-		assertEquals(out.get(), LARGE_NUM - 1, 0.0);
-		ops.math().subtract(out, in1, in2);
-		assertEquals(out.get(), LARGE_NUM - 1, 0.0);
-	}
-
-	@Test
 	public void testTan() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
@@ -494,18 +431,6 @@ public class RealMathTest extends AbstractOpTest {
 		ops.math().ulp(out, in);
 		assertEquals(out.get(), 2.0, 0.0);
 	}
-
-	// NB: This tests always fails until this issue
-	// https://github.com/imglib/imglib2/issues/110 has been addressed.
-//	@Test
-//	public void testXor() {
-//		final LongType in1 = new LongType(LARGE_NUM);
-//		final ByteType in2 = new ByteType((byte) 1);
-//		final LongType out = ops.math().xor(in1.createVariable(), in1, 1L);
-//		assertEquals(out.get(), 1L);
-//		ops.math().xor(out, in1, in2);
-//		assertEquals(out.get(), 1L);
-//	}
 
 	// -- complex tests --
 
@@ -596,8 +521,8 @@ public class RealMathTest extends AbstractOpTest {
 		final DoubleType out = new DoubleType();
 		final long seed = 0xcafebabe12345678L;
 		@SuppressWarnings("unchecked")
-		final RealMath.RandomGaussian<DoubleType, DoubleType> op = ops.op(
-			RealMath.RandomGaussian.class, in.createVariable(), in, seed);
+		final UnaryRealTypeMath.RandomGaussian<DoubleType, DoubleType> op = ops.op(
+			UnaryRealTypeMath.RandomGaussian.class, in.createVariable(), in, seed);
 		op.compute1(in, out);
 		assertEquals(o, out.get(), 0);
 		in.set(i2);
@@ -627,8 +552,8 @@ public class RealMathTest extends AbstractOpTest {
 		final DoubleType out = new DoubleType();
 		final long seed = 0xcafebabe12345678L;
 		@SuppressWarnings("unchecked")
-		final RealMath.RandomUniform<DoubleType, DoubleType> op = ops.op(
-			RealMath.RandomUniform.class, in.createVariable(), in, seed);
+		final UnaryRealTypeMath.RandomUniform<DoubleType, DoubleType> op = ops.op(
+			UnaryRealTypeMath.RandomUniform.class, in.createVariable(), in, seed);
 		op.compute1(in, out);
 		assertEquals(o, out.get(), 0);
 		in.set(i2);
