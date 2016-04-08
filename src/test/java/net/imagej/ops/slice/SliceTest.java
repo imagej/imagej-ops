@@ -88,7 +88,7 @@ public class SliceTest extends AbstractOpTest {
 		// selected interval XY
 		final int[] xyAxis = new int[] { 0, 1 };
 
-		ops.slice(out, in, new DummyOp(), xyAxis);
+		ops.run(SliceRAI2RAI.class, out, in, new DummyOp(), xyAxis);
 
 		for (final Cursor<ByteType> cur = out.cursor(); cur.hasNext();) {
 			cur.fwd();
@@ -122,7 +122,7 @@ public class SliceTest extends AbstractOpTest {
 		// selected interval XYZ
 		final int[] xyAxis = new int[] { 0, 1, 2 };
 
-		ops.slice(outSequence, inSequence, new DummyOp(), xyAxis);
+		ops.run(SliceRAI2RAI.class, outSequence, inSequence, new DummyOp(), xyAxis);
 
 		for (final Cursor<ByteType> cur = outSequence.cursor(); cur.hasNext();) {
 			cur.fwd();
