@@ -634,7 +634,7 @@ public class FilterNamespace extends AbstractNamespace {
 	/** Executes the "fft" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.fft.FFTImg.class)
 	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<I> in)
+		final I in)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<ComplexFloatType> result =
@@ -646,7 +646,7 @@ public class FilterNamespace extends AbstractNamespace {
 	/** Executes the "fft" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.fft.FFTImg.class)
 	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<ComplexFloatType> out, final Img<I> in)
+		final Img<ComplexFloatType> out, final I in)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<ComplexFloatType> result =
@@ -658,7 +658,7 @@ public class FilterNamespace extends AbstractNamespace {
 	/** Executes the "fft" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.fft.FFTImg.class)
 	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<ComplexFloatType> out, final Img<I> in, final long... borderSize)
+		final Img<ComplexFloatType> out, final I in, final long... borderSize)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<ComplexFloatType> result =
@@ -670,7 +670,7 @@ public class FilterNamespace extends AbstractNamespace {
 	/** Executes the "fft" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.fft.FFTImg.class)
 	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<ComplexFloatType> out, final Img<I> in, final long[] borderSize,
+		final Img<ComplexFloatType> out, final I in, final long[] borderSize,
 		final Boolean fast)
 	{
 		@SuppressWarnings("unchecked")
@@ -683,7 +683,7 @@ public class FilterNamespace extends AbstractNamespace {
 	/** Executes the "fft" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.fft.FFTImg.class)
 	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<ComplexFloatType> out, final Img<I> in, final long[] borderSize,
+		final Img<ComplexFloatType> out, final I in, final long[] borderSize,
 		final Boolean fast,
 		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf)
 	{
