@@ -56,11 +56,6 @@ public class DeconvolveNamespace extends AbstractNamespace {
 
 	// -- DeconvolveOps.RichardsonLucy
 
-	@OpMethod(op = net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class)
-	public Object richardsonLucy(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class, args);
-	}
-
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyImg.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		Img<O> richardsonLucy(final Img<I> in,
@@ -427,12 +422,6 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	}
 
 //-- DeconvolveOps.RichardsonLucyTV
-
-	@OpMethod(op = net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class)
-	public Object richardsonLucyTV(final Object... args) {
-		return ops()
-			.run(net.imagej.ops.Ops.Deconvolve.RichardsonLucyTV.class, args);
-	}
 
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyTVImg.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>

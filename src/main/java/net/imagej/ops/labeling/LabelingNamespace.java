@@ -51,11 +51,6 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Namespace.class)
 public class LabelingNamespace extends AbstractNamespace {
 
-	@OpMethod(op = net.imagej.ops.Ops.Labeling.CCA.class)
-	public Object cca(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Labeling.CCA.class, args);
-	}
-
 	@OpMethod(op = net.imagej.ops.labeling.cca.DefaultCCA.class)
 	public <T extends IntegerType<T>, L, I extends IntegerType<I>>
 		ImgLabeling<L, I> cca(final ImgLabeling<L, I> out,
