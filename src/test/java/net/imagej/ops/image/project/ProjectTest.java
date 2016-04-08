@@ -33,11 +33,11 @@ package net.imagej.ops.image.project;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.RandomAccess;
 import net.imglib2.img.Img;
-import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 
 import org.junit.Before;
@@ -50,7 +50,7 @@ public class ProjectTest extends AbstractOpTest {
 	private Img<UnsignedByteType> in;
 	private Img<UnsignedByteType> out1;
 	private Img<UnsignedByteType> out2;
-	private Op op;
+	private UnaryComputerOp<Iterable<UnsignedByteType>, UnsignedByteType> op;
 
 	@Before
 	public void initImg() {
@@ -71,7 +71,8 @@ public class ProjectTest extends AbstractOpTest {
 		out1 = generateUnsignedByteArrayTestImg(false, 10, 10);
 		out2 = generateUnsignedByteArrayTestImg(false, 10, 10);
 
-		op = ops.op(Ops.Stats.Sum.class, RealType.class, out1);
+		op = Computers.unary(ops, Ops.Stats.Sum.class, UnsignedByteType.class,
+			out1);
 	}
 
 	@Test

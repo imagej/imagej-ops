@@ -63,12 +63,6 @@ public class ImageNamespace extends AbstractNamespace {
 	// -- ascii --
 
 	/** Executes the "ascii" operation on the given arguments. */
-	@OpMethod(op = Ops.Image.ASCII.class)
-	public Object ascii(final Object... args) {
-		return ops().run(Ops.Image.ASCII.class, args);
-	}
-
-	/** Executes the "ascii" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.ascii.DefaultASCII.class)
 	public <T extends RealType<T>> String ascii(final IterableInterval<T> image) {
 		final String result = (String) ops().run(
@@ -111,12 +105,6 @@ public class ImageNamespace extends AbstractNamespace {
 	}
 
 	// -- crop --
-
-	/** Executes the "crop" operation on the given arguments. */
-	@OpMethod(op = Ops.Image.Crop.class)
-	public Object crop(final Object... args) {
-		return ops().run(Ops.Image.Crop.class, args);
-	}
 
 	/** Executes the "crop" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.crop.CropImgPlus.class)
@@ -190,12 +178,6 @@ public class ImageNamespace extends AbstractNamespace {
 	// -- equation --
 
 	/** Executes the "equation" operation on the given arguments. */
-	@OpMethod(op = Ops.Image.Equation.class)
-	public Object equation(final Object... args) {
-		return ops().run(Ops.Image.Equation.class, args);
-	}
-
-	/** Executes the "equation" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.equation.DefaultEquation.class)
 	public <T extends RealType<T>> IterableInterval<T> equation(final String in) {
 		@SuppressWarnings("unchecked")
@@ -217,12 +199,6 @@ public class ImageNamespace extends AbstractNamespace {
 	// -- fill --
 
 	/** Executes the "fill" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.Ops.Image.Fill.class)
-	public Object fill(final Object... args) {
-		return ops().run(Ops.Image.Fill.class, args);
-	}
-
-	/** Executes the "fill" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.fill.DefaultFill.class)
 	public <T extends Type<T>> Iterable<T> fill(final Iterable<T> out,
 		final T in)
@@ -234,12 +210,6 @@ public class ImageNamespace extends AbstractNamespace {
 	}
 
 	// -- histogram --
-
-	/** Executes the "histogram" operation on the given arguments. */
-	@OpMethod(op = Ops.Image.Histogram.class)
-	public Object histogram(final Object... args) {
-		return ops().run(Ops.Image.Histogram.class, args);
-	}
 
 	/** Executes the "histogram" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.histogram.HistogramCreate.class)
@@ -312,12 +282,6 @@ public class ImageNamespace extends AbstractNamespace {
 	// -- invert --
 
 	/** Executes the "invert" operation on the given arguments. */
-	@OpMethod(op = Ops.Image.Invert.class)
-	public Object invert(final Object... args) {
-		return ops().run(Ops.Image.Invert.class, args);
-	}
-
-	/** Executes the "invert" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.invert.InvertII.class)
 	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O> invert(
 			final IterableInterval<O> out, final IterableInterval<I> in) {
@@ -329,12 +293,6 @@ public class ImageNamespace extends AbstractNamespace {
 	}
 
 	// -- normalize --
-
-	/** Executes the "normalize" operation on the given arguments. */
-	@OpMethod(op = Ops.Image.Normalize.class)
-	public Object normalize(final Object... args) {
-		return ops().run(Ops.Image.Normalize.class, args);
-	}
 
 	@OpMethod(op = net.imagej.ops.image.normalize.NormalizeIIComputer.class)
 	public
@@ -496,12 +454,6 @@ public class ImageNamespace extends AbstractNamespace {
 	// -- project --
 
 	/** Executes the "project" operation on the given arguments. */
-	@OpMethod(op = Ops.Image.Project.class)
-	public Object project(final Object... args) {
-		return ops().run(Ops.Image.Project.class, args);
-	}
-
-	/** Executes the "project" operation on the given arguments. */
 	@OpMethod(ops = {
 			net.imagej.ops.image.project.DefaultProjectParallel.class,
 			net.imagej.ops.image.project.ProjectRAIToII.class })
@@ -515,12 +467,6 @@ public class ImageNamespace extends AbstractNamespace {
 	}
 
 	// -- scale --
-
-	/** Executes the "scale" operation on the given arguments. */
-	@OpMethod(op = Ops.Image.Scale.class)
-	public Object scale(final Object... args) {
-		return ops().run(Ops.Image.Scale.class, args);
-	}
 
 	/** Executes the "scale" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.scale.ScaleImg.class)

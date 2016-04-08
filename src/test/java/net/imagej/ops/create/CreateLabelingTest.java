@@ -36,6 +36,9 @@ import static org.junit.Assert.assertEquals;
 import java.util.Random;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.create.imgLabeling.DefaultCreateImgLabeling;
+import net.imglib2.Dimensions;
+import net.imglib2.FinalDimensions;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.img.cell.CellImgFactory;
@@ -73,8 +76,8 @@ public class CreateLabelingTest extends AbstractOpTest {
 
 			// create imglabeling
 			@SuppressWarnings("unchecked")
-			final ImgLabeling<String, ?> img =
-				(ImgLabeling<String, ?>) ops.create().imgLabeling(dim);
+			final ImgLabeling<String, ?> img = (ImgLabeling<String, ?>) ops.run(
+				DefaultCreateImgLabeling.class, dim);
 
 			assertArrayEquals("Labeling Dimensions:", dim, Intervals
 				.dimensionsAsLongArray(img));
@@ -85,17 +88,17 @@ public class CreateLabelingTest extends AbstractOpTest {
 	@Test
 	public void testImageFactory() {
 
-		final long[] dim = new long[] { 10, 10, 10 };
+		final Dimensions dim = new FinalDimensions( 10, 10, 10 );
 
 		assertEquals("Labeling Factory: ", ArrayImgFactory.class,
-			((Img<?>) ((ImgLabeling<String, ?>) ops.create().imgLabeling(dim,
-				null, new ArrayImgFactory<IntType>())).getIndexImg()).factory()
-				.getClass());
+			((Img<?>) ((ImgLabeling<String, ?>) ops.run(
+				DefaultCreateImgLabeling.class, dim, null,
+				new ArrayImgFactory<IntType>())).getIndexImg()).factory().getClass());
 
 		assertEquals("Labeling Factory: ", CellImgFactory.class,
-			((Img<?>) ((ImgLabeling<String, ?>) ops.create().imgLabeling(dim,
-				null, new CellImgFactory<IntType>())).getIndexImg()).factory()
-				.getClass());
+			((Img<?>) ((ImgLabeling<String, ?>) ops.run(
+				DefaultCreateImgLabeling.class, dim, null,
+				new CellImgFactory<IntType>())).getIndexImg()).factory().getClass());
 
 	}
 
@@ -118,9 +121,8 @@ public class CreateLabelingTest extends AbstractOpTest {
 	@SuppressWarnings("unchecked")
 	private <I> ImgLabeling<I, ?> createLabelingWithType(final I type) {
 
-		final ImgLabeling<I, ?> imgLabeling =
-			((ImgLabeling<I, ?>) ops.create().imgLabeling(new long[] { 10,
-				10, 10 }));
+		final ImgLabeling<I, ?> imgLabeling = ((ImgLabeling<I, ?>) ops.run(
+			DefaultCreateImgLabeling.class, new long[] { 10, 10, 10 }));
 		imgLabeling.cursor().next().add(type);
 		return imgLabeling;
 	}

@@ -31,11 +31,14 @@
 package net.imagej.ops.loop;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.Op;
 import net.imagej.ops.bufferfactories.ImgImgSameTypeFactory;
 import net.imagej.ops.map.MapOp;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
+import net.imagej.ops.special.inplace.Inplaces;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -54,8 +57,8 @@ public class LoopTest extends AbstractOpTest {
 	private Img<ByteType> out;
 
 	private int numIterations;
-	private Op functionalOp;
-	private Op inplaceOp;
+	private UnaryComputerOp<Img<ByteType>, Img<ByteType>> computerOp;
+	private UnaryInplaceOp<? super Img<ByteType>, Img<ByteType>> inplaceOp;
 
 	@Before
 	public void init() {
@@ -63,8 +66,8 @@ public class LoopTest extends AbstractOpTest {
 		in = generateByteArrayTestImg(false, dims);
 		out = generateByteArrayTestImg(false, dims);
 		numIterations = 10;
-		functionalOp = ops.op(MapOp.class, out, in, new AddOneFunctional());
-		inplaceOp = ops.op(MapOp.class, in, new AddOneInplace());
+		computerOp = Computers.unary(ops, MapOp.class, out, in, new AddOneFunctional());
+		inplaceOp = Inplaces.unary(ops, MapOp.class, in, new AddOneInplace());
 	}
 
 	@Test
@@ -81,7 +84,7 @@ public class LoopTest extends AbstractOpTest {
 
 	@Test
 	public void testFunctionalEven() {
-		ops.loop(out, in, functionalOp, new ImgImgSameTypeFactory<ByteType>(), numIterations);
+		ops.loop(out, in, computerOp, new ImgImgSameTypeFactory<ByteType>(), numIterations);
 
 		// test
 		final Cursor<ByteType> c = out.cursor();
@@ -93,7 +96,7 @@ public class LoopTest extends AbstractOpTest {
 
 	@Test
 	public void testFunctionalOdd() {
-		ops.loop(out, in, functionalOp, new ImgImgSameTypeFactory<ByteType>(),
+		ops.loop(out, in, computerOp, new ImgImgSameTypeFactory<ByteType>(),
 			numIterations - 1);
 
 		// test

@@ -36,7 +36,6 @@ import java.util.List;
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
-import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
@@ -58,11 +57,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 	// -- Threshold namespace ops --
 
 	// -- apply --
-
-	@OpMethod(op = net.imagej.ops.Ops.Threshold.Apply.class)
-	public Object apply(final Object... args) {
-		return ops().run(Ops.Threshold.Apply.NAME, args);
-	}
 
 	@OpMethod(
 		op = net.imagej.ops.threshold.apply.ApplyConstantThreshold.class)
@@ -129,11 +123,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 
 	// -- huang --
 
-	@OpMethod(op = net.imagej.ops.Ops.Threshold.Huang.class)
-	public Object huang(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Threshold.Huang.class, args);
-	}
-
 	@OpMethod(
 		op = net.imagej.ops.threshold.huang.ComputeHuangThreshold.class)
 	public <T extends RealType<T>> T huang(final Histogram1d<T> in) {
@@ -178,11 +167,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 				net.imagej.ops.Ops.Threshold.Huang.class, out,
 				in);
 		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.Ops.Threshold.IJ1.class)
-	public Object ij1(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Threshold.IJ1.class, args);
 	}
 
 	@OpMethod(
@@ -230,11 +214,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 				net.imagej.ops.Ops.Threshold.IJ1.class,
 				out, in);
 		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.Ops.Threshold.Intermodes.class)
-	public Object intermodes(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Threshold.Intermodes.class, args);
 	}
 
 	@OpMethod(
@@ -291,11 +270,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.Ops.Threshold.IsoData.class)
-	public Object isoData(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Threshold.IsoData.class, args);
-	}
-
 	@OpMethod(
 		op = net.imagej.ops.threshold.ApplyThresholdMethod.IsoData.class)
 	public <T extends RealType<T>> IterableInterval<BitType> isoData(final IterableInterval<T> in) {
@@ -343,11 +317,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 				net.imagej.ops.Ops.Threshold.IsoData.class,
 				out, in);
 		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.Ops.Threshold.Li.class)
-	public Object li(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Threshold.Li.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.threshold.ApplyThresholdMethod.Li.class)
@@ -682,11 +651,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 				net.imagej.ops.Ops.Threshold.LocalSauvolaThreshold.class, out, in, shape);
 		return result;
 	}
-	
-	@OpMethod(op = net.imagej.ops.Ops.Threshold.MaxEntropy.class)
-	public Object maxEntropy(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Threshold.MaxEntropy.class, args);
-	}
 
 	@OpMethod(
 		op = net.imagej.ops.threshold.ApplyThresholdMethod.MaxEntropy.class)
@@ -738,11 +702,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 					net.imagej.ops.Ops.Threshold.MaxEntropy.class,
 					out, in);
 		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.Ops.Threshold.MaxLikelihood.class)
-	public Object maxLikelihood(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Threshold.MaxLikelihood.class, args);
 	}
 
 	@OpMethod(
@@ -802,11 +761,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.Ops.Threshold.Mean.class)
-	public Object mean(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Threshold.Mean.class, args);
-	}
-
 	@OpMethod(
 		op = net.imagej.ops.threshold.ApplyThresholdMethod.Mean.class)
 	public <T extends RealType<T>> IterableInterval<BitType> mean(final IterableInterval<T> in) {
@@ -849,11 +803,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 				net.imagej.ops.Ops.Threshold.Mean.class,
 				out, in);
 		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.Ops.Threshold.MinError.class)
-	public Object minError(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Threshold.MinError.class, args);
 	}
 
 	@OpMethod(
@@ -906,11 +855,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.Ops.Threshold.Minimum.class)
-	public Object minimum(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Threshold.Minimum.class, args);
-	}
-
 	@OpMethod(
 		op = net.imagej.ops.threshold.ApplyThresholdMethod.Minimum.class)
 	public <T extends RealType<T>> IterableInterval<BitType> minimum(final IterableInterval<T> in) {
@@ -958,11 +902,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 				net.imagej.ops.Ops.Threshold.Minimum.class,
 				out, in);
 		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.Ops.Threshold.Moments.class)
-	public Object moments(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Threshold.Moments.class, args);
 	}
 
 	@OpMethod(
@@ -1014,11 +953,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.Ops.Threshold.Otsu.class)
-	public Object otsu(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Threshold.Otsu.class, args);
-	}
-
 	@OpMethod(
 		op = net.imagej.ops.threshold.otsu.ComputeOtsuThreshold.class)
 	public <T extends RealType<T>> T otsu(final Histogram1d<T> in) {
@@ -1061,11 +995,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 				net.imagej.ops.Ops.Threshold.Otsu.class, out,
 				in);
 		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.Ops.Threshold.Percentile.class)
-	public Object percentile(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Threshold.Percentile.class, args);
 	}
 
 	@OpMethod(
@@ -1118,11 +1047,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 					net.imagej.ops.Ops.Threshold.Percentile.class,
 					out, in);
 		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.Ops.Threshold.RenyiEntropy.class)
-	public Object renyiEntropy(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Threshold.RenyiEntropy.class, args);
 	}
 
 	@OpMethod(
@@ -1182,11 +1106,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.Ops.Threshold.Shanbhag.class)
-	public Object shanbhag(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Threshold.Shanbhag.class, args);
-	}
-
 	@OpMethod(
 		op = net.imagej.ops.threshold.ApplyThresholdMethod.Shanbhag.class)
 	public <T extends RealType<T>> IterableInterval<BitType> shanbhag(final IterableInterval<T> in) {
@@ -1235,11 +1154,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.Ops.Threshold.Triangle.class)
-	public Object triangle(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Threshold.Triangle.class, args);
-	}
-
 	@OpMethod(
 		op = net.imagej.ops.threshold.ApplyThresholdMethod.Triangle.class)
 	public <T extends RealType<T>> IterableInterval<BitType> triangle(final IterableInterval<T> in) {
@@ -1286,11 +1200,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 				net.imagej.ops.Ops.Threshold.Triangle.class,
 				out, in);
 		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.Ops.Threshold.Yen.class)
-	public Object yen(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Threshold.Yen.class, args);
 	}
 
 	@OpMethod(

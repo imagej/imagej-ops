@@ -65,11 +65,6 @@ public class FilterNamespace extends AbstractNamespace {
 
 	// -- addNoise --
 
-	@OpMethod(op = net.imagej.ops.Ops.Filter.AddNoise.class)
-	public Object addNoise(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Filter.AddNoise.class, args);
-	}
-
 	@OpMethod(ops = { net.imagej.ops.filter.addNoise.AddNoiseRealType.class,
 		net.imagej.ops.filter.addNoise.AddNoiseRealTypeCFI.class })
 	public <I extends RealType<I>, O extends RealType<O>> O addNoise(final O out,
@@ -108,11 +103,6 @@ public class FilterNamespace extends AbstractNamespace {
 
 	// -- addPoissonNoise --
 
-	@OpMethod(op = net.imagej.ops.Ops.Filter.AddPoissonNoise.class)
-	public Object addPoissonNoise(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Filter.AddPoissonNoise.class, args);
-	}
-
 	@OpMethod(op = net.imagej.ops.filter.addPoissonNoise.AddPoissonNoiseRealType.class)
 	public <I extends RealType<I>, O extends RealType<O>> O addPoissonNoise(final O out,
 		final I in)
@@ -136,12 +126,6 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	// -- convolve --
-
-	/** Executes the "convolve" operation on the given arguments. */
-	@OpMethod(op = Ops.Filter.Convolve.class)
-	public Object convolve(final Object... args) {
-		return ops().run(Ops.Filter.Convolve.NAME, args);
-	}
 
 	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTImg.class,
@@ -387,12 +371,6 @@ public class FilterNamespace extends AbstractNamespace {
 	// -- correlate --
 
 	/** Executes the "correlate" operation on the given arguments. */
-	@OpMethod(op = Ops.Filter.Correlate.class)
-	public Object correlate(final Object... args) {
-		return ops().run(Ops.Filter.Correlate.NAME, args);
-	}
-
-	/** Executes the "correlate" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTImg.class)
 	public
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
@@ -626,15 +604,9 @@ public class FilterNamespace extends AbstractNamespace {
 	// -- fft --
 
 	/** Executes the "fft" operation on the given arguments. */
-	@OpMethod(op = Ops.Filter.FFT.class)
-	public Object fft(final Object... args) {
-		return ops().run(Ops.Filter.FFT.NAME, args);
-	}
-
-	/** Executes the "fft" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.fft.FFTImg.class)
 	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<I> in)
+		final I in)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<ComplexFloatType> result =
@@ -646,7 +618,7 @@ public class FilterNamespace extends AbstractNamespace {
 	/** Executes the "fft" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.fft.FFTImg.class)
 	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<ComplexFloatType> out, final Img<I> in)
+		final Img<ComplexFloatType> out, final I in)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<ComplexFloatType> result =
@@ -658,7 +630,7 @@ public class FilterNamespace extends AbstractNamespace {
 	/** Executes the "fft" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.fft.FFTImg.class)
 	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<ComplexFloatType> out, final Img<I> in, final long... borderSize)
+		final Img<ComplexFloatType> out, final I in, final long... borderSize)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<ComplexFloatType> result =
@@ -670,7 +642,7 @@ public class FilterNamespace extends AbstractNamespace {
 	/** Executes the "fft" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.fft.FFTImg.class)
 	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<ComplexFloatType> out, final Img<I> in, final long[] borderSize,
+		final Img<ComplexFloatType> out, final I in, final long[] borderSize,
 		final Boolean fast)
 	{
 		@SuppressWarnings("unchecked")
@@ -683,7 +655,7 @@ public class FilterNamespace extends AbstractNamespace {
 	/** Executes the "fft" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.fft.FFTImg.class)
 	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<ComplexFloatType> out, final Img<I> in, final long[] borderSize,
+		final Img<ComplexFloatType> out, final I in, final long[] borderSize,
 		final Boolean fast,
 		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf)
 	{
@@ -739,12 +711,6 @@ public class FilterNamespace extends AbstractNamespace {
 	// -- fftSize --
 
 	/** Executes the "fftSize" operation on the given arguments. */
-	@OpMethod(op = Ops.Filter.FFTSize.class)
-	public Object fftSize(final Object... args) {
-		return ops().run(Ops.Filter.FFTSize.NAME, args);
-	}
-
-	/** Executes the "fftSize" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.fftSize.ComputeFFTSize.class)
 	public List<long[]> fftSize(final long[] inputSize, final long[] paddedSize,
 		final long[] fftSize, final Boolean forward, final Boolean fast)
@@ -758,11 +724,6 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	// -- dog --
-
-	@OpMethod(op = Ops.Filter.DoG.class)
-	public Object dog(Object... args) {
-		return ops().run(Ops.Filter.DoG.class, args);
-	}
 
 	@OpMethod(op = net.imagej.ops.filter.dog.DefaultDoG.class)
 	public
@@ -909,12 +870,6 @@ public class FilterNamespace extends AbstractNamespace {
 	// -- gauss --
 
 	/** Executes the "gauss" operation on the given arguments. */
-	@OpMethod(op = Ops.Filter.Gauss.class)
-	public Object gauss(final Object... args) {
-		return ops().run(Ops.Filter.Gauss.NAME, args);
-	}
-
-	/** Executes the "gauss" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.gauss.DefaultGaussRAI.class)
 	public <T extends RealType<T>, V extends RealType<V>>
 		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<V> out,
@@ -994,12 +949,6 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	// -- ifft --
-
-	/** Executes the "ifft" operation on the given arguments. */
-	@OpMethod(op = Ops.Filter.IFFT.class)
-	public Object ifft(final Object... args) {
-		return ops().run(Ops.Filter.IFFT.NAME, args);
-	}
 
 	/** Executes the "ifft" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.ifft.IFFTImg.class)

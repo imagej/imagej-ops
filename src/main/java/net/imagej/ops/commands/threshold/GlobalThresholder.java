@@ -34,6 +34,7 @@ import net.imagej.ImgPlus;
 import net.imagej.axis.Axis;
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.ComputeThreshold;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -71,7 +72,7 @@ public class GlobalThresholder<T extends RealType<T>> extends AbstractOp {
         Op threshold = ops().op("threshold", out, in, method);
 
         // TODO actually map axes to int array
-        ops().slice(out, in, threshold, new int[]{0, 1});
+        ops().run(Ops.Slice.class, out, in, threshold, new int[]{0, 1});
     }
     
     // TODO call otsu: out = ops.run(GlobalThresholder.class, ops.ops(Otsu...),in).

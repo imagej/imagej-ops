@@ -323,12 +323,6 @@ public interface OpEnvironment extends Contextual {
 	// -- Operation shortcuts - global namespace --
 
 	/** Executes the "eval" operation on the given arguments. */
-	@OpMethod(op = Ops.Eval.class)
-	default Object eval(final Object... args) {
-		return run(Ops.Eval.NAME, args);
-	}
-
-	/** Executes the "eval" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.eval.DefaultEval.class)
 	default Object eval(final String expression) {
 		final Object result = run(net.imagej.ops.Ops.Eval.class,
@@ -342,12 +336,6 @@ public interface OpEnvironment extends Contextual {
 		final Object result = run(net.imagej.ops.Ops.Eval.class, expression,
 			vars);
 		return result;
-	}
-
-	/** Executes the "help" operation on the given arguments. */
-	@OpMethod(op = Ops.Help.class)
-	default Object help(final Object... args) {
-		return run(Ops.Help.NAME, args);
 	}
 
 	/** Executes the "help" operation on the given arguments. */
@@ -410,24 +398,12 @@ public interface OpEnvironment extends Contextual {
 	}
 
 	/** Executes the "identity" operation on the given arguments. */
-	@OpMethod(op = Ops.Identity.class)
-	default Object identity(final Object... args) {
-		return run(Ops.Identity.NAME, args);
-	}
-
-	/** Executes the "identity" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.identity.DefaultIdentity.class)
 	default <A> A identity(final A arg) {
 		@SuppressWarnings("unchecked")
 		final A result = (A) run(net.imagej.ops.Ops.Identity.class,
 			arg);
 		return result;
-	}
-
-	/** Executes the "join" operation on the given arguments. */
-	@OpMethod(op = Ops.Join.class)
-	default Object join(final Object... args) {
-		return run(Ops.Join.NAME, args);
 	}
 
 	/** Executes the "join" operation on the given arguments. */
@@ -497,12 +473,6 @@ public interface OpEnvironment extends Contextual {
 	}
 
 	/** Executes the "loop" operation on the given arguments. */
-	@OpMethod(op = Ops.Loop.class)
-	default Object loop(final Object... args) {
-		return run(Ops.Loop.NAME, args);
-	}
-
-	/** Executes the "loop" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.loop.DefaultLoopInplace.class)
 	default <I, O extends I> O loop(final O arg, final UnaryInplaceOp<I, O> op,
 		final int n)
@@ -521,12 +491,6 @@ public interface OpEnvironment extends Contextual {
 		final A result = (A) run(net.imagej.ops.Ops.Loop.class, out,
 			in, op, outputFactory, n);
 		return result;
-	}
-
-	/** Executes the "map" operation on the given arguments. */
-	@OpMethod(op = Ops.Map.class)
-	default Object map(final Object... args) {
-		return run(Ops.Map.NAME, args);
 	}
 
 	/** Executes the "map" operation on the given arguments. */
@@ -834,12 +798,6 @@ public interface OpEnvironment extends Contextual {
 		final RandomAccessibleInterval<EO> result =
 			(RandomAccessibleInterval<EO>) run(Ops.Map.class, arg, in, op);
 		return result;
-	}
-
-	/** Executes the "slicewise" operation on the given arguments. */
-	@OpMethod(op = Ops.Slice.class)
-	default Object slice(final Object... args) {
-		return run(Ops.Slice.NAME, args);
 	}
 
 	/** Executes the "slicewise" operation on the given arguments. */

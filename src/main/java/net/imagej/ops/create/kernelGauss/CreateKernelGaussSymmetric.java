@@ -32,7 +32,7 @@ package net.imagej.ops.create.kernelGauss;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.create.AbstractCreateSymmetricGaussianKernel;
-import net.imglib2.img.Img;
+import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
 
 import org.scijava.Priority;
@@ -45,8 +45,9 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  */
 @Plugin(type = Ops.Create.KernelGauss.class, priority = Priority.HIGH_PRIORITY)
-public class CreateKernelGaussSymmetric<T extends ComplexType<T>> extends
-	AbstractCreateSymmetricGaussianKernel<T> implements Ops.Create.KernelGauss
+public class CreateKernelGaussSymmetric<T extends ComplexType<T> & NativeType<T>>
+	extends AbstractCreateSymmetricGaussianKernel<T> implements
+	Ops.Create.KernelGauss
 {
 
 	@Override
@@ -57,7 +58,6 @@ public class CreateKernelGaussSymmetric<T extends ComplexType<T>> extends
 			sigmas[d] = sigma;
 		}
 
-		output =
-			(Img<T>) ops().create().kernelGauss(outType, fac, sigmas);
+		output = ops().create().kernelGauss(outType, fac, sigmas);
 	}
 }
