@@ -43,21 +43,14 @@ import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imglib2.FinalInterval;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.integral.IntegralImg;
-import net.imglib2.algorithm.neighborhood.Neighborhood;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.algorithm.neighborhood.RectangleShape.NeighborhoodsIterableInterval;
-import net.imglib2.converter.RealDoubleConverter;
 import net.imglib2.outofbounds.OutOfBoundsBorderFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.Views;
 import net.imglib2.view.composite.Composite;
-import net.imglib2.view.composite.CompositeIntervalView;
-import net.imglib2.view.composite.GenericComposite;
-import net.imglib2.view.composite.RealComposite;
 
 /**
  * Apply a local thresholding method to an image using integral images for speed
@@ -79,7 +72,7 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 	private CenterAwareIntegralComputerOp<I, BitType> filterOp;
 
 	private BinaryComputerOp<RandomAccessibleInterval<I>, NeighborhoodsIterableInterval<? extends Composite<RealType>>, IterableInterval<BitType>> map;
-	
+
 	@Override
 	public void initialize() {
 		// Increase span of shape by 1 to return correct values together with
@@ -94,18 +87,20 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 	public void compute1(RandomAccessibleInterval<I> input,
 		IterableInterval<BitType> output)
 	{
-		
-		List<RandomAccessibleInterval<RealType>> listOfIntegralImages = new ArrayList<>();		
+
+		List<RandomAccessibleInterval<RealType>> listOfIntegralImages =
+			new ArrayList<>();
 		for (int order : requiredIntegralImages()) {
 			RandomAccessibleInterval<RealType> requiredIntegralImg = getIntegralImage(
 				input, order);
 			listOfIntegralImages.add(requiredIntegralImg);
 		}
-		
+
 		// Composite image of integral images of order 1 and 2
-		RandomAccessibleInterval<RealType> stacked = Views.stack(listOfIntegralImages);
-		RandomAccessibleInterval<? extends Composite<RealType>> compositeRAI =
-			Views.collapse(stacked);
+		RandomAccessibleInterval<RealType> stacked = Views.stack(
+			listOfIntegralImages);
+		RandomAccessibleInterval<? extends Composite<RealType>> compositeRAI = Views
+			.collapse(stacked);
 		RandomAccessibleInterval<? extends Composite<RealType>> extendedCompositeRAI =
 			removeLeadingZeros(compositeRAI);
 
@@ -116,7 +111,7 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 			map = (BinaryComputerOp) ops().op(Map.class, out(), in(), neighborhoods,
 				filterOp);
 		}
-		
+
 		map.compute2(input, neighborhoods, output);
 	}
 
@@ -171,7 +166,7 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 			.extendBorder(input), interval);
 		return extendedImg;
 	}
-	
+
 	/**
 	 * Get the shape (structuring element) used by this filter.
 	 * 
@@ -187,4 +182,5 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 	protected abstract CenterAwareIntegralComputerOp<I, BitType> unaryComputer();
 
 	protected abstract int[] requiredIntegralImages();
+
 }
