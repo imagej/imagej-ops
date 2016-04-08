@@ -32,7 +32,6 @@ package net.imagej.ops;
 
 import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -185,12 +184,7 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 			if (!checkVarArgs(method)) success = false;
 
 			for (final Class<? extends Op> opType : opTypes(method)) {
-				if (opType.isInterface()) {
-					if (!checkOpIface(method, qName, opType)) success = false;
-				}
-				else {
-					if (!checkOpImpl(method, qName, opType, coverSet)) success = false;
-				}
+				if (!checkOpImpl(method, qName, opType, coverSet)) success = false;
 			}
 		}
 
@@ -254,48 +248,6 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 			}
 		}
 		return opSet;
-	}
-
-	/**
-	 * Checks whether the given op interface matches the specified method,
-	 * particularly with respect to the interface's {@code NAME} constant.
-	 * @param method The method to which the {@link Op} should be compared.
-	 * @param qName The fully qualified (with namespace) name of the op.
-	 * @param opType The {@link Op} to which the method should be compared.
-	 * @return true iff the method and {@link Op} match up.
-	 */
-	private boolean checkOpIface(final Method method, final String qName,
-		final Class<? extends Op> opType)
-	{
-		try {
-			final Field nameField = opType.getField("NAME");
-			if (nameField.getType() != String.class) {
-				error("Non-String NAME field", opType, method);
-				return false;
-			}
-			final String nameFieldValue = (String) nameField.get(null);
-			if (!qName.equals(nameFieldValue)) {
-				error("NAME field mismatch", opType, method);
-				return false;
-			}
-		}
-		catch (final NoSuchFieldException exc) {
-			error("No NAME field", opType, method);
-			return false;
-		}
-		catch (final IllegalAccessException exc) {
-			error("Inaccessible NAME field", opType, method);
-			return false;
-		}
-
-		final Object[] argTypes = method.getParameterTypes();
-		// verify that the method argument is "Object..." as expected
-		if (argTypes.length != 1 || argTypes[0] != Object[].class) {
-			error("Expected single Object... argument", opType, method);
-			return false;
-		}
-
-		return true;
 	}
 
 	/**
