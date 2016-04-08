@@ -36,6 +36,7 @@ import static org.junit.Assert.assertSame;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
+import net.imagej.ops.create.kernelGauss.CreateKernelGauss;
 import net.imagej.ops.filter.CreateFFTFilterMemory;
 import net.imglib2.Point;
 import net.imglib2.RandomAccess;
@@ -213,7 +214,7 @@ public class ConvolveTest extends AbstractOpTest {
 		}
 		
 		// create psf using the gaussian kernel op (alternatively PSF could be an input to the script)
-		Img<DoubleType> psf=(Img<DoubleType>)ops.create().kernelGauss(new long[]{5, 5, 5});
+		Img<DoubleType> psf=(Img<DoubleType>)ops.run(CreateKernelGauss.class, new long[]{5, 5, 5});
 
 		// convolve psf with phantom
 		Img<DoubleType> convolved=ops.filter().convolve(phantom, psf);

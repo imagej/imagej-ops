@@ -34,6 +34,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Iterator;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.create.imgLabeling.DefaultCreateImgLabeling;
 import net.imglib2.Cursor;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelingMapping;
@@ -55,8 +56,10 @@ public class CopyLabelingMappingTest extends AbstractOpTest {
 
 	@Before
 	public void createData() {
-		ImgLabeling<String, IntType> imgL = (ImgLabeling<String, IntType>) ops
-				.create().imgLabeling(new long[] { 10, 10 }, new IntType());
+		@SuppressWarnings("unchecked")
+		final ImgLabeling<String, IntType> imgL = (ImgLabeling<String, IntType>) ops
+			.run(DefaultCreateImgLabeling.class, new long[] { 10, 10 },
+				new IntType());
 
 		final Cursor<LabelingType<String>> inc = imgL.cursor();
 
