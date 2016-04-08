@@ -49,6 +49,7 @@ import net.imagej.ops.threshold.localSauvola.LocalSauvolaThreshold;
 import net.imagej.ops.threshold.localSauvola.LocalSauvolaThresholdIntegral;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
 import net.imglib2.algorithm.neighborhood.DiamondShape;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.exception.IncompatibleTypeException;
@@ -231,15 +232,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
 			0.0);
 		
-		// Test for pixel-wise equality of the results
-		Cursor<BitType> cursorOut2 = out2.cursor();
-		Cursor<BitType> cursorOut3 = out3.cursor();
-		while	(cursorOut2.hasNext()  && cursorOut3.hasNext()) {
-			BitType valueOut2 = cursorOut2.next();
-			BitType valueOut3 = cursorOut3.next();
-			
-			assertEquals(valueOut2, valueOut3);
-		}
+		testIterableIntervalSimilarity(out2, out3);
 	}
 
 	/**
@@ -293,7 +286,6 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 * @see LocalNiblackThresholdIntegral
 	 * @see LocalNiblackThreshold
 	 */
-	@SuppressWarnings("null")
 	@Test
 	public void testLocalNiblackResultsConsistency() {
 		Img<BitType> out2 = null;
@@ -319,15 +311,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
 			0.0, 0.0);
 		
-		// Test for pixel-wise equality of the results
-		Cursor<BitType> cursorOut2 = out2.cursor();
-		Cursor<BitType> cursorOut3 = out3.cursor();
-		while	(cursorOut2.hasNext()  && cursorOut3.hasNext()) {
-			BitType valueOut2 = cursorOut2.next();
-			BitType valueOut3 = cursorOut3.next();
-			
-			assertEquals(valueOut2, valueOut3);
-		}
+		testIterableIntervalSimilarity(out2, out3);
 	}
 
 	/**
@@ -384,15 +368,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
 			0.0, 0.0);
 		
-		// Test for pixel-wise equality of the results
-		Cursor<BitType> cursorOut2 = out2.cursor();
-		Cursor<BitType> cursorOut3 = out3.cursor();
-		while	(cursorOut2.hasNext()  && cursorOut3.hasNext()) {
-			BitType valueOut2 = cursorOut2.next();
-			BitType valueOut3 = cursorOut3.next();
-			
-			assertEquals(valueOut2, valueOut3);
-		}
+		testIterableIntervalSimilarity(out2, out3);
 	}
 	
 	/**
@@ -449,15 +425,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
 			0.0, 0.0);
 		
-		// Test for pixel-wise equality of the results
-		Cursor<BitType> cursorOut2 = out2.cursor();
-		Cursor<BitType> cursorOut3 = out3.cursor();
-		while	(cursorOut2.hasNext()  && cursorOut3.hasNext()) {
-			BitType valueOut2 = cursorOut2.next();
-			BitType valueOut3 = cursorOut3.next();
-			
-			assertEquals(valueOut2, valueOut3);
-		}
+		testIterableIntervalSimilarity(out2, out3);
 	}
 
 	public ArrayImg<ByteType, ByteArray> generateKnownByteArrayTestImgSmall() {
@@ -489,6 +457,33 @@ public class LocalThresholdTest extends AbstractOpTest {
 		array[8] = (byte) 100;
 
 		return ArrayImgs.bytes(array, dims);
+	}
+
+	/**
+	 * Checks if two {@link IterableInterval} have the same content.
+	 *
+	 * @param ii1
+	 * @param ii2
+	 */
+	private <T> void testIterableIntervalSimilarity(IterableInterval<T> ii1,
+		IterableInterval<T> ii2)
+	{
+		// Test for pixel-wise equality of the results
+		Cursor<T> cursor1 = ii1.cursor();
+		Cursor<T> cursor2 = ii2.cursor();
+		while (cursor1.hasNext() && cursor2.hasNext()) {
+			T value1 = cursor1.next();
+			T value2 = cursor2.next();
+
+			long[] position = new long[ii1.numDimensions()];
+
+			if (!value1.equals(value2)) {
+				cursor1.localize(position);
+
+				assertEquals(String.format("Position (%d, %d) differs.", position[0],
+					position[1]), value1, value2);
+			}
+		}
 	}
 
 }
