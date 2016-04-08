@@ -36,6 +36,7 @@ import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCI;
+import net.imglib2.FinalInterval;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.IntegerType;
@@ -75,7 +76,6 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 		}
 	}
 
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public void compute1(RandomAccessibleInterval<I> input,
@@ -90,16 +90,15 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 					integralAdd, i);
 			}
 		}
-		
+
 		RandomAccessibleInterval<? extends RealType<?>> generalizedInput = input; // FIXME
-		
+
 		// Create integral image
 		for (int i=0; i < input.numDimensions(); ++i) {
 			// Slicewise integral addition in one direction
 			slicewiseOps[i].compute1(generalizedInput, output);
-			generalizedInput = output;
+			generalizedInput = ops().copy().rai(output);
 		}
-	
 	}
 
 	@SuppressWarnings("unchecked")
@@ -107,12 +106,31 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 	public RandomAccessibleInterval<RealType<?>> createOutput(
 		RandomAccessibleInterval<I> input)
 	{
+		// Remove 0s from integralImg by shifting its interval by +1
+		final long[] min = new long[input.numDimensions()];
+		final long[] max = new long[input.numDimensions()];
+
+		for (int d = 0; d < input.numDimensions(); ++d) {
+			min[d] = input.min(d) - 1;
+			max[d] = input.max(d);
+		}
+
+		// Define the Interval on the infinite random accessibles
+		final FinalInterval interval = new FinalInterval(min, max);
+
+		RandomAccessibleInterval<RealType<?>> output = null;
+
 		// Create integral image
 		if (Util.getTypeFromInterval(input) instanceof IntegerType) {
-			return (RandomAccessibleInterval) ops().create().img(input, new LongType());
+			output = (RandomAccessibleInterval) ops().create().img(interval,
+				new LongType());
 		}
-		
-		return (RandomAccessibleInterval) ops().create().img(input, new DoubleType());
+		else {
+			output = (RandomAccessibleInterval) ops().create().img(interval,
+				new DoubleType());
+		}
+
+		return Views.offsetInterval(output, output);
 	}
 
 	@Override
