@@ -41,8 +41,11 @@ import net.imagej.ops.bufferfactories.ImgImgSameTypeFactory;
 import net.imagej.ops.map.MapOp;
 import net.imagej.ops.special.UnaryOutputFactory;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
+import net.imagej.ops.special.inplace.Inplaces;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -54,17 +57,17 @@ public class JoinTest extends AbstractOpTest {
 
 	private Img<ByteType> in;
 	private Img<ByteType> out;
-	private Op inplaceOp;
-	private Op computerOp;
+	private UnaryInplaceOp<? super Img<ByteType>, Img<ByteType>> inplaceOp;
+	private UnaryComputerOp<Img<ByteType>, Img<ByteType>> computerOp;
 
 	@Before
 	public void init() {
 		final long[] dims = new long[] { 10, 10 };
 		in = generateByteArrayTestImg(false, dims);
 		out = generateByteArrayTestImg(false, dims);
-		inplaceOp = ops.op(MapOp.class, Img.class, new AddOneInplace());
-		computerOp =
-			ops.op(MapOp.class, Img.class, Img.class, new AddOneComputer());
+		inplaceOp = Inplaces.unary(ops, MapOp.class, out, new AddOneInplace());
+		computerOp = Computers.unary(ops, MapOp.class, out, in,
+			new AddOneComputer());
 	}
 
 	@Test
