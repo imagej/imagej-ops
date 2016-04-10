@@ -31,10 +31,12 @@
 package net.imagej.ops.filter.fft;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.create.img.CreateImgFromDimsAndType;
 import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
+import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
 import net.imglib2.Dimensions;
 import net.imglib2.img.Img;
+import net.imglib2.type.NativeType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -54,15 +56,24 @@ public class CreateOutputFFTMethods<T> extends
 	@Parameter(required = false)
 	private boolean fast = true;
 
-	@SuppressWarnings("unchecked")
+	private BinaryFunctionOp<Dimensions, T, Img<T>> create;
+
+	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void initialize() {
+		super.initialize();
+
+		create = (BinaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+			Img.class, Dimensions.class, NativeType.class);
+	}
+
 	@Override
 	public Img<T> compute2(Dimensions paddedDimensions, T outType) {
 
 		Dimensions paddedFFTMethodsFFTDimensions = FFTMethodsUtility
 			.getFFTDimensionsRealToComplex(fast, paddedDimensions);
 
-		return (Img<T>) ops().run(CreateImgFromDimsAndType.class,
-			paddedFFTMethodsFFTDimensions, outType);
+		return create.compute2(paddedFFTMethodsFFTDimensions, outType);
 	}
 
 }
