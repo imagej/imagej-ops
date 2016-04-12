@@ -1170,7 +1170,7 @@ public class FilterNamespace extends AbstractNamespace {
 	
 	// -- partial derivative --
 	
-	/** Executes the "directional derivative" operation on the given arguments */
+	/** Executes the "partial derivative" operation on the given arguments */
 	@OpMethod(op = net.imagej.ops.filter.derivative.PartialDerivativeRAI.class)
 	public <T extends RealType<T>> RandomAccessibleInterval<T> partialDerivative(final RandomAccessibleInterval<T> in, final int dimension) {
 		@SuppressWarnings("unchecked")
@@ -1179,7 +1179,7 @@ public class FilterNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	/** Executes the "directional derivative" operation on the given arguments */
+	/** Executes the "partial derivative" operation on the given arguments */
 	@OpMethod(op = net.imagej.ops.filter.derivative.PartialDerivativeRAI.class)
 	public <T extends RealType<T>> RandomAccessibleInterval<T> partialDerivative(final RandomAccessibleInterval<T> out, final RandomAccessibleInterval<T> in, final int dimension) {
 		@SuppressWarnings("unchecked")
