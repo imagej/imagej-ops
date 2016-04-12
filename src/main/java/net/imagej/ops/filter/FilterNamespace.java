@@ -52,6 +52,8 @@ import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
+import net.imglib2.view.composite.CompositeIntervalView;
+import net.imglib2.view.composite.RealComposite;
 
 import org.scijava.plugin.Plugin;
 
@@ -1183,6 +1185,15 @@ public class FilterNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(net.imagej.ops.filter.derivative.PartialDerivativeRAI.class, out, in, dimension);
+		return result;
+	}
+	
+	/** Executes the "partial derivative" operation on all dimensions */
+	@OpMethod(op = net.imagej.ops.filter.derivative.PartialDerivativesRAI.class)
+	public <T extends RealType<T>> CompositeIntervalView<T, RealComposite<T>> allPartialDerivatives(final RandomAccessibleInterval<T> in) {
+		@SuppressWarnings("unchecked")
+		final CompositeIntervalView<T, RealComposite<T>> result =
+			(CompositeIntervalView<T, RealComposite<T>>) ops().run(net.imagej.ops.filter.derivative.PartialDerivativesRAI.class, in);
 		return result;
 	}
 

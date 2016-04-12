@@ -90,6 +90,7 @@ namespaces = ```
 		[name: "convolve",                    iface: "Convolve"],
 		[name: "correlate",                   iface: "Correlate"],
 		[name: "partialDerivative",           iface: "PartialDerivative"],
+		[name: "allPartialDerivatives",       iface: "AllPartialDerivatives"],
 		[name: "dog",                         iface: "DoG",                 aliases: ["differenceOfGaussian"]],
 		[name: "fft",                         iface: "FFT"],
 		[name: "fftSize",                     iface: "FFTSize"],
