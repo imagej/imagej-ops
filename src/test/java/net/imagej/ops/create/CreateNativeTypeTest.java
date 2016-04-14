@@ -33,6 +33,8 @@ package net.imagej.ops.create;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.create.nativeType.CreateNativeTypeFromClass;
+import net.imagej.ops.create.nativeType.DefaultCreateNativeType;
 import net.imglib2.type.numeric.complex.ComplexDoubleType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -51,23 +53,23 @@ public class CreateNativeTypeTest extends AbstractOpTest {
 	public void testCreateNativeType() {
 
 		// default
-		Object type = ops.create().nativeType();
+		Object type = ops.run(DefaultCreateNativeType.class);
 		assertEquals(type.getClass(), DoubleType.class);
 
 		// FloatType
-		type = ops.create().nativeType(FloatType.class);
+		type = ops.run(CreateNativeTypeFromClass.class, FloatType.class);
 		assertEquals(type.getClass(), FloatType.class);
 
 		// ComplexFloatType
-		type = ops.create().nativeType(ComplexFloatType.class);
+		type = ops.run(CreateNativeTypeFromClass.class, ComplexFloatType.class);
 		assertEquals(type.getClass(), ComplexFloatType.class);
 
 		// DoubleType
-		type = ops.create().nativeType(DoubleType.class);
+		type = ops.run(CreateNativeTypeFromClass.class, DoubleType.class);
 		assertEquals(type.getClass(), DoubleType.class);
 
 		// ComplexDoubleType
-		type = ops.create().nativeType(ComplexDoubleType.class);
+		type = ops.run(CreateNativeTypeFromClass.class, ComplexDoubleType.class);
 		assertEquals(type.getClass(), ComplexDoubleType.class);
 
 	}

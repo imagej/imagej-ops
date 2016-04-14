@@ -49,7 +49,7 @@ public class ApplyManualThresholdTest extends AbstractThresholdTest {
 	public void testApplyThreshold() throws IncompatibleTypeException {
 		final Img<BitType> out = bitmap();
 		final UnsignedShortType threshold = new UnsignedShortType(30000);
-		ops.threshold().apply(out, in, threshold);
+		ops.run(ApplyManualThreshold.class, out, in, threshold);
 		assertCount(out, 54);
 	}
 

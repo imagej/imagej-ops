@@ -38,9 +38,38 @@ import java.net.MalformedURLException;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.AbstractFeatureTest;
+import net.imagej.ops.geom.geom2d.DefaultCircularity;
+import net.imagej.ops.geom.geom2d.DefaultContour;
+import net.imagej.ops.geom.geom2d.DefaultEccentricity;
+import net.imagej.ops.geom.geom2d.DefaultFeretsAngle;
+import net.imagej.ops.geom.geom2d.DefaultFeretsDiameter;
+import net.imagej.ops.geom.geom2d.DefaultMajorAxis;
+import net.imagej.ops.geom.geom2d.DefaultMinorAxis;
+import net.imagej.ops.geom.geom2d.DefaultPerimeterLength;
+import net.imagej.ops.geom.geom2d.DefaultRoundness;
+import net.imagej.ops.geom.geom2d.DefaultSizePolygon;
+import net.imagej.ops.geom.geom2d.SolidityPolygon;
+import net.imagej.ops.geom.geom3d.BoundaryPixelCountConvexHullMesh;
+import net.imagej.ops.geom.geom3d.BoundarySizeConvexHullMesh;
+import net.imagej.ops.geom.geom3d.ConvexityMesh;
+import net.imagej.ops.geom.geom3d.DefaultCompactness;
+import net.imagej.ops.geom.geom3d.DefaultMainElongation;
+import net.imagej.ops.geom.geom3d.DefaultMarchingCubes;
+import net.imagej.ops.geom.geom3d.DefaultMedianElongation;
+import net.imagej.ops.geom.geom3d.DefaultSpareness;
+import net.imagej.ops.geom.geom3d.DefaultSphericity;
+import net.imagej.ops.geom.geom3d.DefaultSurfaceArea;
+import net.imagej.ops.geom.geom3d.DefaultSurfacePixelCount;
+import net.imagej.ops.geom.geom3d.RugosityMesh;
+import net.imagej.ops.geom.geom3d.SizeConvexHullMesh;
+import net.imagej.ops.geom.geom3d.SolidityMesh;
+import net.imagej.ops.geom.geom3d.mesh.Mesh;
+import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.img.Img;
+import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.roi.labeling.LabelRegion;
+import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.type.numeric.real.FloatType;
 
 import org.junit.BeforeClass;
@@ -57,6 +86,8 @@ public class GeomTest extends AbstractFeatureTest {
 	private static LabelRegion<String> region2D;
 	private static LabelRegion<String> region3D;
 	private static Img<FloatType> img2d;
+	private Polygon contour;
+	private Mesh mesh;
 
 	@BeforeClass
 	public static void setupBefore() throws MalformedURLException, IOException {
@@ -69,18 +100,20 @@ public class GeomTest extends AbstractFeatureTest {
 	public void setup() {
 		// no implementation is needed since the tests in this class will not use
 		// the features provided in super#setup()
+		contour = (Polygon) ops.run(DefaultContour.class, region2D, true, true);
+		mesh = (Mesh) ops.run(DefaultMarchingCubes.class, region3D);
 	}
 
 	@Test
 	public void createPolygon() {
-		ops.geom().contour(region2D, true, true);
+		ops.run(DefaultContour.class, region2D, true, true);
 	}
 
 	@Test
 	public void testSize() {
 		final double expected = expensiveTestsEnabled ? 355630.5 : 3460.5;
-		assertEquals(Ops.Geometric.Size.NAME, expected, ops.geom().size(ops.geom()
-			.contour(region2D, true, true)).getRealDouble(),
+		assertEquals(Ops.Geometric.Size.NAME, expected, ((DoubleType) ops.run(
+			DefaultSizePolygon.class, contour)).getRealDouble(),
 			AbstractFeatureTest.BIG_DELTA);
 	}
 
@@ -88,16 +121,16 @@ public class GeomTest extends AbstractFeatureTest {
 	public void testBoundarySize2D() {
 		final double expected = expensiveTestsEnabled ? 2658.990257670
 			: 262.977705423;
-		assertEquals(Ops.Geometric.BoundarySize.NAME, expected, ops.geom()
-			.boundarySize(ops.geom().contour(region2D, true, true)).getRealDouble(),
+		assertEquals(Ops.Geometric.BoundarySize.NAME, expected, ((DoubleType) ops
+			.run(DefaultPerimeterLength.class, contour)).getRealDouble(),
 			AbstractFeatureTest.BIG_DELTA);
 	}
 
 	@Test
 	public void testCircularity() {
 		final double expected = expensiveTestsEnabled ? 0.632083948 : 0.628797569;
-		assertEquals(Ops.Geometric.Circularity.NAME, expected, ops.geom()
-			.circularity(ops.geom().contour(region2D, true, true)).getRealDouble(),
+		assertEquals(Ops.Geometric.Circularity.NAME, expected, ((DoubleType) ops
+			.run(DefaultCircularity.class, contour)).getRealDouble(),
 			AbstractFeatureTest.BIG_DELTA);
 	}
 
@@ -105,8 +138,8 @@ public class GeomTest extends AbstractFeatureTest {
 	public void testMinorAxis() {
 		final double expected = expensiveTestsEnabled ? 520.667420750
 			: 51.062793933;
-		assertEquals(Ops.Geometric.MinorAxis.NAME, expected, ops.geom().minorAxis(
-			ops.geom().contour(region2D, true, true)).getRealDouble(),
+		assertEquals(Ops.Geometric.MinorAxis.NAME, expected, ((DoubleType) ops.run(
+			DefaultMinorAxis.class, contour)).getRealDouble(),
 			AbstractFeatureTest.BIG_DELTA);
 	}
 
@@ -114,16 +147,16 @@ public class GeomTest extends AbstractFeatureTest {
 	public void testMajorAxis() {
 		final double expected = expensiveTestsEnabled ? 869.657215429
 			: 86.286806991;
-		assertEquals(Ops.Geometric.MajorAxis.NAME, expected, ops.geom().majorAxis(
-			ops.geom().contour(region2D, true, true)).getRealDouble(), 0.01);
+		assertEquals(Ops.Geometric.MajorAxis.NAME, expected, ((DoubleType) ops.run(
+			DefaultMajorAxis.class, contour)).getRealDouble(), 0.01);
 	}
 
 	@Test
 	public void testFeretsDiameter() {
 		final double expected = expensiveTestsEnabled ? 908.002202641
 			: 89.888820216;
-		assertEquals(Ops.Geometric.FeretsDiameter.NAME, expected, ops.geom()
-			.feretsDiameter(ops.geom().contour(region2D, true, true)).getRealDouble(),
+		assertEquals(Ops.Geometric.FeretsDiameter.NAME, expected, ((DoubleType) ops
+			.run(DefaultFeretsDiameter.class, contour)).getRealDouble(),
 			AbstractFeatureTest.BIG_DELTA);
 	}
 
@@ -134,8 +167,8 @@ public class GeomTest extends AbstractFeatureTest {
 		// 148.235410152.. + 180
 		final double expectedAngle = expensiveTestsEnabled ? 148.235410152
 			: 147.724355685;
-		final double actualAngle = ops.geom().feretsAngle(ops.geom().contour(
-			region2D, true, true)).getRealDouble();
+		final double actualAngle = ((DoubleType) ops.run(DefaultFeretsAngle.class,
+			contour)).getRealDouble();
 
 		boolean isEquals = false;
 		if (Math.abs(expectedAngle -
@@ -152,16 +185,16 @@ public class GeomTest extends AbstractFeatureTest {
 	@Test
 	public void testEccentricity() {
 		final double expected = expensiveTestsEnabled ? 1.670273923 : 1.689817582;
-		assertEquals(Ops.Geometric.Eccentricity.NAME, expected, ops.geom()
-			.eccentricity(ops.geom().contour(region2D, true, true)).getRealDouble(),
+		assertEquals(Ops.Geometric.Eccentricity.NAME, expected, ((DoubleType) ops
+			.run(DefaultEccentricity.class, contour)).getRealDouble(),
 			AbstractFeatureTest.BIG_DELTA);
 	}
 
 	@Test
 	public void testRoundness() {
 		final double expected = expensiveTestsEnabled ? 0.598704192 : 0.591779852;
-		assertEquals(Ops.Geometric.Roundness.NAME, expected, ops.geom().roundness(
-			ops.geom().contour(region2D, true, true)).getRealDouble(),
+		assertEquals(Ops.Geometric.Roundness.NAME, expected, ((DoubleType) ops.run(
+			DefaultRoundness.class, contour)).getRealDouble(),
 			AbstractFeatureTest.BIG_DELTA);
 	}
 
@@ -170,8 +203,7 @@ public class GeomTest extends AbstractFeatureTest {
 		final double expected1 = expensiveTestsEnabled ? -25.700 : -12.237808234;
 		final double expected2 = expensiveTestsEnabled ? -24.644 : -12.524262243;
 		final double expected3 = expensiveTestsEnabled ? -19.945 : -9.568196449;
-		final RealPoint c = (RealPoint) ops.geom().centroid(ops.geom()
-			.marchingCubes(region3D));
+		final RealPoint c = (RealPoint) ops.run(CentroidMesh.class, mesh);
 		assertEquals(expected1, c.getDoublePosition(0),
 			AbstractFeatureTest.BIG_DELTA);
 		assertEquals(expected2, c.getDoublePosition(1),
@@ -183,8 +215,8 @@ public class GeomTest extends AbstractFeatureTest {
 	@Test
 	public void testSolidity2D() {
 		final double expected = expensiveTestsEnabled ? 0.997063173 : 0.976990400;
-		assertEquals(Ops.Geometric.Solidity.NAME, expected, ops.geom().solidity(ops
-			.geom().contour(region2D, true, true)).getRealDouble(),
+		assertEquals(Ops.Geometric.Solidity.NAME, expected, ((DoubleType) ops.run(
+			SolidityPolygon.class, contour)).getRealDouble(),
 			AbstractFeatureTest.BIG_DELTA);
 	}
 
@@ -193,8 +225,8 @@ public class GeomTest extends AbstractFeatureTest {
 		final double expected = expensiveTestsEnabled ? 0.754 : 0.905805001;
 		// This test is just here for completeness.
 		// All input values of solidity are verified.
-		assertEquals(Ops.Geometric.Solidity.NAME, expected, ops.geom().solidity(ops
-			.geom().marchingCubes(region3D)).get(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(Ops.Geometric.Solidity.NAME, expected, ((DoubleType) ops.run(
+			SolidityMesh.class, mesh)).get(), AbstractFeatureTest.BIG_DELTA);
 	}
 
 	@Test
@@ -202,8 +234,8 @@ public class GeomTest extends AbstractFeatureTest {
 		final double expected = expensiveTestsEnabled ? 1.379 : 1.035052196;
 		// This test is just here for completeness.
 		// All input values of convexity are verified.
-		assertEquals(Ops.Geometric.Rugosity.NAME, expected, ops.geom().rugosity(ops
-			.geom().marchingCubes(region3D)).get(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(Ops.Geometric.Rugosity.NAME, expected, ((DoubleType) ops.run(
+			RugosityMesh.class, mesh)).get(), AbstractFeatureTest.BIG_DELTA);
 	}
 
 	@Test
@@ -211,8 +243,8 @@ public class GeomTest extends AbstractFeatureTest {
 		final double expected = expensiveTestsEnabled ? 0.725 : 0.966134851;
 		// This test is just here for completeness.
 		// All input values of convexity are verified.
-		assertEquals(Ops.Geometric.Convexity.NAME, expected, ops.geom().convexity(
-			ops.geom().marchingCubes(region3D)).get(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(Ops.Geometric.Convexity.NAME, expected, ((DoubleType) ops.run(
+			ConvexityMesh.class, mesh)).get(), AbstractFeatureTest.BIG_DELTA);
 	}
 
 	@Test
@@ -220,9 +252,9 @@ public class GeomTest extends AbstractFeatureTest {
 		final double expected = expensiveTestsEnabled ? 32 : 177;
 		// Verified by hand. qhull merges faces and therefore has another number
 		// of surface pixels
-		assertEquals(Ops.Geometric.BoundaryPixelCountConvexHull.NAME, expected, ops
-			.geom().boundaryPixelCountConvexHull(ops.geom().marchingCubes(region3D))
-			.get(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(Ops.Geometric.BoundaryPixelCountConvexHull.NAME, expected,
+			((DoubleType) ops.run(BoundaryPixelCountConvexHullMesh.class, mesh))
+				.get(), AbstractFeatureTest.BIG_DELTA);
 
 	}
 
@@ -230,8 +262,8 @@ public class GeomTest extends AbstractFeatureTest {
 	public void testBoundarySizeConvexHull() {
 		final double expected = expensiveTestsEnabled ? 13580.54 : 1457.276963378;
 		// value taken from qhull (qhull.org)
-		assertEquals(Ops.Geometric.BoundarySizeConvexHull.NAME, expected, ops.geom()
-			.boundarySizeConvexHull(ops.geom().marchingCubes(region3D)).get(),
+		assertEquals(Ops.Geometric.BoundarySizeConvexHull.NAME, expected,
+			((DoubleType) ops.run(BoundarySizeConvexHullMesh.class, mesh)).get(),
 			AbstractFeatureTest.BIG_DELTA);
 	}
 
@@ -239,8 +271,8 @@ public class GeomTest extends AbstractFeatureTest {
 	public void testSizeConvexHull() {
 		final double expected = expensiveTestsEnabled ? 108660.667 : 4930.375000000;
 		// value taken from qhull (qhull.org)
-		assertEquals(Ops.Geometric.SizeConvexHull.NAME, expected, ops.geom()
-			.sizeConvexHull(ops.geom().marchingCubes(region3D)).get(),
+		assertEquals(Ops.Geometric.SizeConvexHull.NAME, expected, ((DoubleType) ops
+			.run(SizeConvexHullMesh.class, mesh)).get(),
 			AbstractFeatureTest.BIG_DELTA);
 	}
 
@@ -249,71 +281,73 @@ public class GeomTest extends AbstractFeatureTest {
 		final double expected = expensiveTestsEnabled ? 18741.018 : 1508.357722350;
 		// The delta is relatively big because they use float numbers in imagej
 		// and my implementation is based on doubles.
-		assertEquals(Ops.Geometric.BoundarySize.NAME, expected, ops.geom()
-			.boundarySize(ops.geom().marchingCubes(region3D)).get(), 0.186);
+		assertEquals(Ops.Geometric.BoundarySize.NAME, expected, ((DoubleType) ops
+			.run(DefaultSurfaceArea.class, mesh)).get(), 0.186);
 	}
 
 	@Test
 	public void testBoundaryPixelCount() {
 		final double expected = expensiveTestsEnabled ? 20996.0 : 2070.0;
-		assertEquals(Ops.Geometric.BoundaryPixelCount.NAME, expected, ops.geom()
-			.boundaryPixelCount(ops.geom().marchingCubes(region3D)).get(),
+		assertEquals(Ops.Geometric.BoundaryPixelCount.NAME, expected,
+			((DoubleType) ops.run(DefaultSurfacePixelCount.class, mesh)).get(),
 			AbstractFeatureTest.BIG_DELTA);
 	}
 
 	@Test
 	public void testSize3D() {
 		final double expected = expensiveTestsEnabled ? 81992 : 4488;
-		assertEquals(Ops.Geometric.Size.NAME, expected, ops.geom().size(region3D)
-			.get(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(Ops.Geometric.Size.NAME, expected, ((DoubleType) ops.run(
+			SizeII.class, region3D)).get(), AbstractFeatureTest.BIG_DELTA);
 	}
 
 	@Test
 	public void testCompactness() {
 		final double expected = expensiveTestsEnabled ? 0.082 : 0.254314235;
-		assertEquals(Ops.Geometric.Compactness.NAME, expected, ops.geom()
-			.compactness(ops.geom().marchingCubes(region3D)).get(),
+		assertEquals(Ops.Geometric.Compactness.NAME, expected, ((DoubleType) ops
+			.run(DefaultCompactness.class, mesh)).get(),
 			AbstractFeatureTest.BIG_DELTA);
 	}
 
 	@Test
 	public void testSphericity() {
 		final double expected = expensiveTestsEnabled ? 0.435 : 0.633563608;
-		assertEquals(Ops.Geometric.Sphericity.NAME, expected, ops.geom().sphericity(
-			ops.geom().marchingCubes(region3D)).get(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(Ops.Geometric.Sphericity.NAME, expected, ((DoubleType) ops.run(
+			DefaultSphericity.class, mesh)).get(), AbstractFeatureTest.BIG_DELTA);
 	}
 
 	@Test
 	public void testMainElongation() {
 		final double expected = expensiveTestsEnabled ? 1.041 : 1.270370555;
-		assertEquals(Ops.Geometric.MainElongation.NAME, expected, ops.geom()
-			.mainElongation(region3D).get(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(Ops.Geometric.MainElongation.NAME, expected, ((DoubleType) ops
+			.run(DefaultMainElongation.class, region3D)).get(),
+			AbstractFeatureTest.BIG_DELTA);
 	}
 
 	@Test
 	public void testMedianElongation() {
 		final double expected = expensiveTestsEnabled ? 1.225 : 1.137093214;
-		assertEquals(Ops.Geometric.MedianElongation.NAME, expected, ops.geom()
-			.medianElongation(region3D).get(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(Ops.Geometric.MedianElongation.NAME, expected,
+			((DoubleType) ops.run(DefaultMedianElongation.class, region3D)).get(),
+			AbstractFeatureTest.BIG_DELTA);
 	}
 
 	@Test
 	public void testSpareness() {
 		final double expected = expensiveTestsEnabled ? 0.509 : 0.978261746;
-		assertEquals(Ops.Geometric.Spareness.NAME, expected, ops.geom().spareness(
-			region3D).get(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(Ops.Geometric.Spareness.NAME, expected, ((DoubleType) ops.run(
+			DefaultSpareness.class, region3D)).get(), AbstractFeatureTest.BIG_DELTA);
 	}
 
 	@Test
 	public void testCenterOfGravity() {
 		final double expected1 = expensiveTestsEnabled ? 396.063362 : 39.455323989;
 		final double expected2 = expensiveTestsEnabled ? 576.763804 : 57.580063973;
-		assertEquals(Ops.Geometric.CenterOfGravity.NAME, expected1, ops.geom()
-			.centerOfGravity(img2d).getDoublePosition(0),
-			AbstractFeatureTest.BIG_DELTA);
-		assertEquals(Ops.Geometric.CenterOfGravity.NAME, expected2, ops.geom()
-			.centerOfGravity(img2d).getDoublePosition(1),
-			AbstractFeatureTest.BIG_DELTA);
+		final RealLocalizable result = (RealLocalizable) ops.run(
+			DefaultCenterOfGravity.class, img2d);
+		assertEquals(Ops.Geometric.CenterOfGravity.NAME, expected1, result
+			.getDoublePosition(0), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(Ops.Geometric.CenterOfGravity.NAME, expected2, result
+			.getDoublePosition(1), AbstractFeatureTest.BIG_DELTA);
 	}
 
 }

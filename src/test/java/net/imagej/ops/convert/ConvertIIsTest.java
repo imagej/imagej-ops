@@ -71,7 +71,8 @@ public class ConvertIIsTest extends AbstractOpTest {
 
 	@Test
 	public void testClip() {
-		ops.convert().imageType(out, in, new ClipRealTypes<ShortType, ByteType>());
+		ops.run(ConvertIIs.class, out, in,
+			new ClipRealTypes<ShortType, ByteType>());
 
 		final Cursor<ShortType> c = in.localizingCursor();
 		final RandomAccess<ByteType> ra = out.randomAccess();
@@ -84,7 +85,8 @@ public class ConvertIIsTest extends AbstractOpTest {
 
 	@Test
 	public void testCopy() {
-		ops.convert().imageType(out, in, new CopyRealTypes<ShortType, ByteType>());
+		ops.run(ConvertIIs.class, out, in,
+			new CopyRealTypes<ShortType, ByteType>());
 
 		final Cursor<ShortType> c = in.localizingCursor();
 		final RandomAccess<ByteType> ra = out.randomAccess();
@@ -97,7 +99,8 @@ public class ConvertIIsTest extends AbstractOpTest {
 
 	@Test
 	public void testScale() {
-		ops.convert().imageType(out, in, new ScaleRealTypes<ShortType, ByteType>());
+		ops.run(ConvertIIs.class, out, in,
+			new ScaleRealTypes<ShortType, ByteType>());
 
 		final Cursor<ShortType> c = in.localizingCursor();
 		final RandomAccess<ByteType> ra = out.randomAccess();

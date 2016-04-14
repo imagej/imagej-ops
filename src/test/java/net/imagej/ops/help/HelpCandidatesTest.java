@@ -56,7 +56,7 @@ public class HelpCandidatesTest extends AbstractOpTest {
 
 	@Test
 	public void testAll() {
-		final String actual = ops.help();
+		final String actual = (String) ops.run(HelpCandidates.class);
 		assertTrue(actual.startsWith("Available operations:\n"));
 		assertTrue(actual.length() > 50000); // lots of ops!
 	}
@@ -67,14 +67,14 @@ public class HelpCandidatesTest extends AbstractOpTest {
 			"Available operations:\n" + //
 			"\tnet.imagej.ops.help.HelpCandidatesTest$YummyApple()\n" + //
 			"\tnet.imagej.ops.help.HelpCandidatesTest$YuckyApple()";
-		final String apple = ops.help("test.apple");
+		final String apple = (String) ops.run(HelpCandidates.class, "test.apple");
 		assertEquals(expectedApple, apple);
 
 		final String expectedOrange = "" + //
 			"Available operations:\n" + //
 			"\tnet.imagej.ops.help.HelpCandidatesTest$YummyOrange()\n" + //
 			"\tnet.imagej.ops.help.HelpCandidatesTest$YuckyOrange()";
-		final String orange = ops.help("test.orange");
+		final String orange = (String) ops.run(HelpCandidates.class, "test.orange");
 		assertEquals(expectedOrange, orange);
 	}
 
@@ -84,14 +84,16 @@ public class HelpCandidatesTest extends AbstractOpTest {
 			"Available operations:\n" + //
 			"\tnet.imagej.ops.help.HelpCandidatesTest$YummyApple()\n" + //
 			"\tnet.imagej.ops.help.HelpCandidatesTest$YummyOrange()";
-		final String actualYummy = ops.help(null, Yummy.class);
+		final String actualYummy = (String) ops.run(HelpCandidates.class, null,
+			Yummy.class);
 		assertEquals(expectedYummy, actualYummy);
 
 		final String expectedYucky = "" + //
 			"Available operations:\n" + //
 			"\tnet.imagej.ops.help.HelpCandidatesTest$YuckyOrange()\n" + //
 			"\tnet.imagej.ops.help.HelpCandidatesTest$YuckyApple()";
-		final String yucky = ops.help(null, Yucky.class);
+		final String yucky = (String) ops.run(HelpCandidates.class, null,
+			Yucky.class);
 		assertEquals(expectedYucky, yucky);
 	}
 
@@ -100,28 +102,33 @@ public class HelpCandidatesTest extends AbstractOpTest {
 		final String expectedYummyApple = "" + //
 			"Available operations:\n" + //
 			"\tnet.imagej.ops.help.HelpCandidatesTest$YummyApple()"; //
-		final String actualYummyApple = ops.help("test.apple", Yummy.class);
+		final String actualYummyApple = (String) ops.run(HelpCandidates.class,
+			"test.apple", Yummy.class);
 		assertEquals(expectedYummyApple, actualYummyApple);
 
 		final String expectedYuckyApple = "" + //
 			"Available operations:\n" + //
 			"\tnet.imagej.ops.help.HelpCandidatesTest$YuckyApple()"; //
-		final String actualYuckyApple = ops.help("test.apple", Yucky.class);
+		final String actualYuckyApple = (String) ops.run(HelpCandidates.class,
+			"test.apple", Yucky.class);
 		assertEquals(expectedYuckyApple, actualYuckyApple);
 
 		final String expectedYummyOrange = "" + //
 			"Available operations:\n" + //
 			"\tnet.imagej.ops.help.HelpCandidatesTest$YummyOrange()"; //
-		final String actualYummyOrange = ops.help("test.orange", Yummy.class);
+		final String actualYummyOrange = (String) ops.run(HelpCandidates.class,
+			"test.orange", Yummy.class);
 		assertEquals(expectedYummyOrange, actualYummyOrange);
 
 		final String expectedYuckyOrange = "" + //
 			"Available operations:\n" + //
 			"\tnet.imagej.ops.help.HelpCandidatesTest$YuckyOrange()"; //
-		final String actualYuckyOrange = ops.help("test.orange", Yucky.class);
+		final String actualYuckyOrange = (String) ops.run(HelpCandidates.class,
+			"test.orange", Yucky.class);
 		assertEquals(expectedYuckyOrange, actualYuckyOrange);
-		
-		final String actualEmpty = ops.help("test.apple", Ops.Help.class);
+
+		final String actualEmpty = (String) ops.run(HelpCandidates.class,
+			"test.apple", Ops.Help.class);
 		assertEquals("No such operation.", actualEmpty);
 	}
 
@@ -131,8 +138,8 @@ public class HelpCandidatesTest extends AbstractOpTest {
 			"Available operations:\n" + //
 			"\t(Apple out) =\n" + //
 			"\tnet.imagej.ops.help.HelpCandidatesTest$AppleF0()";
-		final String actualF0 = ops.help("test.special", null, 0,
-			SpecialOp.Flavor.FUNCTION);
+		final String actualF0 = (String) ops.run(HelpCandidates.class,
+			"test.special", null, 0, SpecialOp.Flavor.FUNCTION);
 		assertEquals(expectedF0, actualF0);
 
 		final String expectedF1 = "" + //
@@ -140,22 +147,20 @@ public class HelpCandidatesTest extends AbstractOpTest {
 			"\t(Apple out) =\n" + //
 			"\tnet.imagej.ops.help.HelpCandidatesTest$AppleF1(\n" + //
 			"\t\tApple in)";
-		final String actualF1 = ops.help("test.special", null, 1,
-			SpecialOp.Flavor.FUNCTION);
+		final String actualF1 = (String) ops.run(HelpCandidates.class,
+			"test.special", null, 1, SpecialOp.Flavor.FUNCTION);
 		assertEquals(expectedF1, actualF1);
 
-		final String expectedF2 = "Available operations:\n" +
-			"\t(Apple out) =\n" +
+		final String expectedF2 = "Available operations:\n" + "\t(Apple out) =\n" +
 			"\tnet.imagej.ops.help.HelpCandidatesTest$AppleF2(\n" +
-			"\t\tApple in1,\n" +
-			"\t\tApple in2)";
-		final String actualF2 = ops.help("test.special", null, 2,
-			SpecialOp.Flavor.FUNCTION);
+			"\t\tApple in1,\n" + "\t\tApple in2)";
+		final String actualF2 = (String) ops.run(HelpCandidates.class,
+			"test.special", null, 2, SpecialOp.Flavor.FUNCTION);
 		assertEquals(expectedF2, actualF2);
 
 		final String expectedC0 = "No such operation.";
-		final String actualC0 = ops.help("test.special", null, 0,
-			SpecialOp.Flavor.COMPUTER);
+		final String actualC0 = (String) ops.run(HelpCandidates.class,
+			"test.special", null, 0, SpecialOp.Flavor.COMPUTER);
 		assertEquals(expectedC0, actualC0);
 
 		final String expectedC1 = "" + //
@@ -164,13 +169,13 @@ public class HelpCandidatesTest extends AbstractOpTest {
 			"\tnet.imagej.ops.help.HelpCandidatesTest$AppleC1(\n" + //
 			"\t\tApple out,\n" + //
 			"\t\tApple in)";
-		final String actualC1 = ops.help("test.special", null, 1,
-			SpecialOp.Flavor.COMPUTER);
+		final String actualC1 = (String) ops.run(HelpCandidates.class,
+			"test.special", null, 1, SpecialOp.Flavor.COMPUTER);
 		assertEquals(expectedC1, actualC1);
 
 		final String expectedC2 = "No such operation.";
-		final String actualC2 = ops.help("test.special", null, 2,
-			SpecialOp.Flavor.COMPUTER);
+		final String actualC2 = (String) ops.run(HelpCandidates.class,
+			"test.special", null, 2, SpecialOp.Flavor.COMPUTER);
 		assertEquals(expectedC2, actualC2);
 	}
 
@@ -210,6 +215,7 @@ public class HelpCandidatesTest extends AbstractOpTest {
 
 	@Plugin(type = Op.class, name = "test.special")
 	public static class AppleF0 extends AbstractNullaryFunctionOp<Apple> {
+
 		@Override
 		public Apple compute0() {
 			return new Apple();
@@ -218,6 +224,7 @@ public class HelpCandidatesTest extends AbstractOpTest {
 
 	@Plugin(type = Op.class, name = "test.special")
 	public static class AppleF1 extends AbstractUnaryFunctionOp<Apple, Apple> {
+
 		@Override
 		public Apple compute1(final Apple in) {
 			return new Apple();
@@ -225,7 +232,10 @@ public class HelpCandidatesTest extends AbstractOpTest {
 	}
 
 	@Plugin(type = Op.class, name = "test.special")
-	public static class AppleF2 extends AbstractBinaryFunctionOp<Apple, Apple, Apple> {
+	public static class AppleF2 extends
+		AbstractBinaryFunctionOp<Apple, Apple, Apple>
+	{
+
 		@Override
 		public Apple compute2(final Apple in1, final Apple in2) {
 			return new Apple();
@@ -234,6 +244,7 @@ public class HelpCandidatesTest extends AbstractOpTest {
 
 	@Plugin(type = Op.class, name = "test.special")
 	public static class AppleC1 extends AbstractUnaryComputerOp<Apple, Apple> {
+
 		@Override
 		public void compute1(final Apple out, final Apple in) {
 			// NB: No implementation needed.

@@ -49,9 +49,9 @@ public class ScaleImgTest extends AbstractOpTest {
 	public void test() {
 		Img<ByteType> in = generateByteArrayTestImg(true, new long[] { 10, 10 });
 		double[] scaleFactors = new double[] { 2, 2 };
-		Img<ByteType> out =
-			ops.image().scale(in, scaleFactors,
-				new NLinearInterpolatorFactory<ByteType>());
+		@SuppressWarnings("unchecked")
+		Img<ByteType> out = (Img<ByteType>) ops.run(ScaleImg.class, in,
+			scaleFactors, new NLinearInterpolatorFactory<ByteType>());
 
 		assertEquals(out.dimension(0), 20);
 		assertEquals(out.dimension(1), 20);

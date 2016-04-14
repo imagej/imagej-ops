@@ -77,8 +77,8 @@ public class ProjectTest extends AbstractOpTest {
 
 	@Test
 	public void testProjector() {
-		ops.image().project(out1, in, op, PROJECTION_DIM);
-		ops.image().project(out2, in, op, PROJECTION_DIM);
+		ops.run(DefaultProjectParallel.class, out1, in, op, PROJECTION_DIM);
+		ops.run(DefaultProjectParallel.class, out2, in, op, PROJECTION_DIM);
 		testEquality(out1, out2);
 
 		ops.run(ProjectRAIToII.class, out1, in, op, PROJECTION_DIM);

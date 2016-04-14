@@ -60,7 +60,7 @@ public class GaussTest extends AbstractOpTest {
 		final Img<ByteType> out2 =
 			ops.create().img(in, Util.getTypeFromInterval(in));
 
-		ops.filter().gauss(out1, in, sigma);
+		ops.run(GaussRAISingleSigma.class, out1, in, sigma);
 		try {
 			Gauss3.gauss(sigma, Views.extendMirrorSingle(in), out2);
 		}

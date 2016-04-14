@@ -33,6 +33,7 @@ package net.imagej.ops.deconvolve;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.filter.convolve.ConvolveFFTImg;
 import net.imglib2.Cursor;
 import net.imglib2.Point;
 import net.imglib2.algorithm.region.hypersphere.HyperSphere;
@@ -63,10 +64,13 @@ public class DeconvolveTest extends AbstractOpTest {
 		placeSphereInCenter(kernel);
 
 		// convolve and calculate the sum of output
-		Img<FloatType> convolved = ops.filter().convolve(in, kernel);
+		@SuppressWarnings("unchecked")
+		final Img<FloatType> convolved = (Img<FloatType>) ops.run(
+			ConvolveFFTImg.class, in, kernel);
 
-		final Img<FloatType> deconvolved2 =
-			ops.deconvolve().richardsonLucy(convolved, kernel, 10);
+		@SuppressWarnings("unchecked")
+		final Img<FloatType> deconvolved2 = (Img<FloatType>) ops.run(
+			RichardsonLucyImg.class, convolved, kernel, 10);
 
 		assertEquals(size[0], deconvolved2.dimension(0));
 		assertEquals(size[1], deconvolved2.dimension(1));

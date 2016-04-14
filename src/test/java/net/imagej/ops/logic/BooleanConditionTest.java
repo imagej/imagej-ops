@@ -43,10 +43,10 @@ public class BooleanConditionTest extends AbstractOpTest {
 
 	@Test
 	public void test() {
-		final BoolType result = ops.logic().bool(true);
+		final BoolType result = (BoolType) ops.run(BooleanCondition.class, true);
 		assertTrue(result.get());
 
-		final BoolType result1 = ops.logic().bool(false);
+		final BoolType result1 = (BoolType) ops.run(BooleanCondition.class, false);
 		assertFalse(result1.get());
 	}
 

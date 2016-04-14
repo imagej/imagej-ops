@@ -33,6 +33,57 @@ package net.imagej.ops.math;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.math.UnaryRealTypeMath.Abs;
+import net.imagej.ops.math.UnaryRealTypeMath.Arccos;
+import net.imagej.ops.math.UnaryRealTypeMath.Arccosh;
+import net.imagej.ops.math.UnaryRealTypeMath.Arccot;
+import net.imagej.ops.math.UnaryRealTypeMath.Arccoth;
+import net.imagej.ops.math.UnaryRealTypeMath.Arccsc;
+import net.imagej.ops.math.UnaryRealTypeMath.Arccsch;
+import net.imagej.ops.math.UnaryRealTypeMath.Arcsec;
+import net.imagej.ops.math.UnaryRealTypeMath.Arcsech;
+import net.imagej.ops.math.UnaryRealTypeMath.Arcsin;
+import net.imagej.ops.math.UnaryRealTypeMath.Arcsinh;
+import net.imagej.ops.math.UnaryRealTypeMath.Arctan;
+import net.imagej.ops.math.UnaryRealTypeMath.Arctanh;
+import net.imagej.ops.math.UnaryRealTypeMath.Ceil;
+import net.imagej.ops.math.UnaryRealTypeMath.Cos;
+import net.imagej.ops.math.UnaryRealTypeMath.Cosh;
+import net.imagej.ops.math.UnaryRealTypeMath.Cot;
+import net.imagej.ops.math.UnaryRealTypeMath.Coth;
+import net.imagej.ops.math.UnaryRealTypeMath.Csc;
+import net.imagej.ops.math.UnaryRealTypeMath.Csch;
+import net.imagej.ops.math.UnaryRealTypeMath.CubeRoot;
+import net.imagej.ops.math.UnaryRealTypeMath.Exp;
+import net.imagej.ops.math.UnaryRealTypeMath.ExpMinusOne;
+import net.imagej.ops.math.UnaryRealTypeMath.Floor;
+import net.imagej.ops.math.UnaryRealTypeMath.Invert;
+import net.imagej.ops.math.UnaryRealTypeMath.Log;
+import net.imagej.ops.math.UnaryRealTypeMath.Log10;
+import net.imagej.ops.math.UnaryRealTypeMath.Log2;
+import net.imagej.ops.math.UnaryRealTypeMath.LogOnePlusX;
+import net.imagej.ops.math.UnaryRealTypeMath.MaxConstant;
+import net.imagej.ops.math.UnaryRealTypeMath.MinConstant;
+import net.imagej.ops.math.UnaryRealTypeMath.NearestInt;
+import net.imagej.ops.math.UnaryRealTypeMath.Negate;
+import net.imagej.ops.math.UnaryRealTypeMath.PowerConstant;
+import net.imagej.ops.math.UnaryRealTypeMath.RandomGaussian;
+import net.imagej.ops.math.UnaryRealTypeMath.RandomUniform;
+import net.imagej.ops.math.UnaryRealTypeMath.Reciprocal;
+import net.imagej.ops.math.UnaryRealTypeMath.Round;
+import net.imagej.ops.math.UnaryRealTypeMath.Sec;
+import net.imagej.ops.math.UnaryRealTypeMath.Sech;
+import net.imagej.ops.math.UnaryRealTypeMath.Signum;
+import net.imagej.ops.math.UnaryRealTypeMath.Sin;
+import net.imagej.ops.math.UnaryRealTypeMath.Sinc;
+import net.imagej.ops.math.UnaryRealTypeMath.SincPi;
+import net.imagej.ops.math.UnaryRealTypeMath.Sinh;
+import net.imagej.ops.math.UnaryRealTypeMath.Sqr;
+import net.imagej.ops.math.UnaryRealTypeMath.Sqrt;
+import net.imagej.ops.math.UnaryRealTypeMath.Step;
+import net.imagej.ops.math.UnaryRealTypeMath.Tan;
+import net.imagej.ops.math.UnaryRealTypeMath.Tanh;
+import net.imagej.ops.math.UnaryRealTypeMath.Ulp;
 import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.type.numeric.real.FloatType;
@@ -56,7 +107,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	@Test
 	public void testAbs() {
 		final LongType in = new LongType(-LARGE_NUM);
-		final LongType out = ops.math().abs(in.createVariable(), in);
+		final LongType out = (LongType) ops.run(Abs.class, in.createVariable(), in);
 		assertEquals(out.get(), LARGE_NUM - 1);
 	}
 
@@ -64,7 +115,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testArccos() {
 		final FloatType in = new FloatType(0.5f);
 		final DoubleType out = new DoubleType();
-		ops.math().arccos(out, in);
+		ops.run(Arccos.class, out, in);
 		assertEquals(out.get(), Math.acos(0.5), 0.0);
 	}
 
@@ -72,7 +123,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testArccosh() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().arccosh(out, in);
+		ops.run(Arccosh.class, out, in);
 		final double delta = Math.sqrt(1234567890.0 * 1234567890.0 - 1);
 		assertEquals(out.get(), Math.log(1234567890 + delta), 0.0);
 	}
@@ -81,7 +132,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testArccot() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().arccot(out, in);
+		ops.run(Arccot.class, out, in);
 		assertEquals(out.get(), Math.atan(1.0 / 1234567890), 0.0);
 	}
 
@@ -89,7 +140,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testArccoth() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().arccoth(out, in);
+		ops.run(Arccoth.class, out, in);
 		final double result = 0.5 * Math.log(1234567891.0 / 1234567889.0);
 		assertEquals(out.get(), result, 0.0);
 	}
@@ -98,7 +149,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testArccsch() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().arccsch(out, in);
+		ops.run(Arccsch.class, out, in);
 		final double delta = Math.sqrt(1 + 1 / (1234567890.0 * 1234567890.0));
 		assertEquals(out.get(), Math.log(1 / 1234567890.0 + delta), 0.0);
 	}
@@ -107,7 +158,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testArcsech() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().arcsech(out, in);
+		ops.run(Arcsech.class, out, in);
 		final double numer = 1 + Math.sqrt(1 - 1234567890.0 * 1234567890.0);
 		assertEquals(out.get(), Math.log(numer / 1234567890.0), 0.0);
 	}
@@ -116,7 +167,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testArcsin() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().arcsin(out, in);
+		ops.run(Arcsin.class, out, in);
 		assertEquals(out.get(), Math.asin(1234567890), 0.0);
 	}
 
@@ -124,7 +175,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testArcsinh() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().arcsinh(out, in);
+		ops.run(Arcsinh.class, out, in);
 		final double delta = Math.sqrt(1234567890.0 * 1234567890.0 + 1);
 		assertEquals(out.get(), Math.log(1234567890 + delta), 0.0);
 	}
@@ -133,7 +184,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testArctan() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().arctan(out, in);
+		ops.run(Arctan.class, out, in);
 		assertEquals(out.get(), Math.atan(1234567890), 0.0);
 	}
 
@@ -141,14 +192,15 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testArctanh() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().arctanh(out, in);
+		ops.run(Arctanh.class, out, in);
 		assertEquals(out.get(), 0.5 * Math.log(1234567891.0 / -1234567889.0), 0.0);
 	}
 
 	@Test
 	public void testCeil() {
 		final LongType in = new LongType(LARGE_NUM);
-		final LongType out = ops.math().ceil(in.createVariable(), in);
+		final LongType out = (LongType) ops.run(Ceil.class, in.createVariable(),
+			in);
 		assertEquals(out.get(), LARGE_NUM - 1);
 	}
 
@@ -156,7 +208,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testCos() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().cos(out, in);
+		ops.run(Cos.class, out, in);
 		assertEquals(out.get(), Math.cos(1234567890), 0.0);
 	}
 
@@ -164,7 +216,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testCosh() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().cosh(out, in);
+		ops.run(Cosh.class, out, in);
 		assertEquals(out.get(), Math.cosh(1234567890), 0.0);
 	}
 
@@ -172,7 +224,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testCot() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().cot(out, in);
+		ops.run(Cot.class, out, in);
 		assertEquals(out.get(), 1 / Math.tan(1234567890), 0.0);
 	}
 
@@ -180,7 +232,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testCoth() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().coth(out, in);
+		ops.run(Coth.class, out, in);
 		assertEquals(out.get(), 1 / Math.tanh(1234567890), 0.0);
 	}
 
@@ -188,7 +240,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testCsc() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().csc(out, in);
+		ops.run(Csc.class, out, in);
 		assertEquals(out.get(), 1 / Math.sin(1234567890), 0.0);
 	}
 
@@ -196,7 +248,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testCsch() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().csch(out, in);
+		ops.run(Csch.class, out, in);
 		assertEquals(out.get(), 1 / Math.sinh(1234567890), 0.0);
 	}
 
@@ -204,7 +256,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testCubeRoot() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().cubeRoot(out, in);
+		ops.run(CubeRoot.class, out, in);
 		assertEquals(out.get(), Math.cbrt(1234567890), 0.0);
 	}
 
@@ -212,7 +264,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testExp() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().exp(out, in);
+		ops.run(Exp.class, out, in);
 		assertEquals(out.get(), Math.exp(1234567890), 0.0);
 	}
 
@@ -220,22 +272,23 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testExpMinusOne() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().expMinusOne(out, in);
+		ops.run(ExpMinusOne.class, out, in);
 		assertEquals(out.get(), Math.exp(1234567890) - 1, 0.0);
 	}
 
 	@Test
 	public void testFloor() {
 		final LongType in = new LongType(LARGE_NUM);
-		final LongType out = ops.math().floor(in.createVariable(), in);
+		final LongType out = (LongType) ops.run(Floor.class, in.createVariable(),
+			in);
 		assertEquals(out.get(), LARGE_NUM - 1);
 	}
 
 	@Test
 	public void testInvert() {
 		final LongType in = new LongType(LARGE_NUM);
-		final LongType out = ops.math().invert(in.createVariable(), in,
-			9007199254740992.0, 9007199254740994.0);
+		final LongType out = (LongType) ops.run(Invert.class, in.createVariable(),
+			in, 9007199254740992.0, 9007199254740994.0);
 		assertEquals(out.get(), LARGE_NUM + 1);
 	}
 
@@ -243,7 +296,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testLog() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().log(out, in);
+		ops.run(Log.class, out, in);
 		assertEquals(out.get(), Math.log(1234567890), 0.0);
 	}
 
@@ -251,7 +304,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testLog10() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().log10(out, in);
+		ops.run(Log10.class, out, in);
 		assertEquals(out.get(), Math.log10(1234567890), 0.0);
 	}
 
@@ -259,7 +312,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testLog2() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().log2(out, in);
+		ops.run(Log2.class, out, in);
 		assertEquals(out.get(), Math.log(1234567890) / Math.log(2), 0.0);
 	}
 
@@ -267,37 +320,39 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testLogOnePlusX() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().logOnePlusX(out, in);
+		ops.run(LogOnePlusX.class, out, in);
 		assertEquals(out.get(), Math.log1p(1234567890), 0.0);
 	}
 
 	@Test
 	public void testMax() {
 		final LongType in = new LongType(LARGE_NUM);
-		final LongType out = ops.math().max(in.createVariable(), in, LARGE_NUM +
-			1.0);
+		final LongType out = (LongType) ops.run(MaxConstant.class, in
+			.createVariable(), in, LARGE_NUM + 1.0);
 		assertEquals(out.get(), LARGE_NUM - 1);
 	}
 
 	@Test
 	public void testMin() {
 		final LongType in = new LongType(LARGE_NUM);
-		final LongType out = ops.math().min(in.createVariable(), in, LARGE_NUM -
-			1.0);
+		final LongType out = (LongType) ops.run(MinConstant.class, in
+			.createVariable(), in, LARGE_NUM - 1.0);
 		assertEquals(out.get(), LARGE_NUM - 1);
 	}
 
 	@Test
 	public void testNearestInt() {
 		final LongType in = new LongType(LARGE_NUM);
-		final LongType out = ops.math().nearestInt(in.createVariable(), in);
+		final LongType out = (LongType) ops.run(NearestInt.class, in
+			.createVariable(), in);
 		assertEquals(out.get(), LARGE_NUM - 1);
 	}
 
 	@Test
 	public void testNegate() {
 		final LongType in = new LongType(-LARGE_NUM);
-		final LongType out = ops.math().negate(in.createVariable(), in);
+		final LongType out = (LongType) ops.run(Negate.class, in.createVariable(),
+			in);
 		assertEquals(out.get(), LARGE_NUM - 1);
 	}
 
@@ -305,7 +360,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testPower() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().power(out, in, 1.5);
+		ops.run(PowerConstant.class, out, in, 1.5);
 		assertEquals(out.get(), Math.pow(1234567890, 1.5), 0.0);
 	}
 
@@ -313,24 +368,22 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testReciprocal() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().reciprocal(out, in, 0.0);
+		ops.run(Reciprocal.class, out, in, 0.0);
 		assertEquals(out.get(), 1.0 / 1234567890, 0.0);
 	}
 
-	// NB: This tests always fails until this issue
-	// https://github.com/imglib/imglib2/issues/110 has been addressed.
-//	@Test
-//	public void testRound() {
-//		final LongType in = new LongType(LARGE_NUM);
-//		final LongType out = ops.math().round(in.createVariable(), in);
-//		assertEquals(out.get(), LARGE_NUM - 1);
-//	}
+	@Test
+	public void testRound() {
+		final LongType in = new LongType(LARGE_NUM);
+		final LongType out = (LongType) ops.run(Round.class, in.createVariable(), in);
+		assertEquals(out.get(), LARGE_NUM - 1);
+	}
 
 	@Test
 	public void testSec() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().sec(out, in);
+		ops.run(Sec.class, out, in);
 		assertEquals(out.get(), 1 / Math.cos(1234567890), 0.0);
 	}
 
@@ -338,7 +391,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testSech() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().sech(out, in);
+		ops.run(Sech.class, out, in);
 		assertEquals(out.get(), 1 / Math.cosh(1234567890), 0.0);
 	}
 
@@ -346,7 +399,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testSignum() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().signum(out, in);
+		ops.run(Signum.class, out, in);
 		assertEquals(out.get(), 1.0, 0.0);
 	}
 
@@ -354,7 +407,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testSin() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().sin(out, in);
+		ops.run(Sin.class, out, in);
 		assertEquals(out.get(), Math.sin(1234567890), 0.0);
 	}
 
@@ -362,7 +415,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testSinc() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().sinc(out, in);
+		ops.run(Sinc.class, out, in);
 		assertEquals(out.get(), Math.sin(1234567890) / 1234567890, 0.0);
 	}
 
@@ -370,7 +423,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testSincPi() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().sincPi(out, in);
+		ops.run(SincPi.class, out, in);
 		final double PI = Math.PI;
 		assertEquals(out.get(), Math.sin(PI * 1234567890) / (PI * 1234567890), 0.0);
 	}
@@ -379,14 +432,14 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testSinh() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().sinh(out, in);
+		ops.run(Sinh.class, out, in);
 		assertEquals(out.get(), Math.sinh(1234567890), 0.0);
 	}
 
 	@Test
 	public void testSqr() {
 		final LongType in = new LongType(94906267L);
-		final LongType out = ops.math().sqr(in.createVariable(), in);
+		final LongType out = (LongType) ops.run(Sqr.class, in.createVariable(), in);
 		// NB: for any odd number greater than LARGE_NUM - 1, its double
 		// representation is not exact.
 		assertEquals(out.get(), 94906267L * 94906267L - 1);
@@ -396,7 +449,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testSqrt() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().sqrt(out, in);
+		ops.run(Sqrt.class, out, in);
 		assertEquals(out.get(), Math.sqrt(1234567890), 0.0);
 	}
 
@@ -404,7 +457,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testStep() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().step(out, in);
+		ops.run(Step.class, out, in);
 		assertEquals(out.get(), 1.0, 0.0);
 	}
 
@@ -412,7 +465,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testTan() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().tan(out, in);
+		ops.run(Tan.class, out, in);
 		assertEquals(out.get(), Math.tan(1234567890), 0.0);
 	}
 
@@ -420,7 +473,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testTanh() {
 		final LongType in = new LongType(1234567890);
 		final DoubleType out = new DoubleType();
-		ops.math().tanh(out, in);
+		ops.run(Tanh.class, out, in);
 		assertEquals(out.get(), Math.tanh(1234567890), 0.0);
 	}
 
@@ -428,7 +481,7 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 	public void testUlp() {
 		final LongType in = new LongType(LARGE_NUM);
 		final DoubleType out = new DoubleType();
-		ops.math().ulp(out, in);
+		ops.run(Ulp.class, out, in);
 		assertEquals(out.get(), 2.0, 0.0);
 	}
 
@@ -489,19 +542,22 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 
 	private void assertArccsc(final double i, final double o) {
 		final DoubleType in = new DoubleType(i);
-		final DoubleType out = ops.math().arccsc(in.createVariable(), in);
+		final DoubleType out = (DoubleType) ops.run(Arccsc.class, in
+			.createVariable(), in);
 		assertEquals(o, out.get(), 1e-15);
 	}
 
 	private void assertArcsec(final double i, final double o) {
 		final DoubleType in = new DoubleType(i);
-		final DoubleType out = ops.math().arcsec(in.createVariable(), in);
+		final DoubleType out = (DoubleType) ops.run(Arcsec.class, in
+			.createVariable(), in);
 		assertEquals(o, out.get(), 1e-15);
 	}
 
 	private void assertRandomGaussian(final double i, final double o) {
 		final DoubleType in = new DoubleType(i);
-		final DoubleType out = ops.math().randomGaussian(in.createVariable(), in);
+		final DoubleType out = (DoubleType) ops.run(RandomGaussian.class, in
+			.createVariable(), in);
 		assertEquals(o, out.get(), 0);
 	}
 
@@ -509,8 +565,8 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 		final long seed)
 	{
 		final DoubleType in = new DoubleType(i);
-		final DoubleType out = ops.math().randomGaussian(in.createVariable(), in,
-			seed);
+		final DoubleType out = (DoubleType) ops.run(RandomGaussian.class, in
+			.createVariable(), in, seed);
 		assertEquals(o, out.get(), 0);
 	}
 
@@ -532,7 +588,8 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 
 	private void assertRandomUniform(final double i, final double o) {
 		final DoubleType in = new DoubleType(i);
-		final DoubleType out = ops.math().randomUniform(in.createVariable(), in);
+		final DoubleType out = (DoubleType) ops.run(RandomUniform.class, in
+			.createVariable(), in);
 		assertEquals(o, out.get(), 0);
 	}
 
@@ -540,8 +597,8 @@ public class UnaryRealTypeMathTest extends AbstractOpTest {
 		final long seed)
 	{
 		final DoubleType in = new DoubleType(i);
-		final DoubleType out = ops.math().randomUniform(in.createVariable(), in,
-			seed);
+		final DoubleType out = (DoubleType) ops.run(RandomUniform.class, in
+			.createVariable(), in, seed);
 		assertEquals(o, out.get(), 0);
 	}
 
