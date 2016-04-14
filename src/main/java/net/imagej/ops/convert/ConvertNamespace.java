@@ -159,6 +159,19 @@ public class ConvertNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.convert.ConvertTypes.IntegerToBit.class)
+	public <T extends IntegerType<T>> BitType bit(final T in) {
+		final BitType result = (BitType) ops().run(Ops.Convert.Uint2.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.convert.ConvertTypes.IntegerToBit.class)
+	public <T extends IntegerType<T>> BitType bit(final BitType out, final T in) {
+		final BitType result = (BitType) ops().run(Ops.Convert.Uint2.class, out,
+			in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.convert.ConvertImages.Uint2.class)
 	public <C extends ComplexType<C>> Img<Unsigned2BitType> uint2(
 		final IterableInterval<C> in)
