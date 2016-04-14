@@ -51,7 +51,7 @@ public class PrimitiveMathTest extends AbstractOpTest {
 	/** Tests {@link PrimitiveMath.$className}. */
 	@Test
 	public void test$className() {
-		final Object result = ops.math().$methodName($test.args);
+		final Object result = ops.run(PrimitiveMath.${className}.class, $test.args);
 		assertTrue(result instanceof $type.name);
 		final $type.primitive value = ($type.name) result;
 #if ($type.delta)

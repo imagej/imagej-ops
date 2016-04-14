@@ -73,7 +73,7 @@ public class NumericTypeBinaryMathTest extends AbstractOpTest {
 		final $type expected = new ${type}();
 		expected.set(a);
 		expected.${test.function}(b);
-		final Object result = ops.math().$methodName(a, b);
+		final Object result = ops.run(${className}.class, a, b);
 		final $type actual = ($type) result;
 ## NB: Compare values, until all types implement equals properly.
 ##		assertEquals(expected, actual);

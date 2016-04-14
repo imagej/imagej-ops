@@ -68,7 +68,6 @@ public class TestConvertType extends AbstractOpTest{
 #end
 
 #foreach ($toType in $types)
-#set ($className = "ConvertTypes.ComplexTo$toType.op")
 #set ($methodName = "Types.$toType.outMethod")
 #set ($imgLibType = "$toType.imglibT" + "Type")
 #if ($toType.op.equals("Cfloat32"))
@@ -79,6 +78,11 @@ public class TestConvertType extends AbstractOpTest{
 #set ($getI = "getImaginaryDouble()")
 #end
 #foreach ($fromType in $types)
+#if ($fromType.built.contains("float") || $toType.built.contains("float"))
+#set ($className = "ConvertTypes.ComplexTo$toType.op")
+#else
+#set ($className = "ConvertTypes.IntegerTo$toType.op")
+#end
 #set ($imgLibType2 = "$fromType.imglibT" + "Type")
 #set ($first = "true")
 	/** Tests {@link $className}. */
@@ -88,7 +92,7 @@ public class TestConvertType extends AbstractOpTest{
 #foreach ($value in ${fromType.values})
 #if ($first.equals("true"))
 		final $imgLibType2 b = new $imgLibType2($value.v);
-		final Object result = ops.convert().${toType.built}(b);
+		final Object result = ops.run(${className}.class, b);
 		assertTrue(result instanceof $imgLibType);
 #if($toType.op.contains("C"))
 		assertEquals($methodName($value.r), (($imgLibType) result).$getR, 0);
@@ -104,16 +108,16 @@ public class TestConvertType extends AbstractOpTest{
 #else
 		b.set($value.v);
 #if($toType.op.contains("C"))
-		assertEquals($methodName($value.r), ops.convert().${toType.built}(b).$getR, 0);
-		assertEquals($methodName($value.i), ops.convert().${toType.built}(b).$getI, 0);
+		assertEquals($methodName($value.r), (($imgLibType) ops.run(${className}.class, b)).$getR, 0);
+		assertEquals($methodName($value.i), (($imgLibType) ops.run(${className}.class, b)).$getI, 0);
 #elseif ($toType.op.contains("Float"))
-		assertEquals($methodName($value.r), ops.convert().${toType.built}(b).get(), 0);
+		assertEquals($methodName($value.r), (($imgLibType) ops.run(${className}.class, b)).get(), 0);
 #elseif ($toType.op.equals("Uint64"))
-		assertEquals($methodName($value.r), ops.convert().${toType.built}(b).getBigInteger());
+		assertEquals($methodName($value.r), (($imgLibType) ops.run(${className}.class, b)).getBigInteger());
 #elseif ($toType.op.equals("Uint128") && $fromType.op.equals("Uint64") && $value.s)
-		assertEquals(Types.uint64Uint128($value.r), ops.convert().${toType.built}(b).getBigInteger());
+		assertEquals(Types.uint64Uint128($value.r), (($imgLibType) ops.run(${className}.class, b)).getBigInteger());
 #else
-		assertEquals($methodName($value.r), ops.convert().${toType.built}(b).get());
+		assertEquals($methodName($value.r), (($imgLibType) ops.run(${className}.class, b)).get());
 #end
 #end
 
