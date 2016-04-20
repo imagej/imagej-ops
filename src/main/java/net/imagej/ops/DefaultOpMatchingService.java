@@ -108,8 +108,8 @@ public class DefaultOpMatchingService extends AbstractService implements
 	}
 
 	@Override
-	public List<OpCandidate<?>> findCandidates(
-		final OpEnvironment ops, final List<OpRef<?>> refs)
+	public List<OpCandidate<?>> findCandidates(final OpEnvironment ops,
+		final List<OpRef<?>> refs)
 	{
 		final ArrayList<OpCandidate<?>> candidates = new ArrayList<>();
 		for (final OpInfo info : ops.infos()) {
@@ -184,14 +184,14 @@ public class DefaultOpMatchingService extends AbstractService implements
 		}
 		if (args.length > inputCount) {
 			// too many arguments
-			candidate.setStatus(StatusCode.TOO_MANY_ARGS,
-				args.length + " > " + inputCount);
+			candidate.setStatus(StatusCode.TOO_MANY_ARGS, args.length + " > " +
+				inputCount);
 			return null;
 		}
 		if (args.length < requiredCount) {
 			// too few arguments
-			candidate.setStatus(StatusCode.TOO_FEW_ARGS,
-				args.length + " < " + requiredCount);
+			candidate.setStatus(StatusCode.TOO_FEW_ARGS, args.length + " < " +
+				requiredCount);
 			return null;
 		}
 
@@ -261,8 +261,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * @throws IllegalArgumentException If there is not exactly one matching
 	 *           candidate.
 	 */
-	private OpCandidate<?> singleMatch(
-		final List<OpCandidate<?>> candidates,
+	private OpCandidate<?> singleMatch(final List<OpCandidate<?>> candidates,
 		final List<OpCandidate<?>> matches)
 	{
 		if (matches.size() == 1) {
@@ -304,12 +303,12 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * </p>
 	 */
 	private boolean outputsMatch(final OpCandidate<?> candidate) {
-		final Collection<? extends Class<?>> outTypes =
-			candidate.getRef().getOutTypes();
+		final Collection<? extends Class<?>> outTypes = candidate.getRef()
+			.getOutTypes();
 		if (outTypes == null) return true; // no constraints on output types
 
-		final Iterator<ModuleItem<?>> outItems =
-			candidate.cInfo().outputs().iterator();
+		final Iterator<ModuleItem<?>> outItems = candidate.cInfo().outputs()
+			.iterator();
 		for (final Class<?> outType : outTypes) {
 			if (!outItems.hasNext()) {
 				candidate.setStatus(StatusCode.TOO_FEW_OUTPUTS);
@@ -418,8 +417,8 @@ public class DefaultOpMatchingService extends AbstractService implements
 
 		final Type type = item.getGenericType();
 		if (!canConvert(arg, type)) {
-			candidate.setStatus(StatusCode.CANNOT_CONVERT,
-				arg.getClass().getName() + " => " + type, item);
+			candidate.setStatus(StatusCode.CANNOT_CONVERT, arg.getClass().getName() +
+				" => " + type, item);
 			return false;
 		}
 
@@ -458,8 +457,8 @@ public class DefaultOpMatchingService extends AbstractService implements
 
 	/** Determines whether the argument is a matching class instance. */
 	private boolean isMatchingClass(final Object arg, final Type type) {
-		return arg instanceof Class &&
-			convertService.supports((Class<?>) arg, type);
+		return arg instanceof Class && convertService.supports((Class<?>) arg,
+			type);
 	}
 
 	// -- Deprecated methods --
