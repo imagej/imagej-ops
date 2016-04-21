@@ -20,10 +20,7 @@
 		<developer>
 			<id>ctrueden</id>
 			<name>Curtis Rueden</name>
-			<email>ctrueden@wisc.edu</email>
-			<url>http://loci.wisc.edu/people/curtis-rueden</url>
-			<organization>UW-Madison LOCI</organization>
-			<organizationUrl>http://loci.wisc.edu/</organizationUrl>
+			<url>http://imagej.net/User:Rueden</url>
 			<roles>
 				<role>founder</role>
 				<role>lead</role>
@@ -33,15 +30,11 @@
 				<role>support</role>
 				<role>maintainer</role>
 			</roles>
-			<timezone>-6</timezone>
 		</developer>
 		<developer>
 			<id>dietzc</id>
 			<name>Christian Dietz</name>
-			<email>christian.dietz@uni-konstanz.de</email>
 			<url>http://imagej.net/User:Dietzc</url>
-			<organization>University of Konstanz</organization>
-			<organizationUrl>http://www.informatik.uni-konstanz.de/</organizationUrl>
 			<roles>
 				<role>founder</role>
 				<role>lead</role>
@@ -51,15 +44,11 @@
 				<role>support</role>
 				<role>maintainer</role>
 			</roles>
-			<timezone>+1</timezone>
 		</developer>
 		<developer>
 			<id>hinerm</id>
 			<name>Mark Hiner</name>
-			<email>hiner@wisc.edu</email>
-			<url>http://loci.wisc.edu/people/mark-hiner</url>
-			<organization>UW-Madison LOCI</organization>
-			<organizationUrl>http://loci.wisc.edu/</organizationUrl>
+			<url>http://imagej.net/User:Hinerm</url>
 			<roles>
 				<role>lead</role>
 				<role>developer</role>
@@ -68,101 +57,46 @@
 				<role>support</role>
 				<role>maintainer</role>
 			</roles>
-			<timezone>-6</timezone>
 		</developer>
 		<developer>
 			<id>bnorthan</id>
 			<name>Brian Northan</name>
-			<email>bnorthan@gmail.com</email>
-			<url>https://www.linkedin.com/in/brian-northan-3a78606</url>
+			<url>http://imagej.net/User:Bnorthan</url>
 			<roles>
 				<role>developer</role>
 				<role>debugger</role>
 				<role>reviewer</role>
 				<role>support</role>
 			</roles>
-			<timezone>-5</timezone>
 		</developer>
 		<developer>
-			<id>awalter17</id>
-			<name>Alison Walter</name>
-			<email>awalter17@wisc.edu</email>
-			<url>http://loci.wisc.edu/people/alison-walter</url>
-			<organization>UW-Madison LOCI</organization>
-			<organizationUrl>http://loci.wisc.edu/</organizationUrl>
+			<id>gab1one</id>
+			<name>Gabriel Einsdorf</name>
+			<url>http://imagej.net/User:Gab1one</url>
 			<roles>
 				<role>developer</role>
 			</roles>
-			<timezone>-6</timezone>
 		</developer>
 		<developer>
 			<id>tibuch</id>
 			<name>Tim-Oliver Buchholz</name>
-			<email>tim-oliver.buchholz@uni-konstanz.de</email>
-			<organization>University of Konstanz</organization>
-			<organizationUrl>http://www.informatik.uni-konstanz.de/</organizationUrl>
 			<roles>
 				<role>developer</role>
 				<role>support</role>
 			</roles>
-			<timezone>+1</timezone>
-		</developer>
-		<developer>
-			<id>Squareys</id>
-			<name>Jonathan Hale</name>
-			<email>squareys@googlemail.com</email>
-			<url>http://www.informatik.uni-konstanz.de/en/berthold/members/student-research-assistance/</url>
-			<organization>University of Konstanz</organization>
-			<organizationUrl>http://www.informatik.uni-konstanz.de/</organizationUrl>
-			<roles>
-				<role>developer</role>
-			</roles>
-			<timezone>+1</timezone>
 		</developer>
 		<developer>
 			<id>LeonYang5114</id>
 			<name>Leon Yang</name>
-			<email>gyang48@wisc.edu</email>
-			<url>http://loci.wisc.edu/people/leon-yang</url>
-			<organization>UW-Madison LOCI</organization>
-			<organizationUrl>http://loci.wisc.edu/</organizationUrl>
+			<url>http://imagej.net/User:Leon</url>
 			<roles>
 				<role>developer</role>
 			</roles>
-			<timezone>-6</timezone>
-		</developer>
-		<developer>
-			<id>seebacherd</id>
-			<name>Daniel Seebacher</name>
-			<email>daniel.seebacher@gmail.com</email>
-			<url>http://www.informatik.uni-konstanz.de/en/berthold/members/student-research-assistance/</url>
-			<organization>University of Konstanz</organization>
-			<organizationUrl>http://www.informatik.uni-konstanz.de/</organizationUrl>
-			<roles>
-				<role>developer</role>
-			</roles>
-			<timezone>+1</timezone>
-		</developer>
-		<developer>
-			<id>angrauma</id>
-			<name>Andreas Graumann</name>
-			<email>andreas.graumann@uni-konstanz.de</email>
-			<url>http://www.informatik.uni-konstanz.de/en/berthold/members/student-research-assistance/</url>
-			<organization>University of Konstanz</organization>
-			<organizationUrl>http://www.informatik.uni-konstanz.de/</organizationUrl>
-			<roles>
-				<role>developer</role>
-			</roles>
-			<timezone>+1</timezone>
 		</developer>
 	</developers>
 	<contributors>
 		<contributor>
 			<name>Martin Horn</name>
-			<email>martin.horn@uni-konstanz.de</email>
-			<url>http://www.informatik.uni-konstanz.de/en/dr-martin-horn/</url>
-			<organization>University of Konstanz</organization>
-			<organizationUrl>http://www.informatik.uni-konstanz.de/</organizationUrl>
 			<roles><role>founder</role></roles>
 			<properties><id>hornm</id></properties>
 		</contributor>
@@ -173,8 +107,9 @@
 			<properties><id>dscho</id></properties>
 		</contributor>
 		<contributor>
-			<name>Stefan Helfrich</name>
-			<properties><id>stelfrich</id></properties>
+			<name>Richard Domander</name>
+			<url>http://imagej.net/User:Rdom</url>
+			<properties><id>rimadoma</id></properties>
 		</contributor>
 		<contributor>
 			<name>Jan Eglinger</name>
@@ -182,9 +117,44 @@
 			<properties><id>imagejan</id></properties>
 		</contributor>
 		<contributor>
+			<name>Andreas Graumann</name>
+			<properties><id>angrauma</id></properties>
+		</contributor>
+		<contributor>
+			<name>Jonathan Hale</name>
+			<properties><id>Squareys</id></properties>
+		</contributor>
+		<contributor>
+			<name>Kyle Harrington</name>
+			<url>http://imagej.net/User:Kharrington</url>
+			<properties><id>kephale</id></properties>
+		</contributor>
+		<contributor>
+			<name>Eike Heinz</name>
+			<properties><id>EikeHeinz</id></properties>
+		</contributor>
+		<contributor>
+			<name>Stefan Helfrich</name>
+			<url>http://imagej.net/User:Stelfrich</url>
+			<properties><id>stelfrich</id></properties>
+		</contributor>
+		<contributor>
 			<name>Aparna Pal</name>
-			<url>http://loci.wisc.edu/people/aparna-pal</url>
+			<url>http://imagej.net/User:Apal4</url>
 			<properties><id>apal4</id></properties>
+		</contributor>
+		<contributor>
+			<name>Simon Schmid</name>
+			<properties><id>SimonSchmid</id></properties>
+		</contributor>
+		<contributor>
+			<name>Daniel Seebacher</name>
+			<properties><id>seebacherd</id></properties>
+		</contributor>
+		<contributor>
+			<name>Alison Walter</name>
+			<url>http://imagej.net/User:Awalter2</url>
+			<properties><id>awalter17</id></properties>
 		</contributor>
 		<contributor>
 			<name>Michael Zinsmaier</name>
