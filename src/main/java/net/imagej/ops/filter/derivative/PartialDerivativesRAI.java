@@ -6,7 +6,6 @@ import java.util.List;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Filter.AllPartialDerivatives;
 import net.imagej.ops.special.chain.RAIs;
-import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.RandomAccessibleInterval;
@@ -23,16 +22,14 @@ public class PartialDerivativesRAI<T extends RealType<T>, C extends GenericCompo
 		extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, CompositeIntervalView<T, RealComposite<T>>>
 		implements AllPartialDerivatives {
 
-	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>[] derivativeComputers;
-	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> createRAIFromRAI;
+	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>[] derivativeComputers;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize() {
-		createRAIFromRAI = RAIs.function(ops(), Ops.Create.Img.class, in());
-		derivativeComputers = new UnaryComputerOp[in().numDimensions()];
+		derivativeComputers = new UnaryFunctionOp[in().numDimensions()];
 		for (int i = 0; i < in().numDimensions(); i++) {
-			derivativeComputers[i] = RAIs.computer(ops(), Ops.Filter.PartialDerivative.class, in(), i);
+			derivativeComputers[i] = RAIs.function(ops(), Ops.Filter.PartialDerivative.class, in(), i);
 		}
 	}
 
@@ -40,8 +37,7 @@ public class PartialDerivativesRAI<T extends RealType<T>, C extends GenericCompo
 	public CompositeIntervalView<T, RealComposite<T>> compute1(RandomAccessibleInterval<T> input) {
 		List<RandomAccessibleInterval<T>> derivativeList = new ArrayList<>();
 		for (int i = 0; i < derivativeComputers.length; i++) {
-			RandomAccessibleInterval<T> derivative = createRAIFromRAI.compute1(input);
-			derivativeComputers[i].compute1(input, derivative);
+			RandomAccessibleInterval<T> derivative = derivativeComputers[i].compute1(input);
 			derivativeList.add(derivative);
 		}
 		
