@@ -7,12 +7,12 @@ import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.IntervalView;
-import net.imglib2.view.MixedTransformView;
 import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
@@ -47,6 +47,7 @@ public class PartialDerivativeRAI<T extends RealType<T>> extends
 	public void initialize() {
 		RandomAccessibleInterval<T> kernel = ops().create().kernelSobelSeparated();
 		// kernel A contains 1 2 1
+		//TODO randomaccessibleinterval?
 		IntervalView<T> kernelA = Views.hyperSlice(Views.hyperSlice(kernel, 3, 0), 2, 0);
 		// kernel B contains -1 0 1
 		IntervalView<T> kernelB = Views.hyperSlice(Views.hyperSlice(kernel, 3, 0), 2, 1);
@@ -54,8 +55,8 @@ public class PartialDerivativeRAI<T extends RealType<T>> extends
 		// add dimensions to kernel if input has more than 2 dimensions to
 		// properly rotate the kernel
 		if (in().numDimensions() > 2) {
-			MixedTransformView<T> expandedKernelA = Views.addDimension(kernelA);
-			MixedTransformView<T> expandedKernelB = Views.addDimension(kernelB);
+			RandomAccessible<T> expandedKernelA = Views.addDimension(kernelA);
+			RandomAccessible<T> expandedKernelB = Views.addDimension(kernelB);
 			for (int i = 0; i < in().numDimensions() - 3; i++) {
 				expandedKernelA = Views.addDimension(expandedKernelA);
 				expandedKernelB = Views.addDimension(expandedKernelB);
