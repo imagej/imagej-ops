@@ -12,13 +12,12 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.view.Views;
 import net.imglib2.view.composite.CompositeIntervalView;
-import net.imglib2.view.composite.GenericComposite;
 import net.imglib2.view.composite.RealComposite;
 
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Ops.Filter.AllPartialDerivatives.class, name = Ops.Filter.AllPartialDerivatives.NAME)
-public class PartialDerivativesRAI<T extends RealType<T>, C extends GenericComposite<T>>
+public class PartialDerivativesRAI<T extends RealType<T>>
 		extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, CompositeIntervalView<T, RealComposite<T>>>
 		implements AllPartialDerivatives {
 
