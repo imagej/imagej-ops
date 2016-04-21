@@ -7,6 +7,8 @@ import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imglib2.FinalInterval;
+import net.imglib2.Interval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
@@ -66,7 +68,7 @@ public class PartialDerivativeRAI<T extends RealType<T>> extends
 				dims[j] = 1;
 			}
 			dims[0] = 3;
-			Img<DoubleType> kernelInterval = ops().create().img(dims);
+			Interval kernelInterval = new FinalInterval(dims);
 			kernelA = Views.interval(expandedKernelA, kernelInterval);
 			kernelB = Views.interval(expandedKernelB, kernelInterval);
 		}
