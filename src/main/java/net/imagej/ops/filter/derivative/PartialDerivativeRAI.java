@@ -14,7 +14,6 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
@@ -49,10 +48,9 @@ public class PartialDerivativeRAI<T extends RealType<T>> extends
 	public void initialize() {
 		RandomAccessibleInterval<T> kernel = ops().create().kernelSobelSeparated();
 		// kernel A contains 1 2 1
-		//TODO randomaccessibleinterval?
-		IntervalView<T> kernelA = Views.hyperSlice(Views.hyperSlice(kernel, 3, 0), 2, 0);
+		RandomAccessibleInterval<T> kernelA = Views.hyperSlice(Views.hyperSlice(kernel, 3, 0), 2, 0);
 		// kernel B contains -1 0 1
-		IntervalView<T> kernelB = Views.hyperSlice(Views.hyperSlice(kernel, 3, 0), 2, 1);
+		RandomAccessibleInterval<T> kernelB = Views.hyperSlice(Views.hyperSlice(kernel, 3, 0), 2, 1);
 
 		// add dimensions to kernel if input has more than 2 dimensions to
 		// properly rotate the kernel
@@ -88,7 +86,7 @@ public class PartialDerivativeRAI<T extends RealType<T>> extends
 
 			Img<DoubleType> kernelInterval = ops().create().img(dims);
 			// rotate kernelB to required dimension
-			IntervalView<T> rotatedKernelB = kernelB;
+			RandomAccessibleInterval<T> rotatedKernelB = kernelB;
 			for (int i = 0; i < dimension; i++) {
 				rotatedKernelB = Views.rotate(rotatedKernelB, i, i + 1);
 			}
@@ -104,7 +102,7 @@ public class PartialDerivativeRAI<T extends RealType<T>> extends
 		if (dimension != 0) {
 			kernelAConvolverArray[0] = RAIs.computer(ops(), Ops.Filter.Convolve.class, in(), kernelA);
 		}
-		IntervalView<T> rotatedKernelA = kernelA;
+		RandomAccessibleInterval<T> rotatedKernelA = kernelA;
 		for (int i = 1; i < in().numDimensions(); i++) {
 			if (i != dimension) {
 				dims = new long[in().numDimensions()];
