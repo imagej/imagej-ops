@@ -74,7 +74,7 @@ public class LocalBernsenThreshold<T extends RealType<T>> extends
 
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			@Override
-			public void compute2(final T center, final Iterable<T> neighborhood,
+			public void compute2(final Iterable<T> neighborhood, final T center,
 				final BitType output)
 			{
 

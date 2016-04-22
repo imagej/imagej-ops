@@ -72,7 +72,7 @@ public class DefaultSigmaFilter<T extends RealType<T>, V extends RealType<V>>
 				private UnaryComputerOp<Iterable<T>, DoubleType> variance;
 
 				@Override
-				public void compute2(T center, Iterable<T> neighborhood, V output) {
+				public void compute2(final Iterable<T> neighborhood, final T center, final V output) {
 					if (variance == null) {
 						variance = Computers.unary(ops(), Ops.Stats.Variance.class,
 							DoubleType.class, neighborhood);

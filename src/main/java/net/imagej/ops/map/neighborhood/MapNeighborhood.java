@@ -30,55 +30,21 @@
 
 package net.imagej.ops.map.neighborhood;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-import net.imagej.ops.OpEnvironment;
-import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Map;
-import net.imagej.ops.map.AbstractMapComputer;
-import net.imagej.ops.special.computer.Computers;
-import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.neighborhood.Neighborhood;
+import net.imagej.ops.Op;
+import net.imagej.ops.map.MapOp;
+import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imglib2.algorithm.neighborhood.Shape;
 
 /**
- * Evaluates a {@link UnaryComputerOp} for each {@link Neighborhood} on the
- * input {@link IterableInterval}.
+ * Typed interface for "map" ops that work with neighborhoods.
  * 
- * @author Christian Dietz (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
- * @param <I> input type
- * @param <O> output type
- * @see OpEnvironment#map(IterableInterval, IterableInterval, UnaryComputerOp)
- * @see UnaryComputerOp
+ * @author Leon Yang
+ * @param <EI> element type of inputs
+ * @param <EO> element type of outputs
+ * @param <OP> type of {@link Op} which processes each neighborhood
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
-public class MapNeighborhood<I, O> extends
-	AbstractMapComputer<Iterable<I>, O, RandomAccessibleInterval<I>, IterableInterval<O>>
+public interface MapNeighborhood<EI, EO, PI, PO, OP extends Op> extends
+	BinaryComputerOp<PI, Shape, PO>, MapOp<OP>
 {
-
-	@Parameter
-	private Shape shape;
-
-	private UnaryComputerOp<IterableInterval<Neighborhood<I>>, IterableInterval<O>> map;
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void initialize() {
-		map = (UnaryComputerOp) Computers.unary(ops(), Map.class,
-			IterableInterval.class, in() != null ? shape.neighborhoodsSafe(in())
-				: IterableInterval.class, getOp());
-	}
-
-	@Override
-	public void compute1(final RandomAccessibleInterval<I> input,
-		final IterableInterval<O> output)
-	{
-		map.compute1(shape.neighborhoodsSafe(input), output);
-	}
-
+	// NB: Marker interface.
 }

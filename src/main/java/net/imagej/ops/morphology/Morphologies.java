@@ -28,59 +28,58 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localMedian;
+package net.imagej.ops.morphology;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
-import net.imagej.ops.special.computer.Computers;
-import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imagej.ops.threshold.LocalThresholdMethod;
-import net.imagej.ops.threshold.apply.LocalThreshold;
+import java.util.List;
+
+import net.imglib2.Interval;
+import net.imglib2.algorithm.morphology.MorphologyUtils;
+import net.imglib2.algorithm.neighborhood.Neighborhood;
+import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
- * LocalThresholdMethod using median.
+ * Utility class for morphology operations.
  * 
- * @author Jonathan Hale
- * @author Stefan Helfrich (University of Konstanz)
+ * @author Leon Yang
  */
-@Plugin(type = Ops.Threshold.LocalMedianThreshold.class)
-public class LocalMedianThreshold<T extends RealType<T>> extends LocalThreshold<T>
-	implements Ops.Threshold.LocalMedianThreshold
-{
+public class Morphologies {
 
-	@Parameter
-	private double c;
-
-	@Override
-	protected CenterAwareComputerOp<T, BitType> unaryComputer(
-		final BitType outClass)
-	{
-		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
-
-			private UnaryComputerOp<Iterable<T>, DoubleType> median;
-
-			@Override
-			public void compute2(final Iterable<T> neighborhood, final T center, final BitType output) {
-
-				if (median == null) {
-					median = Computers
-							.unary(ops(), Ops.Stats.Median.class, DoubleType.class, neighborhood);
-				}
-
-				final DoubleType m = new DoubleType();
-				median.compute1(neighborhood, m);
-				output.set(center.getRealDouble() > m.getRealDouble() - c);
-			}
-		};
-
-		op.setEnvironment(ops());
-		return op;
+	private Morphologies() {
+		// NB: Prevent instantiation of utility class.
 	}
-	
+
+	/**
+	 * Computes the min coordinate and the size of an {@link Interval} after
+	 * padding with a list of {@link Shape}s in a series morphology operations.
+	 * 
+	 * @param source the interval to be applied with some morphology operation
+	 * @param shapes the list of Shapes for padding
+	 * @return a size-2 array storing the min coordinate and the size of the
+	 *         padded interval
+	 */
+	public static final long[][] computeMinSize(final Interval source,
+		final List<Shape> shapes)
+	{
+
+		final int numDims = source.numDimensions();
+		final long[] min = new long[numDims];
+		final long[] size = new long[numDims];
+
+		for (int i = 0; i < numDims; i++) {
+			min[i] = source.min(i);
+			size[i] = source.dimension(i);
+		}
+
+		for (final Shape shape : shapes) {
+			final Neighborhood<BitType> nh = MorphologyUtils.getNeighborhood(shape,
+				source);
+			for (int i = 0; i < numDims; i++) {
+				min[i] += nh.min(i);
+				size[i] += nh.dimension(i) - 1;
+			}
+		}
+
+		return new long[][] { min, size };
+	}
 }

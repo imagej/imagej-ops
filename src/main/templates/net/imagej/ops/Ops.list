@@ -76,11 +76,13 @@ namespaces = ```
 	]],
 
 	[name: "morphology", iface: "Morphology", ops: [
+		[name: "blackTopHat",                 iface: "BlackTopHat"],
 		[name: "close",                       iface: "Close"],
 		[name: "dilate",                      iface: "Dilate"],
 		[name: "erode",                       iface: "Erode"],
 		[name: "open",                        iface: "Open"],
 		[name: "thin",                        iface: "Thin"],
+		[name: "topHat",                      iface: "TopHat"],
 	]],
 
 	[name: "filter", iface: "Filter", ops: [

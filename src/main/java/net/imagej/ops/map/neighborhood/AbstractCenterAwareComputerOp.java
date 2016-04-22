@@ -39,7 +39,7 @@ import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
  * @author Stefan Helfrich (University of Konstanz)
  */
 public abstract class AbstractCenterAwareComputerOp<I, O> extends
-	AbstractBinaryComputerOp<I, Iterable<I>, O> implements
+	AbstractBinaryComputerOp<Iterable<I>, I, O> implements
 	CenterAwareComputerOp<I, O>
 {
 	// NB: Empty.

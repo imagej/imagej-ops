@@ -62,8 +62,7 @@ public abstract class AbstractCenterAwareNeighborhoodBasedFilter<I, O> extends
 	@Override
 	public void initialize() {
 		filterOp = unaryComputer(out().firstElement());
-		map = Computers.unary(ops(), Map.class, out(), in(),
-			filterOp, shape);
+		map = Computers.unary(ops(), Map.class, out(), in(), shape, filterOp);
 	}
 
 	@Override

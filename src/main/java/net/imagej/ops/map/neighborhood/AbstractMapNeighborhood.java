@@ -28,59 +28,39 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localMedian;
+package net.imagej.ops.map.neighborhood;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
-import net.imagej.ops.special.computer.Computers;
-import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imagej.ops.threshold.LocalThresholdMethod;
-import net.imagej.ops.threshold.apply.LocalThreshold;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
+import net.imagej.ops.Op;
+import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
+import net.imglib2.algorithm.neighborhood.Shape;
 
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
- * LocalThresholdMethod using median.
+ * Abstract base class for {@link MapNeighborhood} implementations.
  * 
- * @author Jonathan Hale
- * @author Stefan Helfrich (University of Konstanz)
+ * @author Leon Yang
+ * @param <EI> element type of inputs
+ * @param <EO> element type of outputs
+ * @param <PI> producer of inputs
+ * @param <PO> producer of outputs
+ * @param <OP> type of {@link Op} which processes each element
  */
-@Plugin(type = Ops.Threshold.LocalMedianThreshold.class)
-public class LocalMedianThreshold<T extends RealType<T>> extends LocalThreshold<T>
-	implements Ops.Threshold.LocalMedianThreshold
+public abstract class AbstractMapNeighborhood<EI, EO, PI, PO, OP extends Op>
+	extends AbstractBinaryComputerOp<PI, Shape, PO> implements
+	MapNeighborhood<EI, EO, PI, PO, OP>
 {
 
 	@Parameter
-	private double c;
+	private OP op;
 
 	@Override
-	protected CenterAwareComputerOp<T, BitType> unaryComputer(
-		final BitType outClass)
-	{
-		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
-
-			private UnaryComputerOp<Iterable<T>, DoubleType> median;
-
-			@Override
-			public void compute2(final Iterable<T> neighborhood, final T center, final BitType output) {
-
-				if (median == null) {
-					median = Computers
-							.unary(ops(), Ops.Stats.Median.class, DoubleType.class, neighborhood);
-				}
-
-				final DoubleType m = new DoubleType();
-				median.compute1(neighborhood, m);
-				output.set(center.getRealDouble() > m.getRealDouble() - c);
-			}
-		};
-
-		op.setEnvironment(ops());
+	public OP getOp() {
 		return op;
 	}
-	
+
+	@Override
+	public void setOp(final OP op) {
+		this.op = op;
+	}
 }

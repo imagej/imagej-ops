@@ -41,43 +41,39 @@ import net.imglib2.algorithm.neighborhood.Neighborhood;
 import net.imglib2.algorithm.neighborhood.Shape;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
  * Evaluates a {@link CenterAwareComputerOp} for each {@link Neighborhood} on
  * the input {@link RandomAccessibleInterval} and sets the value of the
  * corresponding pixel on the output {@link IterableInterval}. Similar
- * to {@link MapNeighborhood}, but passes the center pixel to the op as well.
+ * to {@link DefaultMapNeighborhood}, but passes the center pixel to the op as well.
  * 
  * @author Jonathan Hale (University of Konstanz)
  * @author Stefan Helfrich (University of Konstanz)
- * @see OpEnvironment#map(IterableInterval, RandomAccessibleInterval,
- *      CenterAwareComputerOp, Shape)
+ * @see OpEnvironment#map(IterableInterval, RandomAccessibleInterval, Shape,
+ *      CenterAwareComputerOp)
  * @see CenterAwareComputerOp
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 1)
 public class MapNeighborhoodWithCenter<I, O> extends
-	AbstractMapCenterAwareComputer<I, O, RandomAccessibleInterval<I>, IterableInterval<O>>
+	AbstractMapNeighborhood<I, O, RandomAccessibleInterval<I>, IterableInterval<O>, CenterAwareComputerOp<I, O>>
 {
 
-	@Parameter
-	private Shape shape;
-
-	private BinaryComputerOp<RandomAccessibleInterval<I>, IterableInterval<Neighborhood<I>>, IterableInterval<O>> map;
+	private BinaryComputerOp<IterableInterval<Neighborhood<I>>, RandomAccessibleInterval<I>, IterableInterval<O>> map;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
 		map = (BinaryComputerOp) Computers.binary(ops(), Map.class, IterableInterval.class,
-			RandomAccessibleInterval.class, IterableInterval.class, getOp());
+			IterableInterval.class, RandomAccessibleInterval.class, getOp());
 	}
 
 	@Override
-	public void compute1(final RandomAccessibleInterval<I> input,
-		final IterableInterval<O> output)
+	public void compute2(final RandomAccessibleInterval<I> in1, final Shape in2,
+		final IterableInterval<O> out)
 	{
-		map.compute2(input, shape.neighborhoodsSafe(input), output);
+		map.compute2(in2.neighborhoodsSafe(in1), in1, out);
 	}
 
 }

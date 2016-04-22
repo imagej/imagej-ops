@@ -28,39 +28,26 @@
  * #L%
  */
 
-package net.imagej.ops.map.neighborhood;
+package net.imagej.ops.morphology;
 
-import org.scijava.plugin.Parameter;
+import net.imagej.ops.AbstractNamespaceTest;
 
-import net.imagej.ops.map.MapBinaryComputer;
-import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import org.junit.Test;
 
 /**
- * Abstract implementation of a {@link MapBinaryComputer} for
- * {@link CenterAwareComputerOp}.
- * 
- * @author Jonathan Hale (University of Konstanz)
- * @author Stefan Helfrich (University of Konstanz)
- * @param <A> mapped on {@code <B>}
- * @param <B> mapped from {@code <A>}
- * @param <C> provides {@code <A>}s
- * @param <D> provides {@code <B>}s
+ * Tests {@link MorphologyNamespace}.
+ *
+ * @author Leon Yang
  */
-public abstract class AbstractMapCenterAwareComputer<A, B, C, D> 
-	extends AbstractUnaryComputerOp<C, D>
-	implements MapBinaryComputer<A, Iterable<A>, B, CenterAwareComputerOp<A, B>>
-{
+public class MorphologyNamespaceTest extends AbstractNamespaceTest {
 
-	@Parameter
-	private CenterAwareComputerOp<A, B> op;
-
-	@Override
-	public CenterAwareComputerOp<A, B> getOp() {
-		return op;
+	/**
+	 * Tests that the ops of the morphology namespace have corresponding type-safe
+	 * Java method signatures declared in the {@link MorphologyNamespace} class.
+	 */
+	@Test
+	public void testCompleteness() {
+		assertComplete("morphology", MorphologyNamespace.class);
 	}
 
-	@Override
-	public void setOp(final CenterAwareComputerOp<A, B> op) {
-		this.op = op;
-	}
 }

@@ -28,59 +28,48 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localMedian;
+package net.imagej.ops.map.neighborhood;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imagej.ops.threshold.LocalThresholdMethod;
-import net.imagej.ops.threshold.apply.LocalThreshold;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.neighborhood.Neighborhood;
+import net.imglib2.algorithm.neighborhood.Shape;
 
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * LocalThresholdMethod using median.
+ * Evaluates a {@link UnaryComputerOp} for each {@link Neighborhood} on the
+ * input {@link RandomAccessibleInterval}.
  * 
- * @author Jonathan Hale
- * @author Stefan Helfrich (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
+ * @param <I> input type
+ * @param <O> output type
  */
-@Plugin(type = Ops.Threshold.LocalMedianThreshold.class)
-public class LocalMedianThreshold<T extends RealType<T>> extends LocalThreshold<T>
-	implements Ops.Threshold.LocalMedianThreshold
+@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
+public class DefaultMapNeighborhood<I, O> extends
+	AbstractMapNeighborhood<I, O, RandomAccessibleInterval<I>, IterableInterval<O>, UnaryComputerOp<Iterable<I>, O>>
 {
 
-	@Parameter
-	private double c;
+	private UnaryComputerOp<IterableInterval<Neighborhood<I>>, IterableInterval<O>> map;
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public void initialize() {
+		map = (UnaryComputerOp) Computers.unary(ops(), Ops.Map.class,
+			IterableInterval.class, in1() == null ? IterableInterval.class : in2()
+				.neighborhoods(in()), getOp());
+	}
 
 	@Override
-	protected CenterAwareComputerOp<T, BitType> unaryComputer(
-		final BitType outClass)
+	public void compute2(final RandomAccessibleInterval<I> in1, final Shape in2,
+		final IterableInterval<O> out)
 	{
-		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
-
-			private UnaryComputerOp<Iterable<T>, DoubleType> median;
-
-			@Override
-			public void compute2(final Iterable<T> neighborhood, final T center, final BitType output) {
-
-				if (median == null) {
-					median = Computers
-							.unary(ops(), Ops.Stats.Median.class, DoubleType.class, neighborhood);
-				}
-
-				final DoubleType m = new DoubleType();
-				median.compute1(neighborhood, m);
-				output.set(center.getRealDouble() > m.getRealDouble() - c);
-			}
-		};
-
-		op.setEnvironment(ops());
-		return op;
+		map.compute1(in2.neighborhoodsSafe(in1), out);
 	}
-	
+
 }
