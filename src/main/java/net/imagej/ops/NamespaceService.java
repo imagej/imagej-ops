@@ -30,6 +30,8 @@
 
 package net.imagej.ops;
 
+import net.imagej.ImageJService;
+
 import org.scijava.plugin.PTService;
 
 /**
@@ -37,7 +39,7 @@ import org.scijava.plugin.PTService;
  *
  * @author Curtis Rueden
  */
-public interface NamespaceService extends PTService<Namespace> {
+public interface NamespaceService extends PTService<Namespace>, ImageJService {
 
 	/** Creates a {@link Namespace} with the given op execution environment. */
 	<NS extends Namespace> NS create(Class<NS> pluginClass, OpEnvironment ops);
