@@ -35,12 +35,11 @@ import net.imagej.ops.AbstractNamespaceTest;
 import net.imagej.ops.transform.TransformNamespace;
 
 /**
- * Tests that the ops of the logic namespace have corresponding type-safe Java
- * method signatures declared in the {@link TransformNamespace} class.
+ * Tests {@link TransformNamespace}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz
  */
-public class ViewNamespaceTest extends AbstractNamespaceTest {
+public class TransformNamespaceTest extends AbstractNamespaceTest {
 
 	/**
 	 * Tests that the ops of the {@code view} namespace have corresponding
