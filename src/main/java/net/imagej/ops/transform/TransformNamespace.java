@@ -35,48 +35,48 @@ import java.util.List;
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
-import net.imagej.ops.transform.addDimensionView.DefaultAddDimension;
+import net.imagej.ops.transform.addDimensionView.DefaultAddDimensionView;
 import net.imagej.ops.transform.collapseNumericView.DefaultCollapseNumeric2CompositeIntervalView;
 import net.imagej.ops.transform.collapseNumericView.DefaultCollapseNumeric2CompositeView;
 import net.imagej.ops.transform.collapseRealView.DefaultCollapseReal2CompositeIntervalView;
 import net.imagej.ops.transform.collapseRealView.DefaultCollapseReal2CompositeView;
 import net.imagej.ops.transform.collapseView.DefaultCollapse2CompositeIntervalView;
 import net.imagej.ops.transform.collapseView.DefaultCollapse2CompositeView;
-import net.imagej.ops.transform.dropSingletonDimensionsView.DefaultDropSingletonDimensions;
-import net.imagej.ops.transform.extendBorderView.DefaultExtendBorder;
-import net.imagej.ops.transform.extendMirrorDoubleView.DefaultExtendMirrorDouble;
-import net.imagej.ops.transform.extendMirrorSingleView.DefaultExtendMirrorSingle;
-import net.imagej.ops.transform.extendPeriodicView.DefaultExtendPeriodic;
-import net.imagej.ops.transform.extendRandomView.DefaultExtendRandom;
-import net.imagej.ops.transform.extendValueView.DefaultExtendValue;
-import net.imagej.ops.transform.extendView.DefaultExtend;
-import net.imagej.ops.transform.extendZeroView.DefaultExtendZero;
-import net.imagej.ops.transform.flatIterableView.DefaultFlatIterable;
-import net.imagej.ops.transform.hyperSliceView.DefaultHyperSlice;
-import net.imagej.ops.transform.interpolateView.DefaultInterpolate;
-import net.imagej.ops.transform.intervalView.DefaultInterval;
-import net.imagej.ops.transform.intervalView.IntervalMinMax;
-import net.imagej.ops.transform.invertAxisView.DefaultInvertAxis;
-import net.imagej.ops.transform.offsetView.DefaultOffset;
-import net.imagej.ops.transform.offsetView.OffsetInterval;
-import net.imagej.ops.transform.offsetView.OffsetOriginSize;
-import net.imagej.ops.transform.permuteCoordinatesInverseView.DefaultPermuteCoordinatesInverse;
-import net.imagej.ops.transform.permuteCoordinatesInverseView.PermuteCoordinateInverseOfDimension;
-import net.imagej.ops.transform.permuteCoordinatesView.DefaultPermuteCoordinates;
-import net.imagej.ops.transform.permuteCoordinatesView.PermuteCoordinatesOfDimension;
-import net.imagej.ops.transform.permuteView.DefaultPermute;
-import net.imagej.ops.transform.rasterView.DefaultRaster;
-import net.imagej.ops.transform.rotateView.RotateAroundAxis;
-import net.imagej.ops.transform.shearView.DefaultShear;
-import net.imagej.ops.transform.shearView.ShearInterval;
-import net.imagej.ops.transform.stackView.DefaultStack;
-import net.imagej.ops.transform.stackView.StackWithAccessMode;
-import net.imagej.ops.transform.subsampleView.DefaultSubsample;
-import net.imagej.ops.transform.subsampleView.SubsampleStepsForDims;
-import net.imagej.ops.transform.translateView.DefaultTranslate;
-import net.imagej.ops.transform.unshearView.DefaultUnshear;
-import net.imagej.ops.transform.unshearView.UnshearInterval;
-import net.imagej.ops.transform.zeroMinView.DefaultZeroMin;
+import net.imagej.ops.transform.dropSingletonDimensionsView.DefaultDropSingletonDimensionsView;
+import net.imagej.ops.transform.extendBorderView.DefaultExtendBorderView;
+import net.imagej.ops.transform.extendMirrorDoubleView.DefaultExtendMirrorDoubleView;
+import net.imagej.ops.transform.extendMirrorSingleView.DefaultExtendMirrorSingleView;
+import net.imagej.ops.transform.extendPeriodicView.DefaultExtendPeriodicView;
+import net.imagej.ops.transform.extendRandomView.DefaultExtendRandomView;
+import net.imagej.ops.transform.extendValueView.DefaultExtendValueView;
+import net.imagej.ops.transform.extendView.DefaultExtendView;
+import net.imagej.ops.transform.extendZeroView.DefaultExtendZeroView;
+import net.imagej.ops.transform.flatIterableView.DefaultFlatIterableView;
+import net.imagej.ops.transform.hyperSliceView.DefaultHyperSliceView;
+import net.imagej.ops.transform.interpolateView.DefaultInterpolateView;
+import net.imagej.ops.transform.intervalView.DefaultIntervalView;
+import net.imagej.ops.transform.intervalView.IntervalViewMinMax;
+import net.imagej.ops.transform.invertAxisView.DefaultInvertAxisView;
+import net.imagej.ops.transform.offsetView.DefaultOffsetView;
+import net.imagej.ops.transform.offsetView.OffsetViewInterval;
+import net.imagej.ops.transform.offsetView.OffsetViewOriginSize;
+import net.imagej.ops.transform.permuteCoordinatesInverseView.DefaultPermuteCoordinatesInverseView;
+import net.imagej.ops.transform.permuteCoordinatesInverseView.PermuteCoordinateInverseViewOfDimension;
+import net.imagej.ops.transform.permuteCoordinatesView.DefaultPermuteCoordinatesView;
+import net.imagej.ops.transform.permuteCoordinatesView.PermuteCoordinatesViewOfDimension;
+import net.imagej.ops.transform.permuteView.DefaultPermuteView;
+import net.imagej.ops.transform.rasterView.DefaultRasterView;
+import net.imagej.ops.transform.rotateView.DefaultRotateView;
+import net.imagej.ops.transform.shearView.DefaultShearView;
+import net.imagej.ops.transform.shearView.ShearViewInterval;
+import net.imagej.ops.transform.stackView.DefaultStackView;
+import net.imagej.ops.transform.stackView.StackViewWithAccessMode;
+import net.imagej.ops.transform.subsampleView.DefaultSubsampleView;
+import net.imagej.ops.transform.subsampleView.SubsampleViewStepsForDims;
+import net.imagej.ops.transform.translateView.DefaultTranslateView;
+import net.imagej.ops.transform.unshearView.DefaultUnshearView;
+import net.imagej.ops.transform.unshearView.UnshearViewInterval;
+import net.imagej.ops.transform.zeroMinView.DefaultZeroMinView;
 import net.imglib2.EuclideanSpace;
 import net.imglib2.FlatIterationOrder;
 import net.imglib2.Interval;
@@ -130,12 +130,12 @@ public class TransformNamespace extends AbstractNamespace {
 	 * @param minOfNewDim Interval min in the additional dimension.
 	 * @param maxOfNewDim Interval max in the additional dimension.
 	 */
-	@OpMethod(op = net.imagej.ops.transform.addDimensionView.AddDimensionMinMax.class)
+	@OpMethod(op = net.imagej.ops.transform.addDimensionView.AddDimensionViewMinMax.class)
 	public <T extends Type<T>> IntervalView<T> addDimension(
 		final RandomAccessibleInterval<T> input, final long min, final long max)
 	{
 		return (IntervalView<T>) ops().run(
-			net.imagej.ops.transform.addDimensionView.AddDimensionMinMax.class, input, min, max);
+			net.imagej.ops.transform.addDimensionView.AddDimensionViewMinMax.class, input, min, max);
 	}
 
 	/**
@@ -146,11 +146,11 @@ public class TransformNamespace extends AbstractNamespace {
 	 * 
 	 * @param randomAccessible the source
 	 */
-	@OpMethod(op = net.imagej.ops.transform.addDimensionView.DefaultAddDimension.class)
+	@OpMethod(op = net.imagej.ops.transform.addDimensionView.DefaultAddDimensionView.class)
 	public <T extends Type<T>> MixedTransformView<T> addDimension(
 		final RandomAccessible<T> input)
 	{
-		return (MixedTransformView<T>) ops().run(DefaultAddDimension.class, input);
+		return (MixedTransformView<T>) ops().run(DefaultAddDimensionView.class, input);
 	}
 
 	/**
@@ -238,12 +238,12 @@ public class TransformNamespace extends AbstractNamespace {
 	 * @param source the source
 	 * @return a RandomAccessibleInterval without dimensions of size one
 	 */
-	@OpMethod(op = net.imagej.ops.transform.dropSingletonDimensionsView.DefaultDropSingletonDimensions.class)
+	@OpMethod(op = net.imagej.ops.transform.dropSingletonDimensionsView.DefaultDropSingletonDimensionsView.class)
 	public <T extends Type<T>> RandomAccessibleInterval<T>
 		dropSingletonDimensions(final RandomAccessibleInterval<T> input)
 	{
 		return (RandomAccessibleInterval<T>) ops().run(
-			DefaultDropSingletonDimensions.class, input);
+			DefaultDropSingletonDimensionsView.class, input);
 	}
 
 	/**
@@ -254,13 +254,13 @@ public class TransformNamespace extends AbstractNamespace {
 	 * @return (unbounded) RandomAccessible which extends the input interval to
 	 *         infinity.
 	 */
-	@OpMethod(op = net.imagej.ops.transform.extendView.DefaultExtend.class)
+	@OpMethod(op = net.imagej.ops.transform.extendView.DefaultExtendView.class)
 	public <T extends Type<T>, F extends RandomAccessibleInterval<T>>
 		ExtendedRandomAccessibleInterval<T, F> extend(final F input,
 			final OutOfBoundsFactory<T, ? super F> factory)
 	{
 		return (ExtendedRandomAccessibleInterval<T, F>) ops().run(
-			DefaultExtend.class, input, factory);
+			DefaultExtendView.class, input, factory);
 	}
 
 	/**
@@ -272,12 +272,12 @@ public class TransformNamespace extends AbstractNamespace {
 	 *         infinity.
 	 * @see net.imglib2.outofbounds.OutOfBoundsBorder
 	 */
-	@OpMethod(op = net.imagej.ops.transform.extendBorderView.DefaultExtendBorder.class)
+	@OpMethod(op = net.imagej.ops.transform.extendBorderView.DefaultExtendBorderView.class)
 	public <T extends Type<T>, F extends RandomAccessibleInterval<T>>
 		ExtendedRandomAccessibleInterval<T, F> extendBorder(final F input)
 	{
 		return (ExtendedRandomAccessibleInterval<T, F>) ops().run(
-			DefaultExtendBorder.class, input);
+			DefaultExtendBorderView.class, input);
 	}
 
 	/**
@@ -289,12 +289,12 @@ public class TransformNamespace extends AbstractNamespace {
 	 *         infinity.
 	 * @see net.imglib2.outofbounds.OutOfBoundsMirrorDoubleBoundary
 	 */
-	@OpMethod(op = net.imagej.ops.transform.extendMirrorDoubleView.DefaultExtendMirrorDouble.class)
+	@OpMethod(op = net.imagej.ops.transform.extendMirrorDoubleView.DefaultExtendMirrorDoubleView.class)
 	public <T extends Type<T>, F extends RandomAccessibleInterval<T>>
 		ExtendedRandomAccessibleInterval<T, F> extendMirrorDouble(final F input)
 	{
 		return (ExtendedRandomAccessibleInterval<T, F>) ops().run(
-			DefaultExtendMirrorDouble.class, input);
+			DefaultExtendMirrorDoubleView.class, input);
 	}
 
 	/**
@@ -307,12 +307,12 @@ public class TransformNamespace extends AbstractNamespace {
 	 *         infinity.
 	 * @see net.imglib2.outofbounds.OutOfBoundsMirrorSingleBoundary
 	 */
-	@OpMethod(op = net.imagej.ops.transform.extendMirrorSingleView.DefaultExtendMirrorSingle.class)
+	@OpMethod(op = net.imagej.ops.transform.extendMirrorSingleView.DefaultExtendMirrorSingleView.class)
 	public <T extends Type<T>, F extends RandomAccessibleInterval<T>>
 		ExtendedRandomAccessibleInterval<T, F> extendMirrorSingle(final F input)
 	{
 		return (ExtendedRandomAccessibleInterval<T, F>) ops().run(
-			DefaultExtendMirrorSingle.class, input);
+			DefaultExtendMirrorSingleView.class, input);
 	}
 
 	/**
@@ -323,12 +323,12 @@ public class TransformNamespace extends AbstractNamespace {
 	 *         infinity.
 	 * @see net.imglib2.outofbounds.OutOfBoundsPeriodic
 	 */
-	@OpMethod(op = net.imagej.ops.transform.extendPeriodicView.DefaultExtendPeriodic.class)
+	@OpMethod(op = net.imagej.ops.transform.extendPeriodicView.DefaultExtendPeriodicView.class)
 	public <T extends Type<T>, F extends RandomAccessibleInterval<T>>
 		ExtendedRandomAccessibleInterval<T, F> extendPeriodic(final F input)
 	{
 		return (ExtendedRandomAccessibleInterval<T, F>) ops().run(
-			DefaultExtendPeriodic.class, input);
+			DefaultExtendPeriodicView.class, input);
 	}
 
 	/**
@@ -342,13 +342,13 @@ public class TransformNamespace extends AbstractNamespace {
 	 *         infinity.
 	 * @see net.imglib2.outofbounds.OutOfBoundsRandomValue
 	 */
-	@OpMethod(op = net.imagej.ops.transform.extendRandomView.DefaultExtendRandom.class)
+	@OpMethod(op = net.imagej.ops.transform.extendRandomView.DefaultExtendRandomView.class)
 	public <T extends Type<T>, F extends RandomAccessibleInterval<T>>
 		ExtendedRandomAccessibleInterval<T, F> extendRandom(final F input,
 			final double min, final double max)
 	{
 		return (ExtendedRandomAccessibleInterval<T, F>) ops().run(
-			DefaultExtendRandom.class, input, min, max);
+			DefaultExtendRandomView.class, input, min, max);
 	}
 
 	/**
@@ -360,13 +360,13 @@ public class TransformNamespace extends AbstractNamespace {
 	 *         infinity.
 	 * @see net.imglib2.outofbounds.OutOfBoundsConstantValue
 	 */
-	@OpMethod(op = net.imagej.ops.transform.extendValueView.DefaultExtendValue.class)
+	@OpMethod(op = net.imagej.ops.transform.extendValueView.DefaultExtendValueView.class)
 	public <T extends Type<T>, F extends RandomAccessibleInterval<T>>
 		ExtendedRandomAccessibleInterval<T, F> extendValue(final F input,
 			final T value)
 	{
 		return (ExtendedRandomAccessibleInterval<T, F>) ops().run(
-			DefaultExtendValue.class, input, value);
+			DefaultExtendValueView.class, input, value);
 	}
 
 	/**
@@ -378,12 +378,12 @@ public class TransformNamespace extends AbstractNamespace {
 	 *         infinity with a constant value of zero.
 	 * @see net.imglib2.outofbounds.OutOfBoundsConstantValue
 	 */
-	@OpMethod(op = net.imagej.ops.transform.extendZeroView.DefaultExtendZero.class)
+	@OpMethod(op = net.imagej.ops.transform.extendZeroView.DefaultExtendZeroView.class)
 	public <T extends Type<T>, F extends RandomAccessibleInterval<T>>
 		ExtendedRandomAccessibleInterval<T, F> extendZero(final F input)
 	{
 		return (ExtendedRandomAccessibleInterval<T, F>) ops().run(
-			DefaultExtendZero.class, input);
+			DefaultExtendZeroView.class, input);
 	}
 
 	/**
@@ -396,22 +396,22 @@ public class TransformNamespace extends AbstractNamespace {
 	 * @param randomAccessibleInterval the source
 	 * @return an {@link IterableInterval} with {@link FlatIterationOrder}
 	 */
-	@OpMethod(op = net.imagej.ops.transform.flatIterableView.DefaultFlatIterable.class)
+	@OpMethod(op = net.imagej.ops.transform.flatIterableView.DefaultFlatIterableView.class)
 	public <T extends Type<T>> IterableInterval<T> flatIterable(
 		final RandomAccessibleInterval<T> input)
 	{
-		return (IterableInterval<T>) ops().run(DefaultFlatIterable.class, input);
+		return (IterableInterval<T>) ops().run(DefaultFlatIterableView.class, input);
 	}
 
 	/**
 	 * take a (n-1)-dimensional slice of a n-dimensional view, fixing d-component
 	 * of coordinates to pos.
 	 */
-	@OpMethod(op = net.imagej.ops.transform.hyperSliceView.DefaultHyperSlice.class)
+	@OpMethod(op = net.imagej.ops.transform.hyperSliceView.DefaultHyperSliceView.class)
 	public <T extends Type<T>> MixedTransformView<T> hyperSlice(
 		final RandomAccessible<T> input, final int d, final long pos)
 	{
-		return (MixedTransformView<T>) ops().run(DefaultHyperSlice.class, input, d,
+		return (MixedTransformView<T>) ops().run(DefaultHyperSliceView.class, input, d,
 			pos);
 	}
 
@@ -423,11 +423,11 @@ public class TransformNamespace extends AbstractNamespace {
 	 *          source
 	 * @return
 	 */
-	@OpMethod(op = net.imagej.ops.transform.interpolateView.DefaultInterpolate.class)
+	@OpMethod(op = net.imagej.ops.transform.interpolateView.DefaultInterpolateView.class)
 	public <T extends Type<T>, I extends EuclideanSpace> RealRandomAccessible<T>
 		interpolate(final I input, final InterpolatorFactory<T, I> factory)
 	{
-		return (RealRandomAccessible<T>) ops().run(DefaultInterpolate.class, input,
+		return (RealRandomAccessible<T>) ops().run(DefaultInterpolateView.class, input,
 			factory);
 	}
 
@@ -437,11 +437,11 @@ public class TransformNamespace extends AbstractNamespace {
 	 * @param randomAccessible the source
 	 * @param d the axis to invert
 	 */
-	@OpMethod(op = net.imagej.ops.transform.invertAxisView.DefaultInvertAxis.class)
+	@OpMethod(op = net.imagej.ops.transform.invertAxisView.DefaultInvertAxisView.class)
 	public <T extends Type<T>> MixedTransformView<T> invertAxis(
 		final RandomAccessible<T> input, final int d)
 	{
-		return (MixedTransformView<T>) ops().run(DefaultInvertAxis.class, input, d);
+		return (MixedTransformView<T>) ops().run(DefaultInvertAxisView.class, input, d);
 	}
 
 	/**
@@ -452,12 +452,12 @@ public class TransformNamespace extends AbstractNamespace {
 	 * @param offset offset of the source view. The pixel at offset becomes the
 	 *          origin of resulting view.
 	 */
-	@OpMethod(op = net.imagej.ops.transform.offsetView.DefaultOffset.class)
+	@OpMethod(op = net.imagej.ops.transform.offsetView.DefaultOffsetView.class)
 	public <T extends Type<T>> MixedTransformView<T> offset(
 		final RandomAccessible<T> input, final long... offset)
 	{
 		return (MixedTransformView<T>) ops()
-			.run(DefaultOffset.class, input, offset);
+			.run(DefaultOffsetView.class, input, offset);
 	}
 
 	/**
@@ -466,11 +466,11 @@ public class TransformNamespace extends AbstractNamespace {
 	 * mapped to the Z-Axis of the permuted view and vice versa. For a XYZ source,
 	 * a ZYX view would be created.
 	 */
-	@OpMethod(op = net.imagej.ops.transform.permuteView.DefaultPermute.class)
+	@OpMethod(op = net.imagej.ops.transform.permuteView.DefaultPermuteView.class)
 	public <T extends Type<T>> MixedTransformView<T> permute(
 		final RandomAccessible<T> input, final int fromAxis, final int toAxis)
 	{
-		return (MixedTransformView<T>) ops().run(DefaultPermute.class, input,
+		return (MixedTransformView<T>) ops().run(DefaultPermuteView.class, input,
 			fromAxis, toAxis);
 	}
 
@@ -485,14 +485,14 @@ public class TransformNamespace extends AbstractNamespace {
 	 * @param d dimension index to be permuted
 	 * @return {@link IntervalView} of permuted source.
 	 */
-	@OpMethod(op = net.imagej.ops.transform.permuteCoordinatesInverseView.PermuteCoordinateInverseOfDimension.class)
+	@OpMethod(op = net.imagej.ops.transform.permuteCoordinatesInverseView.PermuteCoordinateInverseViewOfDimension.class)
 	public
 		<T extends Type<T>> IntervalView<T> permuteCoordinatesInverse(
 			final RandomAccessibleInterval<T> input, final int[] permutation,
 			final int d)
 	{
 		return (IntervalView<T>) ops().run(
-			PermuteCoordinateInverseOfDimension.class, input, permutation, d);
+			PermuteCoordinateInverseViewOfDimension.class, input, permutation, d);
 	}
 
 	/**
@@ -506,11 +506,11 @@ public class TransformNamespace extends AbstractNamespace {
 	 *          [0,...,n-1] which is the index set of the LUT.
 	 * @return {@link IntervalView} of permuted source.
 	 */
-	@OpMethod(op = net.imagej.ops.transform.permuteCoordinatesInverseView.DefaultPermuteCoordinatesInverse.class)
+	@OpMethod(op = net.imagej.ops.transform.permuteCoordinatesInverseView.DefaultPermuteCoordinatesInverseView.class)
 	public <T extends Type<T>> IntervalView<T> permuteCoordinatesInverse(
 		final RandomAccessibleInterval<T> input, final int... permutation)
 	{
-		return (IntervalView<T>) ops().run(DefaultPermuteCoordinatesInverse.class,
+		return (IntervalView<T>) ops().run(DefaultPermuteCoordinatesInverseView.class,
 			input, permutation);
 	}
 
@@ -525,11 +525,11 @@ public class TransformNamespace extends AbstractNamespace {
 	 *          [0,...,n-1] which is the index set of the LUT.
 	 * @return {@link IntervalView} of permuted source.
 	 */
-	@OpMethod(op = net.imagej.ops.transform.permuteCoordinatesView.DefaultPermuteCoordinates.class)
+	@OpMethod(op = net.imagej.ops.transform.permuteCoordinatesView.DefaultPermuteCoordinatesView.class)
 	public <T extends Type<T>> IntervalView<T> permuteCoordinates(
 		final RandomAccessibleInterval<T> input, final int... permutation)
 	{
-		return (IntervalView<T>) ops().run(DefaultPermuteCoordinates.class, input,
+		return (IntervalView<T>) ops().run(DefaultPermuteCoordinatesView.class, input,
 			permutation);
 	}
 
@@ -544,11 +544,11 @@ public class TransformNamespace extends AbstractNamespace {
 	 * @param d dimension index to be permuted
 	 * @return {@link IntervalView} of permuted source.
 	 */
-	@OpMethod(op = net.imagej.ops.transform.permuteCoordinatesView.PermuteCoordinatesOfDimension.class)
+	@OpMethod(op = net.imagej.ops.transform.permuteCoordinatesView.PermuteCoordinatesViewOfDimension.class)
 	public <T extends Type<T>> IntervalView<T> permuteCoordinates(
 		final RandomAccessibleInterval<T> input, final int[] permutation, int d)
 	{
-		return (IntervalView<T>) ops().run(PermuteCoordinatesOfDimension.class,
+		return (IntervalView<T>) ops().run(PermuteCoordinatesViewOfDimension.class,
 			input, permutation, d);
 	}
 
@@ -561,12 +561,12 @@ public class TransformNamespace extends AbstractNamespace {
 	 * @param source the {@link RealRandomAccessible} to be rasterized.
 	 * @return a {@link RandomAccessibleOnRealRandomAccessible} wrapping source.
 	 */
-	@OpMethod(op = net.imagej.ops.transform.rasterView.DefaultRaster.class)
+	@OpMethod(op = net.imagej.ops.transform.rasterView.DefaultRasterView.class)
 	public <T extends Type<T>> RandomAccessibleOnRealRandomAccessible<T> raster(
 		final RealRandomAccessible<T> input)
 	{
 		return (RandomAccessibleOnRealRandomAccessible<T>) ops().run(
-			DefaultRaster.class, input);
+			DefaultRasterView.class, input);
 	}
 
 	/**
@@ -618,12 +618,12 @@ public class TransformNamespace extends AbstractNamespace {
 	 * @param referenceDimension reference dimension for shear
 	 * @return {@link TransformView} containing the result.
 	 */
-	@OpMethod(op = net.imagej.ops.transform.shearView.DefaultShear.class)
+	@OpMethod(op = net.imagej.ops.transform.shearView.DefaultShearView.class)
 	public <T extends Type<T>> TransformView<T> shear(
 		final RandomAccessible<T> input, final int shearDimension,
 		final int referenceDimension)
 	{
-		return (TransformView<T>) ops().run(DefaultShear.class, input,
+		return (TransformView<T>) ops().run(DefaultShearView.class, input,
 			shearDimension, referenceDimension);
 	}
 
@@ -639,12 +639,12 @@ public class TransformNamespace extends AbstractNamespace {
 	 *         dimension are determined by applying the
 	 *         {@link ShearTransform#transform} method on the input interval.
 	 */
-	@OpMethod(op = net.imagej.ops.transform.shearView.ShearInterval.class)
+	@OpMethod(op = net.imagej.ops.transform.shearView.ShearViewInterval.class)
 	public <T extends Type<T>> IntervalView<T> shear(
 		final RandomAccessible<T> input, final Interval interval,
 		final int shearDimension, final int referenceDimension)
 	{
-		return (IntervalView<T>) ops().run(ShearInterval.class, input, interval,
+		return (IntervalView<T>) ops().run(ShearViewInterval.class, input, interval,
 			shearDimension, referenceDimension);
 	}
 
@@ -657,11 +657,11 @@ public class TransformNamespace extends AbstractNamespace {
 	 * @return a <em>(n+1)</em>-dimensional {@link RandomAccessibleInterval} where
 	 *         the final dimension is the index of the hyperslice.
 	 */
-	@OpMethod(op = net.imagej.ops.transform.stackView.DefaultStack.class)
+	@OpMethod(op = net.imagej.ops.transform.stackView.DefaultStackView.class)
 	public <T extends Type<T>> RandomAccessibleInterval<T> stack(
 		final List<RandomAccessibleInterval<T>> input)
 	{
-		return (RandomAccessibleInterval<T>) ops().run(DefaultStack.class, input);
+		return (RandomAccessibleInterval<T>) ops().run(DefaultStackView.class, input);
 	}
 
 	/**
@@ -677,12 +677,12 @@ public class TransformNamespace extends AbstractNamespace {
 	 * @return a <em>(n+1)</em>-dimensional {@link RandomAccessibleInterval} where
 	 *         the final dimension is the index of the hyperslice.
 	 */
-	@OpMethod(op = net.imagej.ops.transform.stackView.StackWithAccessMode.class)
+	@OpMethod(op = net.imagej.ops.transform.stackView.StackViewWithAccessMode.class)
 	public <T extends Type<T>> RandomAccessibleInterval<T> stack(
 		final List<RandomAccessibleInterval<T>> input,
 		final StackAccessMode stackAccessMode)
 	{
-		return (RandomAccessibleInterval<T>) ops().run(StackWithAccessMode.class,
+		return (RandomAccessibleInterval<T>) ops().run(StackViewWithAccessMode.class,
 			input, stackAccessMode);
 	}
 
@@ -695,11 +695,11 @@ public class TransformNamespace extends AbstractNamespace {
 	 * @param step the subsampling step size
 	 * @return a subsampled {@link RandomAccessible}
 	 */
-	@OpMethod(op = net.imagej.ops.transform.subsampleView.DefaultSubsample.class)
+	@OpMethod(op = net.imagej.ops.transform.subsampleView.DefaultSubsampleView.class)
 	public <T extends Type<T>> SubsampleView<T> subsample(
 		final RandomAccessible<T> input, final long step)
 	{
-		return (SubsampleView<T>) ops().run(DefaultSubsample.class, input, step);
+		return (SubsampleView<T>) ops().run(DefaultSubsampleView.class, input, step);
 	}
 
 	/**
@@ -712,11 +712,11 @@ public class TransformNamespace extends AbstractNamespace {
 	 *          <em>x</em> in the source view becomes <em>(x + translation)</em>
 	 *          in the resulting view.
 	 */
-	@OpMethod(op = net.imagej.ops.transform.translateView.DefaultTranslate.class)
+	@OpMethod(op = net.imagej.ops.transform.translateView.DefaultTranslateView.class)
 	public <T extends Type<T>> MixedTransformView<T> translate(
 		final RandomAccessible<T> input, final long... translation)
 	{
-		return (MixedTransformView<T>) ops().run(DefaultTranslate.class, input,
+		return (MixedTransformView<T>) ops().run(DefaultTranslateView.class, input,
 			translation);
 	}
 
@@ -730,12 +730,12 @@ public class TransformNamespace extends AbstractNamespace {
 	 * @param referenceDimension reference dimension for shear
 	 * @return {@link TransformView} containing the result.
 	 */
-	@OpMethod(op = net.imagej.ops.transform.unshearView.DefaultUnshear.class)
+	@OpMethod(op = net.imagej.ops.transform.unshearView.DefaultUnshearView.class)
 	public <T extends Type<T>> TransformView<T> unshear(
 		final RandomAccessible<T> input, final int shearDimension,
 		final int referenceDimension)
 	{
-		return (TransformView<T>) ops().run(DefaultUnshear.class, input,
+		return (TransformView<T>) ops().run(DefaultUnshearView.class, input,
 			shearDimension, referenceDimension);
 	}
 
@@ -752,12 +752,12 @@ public class TransformNamespace extends AbstractNamespace {
 	 *         dimension are determined by applying the
 	 *         {@link ShearTransform#transform} method on the input interval.
 	 */
-	@OpMethod(op = net.imagej.ops.transform.unshearView.UnshearInterval.class)
+	@OpMethod(op = net.imagej.ops.transform.unshearView.UnshearViewInterval.class)
 	public <T extends Type<T>> IntervalView<T> unshear(
 		final RandomAccessible<T> input, final Interval interval,
 		final int shearDimension, final int referenceDimension)
 	{
-		return (IntervalView<T>) ops().run(UnshearInterval.class, input, interval,
+		return (IntervalView<T>) ops().run(UnshearViewInterval.class, input, interval,
 			shearDimension, referenceDimension);
 	}
 
@@ -770,11 +770,11 @@ public class TransformNamespace extends AbstractNamespace {
 	 * @param interval interval boundaries.
 	 * @return a RandomAccessibleInterval
 	 */
-	@OpMethod(op = net.imagej.ops.transform.intervalView.DefaultInterval.class)
+	@OpMethod(op = net.imagej.ops.transform.intervalView.DefaultIntervalView.class)
 	public <T extends Type<T>> IntervalView<T> interval(
 		final RandomAccessible<T> input, final Interval interval)
 	{
-		return (IntervalView<T>) ops().run(DefaultInterval.class, input, interval);
+		return (IntervalView<T>) ops().run(DefaultIntervalView.class, input, interval);
 	}
 
 	/**
@@ -783,11 +783,11 @@ public class TransformNamespace extends AbstractNamespace {
 	 * @param interval the source.
 	 * @return view of the source translated to the origin
 	 */
-	@OpMethod(op = net.imagej.ops.transform.zeroMinView.DefaultZeroMin.class)
+	@OpMethod(op = net.imagej.ops.transform.zeroMinView.DefaultZeroMinView.class)
 	public <T extends Type<T>> IntervalView<T> zeroMin(
 		final RandomAccessibleInterval<T> input)
 	{
-		return (IntervalView<T>) ops().run(DefaultZeroMin.class, input);
+		return (IntervalView<T>) ops().run(DefaultZeroMinView.class, input);
 	}
 
 	/**
@@ -800,11 +800,11 @@ public class TransformNamespace extends AbstractNamespace {
 	 *          translated to the origin.
 	 * @return a RandomAccessibleInterval
 	 */
-	@OpMethod(op = net.imagej.ops.transform.offsetView.OffsetInterval.class)
+	@OpMethod(op = net.imagej.ops.transform.offsetView.OffsetViewInterval.class)
 	public <T extends Type<T>> IntervalView<T> offset(
 		final RandomAccessible<T> input, final Interval interval)
 	{
-		return (IntervalView<T>) ops().run(OffsetInterval.class, input, interval);
+		return (IntervalView<T>) ops().run(OffsetViewInterval.class, input, interval);
 	}
 
 	/**
@@ -817,12 +817,12 @@ public class TransformNamespace extends AbstractNamespace {
 	 * @param dimension size of the interval.
 	 * @return a RandomAccessibleInterval
 	 */
-	@OpMethod(op = net.imagej.ops.transform.offsetView.OffsetOriginSize.class)
+	@OpMethod(op = net.imagej.ops.transform.offsetView.OffsetViewOriginSize.class)
 	public <T extends Type<T>> IntervalView<T> offset(
 		final RandomAccessible<T> input, final long[] offset,
 		final long... dimension)
 	{
-		return (IntervalView<T>) ops().run(OffsetOriginSize.class, input, offset,
+		return (IntervalView<T>) ops().run(OffsetViewOriginSize.class, input, offset,
 			dimension);
 	}
 
@@ -834,11 +834,11 @@ public class TransformNamespace extends AbstractNamespace {
 	 * view in the XY plane. fromAxis=1 and toAxis=0 corresponds to a
 	 * counter-clock-wise rotation in the XY plane.
 	 */
-	@OpMethod(op = net.imagej.ops.transform.rotateView.RotateAroundAxis.class)
+	@OpMethod(op = net.imagej.ops.transform.rotateView.DefaultRotateView.class)
 	public <T extends Type<T>> MixedTransformView<T> rotate(
 		final RandomAccessible<T> input, final int fromAxis, final int toAxis)
 	{
-		return (MixedTransformView<T>) ops().run(RotateAroundAxis.class, input,
+		return (MixedTransformView<T>) ops().run(DefaultRotateView.class, input,
 			fromAxis, toAxis);
 	}
 
@@ -851,11 +851,11 @@ public class TransformNamespace extends AbstractNamespace {
 	 * @param steps the subsampling step sizes
 	 * @return a subsampled {@link RandomAccessible}
 	 */
-	@OpMethod(op = net.imagej.ops.transform.subsampleView.SubsampleStepsForDims.class)
+	@OpMethod(op = net.imagej.ops.transform.subsampleView.SubsampleViewStepsForDims.class)
 	public <T extends Type<T>> SubsampleView<T> subsample(
 		final RandomAccessible<T> input, final long... steps)
 	{
-		return (SubsampleView<T>) ops().run(SubsampleStepsForDims.class, input,
+		return (SubsampleView<T>) ops().run(SubsampleViewStepsForDims.class, input,
 			steps);
 	}
 
@@ -869,11 +869,11 @@ public class TransformNamespace extends AbstractNamespace {
 	 * @param max upper bound of interval
 	 * @return a RandomAccessibleInterval
 	 */
-	@OpMethod(op = net.imagej.ops.transform.intervalView.IntervalMinMax.class)
+	@OpMethod(op = net.imagej.ops.transform.intervalView.IntervalViewMinMax.class)
 	public <T extends Type<T>> IntervalView<T> interval(
 		final RandomAccessible<T> input, final long[] min, final long... max)
 	{
-		return (IntervalView<T>) ops().run(IntervalMinMax.class, input, min, max);
+		return (IntervalView<T>) ops().run(IntervalViewMinMax.class, input, min, max);
 	}
 
 	@Override

@@ -55,7 +55,7 @@ import org.junit.Test;
  */
 public class ShearViewTest extends AbstractOpTest {
 
-	/** Tests {@link DefaultShear}. */
+	/** Tests {@link DefaultShearView}. */
 	@Test
 	public void defaultShearTest() {
 		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 2, 2 }, new DoubleType());
@@ -78,7 +78,7 @@ public class ShearViewTest extends AbstractOpTest {
 		}
 	}
 
-	/** Tests {@link ShearInterval}. */
+	/** Tests {@link ShearViewInterval}. */
 	@Test
 	public void ShearIntervalTest() {
 		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 2, 2 }, new DoubleType());
