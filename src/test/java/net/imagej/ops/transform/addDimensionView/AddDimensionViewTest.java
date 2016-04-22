@@ -31,15 +31,16 @@ package net.imagej.ops.transform.addDimensionView;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
-
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.RandomAccessible;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.view.IntervalView;
 import net.imglib2.view.MixedTransformView;
 import net.imglib2.view.Views;
+
+import org.junit.Test;
 
 /**
  * @author Tim-Oliver Buchholz, University of Konstanz
@@ -48,7 +49,7 @@ import net.imglib2.view.Views;
  * result is equal to the Views.method() call. 
  * This is not a correctness test of {@linkplain net.imglib2.view.Views}.
  */
-public class DefaultAddDimensionTest extends AbstractOpTest {
+public class AddDimensionViewTest extends AbstractOpTest {
 
 	@Test
 	public void addDimensionTest() {
@@ -66,6 +67,21 @@ public class DefaultAddDimensionTest extends AbstractOpTest {
 		for (int i = 0; i < il2Transform.length; i++) {
 			assertEquals(il2Transform[i], oprTransform[i]);
 		}
+	}
 
+	@Test
+	public void addDimensionMinMaxTest() {
+		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
+		int max = 20;
+		int min = 0;
+		
+		IntervalView<DoubleType> il2 = Views.addDimension(img, min, max);
+		
+		IntervalView<DoubleType> opr = ops.view().addDimension(img, min, max);
+		
+		assertEquals(il2.numDimensions(), opr.numDimensions(), 0.0);
+		for (int i = 0; i < il2.numDimensions(); i++) {
+			assertEquals(il2.dimension(i), opr.dimension(i), 0.0);
+		}
 	}
 }
