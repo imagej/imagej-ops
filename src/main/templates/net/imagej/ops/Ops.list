@@ -370,7 +370,7 @@ namespaces = ```
 		[name: "stackView",                     iface: "StackView"],
 		[name: "subsampleView",                 iface: "SubsampleView"],
 		[name: "translateView",                 iface: "TranslateView"],
-		[name: "unshearView",                   iface: "UnShearView"],
+		[name: "unshearView",                   iface: "UnshearView"],
 		[name: "zeroMinView",                   iface: "ZeroMinView"],
 	]],
 	[name: "zernike", iface: "Zernike", ops: [

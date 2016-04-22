@@ -62,7 +62,7 @@ import net.imagej.ops.special.inplace.UnaryInplaceOp;
 import net.imagej.ops.stats.StatsNamespace;
 import net.imagej.ops.thread.ThreadNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
-import net.imagej.ops.views.ViewNamespace;
+import net.imagej.ops.transform.TransformNamespace;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
@@ -818,8 +818,8 @@ public interface OpEnvironment extends Contextual {
 	}
 
 	/** Gateway into ops of the "view" namespace. */
-	default ViewNamespace view() {
-		return namespace(ViewNamespace.class);
+	default TransformNamespace view() {
+		return namespace(TransformNamespace.class);
 	}
 
 	/** Gateway into ops of the "zernike" namespace. */
