@@ -55,7 +55,7 @@ public class ExtendPeriodicViewTest extends AbstractOpTest {
 
 		OutOfBounds<DoubleType> il2 = Views.extendPeriodic(img).randomAccess();
 
-		OutOfBounds<DoubleType> opr = ops.view().extendPeriodic(img).randomAccess();
+		OutOfBounds<DoubleType> opr = ops.transform().extendPeriodic(img).randomAccess();
 
 		il2.setPosition(new int[] { -1, -1 });
 		opr.setPosition(new int[] { -1, -1 });

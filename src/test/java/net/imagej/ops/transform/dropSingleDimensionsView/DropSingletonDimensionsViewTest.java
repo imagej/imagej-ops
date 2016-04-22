@@ -56,7 +56,7 @@ public class DropSingletonDimensionsViewTest extends AbstractOpTest {
 
 		RandomAccessibleInterval<DoubleType> il2 = Views.dropSingletonDimensions(img);
 
-		RandomAccessibleInterval<DoubleType> opr = ops.view().dropSingletonDimensions(img);
+		RandomAccessibleInterval<DoubleType> opr = ops.transform().dropSingletonDimensions(img);
 
 		assertEquals(il2.numDimensions(), opr.numDimensions());
 	}

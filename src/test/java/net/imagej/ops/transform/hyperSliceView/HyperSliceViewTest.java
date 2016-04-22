@@ -56,7 +56,7 @@ public class HyperSliceViewTest extends AbstractOpTest {
 		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10, 10 }, new DoubleType());
 
 		MixedTransformView<DoubleType> il2 = Views.hyperSlice((RandomAccessible<DoubleType>) img, 1, 8);
-		MixedTransformView<DoubleType> opr = ops.view().hyperSlice(img, 1, 8);
+		MixedTransformView<DoubleType> opr = ops.transform().hyperSlice(img, 1, 8);
 
 		for (int i = 0; i < il2.getTransformToSource().getMatrix().length; i++) {
 			for (int j = 0; j < il2.getTransformToSource().getMatrix()[i].length; j++) {

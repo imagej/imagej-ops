@@ -55,7 +55,7 @@ public class ExtendMirrorSingleViewTest extends AbstractOpTest {
 
 		OutOfBounds<DoubleType> il2 = Views.extendMirrorSingle(img).randomAccess();
 
-		OutOfBounds<DoubleType> opr = ops.view().extendMirrorSingle(img).randomAccess();
+		OutOfBounds<DoubleType> opr = ops.transform().extendMirrorSingle(img).randomAccess();
 
 		il2.setPosition(new int[] { -1, -1 });
 		opr.setPosition(new int[] { -1, -1 });

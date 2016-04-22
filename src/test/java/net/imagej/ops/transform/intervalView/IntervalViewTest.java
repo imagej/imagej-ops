@@ -63,7 +63,7 @@ public class IntervalViewTest extends AbstractOpTest {
 		}
 		
 		Cursor<DoubleType> il2 = Views.interval(img, img).localizingCursor();
-		RandomAccess<DoubleType> opr = ops.view().interval(img, img).randomAccess();
+		RandomAccess<DoubleType> opr = ops.transform().interval(img, img).randomAccess();
 
 		
 		while (il2.hasNext()) {
@@ -85,7 +85,7 @@ public class IntervalViewTest extends AbstractOpTest {
 		}
 		
 		Cursor<DoubleType> il2 = Views.interval(img, new long[]{1, 1}, new long[]{8,9}).localizingCursor();
-		RandomAccess<DoubleType> opr = ops.view().interval(img, new long[]{1, 1}, new long[]{8,9}).randomAccess();
+		RandomAccess<DoubleType> opr = ops.transform().interval(img, new long[]{1, 1}, new long[]{8,9}).randomAccess();
 		
 		while (il2.hasNext()) {
 			DoubleType e = il2.next();

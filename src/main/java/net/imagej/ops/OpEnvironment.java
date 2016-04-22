@@ -817,8 +817,8 @@ public interface OpEnvironment extends Contextual {
 		return namespace(ThresholdNamespace.class);
 	}
 
-	/** Gateway into ops of the "view" namespace. */
-	default TransformNamespace view() {
+	/** Gateway into ops of the "transform" namespace. */
+	default TransformNamespace transform() {
 		return namespace(TransformNamespace.class);
 	}
 

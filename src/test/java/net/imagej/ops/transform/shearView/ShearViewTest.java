@@ -62,7 +62,7 @@ public class ShearViewTest extends AbstractOpTest {
 		}
 
 		TransformView<DoubleType> il2 = Views.shear(Views.extendZero(img), 0, 1);
-		TransformView<DoubleType> opr = ops.view().shear(Views.extendZero(img), 0, 1);
+		TransformView<DoubleType> opr = ops.transform().shear(Views.extendZero(img), 0, 1);
 		Cursor<DoubleType> il2C = Views.interval(il2, new FinalInterval(new long[] { 0, 0 }, new long[] { 3, 3 }))
 				.cursor();
 		RandomAccess<DoubleType> oprRA = Views
@@ -87,7 +87,7 @@ public class ShearViewTest extends AbstractOpTest {
 		Cursor<DoubleType> il2 = Views
 				.shear(Views.extendZero(img), new FinalInterval(new long[] { 0, 0 }, new long[] { 3, 3 }), 0, 1)
 				.cursor();
-		RandomAccess<DoubleType> opr = ops.view()
+		RandomAccess<DoubleType> opr = ops.transform()
 				.shear(Views.extendZero(img), new FinalInterval(new long[] { 0, 0 }, new long[] { 3, 3 }), 0, 1)
 				.randomAccess();
 

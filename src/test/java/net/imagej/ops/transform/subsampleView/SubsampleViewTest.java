@@ -63,7 +63,7 @@ public class SubsampleViewTest extends AbstractOpTest {
 		}
 
 		SubsampleView<DoubleType> il2 = Views.subsample((RandomAccessible<DoubleType>) img, 2);
-		SubsampleView<DoubleType> opr = ops.view().subsample(img, 2);
+		SubsampleView<DoubleType> opr = ops.transform().subsample(img, 2);
 
 		Cursor<DoubleType> il2C = Views.interval(il2, new long[] { 0, 0 }, new long[] { 4, 4 }).localizingCursor();
 		RandomAccess<DoubleType> oprRA = opr.randomAccess();
@@ -84,7 +84,7 @@ public class SubsampleViewTest extends AbstractOpTest {
 		}
 
 		SubsampleView<DoubleType> il2 = Views.subsample((RandomAccessible<DoubleType>) img, 2, 1);
-		SubsampleView<DoubleType> opr = ops.view().subsample(img, 2, 1);
+		SubsampleView<DoubleType> opr = ops.transform().subsample(img, 2, 1);
 
 		Cursor<DoubleType> il2C = Views.interval(il2, new long[] { 0, 0 }, new long[] { 4, 9 }).localizingCursor();
 		RandomAccess<DoubleType> oprRA = opr.randomAccess();
