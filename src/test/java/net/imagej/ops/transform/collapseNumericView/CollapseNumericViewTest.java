@@ -27,11 +27,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.transform.collapseView;
+package net.imagej.ops.transform.collapseNumericView;
 
 import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.RandomAccessible;
@@ -39,13 +37,12 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.NativeARGBDoubleType;
-import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.Views;
 import net.imglib2.view.composite.CompositeIntervalView;
 import net.imglib2.view.composite.CompositeView;
-import net.imglib2.view.composite.GenericComposite;
 import net.imglib2.view.composite.NumericComposite;
-import net.imglib2.view.composite.RealComposite;
+
+import org.junit.Test;
 
 /**
  * @author Tim-Oliver Buchholz, University of Konstanz
@@ -54,22 +51,8 @@ import net.imglib2.view.composite.RealComposite;
  * result is equal to the Views.method() call. 
  * This is not a correctness test of {@linkplain net.imglib2.view.Views}.
  */
-public class DefaultCollapseTests extends AbstractOpTest {
+public class CollapseNumericViewTest extends AbstractOpTest {
 
-	@Test
-	public void defaultCollapseTest() {
-
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 },
-				new DoubleType());
-
-		CompositeIntervalView<DoubleType, ? extends GenericComposite<DoubleType>> il2 = Views
-				.collapse(img);
-		CompositeIntervalView<DoubleType, ? extends GenericComposite<DoubleType>> opr = ops.view()
-				.collapse(img);
-
-		assertEquals(il2.numDimensions(), opr.numDimensions());
-	}
-	
 	@Test
 	public void defaultCollapseNumericTest() {
 
@@ -90,25 +73,5 @@ public class DefaultCollapseTests extends AbstractOpTest {
 
 		assertEquals(il2_2.numDimensions(), opr_2.numDimensions());
 	}
-	
-	@Test
-	public void defaultCollapseRealTest() {
 
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 },
-				new DoubleType());
-
-		CompositeIntervalView<DoubleType, RealComposite<DoubleType>> il2 = Views
-				.collapseReal((RandomAccessibleInterval<DoubleType>) img);
-		CompositeIntervalView<DoubleType, RealComposite<DoubleType>> opr = ops.view()
-				.collapseReal((RandomAccessibleInterval<DoubleType>) img);
-
-		assertEquals(il2.numDimensions(), opr.numDimensions());
-
-		CompositeView<DoubleType, RealComposite<DoubleType>> il2_2 = Views
-				.collapseReal((RandomAccessible<DoubleType>) img, 1);
-		CompositeView<DoubleType, RealComposite<DoubleType>> opr_2 = ops.view()
-				.collapseReal((RandomAccessible<DoubleType>) img, 1);
-
-		assertEquals(il2_2.numDimensions(), opr_2.numDimensions());
-	}
 }
