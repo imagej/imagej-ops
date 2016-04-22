@@ -403,17 +403,6 @@ public class ViewNamespace extends AbstractNamespace {
 	}
 
 	/**
-	 * test whether the source interval starts at (0,0,...,0)
-	 * 
-	 * @param interval - the {@link Interval} to test
-	 * @return true if zero-bounded, false otherwise
-	 */
-	@OpMethod(op = net.imagej.ops.views.DefaultIsZeroMin.class)
-	public Boolean isZeroMin(Interval input) {
-		return (Boolean) ops().run(DefaultIsZeroMin.class, input);
-	}
-
-	/**
 	 * Translate such that pixel at offset in randomAccessible is at the origin in
 	 * the resulting view. This is equivalent to translating by -offset.
 	 * 

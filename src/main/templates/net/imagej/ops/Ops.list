@@ -387,7 +387,6 @@ namespaces = ```
 		[name: "hyperSliceView",                iface: "HyperSliceView"],
 		[name: "addDimensionView",              iface: "AddDimensionView"],
 		[name: "invertAxisView",                iface: "InvertAxisView"],
-		[name: "isZeroMinView",                 iface: "IsZeroMinView"],
 		[name: "iterableView",                  iface: "IterableView"],
 		[name: "flatIterableView",              iface: "FlatIterableView"],
 		[name: "collapseView",                  iface: "CollapseView"],

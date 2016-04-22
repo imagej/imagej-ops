@@ -45,7 +45,7 @@ import net.imglib2.view.Views;
  */
 @Plugin(type = Ops.View.ZeroMinView.class)
 public class DefaultZeroMin<T> extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>>
-		implements Ops.View.IsZeroMinView {
+		implements Ops.View.ZeroMinView {
 
 	@Override
 	public IntervalView<T> compute1(RandomAccessibleInterval<T> input) {
