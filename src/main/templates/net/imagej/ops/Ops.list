@@ -61,7 +61,7 @@ namespaces = ```
 		[name: "imgLabeling",                 iface: "ImgLabeling"],
 		[name: "imgPlus",                     iface: "ImgPlus"],
 		[name: "integerType",                 iface: "IntegerType"],
-	[name: "kernel",                      iface: "Kernel"],
+		[name: "kernel",                      iface: "Kernel"],
 		[name: "kernelGauss",                 iface: "KernelGauss"],
 		[name: "kernelLog",                   iface: "KernelLog"],
 		[name: "labelingMapping",             iface: "LabelingMapping"],
@@ -74,17 +74,6 @@ namespaces = ```
 		[name: "richardsonLucy",              iface: "RichardsonLucy"],
 		[name: "richardsonLucyTV",            iface: "RichardsonLucyTV"],
 	]],
-
-	[name: "morphology", iface: "Morphology", ops: [
-		[name: "blackTopHat",                 iface: "BlackTopHat"],
-		[name: "close",                       iface: "Close"],
-		[name: "dilate",                      iface: "Dilate"],
-		[name: "erode",                       iface: "Erode"],
-		[name: "open",                        iface: "Open"],
-		[name: "thin",                        iface: "Thin"],
-		[name: "topHat",                      iface: "TopHat"],
-	]],
-
 	[name: "filter", iface: "Filter", ops: [
 		[name: "addNoise",                    iface: "AddNoise"],
 		[name: "addPoissonNoise",             iface: "AddPoissonNoise"],
@@ -290,10 +279,17 @@ namespaces = ```
 		[name: "xor",                         iface: "Xor"],
 		[name: "zero",                        iface: "Zero"],
 	]],
-	[name: "tamura", iface: "Tamura", ops: [
-		[name: "coarseness",                  iface: "Coarseness"],
-		[name: "contrast",                    iface: "Contrast"],
-		[name: "directionality",              iface: "Directionality"],
+	[name: "morphology", iface: "Morphology", ops: [
+		[name: "blackTopHat",                 iface: "BlackTopHat"],
+		[name: "close",                       iface: "Close"],
+		[name: "dilate",                      iface: "Dilate"],
+		[name: "erode",                       iface: "Erode"],
+		[name: "extractHoles",                iface: "ExtractHoles"],
+		[name: "fillHoles",                   iface: "FillHoles"],
+		[name: "floodFill",                   iface: "FloodFill"],
+		[name: "open",                        iface: "Open"],
+		[name: "thin",                        iface: "Thin"],
+		[name: "topHat",                      iface: "TopHat"],
 	]],
 	[name: "stats", iface: "Stats", ops: [
 		[name: "geometricMean",               iface: "GeometricMean"],
@@ -318,6 +314,11 @@ namespaces = ```
 		[name: "sumOfLogs",                   iface: "SumOfLogs"],
 		[name: "sumOfSquares",                iface: "SumOfSquares"],
 		[name: "variance",                    iface: "Variance"],
+	]],
+	[name: "tamura", iface: "Tamura", ops: [
+		[name: "coarseness",                  iface: "Coarseness"],
+		[name: "contrast",                    iface: "Contrast"],
+		[name: "directionality",              iface: "Directionality"],
 	]],
 	[name: "thread", iface: "Thread", ops: [
 		[name: "chunker",                     iface: "Chunker"],
