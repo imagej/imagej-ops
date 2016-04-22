@@ -30,16 +30,19 @@
 
 package net.imagej.ops.image.scale;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
-import net.imglib2.Cursor;
+import net.imglib2.FinalDimensions;
 import net.imglib2.FinalInterval;
-import net.imglib2.FlatIterationOrder;
-import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessible;
 import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
 import net.imglib2.interpolation.InterpolatorFactory;
 import net.imglib2.realtransform.RealViews;
+import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
@@ -52,29 +55,63 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Image.Scale.class)
 public class ScaleImg<T extends RealType<T>> extends
-	AbstractUnaryFunctionOp<Img<T>, Img<T>> implements Ops.Image.Scale
+	AbstractUnaryFunctionOp<Img<T>, Img<T>> implements Ops.Image.Scale,
+	Contingent
 {
 
 	@Parameter
 	/*Scale factors for each dimension*/
 	private double[] scaleFactors;
 
+	private ImgFactory<T> factory;
+
+	private UnaryComputerOp<IntervalView<T>, Img<T>> copyImg;
+
 	@Parameter
 	private InterpolatorFactory<T, RandomAccessible<T>> interpolator;
 
 	@Override
-	public Img<T> compute1(Img<T> input) {
-		if (input.numDimensions() != scaleFactors.length) {
-			throw new IllegalArgumentException(
-				"Less/more scale factors are provided than dimensions input the image.");
-		}
+	public boolean conforms() {
+		return in().numDimensions() == scaleFactors.length;
+	}
 
-		final long[] newDims = new long[input.numDimensions()];
-		input.dimensions(newDims);
-		for (int i = 0; i < Math.min(scaleFactors.length, input
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void initialize() {
+		final long[] newDims = new long[in().numDimensions()];
+		in().dimensions(newDims);
+		for (int i = 0; i < Math.min(scaleFactors.length, in()
 			.numDimensions()); i++)
 		{
-			newDims[i] = Math.round(input.dimension(i) * scaleFactors[i]);
+			newDims[i] = Math.round(in().dimension(i) * scaleFactors[i]);
+		}
+
+		if (in().firstElement() instanceof NativeType) {
+			@SuppressWarnings("rawtypes")
+			final NativeType type = (NativeType) in().firstElement().createVariable();
+			factory = ops().create().imgFactory(new FinalDimensions(newDims), type);
+		}
+		else {
+			factory = in().factory();
+		}
+
+		IntervalView<T> interval = Views.interval(Views.raster(RealViews.affineReal(
+			Views.interpolate(Views.extendMirrorSingle(in()), interpolator),
+			new net.imglib2.realtransform.Scale(scaleFactors))), new FinalInterval(
+				newDims));
+
+		copyImg = (UnaryComputerOp) Computers.unary(ops(),
+			Ops.Copy.IterableInterval.class, Img.class, interval);
+	}
+
+	@Override
+	public Img<T> compute1(Img<T> input) {
+		final long[] newDims = new long[in().numDimensions()];
+		in().dimensions(newDims);
+		for (int i = 0; i < Math.min(scaleFactors.length, in()
+			.numDimensions()); i++)
+		{
+			newDims[i] = Math.round(in().dimension(i) * scaleFactors[i]);
 		}
 
 		IntervalView<T> interval = Views.interval(Views.raster(RealViews.affineReal(
@@ -82,26 +119,11 @@ public class ScaleImg<T extends RealType<T>> extends
 			new net.imglib2.realtransform.Scale(scaleFactors))), new FinalInterval(
 				newDims));
 
-		final Img<T> out = input.factory().create(newDims, input.firstElement()
+		final Img<T> out = factory.create(newDims, input.firstElement()
 			.createVariable());
-		Cursor<T> outC = out.cursor();
-		if (input.iterationOrder().equals(new FlatIterationOrder(input))) {
-			Cursor<T> viewC = Views.flatIterable(interval).cursor();
-			while (outC.hasNext()) {
-				outC.fwd();
-				viewC.fwd();
-				outC.get().set(viewC.get());
-			}
-		}
-		else {
-			RandomAccess<T> viewRA = interval.randomAccess();
-			while (outC.hasNext()) {
-				outC.fwd();
-				viewRA.setPosition(outC);
-				outC.get().set(viewRA.get());
-			}
 
-		}
+		copyImg.compute1(interval, out);
+
 		return out;
 	}
 }

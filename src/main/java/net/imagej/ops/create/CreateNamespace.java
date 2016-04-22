@@ -186,6 +186,32 @@ public class CreateNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
+		ops = net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class)
+	public <T extends NativeType<T>> ImgFactory<T> imgFactory(
+		final Dimensions dims, final T type)
+	{
+		// NB: The generic typing of ImgFactory is broken; see:
+		// https://github.com/imglib/imglib2/issues/91
+		@SuppressWarnings("unchecked")
+		final ImgFactory<T> result = (ImgFactory<T>) ops().run(
+			net.imagej.ops.Ops.Create.ImgFactory.class, dims, type);
+		return result;
+	}
+
+	@OpMethod(
+		ops = net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class)
+	public <T extends NativeType<T>> ImgFactory<T> imgFactory(
+		final Dimensions dims, final T type, final int targetCellSize)
+	{
+		// NB: The generic typing of ImgFactory is broken; see:
+		// https://github.com/imglib/imglib2/issues/91
+		@SuppressWarnings("unchecked")
+		final ImgFactory<T> result = (ImgFactory<T>) ops().run(
+			net.imagej.ops.Ops.Create.ImgFactory.class, dims, type, targetCellSize);
+		return result;
+	}
+
+	@OpMethod(
 		ops = net.imagej.ops.create.imgFactory.CreateImgFactoryFromImg.class)
 	public <T extends NativeType<T>> ImgFactory<T> imgFactory(final Img<T> in) {
 		@SuppressWarnings("unchecked")
