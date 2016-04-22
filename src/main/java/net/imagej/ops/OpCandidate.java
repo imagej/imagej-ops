@@ -69,6 +69,7 @@ public class OpCandidate<OP extends Op> {
 	private StatusCode code;
 	private String message;
 	private ModuleItem<?> item;
+	private Object[] args;
 
 	public OpCandidate(final OpEnvironment ops, final OpRef<OP> ref,
 		final OpInfo info)
@@ -203,6 +204,14 @@ public class OpCandidate<OP extends Op> {
 		if (msg != null) sb.append(": " + msg);
 
 		return sb.toString();
+	}
+	
+	public Object[] getArgs() {
+		return args;
+	}
+	
+	public void setArgs(final Object[] args) {
+		this.args = args;
 	}
 
 	@Override
