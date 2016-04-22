@@ -48,7 +48,7 @@ import net.imglib2.view.Views;
  * result is equal to the Views.method() call. 
  * This is not a correctness test of {@linkplain net.imglib2.view.Views}.
  */
-public class DefaultZeroMinTest extends AbstractOpTest {
+public class ZeroMinViewTest extends AbstractOpTest {
 
 	@Test
 	public void defaultZeroMinTest() {

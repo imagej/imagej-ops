@@ -27,21 +27,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.transform.stackView;
+package net.imagej.ops.transform.rasterView;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Random;
 
 import org.junit.Test;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.Cursor;
+import net.imglib2.RandomAccess;
+import net.imglib2.RealRandomAccessible;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.interpolation.randomaccess.FloorInterpolatorFactory;
 import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.view.StackView.StackAccessMode;
+import net.imglib2.view.RandomAccessibleOnRealRandomAccessible;
 import net.imglib2.view.Views;
 
 /**
@@ -51,34 +53,27 @@ import net.imglib2.view.Views;
  * result is equal to the Views.method() call. 
  * This is not a correctness test of {@linkplain net.imglib2.view.Views}.
  */
-public class StackTests extends AbstractOpTest {
+public class RasterViewTest extends AbstractOpTest {
 
 	@Test
-	public void defaultStackTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
-
-		List<RandomAccessibleInterval<DoubleType>> list = new ArrayList<RandomAccessibleInterval<DoubleType>>();
-		list.add(img);
-		list.add(img);
+	public void defaultRasterTest() {
+		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{10,  10}, new DoubleType());
+		Random r = new Random();
+		for (DoubleType d : img) {
+			d.set(r.nextDouble());
+		}
+		RealRandomAccessible<DoubleType> realImg = Views.interpolate(img, new FloorInterpolatorFactory<DoubleType>());
 		
-		RandomAccessibleInterval<DoubleType> il2 = Views.stack(list);
-		RandomAccessibleInterval<DoubleType> opr = ops.view().stack(list);
-
-		assertEquals(il2.dimension(2), opr.dimension(2));
-	}
-	
-	@Test
-	public void stackWithAccessModeTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
-
-		List<RandomAccessibleInterval<DoubleType>> list = new ArrayList<RandomAccessibleInterval<DoubleType>>();
-		list.add(img);
-		list.add(img);
+		RandomAccessibleOnRealRandomAccessible<DoubleType> il2 = Views.raster(realImg);
+		RandomAccessibleOnRealRandomAccessible<DoubleType> opr = ops.view().raster(realImg);
 		
-		RandomAccessibleInterval<DoubleType> il2 = Views.stack(StackAccessMode.DEFAULT, list);
-		RandomAccessibleInterval<DoubleType> opr = ops.view().stack(list, StackAccessMode.DEFAULT);
-
-		assertEquals(il2.dimension(2), opr.dimension(2));
+		Cursor<DoubleType> il2C = Views.interval(il2, img).localizingCursor();
+		RandomAccess<DoubleType> oprRA = Views.interval(opr, img).randomAccess();
+		
+		while (il2C.hasNext()) {
+			il2C.next();
+			oprRA.setPosition(il2C);
+			assertEquals(il2C.get().get(), oprRA.get().get(), 1e-10);
+		}
 	}
-
 }

@@ -54,7 +54,7 @@ import net.imglib2.view.Views;
  * result is equal to the Views.method() call. 
  * This is not a correctness test of {@linkplain net.imglib2.view.Views}.
  */
-public class DefaultPermuteTest extends AbstractOpTest {
+public class PermuteViewTest extends AbstractOpTest {
 
 	@Test
 	public void defaultPermuteTest() {

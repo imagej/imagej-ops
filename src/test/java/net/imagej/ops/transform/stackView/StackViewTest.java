@@ -27,9 +27,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.transform.dropSingleDimensionsView;
+package net.imagej.ops.transform.stackView;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -38,6 +41,7 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.view.StackView.StackAccessMode;
 import net.imglib2.view.Views;
 
 /**
@@ -47,17 +51,34 @@ import net.imglib2.view.Views;
  * result is equal to the Views.method() call. 
  * This is not a correctness test of {@linkplain net.imglib2.view.Views}.
  */
-public class DefaultDropSingletonDimensionsTest extends AbstractOpTest {
+public class StackViewTest extends AbstractOpTest {
 
 	@Test
-	public void dropSingletonDimensionsTest() {
+	public void defaultStackTest() {
+		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
 
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 1, 10 }, new DoubleType());
+		List<RandomAccessibleInterval<DoubleType>> list = new ArrayList<RandomAccessibleInterval<DoubleType>>();
+		list.add(img);
+		list.add(img);
+		
+		RandomAccessibleInterval<DoubleType> il2 = Views.stack(list);
+		RandomAccessibleInterval<DoubleType> opr = ops.view().stack(list);
 
-		RandomAccessibleInterval<DoubleType> il2 = Views.dropSingletonDimensions(img);
-
-		RandomAccessibleInterval<DoubleType> opr = ops.view().dropSingletonDimensions(img);
-
-		assertEquals(il2.numDimensions(), opr.numDimensions());
+		assertEquals(il2.dimension(2), opr.dimension(2));
 	}
+	
+	@Test
+	public void stackWithAccessModeTest() {
+		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
+
+		List<RandomAccessibleInterval<DoubleType>> list = new ArrayList<RandomAccessibleInterval<DoubleType>>();
+		list.add(img);
+		list.add(img);
+		
+		RandomAccessibleInterval<DoubleType> il2 = Views.stack(StackAccessMode.DEFAULT, list);
+		RandomAccessibleInterval<DoubleType> opr = ops.view().stack(list, StackAccessMode.DEFAULT);
+
+		assertEquals(il2.dimension(2), opr.dimension(2));
+	}
+
 }

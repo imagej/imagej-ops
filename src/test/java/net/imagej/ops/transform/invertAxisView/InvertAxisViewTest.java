@@ -27,17 +27,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.transform.flatIterableView;
+package net.imagej.ops.transform.invertAxisView;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imglib2.Cursor;
+import net.imglib2.RandomAccessible;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.view.MixedTransformView;
 import net.imglib2.view.Views;
 
 /**
@@ -47,21 +48,21 @@ import net.imglib2.view.Views;
  * result is equal to the Views.method() call. 
  * This is not a correctness test of {@linkplain net.imglib2.view.Views}.
  */
-public class DefaultFlatIterableTest extends AbstractOpTest {
+public class InvertAxisViewTest extends AbstractOpTest {
 
 	@Test
-	public void defaultFlatIterableTest() {
+	public void defaultInvertAxisTest() {
+
 		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
 
-		Cursor<DoubleType> il2 = Views.flatIterable(img).cursor();
+		MixedTransformView<DoubleType> il2 = Views.invertAxis((RandomAccessible<DoubleType>) img, 1);
+		MixedTransformView<DoubleType> opr = ops.view().invertAxis(img, 1);
 
-		Cursor<DoubleType> opr = ops.view().flatIterable(img).cursor();
-
-		while (il2.hasNext()) {
-			il2.next();
-			opr.next();
-			assertEquals(il2.getDoublePosition(0), opr.getDoublePosition(0), 1e-10);
-			assertEquals(il2.getDoublePosition(1), opr.getDoublePosition(1), 1e-10);
+		for (int i = 0; i < il2.getTransformToSource().getMatrix().length; i++) {
+			for (int j = 0; j < il2.getTransformToSource().getMatrix()[i].length; j++) {
+				assertEquals(il2.getTransformToSource().getMatrix()[i][j], opr.getTransformToSource().getMatrix()[i][j],
+						1e-10);
+			}
 		}
 	}
 }

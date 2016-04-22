@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.transform.rasterView;
+package net.imagej.ops.transform.intervalView;
 
 import static org.junit.Assert.assertEquals;
 
@@ -38,12 +38,9 @@ import org.junit.Test;
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
-import net.imglib2.RealRandomAccessible;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
-import net.imglib2.interpolation.randomaccess.FloorInterpolatorFactory;
 import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.view.RandomAccessibleOnRealRandomAccessible;
 import net.imglib2.view.Views;
 
 /**
@@ -53,27 +50,48 @@ import net.imglib2.view.Views;
  * result is equal to the Views.method() call. 
  * This is not a correctness test of {@linkplain net.imglib2.view.Views}.
  */
-public class DefaultRasterTest extends AbstractOpTest {
+public class IntervalViewTest extends AbstractOpTest {
 
 	@Test
-	public void defaultRasterTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{10,  10}, new DoubleType());
+	public void defaultIntervalTest() {
+		
+		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{10, 10}, new DoubleType());
+		
 		Random r = new Random();
 		for (DoubleType d : img) {
 			d.set(r.nextDouble());
 		}
-		RealRandomAccessible<DoubleType> realImg = Views.interpolate(img, new FloorInterpolatorFactory<DoubleType>());
 		
-		RandomAccessibleOnRealRandomAccessible<DoubleType> il2 = Views.raster(realImg);
-		RandomAccessibleOnRealRandomAccessible<DoubleType> opr = ops.view().raster(realImg);
+		Cursor<DoubleType> il2 = Views.interval(img, img).localizingCursor();
+		RandomAccess<DoubleType> opr = ops.view().interval(img, img).randomAccess();
+
 		
-		Cursor<DoubleType> il2C = Views.interval(il2, img).localizingCursor();
-		RandomAccess<DoubleType> oprRA = Views.interval(opr, img).randomAccess();
+		while (il2.hasNext()) {
+			DoubleType e = il2.next();
+			opr.setPosition(il2);
+			
+			assertEquals(e.get(), opr.get().get(), 1e-10);
+		}
+	}
+	
+	@Test
+	public void intervalMinMaxTest() {
 		
-		while (il2C.hasNext()) {
-			il2C.next();
-			oprRA.setPosition(il2C);
-			assertEquals(il2C.get().get(), oprRA.get().get(), 1e-10);
+		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{10, 10}, new DoubleType());
+		
+		Random r = new Random();
+		for (DoubleType d : img) {
+			d.set(r.nextDouble());
+		}
+		
+		Cursor<DoubleType> il2 = Views.interval(img, new long[]{1, 1}, new long[]{8,9}).localizingCursor();
+		RandomAccess<DoubleType> opr = ops.view().interval(img, new long[]{1, 1}, new long[]{8,9}).randomAccess();
+		
+		while (il2.hasNext()) {
+			DoubleType e = il2.next();
+			opr.setPosition(il2);
+			
+			assertEquals(e.get(), opr.get().get(), 1e-10);
 		}
 	}
 }

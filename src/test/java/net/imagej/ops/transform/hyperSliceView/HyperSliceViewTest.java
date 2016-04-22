@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.transform.rotateView;
+package net.imagej.ops.transform.hyperSliceView;
 
 import static org.junit.Assert.assertEquals;
 
@@ -48,15 +48,16 @@ import net.imglib2.view.Views;
  * result is equal to the Views.method() call. 
  * This is not a correctness test of {@linkplain net.imglib2.view.Views}.
  */
-public class DefaultRotateTest extends AbstractOpTest {
+public class HyperSliceViewTest extends AbstractOpTest {
 
 	@Test
-	public void defaultRotateTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 20, 10 }, new DoubleType());
-		
-		MixedTransformView<DoubleType> il2 = Views.rotate((RandomAccessible<DoubleType>) img, 1, 0);
-		MixedTransformView<DoubleType> opr = ops.view().rotate((RandomAccessible<DoubleType>) img, 1, 0);
-		
+	public void defaultHyperSliceTest() {
+
+		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10, 10 }, new DoubleType());
+
+		MixedTransformView<DoubleType> il2 = Views.hyperSlice((RandomAccessible<DoubleType>) img, 1, 8);
+		MixedTransformView<DoubleType> opr = ops.view().hyperSlice(img, 1, 8);
+
 		for (int i = 0; i < il2.getTransformToSource().getMatrix().length; i++) {
 			for (int j = 0; j < il2.getTransformToSource().getMatrix()[i].length; j++) {
 				assertEquals(il2.getTransformToSource().getMatrix()[i][j], opr.getTransformToSource().getMatrix()[i][j],

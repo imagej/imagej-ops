@@ -27,17 +27,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.transform.intervalView;
+package net.imagej.ops.transform.flatIterableView;
 
 import static org.junit.Assert.assertEquals;
-
-import java.util.Random;
 
 import org.junit.Test;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.Cursor;
-import net.imglib2.RandomAccess;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -50,48 +47,21 @@ import net.imglib2.view.Views;
  * result is equal to the Views.method() call. 
  * This is not a correctness test of {@linkplain net.imglib2.view.Views}.
  */
-public class DefaultIntervalTest extends AbstractOpTest {
+public class FlatIterableViewTest extends AbstractOpTest {
 
 	@Test
-	public void defaultIntervalTest() {
-		
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{10, 10}, new DoubleType());
-		
-		Random r = new Random();
-		for (DoubleType d : img) {
-			d.set(r.nextDouble());
-		}
-		
-		Cursor<DoubleType> il2 = Views.interval(img, img).localizingCursor();
-		RandomAccess<DoubleType> opr = ops.view().interval(img, img).randomAccess();
+	public void defaultFlatIterableTest() {
+		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
 
-		
+		Cursor<DoubleType> il2 = Views.flatIterable(img).cursor();
+
+		Cursor<DoubleType> opr = ops.view().flatIterable(img).cursor();
+
 		while (il2.hasNext()) {
-			DoubleType e = il2.next();
-			opr.setPosition(il2);
-			
-			assertEquals(e.get(), opr.get().get(), 1e-10);
-		}
-	}
-	
-	@Test
-	public void intervalMinMaxTest() {
-		
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{10, 10}, new DoubleType());
-		
-		Random r = new Random();
-		for (DoubleType d : img) {
-			d.set(r.nextDouble());
-		}
-		
-		Cursor<DoubleType> il2 = Views.interval(img, new long[]{1, 1}, new long[]{8,9}).localizingCursor();
-		RandomAccess<DoubleType> opr = ops.view().interval(img, new long[]{1, 1}, new long[]{8,9}).randomAccess();
-		
-		while (il2.hasNext()) {
-			DoubleType e = il2.next();
-			opr.setPosition(il2);
-			
-			assertEquals(e.get(), opr.get().get(), 1e-10);
+			il2.next();
+			opr.next();
+			assertEquals(il2.getDoublePosition(0), opr.getDoublePosition(0), 1e-10);
+			assertEquals(il2.getDoublePosition(1), opr.getDoublePosition(1), 1e-10);
 		}
 	}
 }
