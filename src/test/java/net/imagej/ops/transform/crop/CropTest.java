@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.image.crop;
+package net.imagej.ops.transform.crop;
 
 import static org.junit.Assert.assertTrue;
 
@@ -46,7 +46,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests {@link net.imagej.ops.Ops.Image.Crop}.
+ * Tests {@link net.imagej.ops.Ops.Transform.Crop}.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
@@ -72,16 +72,16 @@ public class CropTest extends AbstractOpTest {
 			new FinalInterval(new long[] { 0, 0, 0 }, new long[] { 19, 19, 18 });
 
 		// check if result is ImgView
-		assertTrue(ops.image().crop(in, defInterval) instanceof Img);
+		assertTrue(ops.transform().crop(in, defInterval) instanceof Img);
 
 		// check if result is ImgPlus
 		final Object imgPlus =
-			ops.image().crop(new ImgPlus<>(in), defInterval);
+			ops.transform().crop(new ImgPlus<>(in), defInterval);
 		assertTrue(imgPlus instanceof ImgPlus);
 
 		// check if result is RandomAccessibleInterval
 		final Object run =
-			ops.image().crop(Views.interval(in, smallerInterval), smallerInterval);
+			ops.transform().crop(Views.interval(in, smallerInterval), smallerInterval);
 		assertTrue(run instanceof RandomAccessibleInterval && !(run instanceof Img));
 	}
 
@@ -93,7 +93,7 @@ public class CropTest extends AbstractOpTest {
 		long[] min = { 0, 0, 5 };
 		long[] max = { 19, 19, 5 };
 		RandomAccessibleInterval<ByteType> res =
-			ops.image().crop(in, new FinalInterval(min, max));
+			ops.transform().crop(in, new FinalInterval(min, max));
 
 		assertTrue(res.numDimensions() == 2);
 		assertTrue(res.min(0) == 0);
@@ -101,7 +101,7 @@ public class CropTest extends AbstractOpTest {
 
 		// Case B: Fix one dimension and don't start at zero
 		max = new long[] { 19, 0, 10 };
-		res = ops.image().crop(in, new FinalInterval(min, max));
+		res = ops.transform().crop(in, new FinalInterval(min, max));
 
 		assertTrue(res.numDimensions() == 2);
 		assertTrue(res.min(0) == 0);
@@ -110,7 +110,7 @@ public class CropTest extends AbstractOpTest {
 		// Case C: fix two dimensions
 		min = new long[] { 0, 0, 0 };
 		max = new long[] { 0, 15, 0 };
-		res = ops.image().crop(in, new FinalInterval(min, max));
+		res = ops.transform().crop(in, new FinalInterval(min, max));
 
 		assertTrue(res.numDimensions() == 1);
 		assertTrue(res.max(0) == 15);

@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.image.crop;
+package net.imagej.ops.transform.crop;
 
 import net.imagej.ImgPlus;
 import net.imagej.ops.MetadataUtil;
@@ -49,9 +49,9 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Ops.Image.Crop.class, priority = Priority.LOW_PRIORITY + 1)
+@Plugin(type = Ops.Transform.Crop.class, priority = Priority.LOW_PRIORITY + 1)
 public class CropImgPlus<T extends Type<T>> extends
-	AbstractUnaryFunctionOp<ImgPlus<T>, ImgPlus<T>> implements Ops.Image.Crop
+	AbstractUnaryFunctionOp<ImgPlus<T>, ImgPlus<T>> implements Ops.Transform.Crop
 {
 
 	@Parameter

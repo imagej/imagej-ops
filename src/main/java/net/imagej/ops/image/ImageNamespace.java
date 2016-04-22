@@ -30,21 +30,13 @@
 
 package net.imagej.ops.image;
 
-import net.imagej.ImgPlus;
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
 import net.imagej.ops.image.cooccurrencematrix.MatrixOrientation;
-import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccessible;
-import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.histogram.Histogram1d;
-import net.imglib2.img.Img;
-import net.imglib2.interpolation.InterpolatorFactory;
-import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
@@ -103,57 +95,6 @@ public class ImageNamespace extends AbstractNamespace {
 		final double[][] result = (double[][]) ops().run(
 				Ops.Image.CooccurrenceMatrix.class, in, nrGreyLevels, distance,
 				orientation);
-		return result;
-	}
-
-	// -- crop --
-
-	/** Executes the "crop" operation on the given arguments. */
-	@OpMethod(op = Ops.Image.Crop.class)
-	public Object crop(final Object... args) {
-		return ops().run(Ops.Image.Crop.NAME, args);
-	}
-
-	/** Executes the "crop" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.image.crop.CropImgPlus.class)
-	public <T extends Type<T>> ImgPlus<T> crop(final ImgPlus<T> in,
-			final Interval interval) {
-		@SuppressWarnings("unchecked")
-		final ImgPlus<T> result = (ImgPlus<T>) ops().run(
-				net.imagej.ops.image.crop.CropImgPlus.class, in, interval);
-		return result;
-	}
-
-	/** Executes the "crop" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.image.crop.CropImgPlus.class)
-	public <T extends Type<T>> ImgPlus<T> crop(final ImgPlus<T> in,
-			final Interval interval, final boolean dropSingleDimensions) {
-		@SuppressWarnings("unchecked")
-		final ImgPlus<T> result = (ImgPlus<T>) ops().run(
-				net.imagej.ops.image.crop.CropImgPlus.class, in, interval,
-				dropSingleDimensions);
-		return result;
-	}
-
-	/** Executes the "crop" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.image.crop.CropRAI.class)
-	public <T> RandomAccessibleInterval<T> crop(
-			final RandomAccessibleInterval<T> in, final Interval interval) {
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
-				.run(net.imagej.ops.image.crop.CropRAI.class, in, interval);
-		return result;
-	}
-
-	/** Executes the "crop" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.image.crop.CropRAI.class)
-	public <T> RandomAccessibleInterval<T> crop(
-			final RandomAccessibleInterval<T> in, final Interval interval,
-			final boolean dropSingleDimensions) {
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
-				.run(net.imagej.ops.image.crop.CropRAI.class, in, interval,
-						dropSingleDimensions);
 		return result;
 	}
 
@@ -393,47 +334,6 @@ public class ImageNamespace extends AbstractNamespace {
 			(IterableInterval<T>) ops().run(
 				net.imagej.ops.image.normalize.NormalizeIterableIntervalFunction.class,
 				in, sourceMin, sourceMax, targetMin, targetMax, isLazy);
-		return result;
-	}
-
-	// -- project --
-
-	/** Executes the "project" operation on the given arguments. */
-	@OpMethod(op = Ops.Image.Project.class)
-	public Object project(final Object... args) {
-		return ops().run(Ops.Image.Project.NAME, args);
-	}
-
-	/** Executes the "project" operation on the given arguments. */
-	@OpMethod(ops = {
-			net.imagej.ops.image.project.DefaultProjectParallel.class,
-			net.imagej.ops.image.project.ProjectRAIToIterableInterval.class })
-	public <T, V> IterableInterval<V> project(final IterableInterval<V> out,
-			final RandomAccessibleInterval<T> in,
-			final UnaryComputerOp<Iterable<T>, V> method, final int dim) {
-		@SuppressWarnings("unchecked")
-		final IterableInterval<V> result = (IterableInterval<V>) ops().run(
-				net.imagej.ops.Ops.Image.Project.class, out, in, method, dim);
-		return result;
-	}
-
-	// -- scale --
-
-	/** Executes the "scale" operation on the given arguments. */
-	@OpMethod(op = Ops.Image.Scale.class)
-	public Object scale(final Object... args) {
-		return ops().run(Ops.Image.Scale.NAME, args);
-	}
-
-	/** Executes the "scale" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.image.scale.ScaleImg.class)
-	public <T extends RealType<T>> Img<T> scale(final Img<T> in,
-			final double[] scaleFactors,
-			final InterpolatorFactory<T, RandomAccessible<T>> interpolator) {
-		@SuppressWarnings("unchecked")
-		final Img<T> result = (Img<T>) ops().run(
-				net.imagej.ops.image.scale.ScaleImg.class, in, scaleFactors,
-				interpolator);
 		return result;
 	}
 

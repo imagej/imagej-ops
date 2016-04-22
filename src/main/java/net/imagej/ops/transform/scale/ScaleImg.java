@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.image.scale;
+package net.imagej.ops.transform.scale;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
@@ -50,9 +50,9 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Ops.Image.Scale.class)
+@Plugin(type = Ops.Transform.Scale.class)
 public class ScaleImg<T extends RealType<T>> extends
-	AbstractUnaryFunctionOp<Img<T>, Img<T>> implements Ops.Image.Scale
+	AbstractUnaryFunctionOp<Img<T>, Img<T>> implements Ops.Transform.Scale
 {
 
 	@Parameter

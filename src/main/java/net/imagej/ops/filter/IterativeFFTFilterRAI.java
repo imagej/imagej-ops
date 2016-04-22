@@ -289,7 +289,7 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 			copy2(getRAIExtendedEstimate(), temp);
 
 			RandomAccessibleInterval<O> temp2 =
-				ops().image().crop(getRAIExtendedEstimate(),
+				ops().transform().crop(getRAIExtendedEstimate(),
 					new FinalInterval(start, end));
 
 			copy2(temp2, getOutput());

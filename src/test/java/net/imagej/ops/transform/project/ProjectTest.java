@@ -28,13 +28,14 @@
  * #L%
  */
 
-package net.imagej.ops.image.project;
+package net.imagej.ops.transform.project;
 
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
+import net.imagej.ops.transform.project.ProjectRAIToIterableInterval;
 import net.imglib2.RandomAccess;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
@@ -76,8 +77,8 @@ public class ProjectTest extends AbstractOpTest {
 
 	@Test
 	public void testProjector() {
-		ops.image().project(out1, in, op, PROJECTION_DIM);
-		ops.image().project(out2, in, op, PROJECTION_DIM);
+		ops.run(Ops.Transform.Project.class, out1, in, op, PROJECTION_DIM);
+		ops.run(Ops.Transform.Project.class, out2, in, op, PROJECTION_DIM);
 		testEquality(out1, out2);
 
 		ops.run(ProjectRAIToIterableInterval.class, out1, in, op, PROJECTION_DIM);

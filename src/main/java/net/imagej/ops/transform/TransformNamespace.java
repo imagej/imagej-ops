@@ -32,9 +32,11 @@ package net.imagej.ops.transform;
 
 import java.util.List;
 
+import net.imagej.ImgPlus;
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.transform.addDimensionView.DefaultAddDimensionView;
 import net.imagej.ops.transform.collapseNumericView.DefaultCollapseNumeric2CompositeIntervalView;
 import net.imagej.ops.transform.collapseNumericView.DefaultCollapseNumeric2CompositeView;
@@ -85,6 +87,7 @@ import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.RealRandomAccessible;
+import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.interpolation.InterpolatorFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
@@ -229,6 +232,49 @@ public class TransformNamespace extends AbstractNamespace {
 	{
 		return (CompositeIntervalView<N, NumericComposite<N>>) ops().run(
 			DefaultCollapseNumeric2CompositeIntervalView.class, input);
+	}
+
+	/** Executes the "crop" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.transform.crop.CropImgPlus.class)
+	public <T extends Type<T>> ImgPlus<T> crop(final ImgPlus<T> in,
+			final Interval interval) {
+		@SuppressWarnings("unchecked")
+		final ImgPlus<T> result = (ImgPlus<T>) ops().run(
+				net.imagej.ops.transform.crop.CropImgPlus.class, in, interval);
+		return result;
+	}
+
+	/** Executes the "crop" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.transform.crop.CropImgPlus.class)
+	public <T extends Type<T>> ImgPlus<T> crop(final ImgPlus<T> in,
+			final Interval interval, final boolean dropSingleDimensions) {
+		@SuppressWarnings("unchecked")
+		final ImgPlus<T> result = (ImgPlus<T>) ops().run(
+				net.imagej.ops.transform.crop.CropImgPlus.class, in, interval,
+				dropSingleDimensions);
+		return result;
+	}
+
+	/** Executes the "crop" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.transform.crop.CropRAI.class)
+	public <T> RandomAccessibleInterval<T> crop(
+			final RandomAccessibleInterval<T> in, final Interval interval) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
+				.run(net.imagej.ops.transform.crop.CropRAI.class, in, interval);
+		return result;
+	}
+
+	/** Executes the "crop" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.transform.crop.CropRAI.class)
+	public <T> RandomAccessibleInterval<T> crop(
+			final RandomAccessibleInterval<T> in, final Interval interval,
+			final boolean dropSingleDimensions) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
+				.run(net.imagej.ops.transform.crop.CropRAI.class, in, interval,
+						dropSingleDimensions);
+		return result;
 	}
 
 	/**
@@ -552,6 +598,19 @@ public class TransformNamespace extends AbstractNamespace {
 			input, permutation, d);
 	}
 
+	/** Executes the "project" operation on the given arguments. */
+	@OpMethod(ops = {
+			net.imagej.ops.transform.project.DefaultProjectParallel.class,
+			net.imagej.ops.transform.project.ProjectRAIToIterableInterval.class })
+	public <T, V> IterableInterval<V> project(final IterableInterval<V> out,
+			final RandomAccessibleInterval<T> in,
+			final UnaryComputerOp<Iterable<T>, V> method, final int dim) {
+		@SuppressWarnings("unchecked")
+		final IterableInterval<V> result = (IterableInterval<V>) ops().run(
+				net.imagej.ops.Ops.Transform.Project.class, out, in, method, dim);
+		return result;
+	}
+
 	/**
 	 * Turns a {@link RealRandomAccessible} into a {@link RandomAccessible},
 	 * providing {@link RandomAccess} at integer coordinates.
@@ -607,6 +666,18 @@ public class TransformNamespace extends AbstractNamespace {
 	{
 		return (CompositeView<R, RealComposite<R>>) ops().run(
 			DefaultCollapseReal2CompositeView.class, input, numChannels);
+	}
+
+	/** Executes the "scale" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.transform.scale.ScaleImg.class)
+	public <T extends RealType<T>> Img<T> scale(final Img<T> in,
+			final double[] scaleFactors,
+			final InterpolatorFactory<T, RandomAccessible<T>> interpolator) {
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+				net.imagej.ops.transform.scale.ScaleImg.class, in, scaleFactors,
+				interpolator);
+		return result;
 	}
 
 	/**

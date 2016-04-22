@@ -28,39 +28,55 @@
  * #L%
  */
 
-package net.imagej.ops.image.scale;
+package net.imagej.ops.transform.crop;
 
-import static org.junit.Assert.assertEquals;
+import net.imagej.ops.Ops;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imglib2.Interval;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.util.Intervals;
+import net.imglib2.view.IntervalView;
+import net.imglib2.view.Views;
 
-import net.imagej.ops.AbstractOpTest;
-import net.imglib2.RandomAccess;
-import net.imglib2.img.Img;
-import net.imglib2.interpolation.randomaccess.NLinearInterpolatorFactory;
-import net.imglib2.type.numeric.integer.ByteType;
-
-import org.junit.Test;
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
+ * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  */
-public class ScaleImgTest extends AbstractOpTest {
+@Plugin(type = Ops.Transform.Crop.class, priority = Priority.LOW_PRIORITY)
+public class CropRAI<T> extends
+	AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	implements Ops.Transform.Crop
+{
 
-	@Test
-	public void test() {
-		Img<ByteType> in = generateByteArrayTestImg(true, new long[] { 10, 10 });
-		double[] scaleFactors = new double[] { 2, 2 };
-		Img<ByteType> out =
-			ops.image().scale(in, scaleFactors,
-				new NLinearInterpolatorFactory<ByteType>());
+	@Parameter
+	protected Interval interval;
 
-		assertEquals(out.dimension(0), 20);
-		assertEquals(out.dimension(1), 20);
+	@Parameter(required = false)
+	private boolean dropSingleDimensions = true;
 
-		RandomAccess<ByteType> inRA = in.randomAccess();
-		RandomAccess<ByteType> outRA = out.randomAccess();
-		inRA.setPosition(new long[] { 5, 5 });
-		outRA.setPosition(new long[] { 10, 10 });
-		assertEquals(inRA.get().get(), outRA.get().get());
+	@Override
+	public RandomAccessibleInterval<T> compute1(
+		final RandomAccessibleInterval<T> input)
+	{
+		boolean oneSizedDims = false;
 
+		if (dropSingleDimensions) {
+			for (int d = 0; d < interval.numDimensions(); d++) {
+				if (interval.dimension(d) == 1) {
+					oneSizedDims = true;
+					break;
+				}
+			}
+		}
+
+		if (Intervals.equals(input, interval) && !oneSizedDims) return input;
+		if (!Intervals.contains(input, interval)) throw new RuntimeException(
+			"Intervals don't match!");
+		IntervalView<T> res = Views.offsetInterval(input, interval);
+		return oneSizedDims ? Views.dropSingletonDimensions(res) : res;
 	}
 }

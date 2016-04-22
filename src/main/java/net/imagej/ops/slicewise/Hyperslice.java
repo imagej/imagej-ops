@@ -215,8 +215,9 @@ public class Hyperslice<T> extends AbstractInterval implements
 				minPos[d] += sliceMin[d];
 			}
 
-			return (RandomAccessibleInterval<T>) environment.run(Ops.Image.Crop.class,
-				src, new FinalInterval(minPos, maxPos), dropSingleDimensions);
+			return (RandomAccessibleInterval<T>) environment.run(
+				Ops.Transform.Crop.class, src, new FinalInterval(minPos, maxPos),
+				dropSingleDimensions);
 		}
 
 		@Override
