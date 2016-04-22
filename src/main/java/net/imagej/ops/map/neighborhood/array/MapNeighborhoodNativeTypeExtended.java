@@ -4,12 +4,12 @@ package net.imagej.ops.map.neighborhood.array;
 import java.util.ArrayList;
 import java.util.concurrent.Future;
 
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.map.AbstractMapComputer;
 import net.imagej.ops.map.neighborhood.MapNeighborhood;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.FinalInterval;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.img.array.ArrayImg;
@@ -38,7 +38,7 @@ import org.scijava.thread.ThreadService;
  */
 @Plugin(type = net.imagej.ops.Op.class, name = Ops.Map.NAME,
 	priority = Priority.LOW_PRIORITY + 10)
-public class MapNeighborhoodNativeTypeExtended<I extends NativeType<I>, O extends NativeType<O>, Op extends ComputerOp<?, O>>
+public class MapNeighborhoodNativeTypeExtended<I extends NativeType<I>, O extends NativeType<O>, Op extends UnaryComputerOp<?, O>>
 	extends AbstractMapComputer<Iterable<I>, O, ArrayImg<I, ?>, ArrayImg<O, ?>>
 	implements Contingent, Cancelable
 {
@@ -59,7 +59,7 @@ public class MapNeighborhoodNativeTypeExtended<I extends NativeType<I>, O extend
 	private OutOfBoundsFactory<I, I> oobFactory;
 
 	@Override
-	public void compute(final ArrayImg<I, ?> input, final ArrayImg<O, ?> output) {
+	public void compute1(final ArrayImg<I, ?> input, final ArrayImg<O, ?> output) {
 		// all dimensions are equal as ensured in conforms() */
 		final int span = shape.getSpan();
 
@@ -157,8 +157,7 @@ public class MapNeighborhoodNativeTypeExtended<I extends NativeType<I>, O extend
 					new long[] { maxSafe0, maxSafe1, maxSafe2 });
 		}
 
-		ArrayList<Future<?>> futures =
-			new ArrayList<Future<?>>(2 * numDimensions + 1);
+		ArrayList<Future<?>> futures = new ArrayList<>(2 * numDimensions + 1);
 
 		for (final FinalInterval interval : intervals) {
 			futures.add(threadService.run(new Runnable() {
@@ -206,7 +205,7 @@ public class MapNeighborhoodNativeTypeExtended<I extends NativeType<I>, O extend
 
 	@Override
 	public boolean conforms() {
-		return getInput().numDimensions() > 0 && getInput().numDimensions() <= 3 &&
+		return in().numDimensions() > 0 && in().numDimensions() <= 3 && //
 			!shape.isSkippingCenter();
 	}
 

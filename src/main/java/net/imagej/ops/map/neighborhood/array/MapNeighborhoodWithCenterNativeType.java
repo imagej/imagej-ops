@@ -4,7 +4,6 @@ package net.imagej.ops.map.neighborhood.array;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.map.neighborhood.AbstractMapCenterAwareComputer;
 import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
@@ -40,7 +39,7 @@ public class MapNeighborhoodWithCenterNativeType<I extends NativeType<I>, O exte
 	private int span;
 
 	@Override
-	public void compute(final ArrayImg<I, ?> input, final ArrayImg<O, ?> output) {
+	public void compute1(final ArrayImg<I, ?> input, final ArrayImg<O, ?> output) {
 		final I in = input.firstElement();
 		final O out = output.firstElement();
 
@@ -64,10 +63,10 @@ public class MapNeighborhoodWithCenterNativeType<I extends NativeType<I>, O exte
 					final I center = in.copy();
 
 					final Iterable<I> neighborhood =
-						new NeighborhoodIterableNativeType<I>(in, x, y, z, width, height,
+						new NeighborhoodIterableNativeType<>(in, x, y, z, width, height,
 							depth, span);
 
-					op.compute(new ValuePair<I, Iterable<I>>(center, neighborhood), out);
+					op.compute2(neighborhood, center, out);
 
 					in.updateIndex(index);
 					out.incIndex();
@@ -78,7 +77,7 @@ public class MapNeighborhoodWithCenterNativeType<I extends NativeType<I>, O exte
 
 	@Override
 	public boolean conforms() {
-		return getInput().numDimensions() > 0 || getInput().numDimensions() <= 3;
+		return in().numDimensions() > 0 || in().numDimensions() <= 3;
 	}
 
 }
