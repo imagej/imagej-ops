@@ -40,9 +40,9 @@ import net.imglib2.view.MixedTransformView;
 import net.imglib2.view.Views;
 
 /**
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * Wraps the {@link Views#rotate(RandomAccessible, int, int)} method.
  *
- *         This op wraps functionality from {@link net.imglib2.view.Views}.
+ * @author Tim-Oliver Buchholz, University of Konstanz
  */
 @Plugin(type = Ops.Transform.RotateView.class)
 public class RotateAroundAxis<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, MixedTransformView<T>>

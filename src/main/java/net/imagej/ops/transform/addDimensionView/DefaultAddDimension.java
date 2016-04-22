@@ -39,9 +39,9 @@ import net.imglib2.view.Views;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * Wraps the {@link Views#addDimension(RandomAccessible)} method.
  *
- *         This op wraps functionality from {@link net.imglib2.view.Views}.
+ * @author Tim-Oliver Buchholz, University of Konstanz
  */
 @Plugin(type = Ops.Transform.AddDimensionView.class, label = "View: AddDimension")
 public class DefaultAddDimension<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, MixedTransformView<T>>

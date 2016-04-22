@@ -39,9 +39,9 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.view.Views;
 
 /**
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * Wraps the {@link Views#flatIterable(RandomAccessibleInterval)} method.
  *
- *         This op wraps functionality from {@link net.imglib2.view.Views}.
+ * @author Tim-Oliver Buchholz, University of Konstanz
  */
 @Plugin(type = Ops.Transform.FlatIterableView.class)
 public class DefaultFlatIterable<T> extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, IterableInterval<T>>

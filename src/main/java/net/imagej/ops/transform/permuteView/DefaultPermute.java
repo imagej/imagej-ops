@@ -40,9 +40,9 @@ import net.imglib2.view.MixedTransformView;
 import net.imglib2.view.Views;
 
 /**
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * Wraps the {@link Views#permute(RandomAccessible, int, int)} method.
  *
- *         This op wraps functionality from {@link net.imglib2.view.Views}.
+ * @author Tim-Oliver Buchholz, University of Konstanz
  */
 @Plugin(type = Ops.Transform.PermuteView.class)
 public class DefaultPermute<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, MixedTransformView<T>>

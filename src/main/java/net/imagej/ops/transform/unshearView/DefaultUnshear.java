@@ -40,9 +40,9 @@ import net.imglib2.view.TransformView;
 import net.imglib2.view.Views;
 
 /**
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * Wraps the {@link Views#unshear(RandomAccessible, int, int)} method.
  *
- *         This op wraps functionality from {@link net.imglib2.view.Views}.
+ * @author Tim-Oliver Buchholz, University of Konstanz
  */
 @Plugin(type = Ops.Transform.UnshearView.class)
 public class DefaultUnshear<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, TransformView<T>>

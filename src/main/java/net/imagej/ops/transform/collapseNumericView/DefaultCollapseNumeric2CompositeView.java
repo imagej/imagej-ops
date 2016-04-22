@@ -42,9 +42,9 @@ import net.imglib2.view.composite.CompositeView;
 import net.imglib2.view.composite.NumericComposite;
 
 /**
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * Wraps the {@link Views#collapseNumeric(RandomAccessible, int)} method.
  *
- *         This op wraps functionality from {@link net.imglib2.view.Views}.
+ * @author Tim-Oliver Buchholz, University of Konstanz
  */
 @Plugin(type = Ops.Transform.CollapseNumericView.class)
 public class DefaultCollapseNumeric2CompositeView<T extends NumericType<T>>

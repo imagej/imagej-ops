@@ -42,9 +42,10 @@ import net.imglib2.type.Type;
 import net.imglib2.view.Views;
 
 /**
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * Wraps the {@link Views#interpolate(EuclideanSpace, InterpolatorFactory)}
+ * method.
  *
- *         This op wraps functionality from {@link net.imglib2.view.Views}.
+ * @author Tim-Oliver Buchholz, University of Konstanz
  */
 @Plugin(type = Ops.Transform.InterpolateView.class)
 public class DefaultInterpolate<I extends EuclideanSpace, T extends Type<T>>

@@ -40,9 +40,9 @@ import net.imglib2.view.composite.CompositeView;
 import net.imglib2.view.composite.GenericComposite;
 
 /**
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * Wraps the {@link Views#collapse(RandomAccessible)} method.
  *
- *         This op wraps functionality from {@link net.imglib2.view.Views}.
+ * @author Tim-Oliver Buchholz, University of Konstanz
  */
 @Plugin(type = Ops.Transform.CollapseView.class)
 public class DefaultCollapse2CompositeView<T>

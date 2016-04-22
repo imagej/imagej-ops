@@ -38,9 +38,10 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.view.Views;
 
 /**
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * Wraps the {@link Views#dropSingletonDimensions(RandomAccessibleInterval)}
+ * method.
  *
- *         This op wraps functionality from {@link net.imglib2.view.Views}.
+ * @author Tim-Oliver Buchholz, University of Konstanz
  */
 @Plugin(type = Ops.Transform.DropSingletonDimensionsView.class)
 public class DefaultDropSingletonDimensions<T>

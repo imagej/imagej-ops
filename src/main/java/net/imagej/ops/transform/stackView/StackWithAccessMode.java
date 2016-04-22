@@ -42,9 +42,9 @@ import net.imglib2.view.StackView.StackAccessMode;
 import net.imglib2.view.Views;
 
 /**
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * Wraps the {@link Views#stack(StackAccessMode, List)} method.
  *
- *         This op wraps functionality from {@link net.imglib2.view.Views}.
+ * @author Tim-Oliver Buchholz, University of Konstanz
  */
 @Plugin(type = Ops.Transform.StackView.class)
 public class StackWithAccessMode<T>

@@ -43,11 +43,14 @@ import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.Views;
 
 /**
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * Tests {@link net.imagej.ops.Ops.Transform.ExtendBorderView} ops.
+ * <p>
+ * This test only checks if the op call works with all parameters and that the
+ * result is equal to that of the {@link Views} method call. It is not a
+ * correctness test of {@link Views} itself.
+ * </p>
  *
- * This test only checks if the op call works with all parameters and that the 
- * result is equal to the Views.method() call. 
- * This is not a correctness test of {@linkplain net.imglib2.view.Views}.
+ * @author Tim-Oliver Buchholz, University of Konstanz
  */
 public class ExtendBorderViewTest extends AbstractOpTest {
 

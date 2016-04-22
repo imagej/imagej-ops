@@ -40,9 +40,11 @@ import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
 /**
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * Wraps the
+ * {@link Views#permuteCoordinatesInverse(RandomAccessibleInterval, int[])}
+ * method.
  *
- *         This op wraps functionality from {@link net.imglib2.view.Views}.
+ * @author Tim-Oliver Buchholz, University of Konstanz
  */
 @Plugin(type = Ops.Transform.PermuteCoordinatesInverseView.class)
 public class DefaultPermuteCoordinatesInverse<T>
