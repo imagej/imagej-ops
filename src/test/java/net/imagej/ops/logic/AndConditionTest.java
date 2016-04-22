@@ -44,22 +44,25 @@ public class AndConditionTest extends AbstractOpTest {
 	@Test
 	public void test() {
 		@SuppressWarnings("unchecked")
-		final Condition<Double> c1 =
-			ops.op(ComparableGreaterThan.class, Double.class, 3.0);
+		final Condition<Double> c1 = ops.op(ComparableGreaterThan.class,
+			Double.class, 3.0);
 		@SuppressWarnings("unchecked")
-		final Condition<Double> c2 =
-			ops.op(ComparableLessThan.class, Double.class, 6.0);
+		final Condition<Double> c2 = ops.op(ComparableLessThan.class, Double.class,
+			6.0);
 
-		final BoolType result = ops.logic().and(5.0, c1, c2);
+		final BoolType result = (BoolType) ops.run(AndCondition.class, 5.0, c1, c2);
 		assertTrue(result.get());
 
-		final BoolType result2 = ops.logic().and(2.0, c1, c2);
+		final BoolType result2 = (BoolType) ops.run(AndCondition.class, 2.0, c1,
+			c2);
 		assertFalse(result2.get());
 
-		final BoolType result3 = ops.logic().and(7.0, c1, c2);
+		final BoolType result3 = (BoolType) ops.run(AndCondition.class, 7.0, c1,
+			c2);
 		assertFalse(result3.get());
 
-		final BoolType result4 = ops.logic().and(Double.NaN, c1, c2);
+		final BoolType result4 = (BoolType) ops.run(AndCondition.class, Double.NaN,
+			c1, c2);
 		assertFalse(result4.get());
 	}
 

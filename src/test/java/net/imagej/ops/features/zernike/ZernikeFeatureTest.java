@@ -33,6 +33,7 @@ import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.AbstractFeatureTest;
+import net.imglib2.type.numeric.RealType;
 
 import org.junit.Test;
 
@@ -47,18 +48,22 @@ public class ZernikeFeatureTest extends AbstractFeatureTest {
 	
 	@Test
 	public void testPhaseFeature() {
-		
-		assertEquals(Ops.Zernike.Phase.NAME, 180.0, ops.zernike().phase(ellipse, 4, 2).getRealDouble(), 1e-3);
-		assertEquals(Ops.Zernike.Phase.NAME, 360.0, ops.zernike().phase(rotatedEllipse, 4, 2).getRealDouble(), 1e-3);
+
+		assertEquals(Ops.Zernike.Phase.NAME, 180.0, ((RealType<?>) ops.run(
+			DefaultPhaseFeature.class, ellipse, 4, 2)).getRealDouble(), 1e-3);
+		assertEquals(Ops.Zernike.Phase.NAME, 360.0, ((RealType<?>) ops.run(
+			DefaultPhaseFeature.class, rotatedEllipse, 4, 2)).getRealDouble(), 1e-3);
 	}
 	
 	@Test 
 	public void testMagnitudeFeature() {
-			
-		double v1 = ops.zernike().magnitude(ellipse, 4, 2).getRealDouble();
-		double v2 = ops.zernike().magnitude(rotatedEllipse, 4, 2).getRealDouble();
+
+		double v1 = ((RealType<?>) ops.run(DefaultMagnitudeFeature.class, ellipse,
+			4, 2)).getRealDouble();
+		double v2 = ((RealType<?>) ops.run(DefaultMagnitudeFeature.class,
+			rotatedEllipse, 4, 2)).getRealDouble();
 	
-		assertEquals(Ops.Zernike.Magnitude.NAME, 0.16684211008, ops.zernike().magnitude(ellipse, 4, 2).getRealDouble(), 1e-3);
+		assertEquals(Ops.Zernike.Magnitude.NAME, 0.16684211008, v1, 1e-3);
 		
 		// magnitude should be the same after rotating the image
 		assertEquals(Ops.Zernike.Magnitude.NAME, v1, v2, 1e-3);

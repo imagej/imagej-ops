@@ -118,7 +118,8 @@ public class JoinTest extends AbstractOpTest {
 		final UnaryOutputFactory<Img<ByteType>, Img<ByteType>> outputFactory =
 			new ImgImgSameTypeFactory<>();
 
-		ops.join(out, in, computerOp, computerOp, outputFactory);
+		ops.run(DefaultJoin2Computers.class, out, in, computerOp, computerOp,
+			outputFactory);
 
 		// test
 		final Cursor<ByteType> c = out.cursor();
@@ -140,7 +141,7 @@ public class JoinTest extends AbstractOpTest {
 		final UnaryOutputFactory<Img<ByteType>, Img<ByteType>> outputFactory =
 			new ImgImgSameTypeFactory<>();
 
-		ops.join(out, in, computers, outputFactory);
+		ops.run(DefaultJoinNComputers.class, out, in, computers, outputFactory);
 
 		// test
 		final Cursor<ByteType> c = out.cursor();

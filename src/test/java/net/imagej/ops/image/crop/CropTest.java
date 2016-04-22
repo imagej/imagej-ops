@@ -65,24 +65,25 @@ public class CropTest extends AbstractOpTest {
 	@Test
 	public void testCropTypes() {
 		// Set-up interval
-		final Interval defInterval =
-			new FinalInterval(new long[] { 0, 0, 0 }, new long[] { 19, 19, 19 });
+		final Interval defInterval = new FinalInterval(new long[] { 0, 0, 0 },
+			new long[] { 19, 19, 19 });
 
-		final Interval smallerInterval =
-			new FinalInterval(new long[] { 0, 0, 0 }, new long[] { 19, 19, 18 });
+		final Interval smallerInterval = new FinalInterval(new long[] { 0, 0, 0 },
+			new long[] { 19, 19, 18 });
 
 		// check if result is ImgView
-		assertTrue(ops.image().crop(in, defInterval) instanceof Img);
+		assertTrue(ops.run(CropRAI.class, in, defInterval) instanceof Img);
 
 		// check if result is ImgPlus
-		final Object imgPlus =
-			ops.image().crop(new ImgPlus<>(in), defInterval);
+		final Object imgPlus = ops.run(CropImgPlus.class, new ImgPlus<>(in),
+			defInterval);
 		assertTrue(imgPlus instanceof ImgPlus);
 
 		// check if result is RandomAccessibleInterval
-		final Object run =
-			ops.image().crop(Views.interval(in, smallerInterval), smallerInterval);
-		assertTrue(run instanceof RandomAccessibleInterval && !(run instanceof Img));
+		final Object run = ops.run(CropRAI.class, Views.interval(in,
+			smallerInterval), smallerInterval);
+		assertTrue(run instanceof RandomAccessibleInterval &&
+			!(run instanceof Img));
 	}
 
 	/** Tests the result of the slicing. */
@@ -92,27 +93,35 @@ public class CropTest extends AbstractOpTest {
 		// Case 1: fix one dimension
 		long[] min = { 0, 0, 5 };
 		long[] max = { 19, 19, 5 };
-		RandomAccessibleInterval<ByteType> res =
-			ops.image().crop(in, new FinalInterval(min, max));
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<ByteType> res1 =
+			(RandomAccessibleInterval<ByteType>) ops.run(CropRAI.class, in,
+				new FinalInterval(min, max));
 
-		assertTrue(res.numDimensions() == 2);
-		assertTrue(res.min(0) == 0);
-		assertTrue(res.max(0) == 19);
+		assertTrue(res1.numDimensions() == 2);
+		assertTrue(res1.min(0) == 0);
+		assertTrue(res1.max(0) == 19);
 
-		// Case B: Fix one dimension and don't start at zero
+		// Case 2: Fix one dimension and don't start at zero
 		max = new long[] { 19, 0, 10 };
-		res = ops.image().crop(in, new FinalInterval(min, max));
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<ByteType> res2 =
+			(RandomAccessibleInterval<ByteType>) ops.run(CropRAI.class, in,
+				new FinalInterval(min, max));
 
-		assertTrue(res.numDimensions() == 2);
-		assertTrue(res.min(0) == 0);
-		assertTrue(res.max(1) == 5);
+		assertTrue(res2.numDimensions() == 2);
+		assertTrue(res2.min(0) == 0);
+		assertTrue(res2.max(1) == 5);
 
-		// Case C: fix two dimensions
+		// Case 3: fix two dimensions
 		min = new long[] { 0, 0, 0 };
 		max = new long[] { 0, 15, 0 };
-		res = ops.image().crop(in, new FinalInterval(min, max));
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<ByteType> res3 =
+			(RandomAccessibleInterval<ByteType>) ops.run(CropRAI.class, in,
+				new FinalInterval(min, max));
 
-		assertTrue(res.numDimensions() == 1);
-		assertTrue(res.max(0) == 15);
+		assertTrue(res3.numDimensions() == 1);
+		assertTrue(res3.max(0) == 15);
 	}
 }

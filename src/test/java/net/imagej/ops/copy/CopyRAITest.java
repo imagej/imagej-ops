@@ -153,7 +153,7 @@ public class CopyRAITest extends AbstractOpTest {
 
 		// create a copy op
 		final UnaryHybridCF<IntervalView<UnsignedByteType>, RandomAccessibleInterval<UnsignedByteType>> copy =
-			(UnaryHybridCF) Hybrids.unaryCF(ops, Ops.Copy.RAI.class,
+			(UnaryHybridCF) Hybrids.unaryCF(ops, CopyRAI.class,
 				RandomAccessibleInterval.class, IntervalView.class);
 
 		assertNotNull(copy);

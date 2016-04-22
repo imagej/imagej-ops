@@ -52,7 +52,7 @@ public class NormalizeTest extends AbstractOpTest {
 		Img<ByteType> in = generateByteArrayTestImg(true, 5, 5);
 		Img<ByteType> out = in.factory().create(in, new ByteType());
 
-		ops.image().normalize(out, in);
+		ops.run(NormalizeIIComputer.class, out, in);
 
 		final Pair<ByteType, ByteType> minMax2 = ops.stats().minMax(out);
 

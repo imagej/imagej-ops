@@ -57,14 +57,14 @@ public class UnionConditionTest extends AbstractOpTest {
 		condition.add(c1);
 		condition.add(c2);
 
-		final BoolType result = ops.logic().or(2.0, condition);
+		final BoolType result = (BoolType) ops.run(UnionCondition.class, 2.0, condition);
 		assertFalse(result.get());
 
 		condition.add(0, c2);
-		final BoolType result1 = ops.logic().or(4.0, condition);
+		final BoolType result1 = (BoolType) ops.run(UnionCondition.class, 4.0, condition);
 		assertTrue(result1.get());
 
-		final BoolType result2 = ops.logic().or(7.0, condition);
+		final BoolType result2 = (BoolType) ops.run(UnionCondition.class, 7.0, condition);
 		assertTrue(result2.get());
 	}
 

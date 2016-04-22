@@ -33,6 +33,10 @@ package net.imagej.ops.create;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.create.kernelGauss.CreateKernelGauss;
+import net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric;
+import net.imagej.ops.create.kernelLog.CreateKernelLog;
+import net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.real.FloatType;
@@ -59,21 +63,25 @@ public class CreateKernelTest extends AbstractOpTest {
 			sigmas[i] = sigma;
 		}
 
-		final Img<FloatType> gaussianKernel =
-			ops.create().kernelGauss(new FloatType(), new ArrayImgFactory<FloatType>(),
-				numDimensions, sigma);
+		@SuppressWarnings("unchecked")
+		final Img<FloatType> gaussianKernel = (Img<FloatType>) ops.run(
+			CreateKernelGaussSymmetric.class, new FloatType(),
+			new ArrayImgFactory<FloatType>(), numDimensions, sigma);
 
-		final Img<FloatType> gaussianKernel2 =
-			ops.create().kernelGauss(new FloatType(),
-				new ArrayImgFactory<FloatType>(), sigmas);
+		@SuppressWarnings("unchecked")
+		final Img<FloatType> gaussianKernel2 = (Img<FloatType>) ops.run(
+			CreateKernelGauss.class, new FloatType(),
+			new ArrayImgFactory<FloatType>(), sigmas);
 
-		final Img<FloatType> logKernel =
-			ops.create().kernelLog(new FloatType(), new ArrayImgFactory<FloatType>(),
-				numDimensions, sigma);
+		@SuppressWarnings("unchecked")
+		final Img<FloatType> logKernel = (Img<FloatType>) ops.run(
+			CreateKernelLogSymmetric.class, new FloatType(),
+			new ArrayImgFactory<FloatType>(), numDimensions, sigma);
 
-		final Img<FloatType> logKernel2 =
-			ops.create().kernelLog(new FloatType(), new ArrayImgFactory<FloatType>(),
-				sigmas);
+		@SuppressWarnings("unchecked")
+		final Img<FloatType> logKernel2 = (Img<FloatType>) ops.run(
+			CreateKernelLog.class, new FloatType(), new ArrayImgFactory<FloatType>(),
+			sigmas);
 
 		assertEquals(gaussianKernel.dimension(1), 31);
 		assertEquals(gaussianKernel2.dimension(1), 31);
@@ -99,37 +107,40 @@ public class CreateKernelTest extends AbstractOpTest {
 		/*Img<FloatType> gaussianKernel =
 			(Img<FloatType>) ops.create().kernelGauss(sigmas, null, new FloatType(),
 				new ArrayImgFactory());
-
+		
 		// no factory
 		Img<FloatType> gaussianKernel2 =
 			(Img<FloatType>) ops.create().kernelGauss(sigmas, null, new FloatType());
 		*/
-		final Img<FloatType> gaussianKernel =
-			ops.create().kernelGauss(new FloatType(),
-				new ArrayImgFactory<FloatType>(), sigmas);
+		@SuppressWarnings("unchecked")
+		final Img<FloatType> gaussianKernel = (Img<FloatType>) ops.run(
+			CreateKernelGauss.class, new FloatType(),
+			new ArrayImgFactory<FloatType>(), sigmas);
 
 		// no factory
-		final Img<FloatType> gaussianKernel2 =
-			ops.create().kernelGauss(new FloatType(), null, sigmas);
+		@SuppressWarnings("unchecked")
+		final Img<FloatType> gaussianKernel2 = (Img<FloatType>) ops.run(
+			CreateKernelGauss.class, new FloatType(), null, sigmas);
 		// no factory, no type
-		final Img<FloatType> gaussianKernel3 =
-			ops.create().<FloatType> kernelGauss(sigmas);
+		final Img<?> gaussianKernel3 = (Img<?>) ops.run(CreateKernelGauss.class,
+			sigmas);
 
 		assertEquals(gaussianKernel.dimension(1), 31);
 		assertEquals(gaussianKernel2.dimension(1), 31);
 		assertEquals(gaussianKernel3.dimension(1), 31);
 
-		final Img<FloatType> logKernel =
-			ops.create().kernelLog(new FloatType(), new ArrayImgFactory<FloatType>(),
-				sigmas);
+		@SuppressWarnings("unchecked")
+		final Img<FloatType> logKernel = (Img<FloatType>) ops.run(
+			CreateKernelLog.class, new FloatType(), new ArrayImgFactory<FloatType>(),
+			sigmas);
 
 		// no factory
-		final Img<FloatType> logKernel2 =
-			ops.create().kernelLog(new FloatType(), null, sigmas);
+		@SuppressWarnings("unchecked")
+		final Img<FloatType> logKernel2 = (Img<FloatType>) ops.run(
+			CreateKernelLog.class, new FloatType(), null, sigmas);
 
 		// no factory, no type
-		final Img<FloatType> logKernel3 =
-			ops.create().<FloatType> kernelLog(sigmas);
+		final Img<?> logKernel3 = (Img<?>) ops.run(CreateKernelLog.class, sigmas);
 
 		assertEquals(logKernel.dimension(1), 27);
 		assertEquals(logKernel2.dimension(1), 27);

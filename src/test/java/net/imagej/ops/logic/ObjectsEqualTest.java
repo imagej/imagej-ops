@@ -43,10 +43,12 @@ public class ObjectsEqualTest extends AbstractOpTest {
 
 	@Test
 	public void test() {
-		final BoolType result = ops.logic().equal(5.0, (Object) 5.0);
+		final BoolType result = (BoolType) ops.run(ObjectsEqual.class, 5.0,
+			(Object) 5.0);
 		assertTrue(result.get());
 
-		final BoolType result1 = ops.logic().equal(5.0, (Object) 6.0);
+		final BoolType result1 = (BoolType) ops.run(ObjectsEqual.class, 5.0,
+			(Object) 6.0);
 		assertFalse(result1.get());
 	}
 

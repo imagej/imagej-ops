@@ -38,6 +38,7 @@ import org.junit.Test;
 import net.imagej.ops.features.AbstractFeatureTest;
 import net.imagej.ops.image.cooccurrenceMatrix.MatrixOrientation2D;
 import net.imagej.ops.image.cooccurrenceMatrix.MatrixOrientation3D;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * Testing implementations of {@link HaralickFeature}
@@ -50,22 +51,22 @@ public class HaralickFeaturesTest extends AbstractFeatureTest {
 	@Test
 	public void test${op.iface}() {
 		// empty
-		assertEquals("${op.label} empty 2d", ${op.empty2d}, this.ops.haralick().${op.label}(this.empty, 8, 1,
-			MatrixOrientation2D.HORIZONTAL).get(), SMALL_DELTA);
-		assertEquals("${op.label} empty 3d", ${op.empty3d}, this.ops.haralick().${op.label}(this.empty3d, 8, 1,
-			MatrixOrientation3D.HORIZONTAL_DIAGONAL).get(), SMALL_DELTA);
+		assertEquals("${op.label} empty 2d", ${op.empty2d}, ((DoubleType) this.ops.run(Default${op.iface}.class, this.empty, 8, 1,
+			MatrixOrientation2D.HORIZONTAL)).get(), SMALL_DELTA);
+		assertEquals("${op.label} empty 3d", ${op.empty3d}, ((DoubleType) this.ops.run(Default${op.iface}.class, this.empty3d, 8, 1,
+			MatrixOrientation3D.HORIZONTAL_DIAGONAL)).get(), SMALL_DELTA);
 
 		// constant
-		assertEquals("${op.label} constant 2d", ${op.constant2d}, this.ops.haralick().${op.label}(this.constant,
-			8, 1, MatrixOrientation2D.HORIZONTAL).get(), SMALL_DELTA);
-		assertEquals("${op.label} constant 3d", ${op.constant3d}, this.ops.haralick().${op.label}(this.constant3d,
-			8, 1, MatrixOrientation3D.HORIZONTAL_DIAGONAL).get(), SMALL_DELTA);
+		assertEquals("${op.label} constant 2d", ${op.constant2d}, ((DoubleType) this.ops.run(Default${op.iface}.class, this.constant,
+			8, 1, MatrixOrientation2D.HORIZONTAL)).get(), SMALL_DELTA);
+		assertEquals("${op.label} constant 3d", ${op.constant3d}, ((DoubleType) this.ops.run(Default${op.iface}.class, this.constant3d,
+			8, 1, MatrixOrientation3D.HORIZONTAL_DIAGONAL)).get(), SMALL_DELTA);
 
 		// random
-		assertEquals("${op.label} random 2d", ${op.random2d}, this.ops.haralick().${op.label}(
-			this.random, 8, 1, MatrixOrientation2D.HORIZONTAL).get(), SMALL_DELTA);
-		assertEquals("${op.label} random 3d", ${op.random3d}, this.ops.haralick().${op.label}(
-			this.random3d, 8, 1, MatrixOrientation3D.HORIZONTAL_DIAGONAL).get(),
+		assertEquals("${op.label} random 2d", ${op.random2d}, ((DoubleType) this.ops.run(Default${op.iface}.class, 
+			this.random, 8, 1, MatrixOrientation2D.HORIZONTAL)).get(), SMALL_DELTA);
+		assertEquals("${op.label} random 3d", ${op.random3d}, ((DoubleType) this.ops.run(Default${op.iface}.class, 
+			this.random3d, 8, 1, MatrixOrientation3D.HORIZONTAL_DIAGONAL)).get(),
 			SMALL_DELTA);
 	}
 #end

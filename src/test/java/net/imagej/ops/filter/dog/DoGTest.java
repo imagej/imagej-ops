@@ -60,7 +60,7 @@ public class DoGTest extends AbstractOpTest {
 		final Img<ByteType> out1 = generateByteArrayTestImg(false, dims);
 		final Img<ByteType> out2 = generateByteArrayTestImg(false, dims);
 
-		ops.filter().dog(out1, in, sigmas1, sigmas2);
+		ops.run(DoGVaryingSigmas.class, out1, in, sigmas1, sigmas2);
 
 		// test against native imglib2 implementation
 		DifferenceOfGaussian.DoG(sigmas1, sigmas2, Views.extendMirrorSingle(in),
@@ -77,8 +77,10 @@ public class DoGTest extends AbstractOpTest {
 
 	@Test
 	public void dogRAISingleSigmasTest() {
+		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<ByteType> res =
-			ops.filter().dog(generateByteArrayTestImg(true, new long[] { 10, 10 }), 1, 2);
+			(RandomAccessibleInterval<ByteType>) ops.run(DoGSingleSigmas.class,
+				generateByteArrayTestImg(true, new long[] { 10, 10 }), 1, 2);
 
 		org.junit.Assert.assertNotNull(res);
 	}

@@ -87,6 +87,24 @@ public final class ConvertTypes {
 
 	}
 
+	@Plugin(type = Ops.Convert.Bit.class, name = Ops.Convert.Bit.NAME,
+		priority = Priority.HIGH_PRIORITY)
+	public static class IntegerToBit<T extends IntegerType<T>> extends
+		AbstractUnaryHybridCF<T, BitType> implements Convert.Bit
+	{
+
+		@Override
+		public BitType createOutput(final T input) {
+			return new BitType();
+		}
+
+		@Override
+		public void compute1(final T input, final BitType output) {
+			output.set(input.getIntegerLong() != 0);
+		}
+
+	}
+
 	@Plugin(type = Ops.Convert.Uint2.class, name = Ops.Convert.Uint2.NAME)
 	public static class ComplexToUint2<C extends ComplexType<C>> extends
 		AbstractUnaryHybridCF<C, Unsigned2BitType> implements Convert.Uint2

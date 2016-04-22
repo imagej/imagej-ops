@@ -32,6 +32,9 @@ package net.imagej.ops.filter;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.filter.fft.FFTImg;
+import net.imagej.ops.filter.fftSize.ComputeFFTSize;
+import net.imagej.ops.filter.ifft.IFFTRAI;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.Point;
@@ -73,8 +76,10 @@ public class FFTTest extends AbstractOpTest {
 			final Img<FloatType> inverse = generateFloatArrayTestImg(false,
 				dimensions);
 
-			final Img<ComplexFloatType> out = ops.filter().fft(in);
-			ops.filter().ifft(inverse, out);
+			@SuppressWarnings("unchecked")
+			final Img<ComplexFloatType> out = (Img<ComplexFloatType>) ops.run(
+				FFTImg.class, in);
+			ops.run(IFFTRAI.class, inverse, out);
 
 			assertImagesEqual(in, inverse, .00005f);
 		}
@@ -100,8 +105,8 @@ public class FFTTest extends AbstractOpTest {
 			final long[] fftDimensions = new long[3];
 
 			// compute the dimensions that will result in the fastest FFT time
-			ops.filter().fftSize(originalDimensions, fastDimensions, fftDimensions,
-				true, true);
+			ops.run(ComputeFFTSize.class, originalDimensions, fastDimensions,
+				fftDimensions, true, true);
 
 			// create an input with a small sphere at the center
 			final Img<FloatType> inOriginal = generateFloatArrayTestImg(false,
@@ -116,18 +121,22 @@ public class FFTTest extends AbstractOpTest {
 			// call FFT passing false for "fast" (in order to pass the optional
 			// parameter we have to pass null for the
 			// output parameter).
-			final Img<ComplexFloatType> fft1 = ops.filter().fft(null, inOriginal,
-				null, false);
+			@SuppressWarnings("unchecked")
+			final Img<ComplexFloatType> fft1 = (Img<ComplexFloatType>) ops.run(
+				FFTImg.class, null, inOriginal, null, false);
 
 			// call FFT passing true for "fast" (in order to pass the optional
 			// parameter we have to pass null for the
 			// output parameter). The FFT op will pad the input to the fast
 			// size.
-			final Img<ComplexFloatType> fft2 = ops.filter().fft(null, inOriginal,
-				null, true);
+			@SuppressWarnings("unchecked")
+			final Img<ComplexFloatType> fft2 = (Img<ComplexFloatType>) ops.run(
+				FFTImg.class, null, inOriginal, null, true);
 
 			// call fft using the img that was created with the fast size
-			final Img<ComplexFloatType> fft3 = ops.filter().fft(inFast);
+			@SuppressWarnings("unchecked")
+			final Img<ComplexFloatType> fft3 = (Img<ComplexFloatType>) ops.run(
+				FFTImg.class, inFast);
 
 			// create an image to be used for the inverse, using the original
 			// size
@@ -146,18 +155,18 @@ public class FFTTest extends AbstractOpTest {
 				fastDimensions);
 
 			// invert the "small" FFT
-			ops.filter().ifft(inverseOriginalSmall, fft1);
+			ops.run(IFFTRAI.class, inverseOriginalSmall, fft1);
 
 			// invert the "fast" FFT. The inverse will should be the original
 			// size.
-			ops.filter().ifft(inverseOriginalFast, fft2);
+			ops.run(IFFTRAI.class, inverseOriginalFast, fft2);
 
 			// invert the "fast" FFT that was acheived by explicitly using an
 			// image
 			// that had "fast" dimensions. The inverse will be the fast size
 			// this
 			// time.
-			ops.filter().ifft(inverseFast, fft3);
+			ops.run(IFFTRAI.class, inverseFast, fft3);
 
 			// assert that the inverse images are equal to the original
 			assertImagesEqual(inverseOriginalSmall, inOriginal, .0001f);

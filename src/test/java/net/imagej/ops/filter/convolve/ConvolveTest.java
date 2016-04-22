@@ -74,9 +74,11 @@ public class ConvolveTest extends AbstractOpTest {
 		assertSame(ConvolveNaiveImg.class, op.getClass());
 
 		// make sure it runs
-		Img<FloatType> out = ops.filter().convolve(in, kernel);
+		@SuppressWarnings("unchecked")
+		final Img<FloatType> out1 = (Img<FloatType>) ops.run(ConvolveNaiveImg.class,
+			in, kernel);
 
-		assertEquals(out.dimension(0), 20);
+		assertEquals(out1.dimension(0), 20);
 
 		// use a bigger kernel
 		kernelSize = new int[] { 30, 30 };
@@ -89,9 +91,11 @@ public class ConvolveTest extends AbstractOpTest {
 		assertSame(ConvolveFFTImg.class, op.getClass());
 
 		// make sure it runs
-		out = ops.filter().convolve(in, kernel);
+		@SuppressWarnings("unchecked")
+		final Img<FloatType> out2 = (Img<FloatType>) ops.run(ConvolveFFTImg.class,
+			in, kernel);
 
-		assertEquals(out.dimension(0), 20);
+		assertEquals(out2.dimension(0), 20);
 
 	}
 
@@ -128,7 +132,9 @@ public class ConvolveTest extends AbstractOpTest {
 		ops.stats().sum(kernelSum, kernel);
 
 		// convolve and calculate the sum of output
-		Img<FloatType> out = ops.filter().convolve(null, in, kernel, borderSize);
+		@SuppressWarnings("unchecked")
+		final Img<FloatType> out = (Img<FloatType>) ops.run(ConvolveFFTImg.class,
+			null, in, kernel, borderSize);
 
 		// create an output for the next test
 		Img<FloatType> out2 =
@@ -146,11 +152,11 @@ public class ConvolveTest extends AbstractOpTest {
 		createMemory.run();
 
 		// run convolve using the rai version with the memory created above
-		ops.filter().convolve(createMemory.getRAIExtendedInput(),
+		ops.run(ConvolveFFTRAI.class, createMemory.getRAIExtendedInput(),
 			createMemory.getRAIExtendedKernel(), createMemory.getFFTImg(),
 			createMemory.getFFTKernel(), out2);
 
-		ops.filter().convolve(createMemory.getRAIExtendedInput(), null,
+		ops.run(ConvolveFFTRAI.class, createMemory.getRAIExtendedInput(), null,
 			createMemory.getFFTImg(), createMemory.getFFTKernel(), out3, true, false);
 
 		ops.stats().sum(outSum, out);

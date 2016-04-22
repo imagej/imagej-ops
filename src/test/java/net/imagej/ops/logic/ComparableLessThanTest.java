@@ -43,11 +43,12 @@ public class ComparableLessThanTest extends AbstractOpTest {
 
 	@Test
 	public void test() {
-		final BoolType result = ops.logic().lessThan(5.0, (Comparable<Double>) 3.0);
+		final BoolType result = (BoolType) ops.run(ComparableLessThan.class, 5.0,
+			(Comparable<Double>) 3.0);
 		assertFalse(result.get());
 
-		final BoolType result2 =
-			ops.logic().lessThan(5.0, (Comparable<Double>) 6.0);
+		final BoolType result2 = (BoolType) ops.run(ComparableLessThan.class, 5.0,
+			(Comparable<Double>) 6.0);
 		assertTrue(result2.get());
 	}
 

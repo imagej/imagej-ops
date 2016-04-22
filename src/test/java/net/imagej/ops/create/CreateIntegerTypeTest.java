@@ -34,6 +34,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.create.integerType.DefaultCreateIntegerType;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.IntType;
@@ -110,11 +111,12 @@ public class CreateIntegerTypeTest extends AbstractOpTest {
 	// -- Helper methods --
 
 	private void assertType(final Class<?> type, final long max) {
-		assertEquals(type, ops.create().integerType(max).getClass());
+		assertEquals(type, ops.run(DefaultCreateIntegerType.class, max).getClass());
 	}
 
 	private void assertNotType(final Class<?> type, final long max) {
-		assertNotEquals(type, ops.create().integerType(max).getClass());
+		assertNotEquals(type, ops.run(DefaultCreateIntegerType.class, max)
+			.getClass());
 	}
 
 }

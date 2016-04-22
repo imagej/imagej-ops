@@ -77,7 +77,9 @@ public class ConvertImagesTest extends AbstractOpTest {
 	@Test
 	public <C extends ComplexType<C>> void test$opType() {
 		final Img<DoubleType> in = ArrayImgs.doubles(VALUES, DIMS);
-		final Img<$imglibType> out = ops.convert().$methodName(in);
+		@SuppressWarnings("unchecked")
+		final Img<$imglibType> out = (Img<$imglibType>) ops.run(ConvertImages.${op.name}.class,
+			in);
 
 		final Cursor<DoubleType> ci = in.cursor();
 		final Cursor<$imglibType> co = out.cursor();

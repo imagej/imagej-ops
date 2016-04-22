@@ -744,7 +744,7 @@ public final class UnaryRealTypeMath {
 
 		@Override
 		public void compute1(final I input, final O output) {
-			output.setReal(Math.round(input.getRealDouble()));
+			output.setReal((double) Math.round(input.getRealDouble()));
 		}
 	}
 
