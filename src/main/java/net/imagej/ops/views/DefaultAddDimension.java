@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Transform.AddDimensionView.class, label = "View: AddDimension")
 public class DefaultAddDimension<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, MixedTransformView<T>>
-		implements ViewOp<RandomAccessible<T>, MixedTransformView<T>>, Ops.Transform.AddDimensionView {
+		implements Ops.Transform.AddDimensionView {
 
 	@Override
 	public MixedTransformView<T> compute1(RandomAccessible<T> input) {

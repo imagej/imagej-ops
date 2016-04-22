@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Transform.AddDimensionView.class, label = "View: AddDimension")
 public class AddDimensionMinMax<T> extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>>
-		implements ViewOp<RandomAccessibleInterval<T>, IntervalView<T>>, Ops.Transform.AddDimensionView {
+		implements Ops.Transform.AddDimensionView {
 
 	@Parameter
 	private long minOfNewDim;
