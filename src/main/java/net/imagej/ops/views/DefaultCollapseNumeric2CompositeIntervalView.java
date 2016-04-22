@@ -45,10 +45,10 @@ import net.imglib2.view.composite.NumericComposite;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.Transform.NumericCollapseView.class)
+@Plugin(type = Ops.Transform.CollapseNumericView.class)
 public class DefaultCollapseNumeric2CompositeIntervalView<T extends NumericType<T>>
 		extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, CompositeIntervalView<T, NumericComposite<T>>>
-		implements Ops.Transform.NumericCollapseView {
+		implements Ops.Transform.CollapseNumericView {
 
 	@Override
 	public CompositeIntervalView<T, NumericComposite<T>> compute1(RandomAccessibleInterval<T> input) {

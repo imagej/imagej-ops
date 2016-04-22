@@ -162,7 +162,7 @@ public class ViewNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.views.DefaultCollapseNumeric2CompositeView.class)
 	public <N extends NumericType<N>> CompositeView<N, NumericComposite<N>>
-		numericCollapse(final RandomAccessible<N> input, final int numChannels)
+		collapseNumeric(final RandomAccessible<N> input, final int numChannels)
 	{
 		return (CompositeView<N, NumericComposite<N>>) ops().run(
 			DefaultCollapseNumeric2CompositeView.class, input, numChannels);
@@ -183,7 +183,7 @@ public class ViewNamespace extends AbstractNamespace {
 	public
 		<N extends NumericType<N>>
 		CompositeIntervalView<N, NumericComposite<N>>
-		numericCollapse(final RandomAccessibleInterval<N> input)
+		collapseNumeric(final RandomAccessibleInterval<N> input)
 	{
 		return (CompositeIntervalView<N, NumericComposite<N>>) ops().run(
 			DefaultCollapseNumeric2CompositeIntervalView.class, input);
@@ -540,7 +540,7 @@ public class ViewNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.views.DefaultCollapseReal2CompositeIntervalView.class)
 	public <T extends Type<T>, R extends RealType<R>>
-		CompositeIntervalView<R, RealComposite<R>> realCollapse(
+		CompositeIntervalView<R, RealComposite<R>> collapseReal(
 			final RandomAccessibleInterval<T> input)
 	{
 		return (CompositeIntervalView<R, RealComposite<R>>) ops().run(
@@ -561,7 +561,7 @@ public class ViewNamespace extends AbstractNamespace {
 	 */
 	@OpMethod(op = net.imagej.ops.views.DefaultCollapseReal2CompositeView.class)
 	public <R extends RealType<R>> CompositeView<R, RealComposite<R>>
-		realCollapse(final RandomAccessible<R> input, final int numChannels)
+		collapseReal(final RandomAccessible<R> input, final int numChannels)
 	{
 		return (CompositeView<R, RealComposite<R>>) ops().run(
 			DefaultCollapseReal2CompositeView.class, input, numChannels);
