@@ -30,13 +30,13 @@
 
 package net.imagej.ops.views;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.RandomAccessible;
 import net.imglib2.view.MixedTransformView;
 import net.imglib2.view.Views;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * @author Tim-Oliver Buchholz, University of Konstanz
