@@ -140,8 +140,6 @@ public class PermuteViewTest extends AbstractOpTest {
 		
 		IntervalView<DoubleType> out = Views.permuteCoordinateInverse(img, new int[]{0, 1}, 1);
 		
-		if(out == null)
-			System.out.println("fuck");
 		Cursor<DoubleType> il2 = out.cursor();
 		RandomAccess<DoubleType> opr = ops.transform().permuteCoordinatesInverse(img, new int[]{0, 1}, 1).randomAccess();
 		
