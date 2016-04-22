@@ -27,14 +27,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.create.kernel;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.create.AbstractCreateKernelImg;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.Cursor;
-import net.imglib2.type.NativeType;
+import net.imglib2.FinalInterval;
+import net.imglib2.Interval;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
+import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -46,31 +52,46 @@ import org.scijava.plugin.Plugin;
  * @author Mark Hiner hinerm at gmail.com
  */
 @Plugin(type = Ops.Create.Kernel.class)
-public class CreateKernel<T extends ComplexType<T> & NativeType<T>>
-		extends AbstractCreateKernelImg<T> implements Ops.Create.Kernel, Contingent {
+public class CreateKernel2D<T extends ComplexType<T>> extends
+	AbstractUnaryFunctionOp<double[][], RandomAccessibleInterval<T>> implements
+	Ops.Create.Kernel, Contingent
+{
 
-	@Parameter
-	private double[][] values;
+	@Parameter(required = false)
+	private T type;
 
+	private UnaryFunctionOp<Interval, RandomAccessibleInterval<T>> createOp;
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public void run() {
-		final long[] dims = {values.length, values[0].length};
-		createOutputImg(dims);
-
-		final Cursor<T> cursor = getOutput().cursor();
-			for (int j = 0; j < values.length; j++) {
-				for (int k = 0; k < values[j].length; k++) {
-					cursor.fwd();
-
-					cursor.get().setReal(values[j][k]);
-				}
-			}
+	public void initialize() {
+		createOp = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+			RandomAccessibleInterval.class, Interval.class, type);
 	}
 
 	@Override
 	public boolean conforms() {
 		// check the nested arrays for nulls
-		for (int i=0; i<values.length; i++) if (values[i] == null) return false;
+		for (int i = 0; i < in().length; i++)
+			if (in()[i] == null) return false;
 		return true;
+	}
+
+	@Override
+	public RandomAccessibleInterval<T> compute1(double[][] input) {
+		final long[] dims = { input.length, input[0].length };
+		final RandomAccessibleInterval<T> rai = createOp.compute1(new FinalInterval(
+			dims));
+
+		final Cursor<T> cursor = Views.iterable(rai).cursor();
+		for (int j = 0; j < input.length; j++) {
+			for (int k = 0; k < input[j].length; k++) {
+				cursor.fwd();
+
+				cursor.get().setReal(input[j][k]);
+			}
+		}
+
+		return rai;
 	}
 }

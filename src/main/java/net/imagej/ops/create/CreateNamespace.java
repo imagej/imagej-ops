@@ -348,28 +348,27 @@ public class CreateNamespace extends AbstractNamespace {
 	// -- kernel --
 
 	/** Executes the "kernel" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.create.kernel.CreateKernel.class)
-	public <T extends ComplexType<T>> Img<T> kernel(final double[]... values) {
+	@OpMethod(op = net.imagej.ops.create.kernel.CreateKernel2D.class)
+	public <T extends ComplexType<T>> RandomAccessibleInterval<T> kernel(
+		final double[]... values)
+	{
 		@SuppressWarnings("unchecked")
-		final Img<T> result = (Img<T>) ops().run(net.imagej.ops.Ops.Create.Kernel.class, 
-				new Object[] { values });
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.create.kernel.CreateKernel2D.class, new Object[] {
+					values });
 		return result;
 	}
 
 	/** Executes the "kernel" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.create.kernel.CreateKernel.class)
-	public <T extends ComplexType<T>> Img<T> kernel(final T outType, final double[]... values) {
+	@OpMethod(op = net.imagej.ops.create.kernel.CreateKernel2D.class)
+	public <T extends ComplexType<T>> RandomAccessibleInterval<T> kernel(
+		final double[][] values, final T outType)
+	{
 		@SuppressWarnings("unchecked")
-		final Img<T> result = (Img<T>) ops().run(net.imagej.ops.Ops.Create.Kernel.class, outType, values);
-		return result;
-	}
-
-	/** Executes the "kernel" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.create.kernel.CreateKernel.class)
-	public <T extends ComplexType<T>> Img<T> kernel(final T outType, final ImgFactory<T> fac,
-			final double[]... values) {
-		@SuppressWarnings("unchecked")
-		final Img<T> result = (Img<T>) ops().run(net.imagej.ops.Ops.Create.Kernel.class, outType, fac, values);
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.create.kernel.CreateKernel2D.class, values, outType);
 		return result;
 	}
 
@@ -378,80 +377,28 @@ public class CreateNamespace extends AbstractNamespace {
 	/** Executes the "kernelGauss" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric.class)
-	public <T extends ComplexType<T>> Img<T> kernelGauss(final int numDimensions,
-		final double sigma)
+	public <T extends ComplexType<T>> RandomAccessibleInterval<T> kernelGauss(
+		final Double sigma, final int numDimensions, final T outType)
 	{
 		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(
-				Ops.Create.KernelGauss.class,
-				numDimensions, sigma);
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric.class,
+				sigma, numDimensions, outType);
 		return result;
 	}
 
 	/** Executes the "kernelGauss" operation on the given arguments. */
 	@OpMethod(
-		op = net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric.class)
-	public <T extends ComplexType<T>> Img<T> kernelGauss(final T outType,
-		final int numDimensions, final double sigma)
+		op = net.imagej.ops.create.kernelGauss.DefaultCreateKernelGauss.class)
+	public <T extends ComplexType<T> & NativeType<T>> RandomAccessibleInterval<T>
+		kernelGauss(final double[] sigma, final T outType)
 	{
 		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(
-				Ops.Create.KernelGauss.class,
-				outType, numDimensions, sigma);
-		return result;
-	}
-
-	/** Executes the "kernelGauss" operation on the given arguments. */
-	@OpMethod(
-		op = net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric.class)
-	public <T extends ComplexType<T>> Img<T> kernelGauss(final T outType,
-		final ImgFactory<T> fac, final int numDimensions, final double sigma)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(
-				Ops.Create.KernelGauss.class,
-				outType, fac, numDimensions, sigma);
-		return result;
-	}
-
-	/** Executes the "kernelGauss" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.create.kernelGauss.CreateKernelGauss.class)
-	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelGauss(
-		final double... sigma)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(
-				Ops.Create.KernelGauss.class, sigma);
-		return result;
-	}
-
-	/** Executes the "kernelGauss" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.create.kernelGauss.CreateKernelGauss.class)
-	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelGauss(
-		final T outType, final double... sigma)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(
-				Ops.Create.KernelGauss.class, outType,
-				sigma);
-		return result;
-	}
-
-	/** Executes the "kernelGauss" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.create.kernelGauss.CreateKernelGauss.class)
-	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelGauss(
-		final T outType, final ImgFactory<T> fac, final double... sigma)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(
-				Ops.Create.KernelGauss.class, outType,
-				fac, sigma);
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.create.kernelGauss.DefaultCreateKernelGauss.class, sigma,
+				outType);
 		return result;
 	}
 
@@ -459,79 +406,25 @@ public class CreateNamespace extends AbstractNamespace {
 
 	/** Executes the "kernelLog" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric.class)
-	public
-		<T extends ComplexType<T>> Img<T> kernelLog(final int numDimensions,
-			final double sigma)
+	public <T extends ComplexType<T>> RandomAccessibleInterval<T> kernelLog(
+		final Double sigma, final int numDimensions, final T outType)
 	{
 		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(
-				Ops.Create.KernelLog.class,
-				numDimensions, sigma);
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric.class, sigma,
+				numDimensions, outType);
 		return result;
 	}
 
 	/** Executes the "kernelLog" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric.class)
-	public
-		<T extends ComplexType<T>> Img<T> kernelLog(final T outType,
-			final int numDimensions, final double sigma)
+	@OpMethod(op = net.imagej.ops.create.kernelLog.DefaultCreateKernelLog.class)
+	public <T extends ComplexType<T>> RandomAccessibleInterval<T> kernelLog(
+		final double[] sigma, final T outType)
 	{
 		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(
-				Ops.Create.KernelLog.class,
-				outType, numDimensions, sigma);
-		return result;
-	}
-
-	/** Executes the "kernelLog" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric.class)
-	public
-		<T extends ComplexType<T>> Img<T> kernelLog(final T outType,
-			final ImgFactory<T> fac, final int numDimensions, final double sigma)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(
-				Ops.Create.KernelLog.class,
-				outType, fac, numDimensions, sigma);
-		return result;
-	}
-
-	/** Executes the "kernelLog" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.create.kernelLog.CreateKernelLog.class)
-	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelLog(
-		final double... sigma)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(Ops.Create.KernelLog.class,
-				sigma);
-		return result;
-	}
-
-	/** Executes the "kernelLog" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.create.kernelLog.CreateKernelLog.class)
-	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelLog(
-		final T outType, final double... sigma)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(Ops.Create.KernelLog.class,
-				outType, sigma);
-		return result;
-	}
-
-	/** Executes the "kernelLog" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.create.kernelLog.CreateKernelLog.class)
-	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelLog(
-		final T outType, final ImgFactory<T> fac, final double... sigma)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(Ops.Create.KernelLog.class,
-				outType, fac, sigma);
+		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops().run(
+			net.imagej.ops.create.kernelLog.DefaultCreateKernelLog.class, sigma, outType);
 		return result;
 	}
 

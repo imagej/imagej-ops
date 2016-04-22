@@ -31,17 +31,23 @@
 package net.imagej.ops.create.kernelGauss;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.create.AbstractCreateGaussianKernel;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.Cursor;
-import net.imglib2.type.NativeType;
+import net.imglib2.Dimensions;
+import net.imglib2.FinalInterval;
+import net.imglib2.Interval;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.util.Util;
+import net.imglib2.view.Views;
 
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Gaussian filter ported from
- * org.knime.knip.core.algorithm.convolvers.filter.linear.Gaussian;
+ * Creates a Gaussian Kernel
  *
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
@@ -51,37 +57,52 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  */
 @Plugin(type = Ops.Create.KernelGauss.class)
-public class CreateKernelGauss<T extends ComplexType<T> & NativeType<T>>
-	extends AbstractCreateGaussianKernel<T> implements Ops.Create.KernelGauss
+public class DefaultCreateKernelGauss<T extends ComplexType<T>> extends
+	AbstractUnaryFunctionOp<double[], RandomAccessibleInterval<T>> implements
+	Ops.Create.KernelGauss
 {
 
+	@Parameter
+	private T type;
+
+	private UnaryFunctionOp<Interval, RandomAccessibleInterval<T>> createOp;
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	protected void createKernel() {
-		final double[] sigmaPixels = new double[numDimensions];
+	public void initialize() {
+		createOp = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+			RandomAccessibleInterval.class, Dimensions.class, type);
+	}
 
-		final long[] dims = new long[numDimensions];
-		final double[][] kernelArrays = new double[numDimensions][];
+	@Override
+	public RandomAccessibleInterval<T> compute1(double[] input) {
+		final double[] sigmaPixels = new double[input.length];
 
-		for (int d = 0; d < numDimensions; d++) {
-			sigmaPixels[d] = sigma[d];
+		final long[] dims = new long[input.length];
+		final double[][] kernelArrays = new double[input.length][];
+
+		for (int d = 0; d < input.length; d++) {
+			sigmaPixels[d] = input[d];
 
 			dims[d] = Math.max(3, (2 * (int) (3 * sigmaPixels[d] + 0.5) + 1));
 			kernelArrays[d] = Util.createGaussianKernel1DDouble(sigmaPixels[d], true);
 		}
 
-		createOutputImg(dims);
+		final RandomAccessibleInterval<T> out = createOp.compute1(new FinalInterval(
+			dims));
 
-		final Cursor<T> cursor = getOutput().cursor();
+		final Cursor<T> cursor = Views.iterable(out).cursor();
 		while (cursor.hasNext()) {
 			cursor.fwd();
 			double result = 1.0f;
-			for (int d = 0; d < numDimensions; d++) {
+			for (int d = 0; d < input.length; d++) {
 				result *= kernelArrays[d][cursor.getIntPosition(d)];
 			}
 
 			cursor.get().setReal(result);
 		}
 
+		return out;
 	}
 
 }
