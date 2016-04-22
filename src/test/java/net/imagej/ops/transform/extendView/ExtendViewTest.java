@@ -31,8 +31,6 @@ package net.imagej.ops.transform.extendView;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
-
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
@@ -41,6 +39,8 @@ import net.imglib2.outofbounds.OutOfBounds;
 import net.imglib2.outofbounds.OutOfBoundsBorderFactory;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.Views;
+
+import org.junit.Test;
 
 /**
  * Tests {@link net.imagej.ops.Ops.Transform.ExtendView} ops.

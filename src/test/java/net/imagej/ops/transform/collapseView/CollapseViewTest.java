@@ -31,8 +31,6 @@ package net.imagej.ops.transform.collapseView;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
-
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
@@ -43,6 +41,8 @@ import net.imglib2.view.Views;
 import net.imglib2.view.composite.CompositeIntervalView;
 import net.imglib2.view.composite.CompositeView;
 import net.imglib2.view.composite.GenericComposite;
+
+import org.junit.Test;
 
 /**
  * Tests {@link net.imagej.ops.Ops.Transform.CollapseView} ops.

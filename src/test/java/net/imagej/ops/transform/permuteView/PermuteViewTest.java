@@ -30,11 +30,8 @@
 package net.imagej.ops.transform.permuteView;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
-
-import org.junit.Test;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.Cursor;
@@ -46,6 +43,8 @@ import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.MixedTransformView;
 import net.imglib2.view.Views;
+
+import org.junit.Test;
 
 /**
  * Tests {@link net.imagej.ops.Ops.Transform.PermuteView} ops.

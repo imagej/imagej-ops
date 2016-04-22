@@ -30,13 +30,13 @@
 
 package net.imagej.ops.transform.flatIterableView;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.view.Views;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * Wraps the {@link Views#flatIterable(RandomAccessibleInterval)} method.

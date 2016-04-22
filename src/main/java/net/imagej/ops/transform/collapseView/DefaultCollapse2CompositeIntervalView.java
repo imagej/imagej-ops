@@ -30,14 +30,14 @@
 
 package net.imagej.ops.transform.collapseView;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.view.Views;
 import net.imglib2.view.composite.CompositeIntervalView;
 import net.imglib2.view.composite.GenericComposite;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * Wraps the {@link Views#collapse(RandomAccessibleInterval)} method.

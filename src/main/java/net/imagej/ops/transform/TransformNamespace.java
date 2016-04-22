@@ -32,8 +32,6 @@ package net.imagej.ops.transform;
 
 import java.util.List;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
@@ -109,6 +107,8 @@ import net.imglib2.view.composite.CompositeView;
 import net.imglib2.view.composite.GenericComposite;
 import net.imglib2.view.composite.NumericComposite;
 import net.imglib2.view.composite.RealComposite;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * @author Tim-Oliver Buchholz, University of Konstanz

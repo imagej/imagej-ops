@@ -31,8 +31,6 @@ package net.imagej.ops.transform.invertAxisView;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
-
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.RandomAccessible;
 import net.imglib2.img.Img;
@@ -40,6 +38,8 @@ import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.MixedTransformView;
 import net.imglib2.view.Views;
+
+import org.junit.Test;
 
 /**
  * Tests {@link net.imagej.ops.Ops.Transform.InvertAxisView} ops.

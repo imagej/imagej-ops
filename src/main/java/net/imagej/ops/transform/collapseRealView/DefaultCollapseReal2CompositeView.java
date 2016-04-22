@@ -30,9 +30,6 @@
 
 package net.imagej.ops.transform.collapseRealView;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.RandomAccessible;
@@ -40,6 +37,9 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.view.Views;
 import net.imglib2.view.composite.CompositeView;
 import net.imglib2.view.composite.RealComposite;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * Wraps the {@link Views#collapseReal(RandomAccessible, int)} method.

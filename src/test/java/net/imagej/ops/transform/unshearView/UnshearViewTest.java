@@ -31,8 +31,6 @@ package net.imagej.ops.transform.unshearView;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
-
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
@@ -42,6 +40,8 @@ import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.TransformView;
 import net.imglib2.view.Views;
+
+import org.junit.Test;
 
 /**
  * Tests {@link net.imagej.ops.Ops.Transform.UnshearView} ops.

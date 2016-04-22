@@ -30,9 +30,6 @@
 
 package net.imagej.ops.transform.interpolateView;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.EuclideanSpace;
@@ -40,6 +37,9 @@ import net.imglib2.RealRandomAccessible;
 import net.imglib2.interpolation.InterpolatorFactory;
 import net.imglib2.type.Type;
 import net.imglib2.view.Views;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * Wraps the {@link Views#interpolate(EuclideanSpace, InterpolatorFactory)}
