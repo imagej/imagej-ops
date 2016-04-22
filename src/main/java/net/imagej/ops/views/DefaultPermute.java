@@ -44,9 +44,9 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.PermuteView.class)
+@Plugin(type = Ops.Transform.PermuteView.class)
 public class DefaultPermute<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, MixedTransformView<T>>
-		implements Ops.View.PermuteView {
+		implements Ops.Transform.PermuteView {
 
 	@Parameter
 	private int fromAxis;

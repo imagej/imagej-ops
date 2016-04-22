@@ -44,9 +44,9 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.RotateView.class)
+@Plugin(type = Ops.Transform.RotateView.class)
 public class RotateAroundAxis<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, MixedTransformView<T>>
-		implements Ops.View.RotateView {
+		implements Ops.Transform.RotateView {
 
 	@Parameter
 	private int fromAxis;

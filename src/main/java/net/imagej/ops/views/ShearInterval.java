@@ -45,9 +45,9 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.ShearView.class)
+@Plugin(type = Ops.Transform.ShearView.class)
 public class ShearInterval<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, IntervalView<T>>
-		implements Ops.View.ShearView {
+		implements Ops.Transform.ShearView {
 
 	@Parameter
 	private Interval interval;

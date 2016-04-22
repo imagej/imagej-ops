@@ -43,9 +43,9 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.ExtendBorderView.class)
+@Plugin(type = Ops.Transform.ExtendBorderView.class)
 public class DefaultExtendBorder<T, F extends RandomAccessibleInterval<T>>
-		extends AbstractUnaryFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>> implements Ops.View.ExtendBorderView {
+		extends AbstractUnaryFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>> implements Ops.Transform.ExtendBorderView {
 
 	@Override
 	public ExtendedRandomAccessibleInterval<T, F> compute1(F input) {

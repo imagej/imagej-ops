@@ -45,9 +45,9 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.IntervalView.class)
+@Plugin(type = Ops.Transform.IntervalView.class)
 public class DefaultInterval<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, IntervalView<T>>
-		implements Ops.View.IntervalView {
+		implements Ops.Transform.IntervalView {
 
 	@Parameter
 	private Interval interval;

@@ -46,10 +46,10 @@ import net.imglib2.view.composite.NumericComposite;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.NumericCollapseView.class)
+@Plugin(type = Ops.Transform.NumericCollapseView.class)
 public class DefaultCollapseNumeric2CompositeView<T extends NumericType<T>>
 		extends AbstractUnaryFunctionOp<RandomAccessible<T>, CompositeView<T, NumericComposite<T>>>
-		implements Ops.View.NumericCollapseView {
+		implements Ops.Transform.NumericCollapseView {
 
 	@Parameter
 	private int numChannels;

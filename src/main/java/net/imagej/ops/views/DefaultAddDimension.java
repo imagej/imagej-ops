@@ -32,7 +32,7 @@ package net.imagej.ops.views;
 
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.Ops.View.AddDimensionView;
+import net.imagej.ops.Ops.Transform.AddDimensionView;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.RandomAccessible;
 import net.imglib2.view.MixedTransformView;

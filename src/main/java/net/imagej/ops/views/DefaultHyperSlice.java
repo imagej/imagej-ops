@@ -44,9 +44,9 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.HyperSliceView.class)
+@Plugin(type = Ops.Transform.HyperSliceView.class)
 public class DefaultHyperSlice<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, MixedTransformView<T>>
-		implements Ops.View.HyperSliceView {
+		implements Ops.Transform.HyperSliceView {
 
 	@Parameter
 	private int d;

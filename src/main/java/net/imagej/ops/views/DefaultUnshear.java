@@ -44,9 +44,9 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.UnShearView.class)
+@Plugin(type = Ops.Transform.UnShearView.class)
 public class DefaultUnshear<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, TransformView<T>>
-		implements Ops.View.UnShearView {
+		implements Ops.Transform.UnShearView {
 
 	@Parameter
 	private int shearDimension;

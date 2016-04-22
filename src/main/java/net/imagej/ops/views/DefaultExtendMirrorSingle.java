@@ -43,9 +43,9 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.ExtendMirrorSingleView.class)
+@Plugin(type = Ops.Transform.ExtendMirrorSingleView.class)
 public class DefaultExtendMirrorSingle<T, F extends RandomAccessibleInterval<T>> extends
-		AbstractUnaryFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>> implements Ops.View.ExtendMirrorSingleView {
+		AbstractUnaryFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>> implements Ops.Transform.ExtendMirrorSingleView {
 
 	@Override
 	public ExtendedRandomAccessibleInterval<T, F> compute1(F input) {
