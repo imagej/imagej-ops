@@ -54,6 +54,7 @@ import net.imagej.ops.labeling.LabelingNamespace;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.math.MathNamespace;
+import net.imagej.ops.morphology.MorphologyNamespace;
 import net.imagej.ops.special.SpecialOp;
 import net.imagej.ops.special.UnaryOutputFactory;
 import net.imagej.ops.special.computer.BinaryComputerOp;
@@ -895,6 +896,11 @@ public interface OpEnvironment extends Contextual {
 	/** Gateway into ops of the "math" namespace. */
 	default MathNamespace math() {
 		return namespace(MathNamespace.class);
+	}
+
+	/** Gateway into ops of the "morphology" namespace. */
+	default MorphologyNamespace morphology() {
+		return namespace(MorphologyNamespace.class);
 	}
 
 	/** Gateway into ops of the "stats" namespace. */
