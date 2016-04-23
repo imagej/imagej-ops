@@ -113,17 +113,17 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 
 	@Test
 	public void testNameViaInterface() {
-		assertMatches("dessert.iceCream", FlavorlessIceCream.class);
-		assertMatches("dessert.vanillaIceCream", VanillaIceCream.class);
-		assertMatches("dessert.chocolateIceCream", ChocolateIceCream.class);
-		assertMatches("dessert.sorbet", YummySorbet.class);
-		assertMatches("dessert.sherbet", GenericSherbet.class,
+		assertMatches("test.dessert.iceCream", FlavorlessIceCream.class);
+		assertMatches("test.dessert.vanillaIceCream", VanillaIceCream.class);
+		assertMatches("test.dessert.chocolateIceCream", ChocolateIceCream.class);
+		assertMatches("test.dessert.sorbet", YummySorbet.class);
+		assertMatches("test.dessert.sherbet", GenericSherbet.class,
 			RainbowSherbet.class);
-		assertMatches("dessert.americanSherbet", GenericSherbet.class);
-		assertMatches("dessert.rainbowSherbet", RainbowSherbet.class);
-		assertMatches("dessert.gelato", RichGelato.class);
-		assertMatches("dessert.gelati", RichGelato.class);
-		assertMatches("dessert.italianIceCream", RichGelato.class);
+		assertMatches("test.dessert.americanSherbet", GenericSherbet.class);
+		assertMatches("test.dessert.rainbowSherbet", RainbowSherbet.class);
+		assertMatches("test.dessert.gelato", RichGelato.class);
+		assertMatches("test.dessert.gelati", RichGelato.class);
+		assertMatches("test.dessert.italianIceCream", RichGelato.class);
 	}
 
 	/** Tests if the perfect match will be selected if no priority given. */
@@ -243,24 +243,24 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 
 	public static interface IceCream extends Dessert {
 
-		String NAME = "dessert.iceCream";
+		String NAME = "test.dessert.iceCream";
 	}
 
 	public static interface Sorbet extends IceCream {
 
-		String NAME = "dessert.sorbet";
+		String NAME = "test.dessert.sorbet";
 	}
 
 	public static interface Sherbet extends IceCream {
 
-		String NAME = "dessert.sherbet";
-		String ALIAS = "dessert.americanSherbet";
+		String NAME = "test.dessert.sherbet";
+		String ALIAS = "test.dessert.americanSherbet";
 	}
 
 	public static interface Gelato extends IceCream {
 
-		String NAME = "dessert.gelato";
-		String ALIASES = "dessert.gelati, dessert.italianIceCream";
+		String NAME = "test.dessert.gelato";
+		String ALIASES = "test.dessert.gelati, test.dessert.italianIceCream";
 	}
 
 	@Plugin(type = IceCream.class)
@@ -268,12 +268,12 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 		// NB: No implementation needed.
 	}
 
-	@Plugin(type = IceCream.class, name = "dessert.vanillaIceCream")
+	@Plugin(type = IceCream.class, name = "test.dessert.vanillaIceCream")
 	public static class VanillaIceCream extends NoOp implements IceCream {
 		// NB: No implementation needed.
 	}
 
-	@Plugin(type = IceCream.class, name = "dessert.chocolateIceCream")
+	@Plugin(type = IceCream.class, name = "test.dessert.chocolateIceCream")
 	public static class ChocolateIceCream extends NoOp implements IceCream {
 		// NB: No implementation needed.
 	}
@@ -289,7 +289,7 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 	}
 
 	@Plugin(type = Sherbet.class, //
-		attrs = { @Attr(name = "alias", value = "dessert.rainbowSherbet") })
+		attrs = { @Attr(name = "alias", value = "test.dessert.rainbowSherbet") })
 	public static class RainbowSherbet extends NoOp implements Sherbet {
 		// NB: No implementation needed.
 	}
