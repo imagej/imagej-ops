@@ -59,4 +59,50 @@ public class OpConformanceTest extends AbstractOpTest {
 		}
 	}
 
+	@Test
+	public void testOpPackages() {
+		int bad = 0, total = 0;
+		for (final OpInfo info : ops.infos()) {
+			final String opName = info.getName();
+			if (opName == null) continue;
+			String opNamespace = beforeDot(opName);
+			if ("test".equals(opNamespace)) continue; // skip test ops
+
+			final String className = info.cInfo().getClassName();
+			final String packageName = beforeDot(className);
+			final String simpleName = afterDot(className);
+			final boolean inner = simpleName.contains("$");
+
+			final String expected;
+			if (inner) {
+				// inner classes use namespace package
+				// e.g.: net.imagej.ops.math.sec == net.imagej.ops.math.UnaryRealTypeMath$Sec
+				expected = "net.imagej.ops." + opNamespace;
+			}
+			else {
+				// regular op classes use full op name package
+				// e.g.: net.imagej.ops.morphology.close == net.imagej.ops.morphology.close.ListClose
+				expected = "net.imagej.ops." + opName;
+			}
+			if (!packageName.equals(expected)) {
+				System.err.println("[ERROR] " + //
+					className + " should reside in package " + expected);
+				bad++;
+			}
+			total++;
+		}
+		assertTrue(bad + "/" + total + " ops with non-matching packages", bad == 0);
+	}
+
+	// -- Helper methods --
+
+	private String beforeDot(final String s) {
+		final int dot = s.lastIndexOf(".");
+		return dot < 0 ? "" : s.substring(0, dot);
+	}
+
+	private String afterDot(final String s) {
+		return s.substring(s.lastIndexOf(".") + 1);
+	}
+
 }
