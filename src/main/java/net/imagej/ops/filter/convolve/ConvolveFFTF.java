@@ -36,11 +36,11 @@ import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
-import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
+import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Util;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
@@ -65,7 +65,8 @@ public class ConvolveFFTF<I extends RealType<I> & NativeType<I>, O extends RealT
 		// TODO: try and figure out if there is a better place to set the default
 		// OBF
 		if (this.getOBFInput() == null) {
-			setOBFInput(new OutOfBoundsMirrorFactory<>(Boundary.SINGLE));
+			setOBFInput(new OutOfBoundsConstantValueFactory<>(Util
+				.getTypeFromInterval(in()).createVariable()));
 		}
 
 		super.initialize();

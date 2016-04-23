@@ -38,8 +38,6 @@ import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
-import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
-import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
@@ -126,7 +124,8 @@ public class ConvolveNaiveF<I extends RealType<I>, O extends RealType<O> & Nativ
 		RandomAccessibleInterval<O> out = createOutput(img, kernel);
 
 		if (obf == null) {
-			obf = new OutOfBoundsMirrorFactory<>(Boundary.SINGLE);
+			obf = new OutOfBoundsConstantValueFactory<>(Util.getTypeFromInterval(in())
+				.createVariable());
 		}
 
 		// extend the input
