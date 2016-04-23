@@ -37,11 +37,12 @@ import org.scijava.InstantiableException;
 import org.scijava.plugin.PluginInfo;
 
 /**
- * Tests the consistency of declared op interfaces.
+ * Tests that all op plugins follow the core rules and conventions.
  *
  * @author Leon Yang
+ * @author Curtis Rueden
  */
-public class OpInterfaceTest extends AbstractOpTest {
+public class OpConformanceTest extends AbstractOpTest {
 
 	/**
 	 * Tests that each op implements the marker interface that it uses as its
