@@ -123,8 +123,7 @@ public class ConvertMapTest extends AbstractOpTest {
 			new float[(int) Intervals.numElements(new FinalInterval(dims))];
 
 		if (array.length != values.length) {
-			System.out.println("Number of values doesn't match dimmensions");
-			return null;
+			throw new RuntimeException("Number of values doesn't match dimmensions");
 		}
 
 		for (int i = 0; i < array.length; i++) {
@@ -142,8 +141,7 @@ public class ConvertMapTest extends AbstractOpTest {
 			new byte[(int) Intervals.numElements(new FinalInterval(dims))];
 
 		if (array.length != values.length) {
-			System.out.println("Number of values doesn't match dimmensions");
-			return null;
+			throw new RuntimeException("Number of values doesn't match dimmensions");
 		}
 
 		for (int i = 0; i < array.length; i++) {

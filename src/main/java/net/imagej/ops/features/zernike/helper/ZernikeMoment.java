@@ -134,28 +134,4 @@ public class ZernikeMoment {
 		this.m = _m;
 	}
 
-	/**
-	 * Print zernike moment in complex representation
-	 */
-	public void printComplex() {
-		String sign = "+";
-		if (zm.getImaginaryDouble() < 0)
-			sign = "-";
-		System.out.println("Complex Representation: " + zm.getRealDouble() + " " + sign + " "
-				+ Math.abs(zm.getImaginaryDouble()) + "i");
-	}
-
-	/**
-	 * Print Zernike moment containing order, representation, polyonom, complex,
-	 * phase and magnitude
-	 */
-	public void printMoment() {
-		System.out.println("N: " + getN() + " M: " + getM());
-		System.out.println("Polynom: " + getP().toString());
-		printComplex();
-		System.out.println("Phase: " + (double) Math.round(getPhase() * 10000) / 10000);
-		System.out.println("Magnitude: " + (double) Math.round(getMagnitude() * 10000) / 10000);
-
-		System.out.println("");
-	}
 }

@@ -118,8 +118,6 @@ public class VectorAccelerator<T extends RealType<T> & NativeType<T>> extends
 
 			accelerationFactor = computeAccelerationFactor(yk_iterated);
 
-			System.out.println("Acceleration Factor is: " + accelerationFactor);
-
 			if ((accelerationFactor < 0)) {
 				gkm1 = null;
 				accelerationFactor = 0.0;

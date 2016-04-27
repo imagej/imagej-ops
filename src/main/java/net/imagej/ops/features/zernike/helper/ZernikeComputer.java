@@ -218,21 +218,6 @@ public class ZernikeComputer<T extends RealType<T>> extends
 	}
 
 	/**
-	 * Prints all calculate Zernike Moments (Complex Number + Phase + Magnitude)
-	 * 
-	 * @param _polynomials
-	 *            List of polynomials
-	 */
-	void printMoments(List<ZernikeMoment> _polynomials) {
-		System.out.println("Print Zernike Moments:\n");
-
-		for (ZernikeMoment p : _polynomials) {
-			p.printMoment();
-		}
-
-	}
-
-	/**
 	 * Efficient calculation of pascal's triangle up to order max
 	 * 
 	 * @param _max

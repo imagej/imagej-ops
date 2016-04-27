@@ -177,20 +177,13 @@ public class SliceTest extends AbstractOpTest {
 
 		int numHyperSlices = 0;
 		while (c.hasNext()) {
-
 			c.fwd();
 			numHyperSlices++;
-			try {
-				final RandomAccessibleInterval<UnsignedByteType> hyperSlice = c.get();
-
-				assertEquals(3, hyperSlice.numDimensions());
-				assertEquals(hyperSlice.dimension(0), xSize);
-				assertEquals(hyperSlice.dimension(1), ySize);
-				assertEquals(hyperSlice.dimension(2), numSlices);
-
-			} catch (final Exception e) {
-				System.out.println(e);
-			}
+			final RandomAccessibleInterval<UnsignedByteType> hyperSlice = c.get();
+			assertEquals(3, hyperSlice.numDimensions());
+			assertEquals(hyperSlice.dimension(0), xSize);
+			assertEquals(hyperSlice.dimension(1), ySize);
+			assertEquals(hyperSlice.dimension(2), numSlices);
 		}
 
 		assertEquals(numChannels * numTimePoints, numHyperSlices);
