@@ -28,76 +28,38 @@
  * #L%
  */
 
-package net.imagej.ops.create;
+package net.imagej.ops.create.kernelLog;
 
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.real.FloatType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Test;
 
 /**
- * Kernel generation test class.
+ * Tests {@link CreateKernelLogDoubleType} and
+ * {@link CreateKernelLogSymmetricDoubleType}.
  * 
  * @author Brian Northan
+ * @author Curtis Rueden
  */
-public class CreateKernelTest extends AbstractOpTest {
+public class CreateKernelLogTest extends AbstractOpTest {
 
 	@Test
-	public void test() {
+	public void testKernelLog() {
+		final double sigma = 5.0;
+		final double[] sigmas = {sigma, sigma};
 
-		double sigma = 5.0;
+		final RandomAccessibleInterval<DoubleType> logKernel = //
+			ops.create().kernelLog(sigma, sigmas.length);
 
-		int numDimensions = 2;
-
-		double[] sigmas = new double[numDimensions];
-
-		for (int i = 0; i < numDimensions; i++) {
-			sigmas[i] = sigma;
-		}
-
-		final RandomAccessibleInterval<FloatType> gaussianKernel = ops.create()
-			.kernelGauss(sigma, numDimensions, new FloatType());
-
-		final RandomAccessibleInterval<FloatType> gaussianKernel2 = ops.create()
-			.kernelGauss(sigmas, new FloatType());
-
-		final RandomAccessibleInterval<FloatType> logKernel = ops.create()
-			.kernelLog(sigma, numDimensions, new FloatType());
-
-		final RandomAccessibleInterval<FloatType> logKernel2 = ops.create()
-			.kernelLog(sigmas, new FloatType());
-
-		assertEquals(gaussianKernel.dimension(1), 31);
-		assertEquals(gaussianKernel2.dimension(1), 31);
+		final RandomAccessibleInterval<DoubleType> logKernel2 = //
+			ops.create().kernelLog(sigmas);
 
 		assertEquals(logKernel.dimension(1), 27);
 		assertEquals(logKernel2.dimension(1), 27);
-
-	}
-
-	@Test
-	public void testDefaults() {
-
-		double sigma = 5.0;
-
-		int numDimensions = 2;
-
-		double[] sigmas = new double[numDimensions];
-
-		for (int i = 0; i < numDimensions; i++) {
-			sigmas[i] = sigma;
-		}
-
-		final RandomAccessibleInterval<FloatType> gaussianKernel = ops.create()
-			.kernelGauss(sigmas, new FloatType());
-		assertEquals(gaussianKernel.dimension(1), 31);
-
-		final RandomAccessibleInterval<FloatType> logKernel = ops.create()
-			.kernelLog(sigmas, new FloatType());
-		assertEquals(logKernel.dimension(1), 27);
 	}
 
 }

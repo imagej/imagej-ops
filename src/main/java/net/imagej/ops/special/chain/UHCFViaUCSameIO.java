@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -30,31 +30,18 @@
 
 package net.imagej.ops.special.chain;
 
-import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
-import net.imagej.ops.special.inplace.UnaryInplaceOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.hybrid.UnaryHybridCF;
 
 /**
- * Base class for {@link UnaryInplaceOp} implementations that delegate to other
- * {@link UnaryInplaceOp} implementations.
- * 
+ * Base class for {@link UnaryHybridCF}s that delegate to
+ * {@link UnaryComputerOp}s with the same input and output types.
+ *
  * @author Curtis Rueden
+ * @param <I> type of input (for both the op and its worker)
+ * @param <O> type of output (for both the op and its worker)
+ * @see UHCFViaUC
  */
-public abstract class InplaceViaInplace<I, O extends I> extends
-	AbstractUnaryInplaceOp<O>
-{
-
-	private UnaryInplaceOp<I, O> worker;
-
-	public abstract UnaryInplaceOp<I, O> createWorker(I t);
-
-	@Override
-	public void initialize() {
-		worker = createWorker(in());
-	}
-
-	@Override
-	public void mutate(final O arg) {
-		worker.mutate(arg);
-	}
-
+public abstract class UHCFViaUCSameIO<I, O> extends UHCFViaUC<I, O, I, O> {
+	// NB: No implementation needed.
 }

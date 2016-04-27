@@ -28,32 +28,39 @@
  * #L%
  */
 
-package net.imagej.ops.special.chain;
+package net.imagej.ops.create.kernelGauss;
 
-import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
-import net.imagej.ops.special.computer.BinaryComputerOp;
+import static org.junit.Assert.assertEquals;
+
+import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.create.kernelGauss.CreateKernelGaussDoubleType;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.numeric.real.DoubleType;
+
+import org.junit.Test;
 
 /**
- * Base class for {@link BinaryComputerOp} implementations that delegate to
- * other {@link BinaryComputerOp} implementations.
+ * Tests {@link CreateKernelGaussDoubleType} and
+ * {@link CreateKernelGaussSymmetricDoubleType}.
  * 
+ * @author Brian Northan
  * @author Curtis Rueden
  */
-public abstract class BinaryComputerViaComputer<I1, I2, O> extends
-	AbstractBinaryComputerOp<I1, I2, O> implements
-	DelegatingBinaryOp<BinaryComputerOp<I1, I2, O>, I1, I2, O>
-{
+public class CreateKernelGaussTest extends AbstractOpTest {
 
-	private BinaryComputerOp<I1, I2, O> worker;
+	@Test
+	public void testKernelGauss() {
+		final double sigma = 5.0;
+		final double[] sigmas = {sigma, sigma};
 
-	@Override
-	public void initialize() {
-		worker = createWorker(in1(), in2());
-	}
+		final RandomAccessibleInterval<DoubleType> gaussianKernel = //
+			ops.create().kernelGauss(sigma, sigmas.length);
 
-	@Override
-	public void compute2(final I1 input1, final I2 input2, final O output) {
-		worker.compute2(input1, input2, output);
+		final RandomAccessibleInterval<DoubleType> gaussianKernel2 = //
+			ops.create().kernelGauss(sigmas);
+
+		assertEquals(gaussianKernel.dimension(1), 31);
+		assertEquals(gaussianKernel2.dimension(1), 31);
 	}
 
 }

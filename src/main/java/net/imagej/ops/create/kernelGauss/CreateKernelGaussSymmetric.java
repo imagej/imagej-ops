@@ -43,11 +43,11 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Creates a Gaussian Kernel
+ * Creates a symmetric Gaussian kernel.
  *
  * @author Christian Dietz (University of Konstanz)
  * @author Brian Northan
- * @param <T>
+ * @param <T> type of kernel image to create
  */
 @Plugin(type = Ops.Create.KernelGauss.class)
 public class CreateKernelGaussSymmetric<T extends ComplexType<T>> extends

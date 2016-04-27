@@ -355,7 +355,7 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.create.kernel.CreateKernel2D.class, new Object[] {
+				Ops.Create.Kernel.class, new Object[] {
 					values });
 		return result;
 	}
@@ -367,12 +367,25 @@ public class CreateNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.create.kernel.CreateKernel2D.class, values, outType);
+			(RandomAccessibleInterval<T>) ops().run(Ops.Create.Kernel.class, values,
+				outType);
 		return result;
 	}
 
 	// -- kernelGauss --
+
+	/** Executes the "kernelGauss" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.create.kernelGauss.CreateKernelGaussDoubleType.class)
+	public RandomAccessibleInterval<DoubleType> kernelGauss(
+		final double... sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<DoubleType> result =
+			(RandomAccessibleInterval<DoubleType>) ops().run(
+				Ops.Create.KernelGauss.class, sigma);
+		return result;
+	}
 
 	/** Executes the "kernelGauss" operation on the given arguments. */
 	@OpMethod(
@@ -382,9 +395,21 @@ public class CreateNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric.class,
+			(RandomAccessibleInterval<T>) ops().run(Ops.Create.KernelGauss.class,
 				sigma, numDimensions, outType);
+		return result;
+	}
+
+	/** Executes the "kernelGauss" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetricDoubleType.class)
+	public RandomAccessibleInterval<DoubleType> kernelGauss(final Double sigma,
+		final int numDimensions)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<DoubleType> result =
+			(RandomAccessibleInterval<DoubleType>) ops().run(
+				Ops.Create.KernelGauss.class, sigma, numDimensions);
 		return result;
 	}
 
@@ -396,13 +421,23 @@ public class CreateNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.create.kernelGauss.DefaultCreateKernelGauss.class, sigma,
-				outType);
+			(RandomAccessibleInterval<T>) ops().run(Ops.Create.KernelGauss.class,
+				sigma, outType);
 		return result;
 	}
 
 	// -- kernelLog --
+
+	/** Executes the "kernelLog" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.create.kernelLog.CreateKernelLogDoubleType.class)
+	public RandomAccessibleInterval<DoubleType> kernelLog(final double... sigma) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<DoubleType> result =
+			(RandomAccessibleInterval<DoubleType>) ops().run(
+				Ops.Create.KernelLog.class, sigma);
+		return result;
+	}
 
 	/** Executes the "kernelLog" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric.class)
@@ -411,9 +446,21 @@ public class CreateNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric.class, sigma,
+			(RandomAccessibleInterval<T>) ops().run(Ops.Create.KernelLog.class, sigma,
 				numDimensions, outType);
+		return result;
+	}
+
+	/** Executes the "kernelLog" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.create.kernelLog.CreateKernelLogSymmetricDoubleType.class)
+	public RandomAccessibleInterval<DoubleType> kernelLog(final Double sigma,
+		final int numDimensions)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<DoubleType> result =
+			(RandomAccessibleInterval<DoubleType>) ops().run(
+				Ops.Create.KernelLog.class, sigma, numDimensions);
 		return result;
 	}
 
@@ -423,8 +470,9 @@ public class CreateNamespace extends AbstractNamespace {
 		final double[] sigma, final T outType)
 	{
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops().run(
-			net.imagej.ops.create.kernelLog.DefaultCreateKernelLog.class, sigma, outType);
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(Ops.Create.KernelLog.class, sigma,
+				outType);
 		return result;
 	}
 

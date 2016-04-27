@@ -30,34 +30,16 @@
 
 package net.imagej.ops.special.chain;
 
-import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
-import net.imagej.ops.special.hybrid.UnaryHybridCF;
+import net.imagej.ops.special.computer.BinaryComputerOp;
 
 /**
- * Base class for {@link UnaryHybridCF} implementations that delegate to other
- * {@link UnaryHybridCF} implementations.
+ * Base class for {@link BinaryComputerOp}s that delegate to other
+ * {@link BinaryComputerOp}s with all matching types (inputs same as output).
  * 
  * @author Curtis Rueden
+ * @param <IO> type of inputs and output (for both the op and its worker)
+ * @see BCViaBC
  */
-public abstract class HybridViaHybrid<I, O> extends AbstractUnaryHybridCF<I, O>
-	implements DelegatingUnaryOp<UnaryHybridCF<I, O>, I, O>
-{
-
-	private UnaryHybridCF<I, O> worker;
-
-	@Override
-	public O createOutput(final I input) {
-		return worker.createOutput(input);
-	}
-
-	@Override
-	public void initialize() {
-		worker = createWorker(in());
-	}
-
-	@Override
-	public void compute1(final I input, final O output) {
-		worker.compute1(input, output);
-	}
-
+public abstract class BCViaBCAllSame<IO> extends BCViaBCSameIO<IO, IO, IO> {
+	// NB: No implementation needed.
 }

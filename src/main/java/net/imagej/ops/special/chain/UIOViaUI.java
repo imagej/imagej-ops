@@ -30,30 +30,34 @@
 
 package net.imagej.ops.special.chain;
 
-import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
-import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
+import net.imagej.ops.special.inplace.UnaryInplaceOnlyOp;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
 /**
- * Base class for {@link BinaryFunctionOp} implementations that delegate to
- * other {@link BinaryFunctionOp} implementations.
+ * Base class for {@link UnaryInplaceOnlyOp}s that delegate to
+ * {@link UnaryInplaceOp}s.
  * 
  * @author Curtis Rueden
+ * @param <A> type of input + output
+ * @param <DI> type of input accepted by the worker op
+ * @param <DO> type of output accepted by the worker op
  */
-public abstract class BinaryFunctionViaFunction<I1, I2, O> extends
-	AbstractBinaryFunctionOp<I1, I2, O> implements
-	DelegatingBinaryOp<BinaryFunctionOp<I1, I2, O>, I1, I2, O>
+public abstract class UIOViaUI<A extends DO, DI, DO extends DI> extends
+	AbstractUnaryInplaceOp<A> implements
+	DelegatingUnaryOp<A, A, DI, DO, UnaryInplaceOp<DI, DO>>
 {
 
-	private BinaryFunctionOp<I1, I2, O> worker;
+	private UnaryInplaceOp<DI, DO> worker;
 
 	@Override
 	public void initialize() {
-		worker = createWorker(in1(), in2());
+		worker = createWorker(in());
 	}
 
 	@Override
-	public O compute2(final I1 input1, final I2 input2) {
-		return worker.compute2(input1, input2);
+	public void mutate(final A arg) {
+		worker.mutate(arg);
 	}
 
 }

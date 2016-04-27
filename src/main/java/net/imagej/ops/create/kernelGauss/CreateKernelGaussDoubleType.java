@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,32 +28,36 @@
  * #L%
  */
 
-package net.imagej.ops.special.chain;
+package net.imagej.ops.create.kernelGauss;
 
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.Ops;
+import net.imagej.ops.special.chain.UFViaUFSameIO;
+import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.plugin.Plugin;
 
 /**
- * Base class for {@link UnaryFunctionOp} implementations that delegate to other
- * {@link UnaryFunctionOp} implementations.
- * 
+ * Creates a Gaussian kernel of type {@link DoubleType}.
+ *
  * @author Curtis Rueden
  */
-public abstract class FunctionViaFunction<I, O> extends
-	AbstractUnaryFunctionOp<I, O> implements
-	DelegatingUnaryOp<UnaryFunctionOp<I, O>, I, O>
+@Plugin(type = Ops.Create.KernelGauss.class)
+public class CreateKernelGaussDoubleType extends
+	UFViaUFSameIO<double[], RandomAccessibleInterval<DoubleType>> implements
+	Ops.Create.KernelGauss
 {
 
-	private UnaryFunctionOp<I, O> worker;
-
 	@Override
-	public void initialize() {
-		worker = createWorker(in());
-	}
-
-	@Override
-	public O compute1(final I input) {
-		return worker.compute1(input);
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public UnaryFunctionOp<double[], RandomAccessibleInterval<DoubleType>>
+		createWorker(final double[] t)
+	{
+		return (UnaryFunctionOp) Functions.unary(ops(),
+			Ops.Create.KernelGauss.class, RandomAccessibleInterval.class,
+			double[].class, new DoubleType());
 	}
 
 }

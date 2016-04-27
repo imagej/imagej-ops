@@ -30,54 +30,18 @@
 
 package net.imagej.ops.special.chain;
 
-import net.imagej.ops.special.UnaryOutputFactory;
 import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.UnaryFunctionOp;
-import net.imagej.ops.special.hybrid.UnaryHybridCF;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 
 /**
- * Base class for {@link UnaryFunctionOp} implementations that delegate to
- * {@link UnaryComputerOp} implementations.
- * <p>
- * This is mostly useful when the {@link UnaryComputerOp} in question has a
- * generic type as output, which needs to be narrowed to a concrete type for the
- * purposes of the {@link UnaryFunctionOp} portion's return type. In this
- * scenario, a {@link UnaryHybridCF} cannot be used directly with type-safe
- * generics.
- * </p>
- * <p>
- * For example, a {@link UnaryComputerOp} whose output variable is a
- * {@code T extends RealType<T>} cannot be a {@link UnaryHybridCF} because we do
- * not know at runtime which sort of {@link RealType} matches the caller's
- * {@code T} parameter. However, a separate {@link UnaryFunctionOp} can be
- * created whose output is typed on e.g. {@link DoubleType}, with the
- * computation delegating to the wrapped {@link UnaryComputerOp}.
- * </p>
+ * Base class for {@link UnaryFunctionOp}s that delegate to
+ * {@link UnaryComputerOp}s with the same input and output types.
+ * 
+ * @author Curtis Rueden
+ * @param <I> type of input (for both the op and its worker)
+ * @param <O> type of output (for both the op and its worker)
+ * @see UFViaUC
  */
-public abstract class FunctionViaComputer<I, O> extends
-	AbstractUnaryFunctionOp<I, O> implements
-	DelegatingUnaryOp<UnaryComputerOp<I, O>, I, O>, UnaryOutputFactory<I, O>
-{
-
-	private UnaryComputerOp<I, O> worker;
-
-	// -- UnaryFunctionOp methods --
-
-	@Override
-	public O compute1(final I input) {
-		final O output = createOutput(input);
-		worker.compute1(input, output);
-		return output;
-	}
-
-	// -- Initializable methods --
-
-	@Override
-	public void initialize() {
-		worker = createWorker(in());
-	}
-
+public abstract class UFViaUCSameIO<I, O> extends UFViaUC<I, O, I, O> {
+	// NB: No implementation needed.
 }

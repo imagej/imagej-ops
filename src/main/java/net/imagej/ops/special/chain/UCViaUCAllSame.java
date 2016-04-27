@@ -28,41 +28,18 @@
  * #L%
  */
 
-package net.imagej.ops.create.img;
+package net.imagej.ops.special.chain;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.special.chain.UFViaUFSameIO;
-import net.imagej.ops.special.function.Functions;
-import net.imagej.ops.special.function.UnaryFunctionOp;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
-import net.imglib2.type.NativeType;
-import net.imglib2.util.Util;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 
 /**
- * Create an {@link Img} from a {@link RandomAccessibleInterval} using its type
- * {@code T}.
- *
+ * Base class for {@link UnaryComputerOp}s that delegate to other
+ * {@link UnaryComputerOp}s with all matching types (input same as output).
+ * 
  * @author Curtis Rueden
- * @param <T>
+ * @param <IO> type of input and output (for both the op and its worker)
+ * @see UCViaUC
  */
-@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
-public class CreateImgFromRAI<T extends NativeType<T>> extends
-	UFViaUFSameIO<RandomAccessibleInterval<T>, Img<T>> implements
-	Ops.Create.Img
-{
-
-	@Override
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public UnaryFunctionOp<RandomAccessibleInterval<T>, Img<T>> createWorker(
-		final RandomAccessibleInterval<T> input)
-	{
-		// NB: Intended to match CreateImgFromDimsAndType.
-		return (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
-			Img.class, input, Util.getTypeFromInterval(input));
-	}
-
+public abstract class UCViaUCAllSame<IO> extends UCViaUCSameIO<IO, IO> {
+	// NB: No implementation needed.
 }

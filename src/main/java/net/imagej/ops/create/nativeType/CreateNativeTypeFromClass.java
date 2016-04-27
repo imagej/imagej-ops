@@ -31,7 +31,7 @@
 package net.imagej.ops.create.nativeType;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.chain.FunctionViaFunction;
+import net.imagej.ops.special.chain.UFViaUFSameIO;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.type.NativeType;
@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.NativeType.class)
 public class CreateNativeTypeFromClass<T extends NativeType<T>> extends
-	FunctionViaFunction<Class<T>, T> implements Ops.Create.NativeType
+	UFViaUFSameIO<Class<T>, T> implements Ops.Create.NativeType
 {
 
 	@Override

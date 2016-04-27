@@ -31,8 +31,8 @@
 package net.imagej.ops.morphology.extractHoles;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.chain.FunctionViaComputer;
 import net.imagej.ops.special.chain.RAIs;
+import net.imagej.ops.special.chain.UFViaUCAllSame;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.RandomAccessibleInterval;
@@ -48,8 +48,8 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Morphology.ExtractHoles.class)
 public class DefaultExtractHolesFunction<T extends BooleanType<T>> extends
-	FunctionViaComputer<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
-	implements Ops.Morphology.ExtractHoles
+	UFViaUCAllSame<RandomAccessibleInterval<T>> implements
+	Ops.Morphology.ExtractHoles
 {
 
 	@Parameter(required = false)

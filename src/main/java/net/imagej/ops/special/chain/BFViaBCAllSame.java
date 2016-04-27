@@ -30,30 +30,17 @@
 
 package net.imagej.ops.special.chain;
 
-import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
-import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imagej.ops.special.function.BinaryFunctionOp;
 
 /**
- * Base class for {@link UnaryComputerOp} implementations that delegate to other
- * {@link UnaryComputerOp} implementations.
+ * Base class for {@link BinaryFunctionOp}s that delegate to
+ * {@link BinaryComputerOp}s with all matching types (inputs same as output).
  * 
  * @author Curtis Rueden
+ * @param <IO> type of inputs and output (for both the op and its worker)
+ * @see BFViaBC
  */
-public abstract class ComputerViaComputer<I, O> extends
-	AbstractUnaryComputerOp<I, O> implements
-	DelegatingUnaryOp<UnaryComputerOp<I, O>, I, O>
-{
-
-	private UnaryComputerOp<I, O> worker;
-
-	@Override
-	public void initialize() {
-		worker = createWorker(in());
-	}
-
-	@Override
-	public void compute1(final I input, final O output) {
-		worker.compute1(input, output);
-	}
-
+public abstract class BFViaBCAllSame<IO> extends BFViaBCSameIO<IO, IO, IO> {
+	// NB: No implementation needed.
 }

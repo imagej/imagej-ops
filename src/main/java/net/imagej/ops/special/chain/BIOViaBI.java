@@ -30,22 +30,25 @@
 
 package net.imagej.ops.special.chain;
 
-import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
-import net.imagej.ops.special.function.BinaryFunctionOp;
-import net.imagej.ops.special.hybrid.BinaryHybridCF;
+import net.imagej.ops.special.inplace.AbstractBinaryInplaceOp;
+import net.imagej.ops.special.inplace.BinaryInplaceOnlyOp;
+import net.imagej.ops.special.inplace.BinaryInplaceOp;
 
 /**
- * Base class for {@link BinaryFunctionOp} implementations that delegate to
- * other {@link BinaryFunctionOp} implementations.
+ * Base class for {@link BinaryInplaceOnlyOp}s that delegate to
+ * {@link BinaryInplaceOp}s.
  * 
  * @author Curtis Rueden
+ * @param <A> type of input + output
+ * @param <DI> type of input accepted by the worker op
+ * @param <DO> type of output accepted by the worker op
  */
-public abstract class BinaryHybridViaHybrid<I1, I2, O> extends
-	AbstractBinaryFunctionOp<I1, I2, O> implements
-	DelegatingBinaryOp<BinaryHybridCF<I1, I2, O>, I1, I2, O>
+public abstract class BIOViaBI<A extends DO, DI, DO extends DI> extends
+	AbstractBinaryInplaceOp<A> implements
+	DelegatingBinaryOp<A, A, A, DI, DI, DO, BinaryInplaceOp<DI, DO>>
 {
 
-	private BinaryHybridCF<I1, I2, O> worker;
+	private BinaryInplaceOp<DI, DO> worker;
 
 	@Override
 	public void initialize() {
@@ -53,8 +56,13 @@ public abstract class BinaryHybridViaHybrid<I1, I2, O> extends
 	}
 
 	@Override
-	public O compute2(final I1 input1, final I2 input2) {
-		return worker.compute2(input1, input2);
+	public void mutate1(final A arg, final A in) {
+		worker.mutate1(arg, in);
+	}
+
+	@Override
+	public void mutate2(final A in, final A arg) {
+		worker.mutate2(in, arg);
 	}
 
 }

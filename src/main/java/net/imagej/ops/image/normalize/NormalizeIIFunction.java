@@ -31,7 +31,8 @@
 package net.imagej.ops.image.normalize;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.chain.FunctionViaComputer;
+import net.imagej.ops.special.chain.UFViaUC;
+import net.imagej.ops.special.chain.UFViaUCAllSame;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.Functions;
@@ -54,8 +55,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Image.Normalize.class)
 public class NormalizeIIFunction<T extends RealType<T>> extends
-	FunctionViaComputer<IterableInterval<T>, IterableInterval<T>> implements
-	Ops.Image.Normalize
+	UFViaUCAllSame<IterableInterval<T>> implements Ops.Image.Normalize
 {
 
 	@Parameter(required = false)
