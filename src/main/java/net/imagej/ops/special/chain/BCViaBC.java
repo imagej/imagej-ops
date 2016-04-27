@@ -30,22 +30,27 @@
 
 package net.imagej.ops.special.chain;
 
-import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
-import net.imagej.ops.special.function.BinaryFunctionOp;
-import net.imagej.ops.special.hybrid.BinaryHybridCF;
+import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
+import net.imagej.ops.special.computer.BinaryComputerOp;
 
 /**
- * Base class for {@link BinaryFunctionOp} implementations that delegate to
- * other {@link BinaryFunctionOp} implementations.
+ * Base class for {@link BinaryComputerOp}s that delegate to other
+ * {@link BinaryComputerOp}s.
  * 
  * @author Curtis Rueden
+ * @param <I1> type of first input
+ * @param <I2> type of second input
+ * @param <O> type of output
+ * @param <DI1> type of first input accepted by the worker op
+ * @param <DI2> type of second input accepted by the worker op
+ * @param <DO> type of output accepted by the worker op
  */
-public abstract class BinaryHybridViaHybrid<I1, I2, O> extends
-	AbstractBinaryFunctionOp<I1, I2, O> implements
-	DelegatingBinaryOp<BinaryHybridCF<I1, I2, O>, I1, I2, O>
+public abstract class BCViaBC<I1 extends DI1, I2 extends DI2, O extends DO, DI1, DI2, DO>
+	extends AbstractBinaryComputerOp<I1, I2, O> implements
+	DelegatingBinaryOp<I1, I2, O, DI1, DI2, DO, BinaryComputerOp<DI1, DI2, DO>>
 {
 
-	private BinaryHybridCF<I1, I2, O> worker;
+	private BinaryComputerOp<DI1, DI2, DO> worker;
 
 	@Override
 	public void initialize() {
@@ -53,8 +58,8 @@ public abstract class BinaryHybridViaHybrid<I1, I2, O> extends
 	}
 
 	@Override
-	public O compute2(final I1 input1, final I2 input2) {
-		return worker.compute2(input1, input2);
+	public void compute2(final I1 input1, final I2 input2, final O output) {
+		worker.compute2(input1, input2, output);
 	}
 
 }

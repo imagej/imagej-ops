@@ -30,30 +30,17 @@
 
 package net.imagej.ops.special.chain;
 
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
-import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 
 /**
- * Base class for {@link UnaryFunctionOp} implementations that delegate to other
- * {@link UnaryFunctionOp} implementations.
+ * Base class for {@link UnaryComputerOp}s that delegate to other
+ * {@link UnaryComputerOp}s with the same input and output types.
  * 
  * @author Curtis Rueden
+ * @param <I> type of input (for both the op and its worker)
+ * @param <O> type of output (for both the op and its worker)
+ * @see UCViaUC
  */
-public abstract class FunctionViaFunction<I, O> extends
-	AbstractUnaryFunctionOp<I, O> implements
-	DelegatingUnaryOp<UnaryFunctionOp<I, O>, I, O>
-{
-
-	private UnaryFunctionOp<I, O> worker;
-
-	@Override
-	public void initialize() {
-		worker = createWorker(in());
-	}
-
-	@Override
-	public O compute1(final I input) {
-		return worker.compute1(input);
-	}
-
+public abstract class UCViaUCSameIO<I, O> extends UCViaUC<I, O, I, O> {
+	// NB: No implementation needed.
 }

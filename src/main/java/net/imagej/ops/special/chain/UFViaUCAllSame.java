@@ -30,31 +30,17 @@
 
 package net.imagej.ops.special.chain;
 
-import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
-import net.imagej.ops.special.inplace.UnaryInplaceOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 
 /**
- * Base class for {@link UnaryInplaceOp} implementations that delegate to other
- * {@link UnaryInplaceOp} implementations.
+ * Base class for {@link UnaryFunctionOp}s that delegate to
+ * {@link UnaryComputerOp}s with all matching types (input same as output).
  * 
  * @author Curtis Rueden
+ * @param <IO> type of input and output (for both the op and its worker)
+ * @see UFViaUC
  */
-public abstract class InplaceViaInplace<I, O extends I> extends
-	AbstractUnaryInplaceOp<O>
-{
-
-	private UnaryInplaceOp<I, O> worker;
-
-	public abstract UnaryInplaceOp<I, O> createWorker(I t);
-
-	@Override
-	public void initialize() {
-		worker = createWorker(in());
-	}
-
-	@Override
-	public void mutate(final O arg) {
-		worker.mutate(arg);
-	}
-
+public abstract class UFViaUCAllSame<IO> extends UFViaUCSameIO<IO, IO> {
+	// NB: No implementation needed.
 }

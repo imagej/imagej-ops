@@ -28,41 +28,42 @@
  * #L%
  */
 
-package net.imagej.ops.create.img;
+package net.imagej.ops.special.chain;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.special.chain.UFViaUFSameIO;
-import net.imagej.ops.special.function.Functions;
-import net.imagej.ops.special.function.UnaryFunctionOp;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
-import net.imglib2.type.NativeType;
-import net.imglib2.util.Util;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.special.hybrid.AbstractBinaryHybridCF;
+import net.imagej.ops.special.hybrid.BinaryHybridCF;
 
 /**
- * Create an {@link Img} from a {@link RandomAccessibleInterval} using its type
- * {@code T}.
- *
+ * Base class for {@link BinaryHybridCF}s that delegate to
+ * {@link BinaryHybridCF}s.
+ * 
  * @author Curtis Rueden
- * @param <T>
+ * @param <I1> type of first input
+ * @param <I2> type of second input
+ * @param <O> type of output (for both the op and its worker)
+ * @param <DI1> type of first input accepted by the worker op
+ * @param <DI2> type of second input accepted by the worker op
  */
-@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
-public class CreateImgFromRAI<T extends NativeType<T>> extends
-	UFViaUFSameIO<RandomAccessibleInterval<T>, Img<T>> implements
-	Ops.Create.Img
+public abstract class BHCFViaBHCF<I1 extends DI1, I2 extends DI2, O, DI1, DI2>
+	extends AbstractBinaryHybridCF<I1, I2, O> implements
+	DelegatingBinaryOp<I1, I2, O, DI1, DI2, O, BinaryHybridCF<DI1, DI2, O>>
 {
 
+	private BinaryHybridCF<DI1, DI2, O> worker;
+
 	@Override
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public UnaryFunctionOp<RandomAccessibleInterval<T>, Img<T>> createWorker(
-		final RandomAccessibleInterval<T> input)
-	{
-		// NB: Intended to match CreateImgFromDimsAndType.
-		return (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
-			Img.class, input, Util.getTypeFromInterval(input));
+	public O createOutput(final I1 input1, final I2 input2) {
+		return worker.createOutput(input1, input2);
+	}
+
+	@Override
+	public void initialize() {
+		worker = createWorker(in1(), in2());
+	}
+
+	@Override
+	public void compute2(final I1 input1, final I2 input2, final O output) {
+		worker.compute2(input1, input2, output);
 	}
 
 }

@@ -33,15 +33,22 @@ package net.imagej.ops.special.chain;
 import net.imagej.ops.special.BinaryOp;
 
 /**
- * Base class for {@link BinaryOp} implementations that delegate to other
- * {@link BinaryOp} implementations.
+ * Base interface for {@link BinaryOp}s that delegate to other
+ * {@link BinaryOp}s.
  * 
  * @author Curtis Rueden
+ * @param <I1> type of first input
+ * @param <I2> type of second input
+ * @param <O> type of output
+ * @param <DI1> type of first input accepted by the worker op
+ * @param <DI2> type of second input accepted by the worker op
+ * @param <DO> type of output accepted by the worker op
+ * @param <OP> type of the worker op
  */
-public interface DelegatingBinaryOp<T extends BinaryOp<I1, I2, O>, I1, I2, O>
+public interface DelegatingBinaryOp<I1, I2, O, DI1, DI2, DO, OP extends BinaryOp<DI1, DI2, DO>>
 	extends BinaryOp<I1, I2, O>
 {
 
-	T createWorker(I1 t1, I2 t2);
+	OP createWorker(I1 t1, I2 t2);
 
 }

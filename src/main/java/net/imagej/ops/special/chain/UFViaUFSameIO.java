@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,41 +28,19 @@
  * #L%
  */
 
-package net.imagej.ops.create.img;
+package net.imagej.ops.special.chain;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.special.chain.UFViaUFSameIO;
-import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
-import net.imglib2.type.NativeType;
-import net.imglib2.util.Util;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
 
 /**
- * Create an {@link Img} from a {@link RandomAccessibleInterval} using its type
- * {@code T}.
+ * Base class for {@link UnaryFunctionOp}s that delegate to other
+ * {@link UnaryFunctionOp}s with the same input and output types.
  *
  * @author Curtis Rueden
- * @param <T>
+ * @param <I> type of input (for both the op and its worker)
+ * @param <O> type of output (for both the op and its worker)
+ * @see UFViaUF
  */
-@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
-public class CreateImgFromRAI<T extends NativeType<T>> extends
-	UFViaUFSameIO<RandomAccessibleInterval<T>, Img<T>> implements
-	Ops.Create.Img
-{
-
-	@Override
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public UnaryFunctionOp<RandomAccessibleInterval<T>, Img<T>> createWorker(
-		final RandomAccessibleInterval<T> input)
-	{
-		// NB: Intended to match CreateImgFromDimsAndType.
-		return (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
-			Img.class, input, Util.getTypeFromInterval(input));
-	}
-
+public abstract class UFViaUFSameIO<I, O> extends UFViaUF<I, O, I, O> {
+	// NB: No implementation needed.
 }

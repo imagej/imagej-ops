@@ -32,7 +32,7 @@ package net.imagej.ops.convert;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.chain.HybridViaComputer;
+import net.imagej.ops.special.chain.UHCFViaUCSameIO;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.IterableInterval;
@@ -88,7 +88,7 @@ public final class ConvertImages {
 	// -- Helper classes --
 
 	private abstract static class ConvertViaMap<I extends ComplexType<I>, O extends NativeType<O>>
-		extends HybridViaComputer<IterableInterval<I>, Img<O>>
+		extends UHCFViaUCSameIO<IterableInterval<I>, Img<O>>
 	{
 
 		private Class<? extends Op> opType;

@@ -28,41 +28,36 @@
  * #L%
  */
 
-package net.imagej.ops.create.img;
+package net.imagej.ops.special.chain;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.special.chain.UFViaUFSameIO;
-import net.imagej.ops.special.function.Functions;
-import net.imagej.ops.special.function.UnaryFunctionOp;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
-import net.imglib2.type.NativeType;
-import net.imglib2.util.Util;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 
 /**
- * Create an {@link Img} from a {@link RandomAccessibleInterval} using its type
- * {@code T}.
- *
+ * Base class for {@link UnaryComputerOp}s that delegate to other
+ * {@link UnaryComputerOp}s.
+ * 
  * @author Curtis Rueden
- * @param <T>
+ * @param <I> type of input
+ * @param <O> type of output
+ * @param <DI> type of input accepted by the worker op
+ * @param <DO> type of output accepted by the worker op
  */
-@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
-public class CreateImgFromRAI<T extends NativeType<T>> extends
-	UFViaUFSameIO<RandomAccessibleInterval<T>, Img<T>> implements
-	Ops.Create.Img
+public abstract class UCViaUC<I extends DI, O extends DO, DI, DO> extends
+	AbstractUnaryComputerOp<I, O> implements
+	DelegatingUnaryOp<I, O, DI, DO, UnaryComputerOp<DI, DO>>
 {
 
+	private UnaryComputerOp<DI, DO> worker;
+
 	@Override
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public UnaryFunctionOp<RandomAccessibleInterval<T>, Img<T>> createWorker(
-		final RandomAccessibleInterval<T> input)
-	{
-		// NB: Intended to match CreateImgFromDimsAndType.
-		return (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
-			Img.class, input, Util.getTypeFromInterval(input));
+	public void initialize() {
+		worker = createWorker(in());
+	}
+
+	@Override
+	public void compute1(final I input, final O output) {
+		worker.compute1(input, output);
 	}
 
 }
