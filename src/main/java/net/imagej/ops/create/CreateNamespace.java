@@ -355,7 +355,7 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.create.kernel.CreateKernel2D.class, new Object[] {
+				Ops.Create.Kernel.class, new Object[] {
 					values });
 		return result;
 	}
@@ -367,8 +367,8 @@ public class CreateNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.create.kernel.CreateKernel2D.class, values, outType);
+			(RandomAccessibleInterval<T>) ops().run(Ops.Create.Kernel.class, values,
+				outType);
 		return result;
 	}
 
@@ -382,8 +382,7 @@ public class CreateNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric.class,
+			(RandomAccessibleInterval<T>) ops().run(Ops.Create.KernelGauss.class,
 				sigma, numDimensions, outType);
 		return result;
 	}
@@ -396,9 +395,8 @@ public class CreateNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.create.kernelGauss.DefaultCreateKernelGauss.class, sigma,
-				outType);
+			(RandomAccessibleInterval<T>) ops().run(Ops.Create.KernelGauss.class,
+				sigma, outType);
 		return result;
 	}
 
@@ -411,8 +409,7 @@ public class CreateNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric.class, sigma,
+			(RandomAccessibleInterval<T>) ops().run(Ops.Create.KernelLog.class, sigma,
 				numDimensions, outType);
 		return result;
 	}
@@ -423,8 +420,9 @@ public class CreateNamespace extends AbstractNamespace {
 		final double[] sigma, final T outType)
 	{
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops().run(
-			net.imagej.ops.create.kernelLog.DefaultCreateKernelLog.class, sigma, outType);
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(Ops.Create.KernelLog.class, sigma,
+				outType);
 		return result;
 	}
 
