@@ -46,8 +46,6 @@ import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
-import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
-import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Util;
@@ -78,15 +76,8 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 	Ops.Deconvolve.RichardsonLucy
 {
 
-	// TODO: think through whether we can always have a statusservice.
 	@Parameter(required = false)
 	private StatusService status;
-
-	/**
-	 * An OutOfBoundsFactory which defines the extension strategy
-	 */
-	@Parameter(required = false)
-	private OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput;
 
 	/**
 	 * Op that computes Richardson Lucy update TODO: figure out best way to
@@ -192,13 +183,6 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 	protected void preProcess(RandomAccessibleInterval<I> in,
 		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
-
-		// if no output out of bounds factory exists create the obf for output
-		if (obfOutput == null) {
-			obfOutput =
-				new OutOfBoundsConstantValueFactory<O, RandomAccessibleInterval<O>>(Util
-					.getTypeFromInterval(out).createVariable());
-		}
 
 		// create image for the estimate, this image is defined over the entire
 		// convolution interval
