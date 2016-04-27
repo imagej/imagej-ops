@@ -52,7 +52,6 @@ import net.imglib2.FinalInterval;
 import net.imglib2.Point;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
-import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Util;
@@ -63,7 +62,6 @@ import org.scijava.Priority;
 import org.scijava.app.StatusService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
-import org.scijava.ui.UIService;
 
 /**
  * TODO: This class repeats parts of RichardsonLucyC -- figure out best way to
@@ -88,9 +86,6 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 
 	@Parameter(required = false)
 	private StatusService status;
-
-	@Parameter(required = false)
-	private UIService ui;
 
 	/**
 	 * TODO: review and document! - k is the size of the measurement window. That
@@ -119,7 +114,7 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 
 	private BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> rlCorrection;
 
-	private BinaryInplace1Op<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>,RandomAccessibleInterval<O>> divide;
+	private BinaryInplace1Op<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> divide;
 
 	private UnaryFunctionOp<Dimensions, Img<O>> create;
 
@@ -149,8 +144,9 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
 			getFFTInput(), getFFTKernel());
 
-		divide = (BinaryInplace1Op) Inplaces.binary1(ops(), DivideHandleZeroMap.class,
-			RandomAccessibleInterval.class,RandomAccessibleInterval.class);
+		divide = (BinaryInplace1Op) Inplaces.binary1(ops(),
+			DivideHandleZeroMap.class, RandomAccessibleInterval.class,
+			RandomAccessibleInterval.class);
 
 		fftIn = (UnaryComputerOp) Computers.unary(ops(), FFTMethodsOpC.class,
 			getFFTInput(), RandomAccessibleInterval.class);
@@ -181,8 +177,8 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 			}
 
 			// create reblurred by convolving kernel with estimate
-			// NOTE: the FFT of the PSF of the kernel is performed in "preprocess" so 
-			// no need to pass it in here. 
+			// NOTE: the FFT of the PSF of the kernel is performed in "preprocess" so
+			// no need to pass it in here.
 			convolver.compute1(this.getRAIExtendedEstimate(), this
 				.getRAIExtendedReblurred());
 
@@ -195,7 +191,7 @@ public class RichardsonLucyNonCirculantC<I extends RealType<I>, O extends RealTy
 
 			// normalize for non-circulant deconvolution
 			divide.mutate1(normalization, getRAIExtendedEstimate());
-			
+
 			// accelerate (take larger step)
 			if (getAccelerator() != null) {
 				getAccelerator().mutate(getRAIExtendedEstimate());
