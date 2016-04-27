@@ -1,0 +1,6 @@
+# Generated binary arithmetic ops with IterableIntervals and output to
+# IterableIntervals.
+
+[IIToIIOutputII.java]
+
+ops = ["And", "Or", "Xor"]

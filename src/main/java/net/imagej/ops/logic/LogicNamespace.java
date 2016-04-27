@@ -35,6 +35,9 @@ import java.util.List;
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
+import net.imagej.ops.Ops;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.Type;
 import net.imglib2.type.logic.BoolType;
@@ -56,6 +59,64 @@ public class LogicNamespace extends AbstractNamespace {
 		final boolean result =
 			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.BooleanAnd.class,
 				a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.BooleanTypeLogic.And.class)
+	public <T extends BooleanType<T>> T and(final T in1, final T in2) {
+		@SuppressWarnings("unchecked")
+		final T result = (T) ops().run(Ops.Logic.And.class, in1, in2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.BooleanTypeLogic.And.class)
+	public <T extends BooleanType<T>> T and(final T out, final T in1,
+		final T in2)
+	{
+		@SuppressWarnings("unchecked")
+		final T result = (T) ops().run(Ops.Logic.And.class, out, in1, in2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.IIToIIOutputII.And.class)
+	public <T extends BooleanType<T>> IterableInterval<T> and(
+		final IterableInterval<T> in1, final IterableInterval<T> in2)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			Ops.Logic.And.class, in1, in2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.IIToIIOutputII.And.class)
+	public <T extends BooleanType<T>> IterableInterval<T> and(
+		final IterableInterval<T> out, final IterableInterval<T> in1,
+		final IterableInterval<T> in2)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			Ops.Logic.And.class, out, in1, in2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.IIToRAIOutputII.And.class)
+	public <T extends BooleanType<T>> IterableInterval<T> and(
+		final IterableInterval<T> in1, final RandomAccessibleInterval<T> in2)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.logic.IIToRAIOutputII.And.class, in1, in2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.IIToRAIOutputII.And.class)
+	public <T extends BooleanType<T>> IterableInterval<T> and(
+		final IterableInterval<T> out, final IterableInterval<T> in1,
+		final RandomAccessibleInterval<T> in2)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			Ops.Logic.And.class, out, in1, in2);
 		return result;
 	}
 
@@ -433,6 +494,21 @@ public class LogicNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.logic.BooleanTypeLogic.Not.class)
+	public <T extends BooleanType<T>> T not(final T in) {
+		@SuppressWarnings("unchecked")
+		final T result = (T) ops().run(Ops.Logic.Not.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.BooleanTypeLogic.Not.class)
+	public <T extends BooleanType<T>> T not(final T out, final T in)
+	{
+		@SuppressWarnings("unchecked")
+		final T result = (T) ops().run(Ops.Logic.Not.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.logic.NotCondition.class)
 	public <T> BoolType not(final Object in, final Condition<T> c1) {
 		final BoolType result =
@@ -518,6 +594,64 @@ public class LogicNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.logic.BooleanTypeLogic.Or.class)
+	public <T extends BooleanType<T>> T or(final T in1, final T in2) {
+		@SuppressWarnings("unchecked")
+		final T result = (T) ops().run(Ops.Logic.Or.class, in1, in2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.BooleanTypeLogic.Or.class)
+	public <T extends BooleanType<T>> T or(final T out, final T in1,
+		final T in2)
+	{
+		@SuppressWarnings("unchecked")
+		final T result = (T) ops().run(Ops.Logic.Or.class, out, in1, in2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.IIToIIOutputII.Or.class)
+	public <T extends BooleanType<T>> IterableInterval<T> or(
+		final IterableInterval<T> in1, final IterableInterval<T> in2)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			Ops.Logic.Or.class, in1, in2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.IIToIIOutputII.Or.class)
+	public <T extends BooleanType<T>> IterableInterval<T> or(
+		final IterableInterval<T> out, final IterableInterval<T> in1,
+		final IterableInterval<T> in2)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			Ops.Logic.Or.class, out, in1, in2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.IIToRAIOutputII.Or.class)
+	public <T extends BooleanType<T>> IterableInterval<T> or(
+		final IterableInterval<T> in1, final RandomAccessibleInterval<T> in2)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			Ops.Logic.Or.class, in1, in2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.IIToRAIOutputII.Or.class)
+	public <T extends BooleanType<T>> IterableInterval<T> or(
+		final IterableInterval<T> out, final IterableInterval<T> in1,
+		final RandomAccessibleInterval<T> in2)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			Ops.Logic.Or.class, out, in1, in2);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.logic.OrCondition.class)
 	public <T> BoolType or(final Object in, final Condition<T> c1,
 		final Condition<T> c2)
@@ -562,6 +696,64 @@ public class LogicNamespace extends AbstractNamespace {
 		final boolean result =
 			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.BooleanXor.class,
 				a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.BooleanTypeLogic.Xor.class)
+	public <T extends BooleanType<T>> T xor(final T in1, final T in2) {
+		@SuppressWarnings("unchecked")
+		final T result = (T) ops().run(Ops.Logic.Xor.class, in1, in2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.BooleanTypeLogic.Xor.class)
+	public <T extends BooleanType<T>> T xor(final T out, final T in1,
+		final T in2)
+	{
+		@SuppressWarnings("unchecked")
+		final T result = (T) ops().run(Ops.Logic.Xor.class, out, in1, in2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.IIToIIOutputII.Xor.class)
+	public <T extends BooleanType<T>> IterableInterval<T> xor(
+		final IterableInterval<T> in1, final IterableInterval<T> in2)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.logic.IIToIIOutputII.Xor.class, in1, in2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.IIToIIOutputII.Xor.class)
+	public <T extends BooleanType<T>> IterableInterval<T> xor(
+		final IterableInterval<T> out, final IterableInterval<T> in1,
+		final IterableInterval<T> in2)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.logic.IIToIIOutputII.Xor.class, out, in1, in2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.IIToRAIOutputII.Xor.class)
+	public <T extends BooleanType<T>> IterableInterval<T> xor(
+		final IterableInterval<T> in1, final RandomAccessibleInterval<T> in2)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.logic.IIToRAIOutputII.Xor.class, in1, in2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.IIToRAIOutputII.Xor.class)
+	public <T extends BooleanType<T>> IterableInterval<T> xor(
+		final IterableInterval<T> out, final IterableInterval<T> in1,
+		final RandomAccessibleInterval<T> in2)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.logic.IIToRAIOutputII.Xor.class, out, in1, in2);
 		return result;
 	}
 
