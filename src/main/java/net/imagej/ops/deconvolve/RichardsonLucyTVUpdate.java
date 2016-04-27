@@ -33,7 +33,6 @@ package net.imagej.ops.deconvolve;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import net.imagej.ops.Ops;
-
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
@@ -81,9 +80,8 @@ public class RichardsonLucyTVUpdate<T extends RealType<T> & NativeType<T>, I ext
 	public void compute1(I correction, I estimate) {
 
 		if (variation == null) {
-			Type<T> type=Util.getTypeFromInterval(
-				correction);
-			
+			Type<T> type = Util.getTypeFromInterval(correction);
+
 			variation = ops().create().img(correction, type.createVariable());
 		}
 
@@ -382,24 +380,15 @@ public class RichardsonLucyTVUpdate<T extends RealType<T> & NativeType<T>, I ext
 									Dymb = (bijk - bjm) / hy;
 									Dzmc = (cijk - ckm) / hz;
 
-									// outRandom.setPosition(new int[] { i, j, k });
-									// outRandom.get().setReal(Dxma + Dymb + Dzmc);
-
 									outCursor.get().setReal(Dxma + Dymb + Dzmc);
 
-									// outRandom.get().setReal(1);
-
 								}
-								catch (final ArrayIndexOutOfBoundsException ex) {
-									// log.error("ERROR at: " + i + " " + j + " " + k);
-								}
+								catch (final ArrayIndexOutOfBoundsException ex) {}
 
 							} // end i
 						} // end j
 					} // end k
 
-					// long totaltime = System.currentTimeMillis() - starttime;
-					// if (log.isDebug()) log.debug("totaltime = " + totaltime);
 				}// end run
 			});
 		}

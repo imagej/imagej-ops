@@ -40,7 +40,7 @@ import org.scijava.app.StatusService;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract class for iterative FFT filters that perform on RAI. Boundary
+ * Abstract class for iterative FFT filters that perform on RAI. 
  * 
  * @author Brian Northan
  * @param <I>
@@ -52,8 +52,7 @@ public abstract class AbstractIterativeFFTFilterC<I extends RealType<I>, O exten
 	extends
 	AbstractFFTFilterC<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<C>>
 {
-	// TODO remove required=false? Can we always expect a Status Service?
-	@Parameter(required = false)
+	@Parameter(required=false)
 	private StatusService status;
 
 	/**
@@ -69,8 +68,7 @@ public abstract class AbstractIterativeFFTFilterC<I extends RealType<I>, O exten
 	private Interval imgConvolutionInterval;
 
 	/**
-	 * TODO: make this an op?? A boolean which indicates whether to perform
-	 * acceleration
+	 * An op which implements an acceleration strategy (takes a larger step at each iteration).
 	 */
 	@Parameter(required = false)
 	private UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> accelerator;
