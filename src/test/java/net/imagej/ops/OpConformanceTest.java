@@ -73,20 +73,17 @@ public class OpConformanceTest extends AbstractOpTest {
 			final String simpleName = afterDot(className);
 			final boolean inner = simpleName.contains("$");
 
-			final String expected;
-			if (inner) {
-				// inner classes use namespace package
-				// e.g.: net.imagej.ops.math.sec == net.imagej.ops.math.UnaryRealTypeMath$Sec
-				expected = "net.imagej.ops." + opNamespace;
-			}
-			else {
-				// regular op classes use full op name package
-				// e.g.: net.imagej.ops.morphology.close == net.imagej.ops.morphology.close.ListClose
-				expected = "net.imagej.ops." + opName;
-			}
-			if (!packageName.equals(expected)) {
-				System.err.println("[ERROR] " + //
-					className + " should reside in package " + expected);
+			// some ops (especially inner classes) use namespace package
+			// e.g.: net.imagej.ops.math.UnaryRealTypeMath$Sec
+			final String mainPackage = "net.imagej.ops." + opNamespace;
+
+			// many regular op classes use full op name package
+			// e.g.: net.imagej.ops.morphology.close.ListClose
+			final String subPackage = "net.imagej.ops." + opName;
+
+			if (!packageName.equals(mainPackage) && !packageName.equals(subPackage)) {
+				System.err.println("[ERROR] " + className +
+					" should reside in either " + mainPackage + " or " + subPackage);
 				bad++;
 			}
 			total++;
