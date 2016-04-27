@@ -49,7 +49,7 @@ public class ClosingTest extends AbstractOpTest {
 
 	@Test
 	public void testListClose() {
-		final List<Shape> shapes = new ArrayList<Shape>();
+		final List<Shape> shapes = new ArrayList<>();
 		shapes.add(new DiamondShape(1));
 		shapes.add(new DiamondShape(1));
 		shapes.add(new RectangleShape(1, false));

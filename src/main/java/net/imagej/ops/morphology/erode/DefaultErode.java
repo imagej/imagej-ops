@@ -97,7 +97,7 @@ public class DefaultErode<T extends RealType<T>> extends
 		maxVal.setReal(maxVal.getMaxValue());
 
 		if (f == null) {
-			f = new OutOfBoundsConstantValueFactory<T, RandomAccessibleInterval<T>>(
+			f = new OutOfBoundsConstantValueFactory<>(
 				maxVal);
 		}
 

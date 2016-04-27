@@ -62,7 +62,7 @@ public class PadInputFFTMethods<T extends ComplexType<T>, I extends RandomAccess
 			.getPaddedInputDimensionsRealToComplex(fast, paddedDimensions);
 
 		if (obf == null) {
-			obf = new OutOfBoundsConstantValueFactory<T, RandomAccessibleInterval<T>>(
+			obf = new OutOfBoundsConstantValueFactory<>(
 				Util.getTypeFromInterval(input).createVariable());
 		}
 

@@ -83,7 +83,7 @@ public class DilationTest extends AbstractOpTest {
 
 	@Test
 	public void testListDilate() {
-		final List<Shape> shapes = new ArrayList<Shape>();
+		final List<Shape> shapes = new ArrayList<>();
 		shapes.add(new DiamondShape(1));
 		shapes.add(new DiamondShape(1));
 		shapes.add(new RectangleShape(1, false));
@@ -100,7 +100,7 @@ public class DilationTest extends AbstractOpTest {
 
 	@Test
 	public void testListDilateFull() {
-		final List<Shape> shapes = new ArrayList<Shape>();
+		final List<Shape> shapes = new ArrayList<>();
 		shapes.add(new DiamondShape(1));
 		shapes.add(new DiamondShape(1));
 		shapes.add(new RectangleShape(1, false));

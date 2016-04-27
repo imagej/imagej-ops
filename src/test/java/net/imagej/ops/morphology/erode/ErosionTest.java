@@ -84,7 +84,7 @@ public class ErosionTest extends AbstractOpTest {
 
 //	@Test
 	public void testListErode() {
-		final List<Shape> shapes = new ArrayList<Shape>();
+		final List<Shape> shapes = new ArrayList<>();
 		shapes.add(new DiamondShape(1));
 		shapes.add(new DiamondShape(1));
 		shapes.add(new RectangleShape(1, false));
@@ -103,7 +103,7 @@ public class ErosionTest extends AbstractOpTest {
 
 	@Test
 	public void testListErodeFull() {
-		final List<Shape> shapes = new ArrayList<Shape>();
+		final List<Shape> shapes = new ArrayList<>();
 		shapes.add(new DiamondShape(1));
 		shapes.add(new DiamondShape(1));
 		shapes.add(new RectangleShape(1, false));

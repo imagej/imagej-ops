@@ -52,7 +52,7 @@ public abstract class AbstractNeighborhoodBasedFilter<I, O> extends
 
 	@Parameter(required = false)
 	private OutOfBoundsFactory<I, RandomAccessibleInterval<I>> outOfBoundsFactory =
-		new OutOfBoundsBorderFactory<I, RandomAccessibleInterval<I>>();
+		new OutOfBoundsBorderFactory<>();
 
 	private UnaryComputerOp<Iterable<I>, O> filterOp;
 

@@ -97,7 +97,7 @@ public class DefaultDilate<T extends RealType<T>> extends
 		minVal.setReal(minVal.getMinValue());
 
 		if (f == null) {
-			f = new OutOfBoundsConstantValueFactory<T, RandomAccessibleInterval<T>>(
+			f = new OutOfBoundsConstantValueFactory<>(
 				minVal);
 		}
 

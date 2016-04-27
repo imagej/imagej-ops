@@ -49,7 +49,7 @@ public class BlackTopHatTest extends AbstractOpTest {
 
 	@Test
 	public void testListBlackTopHat() {
-		final List<Shape> shapes = new ArrayList<Shape>();
+		final List<Shape> shapes = new ArrayList<>();
 		shapes.add(new DiamondShape(1));
 		shapes.add(new DiamondShape(1));
 		shapes.add(new RectangleShape(1, false));

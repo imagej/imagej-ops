@@ -58,7 +58,7 @@ public class PadInput<T extends ComplexType<T>, I extends RandomAccessibleInterv
 	public O compute1(final I input) {
 
 		if (obf == null) {
-			obf = new OutOfBoundsConstantValueFactory<T, RandomAccessibleInterval<T>>(
+			obf = new OutOfBoundsConstantValueFactory<>(
 				Util.getTypeFromInterval(input).createVariable());
 		}
 

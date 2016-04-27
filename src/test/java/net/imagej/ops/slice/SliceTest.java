@@ -141,7 +141,7 @@ public class SliceTest extends AbstractOpTest {
 		// iterate through every slice, should return a single
 		// RandomAccessibleInterval<?> from 25, 25, 2 to 35, 35, 2
 
-		final SlicesII<ByteType> hyperSlices = new SlicesII<ByteType>(interval2D, xyAxis, true);
+		final SlicesII<ByteType> hyperSlices = new SlicesII<>(interval2D, xyAxis, true);
 		final Cursor<RandomAccessibleInterval<ByteType>> c = hyperSlices.cursor();
 		int i = 0;
 		while (c.hasNext()) {
@@ -171,7 +171,7 @@ public class SliceTest extends AbstractOpTest {
 		axisIndices[1] = 1;
 		axisIndices[2] = 3;
 
-		final SlicesII<UnsignedByteType> hyperSlices = new SlicesII<UnsignedByteType>(testImage, axisIndices, true);
+		final SlicesII<UnsignedByteType> hyperSlices = new SlicesII<>(testImage, axisIndices, true);
 
 		final Cursor<RandomAccessibleInterval<UnsignedByteType>> c = hyperSlices.cursor();
 
