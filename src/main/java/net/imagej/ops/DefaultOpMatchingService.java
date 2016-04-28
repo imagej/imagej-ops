@@ -234,7 +234,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 		return ref.typesMatch(opClass);
 	}
 
-	/** Helper method of {@link #findModule}. */
+	/** Helper method of {@link #findMatch}. */
 	private <OP extends Op> void assertCandidates(
 		final List<OpCandidate<?>> candidates, final OpRef<OP> ref)
 	{
@@ -409,7 +409,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * is not exactly one match, an {@link IllegalArgumentException} is thrown
 	 * with an analysis of the problem(s).
 	 * <p>
-	 * Helper method of {@link #findModule}.
+	 * Helper method of {@link #findMatch}.
 	 * </p>
 	 * 
 	 * @param candidates The original unfiltered list of candidates, used during
