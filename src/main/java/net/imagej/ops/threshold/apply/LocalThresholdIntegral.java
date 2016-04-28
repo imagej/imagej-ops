@@ -181,6 +181,11 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 	 */
 	protected abstract CenterAwareIntegralComputerOp<I, BitType> unaryComputer();
 
+	/**
+	 * @return the orders of integral images that are required for a local
+	 *         threshold method. For example [1,2] for the default as well as
+	 *         the squared integral image.
+	 */
 	protected abstract int[] requiredIntegralImages();
 
 }
