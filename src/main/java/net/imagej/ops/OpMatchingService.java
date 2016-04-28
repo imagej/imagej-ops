@@ -74,6 +74,11 @@ public interface OpMatchingService extends ImageJService {
 
 	/**
 	 * Builds a list of candidate ops which might match the given op reference.
+	 * <p>
+	 * A "candidate" is an op with the same name and type(s) as the given
+	 * {@link OpRef}&mdash;but not necessarily with compatible argument types,
+	 * since that check is substantially more complex.
+	 * </p>
 	 * 
 	 * @param ops The pool from which candidate ops should be drawn.
 	 * @param ref The op reference describing the op to match.
@@ -85,6 +90,11 @@ public interface OpMatchingService extends ImageJService {
 	/**
 	 * Builds a list of candidate ops which might match one of the given op
 	 * references.
+	 * <p>
+	 * A "candidate" is an op with the same name and type(s) as one of the given
+	 * {@link OpRef}s&mdash;but not necessarily with compatible argument types,
+	 * since that check is substantially more complex.
+	 * </p>
 	 * 
 	 * @param ops The pool from which candidate ops should be drawn.
 	 * @param refs The op references describing the op to match.

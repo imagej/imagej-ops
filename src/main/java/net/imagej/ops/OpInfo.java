@@ -38,10 +38,14 @@ import org.scijava.util.ClassUtils;
 
 /**
  * Metadata about a particular {@link Op} implementation.
+ * <p>
+ * Each {@link Op} plugin in the system has one instance of this class which
+ * describes it, housed in the {@link OpEnvironment}.
+ * </p>
  * 
  * @author Curtis Rueden
  * @see CommandInfo
- * @see OpEnvironment#ops()
+ * @see OpEnvironment#infos()
  */
 public class OpInfo implements Comparable<OpInfo> {
 

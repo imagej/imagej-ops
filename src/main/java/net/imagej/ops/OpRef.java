@@ -41,11 +41,21 @@ import org.scijava.util.MiscUtils;
  * type(s), along with a list of input arguments.
  * <p>
  * With the help of the {@link OpMatchingService}, an {@code OpRef} holds all
- * information needed to create an appropriate {@link Op}.
+ * information needed to create an appropriate {@link Op}. Another way to think
+ * about an {@link OpRef} is as a <em>descriptor</em> or <em>template</em> of an
+ * op, without necessarily knowing that op's ultimate concrete implementing
+ * class.
+ * <p>
+ * For example, the string {@code "math.add(5, 3)"} can be represented as an
+ * {@link OpRef} with a {@code name} of {@code "math.add"} and {@code args}
+ * equal to <code>{5, 3}</code>. It is the job of the {@link OpMatchingService}
+ * to match the {@link OpRef} with a corresponding {@link OpInfo} for use in
+ * actually executing the operation.
  * </p>
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
+ * @see OpMatchingService#findMatch(OpEnvironment, OpRef)
  */
 public class OpRef<OP extends Op> {
 
