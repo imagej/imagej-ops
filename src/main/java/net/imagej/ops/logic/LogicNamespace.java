@@ -54,7 +54,7 @@ public class LogicNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.BooleanAnd.class)
 	public boolean and(final boolean a, final boolean b) {
 		final boolean result =
-			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.BooleanAnd.class,
+			(Boolean) ops().run(Ops.Logic.And.class,
 				a, b);
 		return result;
 	}
@@ -102,7 +102,7 @@ public class LogicNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.logic.IIToRAIOutputII.And.class, in1, in2);
+			Ops.Logic.And.class, in1, in2);
 		return result;
 	}
 
@@ -124,7 +124,7 @@ public class LogicNamespace extends AbstractNamespace {
 		final O out, final I in, final O ifTrueVal, final O ifFalseVal)
 	{
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.logic.If.class, out, in,
+		final O result = (O) ops().run(Ops.Logic.Conditional.class, out, in,
 			ifTrueVal, ifFalseVal);
 		return result;
 	}
@@ -134,7 +134,7 @@ public class LogicNamespace extends AbstractNamespace {
 		final O ifTrueVal, final O ifFalseVal)
 	{
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.logic.If.class, in, ifTrueVal,
+		final O result = (O) ops().run(Ops.Logic.Conditional.class, in, ifTrueVal,
 			ifFalseVal);
 		return result;
 	}
@@ -144,7 +144,7 @@ public class LogicNamespace extends AbstractNamespace {
 		final O out, final I in, final O defaultVal)
 	{
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.logic.Default.class, out, in,
+		final O result = (O) ops().run(Ops.Logic.Conditional.class, out, in,
 			defaultVal);
 		return result;
 	}
@@ -155,7 +155,7 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean equal(final boolean a, final boolean b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.BooleanEqual.class, a, b);
+				Ops.Logic.Equal.class, a, b);
 		return result;
 	}
 
@@ -163,14 +163,14 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean equal(final int a, final int b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.IntegerEqual.class, a, b);
+				Ops.Logic.Equal.class, a, b);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.LongEqual.class)
 	public boolean equal(final long a, final long b) {
 		final boolean result =
-			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.LongEqual.class,
+			(Boolean) ops().run(Ops.Logic.Equal.class,
 				a, b);
 		return result;
 	}
@@ -178,7 +178,7 @@ public class LogicNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.FloatEqual.class)
 	public boolean equal(final float a, final float b) {
 		final boolean result =
-			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.FloatEqual.class,
+			(Boolean) ops().run(Ops.Logic.Equal.class,
 				a, b);
 		return result;
 	}
@@ -187,7 +187,7 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean equal(final double a, final double b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.DoubleEqual.class, a, b);
+				Ops.Logic.Equal.class, a, b);
 		return result;
 	}
 
@@ -197,7 +197,7 @@ public class LogicNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final T result = (T) ops().run(
-			net.imagej.ops.logic.BooleanTypeLogic.ObjectsEqual.class, out, a, b);
+			Ops.Logic.Equal.class, out, a, b);
 		return result;
 	}
 
@@ -207,7 +207,7 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean greaterThan(final int a, final int b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.IntegerGreaterThan.class, a, b);
+				Ops.Logic.GreaterThan.class, a, b);
 		return result;
 	}
 
@@ -215,7 +215,7 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean greaterThan(final long a, final long b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.LongGreaterThan.class, a, b);
+				Ops.Logic.GreaterThan.class, a, b);
 		return result;
 	}
 
@@ -223,7 +223,7 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean greaterThan(final float a, final float b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.FloatGreaterThan.class, a, b);
+				Ops.Logic.GreaterThan.class, a, b);
 		return result;
 	}
 
@@ -231,7 +231,7 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean greaterThan(final double a, final double b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.DoubleGreaterThan.class, a, b);
+				Ops.Logic.GreaterThan.class, a, b);
 		return result;
 	}
 
@@ -242,7 +242,7 @@ public class LogicNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final O result = (O) ops().run(
-			net.imagej.ops.logic.BooleanTypeLogic.ComparableGreaterThan.class, out, a,
+			Ops.Logic.GreaterThan.class, out, a,
 			b);
 		return result;
 	}
@@ -254,7 +254,7 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean greaterThanOrEqual(final int a, final int b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.IntegerGreaterThanOrEqual.class, a,
+				Ops.Logic.GreaterThanOrEqual.class, a,
 				b);
 		return result;
 	}
@@ -264,7 +264,7 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean greaterThanOrEqual(final long a, final long b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.LongGreaterThanOrEqual.class, a, b);
+				Ops.Logic.GreaterThanOrEqual.class, a, b);
 		return result;
 	}
 
@@ -273,7 +273,7 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean greaterThanOrEqual(final float a, final float b) {
 		final boolean result =
 			(Boolean) ops()
-				.run(net.imagej.ops.logic.PrimitiveLogic.FloatGreaterThanOrEqual.class,
+				.run(Ops.Logic.GreaterThanOrEqual.class,
 					a, b);
 		return result;
 	}
@@ -283,7 +283,7 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean greaterThanOrEqual(final double a, final double b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.DoubleGreaterThanOrEqual.class, a,
+				Ops.Logic.GreaterThanOrEqual.class, a,
 				b);
 		return result;
 	}
@@ -295,7 +295,7 @@ public class LogicNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final O result = (O) ops().run(
-			net.imagej.ops.logic.BooleanTypeLogic.ComparableGreaterThanOrEqual.class,
+			Ops.Logic.GreaterThanOrEqual.class,
 			out, a, b);
 		return result;
 	}
@@ -306,7 +306,7 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean lessThan(final int a, final int b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.IntegerLessThan.class, a, b);
+				Ops.Logic.LessThan.class, a, b);
 		return result;
 	}
 
@@ -314,7 +314,7 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean lessThan(final long a, final long b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.LongLessThan.class, a, b);
+				Ops.Logic.LessThan.class, a, b);
 		return result;
 	}
 
@@ -322,7 +322,7 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean lessThan(final float a, final float b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.FloatLessThan.class, a, b);
+				Ops.Logic.LessThan.class, a, b);
 		return result;
 	}
 
@@ -330,7 +330,7 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean lessThan(final double a, final double b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.DoubleLessThan.class, a, b);
+				Ops.Logic.LessThan.class, a, b);
 		return result;
 	}
 
@@ -340,7 +340,7 @@ public class LogicNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final O result = (O) ops().run(
-			net.imagej.ops.logic.BooleanTypeLogic.ComparableLessThan.class, out, a,
+			Ops.Logic.LessThan.class, out, a,
 			b);
 		return result;
 	}
@@ -352,7 +352,7 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean lessThanOrEqual(final int a, final int b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.IntegerLessThanOrEqual.class, a, b);
+				Ops.Logic.LessThanOrEqual.class, a, b);
 		return result;
 	}
 
@@ -360,7 +360,7 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean lessThanOrEqual(final long a, final long b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.LongLessThanOrEqual.class, a, b);
+				Ops.Logic.LessThanOrEqual.class, a, b);
 		return result;
 	}
 
@@ -369,7 +369,7 @@ public class LogicNamespace extends AbstractNamespace {
 		boolean lessThanOrEqual(final float a, final float b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.FloatLessThanOrEqual.class, a, b);
+				Ops.Logic.LessThanOrEqual.class, a, b);
 		return result;
 	}
 
@@ -378,7 +378,7 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean lessThanOrEqual(final double a, final double b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.DoubleLessThanOrEqual.class, a, b);
+				Ops.Logic.LessThanOrEqual.class, a, b);
 		return result;
 	}
 
@@ -389,7 +389,7 @@ public class LogicNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final O result = (O) ops().run(
-			net.imagej.ops.logic.BooleanTypeLogic.ComparableLessThanOrEqual.class,
+			Ops.Logic.LessThanOrEqual.class,
 			out, a, b);
 		return result;
 	}
@@ -399,7 +399,7 @@ public class LogicNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.BooleanNot.class)
 	public boolean not(final boolean a) {
 		final boolean result =
-			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.BooleanNot.class,
+			(Boolean) ops().run(Ops.Logic.Not.class,
 				a);
 		return result;
 	}
@@ -425,7 +425,7 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean notEqual(final boolean a, final boolean b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.BooleanNotEqual.class, a, b);
+				Ops.Logic.NotEqual.class, a, b);
 		return result;
 	}
 
@@ -433,7 +433,7 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean notEqual(final int a, final int b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.IntegerNotEqual.class, a, b);
+				Ops.Logic.NotEqual.class, a, b);
 		return result;
 	}
 
@@ -441,7 +441,7 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean notEqual(final long a, final long b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.LongNotEqual.class, a, b);
+				Ops.Logic.NotEqual.class, a, b);
 		return result;
 	}
 
@@ -449,7 +449,7 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean notEqual(final float a, final float b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.FloatNotEqual.class, a, b);
+				Ops.Logic.NotEqual.class, a, b);
 		return result;
 	}
 
@@ -457,7 +457,7 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean notEqual(final double a, final double b) {
 		final boolean result =
 			(Boolean) ops().run(
-				net.imagej.ops.logic.PrimitiveLogic.DoubleNotEqual.class, a, b);
+				Ops.Logic.NotEqual.class, a, b);
 		return result;
 	}
 
@@ -467,7 +467,7 @@ public class LogicNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final T result = (T) ops().run(
-			net.imagej.ops.logic.BooleanTypeLogic.ObjectsNotEqual.class, out, a, b);
+			Ops.Logic.NotEqual.class, out, a, b);
 		return result;
 	}
 
@@ -476,7 +476,7 @@ public class LogicNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.BooleanOr.class)
 	public boolean or(final boolean a, final boolean b) {
 		final boolean result =
-			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.BooleanOr.class,
+			(Boolean) ops().run(Ops.Logic.Or.class,
 				a, b);
 		return result;
 	}
@@ -544,7 +544,7 @@ public class LogicNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.BooleanXor.class)
 	public boolean xor(final boolean a, final boolean b) {
 		final boolean result =
-			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.BooleanXor.class,
+			(Boolean) ops().run(Ops.Logic.Xor.class,
 				a, b);
 		return result;
 	}
@@ -571,7 +571,7 @@ public class LogicNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.logic.IIToIIOutputII.Xor.class, in1, in2);
+			Ops.Logic.Xor.class, in1, in2);
 		return result;
 	}
 
@@ -582,7 +582,7 @@ public class LogicNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.logic.IIToIIOutputII.Xor.class, out, in1, in2);
+			Ops.Logic.Xor.class, out, in1, in2);
 		return result;
 	}
 
@@ -592,7 +592,7 @@ public class LogicNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.logic.IIToRAIOutputII.Xor.class, in1, in2);
+			Ops.Logic.Xor.class, in1, in2);
 		return result;
 	}
 
@@ -603,7 +603,7 @@ public class LogicNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.logic.IIToRAIOutputII.Xor.class, out, in1, in2);
+			Ops.Logic.Xor.class, out, in1, in2);
 		return result;
 	}
 
