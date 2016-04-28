@@ -334,8 +334,8 @@ public class DefaultOpMatchingService extends AbstractService implements
 		final Object[] args = candidate.getArgs();
 		for (final ModuleItem<?> item : candidate.cInfo().inputs()) {
 			if (args[i] != null) {
-				final Class<?> typeClass = OpMatchingUtil.getClass(item.getType());
-				final Class<?> argClass = OpMatchingUtil.getClass(args[i]);
+				final Class<?> typeClass = OpUtils.getClass(item.getType());
+				final Class<?> argClass = OpUtils.getClass(args[i]);
 				if (!typeClass.equals(argClass)) return false;
 			}
 			i++;
@@ -393,8 +393,8 @@ public class DefaultOpMatchingService extends AbstractService implements
 		for (final ModuleItem<?> item : candidate.cInfo().inputs()) {
 			final Class<?> type = item.getType();
 			if (args[i] != null) {
-				final int currLevel = OpMatchingUtil.findCastLevels(type, OpMatchingUtil
-					.getClass(args[i]));
+				final int currLevel = OpUtils.findCastLevels(type, //
+					OpUtils.getClass(args[i]));
 				if (currLevel < 0) return -1;
 				level += currLevel;
 			}
