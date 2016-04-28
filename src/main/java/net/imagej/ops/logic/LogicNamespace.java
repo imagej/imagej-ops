@@ -30,8 +30,6 @@
 
 package net.imagej.ops.logic;
 
-import java.util.List;
-
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
@@ -40,7 +38,6 @@ import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.Type;
-import net.imglib2.type.logic.BoolType;
 
 import org.scijava.plugin.Plugin;
 
@@ -120,60 +117,6 @@ public class LogicNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.logic.AndCondition.class)
-	public <T> BoolType and(final Object in, final Condition<T> c1,
-		final Condition<T> c2)
-	{
-		final BoolType result =
-			(BoolType) ops().run(net.imagej.ops.logic.AndCondition.class, in, c1, c2);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.logic.AndCondition.class)
-	public <T> BoolType and(final BoolType out, final Object in,
-		final Condition<T> c1, final Condition<T> c2)
-	{
-		final BoolType result =
-			(BoolType) ops().run(net.imagej.ops.logic.AndCondition.class, out, in,
-				c1, c2);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.logic.IntersectionCondition.class)
-	public <T> BoolType and(final T in, final List<Condition<T>> conditions) {
-		final BoolType result =
-			(BoolType) ops().run(net.imagej.ops.logic.IntersectionCondition.class,
-				in, conditions);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.logic.IntersectionCondition.class)
-	public <T> BoolType and(final BoolType out, final T in,
-		final List<Condition<T>> conditions)
-	{
-		final BoolType result =
-			(BoolType) ops().run(net.imagej.ops.logic.IntersectionCondition.class,
-				out, in, conditions);
-		return result;
-	}
-
-	// -- bool --
-
-	@OpMethod(op = net.imagej.ops.logic.BooleanCondition.class)
-	public BoolType bool(final Boolean in) {
-		final BoolType result =
-			(BoolType) ops().run(net.imagej.ops.logic.BooleanCondition.class, in);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.logic.BooleanCondition.class)
-	public BoolType bool(final BoolType out, final Boolean in) {
-		final BoolType result =
-			(BoolType) ops().run(net.imagej.ops.logic.BooleanCondition.class,
-				out, in);
-		return result;
-	}
-
 	// -- conditional --
 
 	@OpMethod(op = net.imagej.ops.logic.If.class)
@@ -248,17 +191,13 @@ public class LogicNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.logic.ObjectsEqual.class)
-	public <T> BoolType equal(final T in, final Object o) {
-		final BoolType result =
-			(BoolType) ops().run(net.imagej.ops.logic.ObjectsEqual.class, in, o);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.logic.ObjectsEqual.class)
-	public <T> BoolType equal(final BoolType out, final T in, final Object o) {
-		final BoolType result =
-			(BoolType) ops().run(net.imagej.ops.logic.ObjectsEqual.class, out, in, o);
+	@OpMethod(op = net.imagej.ops.logic.BooleanTypeLogic.ObjectsEqual.class)
+	public <T extends BooleanType<T>> T equal(final T out, final Object a,
+		final Object b)
+	{
+		@SuppressWarnings("unchecked")
+		final T result = (T) ops().run(
+			net.imagej.ops.logic.BooleanTypeLogic.ObjectsEqual.class, out, a, b);
 		return result;
 	}
 
@@ -296,21 +235,15 @@ public class LogicNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.logic.ComparableGreaterThan.class)
-	public <T> BoolType greaterThan(final T in, final Comparable<? super T> c) {
-		final BoolType result =
-			(BoolType) ops().run(net.imagej.ops.logic.ComparableGreaterThan.class,
-				in, c);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.logic.ComparableGreaterThan.class)
-	public <T> BoolType greaterThan(final BoolType out, final T in,
-		final Comparable<? super T> c)
+	@OpMethod(
+		op = net.imagej.ops.logic.BooleanTypeLogic.ComparableGreaterThan.class)
+	public <I extends Comparable<I>, O extends BooleanType<O>> O greaterThan(
+		final O out, final I a, final I b)
 	{
-		final BoolType result =
-			(BoolType) ops().run(net.imagej.ops.logic.ComparableGreaterThan.class,
-				out, in, c);
+		@SuppressWarnings("unchecked")
+		final O result = (O) ops().run(
+			net.imagej.ops.logic.BooleanTypeLogic.ComparableGreaterThan.class, out, a,
+			b);
 		return result;
 	}
 
@@ -355,23 +288,15 @@ public class LogicNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.logic.ComparableGreaterThanOrEqual.class)
-	public <T> BoolType greaterThanOrEqual(final T in,
-		final Comparable<? super T> c)
+	@OpMethod(
+		op = net.imagej.ops.logic.BooleanTypeLogic.ComparableGreaterThanOrEqual.class)
+	public <I extends Comparable<I>, O extends BooleanType<O>> O
+		greaterThanOrEqual(final O out, final I a, final I b)
 	{
-		final BoolType result =
-			(BoolType) ops().run(
-				net.imagej.ops.logic.ComparableGreaterThanOrEqual.class, in, c);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.logic.ComparableGreaterThanOrEqual.class)
-	public <T> BoolType greaterThanOrEqual(final BoolType out, final T in,
-		final Comparable<? super T> c)
-	{
-		final BoolType result =
-			(BoolType) ops().run(
-				net.imagej.ops.logic.ComparableGreaterThanOrEqual.class, out, in, c);
+		@SuppressWarnings("unchecked")
+		final O result = (O) ops().run(
+			net.imagej.ops.logic.BooleanTypeLogic.ComparableGreaterThanOrEqual.class,
+			out, a, b);
 		return result;
 	}
 
@@ -409,21 +334,14 @@ public class LogicNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.logic.ComparableLessThan.class)
-	public <T> BoolType lessThan(final T in, final Comparable<? super T> c) {
-		final BoolType result =
-			(BoolType) ops()
-				.run(net.imagej.ops.logic.ComparableLessThan.class, in, c);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.logic.ComparableLessThan.class)
-	public <T> BoolType lessThan(final BoolType out, final T in,
-		final Comparable<? super T> c)
+	@OpMethod(op = net.imagej.ops.logic.BooleanTypeLogic.ComparableLessThan.class)
+	public <I extends Comparable<I>, O extends BooleanType<O>> O lessThan(
+		final O out, final I a, final I b)
 	{
-		final BoolType result =
-			(BoolType) ops().run(net.imagej.ops.logic.ComparableLessThan.class, out,
-				in, c);
+		@SuppressWarnings("unchecked")
+		final O result = (O) ops().run(
+			net.imagej.ops.logic.BooleanTypeLogic.ComparableLessThan.class, out, a,
+			b);
 		return result;
 	}
 
@@ -464,23 +382,15 @@ public class LogicNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.logic.ComparableLessThanOrEqual.class)
-	public <T> BoolType
-		lessThanOrEqual(final T in, final Comparable<? super T> c)
+	@OpMethod(
+		op = net.imagej.ops.logic.BooleanTypeLogic.ComparableLessThanOrEqual.class)
+	public <I extends Comparable<I>, O extends BooleanType<O>> O lessThanOrEqual(
+		final O out, final I a, final I b)
 	{
-		final BoolType result =
-			(BoolType) ops().run(
-				net.imagej.ops.logic.ComparableLessThanOrEqual.class, in, c);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.logic.ComparableLessThanOrEqual.class)
-	public <T> BoolType lessThanOrEqual(final BoolType out, final T in,
-		final Comparable<? super T> c)
-	{
-		final BoolType result =
-			(BoolType) ops().run(
-				net.imagej.ops.logic.ComparableLessThanOrEqual.class, out, in, c);
+		@SuppressWarnings("unchecked")
+		final O result = (O) ops().run(
+			net.imagej.ops.logic.BooleanTypeLogic.ComparableLessThanOrEqual.class,
+			out, a, b);
 		return result;
 	}
 
@@ -506,23 +416,6 @@ public class LogicNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final T result = (T) ops().run(Ops.Logic.Not.class, out, in);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.logic.NotCondition.class)
-	public <T> BoolType not(final Object in, final Condition<T> c1) {
-		final BoolType result =
-			(BoolType) ops().run(net.imagej.ops.logic.NotCondition.class, in, c1);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.logic.NotCondition.class)
-	public <T> BoolType not(final BoolType out, final Object in,
-		final Condition<T> c1)
-	{
-		final BoolType result =
-			(BoolType) ops()
-				.run(net.imagej.ops.logic.NotCondition.class, out, in, c1);
 		return result;
 	}
 
@@ -568,19 +461,13 @@ public class LogicNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.logic.ObjectsNotEqual.class)
-	public BoolType notEqual(final Object in, final Object o) {
-		final BoolType result =
-			(BoolType) ops().run(net.imagej.ops.logic.ObjectsNotEqual.class, in, o);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.logic.ObjectsNotEqual.class)
-	public BoolType notEqual(final BoolType out, final Object in, final Object o)
+	@OpMethod(op = net.imagej.ops.logic.BooleanTypeLogic.ObjectsNotEqual.class)
+	public <T extends BooleanType<T>> T notEqual(final T out, final Object a,
+		final Object b)
 	{
-		final BoolType result =
-			(BoolType) ops().run(net.imagej.ops.logic.ObjectsNotEqual.class, out, in,
-				o);
+		@SuppressWarnings("unchecked")
+		final T result = (T) ops().run(
+			net.imagej.ops.logic.BooleanTypeLogic.ObjectsNotEqual.class, out, a, b);
 		return result;
 	}
 
@@ -652,43 +539,6 @@ public class LogicNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.logic.OrCondition.class)
-	public <T> BoolType or(final Object in, final Condition<T> c1,
-		final Condition<T> c2)
-	{
-		final BoolType result =
-			(BoolType) ops().run(net.imagej.ops.logic.OrCondition.class, in, c1, c2);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.logic.OrCondition.class)
-	public <T> BoolType or(final BoolType out, final Object in,
-		final Condition<T> c1, final Condition<T> c2)
-	{
-		final BoolType result =
-			(BoolType) ops().run(net.imagej.ops.logic.OrCondition.class, out, in, c1,
-				c2);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.logic.UnionCondition.class)
-	public <T> BoolType or(final T in, final List<Condition<T>> conditions) {
-		final BoolType result =
-			(BoolType) ops().run(net.imagej.ops.logic.UnionCondition.class, in,
-				conditions);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.logic.UnionCondition.class)
-	public <T> BoolType or(final BoolType out, final T in,
-		final List<Condition<T>> conditions)
-	{
-		final BoolType result =
-			(BoolType) ops().run(net.imagej.ops.logic.UnionCondition.class, out, in,
-				conditions);
-		return result;
-	}
-
 	// -- xor --
 
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.BooleanXor.class)
@@ -754,25 +604,6 @@ public class LogicNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
 			net.imagej.ops.logic.IIToRAIOutputII.Xor.class, out, in1, in2);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.logic.XorCondition.class)
-	public <T> BoolType xor(final Object in, final Condition<T> c1,
-		final Condition<T> c2)
-	{
-		final BoolType result =
-			(BoolType) ops().run(net.imagej.ops.logic.XorCondition.class, in, c1, c2);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.logic.XorCondition.class)
-	public <T> BoolType xor(final BoolType out, final Object in,
-		final Condition<T> c1, final Condition<T> c2)
-	{
-		final BoolType result =
-			(BoolType) ops().run(net.imagej.ops.logic.XorCondition.class, out, in,
-				c1, c2);
 		return result;
 	}
 

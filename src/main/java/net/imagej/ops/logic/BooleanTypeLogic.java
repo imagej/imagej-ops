@@ -31,6 +31,7 @@
 package net.imagej.ops.logic;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
 import net.imagej.ops.special.hybrid.AbstractBinaryHybridCFI;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCFI;
 import net.imglib2.type.BooleanType;
@@ -76,6 +77,56 @@ public class BooleanTypeLogic {
 		}
 	}
 
+	/** Performs greater-than (>) between two {@link Comparable}s. */
+	@Plugin(type = Ops.Logic.GreaterThan.class)
+	public static class ComparableGreaterThan<I extends Comparable<I>, O extends BooleanType<O>>
+		extends AbstractBinaryComputerOp<I, I, O> implements Ops.Logic.GreaterThan
+	{
+
+		@Override
+		public void compute2(final I in1, final I in2, final O out) {
+			out.set(in1.compareTo(in2) > 0);
+		}
+	}
+
+	/** Performs greater-than-or-equal (>=) between two {@link Comparable}s. */
+	@Plugin(type = Ops.Logic.GreaterThanOrEqual.class)
+	public static class ComparableGreaterThanOrEqual<I extends Comparable<I>, O extends BooleanType<O>>
+		extends AbstractBinaryComputerOp<I, I, O> implements
+		Ops.Logic.GreaterThanOrEqual
+	{
+
+		@Override
+		public void compute2(final I in1, final I in2, final O out) {
+			out.set(in1.compareTo(in2) >= 0);
+		}
+	}
+
+	/** Performs less-than (<) between two {@link Comparable}s. */
+	@Plugin(type = Ops.Logic.LessThan.class)
+	public static class ComparableLessThan<I extends Comparable<I>, O extends BooleanType<O>>
+		extends AbstractBinaryComputerOp<I, I, O> implements Ops.Logic.LessThan
+	{
+
+		@Override
+		public void compute2(final I in1, final I in2, final O out) {
+			out.set(in1.compareTo(in2) < 0);
+		}
+	}
+
+	/** Performs less-than-or-equal (<=) between two {@link Comparable}s. */
+	@Plugin(type = Ops.Logic.LessThanOrEqual.class)
+	public static class ComparableLessThanOrEqual<I extends Comparable<I>, O extends BooleanType<O>>
+		extends AbstractBinaryComputerOp<I, I, O> implements
+		Ops.Logic.LessThanOrEqual
+	{
+
+		@Override
+		public void compute2(final I in1, final I in2, final O out) {
+			out.set(in1.compareTo(in2) <= 0);
+		}
+	}
+
 	/** Performs logical not (!) on a {@link BooleanType}. */
 	@Plugin(type = Ops.Logic.Not.class)
 	public static class Not<T extends BooleanType<T>> extends
@@ -96,6 +147,30 @@ public class BooleanTypeLogic {
 		@Override
 		public void mutate(final T arg) {
 			arg.not();
+		}
+	}
+
+	/** Performs equals (==) between two {@link Object}s. */
+	@Plugin(type = Ops.Logic.Equal.class)
+	public static class ObjectsEqual<O extends BooleanType<O>> extends
+		AbstractBinaryComputerOp<Object, Object, O> implements Ops.Logic.Equal
+	{
+
+		@Override
+		public void compute2(final Object in1, final Object in2, final O out) {
+			out.set(in1.equals(in2));
+		}
+	}
+
+	/** Performs not-equals (!=) between two {@link Object}s. */
+	@Plugin(type = Ops.Logic.NotEqual.class)
+	public static class ObjectsNotEqual<O extends BooleanType<O>> extends
+		AbstractBinaryComputerOp<Object, Object, O> implements Ops.Logic.NotEqual
+	{
+
+		@Override
+		public void compute2(final Object in1, final Object in2, final O out) {
+			out.set(!in1.equals(in2));
 		}
 	}
 

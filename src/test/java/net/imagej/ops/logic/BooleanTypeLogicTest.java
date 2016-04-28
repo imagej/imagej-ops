@@ -58,6 +58,68 @@ public class BooleanTypeLogicTest extends AbstractOpTest {
 	}
 
 	@Test
+	public void testComparableGreaterThan() {
+		assertTrue(((BitType) ops.run(BooleanTypeLogic.ComparableGreaterThan.class,
+			new BitType(), 5.0, 3.0)).get());
+		assertFalse(((BitType) ops.run(BooleanTypeLogic.ComparableGreaterThan.class,
+			new BitType(), 5.0, 6.0)).get());
+	}
+
+	@Test
+	public void testComparableGreaterThanOrEqual() {
+		assertTrue(((BitType) ops.run(
+			BooleanTypeLogic.ComparableGreaterThanOrEqual.class, new BitType(), 5.0,
+			3.0)).get());
+		assertTrue(((BitType) ops.run(
+			BooleanTypeLogic.ComparableGreaterThanOrEqual.class, new BitType(), 5.0,
+			5.0)).get());
+		assertFalse(((BitType) ops.run(
+			BooleanTypeLogic.ComparableGreaterThanOrEqual.class, new BitType(), 5.0,
+			6.0)).get());
+	}
+
+	@Test
+	public void testComparableLessThan() {
+		assertFalse(((BitType) ops.run(BooleanTypeLogic.ComparableLessThan.class,
+			new BitType(), 5.0, 3.0)).get());
+		assertTrue(((BitType) ops.run(BooleanTypeLogic.ComparableLessThan.class,
+			new BitType(), 5.0, 6.0)).get());
+	}
+
+	@Test
+	public void testComparableLessThanOrEqual() {
+		assertFalse(((BitType) ops.run(
+			BooleanTypeLogic.ComparableLessThanOrEqual.class, new BitType(), 5.0,
+			3.0)).get());
+		assertTrue(((BitType) ops.run(
+			BooleanTypeLogic.ComparableLessThanOrEqual.class, new BitType(), 5.0,
+			6.0)).get());
+		assertTrue(((BitType) ops.run(
+			BooleanTypeLogic.ComparableLessThanOrEqual.class, new BitType(), 5.0,
+			5.0)).get());
+	}
+
+	@Test
+	public void testObjectsEqual() {
+		assertFalse(((BitType) ops.run(BooleanTypeLogic.ObjectsEqual.class,
+			new BitType(), 2, 1)).get());
+		assertTrue(((BitType) ops.run(BooleanTypeLogic.ObjectsEqual.class,
+			new BitType(), 2, 2)).get());
+		assertFalse(((BitType) ops.run(BooleanTypeLogic.ObjectsEqual.class,
+			new BitType(), 2, 3)).get());
+	}
+
+	@Test
+	public void testObjectsNotEqual() {
+		assertTrue(((BitType) ops.run(BooleanTypeLogic.ObjectsNotEqual.class,
+			new BitType(), 2, 1)).get());
+		assertFalse(((BitType) ops.run(BooleanTypeLogic.ObjectsNotEqual.class,
+			new BitType(), 2, 2)).get());
+		assertTrue(((BitType) ops.run(BooleanTypeLogic.ObjectsNotEqual.class,
+			new BitType(), 2, 3)).get());
+	}
+
+	@Test
 	public void testNot() {
 		assertFalse(((BitType) ops.run(BooleanTypeLogic.Not.class, new BitType(
 			true))).get());
