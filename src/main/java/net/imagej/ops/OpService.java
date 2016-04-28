@@ -46,5 +46,10 @@ import org.scijava.plugin.PTService;
  * @see OpEnvironment
  */
 public interface OpService extends PTService<Op>, ImageJService, OpEnvironment {
-	// NB: Marker interface.
+
+	@Override
+	default Class<Op> getPluginType() {
+		return Op.class;
+	}
+
 }

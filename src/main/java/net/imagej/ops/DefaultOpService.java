@@ -90,11 +90,4 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		return namespaceService.create(nsClass, this);
 	}
 
-	// -- SingletonService methods --
-
-	@Override
-	public Class<Op> getPluginType() {
-		return Op.class;
-	}
-
 }
