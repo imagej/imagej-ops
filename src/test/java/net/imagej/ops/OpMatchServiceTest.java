@@ -48,13 +48,13 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Tests {@link OpMatchingService}.
+ * Tests {@link OpMatchService}.
  * 
  * @author Curtis Rueden
  */
-public class OpMatchingServiceTest extends AbstractOpTest {
+public class OpMatchServiceTest extends AbstractOpTest {
 
-	/** Tests {@link OpMatchingService#findMatch}. */
+	/** Tests {@link OpMatchService#findMatch}. */
 	@Test
 	public void testFindMatch() {
 		final DoubleType value = new DoubleType(123.456);

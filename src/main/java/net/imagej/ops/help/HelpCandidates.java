@@ -31,7 +31,7 @@
 package net.imagej.ops.help;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.OpMatchingService;
+import net.imagej.ops.OpMatchService;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.SpecialOp;
@@ -53,7 +53,7 @@ public class HelpCandidates extends AbstractHelp {
 	private OpService ops;
 
 	@Parameter
-	private OpMatchingService matcher;
+	private OpMatchService matcher;
 
 	@Parameter(required = false)
 	private LogService log;

@@ -110,7 +110,7 @@ public interface OpEnvironment extends Contextual {
 
 	// -- OpEnvironment methods --
 
-	OpMatchingService matcher();
+	OpMatchService matcher();
 
 	/**
 	 * Executes the given operation with the specified arguments. The best

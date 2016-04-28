@@ -54,7 +54,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	private CommandService commandService;
 
 	@Parameter
-	private OpMatchingService matcher;
+	private OpMatchService matcher;
 
 	@Parameter
 	private NamespaceService namespaceService;
@@ -62,7 +62,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	// -- OpEnvironment methods --
 
 	@Override
-	public OpMatchingService matcher() {
+	public OpMatchService matcher() {
 		return matcher;
 	}
 

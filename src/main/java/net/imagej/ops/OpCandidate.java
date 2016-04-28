@@ -39,11 +39,11 @@ import org.scijava.module.ModuleItem;
 
 /**
  * Container class for a possible operation match between an {@link OpRef} and
- * an {@link OpInfo}, as computed by the {@link OpMatchingService}.
+ * an {@link OpInfo}, as computed by the {@link OpMatchService}.
  * <p>
  * This is a stateful object, which tracks the matcher's progress in determining
  * a matching between the {@link OpRef} and the {@link OpInfo}. After analysis
- * via the {@link OpMatchingService#match} method, the {@link OpCandidate} will
+ * via the {@link OpMatchService#match} method, the {@link OpCandidate} will
  * contain a status consisting of a {@link #getStatusCode() code} and a
  * {@link #getStatusMessage() message} which indicates the result of the match
  * attempt.
@@ -51,7 +51,7 @@ import org.scijava.module.ModuleItem;
  * 
  * @author Curtis Rueden
  * @param <OP> The type of {@link Op}.
- * @see OpMatchingService
+ * @see OpMatchService
  */
 public class OpCandidate<OP extends Op> {
 

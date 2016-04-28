@@ -69,11 +69,11 @@ public abstract class AbstractOpTest {
 	protected OpService ops;
 
 	@Parameter
-	protected OpMatchingService matcher;
+	protected OpMatchService matcher;
 
 	/** Subclasses can override to create a context with different services. */
 	protected Context createContext() {
-		return new Context(OpService.class, OpMatchingService.class,
+		return new Context(OpService.class, OpMatchService.class,
 			CacheService.class);
 	}
 

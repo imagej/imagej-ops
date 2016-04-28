@@ -42,7 +42,7 @@ import org.scijava.module.ModuleInfo;
  * 
  * @author Curtis Rueden
  */
-public interface OpMatchingService extends ImageJService {
+public interface OpMatchService extends ImageJService {
 
 	/**
 	 * Finds and initializes the best module matching the given op name and/or

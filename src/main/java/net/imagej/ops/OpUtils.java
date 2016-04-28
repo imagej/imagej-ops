@@ -252,7 +252,7 @@ public final class OpUtils {
 	 *         failure; 2) the list of matching ops (if any); 3) the request
 	 *         itself; and 4) the list of candidates including status (i.e.,
 	 *         whether it matched, and if not, why not).
-	 * @see OpMatchingService#filterMatches(List)
+	 * @see OpMatchService#filterMatches(List)
 	 */
 	public static String matchInfo(final List<OpCandidate<?>> candidates,
 		final List<OpCandidate<?>> matches)

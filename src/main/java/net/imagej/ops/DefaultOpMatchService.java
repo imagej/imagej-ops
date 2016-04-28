@@ -60,8 +60,8 @@ import org.scijava.util.ConversionUtils;
  * @author Curtis Rueden
  */
 @Plugin(type = Service.class)
-public class DefaultOpMatchingService extends AbstractService implements
-	OpMatchingService
+public class DefaultOpMatchService extends AbstractService implements
+	OpMatchService
 {
 
 	@Parameter
@@ -76,7 +76,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	@Parameter
 	private LogService log;
 
-	// -- OpMatchingService methods --
+	// -- OpMatchService methods --
 
 	@SuppressWarnings("unchecked")
 	@Override

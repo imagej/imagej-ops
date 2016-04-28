@@ -93,7 +93,7 @@ public class CustomOpEnvironment extends AbstractContextual implements
 	// -- OpEnvironment methods --
 
 	@Override
-	public OpMatchingService matcher() {
+	public OpMatchService matcher() {
 		return parent().matcher();
 	}
 
