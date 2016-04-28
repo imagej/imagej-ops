@@ -123,14 +123,4 @@ public interface OpMatchingService extends ImageJService {
 	/** Assigns arguments into the given module's inputs. */
 	Module assignInputs(Module module, Object... args);
 
-	// -- Deprecated methods --
-
-	/** @deprecated Use {@link #findMatch} instead. */
-	@Deprecated
-	<OP extends Op> Module findModule(OpEnvironment ops, OpRef<OP> ref);
-
-	/** @deprecated Use {@link #filterMatches} instead. */
-	@Deprecated
-	<OP extends Op> List<Module> findMatches(List<OpCandidate<OP>> candidates);
-
 }
