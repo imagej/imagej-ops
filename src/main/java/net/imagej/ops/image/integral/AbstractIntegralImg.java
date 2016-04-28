@@ -31,11 +31,16 @@
 package net.imagej.ops.image.integral;
 
 import net.imagej.ops.Contingent;
+import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Slice;
+import net.imagej.ops.special.chain.RAIs;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCI;
+import net.imglib2.Dimensions;
 import net.imglib2.FinalInterval;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
@@ -60,6 +65,9 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 
 	private AbstractUnaryHybridCI<IterableInterval<RealType<?>>, IterableInterval<RealType<?>>> integralAdd;
 	private UnaryComputerOp[] slicewiseOps;
+	private UnaryFunctionOp<RandomAccessibleInterval, RandomAccessibleInterval> copyOp;
+	private UnaryFunctionOp<Dimensions, RandomAccessibleInterval> createLongRAI;
+	private UnaryFunctionOp<Dimensions, RandomAccessibleInterval> createDoubleRAI;
 	
 	@Override
 	public void initialize() {
@@ -74,6 +82,11 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 					integralAdd, i);
 			}
 		}
+
+		createLongRAI = Functions.unary(ops(), Ops.Create.Img.class, RandomAccessibleInterval.class,
+				Dimensions.class, new LongType());
+		createDoubleRAI = Functions.unary(ops(), Ops.Create.Img.class, RandomAccessibleInterval.class,
+				Dimensions.class, new DoubleType());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -90,14 +103,19 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 					integralAdd, i);
 			}
 		}
-
+		
+		// Requires type information from output
+		if (copyOp == null) {
+			copyOp = (UnaryFunctionOp) RAIs.function(ops(), Ops.Copy.RAI.class, output);
+		}
+		
 		RandomAccessibleInterval<? extends RealType<?>> generalizedInput = input; // FIXME
 
 		// Create integral image
 		for (int i=0; i < input.numDimensions(); ++i) {
 			// Slicewise integral addition in one direction
 			slicewiseOps[i].compute1(generalizedInput, output);
-			generalizedInput = ops().copy().rai(output);
+			generalizedInput = copyOp.compute1(output);
 		}
 	}
 
@@ -122,12 +140,10 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 
 		// Create integral image
 		if (Util.getTypeFromInterval(input) instanceof IntegerType) {
-			output = (RandomAccessibleInterval) ops().create().img(interval,
-				new LongType());
+			output = createLongRAI.compute1(interval);
 		}
 		else {
-			output = (RandomAccessibleInterval) ops().create().img(interval,
-				new DoubleType());
+			output = createDoubleRAI.compute1(interval);
 		}
 
 		return Views.offsetInterval(output, output);
