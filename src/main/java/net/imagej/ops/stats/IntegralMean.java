@@ -73,11 +73,11 @@ public class IntegralMean<I extends RealType<I>> extends
 
 		// Convert from input to return type
 		final Converter<I, DoubleType> conv = new RealDoubleConverter<>();
+		final DoubleType valueAsDoubleType = new DoubleType();
 		
 		while ( cursor.hasNext() )
 		{
 			final I value = cursor.next().get(0).copy();
-			final DoubleType valueAsDoubleType = new DoubleType();
 			conv.convert(value, valueAsDoubleType);
 			
 			// Obtain the cursor position encoded as corner vector

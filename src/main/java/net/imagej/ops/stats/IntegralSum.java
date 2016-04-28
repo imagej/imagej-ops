@@ -68,13 +68,13 @@ public class IntegralSum<I extends RealType<I>> extends
 
 		// Convert from input to return type
 		final Converter<I, DoubleType> conv = new RealDoubleConverter<>();
+		DoubleType valueAsDoubleType = new DoubleType();
 		
 		while ( cursor.hasNext() )
 		{
 			// Obtain the cursor position encoded as corner vector
 			int cornerInteger = cursor.getCornerRepresentation();
-			final I value = cursor.next().copy();
-			final DoubleType valueAsDoubleType = new DoubleType();
+			final I value = cursor.next().copy();			
 			conv.convert(value, valueAsDoubleType);
 			
 			// Determine if the value has to be added (factor==1) or subtracted (factor==-1)

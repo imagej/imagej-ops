@@ -76,11 +76,12 @@ public class IntegralVariance<I extends RealType<I>> extends
 		final DoubleType sum2 = new DoubleType();
 		sum2.setZero();
 		
+		DoubleType value1AsDoubleType = new DoubleType();
+		
 		while ( cursorS1.hasNext() )
 		{
 			final Composite<I> compositeValue = cursorS1.next();
-			final I value1 = compositeValue.get(0).copy();
-			final DoubleType value1AsDoubleType = new DoubleType();
+			final I value1 = compositeValue.get(0).copy();			
 			conv.convert(value1, value1AsDoubleType);
 			
 			// Obtain the cursor position encoded as corner vector
