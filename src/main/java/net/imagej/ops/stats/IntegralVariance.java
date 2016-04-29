@@ -42,6 +42,7 @@ import net.imglib2.converter.Converter;
 import net.imglib2.converter.RealDoubleConverter;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.util.Intervals;
 import net.imglib2.view.composite.Composite;
 
 /**
@@ -105,7 +106,7 @@ public class IntegralVariance<I extends RealType<I>> extends
 		}
 
 		// Compute overlap
-		int area = IntegralMean.overlap(IntegralMean.correctNeighborhoodInterval(input1), input2);
+		int area = IntegralMean.overlap(Intervals.expand(input1, -1l), input2);
 
 		sum1.mul(sum1);
 		sum1.div(new DoubleType(area));
