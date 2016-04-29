@@ -71,6 +71,7 @@ import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
+import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.Type;
 
 import org.scijava.Contextual;
@@ -724,6 +725,19 @@ public interface OpEnvironment extends Contextual {
 	}
 
 	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.map.neighborhood.DefaultMapNeighborhood.class)
+	default <EI, EO> IterableInterval<EO> map(final IterableInterval<EO> out,
+		final RandomAccessibleInterval<EI> in, final Shape shape,
+		final UnaryComputerOp<Iterable<EI>, EO> op,
+		final OutOfBoundsFactory<EI, RandomAccessibleInterval<EI>> oobFactory)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<EO> result = (IterableInterval<EO>) run(
+				net.imagej.ops.Ops.Map.class, out, in, op, shape, oobFactory);
+		return result;
+	}
+
+	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.map.neighborhood.MapNeighborhoodWithCenter.class)
 	default <EI, EO> IterableInterval<EO> map(
@@ -734,6 +748,20 @@ public interface OpEnvironment extends Contextual {
 		final IterableInterval<EO> result =
 			(IterableInterval<EO>) run(
 				net.imagej.ops.Ops.Map.class, out, in, func, shape);
+		return result;
+	}
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.map.neighborhood.MapNeighborhoodWithCenter.class)
+	default <EI, EO> IterableInterval<EO> map(final IterableInterval<EO> out,
+		final RandomAccessibleInterval<EI> in, final Shape shape,
+		final CenterAwareComputerOp<EI, EO> func,
+		final OutOfBoundsFactory<EI, RandomAccessibleInterval<EI>> oobFactory)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<EO> result = (IterableInterval<EO>) run(
+			net.imagej.ops.Ops.Map.class, out, in, func, shape, oobFactory);
 		return result;
 	}
 

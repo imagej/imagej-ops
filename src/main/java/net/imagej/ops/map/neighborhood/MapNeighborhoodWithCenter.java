@@ -39,8 +39,11 @@ import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
 import net.imglib2.algorithm.neighborhood.Shape;
+import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.view.Views;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -60,6 +63,9 @@ public class MapNeighborhoodWithCenter<I, O> extends
 	AbstractMapNeighborhood<I, O, RandomAccessibleInterval<I>, IterableInterval<O>, Shape, CenterAwareComputerOp<I, O>>
 {
 
+	@Parameter(required = false)
+	private OutOfBoundsFactory<I, RandomAccessibleInterval<I>> oobFactory;
+
 	private BinaryComputerOp<IterableInterval<Neighborhood<I>>, RandomAccessibleInterval<I>, IterableInterval<O>> map;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -73,7 +79,9 @@ public class MapNeighborhoodWithCenter<I, O> extends
 	public void compute2(final RandomAccessibleInterval<I> in1, final Shape in2,
 		final IterableInterval<O> out)
 	{
-		map.compute2(in2.neighborhoodsSafe(in1), in1, out);
+		final RandomAccessibleInterval<I> extended = oobFactory == null ? in1
+			: Views.interval(Views.extend(in1, oobFactory), in1);
+		map.compute2(in2.neighborhoodsSafe(extended), in1, out);
 	}
 
 }
