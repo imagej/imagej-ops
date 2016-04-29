@@ -46,9 +46,9 @@ import org.scijava.plugin.Parameter;
  * @param <PO> producer of outputs
  * @param <OP> type of {@link Op} which processes each element
  */
-public abstract class AbstractMapNeighborhood<EI, EO, PI, PO, OP extends Op>
-	extends AbstractBinaryComputerOp<PI, Shape, PO> implements
-	MapNeighborhood<EI, EO, PI, PO, OP>
+public abstract class AbstractMapNeighborhood<EI, EO, PI, PO, S extends Shape, OP extends Op>
+	extends AbstractBinaryComputerOp<PI, S, PO> implements
+	MapNeighborhood<EI, EO, PI, PO, S, OP>
 {
 
 	@Parameter

@@ -80,7 +80,7 @@ public class DefaultErode<T extends RealType<T>> extends
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> f;
 
 	private T maxVal;
-	private MapNeighborhood<T, T, RandomAccessibleInterval<T>, IterableInterval<T>, UnaryComputerOp<Iterable<T>, T>> mapper;
+	private MapNeighborhood<T, T, RandomAccessibleInterval<T>, IterableInterval<T>, Shape, UnaryComputerOp<Iterable<T>, T>> mapper;
 	private UnaryFunctionOp<Dimensions, Img<T>> imgCreator;
 
 	@Override

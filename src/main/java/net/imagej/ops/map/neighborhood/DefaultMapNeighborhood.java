@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
 public class DefaultMapNeighborhood<I, O> extends
-	AbstractMapNeighborhood<I, O, RandomAccessibleInterval<I>, IterableInterval<O>, UnaryComputerOp<Iterable<I>, O>>
+	AbstractMapNeighborhood<I, O, RandomAccessibleInterval<I>, IterableInterval<O>, Shape, UnaryComputerOp<Iterable<I>, O>>
 {
 
 	private UnaryComputerOp<IterableInterval<Neighborhood<I>>, IterableInterval<O>> map;
