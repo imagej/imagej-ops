@@ -30,11 +30,8 @@
 
 package net.imagej.ops.filter;
 
-import org.scijava.plugin.Parameter;
-
 import net.imagej.ops.Ops.Map;
 import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
-import net.imagej.ops.special.chain.RAIs;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
@@ -43,6 +40,8 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.outofbounds.OutOfBoundsBorderFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
+
+import org.scijava.plugin.Parameter;
 
 public abstract class AbstractCenterAwareNeighborhoodBasedFilter<I, O> extends
 	AbstractUnaryComputerOp<RandomAccessibleInterval<I>, IterableInterval<O>>
@@ -62,7 +61,8 @@ public abstract class AbstractCenterAwareNeighborhoodBasedFilter<I, O> extends
 	@Override
 	public void initialize() {
 		filterOp = unaryComputer(out().firstElement());
-		map = Computers.unary(ops(), Map.class, out(), in(), shape, filterOp);
+		map = Computers.unary(ops(), Map.class, out(), in(), shape, filterOp,
+			outOfBoundsFactory);
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public abstract class AbstractCenterAwareNeighborhoodBasedFilter<I, O> extends
 		IterableInterval<O> output)
 	{
 		// map computer to neighborhoods
-		map.compute1(RAIs.extend(input, outOfBoundsFactory), output);
+		map.compute1(input, output);
 	}
 
 	/**
