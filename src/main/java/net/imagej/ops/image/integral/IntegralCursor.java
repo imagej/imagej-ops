@@ -81,7 +81,7 @@ public class IntegralCursor<T> extends AbstractEuclideanSpace implements
 
 	protected IntegralCursor(final IntegralCursor<T> cursor) {
 		super(cursor.numDimensions());
-		neighborhood = cursor.neighborhood; // FIXME?
+		neighborhood = cursor.neighborhood;
 		source = cursor.source.copyRandomAccess();
 		index = cursor.index;
 		code = cursor.code;

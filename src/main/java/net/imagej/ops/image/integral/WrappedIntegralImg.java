@@ -61,8 +61,7 @@ public class WrappedIntegralImg<I extends RealType<I>> extends
 		RandomAccessibleInterval<I> input)
 	{
 		// Create IntegralImg from input
-		// FIXME Higher-order integral images have not been released yet
-		integralImg = new IntegralImg<I, DoubleType>(input, new DoubleType(),
+		integralImg = new IntegralImg<>(input, new DoubleType(),
 			new RealDoubleConverter<I>());
 
 		// integralImg will be larger by one pixel in each dimension than input due

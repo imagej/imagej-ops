@@ -109,7 +109,8 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 			copyOp = (UnaryFunctionOp) RAIs.function(ops(), Ops.Copy.RAI.class, output);
 		}
 		
-		RandomAccessibleInterval<? extends RealType<?>> generalizedInput = input; // FIXME
+		// HACK Generalized to most common supertype of input and output
+		RandomAccessibleInterval<? extends RealType<?>> generalizedInput = input;
 
 		// Create integral image
 		for (int i=0; i < input.numDimensions(); ++i) {
