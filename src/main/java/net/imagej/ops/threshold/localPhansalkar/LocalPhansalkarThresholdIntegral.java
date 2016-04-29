@@ -134,7 +134,7 @@ public class LocalPhansalkarThresholdIntegral<T extends RealType<T>> extends
 
 			// Set value
 			final Converter<I, DoubleType> conv = new RealDoubleConverter<>();
-			final DoubleType centerPixelAsDoubleType = new DoubleType();
+			DoubleType centerPixelAsDoubleType = variance; // NB: Reuse DoubleType
 			conv.convert(center, centerPixelAsDoubleType);
 
 			output.set(centerPixelAsDoubleType.compareTo(threshold) > 0);
