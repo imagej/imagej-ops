@@ -72,6 +72,8 @@ namespaces = ```
 	]],
 	[name: "deconvolve", iface: "Deconvolve", ops: [
 		[name: "accelerate",              	  iface: "Accelerate"],
+		[name: "firstGuess",              	  iface: "FirstGuess"],
+		[name: "normalizationFactor",         iface: "NormalizationFactor"],
 		[name: "richardsonLucy",              iface: "RichardsonLucy"],
 		[name: "richardsonLucyCorrection",    iface: "RichardsonLucyCorrection"],
 		[name: "richardsonLucyTV",            iface: "RichardsonLucyTV"],

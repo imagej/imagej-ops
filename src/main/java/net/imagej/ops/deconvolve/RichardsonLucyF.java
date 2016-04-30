@@ -30,6 +30,8 @@
 
 package net.imagej.ops.deconvolve;
 
+import java.util.ArrayList;
+
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.deconvolve.accelerate.VectorAccelerator;
@@ -37,6 +39,9 @@ import net.imagej.ops.filter.AbstractFFTFilterF;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.inplace.Inplaces;
 import net.imagej.ops.special.inplace.UnaryInplaceOp;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
@@ -93,12 +98,10 @@ public class RichardsonLucyF<I extends RealType<I> & NativeType<I>, O extends Re
 
 	private UnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> computeEstimateOp;
 
-	@Override
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void initialize() {
+	private UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> normalizer;
 
-		// TODO: try and figure out if there is a better place to set the default
-		// OBF
+	@Override
+	public void initialize() {
 
 		// the out of bounds factory will be different depending on wether we are
 		// using circulant or non-circulant
@@ -113,9 +116,7 @@ public class RichardsonLucyF<I extends RealType<I> & NativeType<I>, O extends Re
 			}
 		}
 
-		computeEstimateOp = (UnaryComputerOp) Computers.unary(ops(),
-			RichardsonLucyUpdate.class, RandomAccessibleInterval.class,
-			RandomAccessibleInterval.class);
+		computeEstimateOp = getComputeEstimateOp();
 
 		super.initialize();
 
@@ -133,28 +134,60 @@ public class RichardsonLucyF<I extends RealType<I> & NativeType<I>, O extends Re
 			RandomAccessibleInterval<C> fftImg, RandomAccessibleInterval<C> fftKernel,
 			RandomAccessibleInterval<O> output, Interval imgConvolutionInterval)
 	{
-		UnaryInplaceOp<O, O> accelerator = null;
+		UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> accelerator =
+			null;
 
-		if (accelerate) {
-			accelerator = ops.op(VectorAccelerator.class, output);
+		if (accelerate == true) {
+			accelerator =
+				(UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>) Inplaces
+					.unary(ops(), VectorAccelerator.class, output);
 		}
 
+		// if non-circulant mode, set up the richardson-lucy computer in
+		// non-circulant mode and return it
 		if (nonCirculant) {
-			return Computers.binary(ops(), RichardsonLucyNonCirculantC.class, output,
+			normalizer =
+				(UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>) Inplaces
+					.unary(ops(), NonCirculantNormalizationFactor.class, output, in(),
+						in2(), fftImg, fftKernel, imgConvolutionInterval);
+
+			ArrayList<UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>> list =
+				new ArrayList<UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>>();
+
+			list.add(normalizer);
+
+			// set up the noncirculant first guess op (a flat sheet with total sum
+			// normalized by image area)
+			UnaryFunctionOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> fg =
+				(UnaryFunctionOp) Functions.unary(ops(), NonCirculantFirstGuess.class,
+					RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+					imgConvolutionInterval, Util.getTypeFromInterval(output), in());
+
+			return Computers.binary(ops(), RichardsonLucyC.class, output,
 				raiExtendedInput, raiExtendedKernel, fftImg, fftKernel, true, true,
-				maxIterations, imgConvolutionInterval, accelerator, in(), in2(),
-				computeEstimateOp);
+				maxIterations, imgConvolutionInterval, accelerator, computeEstimateOp,
+				fg.compute1(raiExtendedInput), list);
 		}
 
+		// return a richardson lucy computer
 		return Computers.binary(ops(), RichardsonLucyC.class, output,
 			raiExtendedInput, raiExtendedKernel, fftImg, fftKernel, true, true,
 			maxIterations, imgConvolutionInterval, accelerator, computeEstimateOp);
 	}
 
-	public void setComputeEstimateOp(
-		UnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> computeEstimateOp)
+	/**
+	 * set up and return the compute estimate op. This function can be over-ridden
+	 * to implement different types of richardson lucy (like total variation
+	 * richardson lucy)
+	 * 
+	 * @return compute estimate op
+	 */
+	protected
+		UnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>
+		getComputeEstimateOp()
 	{
-		this.computeEstimateOp = computeEstimateOp;
+		return (UnaryComputerOp) Computers.unary(ops(), RichardsonLucyUpdate.class,
+			RandomAccessibleInterval.class, RandomAccessibleInterval.class);
 	}
 
 }

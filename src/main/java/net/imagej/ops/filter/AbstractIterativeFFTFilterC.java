@@ -40,7 +40,7 @@ import org.scijava.app.StatusService;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract class for iterative FFT filters that perform on RAI. 
+ * Abstract class for iterative FFT filters that perform on RAI.
  * 
  * @author Brian Northan
  * @param <I>
@@ -52,7 +52,8 @@ public abstract class AbstractIterativeFFTFilterC<I extends RealType<I>, O exten
 	extends
 	AbstractFFTFilterC<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<C>>
 {
-	@Parameter(required=false)
+
+	@Parameter(required = false)
 	private StatusService status;
 
 	/**
@@ -68,63 +69,20 @@ public abstract class AbstractIterativeFFTFilterC<I extends RealType<I>, O exten
 	private Interval imgConvolutionInterval;
 
 	/**
-	 * An op which implements an acceleration strategy (takes a larger step at each iteration).
+	 * An op which implements an acceleration strategy (takes a larger step at
+	 * each iteration).
 	 */
 	@Parameter(required = false)
 	private UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> accelerator;
-
-	private RandomAccessibleInterval<O> raiExtendedReblurred;
-
-	private RandomAccessibleInterval<O> raiExtendedEstimate;
-
-	@Override
-	public void compute2(RandomAccessibleInterval<I> in,
-		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
-	{
-
-		preProcess(in, kernel, out);
-
-		performIterations(in, kernel, out);
-
-		postProcess(in, kernel, out);
-
-	}
-
-	abstract protected void preProcess(RandomAccessibleInterval<I> in,
-		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out);
-
-	abstract protected void performIterations(RandomAccessibleInterval<I> in,
-		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out);
-
-	protected void postProcess(RandomAccessibleInterval<I> in,
-		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
-	{}
-
-	protected RandomAccessibleInterval<O> getRAIExtendedReblurred() {
-		return raiExtendedReblurred;
-	}
-
-	protected void setRAIExtendedReblurred(
-		RandomAccessibleInterval<O> raiExtendedReblurred)
-	{
-		this.raiExtendedReblurred = raiExtendedReblurred;
-	}
-
-	protected RandomAccessibleInterval<O> getRAIExtendedEstimate() {
-		return raiExtendedEstimate;
-	}
-
-	protected void setRAIExtendedEstimate(
-		RandomAccessibleInterval<O> raiExtendedEstimate)
-	{
-		this.raiExtendedEstimate = raiExtendedEstimate;
-	}
 
 	public Interval getImgConvolutionInterval() {
 		return imgConvolutionInterval;
 	}
 
-	public UnaryInplaceOp<RandomAccessibleInterval<O>,RandomAccessibleInterval<O>> getAccelerator() {
+	public
+		UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>
+		getAccelerator()
+	{
 		return accelerator;
 	}
 

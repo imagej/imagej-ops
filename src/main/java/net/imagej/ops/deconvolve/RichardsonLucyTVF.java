@@ -32,21 +32,12 @@ package net.imagej.ops.deconvolve;
 
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.deconvolve.accelerate.VectorAccelerator;
-import net.imagej.ops.filter.AbstractFFTFilterF;
-import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imagej.ops.special.inplace.UnaryInplaceOp;
-import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
-import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
-import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Util;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -56,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * Richardson Lucy with total variation function op that operates on (@link
  * RandomAccessibleInterval) (Richardson-Lucy algorithm with total variation
  * regularization for 3D confocal microscope deconvolution Microsc Res Rech 2006
- * Apr; 69(4)- 260-6) <<<<<<< HEAD ======= >>>>>>> Iterate based on review
+ * Apr; 69(4)- 260-6)
  * 
  * @author bnorthan
  * @param <I>
@@ -67,103 +58,26 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Deconvolve.RichardsonLucyTV.class,
 	priority = Priority.HIGH_PRIORITY)
 public class RichardsonLucyTVF<I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
-	extends AbstractFFTFilterF<I, O, K, C> implements
+	extends RichardsonLucyF<I, O, K, C> implements
 	Ops.Deconvolve.RichardsonLucyTV
 {
-	/*TODO: This is a (almost) complete replication of RichardsonLucyF... need to
-	  avoid repeating code but still thinking through how to best do that (trying
-	  to avoid to much inheritance). */
 
 	@Parameter
 	private OpService ops;
 
-	/**
-	 * max number of iterations
-	 */
-	@Parameter
-	private int maxIterations;
-
-	/**
-	 * the regularization factor determines smoothness of solution
-	 */
 	@Parameter
 	private float regularizationFactor = 0.01f;
 
-	/**
-	 * indicates whether to use non-circulant edge handling
-	 */
-	@Parameter(required = false)
-	private boolean nonCirculant = false;
-
-	/**
-	 * indicates whether to use acceleration
-	 */
-	@Parameter(required = false)
-	private boolean accelerate = false;
-
-	private UnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> computeEstimateOp;
-
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void initialize() {
-
-		// TODO: try and figure out if there is a better place to set the default
-		// OBF
-
-		// the out of bounds factory will be different depending on wether we are
-		// using circulant or non-circulant
-		if (this.getOBFInput() == null) {
-
-			if (!nonCirculant) {
-				setOBFInput(new OutOfBoundsMirrorFactory<>(Boundary.SINGLE));
-			}
-			else if (nonCirculant) {
-				setOBFInput(new OutOfBoundsConstantValueFactory<>(Util
-					.getTypeFromInterval(in()).createVariable()));
-			}
-		}
-
+	protected
+		UnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>
+		getComputeEstimateOp()
+	{
 		// create Richardson Lucy TV update op, this will override the base RL
 		// Update.
-		computeEstimateOp = (UnaryComputerOp) Computers.unary(ops(),
+		return ((UnaryComputerOp) Computers.unary(ops(),
 			RichardsonLucyTVUpdate.class, RandomAccessibleInterval.class,
-			RandomAccessibleInterval.class, regularizationFactor);
-
-		super.initialize();
-
-	}
-
-	/**
-	 * create a richardson lucy tv filter
-	 */
-	@Override
-	@SuppressWarnings("unchecked")
-	public
-		BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>>
-		createFilterComputer(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final RandomAccessibleInterval<C> fftImg,
-			final RandomAccessibleInterval<C> fftKernel,
-			final RandomAccessibleInterval<O> output,
-			final Interval imgConvolutionInterval)
-	{
-		UnaryInplaceOp<O, O> accelerator = null;
-
-		// TODO: make Accelerator a special op
-		if (accelerate == true) {
-			accelerator = ops.op(VectorAccelerator.class, output);
-		}
-
-		if (nonCirculant) {
-			return Computers.binary(ops(), RichardsonLucyNonCirculantC.class, output,
-				raiExtendedInput, raiExtendedKernel, fftImg, fftKernel, true, true,
-				maxIterations, imgConvolutionInterval, accelerator, in(), in2(),
-				computeEstimateOp);
-		}
-
-		return Computers.binary(ops(), RichardsonLucyC.class, output,
-			raiExtendedInput, raiExtendedKernel, fftImg, fftKernel, true, true,
-			maxIterations, imgConvolutionInterval, accelerator, null,
-			computeEstimateOp);
+			RandomAccessibleInterval.class, regularizationFactor));
 	}
 }

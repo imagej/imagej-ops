@@ -286,5 +286,9 @@ public abstract class AbstractFFTFilterF<I extends RealType<I>, O extends RealTy
 	{
 		this.obfKernel = obfKernel;
 	}
+	
+	protected Type<O> getOutType() {
+		return outType;
+	}
 
 }
