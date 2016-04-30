@@ -99,11 +99,10 @@ public class RichardsonLucyCorrection<I extends RealType<I>, O extends RealType<
 		RandomAccessibleInterval<O> correction)
 	{
 		// divide observed image by reblurred
-		//divide.mutate1(observed, reblurred);
-		divide.mutate1(reblurred,observed);
+		divide.mutate1(reblurred, observed);
 
 		// correlate with psf to compute the correction factor
-		// Note: FFT of psf is pre-computed
+		// Note: FFT of psf is pre-computed and set as an input parameter of the op
 		correlate.compute1(reblurred, correction);
 
 	}

@@ -62,8 +62,8 @@ public class ConvolveFFTF<I extends RealType<I> & NativeType<I>, O extends RealT
 	@Override
 	public void initialize() {
 
-		// TODO: try and figure out if there is a better place to set the default
-		// OBF
+		// if no OBF was passed in set default OBF for convolve to be constant value
+		// of zero (zero-pad)
 		if (this.getOBFInput() == null) {
 			setOBFInput(new OutOfBoundsConstantValueFactory<>(Util
 				.getTypeFromInterval(in()).createVariable()));

@@ -106,8 +106,6 @@ public class RichardsonLucyTVUpdate<T extends RealType<T> & NativeType<T>, I ext
 	}
 
 	static double hypot3(double a, double b, double c) {
-		// return net.jafama.FastMathcorrection factor.sqrtQuick(a * a + b * b + c *
-		// c);
 		return java.lang.Math.sqrt(a * a + b * b + c * c);
 	}
 
@@ -155,7 +153,6 @@ public class RichardsonLucyTVUpdate<T extends RealType<T> & NativeType<T>, I ext
 
 				@Override
 				public void run() {
-					long starttime = System.currentTimeMillis();
 
 					final RandomAccess<T> outRandom = variation.randomAccess();
 					final Cursor<T> outCursor = Views.iterable(variation).cursor();
