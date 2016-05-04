@@ -125,7 +125,7 @@ public class PartialDerivativeRAI<T extends RealType<T>> extends
 		}
 
 		addOp = RAIs.binaryComputer(ops(), Ops.Math.Add.class, in(), in());
-		createRAI = RAIs.function(ops(), Ops.Create.Img.class, in());
+		createRAI = RAIs.function(ops(), net.imagej.ops.create.img.CreateImgFromRAI.class, in());
 	}
 
 	@Override

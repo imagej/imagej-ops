@@ -3,11 +3,11 @@ package net.imagej.ops.filter.hessian;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.features.shape.DefaultHessian;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
-import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.util.Util;
 import net.imglib2.view.IntervalView;
@@ -91,4 +91,28 @@ public class HessianFilterTest extends AbstractOpTest {
 		}
 	}
 
+	@Test
+	public void testDefaultHessian() {
+		Img<FloatType> img = generateFloatArrayTestImg(false, new long[] { 50, 50 });
+
+		ops.run(DefaultHessian.class, img);
+	}
+
+//	@Test
+//	public void testSomething() {
+//		Img<FloatType> img = generateFloatArrayTestImg(false, new long[] { 50, 50 });
+//
+//		@SuppressWarnings({ "unchecked", "rawtypes" })
+//		UnaryFunctionOp<RandomAccessibleInterval<FloatType>, RandomAccessibleInterval<Composite<FloatType>>> partialDerivatives = (UnaryFunctionOp) Functions.unary(ops,
+//				Ops.Filter.AllPartialDerivatives.class, RandomAccessibleInterval.class, RandomAccessibleInterval.class);
+//		UnaryFunctionOp<RandomAccessibleInterval<FloatType>, RandomAccessibleInterval<FloatType>> createRAI = RAIs
+//				.function(ops, Ops.Create.Img.class, img);
+//
+//		RandomAccessibleInterval<Composite<FloatType>> firstOrderPartialDerivatives = partialDerivatives.compute1(img);
+//		CompositeChannelConverter<FloatType, Composite<FloatType>> conv = new CompositeChannelConverter<>(0);
+//		RandomAccessibleInterval<FloatType> firstOrderPartialDerivative = Converters
+//				.convert(firstOrderPartialDerivatives, conv, Views.iterable(img).firstElement());
+//
+//		createRAI.compute1(firstOrderPartialDerivative);
+//	}
 }
