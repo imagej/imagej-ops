@@ -30,25 +30,63 @@
 
 package net.imagej.ops.filter;
 
-import net.imagej.ops.AbstractNamespaceTest;
+import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
 
-import org.junit.Test;
+import org.scijava.plugin.Parameter;
 
 /**
- * Tests {@link FilterNamespace}.
+ * Abstract class for FFT based filter computers
  * 
- * @author Curtis Rueden
+ * @author Brian Northan
+ * @param <I>
+ * @param <O> gene
+ * @param <K>
+ * @param <C>
  */
-public class FilterNamespaceTest extends AbstractNamespaceTest {
+public abstract class AbstractFFTFilterC<I, O, K, C> extends
+	AbstractBinaryComputerOp<I, K, O>
+{
 
 	/**
-	 * Tests that the ops of the {@code filter} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link FilterNamespace}
-	 * class.
+	 * Buffer to be used to store FFTs for input. Size of fftInput must correspond
+	 * to the fft size of raiExtendedInput
 	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("filter", FilterNamespace.class);
+	@Parameter
+	private C fftInput;
+
+	/**
+	 * Buffer to be used to store FFTs for kernel. Size of fftKernel must
+	 * correspond to the fft size of raiExtendedKernel
+	 */
+	@Parameter
+	private C fftKernel;
+
+	/**
+	 * boolean indicating that the input FFT has already been calculated
+	 */
+	@Parameter(required = false)
+	private boolean performInputFFT = true;
+
+	/**
+	 * boolean indicating that the kernel FFT has already been calculated
+	 */
+	@Parameter(required = false)
+	private boolean performKernelFFT = true;
+
+	protected C getFFTInput() {
+		return fftInput;
+	}
+
+	protected C getFFTKernel() {
+		return fftKernel;
+	}
+
+	protected boolean getPerformInputFFT() {
+		return performInputFFT;
+	}
+
+	protected boolean getPerformKernelFFT() {
+		return performKernelFFT;
 	}
 
 }

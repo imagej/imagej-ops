@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2016 Board of Regents of the University of
+ * Copyright (C) 2014 - 2015 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -28,67 +28,66 @@
  * #L%
  */
 
-package net.imagej.ops.filter.fftSize;
+package net.imagej.ops.filter;
 
-import net.imagej.ops.AbstractOp;
-import net.imagej.ops.Ops;
-import net.imglib2.Dimensions;
-import net.imglib2.algorithm.fft2.FFTMethods;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
+import net.imglib2.Interval;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.numeric.ComplexType;
+import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
+import org.scijava.app.StatusService;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
- * Op that calculates FFT sizes.
+ * Abstract class for iterative FFT filters that perform on RAI.
  * 
  * @author Brian Northan
+ * @param <I>
+ * @param <O>
+ * @param <K>
+ * @param <C>
  */
-@Plugin(type = Ops.Filter.FFTSize.class)
-public class ComputeFFTSize extends AbstractOp implements Ops.Filter.FFTSize {
+public abstract class AbstractIterativeFFTFilterC<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	extends
+	AbstractFFTFilterC<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<C>>
+{
 
+	@Parameter(required = false)
+	private StatusService status;
+
+	/**
+	 * Max number of iterations to perform
+	 */
 	@Parameter
-	private Dimensions inputDimensions;
+	private int maxIterations;
 
-	@Parameter(type = ItemIO.BOTH)
-	private long[] paddedSize;
-
-	@Parameter(type = ItemIO.BOTH)
-	private long[] fftSize;
-
+	/**
+	 * The interval to process TODO: this is probably redundant - remove
+	 */
 	@Parameter
-	private boolean forward;
+	private Interval imgConvolutionInterval;
 
-	@Parameter
-	private boolean fast;
+	/**
+	 * An op which implements an acceleration strategy (takes a larger step at
+	 * each iteration).
+	 */
+	@Parameter(required = false)
+	private UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> accelerator;
 
-	@Override
-	public void run() {
+	public Interval getImgConvolutionInterval() {
+		return imgConvolutionInterval;
+	}
 
-		if (fast && forward) {
+	public
+		UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>
+		getAccelerator()
+	{
+		return accelerator;
+	}
 
-			FFTMethods.dimensionsRealToComplexFast(inputDimensions, paddedSize,
-				fftSize);
-
-		}
-		else if (!fast && forward) {
-			FFTMethods.dimensionsRealToComplexSmall(inputDimensions, paddedSize,
-				fftSize);
-
-		}
-		if (fast && !forward) {
-
-			FFTMethods.dimensionsComplexToRealFast(inputDimensions, paddedSize,
-				fftSize);
-
-		}
-		else if (!fast && !forward) {
-
-			FFTMethods.dimensionsComplexToRealSmall(inputDimensions, paddedSize,
-				fftSize);
-
-		}
-
+	public int getMaxIterations() {
+		return maxIterations;
 	}
 
 }

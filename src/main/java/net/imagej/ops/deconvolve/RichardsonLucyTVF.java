@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,67 +28,56 @@
  * #L%
  */
 
-package net.imagej.ops.filter.fftSize;
+package net.imagej.ops.deconvolve;
 
-import net.imagej.ops.AbstractOp;
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imglib2.Dimensions;
-import net.imglib2.algorithm.fft2.FFTMethods;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.NativeType;
+import net.imglib2.type.numeric.ComplexType;
+import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Op that calculates FFT sizes.
+ * Richardson Lucy with total variation function op that operates on (@link
+ * RandomAccessibleInterval) (Richardson-Lucy algorithm with total variation
+ * regularization for 3D confocal microscope deconvolution Microsc Res Rech 2006
+ * Apr; 69(4)- 260-6)
  * 
- * @author Brian Northan
+ * @author bnorthan
+ * @param <I>
+ * @param <O>
+ * @param <K>
+ * @param <C>
  */
-@Plugin(type = Ops.Filter.FFTSize.class)
-public class ComputeFFTSize extends AbstractOp implements Ops.Filter.FFTSize {
+@Plugin(type = Ops.Deconvolve.RichardsonLucyTV.class,
+	priority = Priority.HIGH_PRIORITY)
+public class RichardsonLucyTVF<I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
+	extends RichardsonLucyF<I, O, K, C> implements
+	Ops.Deconvolve.RichardsonLucyTV
+{
 
 	@Parameter
-	private Dimensions inputDimensions;
-
-	@Parameter(type = ItemIO.BOTH)
-	private long[] paddedSize;
-
-	@Parameter(type = ItemIO.BOTH)
-	private long[] fftSize;
+	private OpService ops;
 
 	@Parameter
-	private boolean forward;
-
-	@Parameter
-	private boolean fast;
+	private float regularizationFactor = 0.01f;
 
 	@Override
-	public void run() {
-
-		if (fast && forward) {
-
-			FFTMethods.dimensionsRealToComplexFast(inputDimensions, paddedSize,
-				fftSize);
-
-		}
-		else if (!fast && forward) {
-			FFTMethods.dimensionsRealToComplexSmall(inputDimensions, paddedSize,
-				fftSize);
-
-		}
-		if (fast && !forward) {
-
-			FFTMethods.dimensionsComplexToRealFast(inputDimensions, paddedSize,
-				fftSize);
-
-		}
-		else if (!fast && !forward) {
-
-			FFTMethods.dimensionsComplexToRealSmall(inputDimensions, paddedSize,
-				fftSize);
-
-		}
-
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	protected
+		UnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>
+		getComputeEstimateOp()
+	{
+		// create Richardson Lucy TV update op, this will override the base RL
+		// Update.
+		return ((UnaryComputerOp) Computers.unary(ops(),
+			RichardsonLucyTVUpdate.class, RandomAccessibleInterval.class,
+			RandomAccessibleInterval.class, regularizationFactor));
 	}
-
 }

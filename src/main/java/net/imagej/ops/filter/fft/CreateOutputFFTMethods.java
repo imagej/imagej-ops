@@ -28,27 +28,52 @@
  * #L%
  */
 
-package net.imagej.ops.filter;
+package net.imagej.ops.filter.fft;
 
-import net.imagej.ops.AbstractNamespaceTest;
+import net.imagej.ops.Ops;
+import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
+import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
+import net.imglib2.Dimensions;
+import net.imglib2.img.Img;
+import net.imglib2.type.NativeType;
 
-import org.junit.Test;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Tests {@link FilterNamespace}.
- * 
- * @author Curtis Rueden
+ * Function that creates an output for FFTMethods FFT
+ *
+ * @author Brian Northan
+ * @param <T>
  */
-public class FilterNamespaceTest extends AbstractNamespaceTest {
+@Plugin(type = Ops.Filter.CreateFFTOutput.class)
+public class CreateOutputFFTMethods<T> extends
+	AbstractBinaryFunctionOp<Dimensions, T, Img<T>> implements
+	Ops.Filter.CreateFFTOutput
+{
 
-	/**
-	 * Tests that the ops of the {@code filter} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link FilterNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("filter", FilterNamespace.class);
+	@Parameter(required = false)
+	private boolean fast = true;
+
+	private BinaryFunctionOp<Dimensions, T, Img<T>> create;
+
+	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void initialize() {
+		super.initialize();
+
+		create = (BinaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+			Img.class, Dimensions.class, NativeType.class);
+	}
+
+	@Override
+	public Img<T> compute2(Dimensions paddedDimensions, T outType) {
+
+		Dimensions paddedFFTMethodsFFTDimensions = FFTMethodsUtility
+			.getFFTDimensionsRealToComplex(fast, paddedDimensions);
+
+		return create.compute2(paddedFFTMethodsFFTDimensions, outType);
 	}
 
 }
