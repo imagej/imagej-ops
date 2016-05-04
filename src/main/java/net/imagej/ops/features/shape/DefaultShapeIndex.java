@@ -33,15 +33,15 @@ package net.imagej.ops.features.shape;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.chain.RAIs;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
-import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.view.Views;
+import net.imglib2.view.composite.Composite;
 
 /**
  * Calculate the shape index as defined in J Koenderink and A van Doorn,
@@ -56,23 +56,18 @@ public class DefaultShapeIndex<I extends RealType<I>> extends
 	implements Ops.Shape.ShapeIndex
 {
 
-	private UnaryFunctionOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<I>> createRAIFromRAI;
-	private UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<I>>[] derivativeComputers;
-	
-	@SuppressWarnings("unchecked")
+	private UnaryFunctionOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<? extends Composite<I>>> hessian;
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		createRAIFromRAI = RAIs.function(ops(), Ops.Create.Img.class, in());
-		
-		derivativeComputers = new UnaryComputerOp[in().numDimensions()];
-		for (int i = 0; i < in().numDimensions(); i++) {
-			derivativeComputers[i] = RAIs.computer(ops(),
-				Ops.Filter.DirectionalDerivative.class, in(), i);
-		}
-
+		hessian = (UnaryFunctionOp) Functions.unary(ops(), net.imagej.ops.features.shape.DefaultHessian.class,
+				RandomAccessibleInterval.class, RandomAccessibleInterval.class);
 	}
 
 	/**
+	 * TODO Improve documentation
+	 * 
 	 * The formula is: dnx_x + dny_y s = 2 / PI * arctan
 	 * --------------------------------------- sqrt((dnx_x - dny_y)^2 + 4 dny_x
 	 * dnx_y) where _x and _y are the x and y components of the partial
@@ -85,47 +80,23 @@ public class DefaultShapeIndex<I extends RealType<I>> extends
 		RandomAccessibleInterval<FloatType> output)
 	{
 
-		RandomAccessibleInterval<I> dx = createRAIFromRAI.compute1(input);
-		derivativeComputers[0].compute1(input, dx);
-		
-		RandomAccessibleInterval<I> dy = createRAIFromRAI.compute1(input);
-		derivativeComputers[1].compute1(input, dy);
-		
-		RandomAccessibleInterval<I> dxx = createRAIFromRAI.compute1(dx);
-		derivativeComputers[0].compute1(dx, dxx);
-
-		RandomAccessibleInterval<I> dxy = createRAIFromRAI.compute1(dx);
-		derivativeComputers[1].compute1(dx, dxy);
-
-		RandomAccessibleInterval<I> dyx = createRAIFromRAI.compute1(dy);
-		derivativeComputers[0].compute1(dy, dyx);
-
-		RandomAccessibleInterval<I> dyy = createRAIFromRAI.compute1(dy);
-		derivativeComputers[1].compute1(dy, dyy);
+		RandomAccessibleInterval<? extends Composite<I>> hessianRAI = hessian.compute1(input);
 
 		float factor = 2 / (float) Math.PI;
 
 		Cursor<FloatType> shapeIndexCursor = Views.iterable(output).cursor();
-
-		// Create cursors for all images
-		Cursor<I> cursorDxx = Views.iterable(dxx).cursor();
-		Cursor<I> cursorDxy = Views.iterable(dxy).cursor();
-		Cursor<I> cursorDyx = Views.iterable(dyx).cursor();
-		Cursor<I> cursorDyy = Views.iterable(dyy).cursor();
+		Cursor<? extends Composite<I>> hessianCursor = Views.iterable(hessianRAI).cursor();
 
 		// Iterate
 		while (shapeIndexCursor.hasNext()) {
 			// Move all cursors forward by one pixel
 			shapeIndexCursor.fwd();
-			cursorDxx.fwd();
-			cursorDxy.fwd();
-			cursorDyx.fwd();
-			cursorDyy.fwd();
+			hessianCursor.fwd();
 
-			float dnx_x = -cursorDxx.get().getRealFloat();
-			float dnx_y = -cursorDxy.get().getRealFloat();
-			float dny_x = -cursorDyx.get().getRealFloat();
-			float dny_y = -cursorDyy.get().getRealFloat();
+			float dnx_x = -hessianCursor.get().get(0).getRealFloat();
+			float dnx_y = -hessianCursor.get().get(1).getRealFloat();
+			float dny_x = -hessianCursor.get().get(2).getRealFloat();
+			float dny_y = -hessianCursor.get().get(3).getRealFloat();
 
 			double D = Math.sqrt((dnx_x - dny_y) * (dnx_x - dny_y) + 4 * dnx_y *
 				dny_x);
