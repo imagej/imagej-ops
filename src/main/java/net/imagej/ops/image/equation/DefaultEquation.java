@@ -94,6 +94,9 @@ public class DefaultEquation<T extends RealType<T>> extends
 		bindings.put("c", c);
 
 		if (engine instanceof Compilable) try {
+			//FIXME use a copy so that we can use original neighborhood
+			//FIXME x, y, z, etc = pixel positions in that axis.. check # dims of input data > this is p[0], p[1], etc
+			//FIXME v = current pixel value
 			final String script =
 				"importClass(Packages.java.lang.Double);\n" +
 				"while (c.hasNext()) {\n" +
