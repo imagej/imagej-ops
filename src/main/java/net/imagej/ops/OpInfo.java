@@ -46,6 +46,10 @@ import org.scijava.util.ClassUtils;
 public class OpInfo implements Comparable<OpInfo> {
 
 	private final CommandInfo cInfo;
+	private String[] aliases = null;
+	private String name = null;
+	private boolean initializedAliases = false;
+	private boolean initializedName = false;
 
 	public OpInfo(final CommandInfo cInfo) {
 		this.cInfo = cInfo;
@@ -62,17 +66,14 @@ public class OpInfo implements Comparable<OpInfo> {
 
 	/** Gets whether the op has a name. */
 	public boolean isNamed() {
-		final String name = getName();
-		return name != null && !name.isEmpty();
+		final String opName = getName();
+		return opName != null && !opName.isEmpty();
 	}
 
 	/** Gets the fully qualified name, with namespace. */
 	public String getName() {
-		final String name = cInfo().getName();
-		if (name != null && !name.isEmpty()) return name;
-
-		// name not explicitly specified; look for NAME constant
-		return getFieldValue(String.class, "NAME");
+		if (!initializedName) name = createName();
+		return name;
 	}
 
 	/** Gets the name without namespace prefix. */
@@ -81,18 +82,18 @@ public class OpInfo implements Comparable<OpInfo> {
 	}
 
 	/** Gets whether the given name matches this op. */
-	public boolean nameMatches(final String name) {
-		if (name == null) return true; // not filtering on name
+	public boolean nameMatches(final String testName) {
+		if (testName == null) return true; // not filtering on name
 
 		// check if name matches exactly
 		final String opName = getName();
-		if (nameMatches(opName, name)) return true;
+		if (nameMatches(opName, testName)) return true;
 
 		// check for aliases
-		final String[] aliases = getAliases();
-		if (aliases != null) {
-			for (final String a : aliases) {
-				if (nameMatches(a, name)) return true;
+		final String[] opAliases = getAliases();
+		if (opAliases != null) {
+			for (final String a : opAliases) {
+				if (nameMatches(a, testName)) return true;
 			}
 		}
 
@@ -101,23 +102,8 @@ public class OpInfo implements Comparable<OpInfo> {
 
 	/** Gets the fully qualified aliases. */
 	public String[] getAliases() {
-		// check for an alias
-		final String alias = cInfo().get("alias");
-		if (alias != null) return new String[] { alias };
-
-		// no single alias; check for a list of aliases
-		final String aliases = cInfo().get("aliases");
-		if (aliases != null) return aliases.split("\\s*,\\s*");
-
-		// alias not explicitly specified; look for ALIAS constant
-		final String aliasField = getFieldValue(String.class, "ALIAS");
-		if (aliasField != null) return new String[] {aliasField};
-
-		// no single alias; look for ALIASES constant
-		final String aliasesField = getFieldValue(String.class, "ALIASES");
-		if (aliasesField != null) return aliasesField.split("\\s*,\\s*");
-
-		return null;
+		if (!initializedAliases) aliases = createAliases();
+		return aliases;
 	}
 
 	/** Gets the namespace. */
@@ -176,6 +162,49 @@ public class OpInfo implements Comparable<OpInfo> {
 	}
 
 	// -- Helper methods --
+
+	/**
+	 * Synchronized double-locked method to ensure aliases are only discovered
+	 * once per {@link OpInfo}.
+	 */
+	private synchronized String[] createAliases() {
+		if (!initializedAliases) {
+			initializedAliases = true;
+			// check for an alias
+			final String alias = cInfo().get("alias");
+			if (alias != null) return new String[] { alias };
+
+			// no single alias; check for a list of aliases
+			final String opAliases = cInfo().get("aliases");
+			if (opAliases != null) return opAliases.split("\\s*,\\s*");
+
+			// alias not explicitly specified; look for ALIAS constant
+			final String aliasField = getFieldValue(String.class, "ALIAS");
+			if (aliasField != null) return new String[] {aliasField};
+
+			// no single alias; look for ALIASES constant
+			final String aliasesField = getFieldValue(String.class, "ALIASES");
+			if (aliasesField != null) return aliasesField.split("\\s*,\\s*");
+		}
+
+		return aliases;
+	}
+
+	/**
+	 * Synchronized double-locked method to ensure names are only discovered once
+	 * per {@link OpInfo}.
+	 */
+	private synchronized String createName() {
+		if (!initializedName) {
+			initializedName = true;
+			final String opName = cInfo().getName();
+			if (opName != null && !opName.isEmpty()) return opName;
+
+			// name not explicitly specified; look for NAME constant
+			return getFieldValue(String.class, "NAME");
+		}
+		return name;
+	}
 
 	/** Helper method of {@link #getName} and {@link #getAliases}. */
 	private <T> T getFieldValue(final Class<T> fieldType, final String fieldName)
