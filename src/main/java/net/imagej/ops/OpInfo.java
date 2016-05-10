@@ -72,7 +72,7 @@ public class OpInfo implements Comparable<OpInfo> {
 
 	/** Gets the fully qualified name, with namespace. */
 	public String getName() {
-		if (!initializedName) name = createName();
+		if (!initializedName) createName();
 		return name;
 	}
 
@@ -102,7 +102,7 @@ public class OpInfo implements Comparable<OpInfo> {
 
 	/** Gets the fully qualified aliases. */
 	public String[] getAliases() {
-		if (!initializedAliases) aliases = createAliases();
+		if (!initializedAliases) createAliases();
 		return aliases;
 	}
 
@@ -167,43 +167,50 @@ public class OpInfo implements Comparable<OpInfo> {
 	 * Synchronized double-locked method to ensure aliases are only discovered
 	 * once per {@link OpInfo}.
 	 */
-	private synchronized String[] createAliases() {
+	private synchronized void createAliases() {
 		if (!initializedAliases) {
-			initializedAliases = true;
 			// check for an alias
 			final String alias = cInfo().get("alias");
-			if (alias != null) return new String[] { alias };
+			String[] aliasArray = null;
+			if (alias != null) aliasArray = new String[] { alias };
 
 			// no single alias; check for a list of aliases
-			final String opAliases = cInfo().get("aliases");
-			if (opAliases != null) return opAliases.split("\\s*,\\s*");
+			if (aliasArray == null) {
+				final String opAliases = cInfo().get("aliases");
+				if (opAliases != null) aliasArray = opAliases.split("\\s*,\\s*");
+			}
 
 			// alias not explicitly specified; look for ALIAS constant
-			final String aliasField = getFieldValue(String.class, "ALIAS");
-			if (aliasField != null) return new String[] {aliasField};
+			if (aliasArray == null) {
+				final String aliasField = getFieldValue(String.class, "ALIAS");
+				if (aliasField != null) aliasArray = new String[] {aliasField};
+			}
 
 			// no single alias; look for ALIASES constant
-			final String aliasesField = getFieldValue(String.class, "ALIASES");
-			if (aliasesField != null) return aliasesField.split("\\s*,\\s*");
+			if (aliasArray == null) {
+				final String aliasesField = getFieldValue(String.class, "ALIASES");
+				if (aliasesField != null) aliasArray = aliasesField.split("\\s*,\\s*");
+			}
+			aliases = aliasArray;
+			initializedAliases = true;
 		}
-
-		return aliases;
 	}
 
 	/**
 	 * Synchronized double-locked method to ensure names are only discovered once
 	 * per {@link OpInfo}.
 	 */
-	private synchronized String createName() {
+	private synchronized void createName() {
 		if (!initializedName) {
-			initializedName = true;
-			final String opName = cInfo().getName();
-			if (opName != null && !opName.isEmpty()) return opName;
+			String opName = cInfo().getName();
 
-			// name not explicitly specified; look for NAME constant
-			return getFieldValue(String.class, "NAME");
+			// if name not explicitly specified; look for NAME constant
+			if (opName == null || opName.isEmpty())
+				opName = getFieldValue(String.class, "NAME");
+
+			name = opName;
+			initializedName = true;
 		}
-		return name;
 	}
 
 	/** Helper method of {@link #getName} and {@link #getAliases}. */
