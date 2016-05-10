@@ -32,6 +32,8 @@ package net.imagej.ops;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.command.CommandService;
@@ -59,6 +61,12 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Parameter
 	private NamespaceService namespaceService;
 
+	// -- Fields --
+
+	private Map<CommandInfo, OpInfo> opsByClass;
+	private Collection<OpInfo> infos;
+	private boolean initialized = false;
+
 	// -- OpEnvironment methods --
 
 	@Override
@@ -68,21 +76,35 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public OpInfo info(final Class<? extends Op> type) {
-		// TODO: Consider maintaining a separate and efficient
-		// OpInfo data structure in AbstractOpEnvironment.
+		if (!initialized) buildInfos();
+
 		final CommandInfo cInfo = commandService.getCommand(type);
-		return cInfo == null ? null : new OpInfo(cInfo);
+		return cInfo == null ? null : opsByClass.get(cInfo);
 	}
 
 	@Override
 	public Collection<OpInfo> infos() {
-		// TODO: Consider maintaining a separate and efficient
-		// OpInfo data structure in AbstractOpEnvironment.
-		final ArrayList<OpInfo> infos = new ArrayList<>();
-		for (final CommandInfo cInfo : commandService.getCommandsOfType(Op.class)) {
-			infos.add(new OpInfo(cInfo));
-		}
+		if (!initialized) buildInfos();
+
 		return infos;
+	}
+
+	/**
+	 * Thread-safe double locked initializer to populate data structures with
+	 * cached {@link OpInfo}s.
+	 */
+	private synchronized void buildInfos() {
+		if (!initialized) {
+			initialized = true;
+			opsByClass = new HashMap<>();
+			infos = new ArrayList<>();
+
+			for (final CommandInfo cInfo : commandService.getCommandsOfType(Op.class)) {
+				final OpInfo info = new OpInfo(cInfo);
+				infos.add(info);
+				opsByClass.put(cInfo, info);
+			}
+		}
 	}
 
 	@Override
