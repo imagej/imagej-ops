@@ -95,7 +95,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	 */
 	private synchronized void buildInfos() {
 		if (!initialized) {
-			initialized = true;
 			opsByClass = new HashMap<>();
 			infos = new ArrayList<>();
 
@@ -104,6 +103,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 				infos.add(info);
 				opsByClass.put(cInfo, info);
 			}
+			initialized = true;
 		}
 	}
 
