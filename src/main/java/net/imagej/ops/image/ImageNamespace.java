@@ -29,11 +29,14 @@
 
 package net.imagej.ops.image;
 
+import java.util.function.DoubleBinaryOperator;
+
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
 import net.imagej.ops.image.cooccurrenceMatrix.MatrixOrientation;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.histogram.Histogram1d;
@@ -438,6 +441,27 @@ public class ImageNamespace extends AbstractNamespace {
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
 			net.imagej.ops.Ops.Image.Normalize.class, in, sourceMin, sourceMax,
 			targetMin, targetMax, isLazy);
+		return result;
+	}
+
+	// -- coordinate equation --
+	@OpMethod(op = net.imagej.ops.image.equation.DefaultCoordinatesEquation.class)
+	public <T extends RealType<T>> IterableInterval<T> equation(
+		final IterableInterval<T> out, final UnaryFunctionOp<long[], Double> in)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.image.equation.DefaultCoordinatesEquation.class, out, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.image.equation.DefaultXYEquation.class)
+	public <T extends RealType<T>> IterableInterval<T> equation(
+		final IterableInterval<T> out, final DoubleBinaryOperator in)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.image.equation.DefaultXYEquation.class, out, in);
 		return result;
 	}
 
