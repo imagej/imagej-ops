@@ -973,6 +973,25 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.math.UnaryComplexTypeMath.ComplexExp.class)
+	public <I extends ComplexType<I>, O extends ComplexType<O>> O exp(final O out,
+		final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Exp.class, out, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.exp.ComplexExpMap.class)
+	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O>
+		complexConjugateMultiply(final IterableInterval<I> in)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
+			net.imagej.ops.math.exp.ComplexExpMap.class, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.math.UnaryRealTypeMath.ExpMinusOne.class)
 	public <I extends RealType<I>, O extends RealType<O>> O expMinusOne(
 		final O out, final I in)
