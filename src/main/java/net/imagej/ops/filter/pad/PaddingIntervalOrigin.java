@@ -6,7 +6,7 @@ import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
 import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.ComplexType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
@@ -23,7 +23,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Filter.PaddingIntervalOrigin.class,
 	name = Ops.Filter.PaddingIntervalOrigin.NAME,
 	priority = Priority.HIGH_PRIORITY)
-public class PaddingIntervalOrigin<T extends RealType<T>, I extends RandomAccessibleInterval<T>, O extends Interval>
+public class PaddingIntervalOrigin<T extends ComplexType<T>, I extends RandomAccessibleInterval<T>, O extends Interval>
 	extends AbstractBinaryFunctionOp<I, Interval, O> implements
 	Ops.Filter.PaddingIntervalOrigin
 {

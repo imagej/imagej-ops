@@ -11,7 +11,7 @@ import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
-import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
@@ -28,7 +28,7 @@ import org.scijava.plugin.Plugin;
  * @param <O>
  */
 @Plugin(type = Ops.Filter.PadFFTInput.class, priority = Priority.HIGH_PRIORITY)
-public class PadInputFFTMethods<T extends RealType<T>, I extends RandomAccessibleInterval<T>, O extends RandomAccessibleInterval<T>>
+public class PadInputFFTMethods<T extends ComplexType<T>, I extends RandomAccessibleInterval<T>, O extends RandomAccessibleInterval<T>>
 	extends AbstractBinaryFunctionOp<I, Dimensions, O> implements
 	Ops.Filter.PadFFTInput
 {
