@@ -41,6 +41,7 @@ import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelingMapping;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
+import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.IntegerType;
 
 import org.scijava.plugin.Plugin;
@@ -183,4 +184,15 @@ public class CopyNamespace extends AbstractNamespace {
 				in);
 		return result;
 	}
+	
+	@OpMethod(op = net.imagej.ops.copy.CopyComplex.class)
+	public <I extends ComplexType<I>, O extends ComplexType<O>> O type(
+		final O out, final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result = (O) ops().run(net.imagej.ops.copy.CopyComplex.class,
+			out, in);
+		return result;
+	}
+
 }
