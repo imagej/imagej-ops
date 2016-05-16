@@ -8,7 +8,7 @@ import net.imglib2.FinalDimensions;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.fft2.FFTMethods;
-import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.ComplexType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
@@ -25,7 +25,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Filter.PaddingIntervalCentered.class,
 	name = Ops.Filter.PaddingIntervalCentered.NAME,
 	priority = Priority.HIGH_PRIORITY)
-public class PaddingIntervalCentered<T extends RealType<T>, I extends RandomAccessibleInterval<T>, O extends Interval>
+public class PaddingIntervalCentered<T extends ComplexType<T>, I extends RandomAccessibleInterval<T>, O extends Interval>
 	extends AbstractBinaryFunctionOp<I, Dimensions, O> implements
 	Ops.Filter.PaddingIntervalCentered
 {
