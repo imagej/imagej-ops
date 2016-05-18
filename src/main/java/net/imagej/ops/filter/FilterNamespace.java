@@ -866,6 +866,17 @@ public class FilterNamespace extends AbstractNamespace {
 				net.imagej.ops.filter.ifft.IFFTMethodsOpC.class, out, in);
 		return result;
 	}
+	
+	@OpMethod(op = net.imagej.ops.filter.ifft.IFFTMethodsOpI.class)
+	public <C extends ComplexType<C>> RandomAccessibleInterval<C> ifft(
+		final RandomAccessibleInterval<C> arg)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<C> result =
+			(RandomAccessibleInterval<C>) ops().run(
+				net.imagej.ops.filter.ifft.IFFTMethodsOpI.class, arg);
+		return result;
+	}
 
 	// -- linear filter --
 
