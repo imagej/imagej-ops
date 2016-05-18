@@ -35,12 +35,16 @@ import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.filter.fft.FFTMethodsOpF;
 import net.imagej.ops.filter.fftSize.ComputeFFTSize;
 import net.imagej.ops.filter.ifft.IFFTMethodsOpC;
+import net.imagej.ops.filter.pad.PadShiftKernel;
+import net.imagej.ops.filter.pad.PadShiftKernelFFTMethods;
 import net.imglib2.Cursor;
+import net.imglib2.FinalDimensions;
 import net.imglib2.IterableInterval;
 import net.imglib2.Point;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.region.hypersphere.HyperSphere;
 import net.imglib2.img.Img;
+import net.imglib2.type.numeric.complex.ComplexDoubleType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.view.Views;
@@ -175,6 +179,28 @@ public class FFTTest extends AbstractOpTest {
 			assertImagesEqual(inverseOriginalFast, inOriginal, .00001f);
 			assertImagesEqual(inverseFast, inFast, 0.00001f);
 		}
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	public void testPadShiftKernel() {
+		long[] dims = new long[] { 1024, 1024 };
+		Img<ComplexDoubleType> test = ops.create().img(new FinalDimensions(dims),
+			new ComplexDoubleType());
+
+		RandomAccessibleInterval<ComplexDoubleType> shift =
+			(RandomAccessibleInterval<ComplexDoubleType>) ops.run(
+				PadShiftKernel.class, test, new FinalDimensions(dims));
+
+		RandomAccessibleInterval<ComplexDoubleType> shift2 =
+			(RandomAccessibleInterval<ComplexDoubleType>) ops.run(
+				PadShiftKernelFFTMethods.class, test, new FinalDimensions(dims));
+
+		// assert there was no additional padding done by PadShiftKernel
+		assertEquals(1024, shift.dimension(0));
+		// assert that PadShiftKernelFFTMethods padded to the FFTMethods fast size
+		assertEquals(1120, shift2.dimension(0));
+
 	}
 
 	/**

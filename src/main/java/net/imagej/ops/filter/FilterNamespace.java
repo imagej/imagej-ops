@@ -144,8 +144,7 @@ public class FilterNamespace extends AbstractNamespace {
 	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTF.class,
 		net.imagej.ops.filter.convolve.ConvolveNaiveF.class })
-	public <
-		I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel)
 	{
@@ -626,6 +625,16 @@ public class FilterNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.filter.fftSize.ComputeFFTMethodsSize.class)
+	public long[][] fftSize(final Dimensions in1, final boolean forward,
+		final boolean fast)
+	{
+		final long[][] result = (long[][]) ops().run(
+			net.imagej.ops.filter.fftSize.ComputeFFTMethodsSize.class, in1, forward,
+			fast);
+		return result;
+	}
+
 	// -- dog --
 
 	@OpMethod(op = net.imagej.ops.filter.dog.DefaultDoG.class)
@@ -855,6 +864,17 @@ public class FilterNamespace extends AbstractNamespace {
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
 				net.imagej.ops.filter.ifft.IFFTMethodsOpC.class, out, in);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.filter.ifft.IFFTMethodsOpI.class)
+	public <C extends ComplexType<C>> RandomAccessibleInterval<C> ifft(
+		final RandomAccessibleInterval<C> arg)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<C> result =
+			(RandomAccessibleInterval<C>) ops().run(
+				net.imagej.ops.filter.ifft.IFFTMethodsOpI.class, arg);
 		return result;
 	}
 
@@ -1128,7 +1148,8 @@ public class FilterNamespace extends AbstractNamespace {
 	/**
 	 * Executes the "padShiftFFTKernel" filter operation on the given arguments.
 	 */
-	@OpMethod(op = net.imagej.ops.filter.pad.PadShiftKernelFFTMethods.class)
+	@OpMethod(ops = { net.imagej.ops.filter.pad.PadShiftKernelFFTMethods.class,
+		net.imagej.ops.filter.pad.PadShiftKernel.class })
 	public <T extends ComplexType<T>> RandomAccessibleInterval<T> padShiftFFTKernel(
 		final RandomAccessibleInterval<T> in1, final Dimensions in2)
 	{
@@ -1142,7 +1163,7 @@ public class FilterNamespace extends AbstractNamespace {
 	/**
 	 * Executes the "padShiftFFTKernel" filter operation on the given arguments.
 	 */
-	@OpMethod(op = net.imagej.ops.filter.pad.PadShiftKernelFFTMethods.class)
+	@OpMethod(op =  net.imagej.ops.filter.pad.PadShiftKernelFFTMethods.class)
 	public <T extends ComplexType<T>> RandomAccessibleInterval<T> padShiftFFTKernel(
 		final RandomAccessibleInterval<T> in1, final Dimensions in2,
 		final boolean fast)
