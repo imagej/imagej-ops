@@ -60,6 +60,7 @@ import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.logic.BitType;
+import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.ByteType;
 
 import org.junit.Before;
@@ -465,24 +466,16 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 * @param ii1
 	 * @param ii2
 	 */
-	private <T> void testIterableIntervalSimilarity(IterableInterval<T> ii1,
-		IterableInterval<T> ii2)
-	{
+	public static <T extends RealType<T>, S extends RealType<S>> void testIterableIntervalSimilarity(IterableInterval<T> ii1,
+			IterableInterval<S> ii2) {
 		// Test for pixel-wise equality of the results
-		Cursor<T> cursor1 = ii1.cursor();
-		Cursor<T> cursor2 = ii2.cursor();
+		Cursor<T> cursor1 = ii1.localizingCursor();
+		Cursor<S> cursor2 = ii2.cursor();
 		while (cursor1.hasNext() && cursor2.hasNext()) {
 			T value1 = cursor1.next();
-			T value2 = cursor2.next();
+			S value2 = cursor2.next();
 
-			long[] position = new long[ii1.numDimensions()];
-
-			if (!value1.equals(value2)) {
-				cursor1.localize(position);
-
-				assertEquals(String.format("Position (%d, %d) differs.", position[0],
-					position[1]), value1, value2);
-			}
+			assertEquals(value1.getRealDouble(), value2.getRealDouble(), 0.00001d);
 		}
 	}
 
