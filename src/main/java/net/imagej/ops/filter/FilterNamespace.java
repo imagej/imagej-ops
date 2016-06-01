@@ -946,24 +946,25 @@ public class FilterNamespace extends AbstractNamespace {
 
 	/** Executes the "mean" filter operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.mean.DefaultMeanFilter.class)
-	public <T extends RealType<T>> IterableInterval<T> mean(
-		final IterableInterval<T> out, final RandomAccessibleInterval<T> in,
-		final Shape shape)
+	public <I extends ComplexType<I>, O extends ComplexType<O>>
+		IterableInterval<O> mean(final IterableInterval<O> out,
+			final RandomAccessibleInterval<I> in, final Shape shape)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
 			net.imagej.ops.filter.mean.DefaultMeanFilter.class, out, in, shape);
 		return result;
 	}
 
 	/** Executes the "mean" filter operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.mean.DefaultMeanFilter.class)
-	public <T extends RealType<T>> IterableInterval<T> mean(
-		final IterableInterval<T> out, final RandomAccessibleInterval<T> in,
-		final Shape shape, final OutOfBoundsFactory<T, T> outOfBoundsFactory)
+	public <I extends ComplexType<I>, O extends ComplexType<O>>
+		IterableInterval<O> mean(final IterableInterval<O> out,
+			final RandomAccessibleInterval<I> in, final Shape shape,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> outOfBoundsFactory)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
 			net.imagej.ops.filter.mean.DefaultMeanFilter.class, out, in, shape,
 			outOfBoundsFactory);
 		return result;
