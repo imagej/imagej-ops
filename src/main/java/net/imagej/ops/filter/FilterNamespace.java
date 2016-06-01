@@ -866,7 +866,7 @@ public class FilterNamespace extends AbstractNamespace {
 				net.imagej.ops.filter.ifft.IFFTMethodsOpC.class, out, in);
 		return result;
 	}
-	
+
 	@OpMethod(op = net.imagej.ops.filter.ifft.IFFTMethodsOpI.class)
 	public <C extends ComplexType<C>> RandomAccessibleInterval<C> ifft(
 		final RandomAccessibleInterval<C> arg)
@@ -946,24 +946,25 @@ public class FilterNamespace extends AbstractNamespace {
 
 	/** Executes the "mean" filter operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.mean.DefaultMeanFilter.class)
-	public <T extends RealType<T>> IterableInterval<T> mean(
-		final IterableInterval<T> out, final RandomAccessibleInterval<T> in,
-		final Shape shape)
+	public <I extends ComplexType<I>, O extends ComplexType<O>>
+		IterableInterval<O> mean(final IterableInterval<O> out,
+			final RandomAccessibleInterval<I> in, final Shape shape)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
 			net.imagej.ops.filter.mean.DefaultMeanFilter.class, out, in, shape);
 		return result;
 	}
 
 	/** Executes the "mean" filter operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.mean.DefaultMeanFilter.class)
-	public <T extends RealType<T>> IterableInterval<T> mean(
-		final IterableInterval<T> out, final RandomAccessibleInterval<T> in,
-		final Shape shape, final OutOfBoundsFactory<T, T> outOfBoundsFactory)
+	public <I extends ComplexType<I>, O extends ComplexType<O>>
+		IterableInterval<O> mean(final IterableInterval<O> out,
+			final RandomAccessibleInterval<I> in, final Shape shape,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> outOfBoundsFactory)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
 			net.imagej.ops.filter.mean.DefaultMeanFilter.class, out, in, shape,
 			outOfBoundsFactory);
 		return result;
@@ -1150,8 +1151,9 @@ public class FilterNamespace extends AbstractNamespace {
 	 */
 	@OpMethod(ops = { net.imagej.ops.filter.pad.PadShiftKernelFFTMethods.class,
 		net.imagej.ops.filter.pad.PadShiftKernel.class })
-	public <T extends ComplexType<T>> RandomAccessibleInterval<T> padShiftFFTKernel(
-		final RandomAccessibleInterval<T> in1, final Dimensions in2)
+	public <T extends ComplexType<T>> RandomAccessibleInterval<T>
+		padShiftFFTKernel(final RandomAccessibleInterval<T> in1,
+			final Dimensions in2)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
@@ -1163,10 +1165,10 @@ public class FilterNamespace extends AbstractNamespace {
 	/**
 	 * Executes the "padShiftFFTKernel" filter operation on the given arguments.
 	 */
-	@OpMethod(op =  net.imagej.ops.filter.pad.PadShiftKernelFFTMethods.class)
-	public <T extends ComplexType<T>> RandomAccessibleInterval<T> padShiftFFTKernel(
-		final RandomAccessibleInterval<T> in1, final Dimensions in2,
-		final boolean fast)
+	@OpMethod(op = net.imagej.ops.filter.pad.PadShiftKernelFFTMethods.class)
+	public <T extends ComplexType<T>> RandomAccessibleInterval<T>
+		padShiftFFTKernel(final RandomAccessibleInterval<T> in1,
+			final Dimensions in2, final boolean fast)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
