@@ -42,13 +42,19 @@ import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imglib2.FinalInterval;
 import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.algorithm.neighborhood.RectangleShape.NeighborhoodsIterableInterval;
+import net.imglib2.outofbounds.OutOfBounds;
 import net.imglib2.outofbounds.OutOfBoundsBorderFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Intervals;
+import net.imglib2.util.Util;
+import net.imglib2.view.ExtendedRandomAccessibleInterval;
+import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 import net.imglib2.view.composite.Composite;
 
@@ -138,6 +144,20 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 				break;
 		}
 
+		final long[] min = Intervals.minAsLongArray(img);
+		final long[] max = Intervals.maxAsLongArray(img);
+
+		for (int i = 0; i < max.length; i++) {
+			min[i]--;
+		}
+
+		RealType realZero = (RealType) Util.getTypeFromInterval(img).copy();
+		realZero.setZero();
+
+		ExtendedRandomAccessibleInterval extendedImg = Views.extendValue(img, realZero);
+		IntervalView<RealType> offsetInterval = Views.interval(extendedImg, min, max);
+		img = Views.zeroMin(offsetInterval);
+		
 		return img;
 	}
 
@@ -151,12 +171,11 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 		RandomAccessibleInterval<T> input)
 	{
 		// Remove 0s from integralImg by shifting its interval by +1
-		final long[] min = new long[input.numDimensions()];
-		final long[] max = new long[input.numDimensions()];
+		final long[] min = Intervals.minAsLongArray(input);
+		final long[] max = Intervals.maxAsLongArray(input);
 
 		for (int d = 0; d < input.numDimensions(); ++d) {
-			min[d] = input.min(d) + 1;
-			max[d] = input.max(d);
+			min[d]++;
 		}
 
 		// Define the Interval on the infinite random accessibles
