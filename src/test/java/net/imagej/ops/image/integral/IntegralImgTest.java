@@ -7,6 +7,7 @@ import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Ops;
 import net.imagej.ops.image.integral.DefaultIntegralImg;
 import net.imagej.ops.threshold.apply.LocalThresholdTest;
+import net.imglib2.FinalInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
@@ -58,7 +59,19 @@ public class IntegralImgTest extends AbstractOpTest  {
 		RandomAccessibleInterval<DoubleType> out2 = (RandomAccessibleInterval<DoubleType>) ops
 				.run(WrappedIntegralImg.class, in);
 
-		LocalThresholdTest.testIterableIntervalSimilarity(Views.iterable(out1), Views.iterable(out2));
+		// Remove 0s from integralImg by shifting its interval by +1
+		final long[] min = new long[out2.numDimensions()];
+		final long[] max = new long[out2.numDimensions()];
+
+		for (int d = 0; d < out2.numDimensions(); ++d) {
+			min[d] = out2.min(d)+1;
+			max[d] = out2.max(d);
+		}
+
+		// Define the Interval on the infinite random accessibles
+		final FinalInterval interval = new FinalInterval(min, max);
+		
+		LocalThresholdTest.testIterableIntervalSimilarity(Views.iterable(out1), Views.iterable(Views.offsetInterval(out2, interval)));
 	}
 
 	public ArrayImg<ByteType, ByteArray> generateKnownByteArrayTestImgLarge() {

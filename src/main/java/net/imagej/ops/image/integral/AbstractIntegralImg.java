@@ -33,7 +33,6 @@ package net.imagej.ops.image.integral;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Slice;
-import net.imagej.ops.special.chain.RAIs;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.Functions;
@@ -41,7 +40,6 @@ import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCI;
 import net.imglib2.Dimensions;
-import net.imglib2.FinalInterval;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.IntegerType;
@@ -65,7 +63,6 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 
 	private AbstractUnaryHybridCI<IterableInterval<RealType<?>>, IterableInterval<RealType<?>>> integralAdd;
 	private UnaryComputerOp[] slicewiseOps;
-	private UnaryFunctionOp<RandomAccessibleInterval, RandomAccessibleInterval> copyOp;
 	private UnaryFunctionOp<Dimensions, RandomAccessibleInterval> createLongRAI;
 	private UnaryFunctionOp<Dimensions, RandomAccessibleInterval> createDoubleRAI;
 	
@@ -103,12 +100,7 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 					integralAdd, i);
 			}
 		}
-		
-		// Requires type information from output
-		if (copyOp == null) {
-			copyOp = (UnaryFunctionOp) RAIs.function(ops(), Ops.Copy.RAI.class, output);
-		}
-		
+
 		// HACK Generalized to most common supertype of input and output
 		RandomAccessibleInterval<? extends RealType<?>> generalizedInput = input;
 
@@ -116,7 +108,7 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 		for (int i=0; i < input.numDimensions(); ++i) {
 			// Slicewise integral addition in one direction
 			slicewiseOps[i].compute1(generalizedInput, output);
-			generalizedInput = copyOp.compute1(output);
+			generalizedInput = output;
 		}
 	}
 
@@ -125,29 +117,12 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 	public RandomAccessibleInterval<RealType<?>> createOutput(
 		RandomAccessibleInterval<I> input)
 	{
-		// Remove 0s from integralImg by shifting its interval by +1
-		final long[] min = new long[input.numDimensions()];
-		final long[] max = new long[input.numDimensions()];
-
-		for (int d = 0; d < input.numDimensions(); ++d) {
-			min[d] = input.min(d) - 1;
-			max[d] = input.max(d);
-		}
-
-		// Define the Interval on the infinite random accessibles
-		final FinalInterval interval = new FinalInterval(min, max);
-
-		RandomAccessibleInterval<RealType<?>> output = null;
-
 		// Create integral image
 		if (Util.getTypeFromInterval(input) instanceof IntegerType) {
-			output = createLongRAI.compute1(interval);
-		}
-		else {
-			output = createDoubleRAI.compute1(interval);
+			return createLongRAI.compute1(input);
 		}
 
-		return Views.offsetInterval(output, output);
+		return createDoubleRAI.compute1(input);
 	}
 
 	@Override

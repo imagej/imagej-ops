@@ -76,19 +76,16 @@ public class DefaultIntegralImg<I extends RealType<I>> extends
 
 			Cursor<RealType<?>> inputCursor = input.cursor();
 			Cursor<RealType<?>> outputCursor = output.cursor();
-			
-			// Create 0-border for the north and west side
-			outputCursor.next().setZero();
-			
+
 			double tmp = 0.0d;
 			while (outputCursor.hasNext()) {
 
 				RealType<?> inputValue = inputCursor.next();
 				RealType<?> outputValue = outputCursor.next();
-				
+
 				// Compute inputValue^order
 				tmp += inputValue.getRealDouble();
-				
+
 				outputValue.setReal(tmp);
 			}
 		}
