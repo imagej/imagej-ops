@@ -49,8 +49,8 @@ import net.imglib2.view.composite.Composite;
  * {@link Op} to calculate the {@code stats.variance} from an integral image using a
  * specialized {@code Cursor} implementation.
  *
- * @author Stefan Helfrich (University of Konstanz)
  * @param <I> input type
+ * @author Stefan Helfrich (University of Konstanz)
  */
 @Plugin(type = Ops.Stats.IntegralVariance.class)
 public class IntegralVariance<I extends RealType<I>> extends
@@ -77,42 +77,42 @@ public class IntegralVariance<I extends RealType<I>> extends
 		final DoubleType sum2 = new DoubleType();
 		sum2.setZero();
 		
-		DoubleType value1AsDoubleType = new DoubleType();
+		DoubleType valueAsDoubleType = new DoubleType();
 		
 		while ( cursorS1.hasNext() )
 		{
 			final Composite<I> compositeValue = cursorS1.next();
-			final I value1 = compositeValue.get(0).copy();			
-			conv.convert(value1, value1AsDoubleType);
+			final I value1 = compositeValue.get(0).copy();
+			conv.convert(value1, valueAsDoubleType);
 			
 			// Obtain the cursor position encoded as corner vector
 			int cornerInteger1 = cursorS1.getCornerRepresentation();
 			
 			// Determine if the value has to be added (factor==1) or subtracted (factor==-1)
 			DoubleType factor = new DoubleType(Math.pow(-1.0d, dimensions - IntegralMean.norm(cornerInteger1)));
-			value1AsDoubleType.mul(factor);
+			valueAsDoubleType.mul(factor);
 			
-			sum1.add(value1AsDoubleType);
+			sum1.add(valueAsDoubleType);
 			
 			final I value2 = compositeValue.get(1).copy();
-			final DoubleType value2AsDoubleType = new DoubleType();
-			conv.convert(value2, value2AsDoubleType);
+			conv.convert(value2, valueAsDoubleType);
 
 			// Determine if the value has to be added (factor==1) or subtracted
 			// (factor==-1)
-			value2AsDoubleType.mul(factor);
+			valueAsDoubleType.mul(factor);
 
-			sum2.add(value2AsDoubleType);
+			sum2.add(valueAsDoubleType);
 		}
 
 		// Compute overlap
 		int area = IntegralMean.overlap(Intervals.expand(input1, -1l), input2);
 
+		valueAsDoubleType.set(area); // NB: Reuse available DoubleType
 		sum1.mul(sum1);
-		sum1.div(new DoubleType(area));
+		sum1.div(valueAsDoubleType); // NB
 		
 		sum2.sub(sum1);
-		sum2.div(new DoubleType(area));
+		sum2.div(valueAsDoubleType); // NB
 
 		output.set(sum2);
 	}
