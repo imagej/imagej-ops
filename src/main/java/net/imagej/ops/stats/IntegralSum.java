@@ -45,8 +45,8 @@ import org.scijava.plugin.Plugin;
  * {@link Op} to calculate the {@code stats.sum} from an integral image using a
  * specialized {@code Cursor} implementation.
  *
- * @author Stefan Helfrich (University of Konstanz)
  * @param <I> input type
+ * @author Stefan Helfrich (University of Konstanz)
  */
 @Plugin(type = Ops.Stats.IntegralSum.class)
 public class IntegralSum<I extends RealType<I>> extends
@@ -61,7 +61,7 @@ public class IntegralSum<I extends RealType<I>> extends
 		// computation according to	https://en.wikipedia.org/wiki/Summed_area_table
 		final IntegralCursor<I> cursor = new IntegralCursor<>(input);
 		int dimensions = input.numDimensions();
-		
+
 		// Compute \sum (-1)^{dim - ||cornerVector||_{1}} * I(x^{cornerVector})
 		final DoubleType sum = new DoubleType();
 		sum.setZero();
@@ -69,34 +69,23 @@ public class IntegralSum<I extends RealType<I>> extends
 		// Convert from input to return type
 		final Converter<I, DoubleType> conv = new RealDoubleConverter<>();
 		DoubleType valueAsDoubleType = new DoubleType();
-		
+
 		while ( cursor.hasNext() )
 		{
-			// Obtain the cursor position encoded as corner vector
-			int cornerInteger = cursor.getCornerRepresentation();
 			final I value = cursor.next().copy();			
 			conv.convert(value, valueAsDoubleType);
-			
+
+			// Obtain the cursor position encoded as corner vector
+			int cornerInteger = cursor.getCornerRepresentation();
+
 			// Determine if the value has to be added (factor==1) or subtracted (factor==-1)
-			DoubleType factor = new DoubleType(Math.pow(-1.0d, dimensions - norm(cornerInteger)));
+			DoubleType factor = new DoubleType(Math.pow(-1.0d, dimensions - IntegralMean.norm(cornerInteger)));
 			valueAsDoubleType.mul(factor);
-			
+
 			sum.add(valueAsDoubleType);
 		}
-			
+
 		output.set(sum);
 	}
 
-	/**
-	 * Computes L1 norm of the position of an {@code IntegralCursor}. Computation
-	 * is based on determining the number of 1 bits in the position.
-	 * 
-	 * @param cornerPosition position vector of an {@code IntegralCursor} encoded
-	 *          as integer
-	 * @return L1 norm of the position
-	 */
-	private int norm(int cornerPosition) {
-		return Integer.bitCount(cornerPosition);
-	}
-	
 }
