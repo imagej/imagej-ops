@@ -38,16 +38,19 @@ import net.imagej.ops.special.hybrid.AbstractUnaryHybridCI;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * <p>
  * <i>n</i>-dimensional squared integral image that stores sums using
  * {@code RealType}. Care must be taken that sums do not overflow the capacity
- * of {@code RealType}. Instead of the sum of values the sum of squared values
- * is computed.
+ * of {@code RealType} (i.e. {@link DoubleType} or {@link LongType}). Instead of
+ * the sum of values the sum of squared values is computed.
  * </p>
  * 
- * @param <I> The type of the input image.
+ * @param <I>
+ *            The type of the input image.
  * @author Stefan Helfrich (University of Konstanz)
  */
 @Plugin(type = Ops.Image.SquareIntegral.class, priority = Priority.LOW_PRIORITY+1)
@@ -83,10 +86,9 @@ public class SquareIntegralImg<I extends RealType<I>> extends
 
 				RealType<?> inputValue = inputCursor.next();
 				RealType<?> outputValue = outputCursor.next();
-				
-				// Compute inputValue^order
+
 				tmp += Math.pow(inputValue.getRealDouble(), 2);
-				
+
 				outputValue.setReal(tmp);
 			}
 		}

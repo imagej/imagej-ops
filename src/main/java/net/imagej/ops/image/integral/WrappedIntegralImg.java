@@ -42,11 +42,11 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
- * Op that wraps {@code net.imglib2.algorithm.integral.IntegralImg} for creation
- * of integral image.
+ * Wrapper op for the creation of integral images with
+ * {@code net.imglib2.algorithm.integral.IntegralImg}.
  * 
- * @author Stefan Helfrich (University of Konstanz)
  * @see IntegralImg
+ * @author Stefan Helfrich (University of Konstanz)
  */
 @Plugin(type = Ops.Image.Integral.class, priority = Priority.LOW_PRIORITY)
 public class WrappedIntegralImg<I extends RealType<I>> extends

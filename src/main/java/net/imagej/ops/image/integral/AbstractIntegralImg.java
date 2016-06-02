@@ -50,9 +50,10 @@ import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
 /**
- * Abstract base class for <i>n</i>-dimensional integral images
+ * Abstract base class for <i>n</i>-dimensional integral images.
  * 
- * @param <I> The type of the input image.
+ * @param <I>
+ *            The type of the input image.
  * @author Stefan Helfrich (University of Konstanz)
  */
 @SuppressWarnings("rawtypes")

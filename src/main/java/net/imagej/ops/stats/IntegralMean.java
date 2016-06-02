@@ -49,8 +49,8 @@ import net.imglib2.view.composite.Composite;
  * {@link Op} to calculate the {@code stats.mean} from an integral image using a
  * specialized {@code Cursor} implementation.
  *
- * @author Stefan Helfrich (University of Konstanz)
  * @param <I> input type
+ * @author Stefan Helfrich (University of Konstanz)
  */
 @Plugin(type = Ops.Stats.IntegralMean.class)
 public class IntegralMean<I extends RealType<I>> extends
