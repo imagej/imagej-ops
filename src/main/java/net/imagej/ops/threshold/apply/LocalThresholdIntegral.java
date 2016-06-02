@@ -40,15 +40,12 @@ import net.imagej.ops.Ops.Map;
 import net.imagej.ops.map.neighborhood.CenterAwareIntegralComputerOp;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imagej.ops.stats.IntegralMean;
 import net.imglib2.FinalInterval;
 import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.algorithm.neighborhood.RectangleShape.NeighborhoodsIterableInterval;
-import net.imglib2.outofbounds.OutOfBounds;
-import net.imglib2.outofbounds.OutOfBoundsBorderFactory;
-import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Intervals;
@@ -71,12 +68,9 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 	@Parameter
 	protected RectangleShape shape;
 
-	@Parameter(required = false)
-	private OutOfBoundsFactory<I, RandomAccessibleInterval<I>> outOfBoundsFactory =
-		new OutOfBoundsBorderFactory<>();
-
 	private CenterAwareIntegralComputerOp<I, BitType> filterOp;
 
+	@SuppressWarnings("rawtypes")
 	private BinaryComputerOp<RandomAccessibleInterval<I>, NeighborhoodsIterableInterval<? extends Composite<RealType>>, IterableInterval<BitType>> map;
 
 	@Override
@@ -122,11 +116,13 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 	}
 
 	/**
-	 * TODO Documentation
+	 * Computes integral images of a given order and extends them such that
+	 * {@link IntegralMean} et al work with them.
 	 * 
 	 * @param input
+	 *            The RAI for which an integral image is computed
 	 * @param order
-	 * @return
+	 * @return An extended integral image for the input RAI
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private RandomAccessibleInterval<RealType> getIntegralImage(
@@ -162,10 +158,11 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 	}
 
 	/**
-	 * TODO Documentation
+	 * Removes leading 0s from integral image after composite creation.
 	 *
 	 * @param input
-	 * @return
+	 *            Input RAI (can be a RAI of Composite)
+	 * @return An extended and cropped version of input
 	 */
 	private <T> RandomAccessibleInterval<T> removeLeadingZeros(
 		RandomAccessibleInterval<T> input)

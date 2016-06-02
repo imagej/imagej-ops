@@ -197,7 +197,6 @@ public class LocalThresholdTest extends AbstractOpTest {
 			out,
 			in,
 			new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
 			0.0);
 		
 		assertEquals(out.firstElement().get(), true);
@@ -230,7 +229,6 @@ public class LocalThresholdTest extends AbstractOpTest {
 			out3,
 			in,
 			new RectangleShape(1, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
 			0.0);
 		
 		testIterableIntervalSimilarity(out2, out3);
@@ -277,7 +275,6 @@ public class LocalThresholdTest extends AbstractOpTest {
 	@Test
 	public void testLocalNiblackThresholdIntegral() {
 		ops.run(LocalNiblackThresholdIntegral.class, out, in, new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
 			0.0, 0.0);
 
 		assertEquals(out.firstElement().get(), true);
@@ -309,7 +306,6 @@ public class LocalThresholdTest extends AbstractOpTest {
 			out3,
 			in,
 			new RectangleShape(1, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
 			0.0, 0.0);
 		
 		testIterableIntervalSimilarity(out2, out3);
@@ -333,8 +329,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	@Test
 	public void testLocalPhansalkarIntegral() {
 		ops.run(LocalPhansalkarThresholdIntegral.class, out, in, new RectangleShape(3,
-			false), new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(
-				Boundary.SINGLE), 0.0, 0.0);
+			false), 0.0, 0.0);
 
 		assertEquals(out.firstElement().get(), false);
 	}
@@ -366,7 +361,6 @@ public class LocalThresholdTest extends AbstractOpTest {
 			out3,
 			in,
 			new RectangleShape(1, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
 			0.0, 0.0);
 		
 		testIterableIntervalSimilarity(out2, out3);
@@ -390,7 +384,6 @@ public class LocalThresholdTest extends AbstractOpTest {
 	@Test
 	public void testLocalSauvolaIntegral() {
 		ops.run(LocalSauvolaThresholdIntegral.class, out, in, new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
 			0.0, 0.0);
 
 		assertEquals(out.firstElement().get(), false);
@@ -423,7 +416,6 @@ public class LocalThresholdTest extends AbstractOpTest {
 			out3,
 			in,
 			new RectangleShape(1, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
 			0.0, 0.0);
 		
 		testIterableIntervalSimilarity(out2, out3);
