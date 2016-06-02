@@ -93,7 +93,8 @@ public class IntegralMean<I extends RealType<I>> extends
 		int area = IntegralMean.overlap(Intervals.expand(input1, -1l), input2);
 
 		// Compute mean by dividing the sum divided by the number of elements
-		sum.div(new DoubleType(area));
+		valueAsDoubleType.set(area); // NB: Reuse DoubleType
+		sum.div(valueAsDoubleType);
 
 		output.set(sum);
 	}
