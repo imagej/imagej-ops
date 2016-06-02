@@ -36,10 +36,13 @@ import java.util.List;
 import org.scijava.plugin.Parameter;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.Ops.Image.Integral;
+import net.imagej.ops.Ops.Image.SquareIntegral;
 import net.imagej.ops.Ops.Map;
 import net.imagej.ops.map.neighborhood.CenterAwareIntegralComputerOp;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imagej.ops.stats.IntegralMean;
 import net.imglib2.FinalInterval;
 import net.imglib2.IterableInterval;
@@ -69,10 +72,13 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 	protected RectangleShape shape;
 
 	private CenterAwareIntegralComputerOp<I, BitType> filterOp;
-
+	private AbstractUnaryHybridCF<RandomAccessibleInterval<I>, RandomAccessibleInterval<RealType<?>>> integralImgOp;
+	private AbstractUnaryHybridCF<RandomAccessibleInterval<I>, RandomAccessibleInterval<RealType<?>>> squareIntegralImgOp;
+	
 	@SuppressWarnings("rawtypes")
 	private BinaryComputerOp<RandomAccessibleInterval<I>, NeighborhoodsIterableInterval<? extends Composite<RealType>>, IterableInterval<BitType>> map;
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
 		// Increase span of shape by 1 to return correct values together with
@@ -80,6 +86,9 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 		shape = new RectangleShape(shape.getSpan() + 1, false);
 
 		filterOp = unaryComputer();
+		
+		integralImgOp = (AbstractUnaryHybridCF) ops().op(Ops.Image.Integral.class, in());
+		squareIntegralImgOp = (AbstractUnaryHybridCF) ops().op(Ops.Image.SquareIntegral.class, in());
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -131,12 +140,10 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 		RandomAccessibleInterval<RealType> img = null;
 		switch (order) {
 			case 1:
-				img = (RandomAccessibleInterval) ops().run(Ops.Image.Integral.class,
-					input);
+				img = (RandomAccessibleInterval) integralImgOp.compute1(input);
 				break;
 			case 2:
-				img = (RandomAccessibleInterval) ops().run(
-					Ops.Image.SquareIntegral.class, input);
+				img = (RandomAccessibleInterval) squareIntegralImgOp.compute1(input);
 				break;
 		}
 
