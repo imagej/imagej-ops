@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -30,10 +30,6 @@
 
 package net.imagej.ops.threshold.localMean;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Ops;
 import net.imagej.ops.map.neighborhood.CenterAwareIntegralComputerOp;
 import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
@@ -48,6 +44,10 @@ import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.composite.Composite;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * <p>
@@ -78,8 +78,7 @@ public class LocalMeanThresholdIntegral<T extends RealType<T>> extends
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected CenterAwareIntegralComputerOp<T, BitType> unaryComputer()
-	{
+	protected CenterAwareIntegralComputerOp<T, BitType> unaryComputer() {
 		final CenterAwareIntegralComputerOp<T, BitType> op =
 			new LocalMeanThresholdComputer<>(in(), ops().op(IntegralMean.class,
 				DoubleType.class, RectangleNeighborhood.class, Interval.class));
@@ -87,17 +86,17 @@ public class LocalMeanThresholdIntegral<T extends RealType<T>> extends
 		op.setEnvironment(ops());
 		return op;
 	}
-	
+
 	private class LocalMeanThresholdComputer<I extends RealType<I>> extends
-		AbstractBinaryComputerOp<I, RectangleNeighborhood<Composite<DoubleType>>, BitType> implements
-		CenterAwareIntegralComputerOp<I, BitType>
+		AbstractBinaryComputerOp<I, RectangleNeighborhood<Composite<DoubleType>>, BitType>
+		implements CenterAwareIntegralComputerOp<I, BitType>
 	{
 
 		RandomAccessibleInterval<I> source;
-		private IntegralMean<DoubleType> integralMean;
+		private final IntegralMean<DoubleType> integralMean;
 
-		public LocalMeanThresholdComputer(RandomAccessibleInterval<I> source,
-			IntegralMean<DoubleType> integralMean)
+		public LocalMeanThresholdComputer(final RandomAccessibleInterval<I> source,
+			final IntegralMean<DoubleType> integralMean)
 		{
 			super();
 			this.source = source;
@@ -105,8 +104,9 @@ public class LocalMeanThresholdIntegral<T extends RealType<T>> extends
 		}
 
 		@Override
-		public void compute2(I center, RectangleNeighborhood<Composite<DoubleType>> neighborhood,
-			BitType output)
+		public void compute2(final I center,
+			final RectangleNeighborhood<Composite<DoubleType>> neighborhood,
+			final BitType output)
 		{
 
 			final DoubleType sum = new DoubleType();
@@ -122,12 +122,12 @@ public class LocalMeanThresholdIntegral<T extends RealType<T>> extends
 
 			output.set(centerPixelAsDoubleType.compareTo(sum) > 0);
 		}
-		
+
 	}
 
 	@Override
 	protected int[] requiredIntegralImages() {
-		return new int[]{1};
-	}	
-	
+		return new int[] { 1 };
+	}
+
 }

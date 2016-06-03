@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -33,11 +33,7 @@ package net.imagej.ops.threshold.apply;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.scijava.plugin.Parameter;
-
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Image.Integral;
-import net.imagej.ops.Ops.Image.SquareIntegral;
 import net.imagej.ops.Ops.Map;
 import net.imagej.ops.map.neighborhood.CenterAwareIntegralComputerOp;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
@@ -58,6 +54,8 @@ import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 import net.imglib2.view.composite.Composite;
 
+import org.scijava.plugin.Parameter;
+
 /**
  * Apply a local thresholding method to an image using integral images for speed
  * up, optionally using a out of bounds strategy.
@@ -74,7 +72,7 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 	private CenterAwareIntegralComputerOp<I, BitType> filterOp;
 	private AbstractUnaryHybridCF<RandomAccessibleInterval<I>, RandomAccessibleInterval<RealType<?>>> integralImgOp;
 	private AbstractUnaryHybridCF<RandomAccessibleInterval<I>, RandomAccessibleInterval<RealType<?>>> squareIntegralImgOp;
-	
+
 	@SuppressWarnings("rawtypes")
 	private BinaryComputerOp<RandomAccessibleInterval<I>, NeighborhoodsIterableInterval<? extends Composite<RealType>>, IterableInterval<BitType>> map;
 
@@ -86,34 +84,36 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 		shape = new RectangleShape(shape.getSpan() + 1, false);
 
 		filterOp = unaryComputer();
-		
-		integralImgOp = (AbstractUnaryHybridCF) ops().op(Ops.Image.Integral.class, in());
-		squareIntegralImgOp = (AbstractUnaryHybridCF) ops().op(Ops.Image.SquareIntegral.class, in());
+
+		integralImgOp = (AbstractUnaryHybridCF) ops().op(Ops.Image.Integral.class,
+			in());
+		squareIntegralImgOp = (AbstractUnaryHybridCF) ops().op(
+			Ops.Image.SquareIntegral.class, in());
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void compute1(RandomAccessibleInterval<I> input,
-		IterableInterval<BitType> output)
+	public void compute1(final RandomAccessibleInterval<I> input,
+		final IterableInterval<BitType> output)
 	{
 
-		List<RandomAccessibleInterval<RealType>> listOfIntegralImages =
+		final List<RandomAccessibleInterval<RealType>> listOfIntegralImages =
 			new ArrayList<>();
-		for (int order : requiredIntegralImages()) {
-			RandomAccessibleInterval<RealType> requiredIntegralImg = getIntegralImage(
-				input, order);
+		for (final int order : requiredIntegralImages()) {
+			final RandomAccessibleInterval<RealType> requiredIntegralImg =
+				getIntegralImage(input, order);
 			listOfIntegralImages.add(requiredIntegralImg);
 		}
 
 		// Composite image of integral images of order 1 and 2
-		RandomAccessibleInterval<RealType> stacked = Views.stack(
+		final RandomAccessibleInterval<RealType> stacked = Views.stack(
 			listOfIntegralImages);
-		RandomAccessibleInterval<? extends Composite<RealType>> compositeRAI = Views
-			.collapse(stacked);
-		RandomAccessibleInterval<? extends Composite<RealType>> extendedCompositeRAI =
+		final RandomAccessibleInterval<? extends Composite<RealType>> compositeRAI =
+			Views.collapse(stacked);
+		final RandomAccessibleInterval<? extends Composite<RealType>> extendedCompositeRAI =
 			removeLeadingZeros(compositeRAI);
 
-		NeighborhoodsIterableInterval<? extends Composite<RealType>> neighborhoods =
+		final NeighborhoodsIterableInterval<? extends Composite<RealType>> neighborhoods =
 			shape.neighborhoodsSafe(extendedCompositeRAI);
 
 		if (map == null) {
@@ -127,15 +127,14 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 	/**
 	 * Computes integral images of a given order and extends them such that
 	 * {@link IntegralMean} et al work with them.
-	 * 
-	 * @param input
-	 *            The RAI for which an integral image is computed
+	 *
+	 * @param input The RAI for which an integral image is computed
 	 * @param order
 	 * @return An extended integral image for the input RAI
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private RandomAccessibleInterval<RealType> getIntegralImage(
-		RandomAccessibleInterval<I> input, int order)
+		final RandomAccessibleInterval<I> input, final int order)
 	{
 		RandomAccessibleInterval<RealType> img = null;
 		switch (order) {
@@ -154,25 +153,26 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 			min[i]--;
 		}
 
-		RealType realZero = (RealType) Util.getTypeFromInterval(img).copy();
+		final RealType realZero = (RealType) Util.getTypeFromInterval(img).copy();
 		realZero.setZero();
 
-		ExtendedRandomAccessibleInterval extendedImg = Views.extendValue(img, realZero);
-		IntervalView<RealType> offsetInterval = Views.interval(extendedImg, min, max);
+		final ExtendedRandomAccessibleInterval extendedImg = Views.extendValue(img,
+			realZero);
+		final IntervalView<RealType> offsetInterval = Views.interval(extendedImg,
+			min, max);
 		img = Views.zeroMin(offsetInterval);
-		
+
 		return img;
 	}
 
 	/**
 	 * Removes leading 0s from integral image after composite creation.
 	 *
-	 * @param input
-	 *            Input RAI (can be a RAI of Composite)
+	 * @param input Input RAI (can be a RAI of Composite)
 	 * @return An extended and cropped version of input
 	 */
 	private <T> RandomAccessibleInterval<T> removeLeadingZeros(
-		RandomAccessibleInterval<T> input)
+		final RandomAccessibleInterval<T> input)
 	{
 		// Remove 0s from integralImg by shifting its interval by +1
 		final long[] min = Intervals.minAsLongArray(input);
@@ -192,7 +192,7 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 
 	/**
 	 * Get the shape (structuring element) used by this filter.
-	 * 
+	 *
 	 * @return the shape
 	 */
 	public RectangleShape getShape() {
@@ -206,8 +206,8 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 
 	/**
 	 * @return the orders of integral images that are required for a local
-	 *         threshold method. For example [1,2] for the default as well as
-	 *         the squared integral image.
+	 *         threshold method. For example [1,2] for the default as well as the
+	 *         squared integral image.
 	 */
 	protected abstract int[] requiredIntegralImages();
 

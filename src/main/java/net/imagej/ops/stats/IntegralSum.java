@@ -58,9 +58,10 @@ public class IntegralSum<I extends RealType<I>> extends
 	public void compute1(final RectangleNeighborhood<I> input,
 		final DoubleType output)
 	{
-		// computation according to	https://en.wikipedia.org/wiki/Summed_area_table
+		// computation according to
+		// https://en.wikipedia.org/wiki/Summed_area_table
 		final IntegralCursor<I> cursor = new IntegralCursor<>(input);
-		int dimensions = input.numDimensions();
+		final int dimensions = input.numDimensions();
 
 		// Compute \sum (-1)^{dim - ||cornerVector||_{1}} * I(x^{cornerVector})
 		final DoubleType sum = new DoubleType();
@@ -68,18 +69,19 @@ public class IntegralSum<I extends RealType<I>> extends
 
 		// Convert from input to return type
 		final Converter<I, DoubleType> conv = new RealDoubleConverter<>();
-		DoubleType valueAsDoubleType = new DoubleType();
+		final DoubleType valueAsDoubleType = new DoubleType();
 
-		while ( cursor.hasNext() )
-		{
-			final I value = cursor.next().copy();			
+		while (cursor.hasNext()) {
+			final I value = cursor.next().copy();
 			conv.convert(value, valueAsDoubleType);
 
 			// Obtain the cursor position encoded as corner vector
-			int cornerInteger = cursor.getCornerRepresentation();
+			final int cornerInteger = cursor.getCornerRepresentation();
 
-			// Determine if the value has to be added (factor==1) or subtracted (factor==-1)
-			DoubleType factor = new DoubleType(Math.pow(-1.0d, dimensions - IntegralMean.norm(cornerInteger)));
+			// Determine if the value has to be added (factor==1) or subtracted
+			// (factor==-1)
+			final DoubleType factor = new DoubleType(Math.pow(-1.0d, dimensions -
+				IntegralMean.norm(cornerInteger)));
 			valueAsDoubleType.mul(factor);
 
 			sum.add(valueAsDoubleType);

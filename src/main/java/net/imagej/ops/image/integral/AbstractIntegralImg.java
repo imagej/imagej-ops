@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -51,9 +51,8 @@ import net.imglib2.view.Views;
 
 /**
  * Abstract base class for <i>n</i>-dimensional integral images.
- * 
- * @param <I>
- *            The type of the input image.
+ *
+ * @param <I> The type of the input image.
  * @author Stefan Helfrich (University of Konstanz)
  */
 @SuppressWarnings("rawtypes")
@@ -66,11 +65,11 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 	private UnaryComputerOp[] slicewiseOps;
 	private UnaryFunctionOp<Dimensions, RandomAccessibleInterval> createLongRAI;
 	private UnaryFunctionOp<Dimensions, RandomAccessibleInterval> createDoubleRAI;
-	
+
 	@Override
 	public void initialize() {
 		integralAdd = getComputer();
-		
+
 		if (in() != null) {
 			slicewiseOps = new UnaryComputerOp[in().numDimensions()];
 
@@ -81,16 +80,16 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 			}
 		}
 
-		createLongRAI = Functions.unary(ops(), Ops.Create.Img.class, RandomAccessibleInterval.class,
-				Dimensions.class, new LongType());
-		createDoubleRAI = Functions.unary(ops(), Ops.Create.Img.class, RandomAccessibleInterval.class,
-				Dimensions.class, new DoubleType());
+		createLongRAI = Functions.unary(ops(), Ops.Create.Img.class,
+			RandomAccessibleInterval.class, Dimensions.class, new LongType());
+		createDoubleRAI = Functions.unary(ops(), Ops.Create.Img.class,
+			RandomAccessibleInterval.class, Dimensions.class, new DoubleType());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void compute1(RandomAccessibleInterval<I> input,
-		RandomAccessibleInterval<RealType<?>> output)
+	public void compute1(final RandomAccessibleInterval<I> input,
+		final RandomAccessibleInterval<RealType<?>> output)
 	{
 		if (slicewiseOps == null) {
 			slicewiseOps = new UnaryComputerOp[in().numDimensions()];
@@ -106,7 +105,7 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 		RandomAccessibleInterval<? extends RealType<?>> generalizedInput = input;
 
 		// Create integral image
-		for (int i=0; i < input.numDimensions(); ++i) {
+		for (int i = 0; i < input.numDimensions(); ++i) {
 			// Slicewise integral addition in one direction
 			slicewiseOps[i].compute1(generalizedInput, output);
 			generalizedInput = output;
@@ -116,7 +115,7 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 	@SuppressWarnings("unchecked")
 	@Override
 	public RandomAccessibleInterval<RealType<?>> createOutput(
-		RandomAccessibleInterval<I> input)
+		final RandomAccessibleInterval<I> input)
 	{
 		// Create integral image
 		if (Util.getTypeFromInterval(input) instanceof IntegerType) {
@@ -136,6 +135,8 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 	 * Implements the row-wise addition required for computations of integral
 	 * images.
 	 */
-	public abstract AbstractUnaryHybridCI<IterableInterval<RealType<?>>, IterableInterval<RealType<?>>> getComputer();
+	public abstract
+		AbstractUnaryHybridCI<IterableInterval<RealType<?>>, IterableInterval<RealType<?>>>
+		getComputer();
 
 }

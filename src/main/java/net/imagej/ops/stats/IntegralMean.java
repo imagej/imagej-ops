@@ -30,8 +30,6 @@
 
 package net.imagej.ops.stats;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.image.integral.IntegralCursor;
@@ -44,6 +42,8 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Intervals;
 import net.imglib2.view.composite.Composite;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link Op} to calculate the {@code stats.mean} from an integral image using a
@@ -59,13 +59,14 @@ public class IntegralMean<I extends RealType<I>> extends
 {
 
 	@Override
-	public void compute2(RectangleNeighborhood<Composite<I>> input1, Interval input2,
-		DoubleType output)
+	public void compute2(final RectangleNeighborhood<Composite<I>> input1,
+		final Interval input2, final DoubleType output)
 	{
-		// computation according to	https://en.wikipedia.org/wiki/Summed_area_table
+		// computation according to
+		// https://en.wikipedia.org/wiki/Summed_area_table
 		final IntegralCursor<Composite<I>> cursor = new IntegralCursor<>(input1);
-		int dimensions = input1.numDimensions();
-		
+		final int dimensions = input1.numDimensions();
+
 		// Compute \sum (-1)^{dim - ||cornerVector||_{1}} * I(x^{cornerVector})
 		final DoubleType sum = new DoubleType();
 		sum.setZero();
@@ -73,24 +74,26 @@ public class IntegralMean<I extends RealType<I>> extends
 		// Convert from input to return type
 		final Converter<I, DoubleType> conv = new RealDoubleConverter<>();
 		final DoubleType valueAsDoubleType = new DoubleType();
-		
-		while ( cursor.hasNext() )
-		{
+
+		while (cursor.hasNext()) {
 			final I value = cursor.next().get(0).copy();
 			conv.convert(value, valueAsDoubleType);
-			
+
 			// Obtain the cursor position encoded as corner vector
-			int cornerInteger = cursor.getCornerRepresentation();
-			
-			// Determine if the value has to be added (factor==1) or subtracted (factor==-1)
-			DoubleType factor = new DoubleType(Math.pow(-1.0d, dimensions - IntegralMean.norm(cornerInteger)));
+			final int cornerInteger = cursor.getCornerRepresentation();
+
+			// Determine if the value has to be added (factor==1) or subtracted
+			// (factor==-1)
+			final DoubleType factor = new DoubleType(Math.pow(-1.0d, dimensions -
+				IntegralMean.norm(cornerInteger)));
 			valueAsDoubleType.mul(factor);
-			
+
 			sum.add(valueAsDoubleType);
 		}
 
 		// Compute overlap
-		int area = IntegralMean.overlap(Intervals.expand(input1, -1l), input2);
+		final int area = IntegralMean.overlap(Intervals.expand(input1, -1l),
+			input2);
 
 		// Compute mean by dividing the sum divided by the number of elements
 		valueAsDoubleType.set(area); // NB: Reuse DoubleType
@@ -101,27 +104,28 @@ public class IntegralMean<I extends RealType<I>> extends
 
 	/**
 	 * Compute the overlap between to intervals.
-	 * 
+	 *
 	 * @param interval1
 	 * @param interval2
 	 * @return area/volume/etc
 	 */
-	public static int overlap(Interval interval1, Interval interval2)
+	public static int overlap(final Interval interval1,
+		final Interval interval2)
 	{
-		Interval intersection = Intervals.intersect(interval1, interval2);
+		final Interval intersection = Intervals.intersect(interval1, interval2);
 		return (int) Intervals.numElements(intersection);
 	}
 
 	/**
 	 * Computes L1 norm of the position of an {@code IntegralCursor}. Computation
 	 * is based on determining the number of 1 bits in the position.
-	 * 
+	 *
 	 * @param cornerPosition position vector of an {@code IntegralCursor} encoded
 	 *          as integer
 	 * @return L1 norm of the position
 	 */
-	public static int norm(int cornerPosition) {
+	public static int norm(final int cornerPosition) {
 		return Integer.bitCount(cornerPosition);
 	}
-	
+
 }

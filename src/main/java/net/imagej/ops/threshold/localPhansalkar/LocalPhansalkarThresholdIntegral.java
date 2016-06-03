@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -29,10 +29,6 @@
  */
 
 package net.imagej.ops.threshold.localPhansalkar;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.map.neighborhood.CenterAwareIntegralComputerOp;
@@ -50,6 +46,10 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.composite.Composite;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 /**
  * <p>
  * Local thresholding algorithm as proposed by Phansalkar et al.
@@ -62,7 +62,7 @@ import net.imglib2.view.composite.Composite;
  * {@link RealType}, i.e. explicit conversion to an integral image is <b>not</b>
  * required.
  * </p>
- * 
+ *
  * @see LocalPhansalkarThreshold
  * @see LocalThresholdIntegral
  * @author Stefan Helfrich (University of Konstanz)
@@ -74,13 +74,13 @@ public class LocalPhansalkarThresholdIntegral<T extends RealType<T>> extends
 {
 
 	@Parameter(required = false)
-	private double k = 0.25;
+	private final double k = 0.25;
 
 	@Parameter(required = false)
-	private double r = 0.5;
+	private final double r = 0.5;
 
-	private double p = 2.0;
-	private double q = 10.0;
+	private final double p = 2.0;
+	private final double q = 10.0;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -101,12 +101,13 @@ public class LocalPhansalkarThresholdIntegral<T extends RealType<T>> extends
 	{
 
 		RandomAccessibleInterval<I> source;
-		private IntegralMean<DoubleType> integralMean;
-		private IntegralVariance<DoubleType> integralVariance;
+		private final IntegralMean<DoubleType> integralMean;
+		private final IntegralVariance<DoubleType> integralVariance;
 
-		public LocalPhansalkarThresholdComputer(RandomAccessibleInterval<I> source,
-			IntegralMean<DoubleType> integralMean,
-			IntegralVariance<DoubleType> integralVariance)
+		public LocalPhansalkarThresholdComputer(
+			final RandomAccessibleInterval<I> source,
+			final IntegralMean<DoubleType> integralMean,
+			final IntegralVariance<DoubleType> integralVariance)
 		{
 			super();
 			this.source = source;
@@ -115,9 +116,9 @@ public class LocalPhansalkarThresholdIntegral<T extends RealType<T>> extends
 		}
 
 		@Override
-		public void compute2(I center,
-			RectangleNeighborhood<Composite<DoubleType>> neighborhood,
-			BitType output)
+		public void compute2(final I center,
+			final RectangleNeighborhood<Composite<DoubleType>> neighborhood,
+			final BitType output)
 		{
 
 			final DoubleType mean = new DoubleType();
@@ -134,7 +135,8 @@ public class LocalPhansalkarThresholdIntegral<T extends RealType<T>> extends
 
 			// Set value
 			final Converter<I, DoubleType> conv = new RealDoubleConverter<>();
-			DoubleType centerPixelAsDoubleType = variance; // NB: Reuse DoubleType
+			final DoubleType centerPixelAsDoubleType = variance; // NB: Reuse
+			// DoubleType
 			conv.convert(center, centerPixelAsDoubleType);
 
 			output.set(centerPixelAsDoubleType.compareTo(threshold) > 0);

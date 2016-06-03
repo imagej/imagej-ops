@@ -1,8 +1,5 @@
-package net.imagej.ops.threshold.localNiblack;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+package net.imagej.ops.threshold.localNiblack;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.map.neighborhood.CenterAwareIntegralComputerOp;
@@ -20,6 +17,10 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.composite.Composite;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 /**
  * <p>
  * Niblack's local thresholding algorithm.
@@ -32,7 +33,7 @@ import net.imglib2.view.composite.Composite;
  * {@link RealType}, i.e. explicit conversion to an integral image is <b>not</b>
  * required.
  * </p>
- * 
+ *
  * @see LocalNiblackThreshold
  * @see LocalThresholdIntegral
  * @author Stefan Helfrich (University of Konstanz)
@@ -68,12 +69,13 @@ public class LocalNiblackThresholdIntegral<T extends RealType<T>> extends
 	{
 
 		RandomAccessibleInterval<I> source;
-		private IntegralMean<DoubleType> integralMean;
-		private IntegralVariance<DoubleType> integralVariance;
+		private final IntegralMean<DoubleType> integralMean;
+		private final IntegralVariance<DoubleType> integralVariance;
 
-		public LocalNiblackThresholdComputer(RandomAccessibleInterval<I> source,
-			IntegralMean<DoubleType> integralMean,
-			IntegralVariance<DoubleType> integralVariance)
+		public LocalNiblackThresholdComputer(
+			final RandomAccessibleInterval<I> source,
+			final IntegralMean<DoubleType> integralMean,
+			final IntegralVariance<DoubleType> integralVariance)
 		{
 			super();
 			this.source = source;
@@ -82,9 +84,9 @@ public class LocalNiblackThresholdIntegral<T extends RealType<T>> extends
 		}
 
 		@Override
-		public void compute2(I center,
-			RectangleNeighborhood<Composite<DoubleType>> neighborhood,
-			BitType output)
+		public void compute2(final I center,
+			final RectangleNeighborhood<Composite<DoubleType>> neighborhood,
+			final BitType output)
 		{
 
 			final DoubleType threshold = new DoubleType(0.0d);
@@ -107,7 +109,8 @@ public class LocalNiblackThresholdIntegral<T extends RealType<T>> extends
 
 			// Set value
 			final Converter<I, DoubleType> conv = new RealDoubleConverter<>();
-			final DoubleType centerPixelAsDoubleType = variance; // NB: Reuse DoubleType
+			final DoubleType centerPixelAsDoubleType = variance; // NB: Reuse
+			// DoubleType
 			conv.convert(center, centerPixelAsDoubleType);
 
 			output.set(centerPixelAsDoubleType.compareTo(threshold) > 0);

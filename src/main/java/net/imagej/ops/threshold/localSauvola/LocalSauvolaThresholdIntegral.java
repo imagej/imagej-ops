@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -29,10 +29,6 @@
  */
 
 package net.imagej.ops.threshold.localSauvola;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.map.neighborhood.CenterAwareIntegralComputerOp;
@@ -50,6 +46,10 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.composite.Composite;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 /**
  * <p>
  * Local thresholding algorithm as proposed by Sauvola et al.
@@ -62,27 +62,26 @@ import net.imglib2.view.composite.Composite;
  * {@link RealType}, i.e. explicit conversion to an integral image is <b>not</b>
  * required.
  * </p>
- * 
+ *
  * @see LocalSauvolaThreshold
  * @see LocalThresholdIntegral
  * @author Stefan Helfrich (University of Konstanz)
  */
 @Plugin(type = Ops.Threshold.LocalSauvolaThreshold.class,
 	priority = Priority.LOW_PRIORITY - 1)
-public class LocalSauvolaThresholdIntegral<T extends RealType<T>> extends LocalThresholdIntegral<T>
-	implements Ops.Threshold.LocalSauvolaThreshold
+public class LocalSauvolaThresholdIntegral<T extends RealType<T>> extends
+	LocalThresholdIntegral<T> implements Ops.Threshold.LocalSauvolaThreshold
 {
 
 	@Parameter(required = false)
-	private double k = 0.5d;
+	private final double k = 0.5d;
 
 	@Parameter(required = false)
-	private double r = 0.5d;
+	private final double r = 0.5d;
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected CenterAwareIntegralComputerOp<T, BitType> unaryComputer()
-	{
+	protected CenterAwareIntegralComputerOp<T, BitType> unaryComputer() {
 		final CenterAwareIntegralComputerOp<T, BitType> op =
 			new LocalSauvolaThresholdComputer<>(in(), ops().op(IntegralMean.class,
 				DoubleType.class, RectangleNeighborhood.class, Interval.class), ops()
@@ -94,16 +93,18 @@ public class LocalSauvolaThresholdIntegral<T extends RealType<T>> extends LocalT
 	}
 
 	private class LocalSauvolaThresholdComputer<I extends RealType<I>> extends
-		AbstractBinaryComputerOp<I, RectangleNeighborhood<Composite<DoubleType>>, BitType> implements
-		CenterAwareIntegralComputerOp<I, BitType>
+		AbstractBinaryComputerOp<I, RectangleNeighborhood<Composite<DoubleType>>, BitType>
+		implements CenterAwareIntegralComputerOp<I, BitType>
 	{
 
 		RandomAccessibleInterval<I> source;
-		private IntegralMean<DoubleType> integralMean;
-		private IntegralVariance<DoubleType> integralVariance;
+		private final IntegralMean<DoubleType> integralMean;
+		private final IntegralVariance<DoubleType> integralVariance;
 
-		public LocalSauvolaThresholdComputer(RandomAccessibleInterval<I> source,
-			IntegralMean<DoubleType> integralMean, IntegralVariance<DoubleType> integralVariance)
+		public LocalSauvolaThresholdComputer(
+			final RandomAccessibleInterval<I> source,
+			final IntegralMean<DoubleType> integralMean,
+			final IntegralVariance<DoubleType> integralVariance)
 		{
 			super();
 			this.source = source;
@@ -112,33 +113,36 @@ public class LocalSauvolaThresholdIntegral<T extends RealType<T>> extends LocalT
 		}
 
 		@Override
-		public void compute2(I center, RectangleNeighborhood<Composite<DoubleType>> neighborhood,
-			BitType output)
+		public void compute2(final I center,
+			final RectangleNeighborhood<Composite<DoubleType>> neighborhood,
+			final BitType output)
 		{
-			
+
 			final DoubleType mean = new DoubleType();
 			integralMean.compute2(neighborhood, source, mean);
-			
+
 			final DoubleType variance = new DoubleType();
 			integralVariance.compute2(neighborhood, source, variance);
-			
+
 			final DoubleType stdDev = new DoubleType(Math.sqrt(variance.get()));
 
-			final DoubleType threshold = new DoubleType(mean.getRealDouble() * (1.0d + k * ((Math.sqrt(stdDev.getRealDouble()) / r) - 1.0)));
-			
+			final DoubleType threshold = new DoubleType(mean.getRealDouble() * (1.0d +
+				k * ((Math.sqrt(stdDev.getRealDouble()) / r) - 1.0)));
+
 			// Set value
 			final Converter<I, DoubleType> conv = new RealDoubleConverter<>();
-			final DoubleType centerPixelAsDoubleType = variance; // NB: Reuse DoubleType
+			final DoubleType centerPixelAsDoubleType = variance; // NB: Reuse
+			// DoubleType
 			conv.convert(center, centerPixelAsDoubleType);
 
 			output.set(centerPixelAsDoubleType.compareTo(threshold) > 0);
 		}
-		
+
 	}
 
 	@Override
 	protected int[] requiredIntegralImages() {
-		return new int[]{1, 2};
+		return new int[] { 1, 2 };
 	}
 
 }
