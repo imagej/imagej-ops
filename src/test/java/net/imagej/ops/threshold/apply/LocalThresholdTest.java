@@ -329,7 +329,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	@Test
 	public void testLocalPhansalkarIntegral() {
 		ops.run(LocalPhansalkarThresholdIntegral.class, out, in, new RectangleShape(3,
-			false), 0.0, 0.0);
+			false), null, 0.0, 0.0);
 
 		assertEquals(out.firstElement().get(), false);
 	}
@@ -359,7 +359,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 		ops.run(LocalPhansalkarThresholdIntegral.class,
 			out3,
 			in,
-			new RectangleShape(1, false),
+			new RectangleShape(1, false), null,
 			0.0, 0.0);
 		
 		testIterableIntervalSimilarity(out2, out3);
@@ -382,7 +382,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testLocalSauvolaIntegral() {
-		ops.run(LocalSauvolaThresholdIntegral.class, out, in, new RectangleShape(3, false),
+		ops.run(LocalSauvolaThresholdIntegral.class, out, in, new RectangleShape(3, false), null,
 			0.0, 0.0);
 
 		assertEquals(out.firstElement().get(), false);
@@ -414,7 +414,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 		ops.run(LocalSauvolaThresholdIntegral.class,
 			out3,
 			in,
-			new RectangleShape(1, false),
+			new RectangleShape(1, false), null,
 			0.0, 0.0);
 		
 		testIterableIntervalSimilarity(out2, out3);
