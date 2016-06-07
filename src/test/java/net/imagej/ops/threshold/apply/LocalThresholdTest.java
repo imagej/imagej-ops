@@ -338,7 +338,6 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 * @see LocalPhansalkarThresholdIntegral
 	 * @see LocalPhansalkarThreshold
 	 */
-	@SuppressWarnings("null")
 	@Test
 	public void testLocalPhansalkarResultsConsistency() {
 		Img<BitType> out2 = null;
