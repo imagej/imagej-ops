@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -50,7 +50,7 @@ import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
  * encoding (neighMax-1). The iteration order follows the (binary-reflected)
  * Gray code pattern such that only one dimension of the target position is
  * modified per move.
- * 
+ *
  * @see <a href="http://en.wikipedia.org/wiki/Gray_code">http://en.wikipedia.org
  *      /wiki/Gray_code</a>
  * @author Stefan Helfrich (University of Konstanz)
@@ -70,10 +70,10 @@ public class IntegralCursor<T> extends AbstractEuclideanSpace implements
 
 	private final RectangleNeighborhood<T> neighborhood;
 
-	public IntegralCursor(final RandomAccess<T> src, final RectangleNeighborhood<T> neighborhood) {
+	public IntegralCursor(final RectangleNeighborhood<T> neighborhood) {
 		super(neighborhood.numDimensions());
 		this.neighborhood = neighborhood;
-		source = src;
+		source = neighborhood.getSourceRandomAccess();
 		maxIndex = ((int) Math.round(Math.pow(2, neighborhood.numDimensions()))) -
 			1;
 		reset();
@@ -81,7 +81,7 @@ public class IntegralCursor<T> extends AbstractEuclideanSpace implements
 
 	protected IntegralCursor(final IntegralCursor<T> cursor) {
 		super(cursor.numDimensions());
-		neighborhood = cursor.neighborhood; // FIXME?
+		neighborhood = cursor.neighborhood;
 		source = cursor.source.copyRandomAccess();
 		index = cursor.index;
 		code = cursor.code;
@@ -106,7 +106,7 @@ public class IntegralCursor<T> extends AbstractEuclideanSpace implements
 
 		/*
 		 * Adapted from Wikipedia:
-		 * 
+		 *
 		 * To construct the binary-reflected Gray code iteratively, at step 0
 		 * start with the code = 0, and at each step index > 0 find the bit
 		 * position of the least significant 1 in the binary representation of
@@ -116,12 +116,12 @@ public class IntegralCursor<T> extends AbstractEuclideanSpace implements
 		index++;
 
 		// Update Gray code
-		int mask = Integer.lowestOneBit(index);
+		final int mask = Integer.lowestOneBit(index);
 		code ^= mask;
 
 		// Move the cursor in the dimension of the updated bit
-		int updatedDimension = Integer.numberOfTrailingZeros(index);
-		int bitInDimension = (code & mask) >> updatedDimension;
+		final int updatedDimension = Integer.numberOfTrailingZeros(index);
+		final int bitInDimension = (code & mask) >> updatedDimension;
 		if (bitInDimension == 1) {
 			source.setPosition(neighborhood.max(updatedDimension) - 1,
 				updatedDimension);

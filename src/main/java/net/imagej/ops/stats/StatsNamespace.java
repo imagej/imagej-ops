@@ -33,8 +33,11 @@ package net.imagej.ops.stats;
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
+import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
+import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Plugin;
@@ -87,6 +90,44 @@ public class StatsNamespace extends AbstractNamespace {
 	{
 		final O result =
 			(O) ops().run(net.imagej.ops.Ops.Stats.HarmonicMean.class, out, in);
+		return result;
+	}
+
+	@SuppressWarnings("rawtypes")
+	@OpMethod(op = net.imagej.ops.stats.IntegralMean.class)
+	public DoubleType integralMean(final DoubleType out,
+		final RectangleNeighborhood in1, final Interval in2)
+	{
+		final DoubleType result = (DoubleType) ops().run(
+			net.imagej.ops.stats.IntegralMean.class, out, in1, in2);
+		return result;
+	}
+
+	@SuppressWarnings("rawtypes")
+	@OpMethod(op = net.imagej.ops.stats.IntegralSum.class)
+	public DoubleType integralSum(final RectangleNeighborhood in) {
+		final DoubleType result = (DoubleType) ops().run(
+			net.imagej.ops.stats.IntegralSum.class, in);
+		return result;
+	}
+
+	@SuppressWarnings("rawtypes")
+	@OpMethod(op = net.imagej.ops.stats.IntegralSum.class)
+	public DoubleType integralSum(final DoubleType out,
+		final RectangleNeighborhood in)
+	{
+		final DoubleType result = (DoubleType) ops().run(
+			net.imagej.ops.stats.IntegralSum.class, out, in);
+		return result;
+	}
+
+	@SuppressWarnings("rawtypes")
+	@OpMethod(op = net.imagej.ops.stats.IntegralVariance.class)
+	public DoubleType integralVariance(final DoubleType out,
+		final RectangleNeighborhood in1, final Interval in2)
+	{
+		final DoubleType result = (DoubleType) ops().run(
+			net.imagej.ops.stats.IntegralVariance.class, out, in1, in2);
 		return result;
 	}
 

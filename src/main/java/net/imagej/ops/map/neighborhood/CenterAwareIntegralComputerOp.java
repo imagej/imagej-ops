@@ -28,62 +28,23 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localMean;
+package net.imagej.ops.map.neighborhood;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-import net.imagej.ops.Ops;
-import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
-import net.imagej.ops.special.computer.Computers;
-import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imagej.ops.threshold.LocalThresholdMethod;
-import net.imagej.ops.threshold.apply.LocalThreshold;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.view.composite.Composite;
 
 /**
- * LocalThresholdMethod that uses the mean and operates directly of RAIs.
- *
- * @author Jonathan Hale (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
+ * A <em>center-aware computer</em> calculates a result from a given input and
+ * the surrounding rectangular neighborhood in (multiple) integral images. The
+ * computed value is stored in the specified output reference.
+ * 
+ * @see CenterAwareComputerOp
  * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.LocalMeanThreshold.class,
-	priority = Priority.LOW_PRIORITY)
-public class LocalMeanThreshold<T extends RealType<T>> extends
-	LocalThreshold<T>	implements Ops.Threshold.LocalMeanThreshold
+public interface CenterAwareIntegralComputerOp<I, O> extends
+	BinaryComputerOp<I, RectangleNeighborhood<Composite<DoubleType>>, O>
 {
-
-	@Parameter
-	private double c;
-
-	@Override
-	protected CenterAwareComputerOp<T, BitType> unaryComputer(
-		final BitType outClass)
-	{
-		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
-
-			private UnaryComputerOp<Iterable<T>, DoubleType> meanOp;
-
-			@Override
-			public void compute2(final Iterable<T> neighborhood, final T center, final BitType output) {
-
-				if (meanOp == null) {
-					meanOp = Computers.unary(ops(),	Ops.Stats.Mean.class, DoubleType.class, neighborhood);
-				}
-
-				final DoubleType m = new DoubleType();
-
-				meanOp.compute1(neighborhood, m);
-				output.set(center.getRealDouble() > m.getRealDouble() - c);
-			}
-		};
-
-		op.setEnvironment(ops());
-		return op;
-	}
-	
+	// NB: Marker interface.
 }

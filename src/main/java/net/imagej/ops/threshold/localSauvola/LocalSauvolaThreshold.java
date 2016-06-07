@@ -30,6 +30,7 @@
 
 package net.imagej.ops.threshold.localSauvola;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -44,21 +45,25 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
+ * <p>
  * This is a modification of Niblack's thresholding method. In contrast to the
  * recommendation on parameters in the publication, this implementation operates
  * on normalized images (to the [0, 1] range). Hence, the r parameter defaults
- * to half the possible standard deviation in a normalized image, namely 0.5
- * 
+ * to half the possible standard deviation in a normalized image, namely 0.5.
+ * </p>
+ * <p>
  * Sauvola J. and Pietaksinen M. (2000) "Adaptive Document Image Binarization"
- * Pattern Recognition, 33(2): 225-236
- * 
- * http://www.ee.oulu.fi/mvg/publications/show_pdf.php?ID=24
- * 
+ * Pattern Recognition, 33(2): 225-236.
+ * <a href="http://www.ee.oulu.fi/mvg/publications/show_pdf.php?ID=24">PDF</a>
+ * </p>
+ * <p>
  * Original ImageJ1 implementation by Gabriel Landini.
+ * </p>
  * 
  * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.LocalSauvolaThreshold.class)
+@Plugin(type = Ops.Threshold.LocalSauvolaThreshold.class,
+	priority = Priority.LOW_PRIORITY)
 public class LocalSauvolaThreshold<T extends RealType<T>> extends LocalThreshold<T>
 	implements Ops.Threshold.LocalSauvolaThreshold
 {

@@ -30,6 +30,7 @@
 
 package net.imagej.ops.threshold.localPhansalkar;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -44,29 +45,35 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
+ * <p>
  * This is a modification of Sauvola's thresholding method to deal with low
- * contrast images.
- * 
- * In this algorithm the threshold is computed as t =
+ * contrast images. In this algorithm the threshold is computed as t =
  * mean*(1+p*exp(-q*mean)+k*((stdev/r)-1)) for an image that is normalized to
  * [0, 1].
- * 
+ * </p>
+ * <p>
  * Phansalkar recommends k = 0.25, r = 0.5, p = 2 and q = 10. In the current
  * implementation, the values of p and q are fixed but can be implemented as
  * additional parameters.
- * 
- * Originally implemented from Phansalkar's paper description by G. Landini
- * (http://fiji.sc/Auto_Local_Threshold#Phansalkar).
- * 
- * Phansalskar N. et al. Adaptive local thresholding for detection of nuclei in
- * diversity stained cytology images. International Conference on Communications
- * and Signal Processing (ICCSP), 2011, 218 - 220.
+ * </p>
+ * <p>
+ * <a href="http://fiji.sc/Auto_Local_Threshold#Phansalkar">Originally
+ * implemented</a> from Phansalkar's paper description by G. Landini.
+ * </p>
+ * <p>
+ * <i>Phansalkar N. et al. Adaptive local thresholding for detection of nuclei
+ * in diversity stained cytology images. International Conference on
+ * Communications and Signal Processing (ICCSP), 2011, 218 - 220.
+ * <a href="http://dx.doi.org/10.1109/ICCSP.2011.5739305">
+ * doi:10.1109/ICCSP.2011.5739305</a></i>
+ * </p>
  * 
  * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.LocalPhansalkarThreshold.class)
-public class LocalPhansalkarThreshold<T extends RealType<T>> extends LocalThreshold<T>
-	implements Ops.Threshold.LocalPhansalkarThreshold
+@Plugin(type = Ops.Threshold.LocalPhansalkarThreshold.class,
+	priority = Priority.LOW_PRIORITY)
+public class LocalPhansalkarThreshold<T extends RealType<T>> extends
+	LocalThreshold<T> implements Ops.Threshold.LocalPhansalkarThreshold
 {
 
 	@Parameter(required = false)
@@ -77,7 +84,7 @@ public class LocalPhansalkarThreshold<T extends RealType<T>> extends LocalThresh
 
 	private double p = 2.0;
 	private double q = 10.0;
-	
+
 	@Override
 	protected CenterAwareComputerOp<T, BitType> unaryComputer(
 		final BitType outClass)

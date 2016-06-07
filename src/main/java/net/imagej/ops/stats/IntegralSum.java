@@ -28,72 +28,66 @@
  * #L%
  */
 
-package net.imagej.ops.image.integral;
+package net.imagej.ops.stats;
 
+import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.hybrid.AbstractUnaryHybridCI;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
+import net.imagej.ops.image.integral.IntegralCursor;
+import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
+import net.imglib2.converter.Converter;
+import net.imglib2.converter.RealDoubleConverter;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * <p>
- * <i>n</i>-dimensional integral image that stores sums using {@code RealType}.
- * Care must be taken that sums do not overflow the capacity of the respective
- * {@code RealType}s (i.e. {@link DoubleType} or {@link LongType}).
- * </p>
+ * {@link Op} to calculate the {@code stats.sum} from an integral image using a
+ * specialized {@code Cursor} implementation.
  *
- * @param <I> The type of the input image.
+ * @param <I> input type
  * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Image.Integral.class, priority = Priority.LOW_PRIORITY + 1)
-public class DefaultIntegralImg<I extends RealType<I>> extends
-	AbstractIntegralImg<I> implements Ops.Image.Integral
+@Plugin(type = Ops.Stats.IntegralSum.class)
+public class IntegralSum<I extends RealType<I>> extends
+	AbstractStatsOp<RectangleNeighborhood<I>, DoubleType> implements
+	Ops.Stats.IntegralSum
 {
 
 	@Override
-	public
-		AbstractUnaryHybridCI<IterableInterval<RealType<?>>, IterableInterval<RealType<?>>>
-		getComputer()
+	public void compute1(final RectangleNeighborhood<I> input,
+		final DoubleType output)
 	{
-		return new IntegralAddComputer();
-	}
+		// computation according to
+		// https://en.wikipedia.org/wiki/Summed_area_table
+		final IntegralCursor<I> cursor = new IntegralCursor<>(input);
+		final int dimensions = input.numDimensions();
 
-	/**
-	 * Implements the row-wise addition required for computations of integral
-	 * images of order=1.
-	 *
-	 * @author Stefan Helfrich (University of Konstanz)
-	 */
-	private class IntegralAddComputer extends
-		AbstractUnaryHybridCI<IterableInterval<RealType<?>>, IterableInterval<RealType<?>>>
-	{
+		// Compute \sum (-1)^{dim - ||cornerVector||_{1}} * I(x^{cornerVector})
+		final DoubleType sum = new DoubleType();
+		sum.setZero();
 
-		@Override
-		public void compute1(final IterableInterval<RealType<?>> input,
-			final IterableInterval<RealType<?>> output)
-		{
+		// Convert from input to return type
+		final Converter<I, DoubleType> conv = new RealDoubleConverter<>();
+		final DoubleType valueAsDoubleType = new DoubleType();
 
-			final Cursor<RealType<?>> inputCursor = input.cursor();
-			final Cursor<RealType<?>> outputCursor = output.cursor();
+		while (cursor.hasNext()) {
+			final I value = cursor.next().copy();
+			conv.convert(value, valueAsDoubleType);
 
-			double tmp = 0.0d;
-			while (outputCursor.hasNext()) {
+			// Obtain the cursor position encoded as corner vector
+			final int cornerInteger = cursor.getCornerRepresentation();
 
-				final RealType<?> inputValue = inputCursor.next();
-				final RealType<?> outputValue = outputCursor.next();
+			// Determine if the value has to be added (factor==1) or subtracted
+			// (factor==-1)
+			final DoubleType factor = new DoubleType(Math.pow(-1.0d, dimensions -
+				IntegralMean.norm(cornerInteger)));
+			valueAsDoubleType.mul(factor);
 
-				tmp += inputValue.getRealDouble();
-
-				outputValue.setReal(tmp);
-			}
+			sum.add(valueAsDoubleType);
 		}
 
+		output.set(sum);
 	}
 
 }

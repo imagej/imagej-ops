@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -30,40 +30,46 @@
 
 package net.imagej.ops.image.integral;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCI;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
  * <p>
  * <i>n</i>-dimensional squared integral image that stores sums using
  * {@code RealType}. Care must be taken that sums do not overflow the capacity
- * of {@code RealType}. Instead of the sum of values the sum of squared values
- * is computed.
+ * of {@code RealType} (i.e. {@link DoubleType} or {@link LongType}). Instead of
+ * the sum of values the sum of squared values is computed.
  * </p>
- * 
+ *
  * @param <I> The type of the input image.
  * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Image.SquareIntegral.class, priority = Priority.LOW_PRIORITY+1)
+@Plugin(type = Ops.Image.SquareIntegral.class,
+	priority = Priority.LOW_PRIORITY + 1)
 public class SquareIntegralImg<I extends RealType<I>> extends
 	AbstractIntegralImg<I> implements Ops.Image.SquareIntegral
 {
-	
+
 	@Override
-	public AbstractUnaryHybridCI<IterableInterval<RealType<?>>, IterableInterval<RealType<?>>> getComputer() {
+	public
+		AbstractUnaryHybridCI<IterableInterval<RealType<?>>, IterableInterval<RealType<?>>>
+		getComputer()
+	{
 		return new IntegralAddComputer();
 	}
 
 	/**
 	 * Implements the row-wise addition required for computations of squared
 	 * integral images.
-	 * 
+	 *
 	 * @author Stefan Helfrich (University of Konstanz)
 	 */
 	private class IntegralAddComputer extends
@@ -75,18 +81,17 @@ public class SquareIntegralImg<I extends RealType<I>> extends
 			final IterableInterval<RealType<?>> output)
 		{
 
-			Cursor<RealType<?>> inputCursor = input.cursor();
-			Cursor<RealType<?>> outputCursor = output.cursor();
+			final Cursor<RealType<?>> inputCursor = input.cursor();
+			final Cursor<RealType<?>> outputCursor = output.cursor();
 
 			double tmp = 0.0d;
 			while (outputCursor.hasNext()) {
 
-				RealType<?> inputValue = inputCursor.next();
-				RealType<?> outputValue = outputCursor.next();
-				
-				// Compute inputValue^order
+				final RealType<?> inputValue = inputCursor.next();
+				final RealType<?> outputValue = outputCursor.next();
+
 				tmp += Math.pow(inputValue.getRealDouble(), 2);
-				
+
 				outputValue.setReal(tmp);
 			}
 		}
