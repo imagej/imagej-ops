@@ -74,10 +74,10 @@ public class LocalPhansalkarThresholdIntegral<T extends RealType<T>> extends
 {
 
 	@Parameter(required = false)
-	private final double k = 0.25;
+	private double k = 0.25;
 
 	@Parameter(required = false)
-	private final double r = 0.5;
+	private double r = 0.5;
 
 	private final double p = 2.0;
 	private final double q = 10.0;

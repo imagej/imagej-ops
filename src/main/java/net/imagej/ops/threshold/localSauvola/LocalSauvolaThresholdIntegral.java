@@ -74,10 +74,10 @@ public class LocalSauvolaThresholdIntegral<T extends RealType<T>> extends
 {
 
 	@Parameter(required = false)
-	private final double k = 0.5d;
+	private double k = 0.5d;
 
 	@Parameter(required = false)
-	private final double r = 0.5d;
+	private double r = 0.5d;
 
 	@SuppressWarnings("unchecked")
 	@Override
