@@ -106,9 +106,7 @@ public class IntegralVariance<I extends RealType<I>> extends
 			sum2.add(valueAsDoubleType);
 		}
 
-		// Compute overlap
-		final int area = IntegralMean.overlap(Intervals.expand(input1, -1l),
-			input2);
+		final int area = (int) Intervals.numElements(Intervals.expand(input1, -1l));
 
 		valueAsDoubleType.set(area); // NB: Reuse available DoubleType
 		sum1.mul(sum1);

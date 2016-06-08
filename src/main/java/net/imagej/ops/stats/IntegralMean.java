@@ -91,29 +91,13 @@ public class IntegralMean<I extends RealType<I>> extends
 			sum.add(valueAsDoubleType);
 		}
 
-		// Compute overlap
-		final int area = IntegralMean.overlap(Intervals.expand(input1, -1l),
-			input2);
-
+		final int area = (int) Intervals.numElements(Intervals.expand(input1, -1l));
+		
 		// Compute mean by dividing the sum divided by the number of elements
 		valueAsDoubleType.set(area); // NB: Reuse DoubleType
 		sum.div(valueAsDoubleType);
 
 		output.set(sum);
-	}
-
-	/**
-	 * Compute the overlap between to intervals.
-	 *
-	 * @param interval1
-	 * @param interval2
-	 * @return area/volume/etc
-	 */
-	public static int overlap(final Interval interval1,
-		final Interval interval2)
-	{
-		final Interval intersection = Intervals.intersect(interval1, interval2);
-		return (int) Intervals.numElements(intersection);
 	}
 
 	/**
