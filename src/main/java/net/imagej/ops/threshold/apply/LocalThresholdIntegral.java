@@ -33,6 +33,7 @@ package net.imagej.ops.threshold.apply;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Map;
 import net.imagej.ops.map.neighborhood.CenterAwareIntegralComputerOp;
