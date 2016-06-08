@@ -7,7 +7,6 @@ import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
 import net.imagej.ops.stats.IntegralMean;
 import net.imagej.ops.stats.IntegralVariance;
 import net.imagej.ops.threshold.apply.LocalThresholdIntegral;
-import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
 import net.imglib2.converter.Converter;
@@ -54,10 +53,10 @@ public class LocalNiblackThresholdIntegral<T extends RealType<T>> extends
 	@Override
 	protected CenterAwareIntegralComputerOp<T, BitType> unaryComputer() {
 		final CenterAwareIntegralComputerOp<T, BitType> op =
-			new LocalNiblackThresholdComputer<>(in(), ops().op(IntegralMean.class,
-				DoubleType.class, RectangleNeighborhood.class, Interval.class), ops()
+			new LocalNiblackThresholdComputer<>(ops().op(IntegralMean.class,
+				DoubleType.class, RectangleNeighborhood.class), ops()
 					.op(IntegralVariance.class, DoubleType.class,
-						RectangleNeighborhood.class, Interval.class));
+						RectangleNeighborhood.class));
 
 		op.setEnvironment(ops());
 		return op;
@@ -68,17 +67,14 @@ public class LocalNiblackThresholdIntegral<T extends RealType<T>> extends
 		implements CenterAwareIntegralComputerOp<I, BitType>
 	{
 
-		RandomAccessibleInterval<I> source;
 		private final IntegralMean<DoubleType> integralMean;
 		private final IntegralVariance<DoubleType> integralVariance;
 
 		public LocalNiblackThresholdComputer(
-			final RandomAccessibleInterval<I> source,
 			final IntegralMean<DoubleType> integralMean,
 			final IntegralVariance<DoubleType> integralVariance)
 		{
 			super();
-			this.source = source;
 			this.integralMean = integralMean;
 			this.integralVariance = integralVariance;
 		}
@@ -92,12 +88,12 @@ public class LocalNiblackThresholdIntegral<T extends RealType<T>> extends
 			final DoubleType threshold = new DoubleType(0.0d);
 
 			final DoubleType mean = new DoubleType();
-			integralMean.compute2(neighborhood, source, mean);
+			integralMean.compute1(neighborhood, mean);
 
 			threshold.add(mean);
 
 			final DoubleType variance = new DoubleType();
-			integralVariance.compute2(neighborhood, source, variance);
+			integralVariance.compute1(neighborhood, variance);
 
 			final DoubleType stdDev = new DoubleType(Math.sqrt(variance.get()));
 			stdDev.mul(k);
