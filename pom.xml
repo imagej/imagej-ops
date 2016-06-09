@@ -46,19 +46,6 @@
 			</roles>
 		</developer>
 		<developer>
-			<id>hinerm</id>
-			<name>Mark Hiner</name>
-			<url>http://imagej.net/User:Hinerm</url>
-			<roles>
-				<role>lead</role>
-				<role>developer</role>
-				<role>debugger</role>
-				<role>reviewer</role>
-				<role>support</role>
-				<role>maintainer</role>
-			</roles>
-		</developer>
-		<developer>
 			<id>bnorthan</id>
 			<name>Brian Northan</name>
 			<url>http://imagej.net/User:Bnorthan</url>
@@ -137,6 +124,11 @@
 			<name>Stefan Helfrich</name>
 			<url>http://imagej.net/User:Stelfrich</url>
 			<properties><id>stelfrich</id></properties>
+		</contributor>
+		<contributor>
+			<name>Mark Hiner</name>
+			<url>http://imagej.net/User:Hinerm</url>
+			<properties><id>hinerm</id></properties>
 		</contributor>
 		<contributor>
 			<name>Aparna Pal</name>

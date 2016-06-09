@@ -236,8 +236,16 @@ public interface OpEnvironment extends Contextual {
 	 * @return The matched op.
 	 */
 	default Op op(final List<OpRef<?>> refs) {
-		final OpCandidate<?> match = matcher().findMatch(this, refs);
+		final OpCandidate<?> match = doTheThings(this, refs);
 		return OpUtils.unwrap(match.getModule(), match.getRef());
+	}
+
+	default OpCandidate<?> doTheThings(final OpEnvironment ops, final OpRef<?> ref) {
+		return doTheThings(ops, Collections.singletonList(ref));
+	}
+
+	default OpCandidate<?> doTheThings(final OpEnvironment ops, final List<OpRef<?>> refs) {
+		return matcher().findMatch(ops, refs);
 	}
 
 	/**
