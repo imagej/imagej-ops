@@ -51,6 +51,7 @@ import net.imagej.ops.geom.GeomNamespace;
 import net.imagej.ops.image.ImageNamespace;
 import net.imagej.ops.imagemoments.ImageMomentsNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
+import net.imagej.ops.learning.LearningNamespace;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.math.MathNamespace;
@@ -887,6 +888,11 @@ public interface OpEnvironment extends Contextual {
 	/** Gateway into ops of the "lbp" namespace. */
 	default LBPNamespace lbp() {
 		return namespace(LBPNamespace.class);
+	}
+	
+	/** Gateway into ops of the "learning" namespace. */
+	default LearningNamespace learning() {
+		return namespace(LearningNamespace.class);
 	}
 
 	/** Gateway into ops of the "logic" namespace. */
