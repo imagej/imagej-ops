@@ -146,6 +146,9 @@ namespaces = ```
 		[name: "textureHomogeneity",          iface: "TextureHomogeneity"],
 		[name: "variance",                    iface: "Variance"],
 	]],
+	[name: "hog", iface: "HoG", ops: [
+	    [name: "hog",                         iface: "HistogramOfOrientedGradients"],
+	]],
 	[name: "image", iface: "Image", ops: [
 		[name: "ascii",                       iface: "ASCII"],
 		[name: "cooccurrenceMatrix",          iface:"CooccurrenceMatrix"],
