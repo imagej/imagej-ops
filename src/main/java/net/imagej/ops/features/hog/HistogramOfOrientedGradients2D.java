@@ -40,6 +40,7 @@ import net.imagej.ops.create.img.CreateImgFromDimsAndType;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.Point;
@@ -88,7 +89,7 @@ public class HistogramOfOrientedGradients2D<T extends RealType<T>>
 	private UnaryFunctionOp<FinalInterval, RandomAccessibleInterval> createOp;
 
 	@SuppressWarnings("rawtypes")
-	private UnaryFunctionOp<RandomAccessibleInterval, RandomAccessibleInterval> createImgOp;
+	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval> createImgOp;
 
 	private Converter<T, FloatType> converter;
 
@@ -142,21 +143,35 @@ public class HistogramOfOrientedGradients2D<T extends RealType<T>>
 		RandomAccessibleInterval<FloatType> angles = createImgOp.compute0();
 		RandomAccessibleInterval<FloatType> magnitudes = createImgOp.compute0();
 
-		Cursor<FloatType> cursorAngles = Views.flatIterable(angles).cursor();
-		Cursor<FloatType> cursorMagnitudes = Views.flatIterable(magnitudes).cursor();
-		Cursor<FloatType> cursorDerivative0 = Views.flatIterable(derivative0).cursor();
-		Cursor<FloatType> cursorDerivative1 = Views.flatIterable(derivative1).cursor();
+		CursorBasedChunk chunkable = new CursorBasedChunk() {
 
-		while (cursorAngles.hasNext()) {
-			cursorAngles.fwd();
-			cursorMagnitudes.fwd();
-			cursorDerivative0.fwd();
-			cursorDerivative1.fwd();
-			final float x = cursorDerivative0.get().getRealFloat();
-			final float y = cursorDerivative1.get().getRealFloat();
-			cursorAngles.get().setReal(getAngle(x, y));
-			cursorMagnitudes.get().setReal(getMagnitude(x, y));
-		}
+			@Override
+			public void execute(int startIndex, int stepSize, int numSteps) {
+				final Cursor<FloatType> cursorAngles = Views.flatIterable(angles).localizingCursor();
+				final Cursor<FloatType> cursorMagnitudes = Views.flatIterable(magnitudes).localizingCursor();
+				final Cursor<FloatType> cursorDerivative0 = Views.flatIterable(derivative0).localizingCursor();
+				final Cursor<FloatType> cursorDerivative1 = Views.flatIterable(derivative1).localizingCursor();
+
+				setToStart(cursorAngles, startIndex);
+				setToStart(cursorMagnitudes, startIndex);
+				setToStart(cursorDerivative0, startIndex);
+				setToStart(cursorDerivative1, startIndex);
+
+				for (int i = 0; i < numSteps; i++) {
+					final float x = cursorDerivative0.get().getRealFloat();
+					final float y = cursorDerivative1.get().getRealFloat();
+					cursorAngles.get().setReal(getAngle(x, y));
+					cursorMagnitudes.get().setReal(getMagnitude(x, y));
+
+					cursorAngles.jumpFwd(stepSize);
+					cursorMagnitudes.jumpFwd(stepSize);
+					cursorDerivative0.jumpFwd(stepSize);
+					cursorDerivative1.jumpFwd(stepSize);
+				}
+			}
+		};
+
+		ops().thread().chunker(chunkable, Views.flatIterable(magnitudes).size());
 
 		// stores each Thread to execute
 		final List<Callable<Void>> listCallables = new ArrayList<>();
