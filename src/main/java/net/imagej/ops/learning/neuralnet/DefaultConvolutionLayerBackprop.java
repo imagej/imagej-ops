@@ -22,9 +22,9 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Ops.Learning.ConvolutionLayerBackProp.class,
 	priority = Priority.HIGH_PRIORITY)
-public class DefaultConvolutionLayerBackprop<I1 extends NativeType<I1> & RealType<I1>, I2 extends NativeType<I2> & RealType<I2>, O extends NativeType<O> & RealType<O>>
+public class DefaultConvolutionLayerBackprop<T extends NativeType<T> & RealType<T>>
 	extends
-	AbstractBinaryFunctionOp<RandomAccessibleInterval<I1>, RandomAccessibleInterval<I2>, RandomAccessibleInterval<O>>
+	AbstractBinaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Learning.ConvolutionLayerBackProp
 {
 
@@ -35,34 +35,37 @@ public class DefaultConvolutionLayerBackprop<I1 extends NativeType<I1> & RealTyp
 	 * The output type. If null a default output type will be used.
 	 */
 	@Parameter(required = false)
-	private Type<O> outType;
+	private Type<T> outType;
 
 	@Override
-	public RandomAccessibleInterval<O> compute2(
-		RandomAccessibleInterval<I1> input1, RandomAccessibleInterval<I2> input2)
+	public RandomAccessibleInterval<T> compute2(
+		RandomAccessibleInterval<T> input1, RandomAccessibleInterval<T> input2)
 	{
 		// initialize outType
 		if (outType == null) {
 			Object temp = new DoubleType();
-			outType = (Type<O>) temp;
+			outType = (Type<T>) temp;
 		}
 
-		
-		
 		// initialize kernel
-		RandomAccessibleInterval<O> kernel = ops.create().kernelGauss(1., 2, outType
+		RandomAccessibleInterval<T> kernel = ops.create().kernelGauss(1., 2, outType
 			.createVariable());
 		// initialize activation function
-		final Op activationFunction = ops.op("math.tanh", DoubleType.class, DoubleType.class  );				
+		final Op activationFunction = ops.op("math.tanh", DoubleType.class,
+			DoubleType.class);
 		// Iterate this
 		// Convolve
-		RandomAccessibleInterval<O> convolved = ops.filter().convolve( input1, kernel );
+		RandomAccessibleInterval<T> convolved = ops.filter().convolve(input1,
+			kernel);
 		// Apply activation function
-		RandomAccessibleInterval<O> outActivated = ops.copy().rai( convolved );
-		ops.map( Views.iterable(convolved), Views.iterable(outActivated), (UnaryComputerOp<O,O>) activationFunction );
-		
+		RandomAccessibleInterval<T> outActivated = ops.copy().rai(convolved);
+		ops.map(Views.iterable(convolved), Views.iterable(outActivated),
+			(UnaryComputerOp<T, T>) activationFunction);
+
 		// Calculate error
-		RandomAccessibleInterval<O> error = ops.math().subtract( (IterableInterval<I2>) input2, (IterableInterval<O>) outActivated );
+		RandomAccessibleInterval<T> error = (RandomAccessibleInterval<T>) ops.math()
+			.subtract(Views.iterable(input2), Views.iterable(outActivated));
+
 		// Backpropagate error
 		// Update kernel
 		// Done iterate
