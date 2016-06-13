@@ -120,7 +120,7 @@ public class ConvolveNaiveC<I extends RealType<I>, K extends RealType<K>, O exte
 	@Override
 	public boolean conforms() {
 		// conforms only if the kernel is sufficiently small
-		return Intervals.numElements(kernel) <= 9;
+		return Intervals.numElements(kernel) <= 50;
 	}
 
 }
