@@ -405,5 +405,8 @@ namespaces = ```
 		[name: "magnitude",                iface: "Magnitude"],
 		[name: "phase",                    iface: "Phase"],
 	]],
+	[name: "learning", iface: "Learning", ops: [
+		[name: "convolutionLayerBackProp",                iface: "ConvolutionLayerBackProp"],
+	]],
 ]
 ```
