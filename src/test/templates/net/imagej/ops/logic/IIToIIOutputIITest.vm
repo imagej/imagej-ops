@@ -30,26 +30,53 @@
 
 package net.imagej.ops.logic;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imglib2.type.logic.BoolType;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImgs;
+import net.imglib2.type.logic.BitType;
 
+import org.junit.Before;
 import org.junit.Test;
 
-/** Tests {@link ComparableGreaterThan}. */
-public class ComparableGreaterThanTest extends AbstractOpTest {
+public class IIToIIOutputIITest extends AbstractOpTest {
 
+	private Img<BitType> in1;
+	private Img<BitType> in2;
+
+	@Before
+	public void initImg() {
+		final boolean[] in1Data = { true, true, false, false };
+		final boolean[] in2Data = { true, false, true, false };
+		in1 = ArrayImgs.bits(2, 2);
+		in2 = ArrayImgs.bits(2, 2);
+		final Cursor<BitType> c1 = in1.cursor();
+		final Cursor<BitType> c2 = in2.cursor();
+		for (int i = 0; i < 4; i++) {
+			c1.next().set(in1Data[i]);
+			c2.next().set(in2Data[i]);
+		}
+	}
+	
+#foreach ($op in $ops)
 	@Test
-	public void test() {
-		final BoolType result = (BoolType) ops.run(ComparableGreaterThan.class, 5.0,
-			(Comparable<Double>) 3.0);
-		assertTrue(result.get());
-
-		final BoolType result2 = (BoolType) ops.run(ComparableGreaterThan.class,
-			5.0, (Comparable<Double>) 6.0);
-		assertFalse(result2.get());
+	public void test${op.name}() {
+		@SuppressWarnings("unchecked")
+		final IterableInterval<BitType> out = (IterableInterval<BitType>) ops.run(
+			IIToIIOutputII.And.class, in1, in2);
+		final Cursor<BitType> in1Cursor = in1.cursor();
+		final Cursor<BitType> in2Cursor = in2.cursor();
+		final Cursor<BitType> outCursor = out.cursor();
+		final BitType result = new BitType();
+		while (in1Cursor.hasNext()) {
+			result.set(in1Cursor.next());
+			result.and(in2Cursor.next());
+			assertEquals(result.get(), outCursor.next().get());
+		}
 	}
 
+#end
 }

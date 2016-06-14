@@ -1,0 +1,6 @@
+# Generated binary arithmetic ops with IterableIntervals and
+# RandomAccessibleIntervals, and output to IterableIntervals.
+
+[IIToRAIOutputII.java]
+
+ops = ["And", "Or", "Xor"]

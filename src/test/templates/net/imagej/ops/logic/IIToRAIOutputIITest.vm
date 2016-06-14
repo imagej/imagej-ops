@@ -30,26 +30,53 @@
 
 package net.imagej.ops.logic;
 
-import net.imagej.ops.Ops;
+import static org.junit.Assert.assertEquals;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.AbstractOpTest;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImgs;
+import net.imglib2.type.logic.BitType;
 
-/**
- * Op that performs a greater-than (>) comparison on two {@link Comparable}
- * objects.
- */
-@Plugin(type = Ops.Logic.GreaterThan.class)
-public class ComparableGreaterThan<T> extends AbstractCondition<T> implements
-	Ops.Logic.GreaterThan
-{
+import org.junit.Before;
+import org.junit.Test;
 
-	@Parameter
-	private Comparable<? super T> c;
+public class IIToRAIOutputIITest extends AbstractOpTest {
 
-	@Override
-	public boolean isTrue(final T val) {
-		return 0 > c.compareTo(val);
+	private Img<BitType> in1;
+	private Img<BitType> in2;
+
+	@Before
+	public void initImg() {
+		final boolean[] in1Data = { true, true, false, false };
+		final boolean[] in2Data = { true, false, true, false };
+		in1 = ArrayImgs.bits(2, 2);
+		in2 = ArrayImgs.bits(2, 2);
+		final Cursor<BitType> c1 = in1.cursor();
+		final Cursor<BitType> c2 = in2.cursor();
+		for (int i = 0; i < 4; i++) {
+			c1.next().set(in1Data[i]);
+			c2.next().set(in2Data[i]);
+		}
+	}
+	
+#foreach ($op in $ops)
+	@Test
+	public void test${op.name}() {
+		@SuppressWarnings("unchecked")
+		final IterableInterval<BitType> out = (IterableInterval<BitType>) ops.run(
+			IIToRAIOutputII.And.class, in1, in2);
+		final Cursor<BitType> in1Cursor = in1.cursor();
+		final Cursor<BitType> in2Cursor = in2.cursor();
+		final Cursor<BitType> outCursor = out.cursor();
+		final BitType result = new BitType();
+		while (in1Cursor.hasNext()) {
+			result.set(in1Cursor.next());
+			result.and(in2Cursor.next());
+			assertEquals(result.get(), outCursor.next().get());
+		}
 	}
 
+#end
 }
