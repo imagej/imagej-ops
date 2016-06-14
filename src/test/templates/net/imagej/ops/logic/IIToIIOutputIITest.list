@@ -1,11 +1,11 @@
-# Unit tests for binary arithmetic ops with IIs and RAIs and output to IIs.
+# Unit tests for binary logic ops with IIs and RAIs and output to IIs.
 
 [IIToIIOutputIITest.java]
 
 ops = ```
 [
-	[name: "And",      function: "and"],
-	[name: "Or", function: "or"], 
-	[name: "Xor", function: "xor"], 
+	[name: "And", function: "and"],
+	[name: "Or",  function: "or"],
+	[name: "Xor", function: "xor"],
 ]
 ```
