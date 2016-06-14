@@ -31,9 +31,9 @@
 package net.imagej.ops.geom.geom2d;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.FeretsAngle.class,
 	label = "Geometric (2D): Ferets Angle")
-public class DefaultFeretsAngle extends AbstractUnaryFunctionOp<Polygon, DoubleType>
+public class DefaultFeretsAngle extends AbstractUnaryHybridCF<Polygon, DoubleType>
 	implements Ops.Geometric.FeretsAngle
 {
 
@@ -61,7 +61,7 @@ public class DefaultFeretsAngle extends AbstractUnaryFunctionOp<Polygon, DoubleT
 	}
 
 	@Override
-	public DoubleType compute1(final Polygon input) {
+	public void compute1(final Polygon input, final DoubleType output) {
 		double result;
 		final Pair<RealLocalizable, RealLocalizable> ferets = function.compute1(
 			input);
@@ -83,7 +83,12 @@ public class DefaultFeretsAngle extends AbstractUnaryFunctionOp<Polygon, DoubleT
 			degree = 180 - degree;
 		}
 		result = Math.abs(degree);
-		return new DoubleType(result);
+		output.set(result);
+	}
+	
+	@Override
+	public DoubleType createOutput(Polygon input) {
+		return new DoubleType();
 	}
 
 }

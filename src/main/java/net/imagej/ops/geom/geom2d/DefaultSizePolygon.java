@@ -32,14 +32,14 @@ package net.imagej.ops.geom.geom2d;
 
 import java.awt.geom.Area;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
 
 /**
  * Specific implementation of {@link Area} for a Polygon.
@@ -48,12 +48,12 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Size.class, label = "Geometric (2D): Size",
 	priority = Priority.VERY_HIGH_PRIORITY - 1)
-public class DefaultSizePolygon extends AbstractUnaryFunctionOp<Polygon, DoubleType>
+public class DefaultSizePolygon extends AbstractUnaryHybridCF<Polygon, DoubleType>
 	implements Ops.Geometric.Size
 {
 
 	@Override
-	public DoubleType compute1(final Polygon input) {
+	public void compute1(Polygon input, DoubleType output) {
 		double sum = 0;
 		for (int i = 0; i < input.getVertices().size(); i++) {
 
@@ -69,7 +69,12 @@ public class DefaultSizePolygon extends AbstractUnaryFunctionOp<Polygon, DoubleT
 
 			sum += p0_x * p1_y - p0_y * p1_x;
 		}
-		return new DoubleType(Math.abs(sum) / 2d);
+		output.set(Math.abs(sum) / 2d);
+	}
+	
+	@Override
+	public DoubleType createOutput(Polygon input) {
+		return new DoubleType();
 	}
 
 }

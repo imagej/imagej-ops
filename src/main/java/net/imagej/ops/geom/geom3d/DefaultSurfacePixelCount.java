@@ -33,7 +33,7 @@ package net.imagej.ops.geom.geom3d;
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.GeometricOp;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
@@ -48,12 +48,17 @@ import org.scijava.plugin.Plugin;
 	label = "Geometric3D: Surface Pixel Count",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultSurfacePixelCount extends
-	AbstractUnaryFunctionOp<Mesh, DoubleType> implements GeometricOp<Mesh, DoubleType>,
+	AbstractUnaryHybridCF<Mesh, DoubleType> implements GeometricOp<Mesh, DoubleType>,
 	Ops.Geometric.BoundaryPixelCount
 {
 
 	@Override
-	public DoubleType compute1(final Mesh input) {
-		return new DoubleType(input.getVertices().size());
+	public void compute1(final Mesh input, final DoubleType output) {
+		output.set(input.getVertices().size());
+	}
+	
+	@Override
+	public DoubleType createOutput(Mesh input) {
+		return new DoubleType();
 	}
 }

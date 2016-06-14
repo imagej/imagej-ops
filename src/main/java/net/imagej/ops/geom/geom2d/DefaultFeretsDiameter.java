@@ -30,27 +30,25 @@
 
 package net.imagej.ops.geom.geom2d;
 
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
-
-import org.scijava.plugin.Plugin;
 
 /**
  * Generic implementation of {@code geom.feretsDiameter}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Ops.Geometric.FeretsDiameter.class,
-	label = "Geometric (2D): Ferets Diameter")
-public class DefaultFeretsDiameter extends
-	AbstractUnaryFunctionOp<Polygon, DoubleType> implements Ops.Geometric.FeretsDiameter
-{
+@Plugin(type = Ops.Geometric.FeretsDiameter.class, label = "Geometric (2D): Ferets Diameter")
+public class DefaultFeretsDiameter extends AbstractUnaryHybridCF<Polygon, DoubleType>
+		implements Ops.Geometric.FeretsDiameter {
 
 	private UnaryFunctionOp<Polygon, Pair<RealLocalizable, RealLocalizable>> function;
 
@@ -61,15 +59,19 @@ public class DefaultFeretsDiameter extends
 	}
 
 	@Override
-	public DoubleType compute1(final Polygon input) {
+	public void compute1(final Polygon input, final DoubleType output) {
 		Pair<RealLocalizable, RealLocalizable> ferets = function.compute1(input);
 
 		RealLocalizable p1 = ferets.getA();
 		RealLocalizable p2 = ferets.getB();
 
-		return new DoubleType(Math.hypot(p1.getDoublePosition(0) - p2
-			.getDoublePosition(0), p1.getDoublePosition(1) - p2.getDoublePosition(
-				1)));
+		output.set(Math.hypot(p1.getDoublePosition(0) - p2.getDoublePosition(0),
+				p1.getDoublePosition(1) - p2.getDoublePosition(1)));
+	}
+
+	@Override
+	public DoubleType createOutput(Polygon input) {
+		return new DoubleType();
 	}
 
 }

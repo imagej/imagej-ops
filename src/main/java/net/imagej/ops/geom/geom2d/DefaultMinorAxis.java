@@ -30,41 +30,42 @@
 
 package net.imagej.ops.geom.geom2d;
 
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
-
-import org.scijava.plugin.Plugin;
 
 /**
  * Generic implementation of {@code geom.minorAxis}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Ops.Geometric.MinorAxis.class,
-	label = "Geometric (2D): Minor Axis")
-public class DefaultMinorAxis extends AbstractUnaryFunctionOp<Polygon, DoubleType>
-	implements Ops.Geometric.MinorAxis
-{
+@Plugin(type = Ops.Geometric.MinorAxis.class, label = "Geometric (2D): Minor Axis")
+public class DefaultMinorAxis extends AbstractUnaryHybridCF<Polygon, DoubleType> implements Ops.Geometric.MinorAxis {
 
 	@SuppressWarnings("rawtypes")
 	private UnaryFunctionOp<Polygon, Pair> minorMajorAxisFunc;
 
 	@Override
 	public void initialize() {
-		minorMajorAxisFunc = Functions.unary(ops(), DefaultMinorMajorAxis.class, Pair.class,
-			in());
+		minorMajorAxisFunc = Functions.unary(ops(), DefaultMinorMajorAxis.class, Pair.class, in());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public DoubleType compute1(final Polygon input) {
+	public void compute1(final Polygon input, final DoubleType output) {
 		Polygon polygon = input;
 		Pair<DoubleType, DoubleType> compute = minorMajorAxisFunc.compute1(polygon);
-		return compute.getA();
+		output.set(compute.getA());
+	}
+
+	@Override
+	public DoubleType createOutput(Polygon input) {
+		return new DoubleType();
 	}
 }

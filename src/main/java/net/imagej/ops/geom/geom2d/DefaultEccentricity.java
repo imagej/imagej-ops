@@ -30,14 +30,14 @@
 
 package net.imagej.ops.geom.geom2d;
 
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.chain.RTs;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.plugin.Plugin;
 
 /**
  * Generic implementation of {@code geom.eccentricity}.
@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Eccentricity.class,
 	label = "Geometric (2D): Eccentricity")
-public class DefaultEccentricity extends AbstractUnaryFunctionOp<Polygon, DoubleType>
+public class DefaultEccentricity extends AbstractUnaryHybridCF<Polygon, DoubleType>
 	implements Ops.Geometric.Eccentricity
 {
 
@@ -60,9 +60,14 @@ public class DefaultEccentricity extends AbstractUnaryFunctionOp<Polygon, Double
 	}
 
 	@Override
-	public DoubleType compute1(final Polygon input) {
-		return new DoubleType(majorAxisFunc.compute1(input).getRealDouble() /
+	public void compute1(final Polygon input, final DoubleType output) {
+		output.set(majorAxisFunc.compute1(input).getRealDouble() /
 			minorAxisFunc.compute1(input).getRealDouble());
+	}
+	
+	@Override
+	public DoubleType createOutput(Polygon input) {
+		return new DoubleType();
 	}
 
 }

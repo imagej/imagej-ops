@@ -35,6 +35,7 @@ import net.imagej.ops.Ops.Geometric.SecondMultiVariate;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
@@ -48,7 +49,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.MajorAxis.class,
 	label = "Geometric (2D): Major Axis")
-public class DefaultMajorAxis extends AbstractUnaryFunctionOp<Polygon, DoubleType>
+public class DefaultMajorAxis extends AbstractUnaryHybridCF<Polygon, DoubleType>
 	implements Ops.Geometric.MajorAxis
 {
 
@@ -63,8 +64,13 @@ public class DefaultMajorAxis extends AbstractUnaryFunctionOp<Polygon, DoubleTyp
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public DoubleType compute1(final Polygon input) {
+	public void compute1(final Polygon input, final DoubleType output) {
 		final Pair<DoubleType, DoubleType> compute = minorMajorAxisFunc.compute1(input);
-		return compute.getB();
+		output.set(compute.getB());
+	}
+	
+	@Override
+	public DoubleType createOutput(Polygon input) {
+		return new DoubleType();
 	}
 }

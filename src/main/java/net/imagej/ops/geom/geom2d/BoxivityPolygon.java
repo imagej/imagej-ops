@@ -30,12 +30,12 @@
 
 package net.imagej.ops.geom.geom2d;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.AbstractBoxivity;
 import net.imglib2.roi.geometric.Polygon;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
 
 /**
  * @author Tim-Oliver Buchholz, University of Konstanz.
@@ -48,5 +48,4 @@ public class BoxivityPolygon extends AbstractBoxivity<Polygon> {
 	public BoxivityPolygon() {
 		super(Polygon.class);
 	}
-
 }

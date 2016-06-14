@@ -30,25 +30,22 @@
 
 package net.imagej.ops.geom.geom2d;
 
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.chain.RTs;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.plugin.Plugin;
 
 /**
  * Generic implementation of {@code geom.roundness}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Ops.Geometric.Roundness.class,
-	label = "Geometric (2D): Roundness")
-public class DefaultRoundness extends AbstractUnaryFunctionOp<Polygon, DoubleType>
-	implements Ops.Geometric.Roundness
-{
+@Plugin(type = Ops.Geometric.Roundness.class, label = "Geometric (2D): Roundness")
+public class DefaultRoundness extends AbstractUnaryHybridCF<Polygon, DoubleType> implements Ops.Geometric.Roundness {
 
 	private UnaryFunctionOp<Polygon, DoubleType> areaFunc;
 	private UnaryFunctionOp<Polygon, DoubleType> majorAxisFunc;
@@ -60,9 +57,14 @@ public class DefaultRoundness extends AbstractUnaryFunctionOp<Polygon, DoubleTyp
 	}
 
 	@Override
-	public DoubleType compute1(final Polygon input) {
-		return new DoubleType(4 * (areaFunc.compute1(input).getRealDouble() /
-			(Math.PI * Math.pow(majorAxisFunc.compute1(input).getRealDouble(), 2))));
+	public void compute1(final Polygon input, final DoubleType output) {
+		output.set(4 * (areaFunc.compute1(input).getRealDouble()
+				/ (Math.PI * Math.pow(majorAxisFunc.compute1(input).getRealDouble(), 2))));
+	}
+
+	@Override
+	public DoubleType createOutput(Polygon input) {
+		return new DoubleType();
 	}
 
 }

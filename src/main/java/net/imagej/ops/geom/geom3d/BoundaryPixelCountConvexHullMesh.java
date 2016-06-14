@@ -32,9 +32,9 @@ package net.imagej.ops.geom.geom3d;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
 	label = "Geometric (3D): Convex Hull Pixel Count",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class BoundaryPixelCountConvexHullMesh extends
-	AbstractUnaryFunctionOp<Mesh, DoubleType>  implements
+	AbstractUnaryHybridCF<Mesh, DoubleType>  implements
 	Ops.Geometric.BoundaryPixelCountConvexHull
 {
 
@@ -59,8 +59,13 @@ public class BoundaryPixelCountConvexHullMesh extends
 	}
 
 	@Override
-	public DoubleType compute1(final Mesh input) {
-		return new DoubleType(convexHullFunc.compute1(input).getVertices().size());
+	public void compute1(final Mesh input, final DoubleType output) {
+		output.set(convexHullFunc.compute1(input).getVertices().size());
+	}
+	
+	@Override
+	public DoubleType createOutput(Mesh input) {
+		return new DoubleType();
 	}
 
 }

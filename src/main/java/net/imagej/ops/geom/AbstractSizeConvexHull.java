@@ -31,9 +31,9 @@
 package net.imagej.ops.geom;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
@@ -43,7 +43,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 public abstract class AbstractSizeConvexHull<I> extends
-	AbstractUnaryFunctionOp<I, DoubleType> implements Ops.Geometric.SizeConvexHull
+	AbstractUnaryHybridCF<I, DoubleType> implements Ops.Geometric.SizeConvexHull
 {
 
 	private UnaryFunctionOp<I, I> convexHullFunc;
@@ -63,8 +63,13 @@ public abstract class AbstractSizeConvexHull<I> extends
 	}
 
 	@Override
-	public DoubleType compute1(final I input) {
-		return sizeFunc.compute1(convexHullFunc.compute1(input));
+	public void compute1(final I input, final DoubleType output) {
+		output.set(sizeFunc.compute1(convexHullFunc.compute1(input)));
+	}
+	
+	@Override
+	public DoubleType createOutput(I input) {
+		return new DoubleType();
 	}
 
 }

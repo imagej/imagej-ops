@@ -32,13 +32,13 @@ package net.imagej.ops.geom.geom2d;
 
 import java.util.List;
 
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.plugin.Plugin;
 
 /**
  * Generic implementation of {@code geom.boundarySize}.
@@ -48,11 +48,11 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Geometric.BoundarySize.class,
 	label = "Geometric (2D): Perimeter")
 public class DefaultPerimeterLength extends
-	AbstractUnaryFunctionOp<Polygon, DoubleType> implements Ops.Geometric.BoundarySize
+	AbstractUnaryHybridCF<Polygon, DoubleType> implements Ops.Geometric.BoundarySize
 {
 
 	@Override
-	public DoubleType compute1(final Polygon input) {
+	public void compute1(final Polygon input, final DoubleType output) {
 		double perimeter = 0;
 		final List<? extends RealLocalizable> vertices = input.getVertices();
 		final int size = vertices.size();
@@ -65,7 +65,12 @@ public class DefaultPerimeterLength extends
 			perimeter += Math.sqrt(dx2 * dx2 + dy2 * dy2);
 		}
 
-		return new DoubleType(perimeter);
+		output.set(perimeter);
+	}
+	
+	@Override
+	public DoubleType createOutput(Polygon input) {
+		return new DoubleType();
 	}
 
 }
