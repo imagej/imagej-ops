@@ -32,9 +32,9 @@ package net.imagej.ops.geom.geom3d;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Geometric.Spareness.class,
 	label = "Geometric (3D): Spareness", priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultSpareness<B extends BooleanType<B>> extends
-	AbstractUnaryFunctionOp<IterableRegion<B>, DoubleType> implements
+	AbstractUnaryHybridCF<IterableRegion<B>, DoubleType> implements
 	Ops.Geometric.Spareness, Contingent
 {
 
@@ -74,7 +74,7 @@ public class DefaultSpareness<B extends BooleanType<B>> extends
 	}
 
 	@Override
-	public DoubleType compute1(final IterableRegion<B> input) {
+	public void compute1(final IterableRegion<B> input, final DoubleType output) {
 
 		double r1 = Math.sqrt(5.0 * multivar.compute1(input).getEigenvalue(0));
 		double r2 = r1 / mainElongation.compute1(input).get();
@@ -82,7 +82,12 @@ public class DefaultSpareness<B extends BooleanType<B>> extends
 
 		double volumeEllipsoid = (4.18879 * r1 * r2 * r3);
 
-		return new DoubleType(volume.compute1(input).get() / volumeEllipsoid);
+		output.set(volume.compute1(input).get() / volumeEllipsoid);
+	}
+	
+	@Override
+	public DoubleType createOutput(IterableRegion<B> input) {
+		return new DoubleType();
 	}
 
 	@Override

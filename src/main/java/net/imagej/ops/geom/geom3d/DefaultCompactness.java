@@ -32,9 +32,9 @@ package net.imagej.ops.geom.geom3d;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Compactness.class,
 	label = "Geometric (3D): Compactness", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultCompactness extends AbstractUnaryFunctionOp<Mesh, DoubleType>
+public class DefaultCompactness extends AbstractUnaryHybridCF<Mesh, DoubleType>
 	implements Ops.Geometric.Compactness
 {
 
@@ -63,11 +63,16 @@ public class DefaultCompactness extends AbstractUnaryFunctionOp<Mesh, DoubleType
 	}
 
 	@Override
-	public DoubleType compute1(final Mesh input) {
+	public void compute1(final Mesh input, final DoubleType output) {
 		double s3 = Math.pow(surfacePixel.compute1(input).get(), 3);
 		double v2 = Math.pow(volume.compute1(input).get(), 2);
 
-		return new DoubleType((v2 * 36.0 * Math.PI) / s3);
+		output.set((v2 * 36.0 * Math.PI) / s3);
+	}
+	
+	@Override
+	public DoubleType createOutput(Mesh input) {
+		return new DoubleType();
 	}
 
 }

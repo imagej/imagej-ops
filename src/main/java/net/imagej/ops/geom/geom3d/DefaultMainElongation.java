@@ -32,9 +32,9 @@ package net.imagej.ops.geom.geom3d;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
 	label = "Geometric (3D): Main Elongation",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultMainElongation<B extends BooleanType<B>> extends
-	AbstractUnaryFunctionOp<IterableRegion<B>, DoubleType> implements
+	AbstractUnaryHybridCF<IterableRegion<B>, DoubleType> implements
 	Ops.Geometric.MainElongation, Contingent
 {
 
@@ -64,10 +64,15 @@ public class DefaultMainElongation<B extends BooleanType<B>> extends
 	}
 
 	@Override
-	public DoubleType compute1(final IterableRegion<B> input) {
+	public void compute1(final IterableRegion<B> input, final DoubleType output) {
 		CovarianceOf2ndMultiVariate3D compute = multivar.compute1(input);
-		return new DoubleType(Math.sqrt(compute.getEigenvalue(0) / compute
+		output.set(Math.sqrt(compute.getEigenvalue(0) / compute
 			.getEigenvalue(1)));
+	}
+	
+	@Override
+	public DoubleType createOutput(IterableRegion<B> input) {
+		return new DoubleType();
 	}
 
 	@Override
