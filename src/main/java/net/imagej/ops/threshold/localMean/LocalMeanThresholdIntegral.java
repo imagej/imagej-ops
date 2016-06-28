@@ -35,7 +35,6 @@ import net.imagej.ops.map.neighborhood.CenterAwareIntegralComputerOp;
 import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
 import net.imagej.ops.stats.IntegralMean;
 import net.imagej.ops.threshold.apply.LocalThresholdIntegral;
-import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
 import net.imglib2.converter.Converter;
@@ -80,8 +79,8 @@ public class LocalMeanThresholdIntegral<T extends RealType<T>> extends
 	@Override
 	protected CenterAwareIntegralComputerOp<T, BitType> unaryComputer() {
 		final CenterAwareIntegralComputerOp<T, BitType> op =
-			new LocalMeanThresholdComputer<>(in(), ops().op(IntegralMean.class,
-				DoubleType.class, RectangleNeighborhood.class, Interval.class));
+			new LocalMeanThresholdComputer<>(ops().op(IntegralMean.class,
+				DoubleType.class, RectangleNeighborhood.class));
 
 		op.setEnvironment(ops());
 		return op;
@@ -92,14 +91,11 @@ public class LocalMeanThresholdIntegral<T extends RealType<T>> extends
 		implements CenterAwareIntegralComputerOp<I, BitType>
 	{
 
-		RandomAccessibleInterval<I> source;
 		private final IntegralMean<DoubleType> integralMean;
 
-		public LocalMeanThresholdComputer(final RandomAccessibleInterval<I> source,
-			final IntegralMean<DoubleType> integralMean)
+		public LocalMeanThresholdComputer(final IntegralMean<DoubleType> integralMean)
 		{
 			super();
-			this.source = source;
 			this.integralMean = integralMean;
 		}
 
@@ -110,7 +106,7 @@ public class LocalMeanThresholdIntegral<T extends RealType<T>> extends
 		{
 
 			final DoubleType sum = new DoubleType();
-			integralMean.compute2(neighborhood, source, sum);
+			integralMean.compute1(neighborhood, sum);
 
 			// Subtract the contrast
 			sum.sub(new DoubleType(c));

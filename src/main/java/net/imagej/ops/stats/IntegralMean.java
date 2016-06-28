@@ -33,8 +33,7 @@ package net.imagej.ops.stats;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.image.integral.IntegralCursor;
-import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
-import net.imglib2.Interval;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
 import net.imglib2.converter.Converter;
 import net.imglib2.converter.RealDoubleConverter;
@@ -54,18 +53,18 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Stats.IntegralMean.class)
 public class IntegralMean<I extends RealType<I>> extends
-	AbstractBinaryComputerOp<RectangleNeighborhood<Composite<I>>, Interval, DoubleType>
+	AbstractUnaryComputerOp<RectangleNeighborhood<Composite<I>>, DoubleType>
 	implements Ops.Stats.IntegralMean
 {
 
 	@Override
-	public void compute2(final RectangleNeighborhood<Composite<I>> input1,
-		final Interval input2, final DoubleType output)
+	public void compute1(final RectangleNeighborhood<Composite<I>> input,
+		final DoubleType output)
 	{
 		// computation according to
 		// https://en.wikipedia.org/wiki/Summed_area_table
-		final IntegralCursor<Composite<I>> cursor = new IntegralCursor<>(input1);
-		final int dimensions = input1.numDimensions();
+		final IntegralCursor<Composite<I>> cursor = new IntegralCursor<>(input);
+		final int dimensions = input.numDimensions();
 
 		// Compute \sum (-1)^{dim - ||cornerVector||_{1}} * I(x^{cornerVector})
 		final DoubleType sum = new DoubleType();
@@ -91,29 +90,13 @@ public class IntegralMean<I extends RealType<I>> extends
 			sum.add(valueAsDoubleType);
 		}
 
-		// Compute overlap
-		final int area = IntegralMean.overlap(Intervals.expand(input1, -1l),
-			input2);
+		final int area = (int) Intervals.numElements(Intervals.expand(input, -1l));
 
 		// Compute mean by dividing the sum divided by the number of elements
 		valueAsDoubleType.set(area); // NB: Reuse DoubleType
 		sum.div(valueAsDoubleType);
 
 		output.set(sum);
-	}
-
-	/**
-	 * Compute the overlap between to intervals.
-	 *
-	 * @param interval1
-	 * @param interval2
-	 * @return area/volume/etc
-	 */
-	public static int overlap(final Interval interval1,
-		final Interval interval2)
-	{
-		final Interval intersection = Intervals.intersect(interval1, interval2);
-		return (int) Intervals.numElements(intersection);
 	}
 
 	/**

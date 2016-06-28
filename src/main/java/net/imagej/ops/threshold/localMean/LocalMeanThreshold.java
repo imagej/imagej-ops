@@ -40,6 +40,7 @@ import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.apply.LocalThreshold;
+import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -85,5 +86,16 @@ public class LocalMeanThreshold<T extends RealType<T>> extends
 		op.setEnvironment(ops());
 		return op;
 	}
-	
+
+	@Override
+	public boolean conforms() {
+		RectangleShape rect = getShape() instanceof RectangleShape
+			? (RectangleShape) getShape() : null;
+		if (rect == null) {
+			return true;
+		}
+
+		return rect.getSpan() <= 2;
+	}
+
 }

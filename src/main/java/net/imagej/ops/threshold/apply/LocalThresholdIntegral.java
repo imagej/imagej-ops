@@ -33,6 +33,7 @@ package net.imagej.ops.threshold.apply;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Map;
 import net.imagej.ops.map.neighborhood.CenterAwareIntegralComputerOp;
@@ -142,33 +143,51 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 	private RandomAccessibleInterval<RealType> getIntegralImage(
 		final RandomAccessibleInterval<I> input, final int order)
 	{
+		ExtendedRandomAccessibleInterval<I, RandomAccessibleInterval<I>> extendedInput =
+			Views.extend(input, outOfBoundsFactory);
+		FinalInterval expandedInterval = Intervals.expand(input, shape.getSpan()-1);
+		IntervalView<I> offsetInterval2 = Views.offsetInterval(extendedInput, expandedInterval);
+		
 		RandomAccessibleInterval<RealType> img = null;
 		switch (order) {
 			case 1:
-				img = (RandomAccessibleInterval) integralImgOp.compute1(input);
+				img = (RandomAccessibleInterval) integralImgOp.compute1(offsetInterval2);
 				break;
 			case 2:
-				img = (RandomAccessibleInterval) squareIntegralImgOp.compute1(input);
+				img = (RandomAccessibleInterval) squareIntegralImgOp.compute1(offsetInterval2);
 				break;
 		}
 
-		final long[] min = Intervals.minAsLongArray(img);
-		final long[] max = Intervals.maxAsLongArray(img);
+		img = addLeadingZeros(img);
+
+		return img;
+	}
+
+	/**
+	 * Add 0s before axis minimum.
+	 * 
+	 * @param input Input RAI
+	 * @return An extended and cropped version of input
+	 */
+	private <T extends RealType<T>> RandomAccessibleInterval<T> addLeadingZeros(
+		RandomAccessibleInterval<T> input)
+	{
+		final long[] min = Intervals.minAsLongArray(input);
+		final long[] max = Intervals.maxAsLongArray(input);
 
 		for (int i = 0; i < max.length; i++) {
 			min[i]--;
 		}
 
-		final RealType realZero = (RealType) Util.getTypeFromInterval(img).copy();
+		final T realZero = Util.getTypeFromInterval(input).copy();
 		realZero.setZero();
 
-		final ExtendedRandomAccessibleInterval extendedImg = Views.extendValue(img,
+		final ExtendedRandomAccessibleInterval<T, RandomAccessibleInterval<T>> extendedImg = Views.extendValue(input,
 			realZero);
-		final IntervalView<RealType> offsetInterval = Views.interval(extendedImg,
+		final IntervalView<T> offsetInterval = Views.interval(extendedImg,
 			min, max);
-		img = Views.zeroMin(offsetInterval);
-
-		return img;
+		
+		return Views.zeroMin(offsetInterval);
 	}
 
 	/**
@@ -185,7 +204,9 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 		final long[] max = Intervals.maxAsLongArray(input);
 
 		for (int d = 0; d < input.numDimensions(); ++d) {
-			min[d]++;
+			int correctedSpan = getShape().getSpan() - 1;
+			min[d] += (1 + correctedSpan);
+			max[d] -= correctedSpan;
 		}
 
 		// Define the Interval on the infinite random accessibles

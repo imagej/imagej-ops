@@ -96,10 +96,10 @@ public class StatsNamespace extends AbstractNamespace {
 	@SuppressWarnings("rawtypes")
 	@OpMethod(op = net.imagej.ops.stats.IntegralMean.class)
 	public DoubleType integralMean(final DoubleType out,
-		final RectangleNeighborhood in1, final Interval in2)
+		final RectangleNeighborhood in)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.stats.IntegralMean.class, out, in1, in2);
+			net.imagej.ops.stats.IntegralMean.class, out, in);
 		return result;
 	}
 
@@ -124,10 +124,10 @@ public class StatsNamespace extends AbstractNamespace {
 	@SuppressWarnings("rawtypes")
 	@OpMethod(op = net.imagej.ops.stats.IntegralVariance.class)
 	public DoubleType integralVariance(final DoubleType out,
-		final RectangleNeighborhood in1, final Interval in2)
+		final RectangleNeighborhood in)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.stats.IntegralVariance.class, out, in1, in2);
+			net.imagej.ops.stats.IntegralVariance.class, out, in);
 		return result;
 	}
 

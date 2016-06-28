@@ -30,6 +30,7 @@
 
 package net.imagej.ops.threshold.apply;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.filter.AbstractCenterAwareNeighborhoodBasedFilter;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -43,7 +44,12 @@ import net.imglib2.type.numeric.RealType;
  * @author Stefan Helfrich (University of Konstanz)
  */
 public abstract class LocalThreshold<T extends RealType<T>> extends
-	AbstractCenterAwareNeighborhoodBasedFilter<T, BitType>
+	AbstractCenterAwareNeighborhoodBasedFilter<T, BitType> implements Contingent
 {
-	// NB
+
+	@Override
+	public boolean conforms() {
+		return true;
+	}
+
 }
