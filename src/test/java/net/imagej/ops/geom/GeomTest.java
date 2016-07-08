@@ -233,7 +233,7 @@ public class GeomTest extends AbstractFeatureTest {
 	public void testRugosity() {
 		final double expected = expensiveTestsEnabled ? 1.379 : 1.035052196;
 		// This test is just here for completeness.
-		// All input values of convexity are verified.
+		// All input values of rugosity are verified.
 		assertEquals(Ops.Geometric.Rugosity.NAME, expected, ((DoubleType) ops.run(
 			RugosityMesh.class, mesh)).get(), AbstractFeatureTest.BIG_DELTA);
 	}
