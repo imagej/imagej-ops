@@ -81,7 +81,8 @@ public class HistogramOfOrientedGradients2DTest extends AbstractOpTest {
 				for (int k = 0; k < hogTestImg.dimension(2); k++) {
 					raTest.setPosition(new long[] { i, j, k });
 					raOp.setPosition(new long[] { i, j, k });
-					assertEquals(raTest.get().getRealFloat(), raOp.get().getRealFloat(), EPSILON);
+					assertEquals("i=" + i + ", j=" + j + ", k=" + k,
+						raTest.get().getRealFloat(), raOp.get().getRealFloat(), EPSILON);
 				}
 			}
 		}
