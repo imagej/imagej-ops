@@ -220,6 +220,12 @@
 			<artifactId>scripting-javascript</artifactId>
 		</dependency>
 
+		<!-- Third party dependencies -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-math3</artifactId>
+		</dependency>
+
 		<!-- Test scope dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -240,11 +246,6 @@
 			<groupId>org.scijava</groupId>
 			<artifactId>scripting-jython</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-math3</artifactId>
-			<version>3.5</version>
 		</dependency>
 	</dependencies>
 
