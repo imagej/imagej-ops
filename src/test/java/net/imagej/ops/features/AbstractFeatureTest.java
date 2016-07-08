@@ -305,12 +305,12 @@ public class AbstractFeatureTest extends AbstractOpTest {
 
 		final RandomAccess<LabelingType<String>> ra = labeling.randomAccess();
 		final Cursor<FloatType> c = img.cursor();
+		final long[] pos = new long[labeling.numDimensions()];
 		while (c.hasNext()) {
 			final FloatType item = c.next();
-			final int[] pos = new int[3];
-			c.localize(pos);
-			ra.setPosition(pos);
 			if (item.get() > 0) {
+				c.localize(pos);
+				ra.setPosition(pos);
 				ra.get().add("1");
 			}
 		}
