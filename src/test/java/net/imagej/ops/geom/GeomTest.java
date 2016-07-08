@@ -93,7 +93,7 @@ public class GeomTest extends AbstractFeatureTest {
 	public static void setupBefore() throws MalformedURLException, IOException {
 		img2d = getTestImage2D();
 		region2D = createLabelRegion2D();
-		region3D = createLabelRegion3D();
+		region3D = createLabelRegion(getTestImage3D(), 104, 102, 81);
 	}
 
 	@Override

@@ -292,16 +292,15 @@ public class AbstractFeatureTest extends AbstractOpTest {
 		return openFloatImg(AbstractFeatureTest.class, imageName);
 	}
 
-	protected static LabelRegion<String> createLabelRegion3D() {
-		final String imageName = expensiveTestsEnabled
-			? "3d_geometric_features_testlabel_expensive.tif"
-			: "3d_geometric_features_testlabel.tif";
-
-		final Img<FloatType> img = openFloatImg(AbstractFeatureTest.class,
-			imageName);
-
-		final ImgLabeling<String, IntType> labeling = new ImgLabeling<>(ArrayImgs
-			.ints(104, 102, 81));
+	protected static LabelRegion<String> createLabelRegion(
+		final Img<FloatType> img, long... dims)
+	{
+		if (dims == null || dims.length == 0) {
+			dims = new long[img.numDimensions()];
+			img.dimensions(dims);
+		}
+		final ImgLabeling<String, IntType> labeling = //
+			new ImgLabeling<>(ArrayImgs.ints(dims));
 
 		final RandomAccess<LabelingType<String>> ra = labeling.randomAccess();
 		final Cursor<FloatType> c = img.cursor();
