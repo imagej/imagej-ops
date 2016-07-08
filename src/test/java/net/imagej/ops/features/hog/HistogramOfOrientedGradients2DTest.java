@@ -54,7 +54,7 @@ public class HistogramOfOrientedGradients2DTest extends AbstractOpTest {
 	public void test() {
 
 		Img<FloatType> hogTestImg = openFloatImg("HoG2DResult.tif");
-		Img<FloatType> hogInputImg = openFloatImg("HoG2DInput.jpg");
+		Img<FloatType> hogInputImg = openFloatImg("HoG2DInput.png");
 
 		// use numOrientations = 9 and spanOfNeighborhood = 2 for test
 		@SuppressWarnings("unchecked")
