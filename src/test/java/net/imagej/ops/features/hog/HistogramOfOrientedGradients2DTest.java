@@ -35,12 +35,9 @@ import net.imagej.ops.AbstractOpTest;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
-import net.imglib2.img.display.imagej.ImageJFunctions;
 import net.imglib2.type.numeric.real.FloatType;
 
 import org.junit.Test;
-
-import ij.io.Opener;
 
 /**
  * The HoG Op is tested by comparing its result with the ground-truth which was
@@ -56,10 +53,8 @@ public class HistogramOfOrientedGradients2DTest extends AbstractOpTest {
 	@Test
 	public void test() {
 
-		Img<FloatType> hogTestImg = ImageJFunctions.convertFloat(new Opener()
-				.openImage(HistogramOfOrientedGradients2DTest.class.getResource("HoG2DResult.tif").getPath()));
-		Img<FloatType> hogInputImg = ImageJFunctions.convertFloat(new Opener()
-				.openImage(HistogramOfOrientedGradients2DTest.class.getResource("HoG2DInput.jpg").getPath()));
+		Img<FloatType> hogTestImg = openFloatImg("HoG2DResult.tif");
+		Img<FloatType> hogInputImg = openFloatImg("HoG2DInput.jpg");
 
 		// use numOrientations = 9 and spanOfNeighborhood = 2 for test
 		@SuppressWarnings("unchecked")

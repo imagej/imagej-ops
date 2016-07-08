@@ -38,14 +38,11 @@ import net.imagej.ops.AbstractOpTest;
 import net.imglib2.Cursor;
 import net.imglib2.algorithm.labeling.ConnectedComponents.StructuringElement;
 import net.imglib2.img.Img;
-import net.imglib2.img.display.imagej.ImageJFunctions;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.real.FloatType;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import ij.io.Opener;
 
 public class MorphologyOpsTest extends AbstractOpTest {
 
@@ -61,12 +58,8 @@ public class MorphologyOpsTest extends AbstractOpTest {
 		}
 
 		// create two bittypes images
-		Img<FloatType> inputWithoutHoles = ImageJFunctions.convertFloat(new Opener()
-			.openImage(MorphologyOpsTest.class.getResource("img_without_holes.png")
-				.getPath()));
-		Img<FloatType> inputWithHoles = ImageJFunctions.convertFloat(new Opener()
-			.openImage(MorphologyOpsTest.class.getResource("img_with_holes.png")
-				.getPath()));
+		Img<FloatType> inputWithoutHoles = openFloatImg("img_without_holes.png");
+		Img<FloatType> inputWithHoles = openFloatImg("img_with_holes.png");
 
 		Cursor<FloatType> inputWithoutHolesCursor = inputWithoutHoles.cursor();
 		Cursor<FloatType> inputWithHolesCursor = inputWithHoles.cursor();

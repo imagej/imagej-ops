@@ -48,7 +48,6 @@ import net.imglib2.img.array.ArrayCursor;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
-import net.imglib2.img.display.imagej.ImageJFunctions;
 import net.imglib2.roi.EllipseRegionOfInterest;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelRegion;
@@ -61,9 +60,6 @@ import net.imglib2.type.numeric.real.FloatType;
 
 import org.junit.Before;
 import org.scijava.Context;
-
-import ij.ImagePlus;
-import ij.io.Opener;
 
 /**
  * @author Daniel Seebacher (University of Konstanz)
@@ -257,8 +253,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	protected static Img<FloatType> getTestImage2D() {
 		final String imageName = expensiveTestsEnabled ? "cZgkFsK_expensive.png"
 			: "cZgkFsK.png";
-		return ImageJFunctions.convertFloat(new Opener().openImage(
-			AbstractFeatureTest.class.getResource(imageName).getPath()));
+		return openFloatImg(AbstractFeatureTest.class, imageName);
 	}
 
 	protected static LabelRegion<String> createLabelRegion2D()
@@ -294,8 +289,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 		final String imageName = expensiveTestsEnabled
 			? "3d_geometric_features_testlabel_expensive.tif"
 			: "3d_geometric_features_testlabel.tif";
-		return ImageJFunctions.convertFloat(new Opener().openImage(
-			AbstractFeatureTest.class.getResource(imageName).getPath()));
+		return openFloatImg(AbstractFeatureTest.class, imageName);
 	}
 
 	protected static LabelRegion<String> createLabelRegion3D() {
@@ -303,15 +297,13 @@ public class AbstractFeatureTest extends AbstractOpTest {
 			? "3d_geometric_features_testlabel_expensive.tif"
 			: "3d_geometric_features_testlabel.tif";
 
-		final Opener o = new Opener();
-		final ImagePlus imp = o.openImage(AbstractFeatureTest.class.getResource(
-			imageName).getPath());
+		final Img<FloatType> img = openFloatImg(AbstractFeatureTest.class,
+			imageName);
 
 		final ImgLabeling<String, IntType> labeling = new ImgLabeling<>(ArrayImgs
 			.ints(104, 102, 81));
 
 		final RandomAccess<LabelingType<String>> ra = labeling.randomAccess();
-		final Img<FloatType> img = ImageJFunctions.convertFloat(imp);
 		final Cursor<FloatType> c = img.cursor();
 		while (c.hasNext()) {
 			final FloatType item = c.next();
