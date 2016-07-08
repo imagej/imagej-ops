@@ -111,7 +111,7 @@ public class GeomTest extends AbstractFeatureTest {
 
 	@Test
 	public void testSize() {
-		final double expected = expensiveTestsEnabled ? 355630.5 : 3460.5;
+		final double expected = expensiveTestsEnabled ? 355588.5 : 3456.0;
 		assertEquals(Ops.Geometric.Size.NAME, expected, ((DoubleType) ops.run(
 			DefaultSizePolygon.class, contour)).getRealDouble(),
 			AbstractFeatureTest.BIG_DELTA);
@@ -120,7 +120,7 @@ public class GeomTest extends AbstractFeatureTest {
 	@Test
 	public void testBoundarySize2D() {
 		final double expected = expensiveTestsEnabled ? 2658.990257670
-			: 262.977705423;
+			: 261.563491861041;
 		assertEquals(Ops.Geometric.BoundarySize.NAME, expected, ((DoubleType) ops
 			.run(DefaultPerimeterLength.class, contour)).getRealDouble(),
 			AbstractFeatureTest.BIG_DELTA);
@@ -128,7 +128,8 @@ public class GeomTest extends AbstractFeatureTest {
 
 	@Test
 	public void testCircularity() {
-		final double expected = expensiveTestsEnabled ? 0.632083948 : 0.628797569;
+		final double expected = expensiveTestsEnabled ? 0.632083948
+			: 0.6347889302936764;
 		assertEquals(Ops.Geometric.Circularity.NAME, expected, ((DoubleType) ops
 			.run(DefaultCircularity.class, contour)).getRealDouble(),
 			AbstractFeatureTest.BIG_DELTA);
@@ -136,8 +137,8 @@ public class GeomTest extends AbstractFeatureTest {
 
 	@Test
 	public void testMinorAxis() {
-		final double expected = expensiveTestsEnabled ? 520.667420750
-			: 51.062793933;
+		final double expected = expensiveTestsEnabled ? 520.6209074990064
+			: 51.0180931669664;
 		assertEquals(Ops.Geometric.MinorAxis.NAME, expected, ((DoubleType) ops.run(
 			DefaultMinorAxis.class, contour)).getRealDouble(),
 			AbstractFeatureTest.BIG_DELTA);
@@ -145,8 +146,8 @@ public class GeomTest extends AbstractFeatureTest {
 
 	@Test
 	public void testMajorAxis() {
-		final double expected = expensiveTestsEnabled ? 869.657215429
-			: 86.286806991;
+		final double expected = expensiveTestsEnabled ? 869.6334191187347
+			: 86.25010449143703;
 		assertEquals(Ops.Geometric.MajorAxis.NAME, expected, ((DoubleType) ops.run(
 			DefaultMajorAxis.class, contour)).getRealDouble(), 0.01);
 	}
@@ -340,8 +341,10 @@ public class GeomTest extends AbstractFeatureTest {
 
 	@Test
 	public void testCenterOfGravity() {
-		final double expected1 = expensiveTestsEnabled ? 396.063362 : 39.455323989;
-		final double expected2 = expensiveTestsEnabled ? 576.763804 : 57.580063973;
+		final double expected1 = expensiveTestsEnabled ? 396.05048458746205
+			: 39.4526879336879;
+		final double expected2 = expensiveTestsEnabled ? 576.6690059208696
+			: 57.55152833452584;
 		final RealLocalizable result = (RealLocalizable) ops.run(
 			DefaultCenterOfGravity.class, img2d);
 		assertEquals(Ops.Geometric.CenterOfGravity.NAME, expected1, result
