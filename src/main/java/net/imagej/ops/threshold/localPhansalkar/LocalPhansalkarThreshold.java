@@ -87,7 +87,7 @@ public class LocalPhansalkarThreshold<T extends RealType<T>> extends
 	private double q = 10.0;
 
 	@Override
-	protected CenterAwareComputerOp<T, BitType> unaryComputer(
+	protected CenterAwareComputerOp<T, BitType> unaryComputer(final T inClass,
 		final BitType outClass)
 	{
 		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
