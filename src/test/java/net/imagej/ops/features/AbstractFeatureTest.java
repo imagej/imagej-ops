@@ -30,13 +30,7 @@
 
 package net.imagej.ops.features;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.Random;
-
-import javax.imageio.ImageIO;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.OpService;
@@ -256,35 +250,6 @@ public class AbstractFeatureTest extends AbstractOpTest {
 		return openFloatImg(AbstractFeatureTest.class, imageName);
 	}
 
-	protected static LabelRegion<String> createLabelRegion2D()
-		throws MalformedURLException, IOException
-	{
-		final String imageName = expensiveTestsEnabled ? "cZgkFsK_expensive.png"
-			: "cZgkFsK.png";
-		// read simple polygon image
-		final BufferedImage read = ImageIO.read(AbstractFeatureTest.class
-			.getResourceAsStream(imageName));
-
-		final ImgLabeling<String, IntType> img = new ImgLabeling<>(ArrayImgs.ints(
-			read.getWidth(), read.getHeight()));
-
-		// at each black pixel of the polygon add a "1" label.
-		final RandomAccess<LabelingType<String>> randomAccess = img.randomAccess();
-		for (int y = 0; y < read.getHeight(); y++) {
-			for (int x = 0; x < read.getWidth(); x++) {
-				randomAccess.setPosition(new int[] { x, y });
-				final Color c = new Color(read.getRGB(x, y));
-				if (c.getRed() == Color.black.getRed()) {
-					randomAccess.get().add("1");
-				}
-			}
-		}
-
-		final LabelRegions<String> labelRegions = new LabelRegions<>(img);
-		return labelRegions.getLabelRegion("1");
-
-	}
-
 	protected static Img<FloatType> getTestImage3D() {
 		final String imageName = expensiveTestsEnabled
 			? "3d_geometric_features_testlabel_expensive.tif"
@@ -293,7 +258,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	}
 
 	protected static LabelRegion<String> createLabelRegion(
-		final Img<FloatType> img, long... dims)
+		final Img<FloatType> img, final float min, final float max, long... dims)
 	{
 		if (dims == null || dims.length == 0) {
 			dims = new long[img.numDimensions()];
@@ -307,7 +272,8 @@ public class AbstractFeatureTest extends AbstractOpTest {
 		final long[] pos = new long[labeling.numDimensions()];
 		while (c.hasNext()) {
 			final FloatType item = c.next();
-			if (item.get() > 0) {
+			final float value = item.get();
+			if (value >= min && value <= max) {
 				c.localize(pos);
 				ra.setPosition(pos);
 				ra.get().add("1");
