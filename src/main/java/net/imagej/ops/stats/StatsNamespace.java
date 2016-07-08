@@ -33,7 +33,6 @@ package net.imagej.ops.stats;
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
-import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
 import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
 import net.imglib2.type.numeric.RealType;

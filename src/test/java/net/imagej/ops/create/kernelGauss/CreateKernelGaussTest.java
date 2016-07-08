@@ -33,7 +33,6 @@ package net.imagej.ops.create.kernelGauss;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.create.kernelGauss.CreateKernelGaussDoubleType;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.real.DoubleType;
 

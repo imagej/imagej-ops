@@ -1,11 +1,7 @@
 package net.imagej.ops.image.integral;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Ops;
-import net.imagej.ops.image.integral.DefaultIntegralImg;
 import net.imagej.ops.threshold.apply.LocalThresholdTest;
 import net.imglib2.FinalInterval;
 import net.imglib2.RandomAccessibleInterval;
@@ -17,6 +13,9 @@ import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.Views;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Stefan Helfrich (University of Konstanz)

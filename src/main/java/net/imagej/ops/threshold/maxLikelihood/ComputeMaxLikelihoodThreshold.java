@@ -38,8 +38,8 @@ import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 // This plugin code ported from the original MatLab code of the max likelihood

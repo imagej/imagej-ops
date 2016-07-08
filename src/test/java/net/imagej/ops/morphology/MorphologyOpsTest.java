@@ -34,10 +34,6 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import ij.io.Opener;
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.Cursor;
 import net.imglib2.algorithm.labeling.ConnectedComponents.StructuringElement;
@@ -45,6 +41,11 @@ import net.imglib2.img.Img;
 import net.imglib2.img.display.imagej.ImageJFunctions;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.real.FloatType;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import ij.io.Opener;
 
 public class MorphologyOpsTest extends AbstractOpTest {
 

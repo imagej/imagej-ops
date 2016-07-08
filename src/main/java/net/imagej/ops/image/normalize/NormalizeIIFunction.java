@@ -31,7 +31,6 @@
 package net.imagej.ops.image.normalize;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.chain.UFViaUC;
 import net.imagej.ops.special.chain.UFViaUCAllSame;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;

@@ -30,13 +30,13 @@
 
 package net.imagej.ops.filter.mean;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractNeighborhoodBasedFilter;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
  * Default implementation of {@link MeanFilterOp}.
