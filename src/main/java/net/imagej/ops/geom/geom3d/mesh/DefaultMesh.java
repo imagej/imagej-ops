@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.imglib2.RealLocalizable;
+import net.imglib2.RealPoint;
 
 /**
  * This is the default implementation of {@link Mesh}.
@@ -155,6 +156,28 @@ public class DefaultMesh implements Mesh, Iterable<Facet> {
 	@Override
 	public Set<RealLocalizable> getVertices() {
 		return vertices;
+	}
+	
+	/**
+	 * Get a deep copy of the mesh (all vertices and facets are new)
+	 * 
+	 * @return a copy of the mesh
+	 */
+	public DefaultMesh copy() {
+		DefaultMesh newMesh = new DefaultMesh();
+		
+		Set<RealLocalizable> newVertices = new LinkedHashSet<RealLocalizable>();
+		List<Facet> newFacets = new ArrayList<Facet>();
+		
+		for( RealLocalizable v : vertices ) {
+			newVertices.add( new RealPoint( v ) );
+		}
+		
+		for( Facet f : facets ) {
+			newFacets.add( f.copy() );
+		}
+		
+		return newMesh;
 	}
 
 }

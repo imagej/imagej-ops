@@ -30,5 +30,6 @@
 package net.imagej.ops.geom.geom3d.mesh;
 
 public interface Facet {
-	// NB: Marker Interface
+
+	public Facet copy();
 }

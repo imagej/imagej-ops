@@ -203,6 +203,13 @@ public class TriangularFacet extends UpdateablePointSet<TriangularFacet> impleme
 	}
 	
 	/**
+	 * Set the List of verticesInFront. Support function for copy.
+	 */
+	protected void setVerticesInFront(List<Vertex> newVerticesInFront) {
+		verticesInFront = newVerticesInFront;
+	}
+	
+	/**
 	 * The vertex which is in front and farthest apart of the plane
 	 * @return vertex with maximum distance to the plane
 	 */
@@ -280,5 +287,30 @@ public class TriangularFacet extends UpdateablePointSet<TriangularFacet> impleme
 		} else if (!vertices.equals(other.vertices))
 			return false;
 		return true;
+	}
+	
+	/**
+	 * Make a deep copy of this TriangularFacet
+	 * @return copy of this facet
+	 */
+	public Facet copy() {
+		TriangularFacet newFacet = new TriangularFacet();
+		ArrayList<Vertex> newVertices = new ArrayList<>();
+		ArrayList<Vertex> newVerticesInFront = new ArrayList<>();
+		
+		for( Vertex v : getVertices() ) {
+			newVertices.add( new Vertex( v.getX(), v.getY(), v.getZ() ) );
+		}
+		
+		for( Vertex v : getVerticesInFront() ) {
+			newVerticesInFront.add( new Vertex( v.getX(), v.getY(), v.getZ() ) );
+		}
+		newFacet.setVerticesInFront(newVerticesInFront);
+		
+		for( TriangularFacet neighbor : getNeighbors() ) {
+			newFacet.neighbors.add( neighbor );
+		}
+
+		return newFacet;
 	}
 }

@@ -138,4 +138,23 @@ public class Vertex extends Vector3D implements RealLocalizable {
 				return -1;
 		}
 	}
+	
+	public Vertex add(Vertex v)
+	{
+		Vector3D v3 = (Vector3D)v;
+	    return new Vertex(this.getX() + v3.getX(), this.getY() + v3.getY(), this.getZ() + v3.getZ());
+	}
+	
+	public Vertex setDoublePosition(final int d, final double val) {
+		switch (d) {
+			case 0 :
+				return this.add(new Vertex(val-getX(), 0, 0));
+			case 1 :
+				return this.add(new Vertex(0, val-getY(), 0));
+			case 2 : 
+				return this.add(new Vertex(0, 0, val-getZ()));
+			default :
+				return new Vertex(0, 0, 0);
+		}
+	}
 }

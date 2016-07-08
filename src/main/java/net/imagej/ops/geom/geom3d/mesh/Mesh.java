@@ -50,4 +50,5 @@ public interface Mesh {
 
 	public double getSurfaceArea();
 
+	public Mesh copy();
 }
