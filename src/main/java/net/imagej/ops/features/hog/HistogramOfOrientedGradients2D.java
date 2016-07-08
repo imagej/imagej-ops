@@ -34,6 +34,10 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+import org.scijava.thread.ThreadService;
+
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.create.img.CreateImgFromDimsAndType;
@@ -57,10 +61,7 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.util.Intervals;
 import net.imglib2.view.Views;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-import org.scijava.thread.ThreadService;
+import net.imglib2.view.composite.GenericComposite;
 
 /**
  * Calculates a histogram of oriented gradients which is a feature descriptor.
@@ -68,6 +69,8 @@ import org.scijava.thread.ThreadService;
  * pixel a histogram of gradient directions by summing up the magnitudes of the
  * neighbored (@param spanOfNeighborhood) pixels. The directions are divided in
  * (@param numOrientations) bins. The output is 3d: for each bin an own channel.
+ * Input can be either a grayscale image or a color image with three channels
+ * (e.g. RGB, LAB, ...).
  * 
  * The algorithm is based on the paper "Histograms of Oriented Gradients for
  * Human Detection" by Navneet Dalal and Bill Triggs, published 2005.
@@ -89,9 +92,11 @@ public class HistogramOfOrientedGradients2D<T extends RealType<T>>
 	private UnaryFunctionOp<FinalInterval, RandomAccessibleInterval> createOp;
 
 	@SuppressWarnings("rawtypes")
-	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval> createImgOp;
+	private UnaryFunctionOp<FinalInterval, RandomAccessibleInterval> createImgOp;
 
-	private Converter<T, FloatType> converter;
+	private Converter<T, FloatType> converterToFloat;
+
+	private Converter<GenericComposite<FloatType>, FloatType> converterGetMax;
 
 	private ExecutorService es;
 
@@ -105,13 +110,28 @@ public class HistogramOfOrientedGradients2D<T extends RealType<T>>
 		createOp = Functions.unary(ops(), CreateImgFromDimsAndType.class, RandomAccessibleInterval.class,
 				new FinalInterval(in().dimension(0), in().dimension(1), numOrientations), new FloatType());
 
-		createImgOp = Functions.unary(ops(), CreateImgFromDimsAndType.class, RandomAccessibleInterval.class, in(),
-				new FloatType());
+		createImgOp = Functions.unary(ops(), CreateImgFromDimsAndType.class, RandomAccessibleInterval.class,
+				new FinalInterval(in().dimension(0), in().dimension(1)), new FloatType());
 
-		converter = new Converter<T, FloatType>() {
+		converterToFloat = new Converter<T, FloatType>() {
 			@Override
 			public void convert(final T arg0, final FloatType arg1) {
 				arg1.setReal(arg0.getRealFloat());
+			}
+		};
+
+		converterGetMax = new Converter<GenericComposite<FloatType>, FloatType>() {
+			@Override
+			public void convert(GenericComposite<FloatType> input, FloatType output) {
+				int idx = 0;
+				float valueR = Math.abs(input.get(0).getRealFloat());
+				float valueG = Math.abs(input.get(1).getRealFloat());
+				float valueB = Math.abs(input.get(2).getRealFloat());
+				if ((valueG > valueR) && (valueG > valueB))
+					idx = 1;
+				if ((valueB > valueR) && (valueB > valueG))
+					idx = 2;
+				output.setReal(input.get(idx).getRealFloat());
 			}
 		};
 	}
@@ -124,24 +144,64 @@ public class HistogramOfOrientedGradients2D<T extends RealType<T>>
 
 	@Override
 	public boolean conforms() {
-		return in().numDimensions() == 2;
+		return ((in().numDimensions() == 2) || ((in().numDimensions() == 3) && (in().dimension(2) == 3)));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void compute1(RandomAccessibleInterval<T> in, RandomAccessibleInterval<T> out) {
-		RandomAccessible<FloatType> convertedIn = Converters.convert(Views.extendMirrorDouble(in), converter,
+		RandomAccessible<FloatType> convertedIn = Converters.convert(Views.extendMirrorDouble(in), converterToFloat,
 				new FloatType());
 
 		// compute partial derivative for each dimension
 		RandomAccessibleInterval<FloatType> derivative0 = createImgOp.compute0();
 		RandomAccessibleInterval<FloatType> derivative1 = createImgOp.compute0();
-		PartialDerivative.gradientCentralDifference(convertedIn, derivative0, 0);
-		PartialDerivative.gradientCentralDifference(convertedIn, derivative1, 1);
+
+		// case of grayscale image
+		if (in.numDimensions() == 2) {
+			PartialDerivative.gradientCentralDifference(convertedIn, derivative0, 0);
+			PartialDerivative.gradientCentralDifference(convertedIn, derivative1, 1);
+		}
+		// case of color image
+		else {
+			final RandomAccessibleInterval<FloatType> derivativeR0 = createImgOp.compute0();
+			final RandomAccessibleInterval<FloatType> derivativeG0 = createImgOp.compute0();
+			final RandomAccessibleInterval<FloatType> derivativeB0 = createImgOp.compute0();
+
+			PartialDerivative.gradientCentralDifference(
+					Views.interval(convertedIn, new long[] { 0, 0, 0 }, new long[] { in.max(0), in.max(1), 0 }),
+					derivativeR0, 0);
+			PartialDerivative.gradientCentralDifference(
+					Views.interval(convertedIn, new long[] { 0, 0, 1 }, new long[] { in.max(0), in.max(1), 1 }),
+					derivativeG0, 0);
+			PartialDerivative.gradientCentralDifference(
+					Views.interval(convertedIn, new long[] { 0, 0, 2 }, new long[] { in.max(0), in.max(1), 2 }),
+					derivativeB0, 0);
+			derivative0 = Converters.convert(Views.collapse(Views.stack(derivativeR0, derivativeG0, derivativeB0)),
+					converterGetMax, new FloatType());
+
+			final RandomAccessibleInterval<FloatType> derivativeR1 = createImgOp.compute0();
+			final RandomAccessibleInterval<FloatType> derivativeG1 = createImgOp.compute0();
+			final RandomAccessibleInterval<FloatType> derivativeB1 = createImgOp.compute0();
+
+			PartialDerivative.gradientCentralDifference(
+					Views.interval(convertedIn, new long[] { 0, 0, 0 }, new long[] { in.max(0), in.max(1), 0 }),
+					derivativeR1, 1);
+			PartialDerivative.gradientCentralDifference(
+					Views.interval(convertedIn, new long[] { 0, 0, 1 }, new long[] { in.max(0), in.max(1), 1 }),
+					derivativeG1, 1);
+			PartialDerivative.gradientCentralDifference(
+					Views.interval(convertedIn, new long[] { 0, 0, 2 }, new long[] { in.max(0), in.max(1), 2 }),
+					derivativeB1, 1);
+			derivative1 = Converters.convert(Views.collapse(Views.stack(derivativeR1, derivativeG1, derivativeB1)),
+					converterGetMax, new FloatType());
+		}
+		final RandomAccessibleInterval<FloatType> finalderivative0 = derivative0;
+		final RandomAccessibleInterval<FloatType> finalderivative1 = derivative1;
 
 		// compute angles and magnitudes
-		RandomAccessibleInterval<FloatType> angles = createImgOp.compute0();
-		RandomAccessibleInterval<FloatType> magnitudes = createImgOp.compute0();
+		final RandomAccessibleInterval<FloatType> angles = createImgOp.compute0();
+		final RandomAccessibleInterval<FloatType> magnitudes = createImgOp.compute0();
 
 		CursorBasedChunk chunkable = new CursorBasedChunk() {
 
@@ -149,8 +209,8 @@ public class HistogramOfOrientedGradients2D<T extends RealType<T>>
 			public void execute(int startIndex, int stepSize, int numSteps) {
 				final Cursor<FloatType> cursorAngles = Views.flatIterable(angles).localizingCursor();
 				final Cursor<FloatType> cursorMagnitudes = Views.flatIterable(magnitudes).localizingCursor();
-				final Cursor<FloatType> cursorDerivative0 = Views.flatIterable(derivative0).localizingCursor();
-				final Cursor<FloatType> cursorDerivative1 = Views.flatIterable(derivative1).localizingCursor();
+				final Cursor<FloatType> cursorDerivative0 = Views.flatIterable(finalderivative0).localizingCursor();
+				final Cursor<FloatType> cursorDerivative1 = Views.flatIterable(finalderivative1).localizingCursor();
 
 				setToStart(cursorAngles, startIndex);
 				setToStart(cursorMagnitudes, startIndex);
@@ -179,7 +239,7 @@ public class HistogramOfOrientedGradients2D<T extends RealType<T>>
 		// compute descriptor (default 3x3, i.e. 9 channels: one channel for
 		// each bin)
 		final RectangleShape shape = new RectangleShape(spanOfNeighborhood, false);
-		final NeighborhoodsAccessible<FloatType> neighborHood = shape.neighborhoodsRandomAccessible(convertedIn);
+		final NeighborhoodsAccessible<FloatType> neighborHood = shape.neighborhoodsRandomAccessible(angles);
 
 		for (int i = 0; i < in.dimension(0); i++) {
 			listCallables.add(new ComputeDescriptor(Views.interval(convertedIn, in), i, angles.randomAccess(),
@@ -218,20 +278,20 @@ public class HistogramOfOrientedGradients2D<T extends RealType<T>>
 		@Override
 		public Void call() throws Exception {
 
+			final FinalInterval interval = new FinalInterval(in.dimension(0), in.dimension(1));
 			for (int j = 0; j < in.dimension(1); j++) {
 				// sum up the magnitudes of all bins in a neighborhood
 				raNeighbor.setPosition(new long[] { i, j });
 				final Cursor<FloatType> cursorNeighborHood = raNeighbor.get().cursor();
 				final long[] posNeighbor = new long[cursorNeighborHood.numDimensions()];
-
 				while (cursorNeighborHood.hasNext()) {
 					cursorNeighborHood.next();
 					cursorNeighborHood.localize(posNeighbor);
-					if (Intervals.contains(in, new Point(posNeighbor))) {
+					if (Intervals.contains(interval, new Point(posNeighbor))) {
 						raAngles.setPosition(posNeighbor);
 						raMagnitudes.setPosition(posNeighbor);
 						raOut.setPosition(
-								new long[] { i, j, (int) raAngles.get().getRealDouble() / (360 / numOrientations) });
+								new long[] { i, j, (int) raAngles.get().getRealFloat() / (360 / numOrientations) });
 						raOut.get().add(raMagnitudes.get());
 					}
 				}
