@@ -71,7 +71,7 @@ public class EulerCharacteristic26NTest extends AbstractOpTest {
 
         final Double result = ops.topology().eulerCharacteristic26N(img);
 
-        assertEquals("Euler characteristic (χ) is incorrect", 0.125, result, 1e-12);
+        assertEquals("Euler characteristic (χ) is incorrect", 0.0, result, 1e-12);
     }
 
     /**

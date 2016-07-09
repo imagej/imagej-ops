@@ -66,12 +66,12 @@ public class EulerCharacteristic26N<B extends BooleanType<B>>
 
     @Override
     public Double compute1(RandomAccessibleInterval<B> interval) {
-        final RandomAccess<B> access = Views.extendZero(interval).randomAccess();
+        final RandomAccess<B> access = interval.randomAccess();
         long sumDeltaEuler = 0;
 
-        for (long z = 0; z <= interval.dimension(2); z++) {
-            for (long y = 0; y <= interval.dimension(1); y++) {
-                for (long x = 0; x <= interval.dimension(0); x++) {
+        for (long z = 0; z < interval.dimension(2) - 1; z++) {
+            for (long y = 0; y < interval.dimension(1)  - 1; y++) {
+                for (long x = 0; x < interval.dimension(0)  - 1; x++) {
                     int index = neighborhoodEulerIndex(access, x, y, z);
                     sumDeltaEuler += EULER_LUT[index];
                 }
