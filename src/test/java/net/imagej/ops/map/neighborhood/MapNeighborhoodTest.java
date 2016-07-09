@@ -114,6 +114,25 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 	}
 
 	/**
+	 * Tests if the {@link Op} fails for a not extended input and no
+	 * {@link OutOfBoundsFactory}.
+	 */
+	@Test
+	public void testMapNeighborhoodsConcurrency() {
+		ops.run(MapNeighborhood.class, out, in, new RectangleShape(1, false),
+			new AbstractUnaryComputerOp<Iterable<ByteType>, ByteType>()
+		{
+
+				@Override
+				public void compute1(Iterable<ByteType> input, ByteType output) {
+					for (ByteType e : input)
+						e.copy();
+				}
+
+		});
+	}
+
+	/**
 	 * Function which increments the output value for every pixel in the
 	 * neighborhood.
 	 *
