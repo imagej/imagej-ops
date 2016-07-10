@@ -50,19 +50,19 @@ import org.scijava.util.MiscUtils;
 public class OpRef<OP extends Op> {
 
 	/** Name of the op, or null for any name. */
-	private String name;
+	private final String name;
 
 	/** Type of the op, or null for any type. */
-	private Class<OP> type;
+	private final Class<OP> type;
 
 	/** Extra types which the op must match. */
-	private Collection<? extends Class<?>> extraTypes;
+	private final Collection<? extends Class<?>> extraTypes;
 
 	/** The op's output parameter types, or null for no constraints. */
-	private Collection<? extends Class<?>> outTypes;
+	private final Collection<? extends Class<?>> outTypes;
 
 	/** Arguments to be passed to the op. */
-	private Object[] args;
+	private final Object[] args;
 
 	// -- Static construction methods --
 
