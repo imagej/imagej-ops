@@ -43,8 +43,13 @@ import net.imagej.ops.special.hybrid.Hybrids;
 import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imagej.ops.special.inplace.Inplaces;
 import net.imagej.ops.special.inplace.UnaryInplaceOp;
+import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.neighborhood.RectangleShape;
+import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.util.Intervals;
+import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
 /**
@@ -90,6 +95,38 @@ public final class RAIs {
 	public static <T> RandomAccessibleInterval<T> extend(final RandomAccessibleInterval<T> in,
 			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds) {
 		return outOfBounds == null ? in : Views.interval((Views.extend(in, outOfBounds)), in);
+	}
+
+	/**
+	 * Extends an input using an {@link OutOfBoundsFactory} if access through the
+	 * provided {@link Shape} requires access to the outside of the
+	 * {@link RandomAccessibleInterval}'s interval. If no
+	 * {@link OutOfBoundsFactory} is provided, it returns the unchanged input.
+	 *
+	 * @param in {@link RandomAccessibleInterval} that is to be extended
+	 * @param shape {@link Shape} that shall be used for access
+	 * @param outOfBounds the factory that is used for extending
+	 * @return {@link RandomAccessibleInterval} extended using the
+	 *         {@link OutOfBoundsFactory} with the interval of in
+	 */
+	@SuppressWarnings("rawtypes")
+	public static <T> RandomAccessibleInterval<T> extendSoft(
+		final RandomAccessibleInterval<T> in, final RectangleShape shape,
+		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
+	{
+		// Check if in covers the required area
+		Interval definedBounds = in;
+		if (in instanceof IntervalView)
+			definedBounds = ((IntervalView) in).definedBounds();
+		
+		// For the no-interface implementation:
+		// final Interval definedBounds = in.definedBounds();
+
+		if (definedBounds == null || Intervals.contains(definedBounds, Intervals
+			.expand(in, shape.getSpan()))) return in;
+
+		return outOfBounds == null ? in : Views.interval((Views.extend(in,
+			outOfBounds)), in);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

@@ -57,11 +57,16 @@ import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
+import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.util.Intervals;
+import net.imglib2.view.ExtendedRandomAccessibleInterval;
+import net.imglib2.view.IntervalView;
+import net.imglib2.view.Views;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -420,6 +425,35 @@ public class LocalThresholdTest extends AbstractOpTest {
 			new RectangleShape(2, false), null,
 			0.0, 0.0);
 		
+		testIterableIntervalSimilarity(out2, out3);
+	}
+
+	/**
+	 * @see LocalSauvolaThresholdIntegral
+	 * @see LocalSauvolaThreshold
+	 */
+	@Test
+	public void testInputExtension() {
+		Img<BitType> out2 = null;
+		Img<BitType> out3 = null;
+		try {
+			out2 = in.factory().imgFactory(new BitType()).create(in, new BitType());
+			out3 = in.factory().imgFactory(new BitType()).create(in, new BitType());
+		}
+		catch (IncompatibleTypeException exc) {
+			exc.printStackTrace();
+		}
+
+		// Explicit OOBF
+		ops.run(LocalSauvolaThreshold.class, out2, in, new RectangleShape(2, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		// Extend input and no explicit OOBF in op
+		ExtendedRandomAccessibleInterval<ByteType, Img<ByteType>> extend =
+			Views.extend(in, new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+		IntervalView<ByteType> extendedIn = Views.interval(extend, in);
+		
+		ops.run(LocalSauvolaThreshold.class, out3, extendedIn, new RectangleShape(2, false));
 		testIterableIntervalSimilarity(out2, out3);
 	}
 

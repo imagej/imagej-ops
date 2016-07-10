@@ -40,6 +40,7 @@ import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.outofbounds.OutOfBoundsBorderFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
@@ -70,7 +71,7 @@ public abstract class AbstractCenterAwareNeighborhoodBasedFilter<I, O> extends
 		IterableInterval<O> output)
 	{
 		// map computer to neighborhoods
-		map.compute1(RAIs.extend(input, outOfBoundsFactory), output);
+		map.compute1(RAIs.extendSoft(input, (RectangleShape) shape, outOfBoundsFactory), output);
 	}
 
 	/**
