@@ -66,6 +66,7 @@ import net.imagej.ops.special.inplace.UnaryInplaceOp;
 import net.imagej.ops.stats.StatsNamespace;
 import net.imagej.ops.thread.ThreadNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
+import net.imagej.ops.topology.TopologyNamespace;
 import net.imagej.ops.transform.TransformNamespace;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
@@ -923,6 +924,9 @@ public interface OpEnvironment extends Contextual {
 	default ThresholdNamespace threshold() {
 		return namespace(ThresholdNamespace.class);
 	}
+
+	/** Gateway into ops of the "topology" namespace */
+	default TopologyNamespace topology() { return namespace(TopologyNamespace.class); }
 
 	/** Gateway into ops of the "transform" namespace. */
 	default TransformNamespace transform() {
