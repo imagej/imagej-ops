@@ -33,6 +33,7 @@ package net.imagej.ops.geom;
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
+import net.imagej.ops.Ops.Geometric.Voxelization;
 import net.imagej.ops.geom.geom2d.DefaultConvexHull2D;
 import net.imagej.ops.geom.geom3d.CovarianceOf2ndMultiVariate3D;
 import net.imagej.ops.geom.geom3d.DefaultConvexHull3D;
@@ -41,11 +42,13 @@ import net.imagej.ops.geom.geom3d.mesh.VertexInterpolator;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.RealLocalizable;
+import net.imglib2.img.Img;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.Type;
+import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
@@ -278,6 +281,13 @@ public class GeomNamespace extends AbstractNamespace {
 	public Mesh meshSmoothing(final Mesh in, final int smoothingSteps ) {
 		final Mesh result = (Mesh) ops().run(
 			net.imagej.ops.Ops.Geometric.MeshSmoothing.class, in, smoothingSteps );
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class)
+	public RandomAccessibleInterval<BitType> voxelization(final Mesh in, final int width, final int height, final int depth ) {
+		final RandomAccessibleInterval<BitType> result = (RandomAccessibleInterval<BitType>) ops().run(
+				Voxelization.class, in, width, height, depth );
 		return result;
 	}
 	
