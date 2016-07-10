@@ -133,7 +133,7 @@ public class OpInfo implements Comparable<OpInfo> {
 	}
 
 	/**
-	 * Gets the type of op&mdash, as specified via {@code @Plugin(type = <type>)}).
+	 * Gets the type of op, as specified via {@code @Plugin(type = <type>)}).
 	 */
 	public Class<? extends Op> getType() {
 		// HACK: The CommandInfo.getPluginType() method returns Command.class.
