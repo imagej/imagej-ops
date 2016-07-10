@@ -293,14 +293,14 @@ public class TriangularFacet extends UpdateablePointSet<TriangularFacet> impleme
 	 * Make a deep copy of this TriangularFacet
 	 * @return copy of this facet
 	 */
-	public Facet copy() {
-		TriangularFacet newFacet = new TriangularFacet();
+	public Facet copy() {		
 		ArrayList<Vertex> newVertices = new ArrayList<>();
 		ArrayList<Vertex> newVerticesInFront = new ArrayList<>();
 		
 		for( Vertex v : getVertices() ) {
 			newVertices.add( new Vertex( v.getX(), v.getY(), v.getZ() ) );
 		}
+		TriangularFacet newFacet = new TriangularFacet(newVertices.get(0), newVertices.get(1), newVertices.get(2));
 		
 		for( Vertex v : getVerticesInFront() ) {
 			newVerticesInFront.add( new Vertex( v.getX(), v.getY(), v.getZ() ) );
@@ -312,5 +312,12 @@ public class TriangularFacet extends UpdateablePointSet<TriangularFacet> impleme
 		}
 
 		return newFacet;
+	}
+	
+	/**
+	 * Set the normal of this facet
+	 */
+	public void setNormal( Vector3D newNormal ) {
+		normal = newNormal;
 	}
 }

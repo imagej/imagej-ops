@@ -20,7 +20,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Mesh smoothing.
  * 
- * @author 
+ * @author Kyle Harrington, University of Idaho 
  */
 @Plugin(type = Ops.Geometric.MeshSmoothing.class)
 public class DefaultMeshSmoothing3D extends AbstractUnaryFunctionOp<Mesh, Mesh>
@@ -37,7 +37,7 @@ implements Ops.Geometric.MeshSmoothing
 	}
 
 	/**
-	 * Smoothing from https://github.com/fiji/3D_Viewer/blob/master/src/main/java/isosurface/MeshEditor.java : smooth2()
+	 * Smoothing based on 3D viewer's smoothing, which was based on Blender
 	 * 
 	 * Comments from: https://github.com/fiji/3D_Viewer/blob/master/src/main/java/isosurface/MeshEditor.java
 	 * Implemented Blender-style vertex smoothing. See Blender's file
@@ -66,6 +66,8 @@ implements Ops.Geometric.MeshSmoothing
 		// Store a count of the number of times an average has been taken
 		final HashMap<RealLocalizable,Integer> vertAverageCount = new HashMap<>();
 
+		System.err.println(  "In vert counts = " + verts.size() );
+		
 		// Initialize intermediate collections
 		for( RealLocalizable rl : toSmooth.getVertices() ) {
 			verts.add( rl );
@@ -73,16 +75,18 @@ implements Ops.Geometric.MeshSmoothing
 			vertAverageCount.put( rl, 0 );
 		}		
 		
-		// Collect unique edges (3D Viewer checked if vertices were unique, we assume that)
+		// Collect unique edges (3D Viewer checked if vertices were unique, we assume that, EDIT: probz bad)
 		for( Facet f : toSmooth.getFacets() ) {
 			TriangularFacet tf = (TriangularFacet) f;// Ew...
 			edges.add( new Vertex[]{ tf.getVertex(0), tf.getVertex(1) } );
 			edges.add( new Vertex[]{ tf.getVertex(1), tf.getVertex(2) } );
 			edges.add( new Vertex[]{ tf.getVertex(0), tf.getVertex(2) } );
 		}
+		
+		System.err.println( "Num edges = " + edges.size() );
 
 		for (int i = 0; i < iterations; ++i) {
-			// First pass: accumulate averages
+			// Take averages over all neighbors per vert
 			for (final RealLocalizable[] e : edges) {
 				// Increment average count for both vertices
 				vertAverageCount.put(e[0], vertAverageCount.get(e[0])+1 );
@@ -96,7 +100,7 @@ implements Ops.Geometric.MeshSmoothing
 				vertAverages.get(e[1]).add(avg);
 			}
 
-			// Second pass: compute the smoothed coordinates and apply them
+			// Smooth from average for each vert
 			for (final RealLocalizable v : verts ) {
 				final float f = 0.5f / vertAverageCount.get(v);
 				Vertex tmp = vertAverages.get(v);
@@ -105,7 +109,7 @@ implements Ops.Geometric.MeshSmoothing
 												0.5f * v.getDoublePosition(2) + f * tmp.getZ() ) );
 			}
 
-			// Prepare for next iteration
+			// Update verts
 			if (i + 1 < iterations) {
 				for (final RealLocalizable v : verts) {
 					Vertex newPos = vertAverages.get(v);					

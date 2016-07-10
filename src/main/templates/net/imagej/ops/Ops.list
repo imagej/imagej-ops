@@ -138,6 +138,8 @@ namespaces = ```
 		[name: "boxivity",                    iface: "Boxivity"],
 		[name: "contour",                     iface: "Contour"],
 		[name: "marchingCubes",               iface: "MarchingCubes"],
+		[name: "meshSmoothing",		      iface: "MeshSmoothing"],
+		[name: "meshVoxelization",	      iface: "MeshVoxelization"],		
 		[name: "centerOfGravity",               iface: "CenterOfGravity"],
 	]],
 	[name: "haralick", iface: "Haralick", ops: [

@@ -273,7 +273,14 @@ public class GeomNamespace extends AbstractNamespace {
 			net.imagej.ops.Ops.Geometric.ConvexHull.class, in);
 		return result;
 	}
-
+	
+	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultMeshSmoothing3D.class)
+	public Mesh meshSmoothing(final Mesh in, final int smoothingSteps ) {
+		final Mesh result = (Mesh) ops().run(
+			net.imagej.ops.Ops.Geometric.MeshSmoothing.class, in, smoothingSteps );
+		return result;
+	}
+	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.ConvexityPolygon.class)
 	public DoubleType convexity(final Polygon in) {
 		final DoubleType result =

@@ -166,18 +166,19 @@ public class DefaultMesh implements Mesh, Iterable<Facet> {
 	public DefaultMesh copy() {
 		DefaultMesh newMesh = new DefaultMesh();
 		
-		Set<RealLocalizable> newVertices = new LinkedHashSet<RealLocalizable>();
-		List<Facet> newFacets = new ArrayList<Facet>();
-		
-		for( RealLocalizable v : vertices ) {
-			newVertices.add( new RealPoint( v ) );
-		}
-		
 		for( Facet f : facets ) {
-			newFacets.add( f.copy() );
+			newMesh.addFace( (TriangularFacet) f.copy() );
 		}
 		
 		return newMesh;
 	}
 
+	/**
+	 * Mesh to string for displaying/inspecting
+	 * 
+	 * @return a string that describes the general attributes of a mesh, doesnt return all verts/facets
+	 */
+	public String toString() {
+		return "<DefaultMesh: Number of vertices = " + vertices.size() + ", number of facets = " + facets.size() + ">";
+	}
 }
