@@ -648,27 +648,4 @@ public class DefaultOpMatchingService extends AbstractService implements
 			type);
 	}
 
-	// -- Deprecated methods --
-
-	@Deprecated
-	@Override
-	public <OP extends Op> Module findModule(final OpEnvironment ops,
-		final OpRef<OP> ref)
-	{
-		return findMatch(ops, ref).getModule();
-	}
-
-	@Deprecated
-	@Override
-	public <OP extends Op> List<Module> findMatches(
-		final List<OpCandidate<OP>> candidates)
-	{
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		final List<OpCandidate<?>> matches = filterMatches((List) candidates);
-		final List<Module> modules = new ArrayList<>(matches.size());
-		for (OpCandidate<?> match : matches) {
-			modules.add(match.getModule());
-		}
-		return modules;
-	}
 }
