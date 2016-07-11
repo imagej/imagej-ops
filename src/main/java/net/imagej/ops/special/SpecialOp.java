@@ -323,8 +323,8 @@ public interface SpecialOp extends Op, Initializable, Threadable {
 		for (final OpCandidate<OP> candidate : candidates) {
 			try {
 				final Class<?> opClass = candidate.cInfo().loadClass();
+				if (!SpecialOp.class.isAssignableFrom(opClass)) return false;
 				final Object o = opClass.newInstance();
-				if (!(o instanceof SpecialOp)) continue;
 				final SpecialOp op = (SpecialOp) o;
 				if (arity == op.getArity()) matches.add(candidate);
 			}
