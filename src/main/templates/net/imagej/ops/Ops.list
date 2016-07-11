@@ -226,6 +226,11 @@ namespaces = ```
 		[name: "or",                             iface: "Or"],
 		[name: "xor",                            iface: "Xor"],
 	]],
+	[name: "mask", iface: "Mask", ops: [
+		[name: "maskHigh",                       iface: "MaskHigh"],
+		[name: "maskLow",                        iface: "MaskLow"],
+		[name: "maskRange",                      iface: "MaskRange"],
+	]],
 	[name: "math", iface: "Math", ops: [
 		[name: "abs",                            iface: "Abs"],
 		[name: "add",                            iface: "Add",                 aliases: ["sum"]],
