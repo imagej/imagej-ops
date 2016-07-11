@@ -2,41 +2,45 @@ package net.imagej.ops.topology.eulerCharacteristic;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.BooleanType;
+import net.imglib2.type.numeric.real.DoubleType;
 import org.scijava.plugin.Plugin;
 
 /**
- * An Op which calculates the euler characteristic (χ) of the given 3D binary image.
- * Here Euler characteristic is defined as χ = β_0 - β_1 + β_2, where β_i are so called Betti numbers.
- * β_0 = number of separate particles
- * β_1 = number of handles
- * β_2 = number enclosed cavities
+ * An Op which calculates the euler characteristic (χ) of the given 3D binary image.<br>
+ * Here Euler characteristic is defined as χ = β_0 - β_1 + β_2, where β_i are so called Betti numbers
+ * <ul>
+ * <li>β_0 = number of separate particles</li>
+ * <li>β_1 = number of handles</li>
+ * <li>β_2 = number enclosed cavities</li>
+ * </ul>
  * <p>
- * The Op calculates χ by using the triangulation algorithm described by Toriwaki & Yonekura (see below).
- * There it's calculated X = ∑Δχ(V), where V is a 2x2x2 neighborhood around each point in the 3D space.
+ * The Op calculates χ by using the triangulation algorithm described by Toriwaki & Yonekura (see below).<br>
+ * There it's calculated X = ∑Δχ(V), where V is a 2x2x2 neighborhood around each point in the 3D space.<br>
  * We are using the 26-neighborhood version of the algorithm. The Δχ(V) values here are predetermined.
- * <p>
- * For the algorithm see
- * Toriwaki J, Yonekura T (2002) Euler Number and Connectivity Indexes of a Three Dimensional Digital Picture.
- * Forma 17: 183-209.
+ * </p><p>
+ * For the algorithm see<br>
+ * Toriwaki J, Yonekura T (2002)<br>
+ * Euler Number and Connectivity Indexes of a Three Dimensional Digital Picture<br>
+ * Forma 17: 183-209<br>
  * <a href="http://www.scipress.org/journals/forma/abstract/1703/17030183.html">
  * http://www.scipress.org/journals/forma/abstract/1703/17030183.html</a>
- * <p>
- * For the Betti number definition of Euler characteristic see
- * Odgaard A, Gundersen HJG (1993) Quantification of connectivity in cancellous bone,
- * with special emphasis on 3-D reconstructions.
- * Bone 14: 173-182.
+ * </p><p>
+ * For the Betti number definition of Euler characteristic see<br>
+ * Odgaard A, Gundersen HJG (1993)<br>
+ * Quantification of connectivity in cancellous bone, with special emphasis on 3-D reconstructions<br>
+ * Bone 14: 173-182<br>
  * <a href="http://dx.doi.org/10.1016/8756-3282(93)90245-6">doi:10.1016/8756-3282(93)90245-6</a>
- *
+ * </p>
  * @author Richard Domander (Royal Veterinary College, London)
  * @author David Legland  - original MatLab implementation
  */
 @Plugin(type = Ops.Topology.EulerCharacteristic26N.class)
 public class EulerCharacteristic26N<B extends BooleanType<B>>
-        extends AbstractUnaryFunctionOp<RandomAccessibleInterval<B>, Double>
+        extends AbstractUnaryHybridCF<RandomAccessibleInterval<B>, DoubleType>
         implements Ops.Topology.EulerCharacteristic26N, Contingent {
     /** Δχ(v) for all configurations of a 2x2x2 voxel neighborhood */
     private static final int[] EULER_LUT = {
@@ -60,26 +64,27 @@ public class EulerCharacteristic26N<B extends BooleanType<B>>
 
     /** The algorithm is defined only for 3D images */
     @Override
-    public boolean conforms() {
-        return in().numDimensions() == 3;
-    }
+    public boolean conforms() { return in().numDimensions() == 3; }
 
     @Override
-    public Double compute1(RandomAccessibleInterval<B> interval) {
+    public void compute1(RandomAccessibleInterval<B> interval, DoubleType output) {
         final RandomAccess<B> access = interval.randomAccess();
         long sumDeltaEuler = 0;
 
         for (long z = 0; z < interval.dimension(2) - 1; z++) {
-            for (long y = 0; y < interval.dimension(1)  - 1; y++) {
-                for (long x = 0; x < interval.dimension(0)  - 1; x++) {
+            for (long y = 0; y < interval.dimension(1) - 1; y++) {
+                for (long x = 0; x < interval.dimension(0) - 1; x++) {
                     int index = neighborhoodEulerIndex(access, x, y, z);
                     sumDeltaEuler += EULER_LUT[index];
                 }
             }
         }
 
-        return sumDeltaEuler / 8.0;
+        output.set(sumDeltaEuler / 8.0);
     }
+
+    @Override
+    public DoubleType createOutput(RandomAccessibleInterval<B> input) { return new DoubleType(0.0); }
 
     /**
      * Determines the LUT index for this 2x2x2 neighborhood

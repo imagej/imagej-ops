@@ -46,8 +46,8 @@ public class EulerCorrectionTest extends AbstractOpTest {
         final long voxelEdgeFaceIntersections = EulerCorrection.voxelEdgeFaceIntersections(traverser);
         assertEquals("Number intersections is incorrect", 0, voxelEdgeFaceIntersections);
 
-        final Double result = ops.topology().eulerCorrection(cube);
-        assertEquals("Euler correction is incorrect", 0, result.intValue());
+        final double result = ops.topology().eulerCorrection(cube).get();
+        assertEquals("Euler correction is incorrect", 0, result, 1e-12);
     }
 
     @Test
@@ -82,7 +82,7 @@ public class EulerCorrectionTest extends AbstractOpTest {
         final long voxelEdgeFaceIntersections = EulerCorrection.voxelEdgeFaceIntersections(traverser);
         assertEquals("Number intersections is incorrect", 108, voxelEdgeFaceIntersections);
 
-        final Double result = ops.topology().eulerCorrection(cube);
-        assertEquals("Euler contribution is incorrect", 1, result.intValue());
+        final double result = ops.topology().eulerCorrection(cube).get();
+        assertEquals("Euler contribution is incorrect", 1, result, 1e-12);
     }
 }
