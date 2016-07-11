@@ -9,7 +9,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Unit tests for the {@link Octant Octant} convenience class
+ * Unit tests for the {@link Octant} convenience class
  *
  * @author Richard Domander (Royal Veterinary College, London)
  */

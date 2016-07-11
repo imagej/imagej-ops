@@ -2,10 +2,11 @@ package net.imagej.ops.topology.eulerCharacteristic;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.BooleanType;
+import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.Views;
 import org.scijava.plugin.Plugin;
 
@@ -16,24 +17,29 @@ import java.util.stream.LongStream;
  * Euler characteristic χ of the whole image. That is, it's assumed that the image is a small part cut
  * from a larger sample.
  * <p>
- * From Odgaard & Gundersen (see below): "-- the Euler characteristic of the entire 3-D space will not be obtained
+ * From Odgaard & Gundersen (see below): <i>"-- the Euler characteristic of the entire 3-D space will not be obtained
  * by simply adding the Euler characteristics of cubic specimens.
- * By doing this, the contribution of the lower dimensional elements will not be considered".
- * They give the correction as c = -1/2χ_2 - 1/4χ_1 - -1/8χ_0, where χ_2 = χ of all the faces,
- * χ_1 = χ of all the edges, and χ_0 = χ of all the corner vertices of the stack.
+ * By doing this, the contribution of the lower dimensional elements will not be considered".</i>
+ * They give the correction as c = -1/2χ_2 - 1/4χ_1 - -1/8χ_0, where
+ * <ul>
+ * <li>χ_2 = χ of all the faces of the stack</li>
+ * <li>χ_1 = χ of all the edges of the stack</li>
+ * <li>χ_0 = χ of all the corner vertices of the stack.</li>
+ * </ul>
  * Each face contributes to two, each edge to four, and each corner to eight stacks.
- * <p>
- * Odgaard A, Gundersen HJG (1993) Quantification of connectivity in cancellous bone,
- * with special emphasis on 3-D reconstructions.
- * Bone 14: 173-182.
+ * </p><p>
+ * Odgaard A, Gundersen HJG (1993)<br>
+ * Quantification of connectivity in cancellous bone, with special emphasis on 3-D reconstructions.<br>
+ * Bone 14: 173-182.<br>
  * <a href="http://dx.doi.org/10.1016/8756-3282(93)90245-6">doi:10.1016/8756-3282(93)90245-6</a>
- *
+ * </p>
  * @author Michael Doube (Royal Veterinary College, London)
  * @author Richard Domander (Royal Veterinary College, London)
  * @implNote Methods are public and static to help testing
  */
 @Plugin(type = Ops.Topology.EulerCorrection.class)
-public class EulerCorrection<B extends BooleanType<B>> extends AbstractUnaryFunctionOp<RandomAccessibleInterval<B>, Double>
+public class EulerCorrection<B extends BooleanType<B>>
+        extends AbstractUnaryHybridCF<RandomAccessibleInterval<B>, DoubleType>
         implements Ops.Topology.EulerCorrection, Contingent {
     /** The algorithm is defined only for 3D images */
     @Override
@@ -41,8 +47,9 @@ public class EulerCorrection<B extends BooleanType<B>> extends AbstractUnaryFunc
         return in().numDimensions() == 3;
     }
 
+
     @Override
-    public Double compute1(RandomAccessibleInterval<B> interval) {
+    public void compute1(RandomAccessibleInterval<B> interval, DoubleType output) {
         final Traverser<B> traverser = new Traverser<>(interval);
         final long chiZero = stackCorners(traverser);
         final long e = stackEdges(traverser) + 3 * chiZero;
@@ -54,13 +61,19 @@ public class EulerCorrection<B extends BooleanType<B>> extends AbstractUnaryFunc
         final long chiOne = d - e;
         final long chiTwo = a - b + c;
 
-        return chiTwo / 2.0 + chiOne / 4.0 + chiZero / 8.0;
+        output.set(chiTwo / 2.0 + chiOne / 4.0 + chiZero / 8.0);
+    }
+
+    @Override
+    public DoubleType createOutput(RandomAccessibleInterval<B> input) {
+        return new DoubleType(0.0);
     }
 
     /**
      * Counts the foreground voxels in stack corners
      * <p>
      * Calculates χ_0 from Odgaard and Gundersen
+     * </p>
      */
     public static <B extends BooleanType<B>> int stackCorners(final Traverser<B> traverser) {
         int foregroundVoxels = 0;
@@ -79,6 +92,7 @@ public class EulerCorrection<B extends BooleanType<B>> extends AbstractUnaryFunc
      * Count the foreground voxels on the edges lining the stack
      * <p>
      * Contributes to χ_1 from Odgaard and Gundersen
+     * </p>
      */
     public static <B extends BooleanType<B>> long stackEdges(final Traverser<B> traverser) {
         final long[] foregroundVoxels = {0};
@@ -115,6 +129,7 @@ public class EulerCorrection<B extends BooleanType<B>> extends AbstractUnaryFunc
      * Count the foreground voxels on the faces that line the stack
      * <p>
      * Contributes to χ_2 from Odgaard and Gundersen
+     * </p>
      */
     public static <B extends BooleanType<B>> int stackFaces(final Traverser<B> traverser) {
         final int[] foregroundVoxels = {0};
@@ -150,7 +165,7 @@ public class EulerCorrection<B extends BooleanType<B>> extends AbstractUnaryFunc
      * Count the number of intersections between voxels in each 2x1 neighborhood and the the edges of the stack
      * <p>
      * Contributes to χ_1 from Odgaard and Gundersen
-     * @implNote Public and static for testing purposes
+     * </p>
      */
     public static <B extends BooleanType<B>> long voxelEdgeIntersections(final Traverser<B> traverser) {
         final int[] voxelVertices = {0};
@@ -198,7 +213,7 @@ public class EulerCorrection<B extends BooleanType<B>> extends AbstractUnaryFunc
      * Count the intersections between voxel edges in each 2x2 neighborhood and the faces lining the stack
      * <p>
      * Contributes to χ_2 from Odgaard and Gundersen
-     * @implNote Public and static for testing purposes
+     * </p>
      */
     public static <B extends BooleanType<B>> long voxelEdgeFaceIntersections(final Traverser<B> traverser) {
         final long[] voxelEdges = {0};
@@ -278,7 +293,7 @@ public class EulerCorrection<B extends BooleanType<B>> extends AbstractUnaryFunc
      * Count the intersections between voxels in each 2x2 neighborhood and the faces lining the stack
      * <p>
      * Contributes to χ_2 from Odgaard and Gundersen
-     * @implNote Public and static for testing purposes
+     * </p>
      */
     public static <B extends BooleanType<B>> long voxelFaceIntersections(final Traverser<B> traverser) {
         final long[] voxelFaces = {0};
