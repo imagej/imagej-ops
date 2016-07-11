@@ -59,7 +59,7 @@ public class OpRef {
 	private final Collection<Type> types;
 
 	/** The op's output parameter types, or null for no constraints. */
-	private final Collection<Type> outTypes;
+	private final List<Type> outTypes;
 
 	/** Arguments to be passed to the op. */
 	private final Object[] args;
@@ -143,8 +143,11 @@ public class OpRef {
 		return types;
 	}
 
-	/** Gets the op's output types, or null for no constraints. */
-	public Collection<Type> getOutTypes() {
+	/**
+	 * Gets the op's output types (one constraint per output), or null for no
+	 * constraints.
+	 */
+	public List<Type> getOutTypes() {
 		return outTypes;
 	}
 
@@ -234,7 +237,7 @@ public class OpRef {
 		sb.append(s);
 	}
 
-	private Collection<Type> list(final Collection<? extends Type> c) {
+	private List<Type> list(final Collection<? extends Type> c) {
 		final ArrayList<Type> list = new ArrayList<>();
 		if (c != null) list.addAll(c);
 		return list;
