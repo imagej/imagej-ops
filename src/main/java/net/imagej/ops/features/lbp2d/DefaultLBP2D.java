@@ -56,7 +56,6 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.LBP.LBP2D.class, label = "2d Local Binary Pattern")
 public class DefaultLBP2D<I extends RealType<I>> extends AbstractLBP2DFeature<I>
-	implements LBP2DFeature<I>
 {
 
 	@Parameter(required = true)
