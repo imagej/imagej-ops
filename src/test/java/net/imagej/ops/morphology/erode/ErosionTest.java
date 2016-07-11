@@ -50,10 +50,7 @@ public class ErosionTest extends AbstractOpTest {
 		final Img<ByteType> out1 = (Img<ByteType>) ops.run(DefaultErode.class,
 			Img.class, in, shape, false);
 		final Img<ByteType> out2 = Erosion.erode(in, shape, 1);
-		final Cursor<ByteType> c1 = out1.cursor();
-		final Cursor<ByteType> c2 = out2.cursor();
-		while (c1.hasNext())
-			assertEquals(c1.next().get(), c2.next().get());
+		assertIterationsEqual(out1, out2);
 	}
 
 	@Test
@@ -76,10 +73,7 @@ public class ErosionTest extends AbstractOpTest {
 		final Img<ByteType> out1 = (Img<ByteType>) ops.run(DefaultErode.class,
 			Img.class, in, shape, true);
 		final Img<ByteType> out2 = Erosion.erodeFull(in, shape, 1);
-		final Cursor<ByteType> c1 = out1.cursor();
-		final Cursor<ByteType> c2 = out2.cursor();
-		while (c1.hasNext())
-			assertEquals(c1.next().get(), c2.next().get());
+		assertIterationsEqual(out1, out2);
 	}
 
 //	@Test
@@ -95,10 +89,7 @@ public class ErosionTest extends AbstractOpTest {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<ByteType> out1 = (IterableInterval<ByteType>) ops
 			.run(ListErode.class, IterableInterval.class, in, shapes, false);
-		final Cursor<ByteType> c1 = out1.cursor();
-		final Cursor<ByteType> c2 = out2.cursor();
-		while (c1.hasNext())
-			assertEquals(c1.next().get(), c2.next().get());
+		assertIterationsEqual(out1, out2);
 	}
 
 	@Test
@@ -112,9 +103,6 @@ public class ErosionTest extends AbstractOpTest {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<ByteType> out1 = (IterableInterval<ByteType>) ops
 			.run(ListErode.class, IterableInterval.class, in, shapes, true);
-		final Cursor<ByteType> c1 = out1.cursor();
-		final Cursor<ByteType> c2 = out2.cursor();
-		while (c1.hasNext())
-			assertEquals(c1.next().get(), c2.next().get());
+		assertIterationsEqual(out1, out2);
 	}
 }
