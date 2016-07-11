@@ -582,6 +582,8 @@ public class DefaultOpMatchingService extends AbstractService implements
 		op.setEnvironment(candidate.ops());
 
 		// inject the SciJava application context
+		// CTR: TODO: It would be nice if the framework already injected this.
+		// Why does ModuleService.createModule not inject on getDelegateObject?
 		context.inject(op);
 
 		// populate the inputs and return the module
