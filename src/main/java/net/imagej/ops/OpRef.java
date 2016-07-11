@@ -86,8 +86,8 @@ public class OpRef {
 	/**
 	 * Creates a new op reference.
 	 * 
-	 * @param type1 first (non-null!) type constraint of the op.
-	 * @param type2 second (non-null!) type constraint of the op.
+	 * @param type1 first type constraint of the op.
+	 * @param type2 second type constraint of the op.
 	 * @param outType the type of the op's primary output, or null for any type.
 	 * @param args arguments to the op.
 	 */
