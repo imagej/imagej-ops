@@ -30,6 +30,11 @@
 
 package net.imagej.ops;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Iterator;
 import java.util.Random;
 
 import net.imglib2.Cursor;
@@ -164,6 +169,18 @@ public abstract class AbstractOpTest {
 		}
 
 		return img;
+	}
+
+	public <T> void assertIterationsEqual(final Iterable<T> expected,
+		final Iterable<T> actual)
+	{
+		final Iterator<T> e = expected.iterator();
+		final Iterator<T> a = actual.iterator();
+		while (e.hasNext()) {
+			assertTrue("Fewer elements than expected", a.hasNext());
+			assertEquals(e.next(), a.next());
+		}
+		assertFalse("More elements than expected", a.hasNext());
 	}
 
 	public static class NoOp extends AbstractOp {
