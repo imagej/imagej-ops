@@ -108,7 +108,7 @@ public final class OpUtils {
 	 *           types.
 	 */
 	public static Op unwrap(final Module module,
-		final Collection<? extends Class<?>> types)
+		final Collection<Class<?>> types)
 	{
 		if (module == null) return null;
 		final Object delegate = module.getDelegateObject();

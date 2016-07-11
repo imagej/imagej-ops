@@ -53,10 +53,10 @@ public class OpRef {
 	private final String name;
 
 	/** Types which the op must match. */
-	private final Collection<? extends Class<?>> types;
+	private final Collection<Class<?>> types;
 
 	/** The op's output parameter types, or null for no constraints. */
-	private final Collection<? extends Class<?>> outTypes;
+	private final Collection<Class<?>> outTypes;
 
 	/** Arguments to be passed to the op. */
 	private final Object[] args;
@@ -103,7 +103,7 @@ public class OpRef {
 	 * @param types type constraints of op, or null for any type.
 	 * @param args arguments to the op.
 	 */
-	public static OpRef createTypes(final Collection<? extends Class<?>> types,
+	public static OpRef createTypes(final Collection<Class<?>> types,
 		final Object... args)
 	{
 		return new OpRef(null, types, null, args);
@@ -119,8 +119,8 @@ public class OpRef {
 	 * @param outTypes the op's required output types.
 	 * @param args arguments to the op.
 	 */
-	public OpRef(final String name, final Collection<? extends Class<?>> types,
-		final Collection<? extends Class<?>> outTypes, final Object... args)
+	public OpRef(final String name, final Collection<Class<?>> types,
+		final Collection<Class<?>> outTypes, final Object... args)
 	{
 		this.name = name;
 		this.types = types;
@@ -136,12 +136,12 @@ public class OpRef {
 	}
 
 	/** Gets the types which the op must match. */
-	public Collection<? extends Class<?>> getTypes() {
+	public Collection<Class<?>> getTypes() {
 		return types;
 	}
 
 	/** Gets the op's output types, or null for no constraints. */
-	public Collection<? extends Class<?>> getOutTypes() {
+	public Collection<Class<?>> getOutTypes() {
 		return outTypes;
 	}
 

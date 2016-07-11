@@ -450,8 +450,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * </p>
 	 */
 	private boolean outputsMatch(final OpCandidate candidate) {
-		final Collection<? extends Class<?>> outTypes = candidate.getRef()
-			.getOutTypes();
+		final Collection<Class<?>> outTypes = candidate.getRef().getOutTypes();
 		if (outTypes == null) return true; // no constraints on output types
 
 		final Iterator<ModuleItem<?>> outItems = candidate.cInfo().outputs()
