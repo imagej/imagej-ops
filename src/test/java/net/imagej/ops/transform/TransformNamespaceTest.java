@@ -29,10 +29,9 @@
  */
 package net.imagej.ops.transform;
 
-import org.junit.Test;
-
 import net.imagej.ops.AbstractNamespaceTest;
-import net.imagej.ops.transform.TransformNamespace;
+
+import org.junit.Test;
 
 /**
  * Tests {@link TransformNamespace}.

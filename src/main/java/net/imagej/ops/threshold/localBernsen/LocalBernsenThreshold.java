@@ -30,9 +30,6 @@
 
 package net.imagej.ops.threshold.localBernsen;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Ops;
 import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.special.function.Functions;
@@ -43,6 +40,9 @@ import net.imagej.ops.threshold.localMidGrey.LocalMidGreyThreshold;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Pair;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * LocalThresholdMethod which is similar to {@link LocalMidGreyThreshold}, but uses a

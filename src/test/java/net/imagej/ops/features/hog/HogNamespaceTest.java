@@ -29,9 +29,9 @@
  */
 package net.imagej.ops.features.hog;
 
-import org.junit.Test;
-
 import net.imagej.ops.AbstractNamespaceTest;
+
+import org.junit.Test;
 
 /**
  * Tests {@link HogNamespace}.

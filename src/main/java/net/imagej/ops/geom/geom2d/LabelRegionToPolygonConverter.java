@@ -57,8 +57,9 @@ public class LabelRegionToPolygonConverter extends
 	AbstractConverter<LabelRegion, Polygon>
 {
 
-	@Parameter
+	@Parameter(required = false)
 	private OpService ops;
+
 	private UnaryFunctionOp<Object, Object> contourFunc;
 
 	@SuppressWarnings({ "unchecked" })
@@ -85,6 +86,7 @@ public class LabelRegionToPolygonConverter extends
 
 	@Override
 	public boolean supports(final ConversionRequest request) {
+		if (ops == null) return false;
 
 		final Object sourceObject = request.sourceObject();
 

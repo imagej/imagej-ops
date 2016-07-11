@@ -34,6 +34,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import io.scif.img.IO;
+
+import java.net.URL;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -169,6 +172,17 @@ public abstract class AbstractOpTest {
 		}
 
 		return img;
+	}
+
+	public Img<FloatType> openFloatImg(final String resourcePath) {
+		return openFloatImg(getClass(), resourcePath);
+	}
+
+	public static Img<FloatType> openFloatImg(final Class<?> c,
+		final String resourcePath)
+	{
+		final URL url = c.getResource(resourcePath);
+		return IO.openFloatImgs(url.getPath()).get(0).getImg();
 	}
 
 	public <T> void assertIterationsEqual(final Iterable<T> expected,

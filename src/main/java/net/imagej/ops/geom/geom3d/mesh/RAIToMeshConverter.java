@@ -57,8 +57,9 @@ public class RAIToMeshConverter extends
 	AbstractConverter<RandomAccessibleInterval, Mesh>
 {
 
-	@Parameter
+	@Parameter(required = false)
 	private OpService ops;
+
 	private UnaryFunctionOp<RandomAccessibleInterval, Mesh> marchingCubesFunc;
 
 	@SuppressWarnings("unchecked")
@@ -87,6 +88,7 @@ public class RAIToMeshConverter extends
 
 	@Override
 	public boolean supports(final ConversionRequest request) {
+		if (ops == null) return false;
 
 		final Object sourceObject = request.sourceObject();
 

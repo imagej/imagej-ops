@@ -36,7 +36,6 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Random;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.Ops;
 import net.imagej.ops.special.hybrid.Hybrids;
 import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imglib2.Cursor;
