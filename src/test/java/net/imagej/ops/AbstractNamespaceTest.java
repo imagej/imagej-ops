@@ -39,6 +39,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import org.scijava.command.CommandService;
@@ -47,7 +48,6 @@ import org.scijava.plugin.Parameter;
 import org.scijava.util.ClassUtils;
 import org.scijava.util.ConversionUtils;
 import org.scijava.util.GenericUtils;
-import org.scijava.util.MiscUtils;
 
 /**
  * Base class for unit testing of namespaces. In particular, this class has
@@ -74,7 +74,7 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		boolean success = true; // whether the test will succeed
 		for (final String op : ops.ops()) {
 			final String ns = OpUtils.getNamespace(op);
-			if (!MiscUtils.equal(namespace, ns)) continue;
+			if (!Objects.equals(namespace, ns)) continue;
 			if (!checkComplete(namespaceClass, op)) success = false;
 		}
 		assertTrue("Coverage mismatch", success);
