@@ -32,9 +32,8 @@ package net.imagej.ops;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
-
-import org.scijava.util.MiscUtils;
 
 /**
  * Data structure which identifies an op by name and/or type(s) and/or argument
@@ -217,20 +216,17 @@ public class OpRef<OP extends Op> {
 		if (obj == null) return false;
 		if (getClass() != obj.getClass()) return false;
 		final OpRef<?> other = (OpRef<?>) obj;
-		if (!MiscUtils.equal(name, other.name)) return false;
-		if (!MiscUtils.equal(type, other.type)) return false;
-		if (!MiscUtils.equal(extraTypes, other.extraTypes)) return false;
+		if (!Objects.equals(name, other.name)) return false;
+		if (!Objects.equals(type, other.type)) return false;
+		if (!Objects.equals(outTypes, other.outTypes)) return false;
+		if (!Objects.equals(extraTypes, other.extraTypes)) return false;
 		if (!Arrays.equals(args, other.args)) return false;
 		return true;
 	}
 
 	@Override
 	public int hashCode() {
-		int hash = 31;
-		for (final Object o : args) {
-			hash += o.hashCode() * 31;
-		}
-		return type.hashCode() * 31 + hash;
+		return Objects.hash(name, type, extraTypes, outTypes, args);
 	}
 
 	// -- Helper methods --
