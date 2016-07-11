@@ -46,9 +46,6 @@ import net.imagej.ops.special.computer.UnaryComputerOp;
  */
 public interface JoinNOps<OP extends Op> extends Ops.Join {
 
-	// TODO: Change to Collection<? extends OP> once
-	// imagej-ops depends on scijava-common 2.50.1 or later.
-
 	/**
 	 * @return {@link Op}s which are joined by this op
 	 */
