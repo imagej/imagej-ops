@@ -35,6 +35,8 @@ import net.imagej.ops.special.function.BinaryFunctionOp;
 import net.imagej.ops.special.hybrid.BinaryHybridCF;
 import net.imagej.ops.special.hybrid.BinaryHybridCFI;
 import net.imagej.ops.special.hybrid.BinaryHybridCFI1;
+import net.imagej.ops.special.hybrid.BinaryHybridCI;
+import net.imagej.ops.special.hybrid.BinaryHybridCI1;
 import net.imagej.ops.special.inplace.BinaryInplaceOp;
 
 /**
@@ -43,8 +45,9 @@ import net.imagej.ops.special.inplace.BinaryInplaceOp;
  * <p>
  * Binary ops come in three major flavors: {@link BinaryComputerOp},
  * {@link BinaryFunctionOp} and {@link BinaryInplaceOp}. Additional hybrid types
- * exist that union these flavors in various combinations:
- * {@link BinaryHybridCF}, {@link BinaryHybridCFI1} and {@link BinaryHybridCFI}.
+ * union these flavors in various combinations: {@link BinaryHybridCF},
+ * {@link BinaryHybridCI1}, {@link BinaryHybridCI}, {@link BinaryHybridCFI1} and
+ * {@link BinaryHybridCFI}.
  * </p>
  * <p>
  * A binary op may be treated as a {@link UnaryOp} by holding the second input

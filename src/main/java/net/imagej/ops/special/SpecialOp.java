@@ -49,6 +49,8 @@ import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.BinaryHybridCF;
 import net.imagej.ops.special.hybrid.BinaryHybridCFI;
 import net.imagej.ops.special.hybrid.BinaryHybridCFI1;
+import net.imagej.ops.special.hybrid.BinaryHybridCI;
+import net.imagej.ops.special.hybrid.BinaryHybridCI1;
 import net.imagej.ops.special.hybrid.NullaryHybridCF;
 import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imagej.ops.special.hybrid.UnaryHybridCFI;
@@ -196,13 +198,13 @@ import org.scijava.InstantiableException;
  * </tr>
  * <tr>
  * <td>2</td>
- * <td>{@code BinaryHybridCI1} (unimplemented)</td>
+ * <td>{@link BinaryHybridCI1}</td>
  * <td style="white-space: nowrap">{@code void compute2(A, I, A)} +
  * {@code void mutate1(A, I)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
- * <td>{@code BinaryHybridCI} (unimplemented)</td>
+ * <td>{@link BinaryHybridCI}</td>
  * <td style="white-space: nowrap">{@code void compute2(A, A, A)} +
  * {@code void mutate1(A, A)} + {@code void mutate2(A, A)}</td>
  * </tr>

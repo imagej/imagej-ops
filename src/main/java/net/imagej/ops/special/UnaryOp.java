@@ -34,6 +34,7 @@ import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imagej.ops.special.hybrid.UnaryHybridCFI;
+import net.imagej.ops.special.hybrid.UnaryHybridCI;
 import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
 /**
@@ -42,8 +43,8 @@ import net.imagej.ops.special.inplace.UnaryInplaceOp;
  * <p>
  * Unary ops come in three major flavors: {@link UnaryComputerOp},
  * {@link UnaryFunctionOp} and {@link UnaryInplaceOp}. Additional hybrid types
- * exist that union these flavors in various combinations: {@link UnaryHybridCF}
- * and {@link UnaryHybridCFI}.
+ * union these flavors in various combinations: {@link UnaryHybridCF},
+ * {@link UnaryHybridCI} and {@link UnaryHybridCFI}.
  * </p>
  * <p>
  * A unary op may be treated as a {@link NullaryOp} by holding the input
