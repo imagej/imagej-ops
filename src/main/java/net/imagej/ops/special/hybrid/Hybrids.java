@@ -68,8 +68,8 @@ public final class Hybrids {
 	 *          value.
 	 * @return A {@link NullaryHybridCF} with populated inputs, ready to use.
 	 */
-	public static <O, OP extends Op> NullaryHybridCF<O> nullaryCF(
-		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
+	public static <O> NullaryHybridCF<O> nullaryCF(final OpEnvironment ops,
+		final Class<? extends Op> opType, final Class<O> outType,
 		final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
@@ -93,9 +93,8 @@ public final class Hybrids {
 	 *          value.
 	 * @return A {@link NullaryHybridCF} with populated inputs, ready to use.
 	 */
-	public static <O, OP extends Op> NullaryHybridCF<O> nullaryCF(
-		final OpEnvironment ops, final Class<OP> opType, final O out,
-		final Object... otherArgs)
+	public static <O> NullaryHybridCF<O> nullaryCF(final OpEnvironment ops,
+		final Class<? extends Op> opType, final O out, final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
 		final NullaryHybridCF<O> op = SpecialOp.op(ops, opType,
@@ -119,8 +118,8 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link UnaryHybridCF} with populated inputs, ready to use.
 	 */
-	public static <I, O, OP extends Op> UnaryHybridCF<I, O> unaryCF(
-		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
+	public static <I, O> UnaryHybridCF<I, O> unaryCF(final OpEnvironment ops,
+		final Class<? extends Op> opType, final Class<O> outType,
 		final Class<I> inType, final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
@@ -145,9 +144,9 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link UnaryHybridCF} with populated inputs, ready to use.
 	 */
-	public static <I, O, OP extends Op> UnaryHybridCF<I, O> unaryCF(
-		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
-		final I in, final Object... otherArgs)
+	public static <I, O> UnaryHybridCF<I, O> unaryCF(final OpEnvironment ops,
+		final Class<? extends Op> opType, final Class<O> outType, final I in,
+		final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
 		final UnaryHybridCF<I, O> op = SpecialOp.op(ops, opType,
@@ -171,8 +170,8 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link UnaryHybridCF} with populated inputs, ready to use.
 	 */
-	public static <I, O, OP extends Op> UnaryHybridCF<I, O> unaryCF(
-		final OpEnvironment ops, final Class<OP> opType, final O out, final I in,
+	public static <I, O> UnaryHybridCF<I, O> unaryCF(final OpEnvironment ops,
+		final Class<? extends Op> opType, final O out, final I in,
 		final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
@@ -197,9 +196,9 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link UnaryHybridCI} with populated inputs, ready to use.
 	 */
-	public static <I, O extends I, OP extends Op> UnaryHybridCI<I, O> unaryCI(
-		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
-		final Class<I> inType, final Object... otherArgs)
+	public static <I, O extends I> UnaryHybridCI<I, O> unaryCI(
+		final OpEnvironment ops, final Class<? extends Op> opType,
+		final Class<O> outType, final Class<I> inType, final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
 		final UnaryHybridCI<I, O> op = SpecialOp.op(ops, opType,
@@ -223,9 +222,9 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link UnaryHybridCI} with populated inputs, ready to use.
 	 */
-	public static <I, O extends I, OP extends Op> UnaryHybridCI<I, O> unaryCI(
-		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
-		final I in, final Object... otherArgs)
+	public static <I, O extends I> UnaryHybridCI<I, O> unaryCI(
+		final OpEnvironment ops, final Class<? extends Op> opType,
+		final Class<O> outType, final I in, final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
 		final UnaryHybridCI<I, O> op = SpecialOp.op(ops, opType,
@@ -249,9 +248,9 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link UnaryHybridCI} with populated inputs, ready to use.
 	 */
-	public static <I, O extends I, OP extends Op> UnaryHybridCI<I, O> unaryCI(
-		final OpEnvironment ops, final Class<OP> opType, final O out, final I in,
-		final Object... otherArgs)
+	public static <I, O extends I> UnaryHybridCI<I, O> unaryCI(
+		final OpEnvironment ops, final Class<? extends Op> opType, final O out,
+		final I in, final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
 		final UnaryHybridCI<I, O> op = SpecialOp.op(ops, opType,
@@ -276,9 +275,9 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link UnaryHybridCFI} with populated inputs, ready to use.
 	 */
-	public static <I, O extends I, OP extends Op> UnaryHybridCFI<I, O> unaryCFI(
-		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
-		final Class<I> inType, final Object... otherArgs)
+	public static <I, O extends I> UnaryHybridCFI<I, O> unaryCFI(
+		final OpEnvironment ops, final Class<? extends Op> opType,
+		final Class<O> outType, final Class<I> inType, final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
 		final UnaryHybridCFI<I, O> op = SpecialOp.op(ops, opType,
@@ -303,9 +302,9 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link UnaryHybridCFI} with populated inputs, ready to use.
 	 */
-	public static <I, O extends I, OP extends Op> UnaryHybridCFI<I, O> unaryCFI(
-		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
-		final I in, final Object... otherArgs)
+	public static <I, O extends I> UnaryHybridCFI<I, O> unaryCFI(
+		final OpEnvironment ops, final Class<? extends Op> opType,
+		final Class<O> outType, final I in, final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
 		final UnaryHybridCFI<I, O> op = SpecialOp.op(ops, opType,
@@ -329,9 +328,9 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link UnaryHybridCFI} with populated inputs, ready to use.
 	 */
-	public static <I, O extends I, OP extends Op> UnaryHybridCFI<I, O> unaryCFI(
-		final OpEnvironment ops, final Class<OP> opType, final O out, final I in,
-		final Object... otherArgs)
+	public static <I, O extends I> UnaryHybridCFI<I, O> unaryCFI(
+		final OpEnvironment ops, final Class<? extends Op> opType, final O out,
+		final I in, final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
 		final UnaryHybridCFI<I, O> op = SpecialOp.op(ops, opType,
@@ -359,9 +358,9 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link BinaryHybridCF} with populated inputs, ready to use.
 	 */
-	public static <I1, I2, O, OP extends Op> BinaryHybridCF<I1, I2, O> binaryCF(
-		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
-		final Class<I1> in1Type, final Class<I2> in2Type,
+	public static <I1, I2, O> BinaryHybridCF<I1, I2, O> binaryCF(
+		final OpEnvironment ops, final Class<? extends Op> opType,
+		final Class<O> outType, final Class<I1> in1Type, final Class<I2> in2Type,
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1Type, in2Type);
@@ -389,9 +388,10 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link BinaryHybridCF} with populated inputs, ready to use.
 	 */
-	public static <I1, I2, O, OP extends Op> BinaryHybridCF<I1, I2, O> binaryCF(
-		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
-		final I1 in1, final I2 in2, final Object... otherArgs)
+	public static <I1, I2, O> BinaryHybridCF<I1, I2, O> binaryCF(
+		final OpEnvironment ops, final Class<? extends Op> opType,
+		final Class<O> outType, final I1 in1, final I2 in2,
+		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1, in2);
 		@SuppressWarnings("unchecked")
@@ -417,9 +417,9 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link BinaryHybridCF} with populated inputs, ready to use.
 	 */
-	public static <I1, I2, O, OP extends Op> BinaryHybridCF<I1, I2, O> binaryCF(
-		final OpEnvironment ops, final Class<OP> opType, final O out, final I1 in1,
-		final I2 in2, final Object... otherArgs)
+	public static <I1, I2, O> BinaryHybridCF<I1, I2, O> binaryCF(
+		final OpEnvironment ops, final Class<? extends Op> opType, final O out,
+		final I1 in1, final I2 in2, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in1, in2);
 		@SuppressWarnings("unchecked")
@@ -448,10 +448,10 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link BinaryHybridCI1} with populated inputs, ready to use.
 	 */
-	public static <I1, I2, O extends I1, OP extends Op> BinaryHybridCI1<I1, I2, O>
-		binaryCI1(final OpEnvironment ops, final Class<OP> opType,
-			final Class<O> outType, final Class<I1> in1Type, final Class<I2> in2Type,
-			final Object... otherArgs)
+	public static <I1, I2, O extends I1> BinaryHybridCI1<I1, I2, O> binaryCI1(
+		final OpEnvironment ops, final Class<? extends Op> opType,
+		final Class<O> outType, final Class<I1> in1Type, final Class<I2> in2Type,
+		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1Type, in2Type);
 		@SuppressWarnings("unchecked")
@@ -478,10 +478,10 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link BinaryHybridCI1} with populated inputs, ready to use.
 	 */
-	public static <I1, I2, O extends I1, OP extends Op> BinaryHybridCI1<I1, I2, O>
-		binaryCI1(final OpEnvironment ops, final Class<OP> opType,
-			final Class<O> outType, final I1 in1, final I2 in2,
-			final Object... otherArgs)
+	public static <I1, I2, O extends I1> BinaryHybridCI1<I1, I2, O> binaryCI1(
+		final OpEnvironment ops, final Class<? extends Op> opType,
+		final Class<O> outType, final I1 in1, final I2 in2,
+		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1, in2);
 		@SuppressWarnings("unchecked")
@@ -507,9 +507,9 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link BinaryHybridCI1} with populated inputs, ready to use.
 	 */
-	public static <I1, I2, O extends I1, OP extends Op> BinaryHybridCI1<I1, I2, O>
-		binaryCI1(final OpEnvironment ops, final Class<OP> opType, final O out,
-			final I1 in1, final I2 in2, final Object... otherArgs)
+	public static <I1, I2, O extends I1> BinaryHybridCI1<I1, I2, O> binaryCI1(
+		final OpEnvironment ops, final Class<? extends Op> opType, final O out,
+		final I1 in1, final I2 in2, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in1, in2);
 		@SuppressWarnings("unchecked")
@@ -538,10 +538,10 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link BinaryHybridCFI1} with populated inputs, ready to use.
 	 */
-	public static <I1, I2, O extends I1, OP extends Op>
-		BinaryHybridCFI1<I1, I2, O> binaryCFI1(final OpEnvironment ops,
-			final Class<OP> opType, final Class<O> outType, final Class<I1> in1Type,
-			final Class<I2> in2Type, final Object... otherArgs)
+	public static <I1, I2, O extends I1> BinaryHybridCFI1<I1, I2, O> binaryCFI1(
+		final OpEnvironment ops, final Class<? extends Op> opType,
+		final Class<O> outType, final Class<I1> in1Type, final Class<I2> in2Type,
+		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1Type, in2Type);
 		@SuppressWarnings("unchecked")
@@ -568,10 +568,10 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link BinaryHybridCFI1} with populated inputs, ready to use.
 	 */
-	public static <I1, I2, O extends I1, OP extends Op>
-		BinaryHybridCFI1<I1, I2, O> binaryCFI1(final OpEnvironment ops,
-			final Class<OP> opType, final Class<O> outType, final I1 in1,
-			final I2 in2, final Object... otherArgs)
+	public static <I1, I2, O extends I1> BinaryHybridCFI1<I1, I2, O> binaryCFI1(
+		final OpEnvironment ops, final Class<? extends Op> opType,
+		final Class<O> outType, final I1 in1, final I2 in2,
+		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1, in2);
 		@SuppressWarnings("unchecked")
@@ -597,10 +597,9 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link BinaryHybridCFI1} with populated inputs, ready to use.
 	 */
-	public static <I1, I2, O extends I1, OP extends Op>
-		BinaryHybridCFI1<I1, I2, O> binaryCFI1(final OpEnvironment ops,
-			final Class<OP> opType, final O out, final I1 in1, final I2 in2,
-			final Object... otherArgs)
+	public static <I1, I2, O extends I1> BinaryHybridCFI1<I1, I2, O> binaryCFI1(
+		final OpEnvironment ops, final Class<? extends Op> opType, final O out,
+		final I1 in1, final I2 in2, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in1, in2);
 		@SuppressWarnings("unchecked")
@@ -626,9 +625,9 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link BinaryHybridCI} with populated inputs, ready to use.
 	 */
-	public static <I, O extends I, OP extends Op> BinaryHybridCI<I, O> binaryCI(
-		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
-		final Class<I> inType, final Object... otherArgs)
+	public static <I, O extends I> BinaryHybridCI<I, O> binaryCI(
+		final OpEnvironment ops, final Class<? extends Op> opType,
+		final Class<O> outType, final Class<I> inType, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, inType, inType);
 		@SuppressWarnings("unchecked")
@@ -655,9 +654,10 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link BinaryHybridCI} with populated inputs, ready to use.
 	 */
-	public static <I, O extends I, OP extends Op> BinaryHybridCI<I, O> binaryCI(
-		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
-		final I in1, final I in2, final Object... otherArgs)
+	public static <I, O extends I> BinaryHybridCI<I, O> binaryCI(
+		final OpEnvironment ops, final Class<? extends Op> opType,
+		final Class<O> outType, final I in1, final I in2,
+		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1, in2);
 		@SuppressWarnings("unchecked")
@@ -683,9 +683,9 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link BinaryHybridCI} with populated inputs, ready to use.
 	 */
-	public static <I, O extends I, OP extends Op> BinaryHybridCI<I, O> binaryCI(
-		final OpEnvironment ops, final Class<OP> opType, final O out, final I in1,
-		final I in2, final Object... otherArgs)
+	public static <I, O extends I> BinaryHybridCI<I, O> binaryCI(
+		final OpEnvironment ops, final Class<? extends Op> opType, final O out,
+		final I in1, final I in2, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in1, in2);
 		@SuppressWarnings("unchecked")
@@ -712,9 +712,9 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link BinaryHybridCFI} with populated inputs, ready to use.
 	 */
-	public static <I, O extends I, OP extends Op> BinaryHybridCFI<I, O> binaryCFI(
-		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
-		final Class<I> inType, final Object... otherArgs)
+	public static <I, O extends I> BinaryHybridCFI<I, O> binaryCFI(
+		final OpEnvironment ops, final Class<? extends Op> opType,
+		final Class<O> outType, final Class<I> inType, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, inType, inType);
 		@SuppressWarnings("unchecked")
@@ -741,9 +741,10 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link BinaryHybridCFI} with populated inputs, ready to use.
 	 */
-	public static <I, O extends I, OP extends Op> BinaryHybridCFI<I, O> binaryCFI(
-		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
-		final I in1, final I in2, final Object... otherArgs)
+	public static <I, O extends I> BinaryHybridCFI<I, O> binaryCFI(
+		final OpEnvironment ops, final Class<? extends Op> opType,
+		final Class<O> outType, final I in1, final I in2,
+		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1, in2);
 		@SuppressWarnings("unchecked")
@@ -769,9 +770,9 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link BinaryHybridCFI} with populated inputs, ready to use.
 	 */
-	public static <I, O extends I, OP extends Op> BinaryHybridCFI<I, O> binaryCFI(
-		final OpEnvironment ops, final Class<OP> opType, final O out, final I in1,
-		final I in2, final Object... otherArgs)
+	public static <I, O extends I> BinaryHybridCFI<I, O> binaryCFI(
+		final OpEnvironment ops, final Class<? extends Op> opType, final O out,
+		final I in1, final I in2, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in1, in2);
 		@SuppressWarnings("unchecked")

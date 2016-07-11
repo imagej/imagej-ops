@@ -68,8 +68,8 @@ public final class Inplaces {
 	 *          value.
 	 * @return An {@link UnaryInplaceOp} with populated inputs, ready to use.
 	 */
-	public static <O, OP extends Op> UnaryInplaceOp<? super O, O> unary(
-		final OpEnvironment ops, final Class<OP> opType, final Class<O> argType,
+	public static <O> UnaryInplaceOp<? super O, O> unary(final OpEnvironment ops,
+		final Class<? extends Op> opType, final Class<O> argType,
 		final Object... otherArgs)
 	{
 		final OpRef[] refs = new OpRef[2];
@@ -98,9 +98,8 @@ public final class Inplaces {
 	 *          value.
 	 * @return An {@link UnaryInplaceOp} with populated inputs, ready to use.
 	 */
-	public static <O, OP extends Op> UnaryInplaceOp<? super O, O> unary(
-		final OpEnvironment ops, final Class<OP> opType, final O arg,
-		final Object... otherArgs)
+	public static <O> UnaryInplaceOp<? super O, O> unary(final OpEnvironment ops,
+		final Class<? extends Op> opType, final O arg, final Object... otherArgs)
 	{
 		final OpRef[] refs = new OpRef[2];
 		refs[0] = OpRef.createTypes(opType, UnaryInplaceOnlyOp.class, null, OpUtils
@@ -132,10 +131,9 @@ public final class Inplaces {
 	 * @return An {@link BinaryInplace1Op} with populated inputs, ready to use.
 	 */
 
-	public static <I2, O, OP extends Op> BinaryInplace1Op<? super O, I2, O>
-		binary1(final OpEnvironment ops, final Class<OP> opType,
-			final Class<O> argType, final Class<I2> inType,
-			final Object... otherArgs)
+	public static <I2, O> BinaryInplace1Op<? super O, I2, O> binary1(
+		final OpEnvironment ops, final Class<? extends Op> opType,
+		final Class<O> argType, final Class<I2> inType, final Object... otherArgs)
 	{
 		final OpRef[] refs = new OpRef[2];
 		refs[0] = OpRef.createTypes(opType, BinaryInplace1OnlyOp.class, null,
@@ -164,9 +162,9 @@ public final class Inplaces {
 	 *          values.
 	 * @return An {@link BinaryInplace1Op} with populated inputs, ready to use.
 	 */
-	public static <I2, O, OP extends Op> BinaryInplace1Op<? super O, I2, O>
-		binary1(final OpEnvironment ops, final Class<OP> opType, final O arg,
-			final I2 in, final Object... otherArgs)
+	public static <I2, O> BinaryInplace1Op<? super O, I2, O> binary1(
+		final OpEnvironment ops, final Class<? extends Op> opType, final O arg,
+		final I2 in, final Object... otherArgs)
 	{
 		final OpRef[] refs = new OpRef[2];
 		refs[0] = OpRef.createTypes(opType, BinaryInplace1OnlyOp.class, null,
@@ -195,9 +193,9 @@ public final class Inplaces {
 	 *          values.
 	 * @return An {@link BinaryInplaceOp} with populated inputs, ready to use.
 	 */
-	public static <O, OP extends Op> BinaryInplaceOp<? super O, O> binary(
-		final OpEnvironment ops, final Class<OP> opType, final Class<O> argType,
-		final Object... otherArgs)
+	public static <O> BinaryInplaceOp<? super O, O> binary(
+		final OpEnvironment ops, final Class<? extends Op> opType,
+		final Class<O> argType, final Object... otherArgs)
 	{
 		final OpRef[] refs = new OpRef[2];
 		refs[0] = OpRef.createTypes(opType, BinaryInplaceOnlyOp.class, null, OpUtils
@@ -226,9 +224,9 @@ public final class Inplaces {
 	 *          values.
 	 * @return An {@link BinaryInplaceOp} with populated inputs, ready to use.
 	 */
-	public static <O, OP extends Op> BinaryInplaceOp<? super O, O> binary(
-		final OpEnvironment ops, final Class<OP> opType, final O arg1, final O arg2,
-		final Object... otherArgs)
+	public static <O> BinaryInplaceOp<? super O, O> binary(
+		final OpEnvironment ops, final Class<? extends Op> opType, final O arg1,
+		final O arg2, final Object... otherArgs)
 	{
 		final OpRef[] refs = new OpRef[2];
 		refs[0] = OpRef.createTypes(opType, BinaryInplaceOnlyOp.class, null, OpUtils

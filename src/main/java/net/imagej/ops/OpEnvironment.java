@@ -152,9 +152,7 @@ public interface OpEnvironment extends Contextual {
 	 *         outputs will be given.
 	 */
 	@OpMethod(op = net.imagej.ops.run.RunByType.class)
-	default <OP extends Op> Object run(final Class<OP> type,
-		final Object... args)
-	{
+	default Object run(final Class<? extends Op> type, final Object... args) {
 		return run(module(type, args));
 	}
 
@@ -201,7 +199,7 @@ public interface OpEnvironment extends Contextual {
 	 */
 	@OpMethod(op = net.imagej.ops.lookup.LookupByType.class)
 	default <OP extends Op> OP op(final Class<OP> type, final Object... args) {
-		return OpUtils.unwrap(module(type, args), type, null);
+		return (OP) OpUtils.unwrap(module(type, args), type, null);
 	}
 
 	/**
@@ -266,9 +264,7 @@ public interface OpEnvironment extends Contextual {
 	 * @return A {@link Module} wrapping the best {@link Op}, with populated
 	 *         inputs, ready to run.
 	 */
-	default <OP extends Op> Module module(final Class<OP> type,
-		final Object... args)
-	{
+	default Module module(final Class<? extends Op> type, final Object... args) {
 		return matcher().findMatch(this, OpRef.create(type, args)).getModule();
 	}
 

@@ -65,8 +65,8 @@ public final class Computers {
 	 *          value.
 	 * @return A {@link NullaryComputerOp} with populated inputs, ready to use.
 	 */
-	public static <O, OP extends Op> NullaryComputerOp<O> nullary(
-		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
+	public static <O> NullaryComputerOp<O> nullary(final OpEnvironment ops,
+		final Class<? extends Op> opType, final Class<O> outType,
 		final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
@@ -90,9 +90,8 @@ public final class Computers {
 	 *          value.
 	 * @return A {@link NullaryComputerOp} with populated inputs, ready to use.
 	 */
-	public static <O, OP extends Op> NullaryComputerOp<O> nullary(
-		final OpEnvironment ops, final Class<OP> opType, final O out,
-		final Object... otherArgs)
+	public static <O> NullaryComputerOp<O> nullary(final OpEnvironment ops,
+		final Class<? extends Op> opType, final O out, final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
 		final NullaryComputerOp<O> op = SpecialOp.op(ops, opType,
@@ -117,8 +116,8 @@ public final class Computers {
 	 *          output values.
 	 * @return A {@link UnaryComputerOp} with populated inputs, ready to use.
 	 */
-	public static <I, O, OP extends Op> UnaryComputerOp<I, O> unary(
-		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
+	public static <I, O> UnaryComputerOp<I, O> unary(final OpEnvironment ops,
+		final Class<? extends Op> opType, final Class<O> outType,
 		final Class<I> inType, final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
@@ -144,9 +143,9 @@ public final class Computers {
 	 *          output values.
 	 * @return A {@link UnaryComputerOp} with populated inputs, ready to use.
 	 */
-	public static <I, O, OP extends Op> UnaryComputerOp<I, O> unary(
-		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
-		final I in, final Object... otherArgs)
+	public static <I, O> UnaryComputerOp<I, O> unary(final OpEnvironment ops,
+		final Class<? extends Op> opType, final Class<O> outType, final I in,
+		final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
 		final UnaryComputerOp<I, O> op = SpecialOp.op(ops, opType,
@@ -170,8 +169,8 @@ public final class Computers {
 	 *          output values.
 	 * @return A {@link UnaryComputerOp} with populated inputs, ready to use.
 	 */
-	public static <I, O, OP extends Op> UnaryComputerOp<I, O> unary(
-		final OpEnvironment ops, final Class<OP> opType, final O out, final I in,
+	public static <I, O> UnaryComputerOp<I, O> unary(final OpEnvironment ops,
+		final Class<? extends Op> opType, final O out, final I in,
 		final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
@@ -200,9 +199,9 @@ public final class Computers {
 	 *          output values.
 	 * @return A {@link BinaryComputerOp} with populated inputs, ready to use.
 	 */
-	public static <I1, I2, O, OP extends Op> BinaryComputerOp<I1, I2, O> binary(
-		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
-		final Class<I1> in1Type, final Class<I2> in2Type,
+	public static <I1, I2, O> BinaryComputerOp<I1, I2, O> binary(
+		final OpEnvironment ops, final Class<? extends Op> opType,
+		final Class<O> outType, final Class<I1> in1Type, final Class<I2> in2Type,
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1Type, in2Type);
@@ -230,9 +229,10 @@ public final class Computers {
 	 *          output values.
 	 * @return A {@link BinaryComputerOp} with populated inputs, ready to use.
 	 */
-	public static <I1, I2, O, OP extends Op> BinaryComputerOp<I1, I2, O> binary(
-		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
-		final I1 in1, final I2 in2, final Object... otherArgs)
+	public static <I1, I2, O> BinaryComputerOp<I1, I2, O> binary(
+		final OpEnvironment ops, final Class<? extends Op> opType,
+		final Class<O> outType, final I1 in1, final I2 in2,
+		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1, in2);
 		@SuppressWarnings("unchecked")
@@ -258,9 +258,9 @@ public final class Computers {
 	 *          output values.
 	 * @return A {@link BinaryComputerOp} with populated inputs, ready to use.
 	 */
-	public static <I1, I2, O, OP extends Op> BinaryComputerOp<I1, I2, O> binary(
-		final OpEnvironment ops, final Class<OP> opType, final O out, final I1 in1,
-		final I2 in2, final Object... otherArgs)
+	public static <I1, I2, O> BinaryComputerOp<I1, I2, O> binary(
+		final OpEnvironment ops, final Class<? extends Op> opType, final O out,
+		final I1 in1, final I2 in2, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in1, in2);
 		@SuppressWarnings("unchecked")

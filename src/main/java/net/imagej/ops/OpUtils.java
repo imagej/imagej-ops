@@ -108,8 +108,8 @@ public final class OpUtils {
 	 * @throws IllegalStateException if the op does not conform to the expected
 	 *           types.
 	 */
-	public static <OP extends Op> OP unwrap(final Module module,
-		final Class<OP> type, final Collection<? extends Class<?>> types)
+	public static Op unwrap(final Module module, final Class<?> type,
+		final Collection<? extends Class<?>> types)
 	{
 		if (module == null) return null;
 		final Object delegate = module.getDelegateObject();
@@ -126,8 +126,11 @@ public final class OpUtils {
 				}
 			}
 		}
-		@SuppressWarnings("unchecked")
-		final OP op = (OP) delegate;
+		if (!(delegate instanceof Op)) {
+			throw new IllegalStateException(delegate.getClass().getName() +
+				" is not an Op");
+		}
+		final Op op = (Op) delegate;
 		return op;
 	}
 
