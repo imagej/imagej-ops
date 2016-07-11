@@ -152,7 +152,7 @@ public class RichardsonLucyF<I extends RealType<I> & NativeType<I>, O extends Re
 						in2(), fftImg, fftKernel, imgConvolutionInterval);
 
 			ArrayList<UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>> list =
-				new ArrayList<UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>>();
+				new ArrayList<>();
 
 			list.add(normalizer);
 
