@@ -288,19 +288,19 @@ public interface SpecialOp extends Op, Initializable, Threadable {
 	 * @param args The operation's arguments.
 	 * @return A typed {@link SpecialOp} with populated inputs, ready to use.
 	 */
-	static <OP extends Op, S extends SpecialOp, O> S op(final OpEnvironment ops,
-		final Class<OP> opType, final Class<S> specialType, final Class<O> outType,
-		final Object... args)
+	static <S extends SpecialOp, O> S op(final OpEnvironment ops,
+		final Class<? extends Op> opType, final Class<S> specialType,
+		final Class<O> outType, final Object... args)
 	{
-		final OpRef<OP> ref = OpRef.createTypes(opType, specialType, outType, args);
+		final OpRef ref = OpRef.createTypes(opType, specialType, outType, args);
 		@SuppressWarnings("unchecked")
 		final S op = (S) ops.op(ref);
 		return op;
 	}
 
-	static <OP extends Op> List<OpCandidate<OP>> candidates(
-		final OpEnvironment ops, final String name, final Class<OP> opType,
-		final int arity, final Flavor flavor)
+	static List<OpCandidate> candidates(final OpEnvironment ops,
+		final String name, final Class<? extends Op> opType, final int arity,
+		final Flavor flavor)
 	{
 		// look up matching candidates
 		final Class<?> specialType;
@@ -310,13 +310,13 @@ public interface SpecialOp extends Op, Initializable, Threadable {
 		else specialType = null;
 		final Set<? extends Class<?>> specialTypes = specialType == null ? null
 			: Collections.singleton(specialType);
-		final OpRef<OP> ref = new OpRef<>(name, opType, specialTypes, null);
+		final OpRef ref = new OpRef(name, opType, specialTypes, null);
 		return filterArity(ops.matcher().findCandidates(ops, ref), arity);
 	}
 
 	/** Extracts a sublist of op candidates with a particular arity. */
-	static <OP extends Op> List<OpCandidate<OP>> filterArity(
-		final List<OpCandidate<OP>> candidates, final int arity)
+	static List<OpCandidate> filterArity(final List<OpCandidate> candidates,
+		final int arity)
 	{
 		if (arity < 0) return candidates;
 		return candidates.stream().filter(candidate -> {

@@ -72,13 +72,8 @@ public class HelpCandidates extends AbstractHelp {
 
 	@Override
 	public void run() {
-		runTyped(opType, arity == null ? -1 : arity);
-	}
-
-	// -- Helper methods --
-
-	private <OP extends Op> void runTyped(final Class<OP> o, final int a) {
-		help(SpecialOp.candidates(ops, name, o, a, flavor));
+		final int a = arity == null ? -1 : arity;
+		help(SpecialOp.candidates(ops, name, opType, a, flavor));
 	}
 
 }

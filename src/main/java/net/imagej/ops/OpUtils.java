@@ -93,9 +93,7 @@ public final class OpUtils {
 	 * @throws IllegalStateException if the op does not conform to the expected
 	 *           types.
 	 */
-	public static <OP extends Op> OP unwrap(final Module module,
-		final OpRef<OP> ref)
-	{
+	public static Op unwrap(final Module module, final OpRef ref) {
 		return unwrap(module, ref.getType(), ref.getExtraTypes());
 	}
 
@@ -248,12 +246,12 @@ public final class OpUtils {
 	 *         whether it matched, and if not, why not).
 	 * @see OpMatchingService#filterMatches(List)
 	 */
-	public static String matchInfo(final List<OpCandidate<?>> candidates,
-		final List<OpCandidate<?>> matches)
+	public static String matchInfo(final List<OpCandidate> candidates,
+		final List<OpCandidate> matches)
 	{
 		final StringBuilder sb = new StringBuilder();
 
-		final OpRef<?> ref = candidates.get(0).getRef();
+		final OpRef ref = candidates.get(0).getRef();
 		if (matches.isEmpty()) {
 			// no matches
 			sb.append("No matching '" + ref.getLabel() + "' op\n");
@@ -264,7 +262,7 @@ public final class OpUtils {
 			sb.append("Multiple '" + ref.getLabel() + "' ops of priority " +
 				priority + ":\n");
 			int count = 0;
-			for (final OpCandidate<?> match : matches) {
+			for (final OpCandidate match : matches) {
 				sb.append(++count + ". ");
 				sb.append(opString(match.getModule().getInfo()) + "\n");
 			}
@@ -277,7 +275,7 @@ public final class OpUtils {
 		sb.append("\n");
 		sb.append("Candidates:\n");
 		int count = 0;
-		for (final OpCandidate<?> candidate : candidates) {
+		for (final OpCandidate candidate : candidates) {
 			final ModuleInfo info = candidate.opInfo().cInfo();
 			sb.append(++count + ". ");
 			sb.append("\t" + opString(info, candidate.getStatusItem()) + "\n");

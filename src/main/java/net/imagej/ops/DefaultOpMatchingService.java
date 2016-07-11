@@ -78,45 +78,41 @@ public class DefaultOpMatchingService extends AbstractService implements
 
 	// -- OpMatchingService methods --
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <OP extends Op> OpCandidate<OP> findMatch(final OpEnvironment ops,
-		final OpRef<OP> ref)
-	{
-		return (OpCandidate<OP>) findMatch(ops, Collections.singletonList(ref));
+	public OpCandidate findMatch(final OpEnvironment ops, final OpRef ref) {
+		return findMatch(ops, Collections.singletonList(ref));
 	}
 
 	@Override
-	public OpCandidate<?> findMatch(final OpEnvironment ops,
-		final List<OpRef<?>> refs)
+	public OpCandidate findMatch(final OpEnvironment ops,
+		final List<OpRef> refs)
 	{
 		// find candidates with matching name & type
-		final List<OpCandidate<?>> candidates = findCandidates(ops, refs);
+		final List<OpCandidate> candidates = findCandidates(ops, refs);
 		assertCandidates(candidates, refs.get(0));
 
 		// narrow down candidates to the exact matches
-		final List<OpCandidate<?>> matches = filterMatches(candidates);
+		final List<OpCandidate> matches = filterMatches(candidates);
 
 		return singleMatch(candidates, matches);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public <OP extends Op> List<OpCandidate<OP>> findCandidates(
-		final OpEnvironment ops, final OpRef<OP> ref)
+	public List<OpCandidate> findCandidates(final OpEnvironment ops,
+		final OpRef ref)
 	{
-		return (List) findCandidates(ops, Collections.singletonList(ref));
+		return findCandidates(ops, Collections.singletonList(ref));
 	}
 
 	@Override
-	public List<OpCandidate<?>> findCandidates(final OpEnvironment ops,
-		final List<OpRef<?>> refs)
+	public List<OpCandidate> findCandidates(final OpEnvironment ops,
+		final List<OpRef> refs)
 	{
-		final ArrayList<OpCandidate<?>> candidates = new ArrayList<>();
+		final ArrayList<OpCandidate> candidates = new ArrayList<>();
 		for (final OpInfo info : ops.infos()) {
-			for (final OpRef<?> ref : refs) {
+			for (final OpRef ref : refs) {
 				if (isCandidate(info, ref)) {
-					candidates.add(new OpCandidate<>(ops, ref, info));
+					candidates.add(new OpCandidate(ops, ref, info));
 				}
 			}
 		}
@@ -124,12 +120,10 @@ public class DefaultOpMatchingService extends AbstractService implements
 	}
 
 	@Override
-	public List<OpCandidate<?>> filterMatches(
-		final List<OpCandidate<?>> candidates)
-	{
-		final List<OpCandidate<?>> validCandidates = validCandidates(candidates);
+	public List<OpCandidate> filterMatches(final List<OpCandidate> candidates) {
+		final List<OpCandidate> validCandidates = validCandidates(candidates);
 
-		List<OpCandidate<?>> matches;
+		List<OpCandidate> matches;
 
 		matches = filterMatches(validCandidates, (cand) -> typesPerfectMatch(cand));
 		if (!matches.isEmpty()) return matches;
@@ -146,7 +140,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	}
 
 	@Override
-	public <OP extends Op> Module match(final OpCandidate<OP> candidate) {
+	public Module match(final OpCandidate candidate) {
 		if (!valid(candidate)) return null;
 		if (!outputsMatch(candidate)) return null;
 		final Object[] args = padArgs(candidate);
@@ -154,7 +148,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	}
 
 	@Override
-	public <OP extends Op> boolean typesMatch(final OpCandidate<OP> candidate) {
+	public boolean typesMatch(final OpCandidate candidate) {
 		if (!valid(candidate)) return false;
 		final Object[] args = padArgs(candidate);
 		return args == null ? false : typesMatch(candidate, args) < 0;
@@ -170,7 +164,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	}
 
 	@Override
-	public <OP extends Op> Object[] padArgs(final OpCandidate<OP> candidate) {
+	public Object[] padArgs(final OpCandidate candidate) {
 		int inputCount = 0, requiredCount = 0;
 		for (final ModuleItem<?> item : candidate.cInfo().inputs()) {
 			inputCount++;
@@ -214,9 +208,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	// -- Helper methods --
 
 	/** Helper method of {@link #findCandidates}. */
-	private <OP extends Op> boolean isCandidate(final OpInfo info,
-		final OpRef<OP> ref)
-	{
+	private boolean isCandidate(final OpInfo info, final OpRef ref) {
 		if (!info.nameMatches(ref.getName())) return false;
 
 		// the name matches; now check the class
@@ -235,8 +227,8 @@ public class DefaultOpMatchingService extends AbstractService implements
 	}
 
 	/** Helper method of {@link #findMatch}. */
-	private <OP extends Op> void assertCandidates(
-		final List<OpCandidate<?>> candidates, final OpRef<OP> ref)
+	private void assertCandidates(final List<OpCandidate> candidates,
+		final OpRef ref)
 	{
 		if (candidates.isEmpty()) {
 			throw new IllegalArgumentException("No candidate '" + ref.getLabel() +
@@ -253,11 +245,11 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * @param candidates list of candidates
 	 * @return a list of valid candidates with arguments injected
 	 */
-	private List<OpCandidate<?>> validCandidates(
-		final List<OpCandidate<?>> candidates)
+	private List<OpCandidate> validCandidates(
+		final List<OpCandidate> candidates)
 	{
-		final ArrayList<OpCandidate<?>> validCandidates = new ArrayList<>();
-		for (final OpCandidate<?> candidate : candidates) {
+		final ArrayList<OpCandidate> validCandidates = new ArrayList<>();
+		for (final OpCandidate candidate : candidates) {
 			if (!valid(candidate) || !outputsMatch(candidate)) continue;
 			final Object[] args = padArgs(candidate);
 			if (args == null) continue;
@@ -273,7 +265,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * support from the conversion in the future.
 	 */
 	@SuppressWarnings("unused")
-	private boolean losslessMatch(final OpCandidate<?> candidate) {
+	private boolean losslessMatch(final OpCandidate candidate) {
 		// NB: Not yet implemented
 		return false;
 	}
@@ -284,13 +276,12 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * Helper method of {@link #filterMatches(List)}.
 	 * </p>
 	 */
-	private List<OpCandidate<?>> filterMatches(
-		final List<OpCandidate<?>> candidates,
-		final Predicate<OpCandidate<?>> filter)
+	private List<OpCandidate> filterMatches(final List<OpCandidate> candidates,
+		final Predicate<OpCandidate> filter)
 	{
-		final ArrayList<OpCandidate<?>> matches = new ArrayList<>();
+		final ArrayList<OpCandidate> matches = new ArrayList<>();
 		double priority = Double.NaN;
-		for (final OpCandidate<?> candidate : candidates) {
+		for (final OpCandidate candidate : candidates) {
 			final ModuleInfo info = candidate.cInfo();
 			final double p = info.getPriority();
 			if (p != priority && !matches.isEmpty()) {
@@ -311,7 +302,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * Helper method of {@link #filterMatches(List)}.
 	 * </p>
 	 */
-	private boolean missArgs(final OpCandidate<?> candidate) {
+	private boolean missArgs(final OpCandidate candidate) {
 		int i = 0;
 		for (final ModuleItem<?> item : candidate.cInfo().inputs()) {
 			if (candidate.getArgs()[i++] == null && item.isRequired()) {
@@ -329,7 +320,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * Helper method of {@link #filterMatches(List)}.
 	 * </p>
 	 */
-	private boolean typesPerfectMatch(final OpCandidate<?> candidate) {
+	private boolean typesPerfectMatch(final OpCandidate candidate) {
 		int i = 0;
 		final Object[] args = candidate.getArgs();
 		for (final ModuleItem<?> item : candidate.cInfo().inputs()) {
@@ -350,13 +341,11 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * Helper method of {@link #filterMatches(List)}.
 	 * </p>
 	 */
-	private List<OpCandidate<?>> castMatches(
-		final List<OpCandidate<?>> candidates)
-	{
-		final ArrayList<OpCandidate<?>> matches = new ArrayList<>();
+	private List<OpCandidate> castMatches(final List<OpCandidate> candidates) {
+		final ArrayList<OpCandidate> matches = new ArrayList<>();
 		int minLevels = Integer.MAX_VALUE;
 		double priority = Double.NaN;
-		for (final OpCandidate<?> candidate : candidates) {
+		for (final OpCandidate candidate : candidates) {
 
 			final ModuleInfo info = candidate.cInfo();
 			final double p = info.getPriority();
@@ -387,7 +376,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * Helper method of {@link #filterMatches(List)}.
 	 * </p>
 	 */
-	private <OP extends Op> int findCastLevels(final OpCandidate<OP> candidate) {
+	private int findCastLevels(final OpCandidate candidate) {
 		int level = 0, i = 0;
 		final Object[] args = candidate.getArgs();
 		for (final ModuleItem<?> item : candidate.cInfo().inputs()) {
@@ -419,8 +408,8 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * @throws IllegalArgumentException If there is not exactly one matching
 	 *           candidate.
 	 */
-	private OpCandidate<?> singleMatch(final List<OpCandidate<?>> candidates,
-		final List<OpCandidate<?>> matches)
+	private OpCandidate singleMatch(final List<OpCandidate> candidates,
+		final List<OpCandidate> matches)
 	{
 		if (matches.size() == 1) {
 			// a single match: initialize and return it
@@ -448,7 +437,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * Helper method of {@link #match(OpCandidate)}.
 	 * </p>
 	 */
-	private <OP extends Op> boolean valid(final OpCandidate<OP> candidate) {
+	private boolean valid(final OpCandidate candidate) {
 		if (candidate.cInfo().isValid()) return true;
 		candidate.setStatus(StatusCode.INVALID_MODULE);
 		return false;
@@ -460,7 +449,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * Helper method of {@link #match(OpCandidate)}.
 	 * </p>
 	 */
-	private boolean outputsMatch(final OpCandidate<?> candidate) {
+	private boolean outputsMatch(final OpCandidate candidate) {
 		final Collection<? extends Class<?>> outTypes = candidate.getRef()
 			.getOutTypes();
 		if (outTypes == null) return true; // no constraints on output types
@@ -486,9 +475,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * Helper method of {@link #filterMatches(List)}.
 	 * </p>
 	 */
-	private <OP extends Op> boolean moduleConforms(
-		final OpCandidate<OP> candidate)
-	{
+	private boolean moduleConforms(final OpCandidate candidate) {
 		// create module and assign the inputs
 		final Module module = createModule(candidate, candidate.getArgs());
 		candidate.setModule(module);
@@ -508,9 +495,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	}
 
 	/** Helper method of {@link #match(OpCandidate)}. */
-	private <OP extends Op> Module match(final OpCandidate<OP> candidate,
-		final Object[] args)
-	{
+	private Module match(final OpCandidate candidate, final Object[] args) {
 		// check that each parameter is compatible with its argument
 		final int badIndex = typesMatch(candidate, args);
 		if (badIndex >= 0) {
@@ -541,9 +526,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * Checks that each parameter is type-compatible with its corresponding
 	 * argument.
 	 */
-	private <OP extends Op> int typesMatch(final OpCandidate<OP> candidate,
-		final Object[] args)
-	{
+	private int typesMatch(final OpCandidate candidate, final Object[] args) {
 		int i = 0;
 		for (final ModuleItem<?> item : candidate.cInfo().inputs()) {
 			if (!canAssign(candidate, args[i], item)) return i;
@@ -553,7 +536,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	}
 
 	/** Helper method of {@link #match(OpCandidate, Object[])}. */
-	private String typeClashMessage(final OpCandidate<?> candidate,
+	private String typeClashMessage(final OpCandidate candidate,
 		final Object[] args, final int index)
 	{
 		int i = 0;
@@ -569,7 +552,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	}
 
 	/** Helper method of {@link #match(OpCandidate, Object[])}. */
-	private Module createModule(final OpCandidate<?> candidate,
+	private Module createModule(final OpCandidate candidate,
 		final Object... args)
 	{
 		// create the module
@@ -591,7 +574,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	}
 
 	/** Helper method of {@link #match(OpCandidate, Object[])}. */
-	private boolean canAssign(final OpCandidate<?> candidate, final Object arg,
+	private boolean canAssign(final OpCandidate candidate, final Object arg,
 		final ModuleItem<?> item)
 	{
 		if (arg == null) {

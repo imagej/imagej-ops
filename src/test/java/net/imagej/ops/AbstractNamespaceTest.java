@@ -268,9 +268,9 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		// Then we can pass Types here instead of Class instances.
 		// final Object[] argTypes = method.getGenericParameterTypes();
 		final Object[] argTypes = method.getParameterTypes();
-		final OpRef<Op> ref = OpRef.create(qName, argTypes);
+		final OpRef ref = OpRef.create(qName, argTypes);
 		final OpInfo info = ops.info(opType);
-		final OpCandidate<Op> candidate = new OpCandidate<>(ops, ref, info);
+		final OpCandidate candidate = new OpCandidate(ops, ref, info);
 
 		// check input types
 		if (!inputTypesMatch(candidate)) {
@@ -291,7 +291,7 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		return true;
 	}
 
-	private boolean inputTypesMatch(final OpCandidate<Op> candidate) {
+	private boolean inputTypesMatch(final OpCandidate candidate) {
 		// check for assignment compatibility, including generics
 		if (!matcher.typesMatch(candidate)) return false;
 
@@ -315,7 +315,7 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 	}
 
 	private boolean outputTypesMatch(final Type returnType,
-		final OpCandidate<Op> candidate)
+		final OpCandidate candidate)
 	{
 		final List<Type> outTypes = new ArrayList<>();
 		for (final ModuleItem<?> output : candidate.cInfo().outputs()) {

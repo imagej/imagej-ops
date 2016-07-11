@@ -56,7 +56,7 @@ public interface OpMatchingService extends ImageJService {
 	 * @throws IllegalArgumentException if there is no match, or if there is more
 	 *           than one match at the same priority.
 	 */
-	<OP extends Op> OpCandidate<OP> findMatch(OpEnvironment ops, OpRef<OP> ref);
+	OpCandidate findMatch(OpEnvironment ops, OpRef ref);
 
 	/**
 	 * Finds and initializes the best module matching any of the given op name
@@ -70,7 +70,7 @@ public interface OpMatchingService extends ImageJService {
 	 * @throws IllegalArgumentException if there is no match, or if there is more
 	 *           than one match at the same priority.
 	 */
-	OpCandidate<?> findMatch(OpEnvironment ops, List<OpRef<?>> refs);
+	OpCandidate findMatch(OpEnvironment ops, List<OpRef> refs);
 
 	/**
 	 * Builds a list of candidate ops which might match the given op reference.
@@ -79,8 +79,7 @@ public interface OpMatchingService extends ImageJService {
 	 * @param ref The op reference describing the op to match.
 	 * @return The list of candidate operations.
 	 */
-	<OP extends Op> List<OpCandidate<OP>> findCandidates(OpEnvironment ops,
-		OpRef<OP> ref);
+	List<OpCandidate> findCandidates(OpEnvironment ops, OpRef ref);
 
 	/**
 	 * Builds a list of candidate ops which might match one of the given op
@@ -90,8 +89,7 @@ public interface OpMatchingService extends ImageJService {
 	 * @param refs The op references describing the op to match.
 	 * @return The list of candidate operations.
 	 */
-	List<OpCandidate<?>> findCandidates(OpEnvironment ops,
-		List<OpRef<?>> refs);
+	List<OpCandidate> findCandidates(OpEnvironment ops, List<OpRef> refs);
 
 	/**
 	 * Filters a list of ops to those matching the given arguments.
@@ -100,7 +98,7 @@ public interface OpMatchingService extends ImageJService {
 	 * @return The list of matching op candidates, with associated {@link Module}
 	 *         instances attached.
 	 */
-	List<OpCandidate<?>> filterMatches(List<OpCandidate<?>> candidates);
+	List<OpCandidate> filterMatches(List<OpCandidate> candidates);
 
 	/**
 	 * Attempts to match the given arguments to the {@link Op} described by the
@@ -109,16 +107,16 @@ public interface OpMatchingService extends ImageJService {
 	 * @return A populated {@link Module} instance for the matching {@link Op}, or
 	 *         null if the arguments do not match the {@link Op}.
 	 */
-	<OP extends Op> Module match(OpCandidate<OP> candidate);
+	Module match(OpCandidate candidate);
 
 	/**
 	 * Checks that each parameter is type-compatible with its corresponding
 	 * argument.
 	 */
-	<OP extends Op> boolean typesMatch(OpCandidate<OP> candidate);
+	boolean typesMatch(OpCandidate candidate);
 
 	/** Checks the number of args, padding optional args with null as needed. */
-	<OP extends Op> Object[] padArgs(OpCandidate<OP> candidate);
+	Object[] padArgs(OpCandidate candidate);
 
 	/** Assigns arguments into the given module's inputs. */
 	Module assignInputs(Module module, Object... args);

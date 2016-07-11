@@ -218,7 +218,7 @@ public interface OpEnvironment extends Contextual {
 	 * @param ref The {@link OpRef} describing the op to match.
 	 * @return The matched op.
 	 */
-	default Op op(final OpRef<?> ref) {
+	default Op op(final OpRef ref) {
 		return op(Collections.singletonList(ref));
 	}
 
@@ -236,8 +236,8 @@ public interface OpEnvironment extends Contextual {
 	 * @param refs The list of {@link OpRef}s describing the op to match.
 	 * @return The matched op.
 	 */
-	default Op op(final List<OpRef<?>> refs) {
-		final OpCandidate<?> match = matcher().findMatch(this, refs);
+	default Op op(final List<OpRef> refs) {
+		final OpCandidate match = matcher().findMatch(this, refs);
 		return OpUtils.unwrap(match.getModule(), match.getRef());
 	}
 

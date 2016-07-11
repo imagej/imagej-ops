@@ -72,7 +72,7 @@ public final class Inplaces {
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> argType,
 		final Object... otherArgs)
 	{
-		final OpRef<?>[] refs = new OpRef<?>[2];
+		final OpRef[] refs = new OpRef[2];
 		refs[0] = OpRef.createTypes(opType, UnaryInplaceOnlyOp.class, null, OpUtils
 			.args(otherArgs, argType));
 		refs[1] = OpRef.createTypes(opType, UnaryHybridCI.class, null, OpUtils.args(
@@ -102,7 +102,7 @@ public final class Inplaces {
 		final OpEnvironment ops, final Class<OP> opType, final O arg,
 		final Object... otherArgs)
 	{
-		final OpRef<?>[] refs = new OpRef<?>[2];
+		final OpRef[] refs = new OpRef[2];
 		refs[0] = OpRef.createTypes(opType, UnaryInplaceOnlyOp.class, null, OpUtils
 			.args(otherArgs, arg));
 		refs[1] = OpRef.createTypes(opType, UnaryHybridCI.class, null, OpUtils.args(
@@ -137,7 +137,7 @@ public final class Inplaces {
 			final Class<O> argType, final Class<I2> inType,
 			final Object... otherArgs)
 	{
-		final OpRef<?>[] refs = new OpRef<?>[2];
+		final OpRef[] refs = new OpRef[2];
 		refs[0] = OpRef.createTypes(opType, BinaryInplace1OnlyOp.class, null,
 			OpUtils.args(otherArgs, argType, inType));
 		refs[1] = OpRef.createTypes(opType, BinaryHybridCI1.class, null, OpUtils
@@ -168,7 +168,7 @@ public final class Inplaces {
 		binary1(final OpEnvironment ops, final Class<OP> opType, final O arg,
 			final I2 in, final Object... otherArgs)
 	{
-		final OpRef<?>[] refs = new OpRef<?>[2];
+		final OpRef[] refs = new OpRef[2];
 		refs[0] = OpRef.createTypes(opType, BinaryInplace1OnlyOp.class, null,
 			OpUtils.args(otherArgs, arg, in));
 		refs[1] = OpRef.createTypes(opType, BinaryHybridCI1.class, null, OpUtils
@@ -199,7 +199,7 @@ public final class Inplaces {
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> argType,
 		final Object... otherArgs)
 	{
-		final OpRef<?>[] refs = new OpRef<?>[2];
+		final OpRef[] refs = new OpRef[2];
 		refs[0] = OpRef.createTypes(opType, BinaryInplaceOnlyOp.class, null, OpUtils
 			.args(otherArgs, argType, argType));
 		refs[1] = OpRef.createTypes(opType, BinaryHybridCI.class, null, OpUtils
@@ -230,7 +230,7 @@ public final class Inplaces {
 		final OpEnvironment ops, final Class<OP> opType, final O arg1, final O arg2,
 		final Object... otherArgs)
 	{
-		final OpRef<?>[] refs = new OpRef<?>[2];
+		final OpRef[] refs = new OpRef[2];
 		refs[0] = OpRef.createTypes(opType, BinaryInplaceOnlyOp.class, null, OpUtils
 			.args(otherArgs, arg1, arg2));
 		refs[1] = OpRef.createTypes(opType, BinaryHybridCI.class, null, OpUtils

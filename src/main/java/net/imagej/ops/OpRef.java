@@ -46,13 +46,13 @@ import java.util.Set;
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public class OpRef<OP extends Op> {
+public class OpRef {
 
 	/** Name of the op, or null for any name. */
 	private final String name;
 
 	/** Type of the op, or null for any type. */
-	private final Class<OP> type;
+	private final Class<? extends Op> type;
 
 	/** Extra types which the op must match. */
 	private final Collection<? extends Class<?>> extraTypes;
@@ -71,8 +71,8 @@ public class OpRef<OP extends Op> {
 	 * @param name name of the op, or null for any name.
 	 * @param args arguments to the op.
 	 */
-	public static OpRef<Op> create(final String name, final Object... args) {
-		return new OpRef<>(name, null, null, null, args);
+	public static OpRef create(final String name, final Object... args) {
+		return new OpRef(name, null, null, null, args);
 	}
 
 	/**
@@ -81,10 +81,10 @@ public class OpRef<OP extends Op> {
 	 * @param type type of op, or null for any type.
 	 * @param args arguments to the op.
 	 */
-	public static <OP extends Op> OpRef<OP> create(final Class<OP> type,
+	public static OpRef create(final Class<? extends Op> type,
 		final Object... args)
 	{
-		return new OpRef<>(null, type, null, null, args);
+		return new OpRef(null, type, null, null, args);
 	}
 
 	/**
@@ -95,10 +95,10 @@ public class OpRef<OP extends Op> {
 	 * @param outType the type of the op's primary output, or null for any type.
 	 * @param args arguments to the op.
 	 */
-	public static <OP extends Op> OpRef<OP> createTypes(final Class<OP> type,
+	public static OpRef createTypes(final Class<? extends Op> type,
 		final Class<?> extraType, final Class<?> outType, final Object... args)
 	{
-		return new OpRef<>(null, type, set(extraType), set(outType), args);
+		return new OpRef(null, type, set(extraType), set(outType), args);
 	}
 
 	/**
@@ -108,10 +108,10 @@ public class OpRef<OP extends Op> {
 	 * @param extraTypes additional types which the ops must match.
 	 * @param args arguments to the op.
 	 */
-	public static <OP extends Op> OpRef<OP> createTypes(final Class<OP> type,
+	public static OpRef createTypes(final Class<? extends Op> type,
 		final Collection<? extends Class<?>> extraTypes, final Object... args)
 	{
-		return new OpRef<>(null, type, extraTypes, null, args);
+		return new OpRef(null, type, extraTypes, null, args);
 	}
 
 	// -- Constructor --
@@ -125,7 +125,7 @@ public class OpRef<OP extends Op> {
 	 * @param outTypes the op's required output types.
 	 * @param args arguments to the op.
 	 */
-	public OpRef(final String name, final Class<OP> type,
+	public OpRef(final String name, final Class<? extends Op> type,
 		final Collection<? extends Class<?>> extraTypes,
 		final Collection<? extends Class<?>> outTypes, final Object... args)
 	{
@@ -144,7 +144,7 @@ public class OpRef<OP extends Op> {
 	}
 
 	/** Gets the type of the op. */
-	public Class<OP> getType() {
+	public Class<? extends Op> getType() {
 		return type;
 	}
 
@@ -215,7 +215,7 @@ public class OpRef<OP extends Op> {
 		if (this == obj) return true;
 		if (obj == null) return false;
 		if (getClass() != obj.getClass()) return false;
-		final OpRef<?> other = (OpRef<?>) obj;
+		final OpRef other = (OpRef) obj;
 		if (!Objects.equals(name, other.name)) return false;
 		if (!Objects.equals(type, other.type)) return false;
 		if (!Objects.equals(outTypes, other.outTypes)) return false;

@@ -84,7 +84,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	}
 
 	@Override
-	public Op op(final OpRef<?> ref) {
+	public Op op(final OpRef ref) {
 		final Op op = super.op(ref);
 
 		for (final Class<?> ignored : ignoredOps) {

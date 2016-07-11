@@ -42,10 +42,9 @@ import org.scijava.module.ModuleItem;
  * an {@link OpInfo}, as computed by the {@link OpMatchingService}.
  * 
  * @author Curtis Rueden
- * @param <OP> The type of {@link Op}.
  * @see OpMatchingService
  */
-public class OpCandidate<OP extends Op> {
+public class OpCandidate {
 
 	public static enum StatusCode {
 		MATCH,
@@ -62,7 +61,7 @@ public class OpCandidate<OP extends Op> {
 	}
 
 	private final OpEnvironment ops;
-	private final OpRef<OP> ref;
+	private final OpRef ref;
 	private final OpInfo info;
 
 	private Module module;
@@ -71,7 +70,7 @@ public class OpCandidate<OP extends Op> {
 	private ModuleItem<?> item;
 	private Object[] args;
 
-	public OpCandidate(final OpEnvironment ops, final OpRef<OP> ref,
+	public OpCandidate(final OpEnvironment ops, final OpRef ref,
 		final OpInfo info)
 	{
 		this.ops = ops;
@@ -85,7 +84,7 @@ public class OpCandidate<OP extends Op> {
 	}
 
 	/** Gets the op reference describing the desired match. */
-	public OpRef<OP> getRef() {
+	public OpRef getRef() {
 		return ref;
 	}
 
