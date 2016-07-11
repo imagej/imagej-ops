@@ -62,8 +62,8 @@ public class DefaultVolume
 		return new DoubleType(Math.abs(volume));
 	}
 
-	private double signedVolumeOfTriangle(Vector3D p0, Vector3D p1, Vector3D p2) {
-		 return p0.dotProduct(p1.crossProduct(p2)) / 6.0f;
+	private double signedVolumeOfTriangle(Vertex vertex, Vertex vertex2, Vertex vertex3) {
+		 return vertex.dotProduct(vertex2.crossProduct(vertex3)) / 6.0f;
 	}
 	
 	@Override

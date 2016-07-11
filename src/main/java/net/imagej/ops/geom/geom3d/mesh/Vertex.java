@@ -36,6 +36,9 @@ import java.util.List;
 import net.imglib2.RealLocalizable;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
+import org.apache.commons.math3.util.FastMath;
+import org.apache.commons.math3.util.MathArrays;
+import org.apache.commons.math3.util.MathUtils;
 
 /**
  * Represents vertices of the hull, as well as the points from which it is
@@ -43,7 +46,8 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
  *
  * @author Tim-Oliver Buchholz, University of Konstanz
  */
-public class Vertex extends Vector3D implements RealLocalizable {
+public class Vertex implements RealLocalizable {
+	public static final Vertex ZERO   = new Vertex(0, 0, 0);
 
 	/**
 	 * 
@@ -54,8 +58,17 @@ public class Vertex extends Vector3D implements RealLocalizable {
 	
 	private List<TriangularFacet> facesInFront = new ArrayList<>();
 	
+	protected double x;
+	
+	protected double y;
+	
+	protected double z;
+	
 	public Vertex(final double x, final double y, final double z) {
-		super(x, y, z);
+		//super(x, y, z);
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
 
 	public double getDistanceToFaceInFront() {
@@ -110,6 +123,18 @@ public class Vertex extends Vector3D implements RealLocalizable {
 		position[1] = getDoublePosition(1);
 		position[2] = getDoublePosition(2);
 	}
+	
+	public double getX() {
+		return this.x;
+	}
+	
+	public double getY() {
+		return this.y;
+	}
+	
+	public double getZ() {
+		return this.z;
+	}
 
 	@Override
 	public float getFloatPosition(final int d) {
@@ -141,8 +166,7 @@ public class Vertex extends Vector3D implements RealLocalizable {
 	
 	public Vertex add(Vertex v)
 	{
-		Vector3D v3 = (Vector3D)v;
-	    return new Vertex(this.getX() + v3.getX(), this.getY() + v3.getY(), this.getZ() + v3.getZ());
+	    return new Vertex(this.getX() + v.getX(), this.getY() + v.getY(), this.getZ() + v.getZ());
 	}
 	
 	public Vertex setDoublePosition(final int d, final double val) {
@@ -157,4 +181,61 @@ public class Vertex extends Vector3D implements RealLocalizable {
 				return new Vertex(0, 0, 0);
 		}
 	}
+	
+	public Vertex subtract(Vertex v) {
+		return new Vertex( this.getX() - v.getX(), this.getY() - v.getY(), this.getZ() - v.getZ() );
+	}
+	
+	public Vertex crossProduct(Vertex v) {
+		return new Vertex( MathArrays.linearCombination(y, v.getZ(), -z, v.getY()), 
+						   MathArrays.linearCombination(z, v.getX(), -x, v.getZ()), 
+						   MathArrays.linearCombination(x, v.getY(), -y, v.getX()) );
+	}
+	
+	public double getNorm() {
+		return FastMath.sqrt (x * x + y * y + z * z);
+	}
+	
+	public double getNormSq() {
+		return ( x * x + y * y + z * z );
+	}
+	
+	public Vertex scalarMultiply( double scalar ) {
+		return new Vertex( this.getX() * scalar,
+						   this.getY() * scalar,
+						   this.getZ() * scalar );
+	}
+	
+	public Vertex normalize() throws Exception {
+		double s = getNorm();
+        if (s == 0) {
+            throw new Exception("Cannot normalize a zero norm vector");
+        }
+        return scalarMultiply(1 / s);
+	}
+	
+	public double dotProduct( Vertex v ) {
+		return MathArrays.linearCombination(x, v.getX(), y, v.getY(), z, v.getZ());
+	}	
+	
+	// Should we just use an underlying array, to ensure consistency in mutability?
+	public double[] toArray() {
+		return new double[]{ x, y, z };
+	}
+	
+	
+	public boolean equals( Object other ) {
+		return (other instanceof Vertex) && 
+				( this.x == ((Vertex) other).x && 
+				  this.y == ((Vertex) other).y && 
+				  this.z == ((Vertex) other).z  );
+	}
+	
+	public int hashCode() {
+        if ( Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z) ) {
+            return 642;
+        }
+        return 643 * (164 * MathUtils.hash(x) +  3 * MathUtils.hash(y) +  MathUtils.hash(z));
+        // Maybe check facesInFront too?
+    }
 }

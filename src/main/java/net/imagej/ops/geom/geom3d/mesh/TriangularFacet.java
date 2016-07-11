@@ -50,12 +50,12 @@ public class TriangularFacet extends UpdateablePointSet<TriangularFacet> impleme
 	/**
 	 * The centroid of this facet.
 	 */
-	private Vector3D centroid = null;
+	private Vertex centroid = null;
 
 	/**
 	 * The normal of this facet.
 	 */
-	private Vector3D normal = null;
+	private Vertex normal = null;
 
 	/**
 	 * The area of this facet.
@@ -107,7 +107,7 @@ public class TriangularFacet extends UpdateablePointSet<TriangularFacet> impleme
 	 * Compute the area of this facet.
 	 */
 	private void computeArea() {
-		Vector3D cross = vertices.get(0).subtract(vertices.get(1))
+		Vertex cross = vertices.get(0).subtract(vertices.get(1))
 				.crossProduct(vertices.get(2).subtract(vertices.get(0)));
 		area = cross.getNorm() * 0.5;
 	}
@@ -116,7 +116,7 @@ public class TriangularFacet extends UpdateablePointSet<TriangularFacet> impleme
 	 * Get the centroid of this facet.
 	 * @return the centroid
 	 */
-	public Vector3D getCentroid() {
+	public Vertex getCentroid() {
 		if (centroid == null) {
 			computeCentroid();
 		}
@@ -127,7 +127,7 @@ public class TriangularFacet extends UpdateablePointSet<TriangularFacet> impleme
 	 * Compute the centroid of this facet.
 	 */
 	private void computeCentroid() {
-		centroid = Vector3D.ZERO;
+		centroid = Vertex.ZERO;
 		Iterator<Vertex> it = vertices.iterator();
 
 		while (it.hasNext()) {
@@ -140,7 +140,7 @@ public class TriangularFacet extends UpdateablePointSet<TriangularFacet> impleme
 	 * Get the normal of this facet.
 	 * @return the normal
 	 */
-	public Vector3D getNormal() {
+	public Vertex getNormal() {
 		if (normal == null) {
 			computeNormal();
 		}
@@ -151,17 +151,18 @@ public class TriangularFacet extends UpdateablePointSet<TriangularFacet> impleme
 	 * Compute the normal of this facet.
 	 */
 	private void computeNormal() {
-		Vector3D v0 = vertices.get(0);
-		Vector3D v1 = vertices.get(1);
-		Vector3D v2 = vertices.get(2);
+		Vertex v0 = vertices.get(0);
+		Vertex v1 = vertices.get(1);
+		Vertex v2 = vertices.get(2);
 		normal = v1.subtract(v0).crossProduct(v2.subtract(v0));
 	}
 
 	/**
 	 * Computes the offset of this facet
 	 * @return the offset
+	 * @throws Exception 
 	 */
-	public double getPlaneOffset() {
+	public double getPlaneOffset() throws Exception {
 		return getNormal().normalize().dotProduct(getCentroid());
 	}
 
@@ -169,8 +170,9 @@ public class TriangularFacet extends UpdateablePointSet<TriangularFacet> impleme
 	 * Computes the distance from a point to this facet
 	 * @param p the point
 	 * @return the distance
+	 * @throws Exception 
 	 */
-	public double distanceToPlane(final Vector3D p) {
+	public double distanceToPlane(final Vertex p) throws Exception {
 		return getNormal().normalize().dotProduct(p) - getPlaneOffset();
 	}
 
@@ -217,15 +219,15 @@ public class TriangularFacet extends UpdateablePointSet<TriangularFacet> impleme
 		return verticesInFront.remove(0);
 	}
 
-	public Vector3D getP0() {
+	public Vertex getP0() {
 		return vertices.get(0);
 	}
 
-	public Vector3D getP1() {
+	public Vertex getP1() {
 		return vertices.get(1);
 	}
 
-	public Vector3D getP2() {
+	public Vertex getP2() {
 		return vertices.get(2);
 	}
 
@@ -317,7 +319,7 @@ public class TriangularFacet extends UpdateablePointSet<TriangularFacet> impleme
 	/**
 	 * Set the normal of this facet
 	 */
-	public void setNormal( Vector3D newNormal ) {
+	public void setNormal( Vertex newNormal ) {
 		normal = newNormal;
 	}
 }

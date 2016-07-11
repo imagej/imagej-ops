@@ -63,7 +63,12 @@ public class QuickHull3DTest extends AbstractOpTest {
 		DefaultMesh df = new DefaultMesh(randomPointSet(100000, 20150818));
 
 		DefaultMesh convexHull = (DefaultMesh) ops.run(DefaultConvexHull3D.class, df);
-		assertTrue(isConvex(convexHull.getFacets(), convexHull.getEpsilon()));
+		try {
+			assertTrue(isConvex(convexHull.getFacets(), convexHull.getEpsilon()));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertEquals(175, convexHull.getVertices().size());
 	}
 
@@ -78,7 +83,12 @@ public class QuickHull3DTest extends AbstractOpTest {
 		DefaultMesh df = new DefaultMesh(points);
 
 		DefaultMesh convexHull = (DefaultMesh) ops.run(DefaultConvexHull3D.class, df);
-		assertTrue(isConvex(convexHull.getFacets(), convexHull.getEpsilon()));
+		try {
+			assertTrue(isConvex(convexHull.getFacets(), convexHull.getEpsilon()));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertEquals(4, convexHull.getVertices().size());
 	}
 
@@ -95,7 +105,12 @@ public class QuickHull3DTest extends AbstractOpTest {
 		DefaultMesh df = new DefaultMesh(points);
 
 		DefaultMesh convexHull = (DefaultMesh) ops.run(DefaultConvexHull3D.class, df);
-		assertTrue(isConvex(convexHull.getFacets(), convexHull.getEpsilon()));
+		try {
+			assertTrue(isConvex(convexHull.getFacets(), convexHull.getEpsilon()));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertEquals(5, convexHull.getVertices().size());
 	}
 
@@ -131,7 +146,12 @@ public class QuickHull3DTest extends AbstractOpTest {
 		DefaultMesh df = new DefaultMesh(points);
 
 		DefaultMesh convexHull = (DefaultMesh) ops.run(DefaultConvexHull3D.class, df);
-		assertTrue(isConvex(convexHull.getFacets(), convexHull.getEpsilon()));
+		try {
+			assertTrue(isConvex(convexHull.getFacets(), convexHull.getEpsilon()));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertEquals(12, convexHull.getVertices().size());
 	}
 
@@ -223,7 +243,12 @@ public class QuickHull3DTest extends AbstractOpTest {
 		DefaultMesh df = new DefaultMesh(points);
 
 		DefaultMesh convexHull = (DefaultMesh) ops.run(DefaultConvexHull3D.class, df);
-		assertTrue(isConvex(convexHull.getFacets(), convexHull.getEpsilon()));
+		try {
+			assertTrue(isConvex(convexHull.getFacets(), convexHull.getEpsilon()));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertEquals(20, convexHull.getVertices().size());
 	}
 
@@ -234,9 +259,10 @@ public class QuickHull3DTest extends AbstractOpTest {
 	 * @param facets of the convex hull
 	 * @param tolerance of the convex hull computation
 	 * @return is convex
+	 * @throws Exception 
 	 */
-	private boolean isConvex(List<Facet> facets, double tolerance) {
-		Vector3D[] centroids = new Vector3D[facets.size()];
+	private boolean isConvex(List<Facet> facets, double tolerance) throws Exception {
+		Vertex[] centroids = new Vertex[facets.size()];
 		for (int i = 0; i < facets.size(); i++) {
 			centroids[i] = ((TriangularFacet) facets.get(i)).getCentroid();
 		}

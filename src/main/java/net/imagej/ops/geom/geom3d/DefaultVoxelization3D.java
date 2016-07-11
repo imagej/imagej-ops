@@ -6,6 +6,7 @@ import net.imagej.ops.geom.geom3d.mesh.DefaultMesh;
 import net.imagej.ops.geom.geom3d.mesh.Facet;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imagej.ops.geom.geom3d.mesh.TriangularFacet;
+import net.imagej.ops.geom.geom3d.mesh.Vertex;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.Dimensions;
 import net.imglib2.FinalInterval;
@@ -109,13 +110,9 @@ Ops.Geometric.Voxelization
 		{
 			TriangularFacet tri = (TriangularFacet) f;
 
-			Vector3D v1 = tri.getP0();
-			Vector3D v2 = tri.getP1();
-			Vector3D v3 = tri.getP2();
-
-			//v1.add(minShift);
-			//v2.add(minShift);
-			//v3.add(minShift);			
+			Vertex v1 = tri.getP0();
+			Vertex v2 = tri.getP1();
+			Vertex v3 = tri.getP2();
 			
 			double[] minSubBoundary = new double[]{Math.min(Math.min(v1.getX(), v2.getX()), v3.getX()) - minPoint.getDoublePosition(0),			
 												   Math.min(Math.min(v1.getY(), v2.getY()), v3.getY()) - minPoint.getDoublePosition(1),
@@ -125,10 +122,6 @@ Ops.Geometric.Voxelization
 												   Math.max(Math.max(v1.getZ(), v2.getZ()), v3.getZ()) - minPoint.getDoublePosition(2)};
 			
 			RandomAccess<BitType> ra = outImg.randomAccess();// Should use the interval implementation for speed
-			
-			//System.out.println( minPoint.getDoublePosition(0) + " " + minPoint.getDoublePosition(1) + " " + minPoint.getDoublePosition(2) );
-			//System.out.println( maxPoint.getDoublePosition(0) + " " + maxPoint.getDoublePosition(1) + " " + maxPoint.getDoublePosition(2) );
-			//System.out.println( Math.floor(maxSubBoundary[0] / stepSizes[0]) + " " +  Math.floor(maxSubBoundary[1] / stepSizes[1]) + " " + Math.floor(maxSubBoundary[2] / stepSizes[2]));
 			
 			long[] indices = new long[3];
 			for (indices[0] = (long)Math.floor(minSubBoundary[0] / stepSizes[0]); indices[0] < Math.floor(maxSubBoundary[0] / stepSizes[0]); indices[0]++) {
@@ -342,11 +335,11 @@ Ops.Geometric.Voxelization
 		dest[2] = (v1[0] * v2[1] - v1[1] * v2[0]);
 	}
 
-	private int triBoxOverlap(double[] boxcenter, double[] boxhalfsize, Vector3D pf1, Vector3D pf2, Vector3D pf3)
+	private int triBoxOverlap(double[] boxcenter, double[] boxhalfsize, Vertex v12, Vertex v22, Vertex v3)
 	{
-		double[] vert1 = pf1.toArray();
-		double[] vert2 = pf2.toArray();
-		double[] vert3 = pf3.toArray();
+		double[] vert1 = v12.toArray();
+		double[] vert2 = v22.toArray();
+		double[] vert3 = v3.toArray();
 		
 		double[] v0 = new double[3];
 		double[] v1 = new double[3];

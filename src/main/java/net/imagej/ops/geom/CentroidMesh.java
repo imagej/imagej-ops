@@ -34,6 +34,7 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imagej.ops.geom.geom3d.mesh.TriangularFacet;
+import net.imagej.ops.geom.geom3d.mesh.Vertex;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
@@ -73,10 +74,10 @@ public class CentroidMesh extends AbstractUnaryFunctionOp<Mesh, RealLocalizable>
 
 		for (int i = 0; i < input.getFacets().size(); i++) {
 			TriangularFacet f = (TriangularFacet) input.getFacets().get(i);
-			Vector3D normal = f.getNormal();
-			Vector3D a = f.getP0();
-			Vector3D b = f.getP1();
-			Vector3D c = f.getP2();
+			Vertex normal = f.getNormal();
+			Vertex a = f.getP0();
+			Vertex b = f.getP1();
+			Vertex c = f.getP2();
 			c_x += (1 / 24d) * normal.getX() * (Math.pow((a.getX() + b.getX()), 2)
 					+ Math.pow((b.getX() + c.getX()), 2)
 					+ Math.pow((c.getX() + a.getX()), 2));
