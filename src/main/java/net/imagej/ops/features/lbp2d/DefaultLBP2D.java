@@ -53,7 +53,6 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Andreas Graumann, University of Konstanz
  * @param <I>
- * @param <O>
  */
 @Plugin(type = Ops.LBP.LBP2D.class, label = "2d Local Binary Pattern")
 public class DefaultLBP2D<I extends RealType<I>> extends AbstractLBP2DFeature<I>
