@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops;
 
 import java.util.Arrays;
@@ -52,7 +53,7 @@ public class OpRef {
 	private final String name;
 
 	/** Type of the op, or null for any type. */
-	private final Class<? extends Op> type;
+	private final Class<?> type;
 
 	/** Extra types which the op must match. */
 	private final Collection<? extends Class<?>> extraTypes;
@@ -81,9 +82,7 @@ public class OpRef {
 	 * @param type type of op, or null for any type.
 	 * @param args arguments to the op.
 	 */
-	public static OpRef create(final Class<? extends Op> type,
-		final Object... args)
-	{
+	public static OpRef create(final Class<?> type, final Object... args) {
 		return new OpRef(null, type, null, null, args);
 	}
 
@@ -95,8 +94,8 @@ public class OpRef {
 	 * @param outType the type of the op's primary output, or null for any type.
 	 * @param args arguments to the op.
 	 */
-	public static OpRef createTypes(final Class<? extends Op> type,
-		final Class<?> extraType, final Class<?> outType, final Object... args)
+	public static OpRef createTypes(final Class<?> type, final Class<?> extraType,
+		final Class<?> outType, final Object... args)
 	{
 		return new OpRef(null, type, set(extraType), set(outType), args);
 	}
@@ -108,7 +107,7 @@ public class OpRef {
 	 * @param extraTypes additional types which the ops must match.
 	 * @param args arguments to the op.
 	 */
-	public static OpRef createTypes(final Class<? extends Op> type,
+	public static OpRef createTypes(final Class<?> type,
 		final Collection<? extends Class<?>> extraTypes, final Object... args)
 	{
 		return new OpRef(null, type, extraTypes, null, args);
@@ -125,7 +124,7 @@ public class OpRef {
 	 * @param outTypes the op's required output types.
 	 * @param args arguments to the op.
 	 */
-	public OpRef(final String name, final Class<? extends Op> type,
+	public OpRef(final String name, final Class<?> type,
 		final Collection<? extends Class<?>> extraTypes,
 		final Collection<? extends Class<?>> outTypes, final Object... args)
 	{
@@ -144,7 +143,7 @@ public class OpRef {
 	}
 
 	/** Gets the type of the op. */
-	public Class<? extends Op> getType() {
+	public Class<?> getType() {
 		return type;
 	}
 
