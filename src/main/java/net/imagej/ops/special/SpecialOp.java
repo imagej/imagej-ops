@@ -30,9 +30,8 @@
 
 package net.imagej.ops.special;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import net.imagej.ops.Initializable;
@@ -303,14 +302,12 @@ public interface SpecialOp extends Op, Initializable, Threadable {
 		final Flavor flavor)
 	{
 		// look up matching candidates
-		final Class<?> specialType;
-		if (flavor == Flavor.COMPUTER) specialType = NullaryComputerOp.class;
-		else if (flavor == Flavor.FUNCTION) specialType = NullaryFunctionOp.class;
-		else if (flavor == Flavor.INPLACE) specialType = UnaryInplaceOp.class;
-		else specialType = null;
-		final Set<? extends Class<?>> specialTypes = specialType == null ? null
-			: Collections.singleton(specialType);
-		final OpRef ref = new OpRef(name, opType, specialTypes, null);
+		final List<Class<?>> types = new ArrayList<>();
+		if (opType != null) types.add(opType);
+		if (flavor == Flavor.COMPUTER) types.add(NullaryComputerOp.class);
+		else if (flavor == Flavor.FUNCTION) types.add(NullaryFunctionOp.class);
+		else if (flavor == Flavor.INPLACE) types.add(UnaryInplaceOp.class);
+		final OpRef ref = new OpRef(name, types, null);
 		return filterArity(ops.matcher().findCandidates(ops, ref), arity);
 	}
 

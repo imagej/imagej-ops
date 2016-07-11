@@ -183,7 +183,7 @@ public interface OpEnvironment extends Contextual {
 	 */
 	@OpMethod(op = net.imagej.ops.lookup.LookupByName.class)
 	default Op op(final String name, final Object... args) {
-		return OpUtils.unwrap(module(name, args), Op.class, null);
+		return OpUtils.unwrap(module(name, args), OpRef.types(Op.class));
 	}
 
 	/**
@@ -199,7 +199,7 @@ public interface OpEnvironment extends Contextual {
 	 */
 	@OpMethod(op = net.imagej.ops.lookup.LookupByType.class)
 	default <OP extends Op> OP op(final Class<OP> type, final Object... args) {
-		return (OP) OpUtils.unwrap(module(type, args), type, null);
+		return (OP) OpUtils.unwrap(module(type, args), OpRef.types(type));
 	}
 
 	/**

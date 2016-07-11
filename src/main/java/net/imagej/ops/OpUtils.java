@@ -94,7 +94,7 @@ public final class OpUtils {
 	 *           types.
 	 */
 	public static Op unwrap(final Module module, final OpRef ref) {
-		return unwrap(module, ref.getType(), ref.getExtraTypes());
+		return unwrap(module, ref.getTypes());
 	}
 
 	/**
@@ -102,22 +102,16 @@ public final class OpUtils {
 	 * instance of the specified type(s).
 	 * 
 	 * @param module The module to unwrap.
-	 * @param type The expected type of {@link Op}.
-	 * @param types Other required types for the op.
+	 * @param types Required types for the op.
 	 * @return The unwrapped {@link Op}.
 	 * @throws IllegalStateException if the op does not conform to the expected
 	 *           types.
 	 */
-	public static Op unwrap(final Module module, final Class<?> type,
+	public static Op unwrap(final Module module,
 		final Collection<? extends Class<?>> types)
 	{
 		if (module == null) return null;
 		final Object delegate = module.getDelegateObject();
-		final Class<?> opType = type == null ? Op.class : type;
-		if (!opType.isInstance(delegate)) {
-			throw new IllegalStateException(delegate.getClass().getName() +
-				" is not of type " + opType.getName());
-		}
 		if (types != null) {
 			for (final Class<?> t : types) {
 				if (!t.isInstance(delegate)) {

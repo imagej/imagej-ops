@@ -88,8 +88,10 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		final Op op = super.op(ref);
 
 		for (final Class<?> ignored : ignoredOps) {
-			if (ignored.isAssignableFrom(ref.getType())) {
-				return op;
+			for (final Class<?> t : ref.getTypes()) {
+				if (ignored.isAssignableFrom(t)) {
+					return op;
+				}
 			}
 		}
 
