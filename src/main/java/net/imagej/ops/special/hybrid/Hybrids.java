@@ -191,8 +191,7 @@ public final class Hybrids {
 	 *          interface which multiple {@link UnaryHybridCI}s implement), then
 	 *          the best {@link UnaryHybridCI} implementation to use will be
 	 *          selected automatically from the type and arguments.
-	 * @param outType The {@link Class} of the {@link UnaryHybridCI} typed
-	 *          output.
+	 * @param outType The {@link Class} of the {@link UnaryHybridCI} typed output.
 	 * @param inType The {@link Class} of the {@link UnaryHybridCI} typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed input and
 	 *          output values.
@@ -209,8 +208,8 @@ public final class Hybrids {
 	}
 
 	/**
-	 * Gets the best {@link UnaryHybridCI} implementation for the given types
-	 * and arguments, populating its inputs.
+	 * Gets the best {@link UnaryHybridCI} implementation for the given types and
+	 * arguments, populating its inputs.
 	 *
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
@@ -218,8 +217,7 @@ public final class Hybrids {
 	 *          interface which multiple {@link UnaryHybridCI}s implement), then
 	 *          the best {@link UnaryHybridCI} implementation to use will be
 	 *          selected automatically from the type and arguments.
-	 * @param outType The {@link Class} of the {@link UnaryHybridCI} typed
-	 *          output.
+	 * @param outType The {@link Class} of the {@link UnaryHybridCI} typed output.
 	 * @param in The typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed input and
 	 *          output values.
@@ -236,8 +234,8 @@ public final class Hybrids {
 	}
 
 	/**
-	 * Gets the best {@link UnaryHybridCI} implementation for the given types
-	 * and arguments, populating its inputs.
+	 * Gets the best {@link UnaryHybridCI} implementation for the given types and
+	 * arguments, populating its inputs.
 	 *
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
@@ -289,8 +287,8 @@ public final class Hybrids {
 	}
 
 	/**
-	 * Gets the best {@link UnaryHybridCFI} implementation for the given types
-	 * and arguments, populating its inputs.
+	 * Gets the best {@link UnaryHybridCFI} implementation for the given types and
+	 * arguments, populating its inputs.
 	 *
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
@@ -316,8 +314,8 @@ public final class Hybrids {
 	}
 
 	/**
-	 * Gets the best {@link UnaryHybridCFI} implementation for the given types
-	 * and arguments, populating its inputs.
+	 * Gets the best {@link UnaryHybridCFI} implementation for the given types and
+	 * arguments, populating its inputs.
 	 *
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
@@ -437,23 +435,23 @@ public final class Hybrids {
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
 	 *          {@link BinaryHybridCI1}s share this type (e.g., the type is an
-	 *          interface which multiple {@link BinaryHybridCI1}s implement),
-	 *          then the best {@link BinaryHybridCI1} implementation to use will
-	 *          be selected automatically from the type and arguments.
+	 *          interface which multiple {@link BinaryHybridCI1}s implement), then
+	 *          the best {@link BinaryHybridCI1} implementation to use will be
+	 *          selected automatically from the type and arguments.
 	 * @param outType The {@link Class} of the {@link BinaryHybridCI1} typed
 	 *          output.
-	 * @param in1Type The {@link Class} of the {@link BinaryHybridCI1} first
-	 *          typed input.
+	 * @param in1Type The {@link Class} of the {@link BinaryHybridCI1} first typed
+	 *          input.
 	 * @param in2Type The {@link Class} of the {@link BinaryHybridCI1} second
 	 *          typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed inputs and
 	 *          output values.
 	 * @return A {@link BinaryHybridCI1} with populated inputs, ready to use.
 	 */
-	public static <I1, I2, O extends I1, OP extends Op>
-		BinaryHybridCI1<I1, I2, O> binaryCI1(final OpEnvironment ops,
-			final Class<OP> opType, final Class<O> outType, final Class<I1> in1Type,
-			final Class<I2> in2Type, final Object... otherArgs)
+	public static <I1, I2, O extends I1, OP extends Op> BinaryHybridCI1<I1, I2, O>
+		binaryCI1(final OpEnvironment ops, final Class<OP> opType,
+			final Class<O> outType, final Class<I1> in1Type, final Class<I2> in2Type,
+			final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1Type, in2Type);
 		@SuppressWarnings("unchecked")
@@ -469,9 +467,9 @@ public final class Hybrids {
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
 	 *          {@link BinaryHybridCI1}s share this type (e.g., the type is an
-	 *          interface which multiple {@link BinaryHybridCI1}s implement),
-	 *          then the best {@link BinaryHybridCI1} implementation to use will
-	 *          be selected automatically from the type and arguments.
+	 *          interface which multiple {@link BinaryHybridCI1}s implement), then
+	 *          the best {@link BinaryHybridCI1} implementation to use will be
+	 *          selected automatically from the type and arguments.
 	 * @param outType The {@link Class} of the {@link BinaryHybridCI1} typed
 	 *          output.
 	 * @param in1 The first typed input.
@@ -480,10 +478,10 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link BinaryHybridCI1} with populated inputs, ready to use.
 	 */
-	public static <I1, I2, O extends I1, OP extends Op>
-		BinaryHybridCI1<I1, I2, O> binaryCI1(final OpEnvironment ops,
-			final Class<OP> opType, final Class<O> outType, final I1 in1,
-			final I2 in2, final Object... otherArgs)
+	public static <I1, I2, O extends I1, OP extends Op> BinaryHybridCI1<I1, I2, O>
+		binaryCI1(final OpEnvironment ops, final Class<OP> opType,
+			final Class<O> outType, final I1 in1, final I2 in2,
+			final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1, in2);
 		@SuppressWarnings("unchecked")
@@ -499,9 +497,9 @@ public final class Hybrids {
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
 	 *          {@link BinaryHybridCI1}s share this type (e.g., the type is an
-	 *          interface which multiple {@link BinaryHybridCI1}s implement),
-	 *          then the best {@link BinaryHybridCI1} implementation to use will
-	 *          be selected automatically from the type and arguments.
+	 *          interface which multiple {@link BinaryHybridCI1}s implement), then
+	 *          the best {@link BinaryHybridCI1} implementation to use will be
+	 *          selected automatically from the type and arguments.
 	 * @param out The typed output.
 	 * @param in1 The first typed input.
 	 * @param in2 The second typed input.
@@ -509,10 +507,9 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link BinaryHybridCI1} with populated inputs, ready to use.
 	 */
-	public static <I1, I2, O extends I1, OP extends Op>
-		BinaryHybridCI1<I1, I2, O> binaryCI1(final OpEnvironment ops,
-			final Class<OP> opType, final O out, final I1 in1, final I2 in2,
-			final Object... otherArgs)
+	public static <I1, I2, O extends I1, OP extends Op> BinaryHybridCI1<I1, I2, O>
+		binaryCI1(final OpEnvironment ops, final Class<OP> opType, final O out,
+			final I1 in1, final I2 in2, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in1, in2);
 		@SuppressWarnings("unchecked")
@@ -613,8 +610,8 @@ public final class Hybrids {
 	}
 
 	/**
-	 * Gets the best {@link BinaryHybridCI} implementation for the given types
-	 * and arguments, populating its inputs.
+	 * Gets the best {@link BinaryHybridCI} implementation for the given types and
+	 * arguments, populating its inputs.
 	 *
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
@@ -624,8 +621,7 @@ public final class Hybrids {
 	 *          selected automatically from the type and arguments.
 	 * @param outType The {@link Class} of the {@link BinaryHybridCI} typed
 	 *          output.
-	 * @param inType The {@link Class} of the {@link BinaryHybridCI} typed
-	 *          inputs.
+	 * @param inType The {@link Class} of the {@link BinaryHybridCI} typed inputs.
 	 * @param otherArgs The operation's arguments, excluding the typed inputs and
 	 *          output values.
 	 * @return A {@link BinaryHybridCI} with populated inputs, ready to use.
@@ -642,8 +638,8 @@ public final class Hybrids {
 	}
 
 	/**
-	 * Gets the best {@link BinaryHybridCI} implementation for the given types
-	 * and arguments, populating its inputs.
+	 * Gets the best {@link BinaryHybridCI} implementation for the given types and
+	 * arguments, populating its inputs.
 	 *
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
@@ -671,8 +667,8 @@ public final class Hybrids {
 	}
 
 	/**
-	 * Gets the best {@link BinaryHybridCI} implementation for the given types
-	 * and arguments, populating its inputs.
+	 * Gets the best {@link BinaryHybridCI} implementation for the given types and
+	 * arguments, populating its inputs.
 	 *
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
