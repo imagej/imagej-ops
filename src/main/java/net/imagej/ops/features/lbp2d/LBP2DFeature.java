@@ -41,7 +41,7 @@ import net.imglib2.type.numeric.integer.LongType;
 /**
  * Marker interface for 2D local binary pattern feature.
  * 
- * @author Andreas Graumann, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
  * @param <I> type of incoming {@Link RandomAccessibleInterval}
  * @param <O> type of output value
  */

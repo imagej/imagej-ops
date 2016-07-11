@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Wraps the {@link Views#zeroMin(RandomAccessibleInterval)} method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.ZeroMinView.class)
 public class DefaultZeroMinView<T> extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>>

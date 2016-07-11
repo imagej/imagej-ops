@@ -43,7 +43,7 @@ import org.junit.Test;
  * 
  * Test for {@Link Lbp2dFeature}
  * 
- * @author Andreas Graumann, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
  *
  */
 public class LBP2dFeatureTest extends AbstractFeatureTest {

@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  * 
  * Computes a specific zernike moment
  * 
- * @author Andreas Graumann, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
  */
 @Plugin(type = Op.class)
 public class ZernikeComputer<T extends RealType<T>> extends

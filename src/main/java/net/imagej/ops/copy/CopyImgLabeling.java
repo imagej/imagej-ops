@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Copying {@link ImgLabeling} into another {@link ImgLabeling}
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
 @Plugin(type = Ops.Copy.ImgLabeling.class)

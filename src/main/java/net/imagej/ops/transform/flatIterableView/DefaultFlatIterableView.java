@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Wraps the {@link Views#flatIterable(RandomAccessibleInterval)} method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.FlatIterableView.class)
 public class DefaultFlatIterableView<T> extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, IterableInterval<T>>

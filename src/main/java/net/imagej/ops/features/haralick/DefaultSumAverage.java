@@ -43,8 +43,8 @@ import org.scijava.plugin.Plugin;
 /**
  * Implementation of Sum Average Haralick Feature
  * 
- * @author Andreas Graumann, University of Konstanz
- * @author Christian Dietz, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Ops.Haralick.SumAverage.class, label = "Haralick: Sum Average")
 public class DefaultSumAverage<T extends RealType<T>> extends

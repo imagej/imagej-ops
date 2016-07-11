@@ -43,7 +43,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
 @Plugin(type = Ops.Morphology.ExtractHoles.class)

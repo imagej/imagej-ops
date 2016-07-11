@@ -44,8 +44,8 @@ import org.scijava.plugin.Plugin;
 /**
  * Extracts the holes from a binary image.
  *
- * @author Christian Dietz, University of Konstanz
- * @author Daniel Seebacher, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
+ * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Morphology.ExtractHoles.class)
 public class DefaultExtractHolesComputer<T extends BooleanType<T>> extends

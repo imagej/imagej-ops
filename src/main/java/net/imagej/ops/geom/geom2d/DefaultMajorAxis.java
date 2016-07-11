@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Generic implementation of {@code geom.majorAxis}.
  * 
- * @author Daniel Seebacher, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.MajorAxis.class,
 	label = "Geometric (2D): Major Axis")

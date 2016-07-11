@@ -37,7 +37,7 @@ import org.apache.commons.math3.linear.EigenDecomposition;
  * This class stores the covariance matrix of the 2nd multi variate 3D and the
  * eigen decomposition of this matrix.
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 public class CovarianceOf2ndMultiVariate3D {
 

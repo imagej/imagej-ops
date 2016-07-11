@@ -54,7 +54,7 @@ import org.junit.Test;
  * 
  * Overriding with customOps is tested implicitly
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  */
 public class CachedOpEnvironmentTest extends AbstractOpTest {
 

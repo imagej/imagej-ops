@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Spareness}.
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.Spareness.class,
 	label = "Geometric (3D): Spareness", priority = Priority.VERY_HIGH_PRIORITY)

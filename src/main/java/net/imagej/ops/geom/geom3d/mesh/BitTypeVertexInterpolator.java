@@ -37,7 +37,7 @@ import org.scijava.plugin.Plugin;
  * The {@link BitTypeVertexInterpolator} returns the point which is 
  * in the middle of the two input vertices. 
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  *
  */
 @Plugin(type = Ops.Geometric.VertexInterpolator.class)

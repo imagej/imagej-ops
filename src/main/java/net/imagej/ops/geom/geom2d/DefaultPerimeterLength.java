@@ -43,7 +43,7 @@ import net.imglib2.type.numeric.real.DoubleType;
 /**
  * Generic implementation of {@code geom.boundarySize}.
  * 
- * @author Daniel Seebacher, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.BoundarySize.class,
 	label = "Geometric (2D): Perimeter")

@@ -43,8 +43,8 @@ import org.scijava.plugin.Plugin;
 /**
  * Implementation of Information Measure of Correlation 2 Haralick Feature
  * 
- * @author Andreas Graumann, University of Konstanz
- * @author Christian Dietz, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Ops.Haralick.ICM2.class,
 	label = "Haralick: Information Measure of Correlation 2")

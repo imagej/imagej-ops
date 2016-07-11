@@ -35,7 +35,7 @@ import net.imagej.ops.special.hybrid.UnaryHybridCF;
 /**
  * marker interface for statistic ops.
  *
- * @author Daniel Seebacher, University of Konstanz
+ * @author Daniel Seebacher (University of Konstanz)
  */
 public interface StatsOp<I, O> extends UnaryHybridCF<I, O> {
 	// NB: marker interface

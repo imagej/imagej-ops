@@ -37,12 +37,10 @@ import net.imglib2.type.numeric.real.DoubleType;
 import org.scijava.plugin.Plugin;
 
 /**
- * 
  * Implementation of Inverse Difference Moment Haralick Feature
  * 
- * @author Andreas Graumann, University of Konstanz
- * @author Christian Dietz, Univesity of Konstanz
- *
+ * @author Andreas Graumann (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Ops.Haralick.IFDM.class, label = "Haralick: Inverse Difference Moment")
 public class DefaultIFDM<T extends RealType<T>> extends AbstractHaralickFeature<T>

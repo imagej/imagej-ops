@@ -32,7 +32,7 @@ package net.imagej.ops.image.cooccurrenceMatrix;
 /**
  * Orientation of a {@link CooccurrenceMatrix2D}
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  *
  */
 public enum MatrixOrientation2D implements MatrixOrientation {

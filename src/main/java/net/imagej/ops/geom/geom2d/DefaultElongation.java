@@ -42,7 +42,7 @@ import net.imglib2.type.numeric.real.DoubleType;
 /**
  * Generic implementation of {@code geom.mainElongation}.
  * 
- * @author Daniel Seebacher, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.MainElongation.class, label = "Geometric (2D): Elongation")
 public class DefaultElongation extends AbstractUnaryHybridCF<Polygon, DoubleType>

@@ -55,7 +55,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Namespace for Geom.
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Namespace.class)
 public class GeomNamespace extends AbstractNamespace {

@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Converts a RandomAccessibleInterval to a Mesh
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @SuppressWarnings("rawtypes")
 @Plugin(type = Converter.class, priority = Priority.VERY_HIGH_PRIORITY)

@@ -42,7 +42,7 @@ import net.imglib2.type.numeric.real.DoubleType;
 /**
  * Generic implementation of {@code geom.roundness}.
  * 
- * @author Daniel Seebacher, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.Roundness.class, label = "Geometric (2D): Roundness")
 public class DefaultRoundness extends AbstractUnaryHybridCF<Polygon, DoubleType> implements Ops.Geometric.Roundness {

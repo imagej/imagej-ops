@@ -50,8 +50,8 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn, University of Konstanz
- * @author Daniel Seebacher, University of Konstanz
+ * @author Martin Horn (University of Konstanz)
+ * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Morphology.FloodFill.class)
 public class DefaultFloodFill<T extends Type<T> & Comparable<T>> extends

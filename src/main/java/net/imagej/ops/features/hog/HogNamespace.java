@@ -40,7 +40,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Namespace for Histogram of oriented gradients Features
  * 
- * @author Simon Schmid, University of Konstanz
+ * @author Simon Schmid (University of Konstanz)
  */
 @Plugin(type = Namespace.class)
 public class HogNamespace extends AbstractNamespace {

@@ -37,7 +37,7 @@ import net.imagej.ops.transform.TransformNamespace;
 /**
  * Tests {@link TransformNamespace}.
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 public class TransformNamespaceTest extends AbstractNamespaceTest {
 

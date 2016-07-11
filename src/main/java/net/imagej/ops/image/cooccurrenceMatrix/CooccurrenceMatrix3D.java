@@ -46,9 +46,9 @@ import org.scijava.plugin.Plugin;
 /**
  * Calculates coocccurrence matrix from an 3D-{@link IterableInterval}.
  * 
- * @author Stephan Sellien, University of Konstanz
- * @author Andreas Graumann, University of Konstanz
- * @author Christian Dietz, University of Konstanz
+ * @author Stephan Sellien (University of Konstanz)
+ * @author Andreas Graumann (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Ops.Image.CooccurrenceMatrix.class)
 public class CooccurrenceMatrix3D<T extends RealType<T>> extends

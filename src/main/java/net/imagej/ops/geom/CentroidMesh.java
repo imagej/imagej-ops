@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * 
  * Computation based on http://wwwf.imperial.ac.uk/~rn/centroid.pdf.
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.Centroid.class, label = "Geometric: Centroid")
 public class CentroidMesh extends AbstractUnaryFunctionOp<Mesh, RealLocalizable>

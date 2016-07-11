@@ -39,7 +39,7 @@ import net.imglib2.type.numeric.real.DoubleType;
 /**
  * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Convexity}.
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 public abstract class AbstractConvexity<I> extends
 	AbstractUnaryHybridCF<I, DoubleType> implements Ops.Geometric.Convexity

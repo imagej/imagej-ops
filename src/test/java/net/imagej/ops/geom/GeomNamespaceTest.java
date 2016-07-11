@@ -37,7 +37,7 @@ import org.junit.Test;
 /**
  * Tests {@link GeomNamespaceTest}.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 public class GeomNamespaceTest extends AbstractNamespaceTest {
 

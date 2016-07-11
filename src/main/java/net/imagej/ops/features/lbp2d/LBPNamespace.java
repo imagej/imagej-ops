@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Namespace for 2d local binary pattern feature
  * 
- * @author Andreas Graumann, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
  */
 @Plugin(type = Namespace.class)
 public class LBPNamespace extends AbstractNamespace {

@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Wraps the {@link Views#unshear(RandomAccessible, int, int)} method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.UnshearView.class)
 public class DefaultUnshearView<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, TransformView<T>>

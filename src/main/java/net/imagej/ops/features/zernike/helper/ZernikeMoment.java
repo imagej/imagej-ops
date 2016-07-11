@@ -35,7 +35,7 @@ import net.imagej.types.BigComplex;
  * Class to hold a zernike moment, including its polynom, order, repition and
  * complex representation
  * 
- * @author Andreas Graumann, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
  *
  */
 public class ZernikeMoment {

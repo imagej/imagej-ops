@@ -41,7 +41,7 @@ import org.junit.Test;
 /**
  * This class tests the {@link BitTypeVertexInterpolator}.
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 public class DefaultVertexInterpolatorTest extends AbstractOpTest {
 

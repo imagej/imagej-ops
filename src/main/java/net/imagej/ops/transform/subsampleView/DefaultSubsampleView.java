@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Wraps the {@link Views#subsample(RandomAccessible, long)} method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.SubsampleView.class)
 public class DefaultSubsampleView<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, SubsampleView<T>>

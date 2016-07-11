@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Copies an {@link IterableInterval} into another {@link IterableInterval}
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
 @Plugin(type = Ops.Copy.IterableInterval.class, priority = 1.0)

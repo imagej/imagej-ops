@@ -45,7 +45,7 @@ import org.junit.Test;
 /**
  * Test {@link CopyImgLabeling}
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  */
 public class CopyImgLabelingTest extends AbstractOpTest {
 

@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Wraps the {@link Views#raster(RealRandomAccessible)} method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.RasterView.class)
 public class DefaultRasterView<T extends Type<T>>

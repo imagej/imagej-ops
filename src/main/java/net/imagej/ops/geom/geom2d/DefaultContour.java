@@ -53,8 +53,8 @@ import org.scijava.plugin.Plugin;
 /**
  * Generic implementation of {@code geom.contour}.
  * 
- * @author Jonathan Hale, Universitf Konstany.
- * @author Daniel Seebacher, University of Konstanz.
+ * @author Jonathan Hale (University of Konstanz)
+ * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.Contour.class)
 public class DefaultContour<B extends BooleanType<B>> extends

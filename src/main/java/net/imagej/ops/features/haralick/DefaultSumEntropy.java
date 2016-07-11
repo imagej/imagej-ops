@@ -43,8 +43,8 @@ import org.scijava.plugin.Plugin;
  * 
  * Implementation of Sum Entropy Haralick Feature
  * 
- * @author Andreas Graumann, University of Konstanz
- * @author Christian Dietz, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  * 
  */
 @Plugin(type = Ops.Haralick.SumEntropy.class, label = "Haralick: Sum Entropy")

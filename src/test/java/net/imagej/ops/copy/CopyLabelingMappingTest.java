@@ -47,7 +47,7 @@ import org.junit.Test;
 /**
  * Test @link {@link CopyLabelingMapping}.
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  *
  */
 public class CopyLabelingMappingTest extends AbstractOpTest {

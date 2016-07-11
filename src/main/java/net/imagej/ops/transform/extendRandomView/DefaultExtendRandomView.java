@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
  * Wraps the
  * {@link Views#extendRandom(RandomAccessibleInterval, double, double)} method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.ExtendRandomView.class)
 public class DefaultExtendRandomView<T extends RealType<T>, F extends RandomAccessibleInterval<T>>

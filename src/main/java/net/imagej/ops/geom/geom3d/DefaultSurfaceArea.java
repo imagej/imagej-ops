@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Generic implementation of {@link net.imagej.ops.Ops.Geometric.BoundarySize}.
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.BoundarySize.class,
 	label = "Geometric (3D): Surface Area",

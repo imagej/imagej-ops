@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Copying {@link ArrayImg} into another {@link ArrayImg}
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
 @Plugin(type = Ops.Copy.Img.class, priority = Priority.VERY_HIGH_PRIORITY)

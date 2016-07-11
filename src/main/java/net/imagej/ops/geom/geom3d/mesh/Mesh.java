@@ -37,7 +37,7 @@ import net.imglib2.RealLocalizable;
 /**
  * Interface for Meshes
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  *
  */
 public interface Mesh {

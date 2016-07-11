@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Wraps the {@link Views#collapseNumeric(RandomAccessibleInterval)} method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.CollapseNumericView.class)
 public class DefaultCollapseNumeric2CompositeIntervalView<T extends NumericType<T>>

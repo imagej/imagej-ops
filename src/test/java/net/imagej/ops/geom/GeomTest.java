@@ -78,8 +78,8 @@ import org.junit.Test;
 /**
  * Tests for geom features
  * 
- * @author Daniel Seebacher, University of Konstanz
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Daniel Seebacher (University of Konstanz)
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 public class GeomTest extends AbstractFeatureTest {
 

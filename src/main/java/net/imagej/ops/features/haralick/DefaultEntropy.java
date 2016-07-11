@@ -41,8 +41,8 @@ import org.scijava.plugin.Plugin;
  * Implementation of Entropy Haralick Feature Definition: -( sum_{i=1}^q
  * sum_{j=1}^q c(i,j) log10(c(i,j)) )
  * 
- * @author Andreas Graumann, University of Konstanz
- * @author Christian Dietz, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  *
  */
 @Plugin(type = Ops.Haralick.Entropy.class, label = "Haralick: Entropy")

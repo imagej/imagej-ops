@@ -32,7 +32,7 @@ package net.imagej.ops.features.zernike.helper;
 /**
  * class used to represent a zernike moment polynomial.
  * 
- * @author Andreas Graumann, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
  */
 public class Polynom {
     /** the array of polynom coefficients. */

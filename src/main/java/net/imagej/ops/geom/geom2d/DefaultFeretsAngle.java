@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Generic implementation of {@code geom.feretsAngle}.
  * 
- * @author Daniel Seebacher, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.FeretsAngle.class,
 	label = "Geometric (2D): Ferets Angle")

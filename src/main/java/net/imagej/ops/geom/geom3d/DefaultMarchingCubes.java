@@ -56,7 +56,7 @@ import org.scijava.plugin.Plugin;
  * (http://paulbourke.net/geometry/polygonise/) implementation. Especially the
  * lookup tables are from his implementation.
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  * @param <T> BooleanType
  */
 @Plugin(type = Ops.Geometric.MarchingCubes.class)

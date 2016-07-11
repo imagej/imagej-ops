@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Generic implementation of {@code geom.centroid}.
  * 
- * @author Daniel Seebacher, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.Centroid.class, label = "Geometric: Center of Gravity")
 public class CentroidPolygon extends

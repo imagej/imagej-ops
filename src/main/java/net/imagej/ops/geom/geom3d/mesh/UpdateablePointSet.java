@@ -34,7 +34,7 @@ import java.util.List;
 /**
  * An {@link UpdateablePointSet} consists of vertices and neighbors.
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  *
  */
 abstract class UpdateablePointSet<T> {

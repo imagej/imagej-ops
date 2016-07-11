@@ -33,7 +33,7 @@ package net.imagej.ops.image.cooccurrenceMatrix;
  * Simple interface for enums representing the orientation of a
  * {@link net.imagej.ops.Ops.Image.CooccurrenceMatrix}.
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  *
  */
 public interface MatrixOrientation {

@@ -141,8 +141,8 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	 * Simple class to generate empty, randomly filled or constantly filled images
 	 * of various types.
 	 * 
-	 * @author Daniel Seebacher, University of Konstanz.
-	 * @author Andreas Graumann, University of Konstanz
+	 * @author Daniel Seebacher (University of Konstanz)
+	 * @author Andreas Graumann (University of Konstanz)
 	 */
 	class ImageGenerator {
 

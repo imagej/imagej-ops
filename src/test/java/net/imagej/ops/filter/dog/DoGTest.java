@@ -45,7 +45,7 @@ import org.junit.Test;
 /**
  * Tests Difference of Gaussians (DoG) implementations.
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  */
 public class DoGTest extends AbstractOpTest {
 

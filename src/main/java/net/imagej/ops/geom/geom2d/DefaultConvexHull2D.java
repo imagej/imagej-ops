@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Generic implementation of {@code geom.convexHull}.
  * 
- * @author Daniel Seebacher, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.ConvexHull.class)
 public class DefaultConvexHull2D extends AbstractUnaryFunctionOp<Polygon, Polygon>

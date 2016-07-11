@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Converts a {@link LabelRegion} to a polygon
  * 
- * @author Daniel Seebacher, University of Konstanz
+ * @author Daniel Seebacher (University of Konstanz)
  */
 @SuppressWarnings("rawtypes")
 @Plugin(type = Converter.class, priority = Priority.VERY_HIGH_PRIORITY)

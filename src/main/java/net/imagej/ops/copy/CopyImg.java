@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * Copying {@link Img} into another {@link Img}.
  * Exists mainly for convenience reasons. 
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
 @Plugin(type = Ops.Copy.Img.class)

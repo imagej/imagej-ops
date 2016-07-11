@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Generic implementation of {@code geom.smallestBoundingBox}.
  * 
- * @author Daniel Seebacher, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.SmallestEnclosingBoundingBox.class,
 	label = "Geometric (2D): Smallest Enclosing Rectangle")

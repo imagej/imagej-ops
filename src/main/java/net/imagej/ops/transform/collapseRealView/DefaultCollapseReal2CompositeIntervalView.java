@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Wraps the {@link Views#collapseReal(RandomAccessibleInterval)} method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.CollapseRealView.class)
 public class DefaultCollapseReal2CompositeIntervalView<T extends RealType<T>>

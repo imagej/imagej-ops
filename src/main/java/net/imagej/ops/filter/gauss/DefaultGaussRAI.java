@@ -52,7 +52,7 @@ import org.scijava.thread.ThreadService;
 /**
  * Gaussian filter, wrapping {@link Gauss3} of imglib2-algorithms.
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  * @param <T> type of input and output
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })

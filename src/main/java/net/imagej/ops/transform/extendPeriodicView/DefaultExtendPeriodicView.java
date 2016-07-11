@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Wraps the {@link Views#extendPeriodic(RandomAccessibleInterval)} method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.ExtendPeriodicView.class)
 public class DefaultExtendPeriodicView<T, F extends RandomAccessibleInterval<T>>

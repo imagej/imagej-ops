@@ -41,7 +41,7 @@ import net.imglib2.RealLocalizable;
 /**
  * This is the default implementation of {@link Mesh}.
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 public class DefaultMesh implements Mesh, Iterable<Facet> {
 

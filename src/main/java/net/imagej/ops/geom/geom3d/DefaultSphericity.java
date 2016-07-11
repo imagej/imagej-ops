@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Sphericity}.
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.Sphericity.class,
 	label = "Geometric (3D): Sphericity", priority = Priority.VERY_HIGH_PRIORITY)

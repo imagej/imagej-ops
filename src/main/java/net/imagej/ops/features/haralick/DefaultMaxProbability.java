@@ -39,8 +39,8 @@ import org.scijava.plugin.Plugin;
 /**
  * Implementation of Maximum Probability Haralick Feature
  * 
- * @author Andreas Graumann, University of Konstanz
- * @author Christian Dietz, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  *
  */
 @Plugin(type = Ops.Haralick.MaxProbability.class, label = "Haralick: Maximum Probability Feature")

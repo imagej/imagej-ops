@@ -39,7 +39,7 @@ import org.scijava.plugin.Parameter;
  * This is the {@link AbstractVertexInterpolator}. A vertex interpolator
  * computes the real coordinates based on the pixel intensities.
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  *
  */
 public abstract class AbstractVertexInterpolator extends AbstractOp

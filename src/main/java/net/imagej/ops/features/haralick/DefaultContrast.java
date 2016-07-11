@@ -43,8 +43,8 @@ import org.scijava.plugin.Plugin;
  * 
  * Implementation of texture contrast haralick feature.
  * 
- * @author Andreas Graumann, University of Konstanz
- * @author Christian Dietz, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  *
  */
 @Plugin(type = Ops.Haralick.Contrast.class, label = "Haralick: Contrast")

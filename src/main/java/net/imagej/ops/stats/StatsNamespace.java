@@ -46,8 +46,8 @@ import org.scijava.plugin.Plugin;
  * The stats namespace contains operations related to numerical statistics.
  *
  * @author Curtis Rueden
- * @author Daniel Seebacher, University of Konstanz.
- * @author Christian Dietz, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  */
 @SuppressWarnings("unchecked")
 @Plugin(type = Namespace.class)

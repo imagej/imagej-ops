@@ -37,7 +37,7 @@ import net.imglib2.type.numeric.real.DoubleType;
 /**
  * Simple marker interface for Haralick Features.
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  *
  * @param <T>
  *            type of the incoming {@link IterableInterval}

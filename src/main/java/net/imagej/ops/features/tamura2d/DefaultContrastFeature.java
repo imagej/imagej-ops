@@ -38,11 +38,9 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.plugin.Plugin;
 
 /**
- * 
  * Default implementation of tamura feature contrast.
  * 
- * @author Andeas Graumann, Univesity of Konstanz
- *
+ * @author Andreas Graumann (University of Konstanz)
  */
 @Plugin(type = Ops.Tamura.Contrast.class, label = "Tamura 2D: Contrast")
 public class DefaultContrastFeature<I extends RealType<I>, O extends RealType<O>>

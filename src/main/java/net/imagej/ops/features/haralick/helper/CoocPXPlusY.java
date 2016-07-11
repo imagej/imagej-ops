@@ -36,8 +36,8 @@ import org.scijava.plugin.Plugin;
 /**
  * NB: Helper class. Internal usage only.
  * 
- * @author Andreas Graumann, University of Konstanz
- * @author Christian Dietz, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = CoocPXPlusY.class)
 public class CoocPXPlusY extends AbstractUnaryFunctionOp<double[][], double[]> {

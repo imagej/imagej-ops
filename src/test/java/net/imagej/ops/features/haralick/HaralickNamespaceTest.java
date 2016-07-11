@@ -36,7 +36,7 @@ import org.junit.Test;
 /**
  * Tests the {@link HaralickNamespace}
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  */
 public class HaralickNamespaceTest extends AbstractNamespaceTest {
 	/**

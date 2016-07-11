@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Wraps the {@link Views#hyperSlice(RandomAccessible, int, long)} method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.HyperSliceView.class)
 public class DefaultHyperSliceView<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, MixedTransformView<T>>

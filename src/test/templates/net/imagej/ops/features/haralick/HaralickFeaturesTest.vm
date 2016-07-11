@@ -43,7 +43,7 @@ import net.imglib2.type.numeric.real.DoubleType;
 /**
  * Testing implementations of {@link HaralickFeature}
  * 
- * @author Daniel Seebacher, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
  */
 public class HaralickFeaturesTest extends AbstractFeatureTest {
 

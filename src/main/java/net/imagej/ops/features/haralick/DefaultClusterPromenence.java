@@ -44,8 +44,8 @@ import org.scijava.plugin.Plugin;
  * 
  * Implementation of Cluster Promenence Haralick Feature
  * 
- * @author Andreas Graumann, University of Konstanz
- * @author Christian Dietz, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  *
  */
 @Plugin(type = Ops.Haralick.ClusterPromenence.class, label = "Haralick: Cluster Promenence")

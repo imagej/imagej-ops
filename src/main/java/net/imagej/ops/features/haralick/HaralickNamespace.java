@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Namespace for Haralick Features
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Namespace.class)
 public class HaralickNamespace extends AbstractNamespace {

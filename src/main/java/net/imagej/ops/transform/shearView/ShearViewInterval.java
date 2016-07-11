@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Wraps the {@link Views#shear(RandomAccessible, Interval, int, int)} method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.ShearView.class)
 public class ShearViewInterval<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, IntervalView<T>>

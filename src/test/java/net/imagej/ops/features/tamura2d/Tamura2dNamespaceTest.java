@@ -37,7 +37,7 @@ import org.junit.Test;
  * 
  * Tests the {@Link TamuraNamespace}
  * 
- * @author Andreas Graumann, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
  *
  */
 public class Tamura2dNamespaceTest extends AbstractNamespaceTest {

@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Wraps the {@link Views#extendMirrorDouble(RandomAccessibleInterval)} method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.ExtendMirrorDoubleView.class)
 public class DefaultExtendMirrorDoubleView<T, F extends RandomAccessibleInterval<T>> extends

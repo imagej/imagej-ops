@@ -35,7 +35,7 @@ import net.imagej.ops.special.function.UnaryFunctionOp;
 /**
  * Simple marker interface for Geoemtric ops.
  * 
- * @author Daniel Seebacher, University of Konstanz
+ * @author Daniel Seebacher (University of Konstanz)
  */
 public interface GeometricOp<I, O> extends UnaryFunctionOp<I, O> {
 	// NB: marker interface

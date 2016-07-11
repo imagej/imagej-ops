@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
 /**
  * The image moments namespace contains ops related to image moments.
  *
- * @author Daniel Seebacher, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
  */
 @SuppressWarnings("unchecked")
 @Plugin(type = Namespace.class)

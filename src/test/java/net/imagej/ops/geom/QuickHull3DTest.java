@@ -54,7 +54,7 @@ import org.junit.Test;
  * {@link QuickHull3DTest#isConvex(List, double)} checks for each centroid if it
  * is behind all other facets.
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 public class QuickHull3DTest extends AbstractOpTest {
 

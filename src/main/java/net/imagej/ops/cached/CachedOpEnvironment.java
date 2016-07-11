@@ -52,7 +52,7 @@ import org.scijava.plugin.Parameter;
 /**
  * Creates {@link CachedFunctionOp}s which know how to cache their outputs.
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  */
 public class CachedOpEnvironment extends CustomOpEnvironment {
 
@@ -141,7 +141,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	 * Wraps a {@link UnaryFunctionOp} and caches the results. New inputs will
 	 * result in re-computation of the result.
 	 * 
-	 * @author Christian Dietz, University of Konstanz
+	 * @author Christian Dietz (University of Konstanz)
 	 * @param <I>
 	 * @param <O>
 	 */
@@ -215,7 +215,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	 * result in re-computation if {@link UnaryHybridCF} is used as
 	 * {@link UnaryFunctionOp}.
 	 * 
-	 * @author Christian Dietz, University of Konstanz
+	 * @author Christian Dietz (University of Konstanz)
 	 * @param <I>
 	 * @param <O>
 	 */

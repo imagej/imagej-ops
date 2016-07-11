@@ -44,7 +44,7 @@ import net.imglib2.type.numeric.real.DoubleType;
 /**
  * Specific implementation of {@link Area} for a Polygon.
  * 
- * @author Daniel Seebacher, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.Size.class, label = "Geometric (2D): Size",
 	priority = Priority.VERY_HIGH_PRIORITY - 1)

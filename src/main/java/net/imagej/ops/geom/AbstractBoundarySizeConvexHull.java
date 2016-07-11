@@ -40,7 +40,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  * Generic implementation of
  * {@link net.imagej.ops.Ops.Geometric.BoundarySizeConvexHull}.
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 public abstract class AbstractBoundarySizeConvexHull<I> extends
 	AbstractUnaryHybridCF<I, DoubleType> implements

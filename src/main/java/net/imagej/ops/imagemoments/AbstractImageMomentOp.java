@@ -41,8 +41,8 @@ import net.imglib2.type.numeric.real.DoubleType;
  * Abstract {@link ImageMomentOp}. Provides {@link OpService} and create the
  * output.
  * 
- * @author Daniel Seebacher, University of Konstanz.
- * @author Christian Dietz, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  * @param <I> input type
  * @param <O> output type
  */

@@ -43,7 +43,7 @@ import org.scijava.plugin.Parameter;
  * 
  * Abstract Zernike Op.
  * 
- * @author Andreas Graumann, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
  *
  * @param <I>
  *            input type

@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
  * {@link Views#permuteCoordinates(RandomAccessibleInterval, int[], int)}
  * method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.PermuteCoordinatesView.class)
 public class PermuteCoordinatesViewOfDimension<T>

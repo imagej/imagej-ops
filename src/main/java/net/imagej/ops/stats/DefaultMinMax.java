@@ -42,8 +42,8 @@ import org.scijava.plugin.Plugin;
 /**
  * {@link Op} to calculate the {@code stats.minMax}.
  * 
- * @author Daniel Seebacher, University of Konstanz.
- * @author Christian Dietz, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  * @param <I> input type
  */
 @Plugin(type = Ops.Stats.MinMax.class, label = "Statistics: MinMax")

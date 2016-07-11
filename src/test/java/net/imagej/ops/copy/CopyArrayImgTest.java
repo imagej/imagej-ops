@@ -48,7 +48,7 @@ import org.junit.Test;
 /**
  * Test {@link CopyArrayImg}
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  */
 public class CopyArrayImgTest extends AbstractOpTest {
 

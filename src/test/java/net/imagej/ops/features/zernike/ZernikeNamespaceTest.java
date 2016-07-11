@@ -36,7 +36,7 @@ import org.junit.Test;
 /**
  * Tests the {@link ZernikeNamespace}
  * 
- * @author Andreas Graumann, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
  */
 public class ZernikeNamespaceTest extends AbstractNamespaceTest {
 	/**

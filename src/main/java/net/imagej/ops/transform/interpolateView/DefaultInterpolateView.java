@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  * Wraps the {@link Views#interpolate(EuclideanSpace, InterpolatorFactory)}
  * method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.InterpolateView.class)
 public class DefaultInterpolateView<I extends EuclideanSpace, T extends Type<T>>

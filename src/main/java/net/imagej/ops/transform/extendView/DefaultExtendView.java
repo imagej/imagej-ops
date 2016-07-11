@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
  * Wraps the {@link Views#extend(RandomAccessibleInterval, OutOfBoundsFactory)}
  * method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.ExtendView.class)
 public class DefaultExtendView<T, F extends RandomAccessibleInterval<T>>

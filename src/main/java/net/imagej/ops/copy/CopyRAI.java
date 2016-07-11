@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * Copies a {@link RandomAccessibleInterval} into another
  * {@link RandomAccessibleInterval}
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
 @Plugin(type = Ops.Copy.RAI.class, priority = 1.0)

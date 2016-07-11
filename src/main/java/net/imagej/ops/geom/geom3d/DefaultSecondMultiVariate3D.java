@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * This {@link Op} computes the 2nd multi variate of a {@link IterableRegion}
  * (Label).
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  * @param <B> BooleanType
  */
 @Plugin(type = Ops.Geometric.SecondMultiVariate.class)

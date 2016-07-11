@@ -58,8 +58,8 @@ public abstract class AbstractLBP2DFeature<I extends RealType<I>> extends
 	}
 
 	/**
-	 * @author Andreas Graumann, University of Konstanz
-	 * @author Jonathan Hale, University of Konstanz
+	 * @author Andreas Graumann (University of Konstanz)
+	 * @author Jonathan Hale (University of Konstanz)
 	 * @param <T>
 	 */
 	final class ClockwiseDistanceNeighborhoodIterator<T extends Type<T>>

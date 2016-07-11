@@ -38,7 +38,7 @@ import net.imagej.ops.geom.AbstractBoxivity;
 import net.imglib2.roi.geometric.Polygon;
 
 /**
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.Boxivity.class,
 	label = "Geometric (2D): Rectangularity",

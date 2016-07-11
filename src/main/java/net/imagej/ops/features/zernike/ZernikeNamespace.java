@@ -40,7 +40,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Namespace for Zernike features
  * 
- * @author Andreas Graumann, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
  *
  */
 @SuppressWarnings("unchecked")

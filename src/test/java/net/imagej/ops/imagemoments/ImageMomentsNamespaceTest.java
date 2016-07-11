@@ -37,7 +37,7 @@ import org.junit.Test;
 /**
  * Tests {@link ImageMomentsNamespace}.
  *
- * @author Daniel Seebacher, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
  */
 public class ImageMomentsNamespaceTest extends AbstractNamespaceTest {
 

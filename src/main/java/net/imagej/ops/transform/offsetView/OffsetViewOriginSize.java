@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
  * Wraps the {@link Views#offsetInterval(RandomAccessible, long[], long[])}
  * method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.OffsetView.class)
 public class OffsetViewOriginSize<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, IntervalView<T>>

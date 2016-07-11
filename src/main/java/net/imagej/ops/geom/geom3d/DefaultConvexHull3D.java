@@ -57,7 +57,7 @@ import org.scijava.plugin.Plugin;
  * computation of the initial simplex is inspired by John Lloyd's quickhull
  * implementation (http://www.cs.ubc.ca/~lloyd/java/quickhull3d.html).
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.ConvexHull.class)
 public class DefaultConvexHull3D extends AbstractUnaryFunctionOp<Mesh, Mesh>

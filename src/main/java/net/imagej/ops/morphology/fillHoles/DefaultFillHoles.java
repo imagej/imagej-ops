@@ -51,8 +51,8 @@ import org.scijava.plugin.Plugin;
 /**
  * Fills the holes of a BooleanType image.
  * 
- * @author Martin Horn, University of Konstanz
- * @author Daniel Seebacher, University of Konstanz
+ * @author Martin Horn (University of Konstanz)
+ * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Morphology.FillHoles.class)
 public class DefaultFillHoles<T extends BooleanType<T>> extends

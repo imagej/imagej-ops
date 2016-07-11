@@ -37,7 +37,7 @@ import org.junit.Test;
 /**
  * Tests {@link CopyNamespace}.
  *
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  */
 public class CopyNamespaceTest extends AbstractNamespaceTest {
 

@@ -44,7 +44,7 @@ import net.imglib2.util.Pair;
 /**
  * Generic implementation of {@code geom.feretsDiameter}.
  * 
- * @author Daniel Seebacher, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.FeretsDiameter.class, label = "Geometric (2D): Ferets Diameter")
 public class DefaultFeretsDiameter extends AbstractUnaryHybridCF<Polygon, DoubleType>

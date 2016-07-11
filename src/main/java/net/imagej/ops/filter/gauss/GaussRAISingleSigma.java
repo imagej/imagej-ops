@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * Gaussian filter which can be called with single sigma, i.e. the sigma is the
  * same in each dimension.
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  * @param <T> type of input
  */
 @Plugin(type = Ops.Filter.Gauss.class)

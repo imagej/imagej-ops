@@ -43,7 +43,7 @@ import net.imglib2.util.Pair;
 /**
  * Generic implementation of {@code geom.minorAxis}.
  * 
- * @author Daniel Seebacher, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.MinorAxis.class, label = "Geometric (2D): Minor Axis")
 public class DefaultMinorAxis extends AbstractUnaryHybridCF<Polygon, DoubleType> implements Ops.Geometric.MinorAxis {

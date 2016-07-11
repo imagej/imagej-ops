@@ -40,8 +40,8 @@ import org.scijava.plugin.Plugin;
 /**
  * Implementation of Texture Homogeneity Haralick Feature
  * 
- * @author Andreas Grauman, University of Konstanz
- * @author Christian Dietz, University of Konstanz
+ * @author Andreas Grauman (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Ops.Haralick.TextureHomogeneity.class,
 	label = "Haralick: Texture Homogeneity Feature")

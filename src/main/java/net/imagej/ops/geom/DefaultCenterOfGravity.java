@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * This {@link Op} computes the center of gravity of a {@link IterableRegion}
  * (Label).
  * 
- * @author Daniel Seebacher, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.CenterOfGravity.class)
 public class DefaultCenterOfGravity<T extends RealType<T>> extends

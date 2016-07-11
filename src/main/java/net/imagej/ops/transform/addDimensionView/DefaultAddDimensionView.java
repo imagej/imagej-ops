@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Wraps the {@link Views#addDimension(RandomAccessible)} method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.AddDimensionView.class, label = "View: AddDimension")
 public class DefaultAddDimensionView<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, MixedTransformView<T>>

@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Wraps the {@link Views#rotate(RandomAccessible, int, int)} method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.RotateView.class)
 public class DefaultRotateView<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, MixedTransformView<T>>

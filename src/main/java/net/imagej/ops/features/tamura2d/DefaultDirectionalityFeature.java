@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Implementation of Tamura's Directionality Feature
  * 
- * @author Andreas Graumann, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
  * @param <I>
  * @param <O>
  */

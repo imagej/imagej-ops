@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
  * Wraps the {@link Views#permuteCoordinates(RandomAccessibleInterval, int[])}
  * method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.PermuteCoordinatesView.class)
 public class DefaultPermuteCoordinatesView<T> extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>>

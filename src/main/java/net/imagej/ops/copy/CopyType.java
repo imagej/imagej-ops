@@ -39,7 +39,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Copy {@link Type} to another {@link Type}
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
 @Plugin(type = Ops.Copy.Type.class)

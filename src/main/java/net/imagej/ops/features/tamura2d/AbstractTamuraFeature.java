@@ -39,7 +39,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  * 
  * Abstract tamura feature.
  * 
- * @author Andreas Graumann, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
  *
  * @param <I>
  *            type of incoming iterable interval

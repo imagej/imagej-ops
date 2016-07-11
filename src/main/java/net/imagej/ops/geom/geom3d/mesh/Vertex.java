@@ -41,7 +41,7 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
  * Represents vertices of the hull, as well as the points from which it is
  * formed.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 public class Vertex extends Vector3D implements RealLocalizable {
 

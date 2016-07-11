@@ -42,8 +42,8 @@ import org.scijava.plugin.Plugin;
  * {@link Op} to calculate the {@code stats.variance} using the
  * {@code stats.stdDev} using the two-pass algorithm.
  * 
- * @author Daniel Seebacher, University of Konstanz.
- * @author Christian Dietz, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  * @param <I> input type
  * @param <O> output type
  * @see <a href=

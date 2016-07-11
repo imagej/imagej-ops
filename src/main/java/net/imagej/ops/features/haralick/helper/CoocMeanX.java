@@ -39,8 +39,8 @@ import org.scijava.plugin.Plugin;
 /**
  * NB: Helper class. Internal usage only.
  * 
- * @author Andreas Graumann, University of Konstanz
- * @author Christian Dietz, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = CoocMeanX.class)
 public class CoocMeanX extends AbstractUnaryFunctionOp<double[][], DoubleType> {

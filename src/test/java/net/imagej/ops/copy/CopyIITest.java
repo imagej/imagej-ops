@@ -50,7 +50,7 @@ import org.junit.Test;
 /**
  * Test {@link CopyII}
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  */
 public class CopyIITest extends AbstractOpTest {
 

@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Compactness}.
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.Compactness.class,
 	label = "Geometric (3D): Compactness", priority = Priority.VERY_HIGH_PRIORITY)

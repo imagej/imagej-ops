@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Wraps the {@link Views#translate(RandomAccessible, long[])} method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.TranslateView.class)
 public class DefaultTranslateView<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, MixedTransformView<T>>

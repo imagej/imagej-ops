@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
  * Wraps the {@link Views#addDimension(RandomAccessibleInterval, long, long)}
  * method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.AddDimensionView.class, label = "View: AddDimension")
 public class AddDimensionViewMinMax<T> extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>>

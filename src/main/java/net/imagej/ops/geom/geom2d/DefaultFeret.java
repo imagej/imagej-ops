@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Generic implementation of {@code geom.feret}.
  * 
- * @author Daniel Seebacher, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.Feret.class)
 public class DefaultFeret extends

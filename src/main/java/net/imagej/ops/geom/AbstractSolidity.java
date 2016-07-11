@@ -39,7 +39,7 @@ import net.imglib2.type.numeric.real.DoubleType;
 /**
  * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Solidity}.
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 public abstract class AbstractSolidity<I> extends AbstractUnaryHybridCF<I, DoubleType>
 		implements Ops.Geometric.Solidity {

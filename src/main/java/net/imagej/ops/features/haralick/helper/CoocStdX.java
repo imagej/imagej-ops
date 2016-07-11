@@ -39,8 +39,8 @@ import org.scijava.plugin.Plugin;
 /**
  * NB: Helper class. Internal usage only.
  * 
- * @author Andreas Graumann, University of Konstanz
- * @author Christian Dietz, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = CoocStdX.class)
 public class CoocStdX extends AbstractUnaryFunctionOp<double[][], DoubleType> {

@@ -37,7 +37,7 @@ import net.imglib2.type.numeric.RealType;
  * 
  * Marker interface for zernike ops.
  * 
- * @author Andreas Graumann, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
  * 
  * @param <I>
  *            Input Type

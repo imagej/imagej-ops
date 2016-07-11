@@ -39,7 +39,7 @@ import org.scijava.plugin.Plugin;
  * 
  * Get Phase of Zernike moment as feature
  * 
- * @author Andreas Graumann, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
  *
  * @param <T>
  *            Input Type

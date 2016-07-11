@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Default implementation of 2d local binary patterns
  * 
- * @author Andreas Graumann, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
  * @param <I>
  */
 @Plugin(type = Ops.LBP.LBP2D.class, label = "2d Local Binary Pattern")

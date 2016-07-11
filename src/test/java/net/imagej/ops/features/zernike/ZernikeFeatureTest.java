@@ -41,7 +41,7 @@ import org.junit.Test;
  * 
  * Test {@Link ZernikeFeature}
  * 
- * @author Andreas Graumann, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
  *
  */
 public class ZernikeFeatureTest extends AbstractFeatureTest {

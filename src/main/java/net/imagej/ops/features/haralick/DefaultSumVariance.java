@@ -43,8 +43,8 @@ import org.scijava.plugin.Plugin;
 /**
  * Implementation of Sum Variance Haralick Feature
  * 
- * @author Andreas Graumann, University of Konstanz
- * @author Christian Dietz, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Ops.Haralick.SumVariance.class, label = "Haralick: Sum Variance")
 public class DefaultSumVariance<T extends RealType<T>> extends

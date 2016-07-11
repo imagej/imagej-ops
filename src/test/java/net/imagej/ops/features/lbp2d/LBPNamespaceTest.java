@@ -37,7 +37,7 @@ import org.junit.Test;
 /**
  * Test the {@Link Lbp2dNamespace}
  * 
- * @author Andreas Graumann, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
  */
 public class LBPNamespaceTest extends AbstractNamespaceTest {
 

@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Generic implementation of {@code geom.boundaryPixelCount}.
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.BoundaryPixelCount.class,
 	label = "Geometric3D: Surface Pixel Count",

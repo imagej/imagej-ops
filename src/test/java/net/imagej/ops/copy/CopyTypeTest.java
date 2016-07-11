@@ -41,7 +41,7 @@ import org.junit.Test;
 /**
  * Test {@link CopyType}.
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  *
  */
 public class CopyTypeTest extends AbstractOpTest {

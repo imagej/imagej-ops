@@ -44,7 +44,7 @@ import org.junit.Test;
  * 
  * Test for {@Link Tamura2d}-Features
  * 
- * @author Andreas Graumann, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
  *
  */
 public class Tamura2dFeatureTest extends AbstractFeatureTest {

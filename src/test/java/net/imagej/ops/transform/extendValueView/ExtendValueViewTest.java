@@ -48,7 +48,7 @@ import org.junit.Test;
  * correctness test of {@link Views} itself.
  * </p>
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 public class ExtendValueViewTest extends AbstractOpTest {
 

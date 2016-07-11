@@ -114,7 +114,7 @@ import net.imglib2.view.composite.RealComposite;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  *
  * All method descriptions are from {@link net.imglib2.view.Views}.
  */

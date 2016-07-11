@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Wraps the {@link Views#interval(RandomAccessible, long[], long[])} method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.IntervalView.class)
 public class IntervalViewMinMax<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, IntervalView<T>>

@@ -38,7 +38,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.SizeConvexHull.class,
 	label = "Geometric (3D): Convex Hull Volume",

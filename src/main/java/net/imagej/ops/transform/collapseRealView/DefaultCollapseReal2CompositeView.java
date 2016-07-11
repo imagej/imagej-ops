@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Wraps the {@link Views#collapseReal(RandomAccessible, int)} method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.CollapseRealView.class)
 public class DefaultCollapseReal2CompositeView<T extends RealType<T>>

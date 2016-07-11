@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Copies a {@link LabelingMapping} into another {@link LabelingMapping}
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  * @param <L>
  */
 @Plugin(type = Ops.Copy.LabelingMapping.class,

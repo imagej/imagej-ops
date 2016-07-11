@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Wraps the {@link Views#stack(StackAccessMode, List)} method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.StackView.class)
 public class StackViewWithAccessMode<T>

@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Wraps the {@link Views#invertAxis(RandomAccessible, int)} method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.InvertAxisView.class)
 public class DefaultInvertAxisView<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, MixedTransformView<T>>

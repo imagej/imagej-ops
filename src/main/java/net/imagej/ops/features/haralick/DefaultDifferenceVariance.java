@@ -43,8 +43,8 @@ import org.scijava.plugin.Plugin;
  * 
  * Implementation of Difference Variance Haralick Feature
  * 
- * @author Andreas Graumann, University of Konstanz
- * @author Christian Dietz, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  *
  */
 @Plugin(type = Ops.Haralick.DifferenceVariance.class, label = "Haralick: Difference Variance")

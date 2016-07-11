@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * Generic implementation of
  * {@link net.imagej.ops.Ops.Geometric.MedianElongation}.
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.MedianElongation.class,
 	label = "Geometric (3D): Median Elongation",

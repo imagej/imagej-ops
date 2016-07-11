@@ -44,8 +44,8 @@ import org.scijava.plugin.Plugin;
 /**
  * Implementation of Variance Haralick Feature
  * 
- * @author Andreas Graumann, University of Konstanz
- * @author Christian Dietz, University of Konstanz
+ * @author Andreas Graumann (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Ops.Haralick.Variance.class, label = "Haralick: Variance")
 public class DefaultVariance<T extends RealType<T>> extends

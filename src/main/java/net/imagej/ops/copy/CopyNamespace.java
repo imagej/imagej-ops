@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
 /**
  * The copy namespace contains ops that copy data.
  *
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Namespace.class)
 public class CopyNamespace extends AbstractNamespace {

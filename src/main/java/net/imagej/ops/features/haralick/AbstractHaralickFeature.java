@@ -46,7 +46,7 @@ import org.scijava.plugin.Parameter;
 /**
  * Abstract class for HaralickFeatures.
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
 public abstract class AbstractHaralickFeature<T extends RealType<T>> extends

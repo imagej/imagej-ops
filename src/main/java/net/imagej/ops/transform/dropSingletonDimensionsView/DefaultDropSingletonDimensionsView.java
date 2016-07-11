@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
  * Wraps the {@link Views#dropSingletonDimensions(RandomAccessibleInterval)}
  * method.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.DropSingletonDimensionsView.class)
 public class DefaultDropSingletonDimensionsView<T>

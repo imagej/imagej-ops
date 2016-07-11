@@ -57,7 +57,7 @@ import org.junit.Test;
 /**
  * Test {@link CopyRAI}.
  *
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 public class CopyRAITest extends AbstractOpTest {
 

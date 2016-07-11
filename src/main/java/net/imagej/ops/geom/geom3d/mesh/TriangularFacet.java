@@ -42,7 +42,7 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
  * A facet consists of three vertices. The triangles orientation
  * is counter clock wise. 
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  *
  */
 public class TriangularFacet extends UpdateablePointSet<TriangularFacet> implements Facet {

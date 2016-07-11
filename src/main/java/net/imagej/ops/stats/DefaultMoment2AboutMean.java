@@ -42,8 +42,8 @@ import org.scijava.plugin.Plugin;
  * {@link Op} to calculate the {@code stats.moment2AboutMean} using
  * {@code stats.mean} and {@code stats.size}.
  * 
- * @author Daniel Seebacher, University of Konstanz.
- * @author Christian Dietz, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  * @param <I> input type
  * @param <O> output type
  */
