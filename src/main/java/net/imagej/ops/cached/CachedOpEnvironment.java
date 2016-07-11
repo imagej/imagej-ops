@@ -30,6 +30,7 @@
 
 package net.imagej.ops.cached;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -48,6 +49,7 @@ import org.scijava.command.CommandInfo;
 import org.scijava.module.Module;
 import org.scijava.module.ModuleItem;
 import org.scijava.plugin.Parameter;
+import org.scijava.util.GenericUtils;
 
 /**
  * Creates {@link CachedFunctionOp}s which know how to cache their outputs.
@@ -88,8 +90,10 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		final Op op = super.op(ref);
 
 		for (final Class<?> ignored : ignoredOps) {
-			for (final Class<?> t : ref.getTypes()) {
-				if (ignored.isAssignableFrom(t)) {
+			for (final Type t : ref.getTypes()) {
+				// FIXME: Use generic assignability test, once it exists.
+				final Class<?> raw = GenericUtils.getClass(t);
+				if (ignored.isAssignableFrom(raw)) {
 					return op;
 				}
 			}

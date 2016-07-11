@@ -31,6 +31,7 @@
 package net.imagej.ops;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 
@@ -41,6 +42,7 @@ import org.scijava.module.Module;
 import org.scijava.module.ModuleInfo;
 import org.scijava.module.ModuleItem;
 import org.scijava.plugin.SciJavaPlugin;
+import org.scijava.util.GenericUtils;
 
 /**
  * Utility methods for working with ops. In particular, this class contains
@@ -108,15 +110,17 @@ public final class OpUtils {
 	 *           types.
 	 */
 	public static Op unwrap(final Module module,
-		final Collection<Class<?>> types)
+		final Collection<? extends Type> types)
 	{
 		if (module == null) return null;
 		final Object delegate = module.getDelegateObject();
 		if (types != null) {
-			for (final Class<?> t : types) {
-				if (!t.isInstance(delegate)) {
+			for (final Type t : types) {
+				// FIXME: Use generic isInstance test, once it exists.
+				final Class<?> raw = GenericUtils.getClass(t);
+				if (!raw.isInstance(delegate)) {
 					throw new IllegalStateException(delegate.getClass().getName() +
-						" is not of type " + t.getName());
+						" is not of type " + raw.getName());
 				}
 			}
 		}

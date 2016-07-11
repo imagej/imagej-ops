@@ -53,6 +53,7 @@ import org.scijava.plugin.Plugin;
 import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
 import org.scijava.util.ConversionUtils;
+import org.scijava.util.GenericUtils;
 
 /**
  * Default service for finding {@link Op}s which match a request.
@@ -450,17 +451,19 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * </p>
 	 */
 	private boolean outputsMatch(final OpCandidate candidate) {
-		final Collection<Class<?>> outTypes = candidate.getRef().getOutTypes();
+		final Collection<Type> outTypes = candidate.getRef().getOutTypes();
 		if (outTypes == null) return true; // no constraints on output types
 
 		final Iterator<ModuleItem<?>> outItems = //
 			candidate.cInfo().outputs().iterator();
-		for (final Class<?> outType : outTypes) {
+		for (final Type outType : outTypes) {
 			if (!outItems.hasNext()) {
 				candidate.setStatus(StatusCode.TOO_FEW_OUTPUTS);
 				return false;
 			}
-			if (!ConversionUtils.canCast(outItems.next().getType(), outType)) {
+			// FIXME: Use generic assignability test, once it exists.
+			final Class<?> raw = GenericUtils.getClass(outType);
+			if (!ConversionUtils.canCast(outItems.next().getType(), raw)) {
 				candidate.setStatus(StatusCode.OUTPUT_TYPES_DO_NOT_MATCH);
 				return false;
 			}
