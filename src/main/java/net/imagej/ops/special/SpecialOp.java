@@ -30,10 +30,10 @@
 
 package net.imagej.ops.special;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import net.imagej.ops.Initializable;
 import net.imagej.ops.Op;
@@ -319,22 +319,21 @@ public interface SpecialOp extends Op, Initializable, Threadable {
 		final List<OpCandidate<OP>> candidates, final int arity)
 	{
 		if (arity < 0) return candidates;
-		final ArrayList<OpCandidate<OP>> matches = new ArrayList<>();
-		for (final OpCandidate<OP> candidate : candidates) {
+		return candidates.stream().filter(candidate -> {
 			try {
 				final Class<?> opClass = candidate.cInfo().loadClass();
 				if (!SpecialOp.class.isAssignableFrom(opClass)) return false;
 				final Object o = opClass.newInstance();
 				final SpecialOp op = (SpecialOp) o;
-				if (arity == op.getArity()) matches.add(candidate);
+				return arity == op.getArity();
 			}
 			catch (final InstantiableException | InstantiationException
 					| IllegalAccessException exc)
 			{
 				// NB: Ignore this problematic op.
+				return false;
 			}
-		}
-		return matches;
+		}).collect(Collectors.toList());
 	}
 
 	// -- Enums --
