@@ -181,4 +181,20 @@ public class DefaultMesh implements Mesh, Iterable<Facet> {
 	public String toString() {
 		return "<DefaultMesh: Number of vertices = " + vertices.size() + ", number of facets = " + facets.size() + ">";
 	}
+	
+	/**
+	 * Find the center of a mesh using vertices
+	 * 
+	 * @return a RealLocalizable representing the mesh's center
+	 */
+	public RealLocalizable getCenter() {
+		RealPoint p = new RealPoint( 0, 0, 0 );
+		for( RealLocalizable v : getVertices() ) {
+			p.move( v );
+		}
+		for( int d = 0; d < 3; d++ ) {
+			p.setPosition( p.getDoublePosition(d)/getVertices().size(), d );
+		}
+		return p;
+	}
 }

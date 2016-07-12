@@ -1,7 +1,11 @@
 package net.imagej.ops.geom.geom3d;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import net.imagej.ops.Ops;
@@ -34,6 +38,16 @@ implements Ops.Geometric.MeshSmoothing
 		DefaultMesh output = (DefaultMesh) input.copy();
 		smooth( output, smoothingSteps );
 		return output;
+	}	
+	
+	static class Edge {
+		public Vertex a;
+		public Vertex b;
+		
+		public Edge( Vertex a, Vertex b) {
+			this.a = a;
+			this.b = b;			
+		}				
 	}
 
 	/**
@@ -58,53 +72,62 @@ implements Ops.Geometric.MeshSmoothing
 	static protected void smooth(final DefaultMesh toSmooth, final int iterations)
 	{
 		// Vertex list
-		final Set<RealLocalizable> verts = toSmooth.getVertices();
-		// Store all edges within the mesh
-		final HashSet<RealLocalizable[]> edges = new HashSet<>(); 
-		// Store an average Vertex for each Vertex
-		final HashMap<RealLocalizable,Vertex> vertAverages = new HashMap<>();
-		// Store a count of the number of times an average has been taken
-		final HashMap<RealLocalizable,Integer> vertAverageCount = new HashMap<>();
-
-		System.err.println(  "In vert counts = " + verts.size() );
+		//final Set<RealLocalizable> verts = toSmooth.getVertices();
+		final List<Vertex> verts = new ArrayList<Vertex>();
+		for( Facet f : toSmooth.getFacets() ) 
+			for( Vertex v : ((TriangularFacet) f).getVertices() )
+				verts.add(v);
 		
-		// Initialize intermediate collections
-		for( RealLocalizable rl : toSmooth.getVertices() ) {
-			verts.add( rl );
-			vertAverages.put( rl, new Vertex(0,0,0) );
-			vertAverageCount.put( rl, 0 );
-		}		
+		// Store all edges within the mesh
+		final HashSet<int[]> edges = new HashSet<>(); 
+		// Store an average Vertex for each Vertex
+		final HashMap<Integer,Vertex> vertAverages = new HashMap<>();
+		// Store a count of the number of times an average has been taken
+		final HashMap<Integer,Integer> vertAverageCount = new HashMap<>();
+		
+		System.err.println(  "In vert counts = " + verts.size() );
 		
 		// Collect unique edges (3D Viewer checked if vertices were unique, we assume that, EDIT: probz bad)
 		for( Facet f : toSmooth.getFacets() ) {
 			TriangularFacet tf = (TriangularFacet) f;// Ew...
-			edges.add( new Vertex[]{ tf.getVertex(0), tf.getVertex(1) } );
-			edges.add( new Vertex[]{ tf.getVertex(1), tf.getVertex(2) } );
-			edges.add( new Vertex[]{ tf.getVertex(0), tf.getVertex(2) } );
-		}
+			edges.add( new int[]{ verts.indexOf( tf.getVertex(0) ), verts.indexOf( tf.getVertex(1) ) } );
+			edges.add( new int[]{ verts.indexOf( tf.getVertex(1) ), verts.indexOf( tf.getVertex(2) ) } );
+			edges.add( new int[]{ verts.indexOf( tf.getVertex(0) ), verts.indexOf( tf.getVertex(2) ) } );
+		}		
+		
+		// Initialize intermediate collections
+		//for( Vertex v : verts ) {
+		for( int k = 0; k < verts.size(); k++ ) {
+			vertAverages.put( k, new Vertex(0,0,0) );
+			vertAverageCount.put( k, 0 );
+		}				
 		
 		System.err.println( "Num edges = " + edges.size() );
 
+		System.err.println( "Iteration " + -1 + " num verts = " + verts.size() );		
+		
 		for (int i = 0; i < iterations; ++i) {
+			System.err.println( "Iteration " + i + " num verts = " + verts.size() );
+
 			// Take averages over all neighbors per vert
-			for (final RealLocalizable[] e : edges) {
+			for (final int[] e : edges) {
 				// Increment average count for both vertices
 				vertAverageCount.put(e[0], vertAverageCount.get(e[0])+1 );
 				vertAverageCount.put(e[1], vertAverageCount.get(e[1])+1 );
 				// Compute average
-				Vertex avg = new Vertex( ( e[0].getDoublePosition(0) + e[1].getDoublePosition(0) ) / 2,
-										 ( e[0].getDoublePosition(1) + e[1].getDoublePosition(1) ) / 2,
-										 ( e[0].getDoublePosition(2) + e[1].getDoublePosition(2) ) / 2 );
+				Vertex avg = new Vertex( ( verts.get( e[0] ).getDoublePosition(0) + verts.get( e[1] ).getDoublePosition(0) ) / 2,
+										 ( verts.get( e[0] ).getDoublePosition(1) + verts.get( e[1] ).getDoublePosition(1) ) / 2,
+										 ( verts.get( e[0] ).getDoublePosition(2) + verts.get( e[1] ).getDoublePosition(2) ) / 2 );
 				// Accumulate averages
 				vertAverages.get(e[0]).add(avg);
 				vertAverages.get(e[1]).add(avg);
 			}
 
 			// Smooth from average for each vert
-			for (final RealLocalizable v : verts ) {
+			for (final Vertex v : verts ) {
 				final float f = 0.5f / vertAverageCount.get(v);
 				Vertex tmp = vertAverages.get(v);
-				vertAverages.put(v, new Vertex( 0.5f * v.getDoublePosition(0) + f * tmp.getX(),
+				vertAverages.put( verts.indexOf(v), new Vertex( 0.5f * v.getDoublePosition(0) + f * tmp.getX(),
 												0.5f * v.getDoublePosition(1) + f * tmp.getY(),
 												0.5f * v.getDoublePosition(2) + f * tmp.getZ() ) );
 			}
@@ -112,8 +135,11 @@ implements Ops.Geometric.MeshSmoothing
 			// Update verts
 			if (i + 1 < iterations) {
 				for (final RealLocalizable v : verts) {
-					Vertex newPos = vertAverages.get(v);					
-					v.localize( new double[]{ newPos.getX(), newPos.getY(), newPos.getZ() } );
+					Vertex newPos = vertAverages.get(v);
+					Vertex vtx = (Vertex) v;
+					for( int k=0; k < 3; k++ ) {
+						vtx.changeDoublePosition(k, newPos.getDoublePosition(k));
+					}					
 				}
 			}
 		}

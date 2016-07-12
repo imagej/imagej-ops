@@ -182,6 +182,25 @@ public class Vertex implements RealLocalizable {
 		}
 	}
 	
+	/**
+	 * A Mutable way of changing a Vertex
+	 * 
+	 * @param d
+	 * @param val
+	 * @return
+	 */
+	public Vertex changeDoublePosition(final int d, final double val) {
+		switch (d) {
+			case 0 :
+				this.x = val;
+			case 1 :
+				this.y = val;
+			case 2 : 
+				this.z = val;
+		}
+		return this;
+	}
+	
 	public Vertex subtract(Vertex v) {
 		return new Vertex( this.getX() - v.getX(), this.getY() - v.getY(), this.getZ() - v.getZ() );
 	}
