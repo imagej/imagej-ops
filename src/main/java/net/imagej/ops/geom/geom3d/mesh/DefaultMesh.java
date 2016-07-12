@@ -197,4 +197,19 @@ public class DefaultMesh implements Mesh, Iterable<Facet> {
 		}
 		return p;
 	}
+	
+	/**
+	 * Translate the mesh such that it's center is at 0,0,0
+	 */
+	public void centerMesh() {
+		RealPoint center = (RealPoint) getCenter();
+		
+		for( Facet f : getFacets() ) {
+			for( Vertex v : ((TriangularFacet) f).getVertices() ) {
+				for( int d = 0; d < 3; d++ ) {
+					v.changeDoublePosition(d, v.getDoublePosition(d) - center.getDoublePosition(d) );
+				}
+			}
+		}		
+	}
 }

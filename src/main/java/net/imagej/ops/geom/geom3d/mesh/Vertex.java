@@ -193,10 +193,13 @@ public class Vertex implements RealLocalizable {
 		switch (d) {
 			case 0 :
 				this.x = val;
+				break;
 			case 1 :
 				this.y = val;
+				break;
 			case 2 : 
 				this.z = val;
+				break;
 		}
 		return this;
 	}
