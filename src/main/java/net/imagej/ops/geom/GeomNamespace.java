@@ -676,6 +676,29 @@ public class GeomNamespace extends AbstractNamespace {
 			p1Value, p2Value);
 		return result;
 	}
+	
+	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class)
+	public RandomAccessibleInterval<BitType> voxelization(final Mesh in) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<BitType> result =
+			(RandomAccessibleInterval<BitType>) ops().run(net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class)
+	public RandomAccessibleInterval<BitType> voxelization(final Mesh in, final int width) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<BitType> result =
+			(RandomAccessibleInterval<BitType>) ops().run(net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class, in, width);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class)
+	public RandomAccessibleInterval<BitType> voxelization(final Mesh in, final int width, final int height) {
+		final RandomAccessibleInterval<BitType> result =
+			(RandomAccessibleInterval<BitType>) ops().run(net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class, in, width, height);
+		return result;
+	}
 
 	@OpMethod(op = net.imagej.ops.geom.DefaultCenterOfGravity.class)
 	public <T extends RealType<T>> RealLocalizable centerOfGravity(final IterableInterval<T> in) {
