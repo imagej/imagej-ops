@@ -139,6 +139,7 @@ namespaces = ```
 		[name: "boxivity",                    iface: "Boxivity"],
 		[name: "contour",                     iface: "Contour"],
 		[name: "marchingCubes",               iface: "MarchingCubes"],
+		[name: "voxelization",	      	      iface: "Voxelization"],
 		[name: "centerOfGravity",               iface: "CenterOfGravity"],
 	]],
 	[name: "haralick", iface: "Haralick", ops: [
