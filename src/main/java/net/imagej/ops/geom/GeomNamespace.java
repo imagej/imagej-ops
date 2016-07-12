@@ -194,6 +194,13 @@ public class GeomNamespace extends AbstractNamespace {
 			(DoubleType) ops().run(net.imagej.ops.geom.geom3d.BoxivityMesh.class, out, in);
 		return result;
 	}
+	
+	@OpMethod(op = net.imagej.ops.geom.DefaultCenterOfGravity.class)
+	public <T extends RealType<T>> RealLocalizable centerOfGravity(final IterableInterval<T> in) {
+		final RealLocalizable result = (RealLocalizable) ops().run(net.imagej.ops.Ops.Geometric.CenterOfGravity.class,
+				in);
+		return result;
+	}	
 
 	@OpMethod(op = net.imagej.ops.geom.CentroidLabelRegion.class)
 	public RealLocalizable centroid(final LabelRegion<?> in) {
@@ -697,13 +704,6 @@ public class GeomNamespace extends AbstractNamespace {
 	public RandomAccessibleInterval<BitType> voxelization(final Mesh in, final int width, final int height) {
 		final RandomAccessibleInterval<BitType> result =
 			(RandomAccessibleInterval<BitType>) ops().run(net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class, in, width, height);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.geom.DefaultCenterOfGravity.class)
-	public <T extends RealType<T>> RealLocalizable centerOfGravity(final IterableInterval<T> in) {
-		final RealLocalizable result = (RealLocalizable) ops().run(net.imagej.ops.Ops.Geometric.CenterOfGravity.class,
-				in);
 		return result;
 	}
 }
