@@ -30,8 +30,12 @@
 
 package net.imagej.ops.special;
 
+import net.imagej.ops.special.computer.NullaryComputerOp;
+
 /**
- * Interface for objects with a typed output parameter that can be changed.
+ * Interface for {@link Output} objects whose typed output parameter is mutable.
+ * From an Ops perspective, this interface marks ops with a typed output which
+ * doubles as an input parameter; see e.g. {@link NullaryComputerOp}.
  * 
  * @author Curtis Rueden
  * @see Output
