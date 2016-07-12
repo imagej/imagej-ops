@@ -234,7 +234,8 @@ public final class OpUtils {
 	 * matches, or too many matches, are found.
 	 * </p>
 	 * 
-	 * @param candidates The list of candidates from which a match was desired.
+	 * @param candidates The list of already-analyzed candidates from which a
+	 *          match was desired.
 	 * @param matches The list of matching candidates with attached {@link Module}
 	 *          instances.
 	 * @return A multi-line string describing the situation: 1) the type of match
