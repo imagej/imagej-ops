@@ -51,6 +51,10 @@ import net.imglib2.util.Pair;
 
 import org.apache.commons.math3.linear.RealMatrix;
 import org.scijava.plugin.Plugin;
+import org.scijava.vecmath.Tuple3d;
+import org.scijava.vecmath.Vector3d;
+
+import java.util.Collection;
 
 /**
  * Namespace for Geom.
@@ -226,6 +230,11 @@ public class GeomNamespace extends AbstractNamespace {
 		final RealLocalizable result = (RealLocalizable) ops().run(
 			net.imagej.ops.Ops.Geometric.Centroid.class, in);
 		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geom.CentroidTuple3D.class)
+	public Vector3d centroid(final Collection<? extends Tuple3d> in) {
+		return (Vector3d) ops().run(net.imagej.ops.Ops.Geometric.Centroid.class, in);
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultCircularity.class)
