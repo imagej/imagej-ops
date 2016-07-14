@@ -69,8 +69,8 @@ import net.imglib2.view.composite.GenericComposite;
  * pixel a histogram of gradient directions by summing up the magnitudes of the
  * neighbored (@param spanOfNeighborhood) pixels. The directions are divided in
  * (@param numOrientations) bins. The output is 3d: for each bin an own channel.
- * Input can be either a grayscale image or a color image with three channels
- * (e.g. RGB, LAB, ...).
+ * Input can be either a grayscale image or a color image with several color
+ * channels (e.g. RGB, LAB, ...).
  * 
  * The algorithm is based on the paper "Histograms of Oriented Gradients for
  * Human Detection" by Navneet Dalal and Bill Triggs, published 2005.
@@ -124,13 +124,13 @@ public class HistogramOfOrientedGradients2D<T extends RealType<T>>
 			@Override
 			public void convert(GenericComposite<FloatType> input, FloatType output) {
 				int idx = 0;
-				float valueR = Math.abs(input.get(0).getRealFloat());
-				float valueG = Math.abs(input.get(1).getRealFloat());
-				float valueB = Math.abs(input.get(2).getRealFloat());
-				if ((valueG > valueR) && (valueG > valueB))
-					idx = 1;
-				if ((valueB > valueR) && (valueB > valueG))
-					idx = 2;
+				float max = 0;
+				for (int i = 0; i < in().dimension(2); i++) {
+					if (Math.abs(input.get(i).getRealFloat()) > max) {
+						max = Math.abs(input.get(i).getRealFloat());
+						idx = i;
+					}
+				}
 				output.setReal(input.get(idx).getRealFloat());
 			}
 		};
@@ -144,7 +144,7 @@ public class HistogramOfOrientedGradients2D<T extends RealType<T>>
 
 	@Override
 	public boolean conforms() {
-		return ((in().numDimensions() == 2) || ((in().numDimensions() == 3) && (in().dimension(2) == 3)));
+		return ((in().numDimensions() == 2) || (in().numDimensions() == 3));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -164,37 +164,24 @@ public class HistogramOfOrientedGradients2D<T extends RealType<T>>
 		}
 		// case of color image
 		else {
-			final RandomAccessibleInterval<FloatType> derivativeR0 = createImgOp.compute0();
-			final RandomAccessibleInterval<FloatType> derivativeG0 = createImgOp.compute0();
-			final RandomAccessibleInterval<FloatType> derivativeB0 = createImgOp.compute0();
-
-			PartialDerivative.gradientCentralDifference(
-					Views.interval(convertedIn, new long[] { 0, 0, 0 }, new long[] { in.max(0), in.max(1), 0 }),
-					derivativeR0, 0);
-			PartialDerivative.gradientCentralDifference(
-					Views.interval(convertedIn, new long[] { 0, 0, 1 }, new long[] { in.max(0), in.max(1), 1 }),
-					derivativeG0, 0);
-			PartialDerivative.gradientCentralDifference(
-					Views.interval(convertedIn, new long[] { 0, 0, 2 }, new long[] { in.max(0), in.max(1), 2 }),
-					derivativeB0, 0);
-			derivative0 = Converters.convert(Views.collapse(Views.stack(derivativeR0, derivativeG0, derivativeB0)),
-					converterGetMax, new FloatType());
-
-			final RandomAccessibleInterval<FloatType> derivativeR1 = createImgOp.compute0();
-			final RandomAccessibleInterval<FloatType> derivativeG1 = createImgOp.compute0();
-			final RandomAccessibleInterval<FloatType> derivativeB1 = createImgOp.compute0();
-
-			PartialDerivative.gradientCentralDifference(
-					Views.interval(convertedIn, new long[] { 0, 0, 0 }, new long[] { in.max(0), in.max(1), 0 }),
-					derivativeR1, 1);
-			PartialDerivative.gradientCentralDifference(
-					Views.interval(convertedIn, new long[] { 0, 0, 1 }, new long[] { in.max(0), in.max(1), 1 }),
-					derivativeG1, 1);
-			PartialDerivative.gradientCentralDifference(
-					Views.interval(convertedIn, new long[] { 0, 0, 2 }, new long[] { in.max(0), in.max(1), 2 }),
-					derivativeB1, 1);
-			derivative1 = Converters.convert(Views.collapse(Views.stack(derivativeR1, derivativeG1, derivativeB1)),
-					converterGetMax, new FloatType());
+			List<RandomAccessibleInterval<FloatType>> listDerivs0 = new ArrayList<>();
+			List<RandomAccessibleInterval<FloatType>> listDerivs1 = new ArrayList<>();
+			for (int i = 0; i < in.dimension(2); i++) {
+				final RandomAccessibleInterval<FloatType> deriv0 = createImgOp.compute0();
+				final RandomAccessibleInterval<FloatType> deriv1 = createImgOp.compute0();
+				PartialDerivative.gradientCentralDifference(
+						Views.interval(convertedIn, new long[] { 0, 0, i }, new long[] { in.max(0), in.max(1), i }),
+						deriv0, 0);
+				PartialDerivative.gradientCentralDifference(
+						Views.interval(convertedIn, new long[] { 0, 0, i }, new long[] { in.max(0), in.max(1), i }),
+						deriv1, 1);
+				listDerivs0.add(deriv0);
+				listDerivs1.add(deriv1);
+			}
+			derivative0 = Converters.convert(Views.collapse(Views.stack(listDerivs0)), converterGetMax,
+					new FloatType());
+			derivative1 = Converters.convert(Views.collapse(Views.stack(listDerivs1)), converterGetMax,
+					new FloatType());
 		}
 		final RandomAccessibleInterval<FloatType> finalderivative0 = derivative0;
 		final RandomAccessibleInterval<FloatType> finalderivative1 = derivative1;
