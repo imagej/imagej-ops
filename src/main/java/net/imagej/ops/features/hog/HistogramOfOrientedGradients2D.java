@@ -69,8 +69,8 @@ import net.imglib2.view.composite.GenericComposite;
  * pixel a histogram of gradient directions by summing up the magnitudes of the
  * neighbored (@param spanOfNeighborhood) pixels. The directions are divided in
  * (@param numOrientations) bins. The output is 3d: for each bin an own channel.
- * Input can be either a grayscale image or a color image with several color
- * channels (e.g. RGB, LAB, ...).
+ * Input can be either a 2D image or a 3D image where the third dimension is
+ * interpreted as color channel (e.g. RGB, LAB, ...).
  * 
  * The algorithm is based on the paper "Histograms of Oriented Gradients for
  * Human Detection" by Navneet Dalal and Bill Triggs, published 2005.
