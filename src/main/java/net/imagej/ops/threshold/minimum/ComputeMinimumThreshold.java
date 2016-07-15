@@ -89,7 +89,7 @@ public class ComputeMinimumThreshold<T extends RealType<T>> extends
 			if (histogram[i] > 0)
 				max = i;
 		}
-		double[] tHisto = iHisto;
+		double[] tHisto = new double[iHisto.length] ;
 
 		while (!Thresholds.bimodalTest(iHisto)) {
 			// smooth with a 3 point running mean filter
@@ -99,7 +99,7 @@ public class ComputeMinimumThreshold<T extends RealType<T>> extends
 			tHisto[0] = (iHisto[0] + iHisto[1]) / 3;
 			// 0 outside
 			tHisto[histogram.length - 1] = (iHisto[histogram.length - 2] + iHisto[histogram.length - 1]) / 3;
-			iHisto = tHisto;
+			System.arraycopy(tHisto, 0, iHisto, 0, iHisto.length) ;
 			iter++;
 			if (iter > 10000) {
 				errMsg = "Minimum Threshold not found after 10000 iterations.";
