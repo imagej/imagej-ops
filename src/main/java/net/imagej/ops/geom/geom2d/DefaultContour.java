@@ -53,6 +53,9 @@ import org.scijava.plugin.Plugin;
 /**
  * Generic implementation of {@code geom.contour}.
  * 
+ * This implementation assumes that foreground-pixels are True and
+ * background-pixels are False.
+ * 
  * @author Jonathan Hale (University of Konstanz)
  * @author Daniel Seebacher (University of Konstanz)
  */
@@ -65,10 +68,6 @@ public class DefaultContour<B extends BooleanType<B>> extends
 	@Parameter(type = ItemIO.INPUT,
 		description = "Set this flag to use  refined Jacobs stopping criteria")
 	private boolean useJacobs = true;
-
-	@Parameter(type = ItemIO.INPUT,
-		description = "Set this flag to invert between foreground/background.")
-	private boolean isInverted = false;
 
 	/**
 	 * ClockwiseMooreNeighborhoodIterator Iterates clockwise through a 2D Moore
@@ -199,7 +198,6 @@ public class DefaultContour<B extends BooleanType<B>> extends
 		List<RealPoint> p = new ArrayList<>();
 
 		final B var = Util.getTypeFromInterval(input).createVariable();
-		var.set(!isInverted);
 
 		final RandomAccess<B> raInput = Views.extendValue(input, var)
 			.randomAccess();
@@ -213,7 +211,7 @@ public class DefaultContour<B extends BooleanType<B>> extends
 		// find first black pixel
 		while (cInput.hasNext()) {
 			// we are looking for a black pixel
-			if (cInput.next().get() == isInverted) {
+			if (cInput.next().get()) {
 				raInput.setPosition(cInput);
 				raInput.localize(startPos);
 
@@ -226,7 +224,7 @@ public class DefaultContour<B extends BooleanType<B>> extends
 				cNeigh.reset();
 
 				while (cNeigh.hasNext()) {
-					if (cNeigh.next().get() == isInverted) {
+					if (cNeigh.next().get()) {
 
 						boolean specialBacktrack = false;
 
