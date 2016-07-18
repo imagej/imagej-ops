@@ -213,7 +213,7 @@ public class DefaultContour<B extends BooleanType<B>> extends
 		// find first black pixel
 		while (cInput.hasNext()) {
 			// we are looking for a black pixel
-			if (cInput.next().get() == isInverted) {
+			if (cInput.next().get() == var.get()) {
 				raInput.setPosition(cInput);
 				raInput.localize(startPos);
 
@@ -226,7 +226,7 @@ public class DefaultContour<B extends BooleanType<B>> extends
 				cNeigh.reset();
 
 				while (cNeigh.hasNext()) {
-					if (cNeigh.next().get() == isInverted) {
+					if (cNeigh.next().get() == var.get()) {
 
 						boolean specialBacktrack = false;
 
