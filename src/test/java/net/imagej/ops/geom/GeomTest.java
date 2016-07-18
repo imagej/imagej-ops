@@ -107,13 +107,13 @@ public class GeomTest extends AbstractFeatureTest {
 	public void setup() {
 		// no implementation is needed since the tests in this class will not use
 		// the features provided in super#setup()
-		contour = (Polygon) ops.run(DefaultContour.class, region2D, true, true);
+		contour = (Polygon) ops.run(DefaultContour.class, region2D, true);
 		mesh = (Mesh) ops.run(DefaultMarchingCubes.class, region3D);
 	}
 
 	@Test
 	public void createPolygon() {
-		ops.run(DefaultContour.class, region2D, true, true);
+		ops.run(DefaultContour.class, region2D, true);
 	}
 
 	@Test

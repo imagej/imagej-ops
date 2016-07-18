@@ -260,12 +260,10 @@ public class GeomNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultContour.class)
 	public <T extends Type<T>> Polygon contour(
-		final RandomAccessibleInterval<T> in, final boolean useJacobs,
-		final boolean isInverted)
+		final RandomAccessibleInterval<T> in, final boolean useJacobs)
 	{
 		final Polygon result = (Polygon) ops().run(
-			net.imagej.ops.Ops.Geometric.Contour.class, in, useJacobs,
-			isInverted);
+			net.imagej.ops.Ops.Geometric.Contour.class, in, useJacobs);
 		return result;
 	}
 
