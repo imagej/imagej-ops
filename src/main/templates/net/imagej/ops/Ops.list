@@ -18,7 +18,7 @@ ops = ```
 	[name: "map",         iface: "Map"],
 	[name: "op",          iface: "Lookup"],
 	[name: "run",         iface: "Run"],
-	[name: "slice",   iface: "Slice"],
+	[name: "slice",       iface: "Slice"],
 ]
 ```
 namespaces = ```
@@ -140,7 +140,7 @@ namespaces = ```
 		[name: "contour",                     iface: "Contour"],
 		[name: "marchingCubes",               iface: "MarchingCubes"],
 		[name: "voxelization",	      	      iface: "Voxelization"],
-		[name: "centerOfGravity",               iface: "CenterOfGravity"],
+		[name: "centerOfGravity",             iface: "CenterOfGravity"],
 	]],
 	[name: "haralick", iface: "Haralick", ops: [
 		[name: "asm",                         iface: "ASM"],
