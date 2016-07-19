@@ -44,8 +44,7 @@ import net.imglib2.type.numeric.integer.LongType;
  * Abstract class for 2d local binary pattern feature
  * 
  * @author Andreas Graumann
- * @param <I>
- * @param <O>
+ * @param <I> TODO Documentation
  */
 public abstract class AbstractLBP2DFeature<I extends RealType<I>> extends
 	AbstractUnaryHybridCF<RandomAccessibleInterval<I>, ArrayList<LongType>> implements

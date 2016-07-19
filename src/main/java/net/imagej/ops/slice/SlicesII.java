@@ -62,8 +62,6 @@ public class SlicesII<T> extends AbstractInterval implements IterableInterval<Ra
 	private boolean dropSingltonDimensions;
 
 	/**
-	 * @param opEnvironment
-	 *            {@link OpEnvironment} used
 	 * @param source
 	 *            {@link RandomAccessibleInterval} which will be virtually
 	 *            cropped
@@ -94,8 +92,6 @@ public class SlicesII<T> extends AbstractInterval implements IterableInterval<Ra
 	}
 
 	/**
-	 * @param opEnvironment
-	 *            {@link OpEnvironment} used
 	 * @param source
 	 *            {@link RandomAccessibleInterval} which will be virtually
 	 *            cropped

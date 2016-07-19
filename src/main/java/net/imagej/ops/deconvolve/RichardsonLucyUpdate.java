@@ -47,10 +47,7 @@ import org.scijava.plugin.Plugin;
  * "An iterative technique for the rectification of observed distributions".)
  * 
  * @author Brian Northan
- * @param <I>
- * @param <O>
- * @param <K>
- * @param <C>
+ * @param <T> TODO Documentation
  */
 @Plugin(type = Ops.Deconvolve.RichardsonLucyUpdate.class,
 	priority = Priority.HIGH_PRIORITY)
