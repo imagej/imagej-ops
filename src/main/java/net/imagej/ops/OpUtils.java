@@ -184,7 +184,7 @@ public final class OpUtils {
 	/**
 	 * Similar to {@link #opString(ModuleInfo)} but prints a cleaner,
 	 * more abstract representation of the Op method call in the format
-	 * "return <= baseOp(param1, param2)". Intended to be presented to users
+	 * {@code return <= baseOp(param1, param2)}. Intended to be presented to users
 	 * as the limited information reduces utility for debugging.
 	 */
 	public static String simpleString(final CommandInfo info) {

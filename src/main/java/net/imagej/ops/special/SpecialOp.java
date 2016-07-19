@@ -78,7 +78,7 @@ import org.scijava.InstantiableException;
  * <p>
  * The following table summarizes the available kinds of special ops:
  * </p>
- * <table style="border: 1px solid black; border-collapse: collapse">
+ * <table style="border: 1px solid black; border-collapse: collapse" summary="">
  * <tr>
  * <th>Name</th>
  * <th>Summary</th>
@@ -104,17 +104,17 @@ import org.scijava.InstantiableException;
  * </td>
  * <td rowspan=3>BOTH</td>
  * <td>0</td>
- * <td>{@link NullaryComputerOp}</th>
+ * <td>{@link NullaryComputerOp}</td>
  * <td>{@code void compute0(O)}</td>
  * </tr>
  * <tr>
  * <td>1</td>
- * <td>{@link UnaryComputerOp}</th>
+ * <td>{@link UnaryComputerOp}</td>
  * <td>{@code void compute1(O, I)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
- * <td>{@link BinaryComputerOp}</th>
+ * <td>{@link BinaryComputerOp}</td>
  * <td>{@code void compute2(O, I1, I2)}</td>
  * </tr>
  * <tr style="border-top: 1px solid gray">
@@ -128,17 +128,17 @@ import org.scijava.InstantiableException;
  * </td>
  * <td rowspan=3>OUTPUT</td>
  * <td>0</td>
- * <td>{@link NullaryFunctionOp}</th>
+ * <td>{@link NullaryFunctionOp}</td>
  * <td>{@code O compute0()}</td>
  * </tr>
  * <tr>
  * <td>1</td>
- * <td>{@link UnaryFunctionOp}</th>
+ * <td>{@link UnaryFunctionOp}</td>
  * <td>{@code O compute1(I)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
- * <td>{@link BinaryFunctionOp}</th>
+ * <td>{@link BinaryFunctionOp}</td>
  * <td>{@code O compute2(I1, I2)}</td>
  * </tr>
  * <tr style="border-top: 1px solid gray">
@@ -148,12 +148,12 @@ import org.scijava.InstantiableException;
  * <td rowspan=2 style="vertical-align: top">-</td>
  * <td rowspan=2>BOTH</td>
  * <td>1</td>
- * <td>{@link UnaryInplaceOp}</th>
+ * <td>{@link UnaryInplaceOp}</td>
  * <td>{@code void mutate(A)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
- * <td>{@link BinaryInplaceOp}</th>
+ * <td>{@link BinaryInplaceOp}</td>
  * <td>{@code void mutate(A, A)}</td>
  * </tr>
  * <tr style="border-top: 3px double gray">
@@ -165,19 +165,19 @@ import org.scijava.InstantiableException;
  * <em>function</em> respectively.</td>
  * <td rowspan=3>BOTH (optional)</td>
  * <td>0</td>
- * <td>{@link NullaryHybridCF}</th>
+ * <td>{@link NullaryHybridCF}</td>
  * <td style="white-space: nowrap">{@code void compute0(O)} +
  * {@code O compute0()}</td>
  * </tr>
  * <tr>
  * <td>1</td>
- * <td>{@link UnaryHybridCF}</th>
+ * <td>{@link UnaryHybridCF}</td>
  * <td style="white-space: nowrap">{@code void compute1(O, I)} +
  * {@code O compute1(I)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
- * <td>{@link BinaryHybridCF}</th>
+ * <td>{@link BinaryHybridCF}</td>
  * <td style="white-space: nowrap">{@code O compute1(I1, I2)} +
  * {@code void compute2(O, I1, I2)}</td>
  * </tr>
@@ -190,19 +190,19 @@ import org.scijava.InstantiableException;
  * <em>inplace</em> respectively.</td>
  * <td rowspan=3>BOTH (optional)</td>
  * <td>1</td>
- * <td>{@link UnaryHybridCI}</th>
+ * <td>{@link UnaryHybridCI}</td>
  * <td style="white-space: nowrap">{@code void compute1(A, A)} +
  * {@code A compute1(A)} + {@code void mutate(A)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
- * <td>{@code BinaryHybridCI1} (unimplemented)</th>
+ * <td>{@code BinaryHybridCI1} (unimplemented)</td>
  * <td style="white-space: nowrap">{@code void compute2(A, I, A)} +
  * {@code void mutate1(A, I)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
- * <td>{@code BinaryHybridCI} (unimplemented)</th>
+ * <td>{@code BinaryHybridCI} (unimplemented)</td>
  * <td style="white-space: nowrap">{@code void compute2(A, A, A)} +
  * {@code void mutate1(A, A)} + {@code void mutate2(A, A)}</td>
  * </tr>
@@ -215,19 +215,19 @@ import org.scijava.InstantiableException;
  * <em>function</em> and <em>inplace</em> respectively.</td>
  * <td rowspan=3>BOTH (optional)</td>
  * <td>1</td>
- * <td>{@link UnaryHybridCFI}</th>
+ * <td>{@link UnaryHybridCFI}</td>
  * <td style="white-space: nowrap">{@code void compute1(A, A)} +
  * {@code A compute1(A)} + {@code void mutate(A)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
- * <td>{@link BinaryHybridCFI1}</th>
+ * <td>{@link BinaryHybridCFI1}</td>
  * <td style="white-space: nowrap">{@code void compute2(A, I, A)} +
  * {@code A compute2(A, I)} + {@code void mutate1(A, I)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
- * <td>{@link BinaryHybridCFI}</th>
+ * <td>{@link BinaryHybridCFI}</td>
  * <td style="white-space: nowrap">{@code void compute2(A, A, A)} +
  * {@code A compute2(A, A)} + {@code void mutate1(A, A)} +
  * {@code void mutate2(A, A)}</td>

@@ -36,9 +36,9 @@ import net.imagej.ops.special.computer.UnaryComputerOp;
 /**
  * A typed "slice" function.
  * <p>
- * Allows running {@link UnaryComputerOp}s on orthogonal subsets of the <I>. The
- * subsets can for example be defined by the axes of an image. For each subset
- * the {@link UnaryComputerOp} will be executed.
+ * Allows running {@link UnaryComputerOp}s on orthogonal subsets of the {@code 
+ * <I>}. The subsets can for example be defined by the axes of an image. For
+ * each subset the {@link UnaryComputerOp} will be executed.
  * </p>
  * 
  * @author Christian Dietz (University of Konstanz)

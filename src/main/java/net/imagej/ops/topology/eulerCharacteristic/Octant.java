@@ -21,8 +21,11 @@ public class Octant<B extends BooleanType<B>> {
     /**
      * Constructs a new 2x2x2 neighborhood
      *
+     * <p>
+     * <em>NB</em>: Copies reference
+     * </p>
+     *
      * @param interval       Image space where the neighborhood is located
-     * @implNote Copies reference
      */
     public Octant(final RandomAccessibleInterval<B> interval) {
         access = Views.extendZero(interval).randomAccess();
@@ -36,7 +39,7 @@ public class Octant<B extends BooleanType<B>> {
     /**
      * Check if the nth neighbor in the 8-neighborhood is foreground
      *
-     * @param n number of neighbor, 1 <= n <= 8
+     * @param n number of neighbor, {@literal 1 <= n <= 8}
      */
     public boolean isNeighborForeground(final int n) {
         return neighborhood[n - 1];
@@ -49,7 +52,8 @@ public class Octant<B extends BooleanType<B>> {
 
     /**
      * Set the starting coordinates of the neighborhood in the interval
-     * @implNote All voxels outside the image bounds are considered 0
+     * 
+     * NB: All voxels outside the image bounds are considered 0
      */
     public void setNeighborhood(final long x, final long y, final long z) {
         Arrays.fill(neighborhood, false);
