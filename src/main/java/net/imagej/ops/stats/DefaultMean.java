@@ -32,6 +32,8 @@ package net.imagej.ops.stats;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.chain.RTs;
+import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.type.numeric.RealType;
 
@@ -55,17 +57,22 @@ public class DefaultMean<I extends RealType<I>, O extends RealType<O>> extends
 	
 	private UnaryFunctionOp<Iterable<I>, O> sumFunc;
 	
-	private UnaryFunctionOp<Iterable<I>, O> areaFunc;
+	private UnaryFunctionOp<Iterable<I>, O> sizeFunc;
+
+	private BinaryFunctionOp<O, O, O> divFunc;
 
 	@Override
 	public void initialize() {
 		sumFunc = RTs.function(ops(), Ops.Stats.Sum.class, in());
-		areaFunc = RTs.function(ops(), Ops.Stats.Size.class, in());
+		sizeFunc = RTs.function(ops(), Ops.Stats.Size.class, in());
+		divFunc = (BinaryFunctionOp) Functions.binary(ops(), Ops.Math.Divide.class,
+			RealType.class, RealType.class, RealType.class);
 	}
 
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
-		output.setReal(sumFunc.calculate(input).getRealDouble() /
-			areaFunc.calculate(input).getRealDouble());
+		O sum = sumFunc.compute1(input);
+		O size = sizeFunc.compute1(input);
+		output.set(divFunc.compute2(sum, size));
 	}
 }
