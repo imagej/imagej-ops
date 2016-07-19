@@ -42,9 +42,12 @@ import org.scijava.plugin.Plugin;
 
 /**
  * {@link SliceOp} implementation for {@link RandomAccessibleInterval} input and
- * {@link RandomAccessibleInterval} output. </br>
+ * {@link RandomAccessibleInterval} output.
+ * 
+ * <p>
  * The input {@link RandomAccessibleInterval} will be wrapped into a
  * {@link SlicesII}, so that the given Op can compute on a per-slice base.
+ * </p>
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)

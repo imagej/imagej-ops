@@ -45,12 +45,13 @@ abstract class UpdateablePointSet<T> {
 	protected List<Vertex> vertices;
 	
 	/**
-	 * The neighboring facets of this facet. 
-	 * Neighbor 0 is the neighbor which is adjacent to this
-	 * facet at the edge from {@link TriangularFacet#getLastVertex()}
-	 * to {@link TriangularFacet#getVertex(0)}. 
+	 * The neighboring facets of this facet.
+	 * <p>
+	 * Neighbor 0 is the neighbor which is adjacent to this facet at the edge from
+	 * {@link TriangularFacet#getLastVertex()} to
+	 * {@link TriangularFacet#getVertex(int) TriangularFacet#getVertex(0)}.
+	 * </p>
 	 */
-	@SuppressWarnings("javadoc")
 	protected List<T> neighbors;
 		
 	/**

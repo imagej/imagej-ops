@@ -86,9 +86,8 @@ public class ConvolveNaiveF<I extends RealType<I>, O extends RealType<O> & Nativ
 	}
 
 	/**
-	 * protected RandomAccessibleInterval<K> getKernel() { return kernel; } Create
-	 * the output using the outFactory and outType if they exist. If these are
-	 * null use a default factory and type
+	 * Create the output using the outFactory and outType if they exist. If these
+	 * are null use a default factory and type
 	 */
 	@SuppressWarnings("unchecked")
 	public RandomAccessibleInterval<O> createOutput(

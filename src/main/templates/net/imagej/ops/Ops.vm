@@ -40,9 +40,8 @@ import net.imagej.ops.Op;
  * would be marked by implementing the {@code Ops.Eval} interface, and
  * annotating them with:
  * </p>
- * <pre>
- * @Plugin(type = Ops.Eval.class)
- * </pre>
+ *
+ * {@code @Plugin(type = Ops.Eval.class)}
  *
 #foreach ($author in $authors)
  * @author $author
@@ -62,9 +61,7 @@ public final class Ops {
 	 * Implementing classes should be annotated with:
 	 * </p>
 	 *
-	 * <pre>
-	 * @Plugin(type = Ops.${opClass}.class)
-	 * </pre>
+	 * {@code @Plugin(type = Ops.${opClass}.class)}
 	 */
 	public interface $opClass extends Op {
 		String NAME = "$op.name";
@@ -97,9 +94,7 @@ $alias##
 		 * Implementing classes should be annotated with:
 		 * </p>
 		 *
-		 * <pre>
-		 * @Plugin(type = Ops.${nsClass}.${opClass}.class
-		 * </pre>
+		 * {@code @Plugin(type = Ops.${nsClass}.${opClass}.class)}
 		 */
 		public interface $opClass extends Op {
 			String NAME = "${ns.name}.$op.name";

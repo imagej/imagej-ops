@@ -40,14 +40,16 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Sets the real component of an output real number to a real number sampled from
- * a Poisson distribution with lambda of the input real number.
+ * Sets the real component of an output real number to a real number sampled
+ * from a Poisson distribution with lambda of the input real number.
  * <p>
  * Implementation according to:
- * <p>D. E. Knuth.<br/>
- * Art of Computer Programming, Volume 2: Seminumerical Algorithms (3rd Edition).<br/>
- * Addison-Wesley Professional, November 1997
- *  
+ * </p>
+ * <p>
+ * D. E. Knuth. Art of Computer Programming, Volume 2: Seminumerical
+ * Algorithms (3rd Edition). Addison-Wesley Professional, November 1997
+ * </p>
+ * 
  * @author Jan Eglinger
  */
 @Plugin(type = Ops.Filter.AddPoissonNoise.class)

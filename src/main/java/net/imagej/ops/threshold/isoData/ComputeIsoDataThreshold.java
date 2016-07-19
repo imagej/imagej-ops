@@ -44,7 +44,8 @@ import org.scijava.plugin.Plugin;
 // plugin found in Fiji (version 1.14).
 
 /**
- * Implements an IsoData (intermeans) threshold method by Ridler & Calvard.
+ * Implements an IsoData (intermeans) threshold method by Ridler {@literal &}
+ * Calvard.
  * 
  * @author Barry DeZonia
  * @author Gabriel Landini

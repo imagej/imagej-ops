@@ -129,9 +129,9 @@ public class TransformNamespace extends AbstractNamespace {
 	 * XY source. When accessing an XYZ sample in the view, the final coordinate
 	 * is discarded and the source XY sample is accessed.
 	 * 
-	 * @param interval the source
-	 * @param minOfNewDim Interval min in the additional dimension.
-	 * @param maxOfNewDim Interval max in the additional dimension.
+	 * @param input the source
+	 * @param min Interval min in the additional dimension.
+	 * @param max Interval max in the additional dimension.
 	 */
 	@OpMethod(op = net.imagej.ops.transform.addDimensionView.AddDimensionViewMinMax.class)
 	public <T extends Type<T>> IntervalView<T> addDimension(
@@ -147,7 +147,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * created for an XY source. When accessing an XYZ sample in the view, the
 	 * final coordinate is discarded and the source XY sample is accessed.
 	 * 
-	 * @param randomAccessible the source
+	 * @param input the source
 	 */
 	@OpMethod(op = net.imagej.ops.transform.addDimensionView.DefaultAddDimensionView.class)
 	public <T extends Type<T>> MixedTransformView<T> addDimension(
@@ -162,7 +162,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * -1)-dimensional {@link RandomAccessible}&lt; {@link GenericComposite}
 	 * &lt;T&gt;&gt;
 	 * 
-	 * @param source the source
+	 * @param input the source
 	 * @return an (<em>n</em>-1)-dimensional {@link CompositeIntervalView} of
 	 *         {@link GenericComposite GenericComposites}
 	 */
@@ -180,7 +180,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * -1)-dimensional {@link RandomAccessibleInterval}&lt;
 	 * {@link GenericComposite}&lt;T&gt;&gt;
 	 * 
-	 * @param source the source
+	 * @param input the source
 	 * @return an (<em>n</em>-1)-dimensional {@link CompositeIntervalView} of
 	 *         {@link GenericComposite GenericComposites}
 	 */
@@ -200,7 +200,9 @@ public class TransformNamespace extends AbstractNamespace {
 	 * {@link NumericType}&lt;T&gt;&gt; into an (<em>n</em>-1)-dimensional
 	 * {@link RandomAccessibleInterval}&lt;{@link NumericComposite}&lt;T&gt;&gt;
 	 * 
-	 * @param source the source
+	 * @param input the source
+	 * @param numChannels the number of channels that the {@link NumericComposite}
+	 *          will consider when performing calculations
 	 * @return an (<em>n</em>-1)-dimensional {@link CompositeIntervalView} of
 	 *         {@link NumericComposite NumericComposites}
 	 */
@@ -219,7 +221,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * {@link NumericType}&lt;T&gt;&gt; into an (<em>n</em>-1)-dimensional
 	 * {@link RandomAccessibleInterval}&lt;{@link NumericComposite}&lt;T&gt;&gt;
 	 * 
-	 * @param source the source
+	 * @param input the source
 	 * @return an (<em>n</em>-1)-dimensional {@link CompositeIntervalView} of
 	 *         {@link NumericComposite NumericComposites}
 	 */
@@ -281,7 +283,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * Removes all unit dimensions (dimensions with size one) from the
 	 * RandomAccessibleInterval
 	 * 
-	 * @param source the source
+	 * @param input the source
 	 * @return a RandomAccessibleInterval without dimensions of size one
 	 */
 	@OpMethod(op = net.imagej.ops.transform.dropSingletonDimensionsView.DefaultDropSingletonDimensionsView.class)
@@ -295,7 +297,7 @@ public class TransformNamespace extends AbstractNamespace {
 	/**
 	 * Extend a RandomAccessibleInterval with an out-of-bounds strategy.
 	 * 
-	 * @param source the interval to extend.
+	 * @param input the interval to extend.
 	 * @param factory the out-of-bounds strategy.
 	 * @return (unbounded) RandomAccessible which extends the input interval to
 	 *         infinity.
@@ -313,7 +315,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * Extend a RandomAccessibleInterval with an out-of-bounds strategy to repeat
 	 * border pixels.
 	 * 
-	 * @param source the interval to extend.
+	 * @param input the interval to extend.
 	 * @return (unbounded) RandomAccessible which extends the input interval to
 	 *         infinity.
 	 * @see net.imglib2.outofbounds.OutOfBoundsBorder
@@ -330,7 +332,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * Extend a RandomAccessibleInterval with a mirroring out-of-bounds strategy.
 	 * Boundary pixels are repeated.
 	 * 
-	 * @param source the interval to extend.
+	 * @param input the interval to extend.
 	 * @return (unbounded) RandomAccessible which extends the input interval to
 	 *         infinity.
 	 * @see net.imglib2.outofbounds.OutOfBoundsMirrorDoubleBoundary
@@ -348,7 +350,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * Boundary pixels are not repeated. Note that this requires that all
 	 * dimensions of the source (F source) must be &gt; 1.
 	 * 
-	 * @param source the interval to extend.
+	 * @param input the interval to extend.
 	 * @return (unbounded) RandomAccessible which extends the input interval to
 	 *         infinity.
 	 * @see net.imglib2.outofbounds.OutOfBoundsMirrorSingleBoundary
@@ -364,7 +366,7 @@ public class TransformNamespace extends AbstractNamespace {
 	/**
 	 * Extend a RandomAccessibleInterval with a periodic out-of-bounds strategy.
 	 * 
-	 * @param source the interval to extend.
+	 * @param input the interval to extend.
 	 * @return (unbounded) RandomAccessible which extends the input interval to
 	 *         infinity.
 	 * @see net.imglib2.outofbounds.OutOfBoundsPeriodic
@@ -381,7 +383,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * Extend a RandomAccessibleInterval with a random-value out-of-bounds
 	 * strategy.
 	 * 
-	 * @param source the interval to extend.
+	 * @param input the interval to extend.
 	 * @param min the minimal random value
 	 * @param max the maximal random value
 	 * @return (unbounded) RandomAccessible which extends the input interval to
@@ -401,7 +403,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * Extend a RandomAccessibleInterval with a constant-value out-of-bounds
 	 * strategy.
 	 * 
-	 * @param source the interval to extend.
+	 * @param input the interval to extend.
 	 * @return (unbounded) RandomAccessible which extends the input interval to
 	 *         infinity.
 	 * @see net.imglib2.outofbounds.OutOfBoundsConstantValue
@@ -419,7 +421,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * Extend a RandomAccessibleInterval with a constant-value out-of-bounds
 	 * strategy where the constant value is the zero-element of the data type.
 	 * 
-	 * @param source the interval to extend.
+	 * @param input the interval to extend.
 	 * @return (unbounded) RandomAccessible which extends the input interval to
 	 *         infinity with a constant value of zero.
 	 * @see net.imglib2.outofbounds.OutOfBoundsConstantValue
@@ -439,7 +441,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * returned directly (this is the case for {@link ArrayImg}). If not, then an
 	 * {@link IterableRandomAccessibleInterval} is created.
 	 * 
-	 * @param randomAccessibleInterval the source
+	 * @param input the source
 	 * @return an {@link IterableInterval} with {@link FlatIterationOrder}
 	 */
 	@OpMethod(op = net.imagej.ops.transform.flatIterableView.DefaultFlatIterableView.class)
@@ -464,7 +466,7 @@ public class TransformNamespace extends AbstractNamespace {
 	/**
 	 * Returns a {@link RealRandomAccessible} using interpolation
 	 * 
-	 * @param source the {@link EuclideanSpace} to be interpolated
+	 * @param input the {@link EuclideanSpace} to be interpolated
 	 * @param factory the {@link InterpolatorFactory} to provide interpolators for
 	 *          source
 	 * @return
@@ -480,7 +482,7 @@ public class TransformNamespace extends AbstractNamespace {
 	/**
 	 * Invert the d-axis.
 	 * 
-	 * @param randomAccessible the source
+	 * @param input the source
 	 * @param d the axis to invert
 	 */
 	@OpMethod(op = net.imagej.ops.transform.invertAxisView.DefaultInvertAxisView.class)
@@ -494,7 +496,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * Translate such that pixel at offset in randomAccessible is at the origin in
 	 * the resulting view. This is equivalent to translating by -offset.
 	 * 
-	 * @param randomAccessible the source
+	 * @param input the source
 	 * @param offset offset of the source view. The pixel at offset becomes the
 	 *          origin of resulting view.
 	 */
@@ -524,7 +526,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * Inverse bijective permutation of the integer coordinates of one dimension
 	 * of a {@link RandomAccessibleInterval}.
 	 *
-	 * @param source must have dimension(dimension) == permutation.length
+	 * @param input must have dimension(dimension) == permutation.length
 	 * @param permutation must be a bijective permutation over its index set, i.e.
 	 *          for a lut of length n, the sorted content the array must be
 	 *          [0,...,n-1] which is the index set of the lut.
@@ -545,7 +547,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * Inverse Bijective permutation of the integer coordinates in each dimension
 	 * of a {@link RandomAccessibleInterval}.
 	 *
-	 * @param source must be an <em>n</em>-dimensional hypercube with each
+	 * @param input must be an <em>n</em>-dimensional hypercube with each
 	 *          dimension being of the same size as the permutation array
 	 * @param permutation must be a bijective permutation over its index set, i.e.
 	 *          for a LUT of length n, the sorted content the array must be
@@ -564,7 +566,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * Bijective permutation of the integer coordinates in each dimension of a
 	 * {@link RandomAccessibleInterval}.
 	 *
-	 * @param source must be an <em>n</em>-dimensional hypercube with each
+	 * @param input must be an <em>n</em>-dimensional hypercube with each
 	 *          dimension being of the same size as the permutation array
 	 * @param permutation must be a bijective permutation over its index set, i.e.
 	 *          for a LUT of length n, the sorted content the array must be
@@ -583,7 +585,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * Bijective permutation of the integer coordinates of one dimension of a
 	 * {@link RandomAccessibleInterval}.
 	 *
-	 * @param source must have dimension(dimension) == permutation.length
+	 * @param input must have dimension(dimension) == permutation.length
 	 * @param permutation must be a bijective permutation over its index set, i.e.
 	 *          for a lut of length n, the sorted content the array must be
 	 *          [0,...,n-1] which is the index set of the lut.
@@ -617,7 +619,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * 
 	 * @see #interpolate(net.imglib2.EuclideanSpace,
 	 *      net.imglib2.interpolation.InterpolatorFactory)
-	 * @param source the {@link RealRandomAccessible} to be rasterized.
+	 * @param input the {@link RealRandomAccessible} to be rasterized.
 	 * @return a {@link RandomAccessibleOnRealRandomAccessible} wrapping source.
 	 */
 	@OpMethod(op = net.imagej.ops.transform.rasterView.DefaultRasterView.class)
@@ -634,7 +636,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * &lt;T&gt;&gt; into an (<em>n</em>-1)-dimensional
 	 * {@link RandomAccessibleInterval}&lt;{@link RealComposite}&lt;T&gt;&gt;
 	 * 
-	 * @param source the source
+	 * @param input the source
 	 * @return an (<em>n</em>-1)-dimensional {@link CompositeIntervalView} of
 	 *         {@link RealComposite RealComposites}
 	 */
@@ -654,7 +656,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * &lt;T&gt;&gt; into an (<em>n</em>-1)-dimensional {@link RandomAccessible}
 	 * &lt;{@link RealComposite}&lt;T&gt;&gt;
 	 * 
-	 * @param source the source
+	 * @param input the source
 	 * @param numChannels the number of channels that the {@link RealComposite}
 	 *          will consider when performing calculations
 	 * @return an (<em>n</em>-1)-dimensional {@link CompositeView} of
@@ -684,7 +686,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * Positive shear transform of a RandomAccessible using {@link ShearTransform}
 	 * , i.e. c[ shearDimension ] = c[ shearDimension ] + c[ referenceDimension ]
 	 *
-	 * @param source input, e.g. extended {@link RandomAccessibleInterval}
+	 * @param input input, e.g. extended {@link RandomAccessibleInterval}
 	 * @param shearDimension dimension to be sheared
 	 * @param referenceDimension reference dimension for shear
 	 * @return {@link TransformView} containing the result.
@@ -702,7 +704,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * Positive shear transform of a RandomAccessible using {@link ShearTransform}
 	 * , i.e. c[ shearDimension ] = c[ shearDimension ] + c[ referenceDimension ]
 	 *
-	 * @param source input, e.g. extended {@link RandomAccessibleInterval}
+	 * @param input input, e.g. extended {@link RandomAccessibleInterval}
 	 * @param interval original interval
 	 * @param shearDimension dimension to be sheared
 	 * @param referenceDimension reference dimension for shear
@@ -723,7 +725,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * Form a <em>(n+1)</em>-dimensional {@link RandomAccessibleInterval} by
 	 * stacking <em>n</em>-dimensional {@link RandomAccessibleInterval}s.
 	 *
-	 * @param hyperslices a list of <em>n</em>-dimensional
+	 * @param input a list of <em>n</em>-dimensional
 	 *          {@link RandomAccessibleInterval} of identical sizes.
 	 * @return a <em>(n+1)</em>-dimensional {@link RandomAccessibleInterval} where
 	 *         the final dimension is the index of the hyperslice.
@@ -743,7 +745,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 *          <em>(n+1)</em> -dimensional {@link StackView} maps position
 	 *          changes into position changes of the underlying <em>n</em>
 	 *          -dimensional {@link RandomAccess}es.
-	 * @param hyperslices a list of <em>n</em>-dimensional
+	 * @param input a list of <em>n</em>-dimensional
 	 *          {@link RandomAccessibleInterval} of identical sizes.
 	 * @return a <em>(n+1)</em>-dimensional {@link RandomAccessibleInterval} where
 	 *         the final dimension is the index of the hyperslice.
@@ -762,7 +764,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * {@link RandomAccessible}. This is effectively an integer scaling
 	 * transformation.
 	 * 
-	 * @param source the source
+	 * @param input the source
 	 * @param step the subsampling step size
 	 * @return a subsampled {@link RandomAccessible}
 	 */
@@ -778,7 +780,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * in the source view has coordinates <em>(x + translation)</em> in the
 	 * resulting view.
 	 * 
-	 * @param randomAccessible the source
+	 * @param input the source
 	 * @param translation translation vector of the source view. The pixel at
 	 *          <em>x</em> in the source view becomes <em>(x + translation)</em>
 	 *          in the resulting view.
@@ -796,7 +798,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * {@link InverseShearTransform}, i.e. c[ shearDimension ] = c[ shearDimension
 	 * ] - c[ referenceDimension ]
 	 *
-	 * @param source input, e.g. extended {@link RandomAccessibleInterval}
+	 * @param input input, e.g. extended {@link RandomAccessibleInterval}
 	 * @param shearDimension dimension to be sheared
 	 * @param referenceDimension reference dimension for shear
 	 * @return {@link TransformView} containing the result.
@@ -815,7 +817,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * {@link InverseShearTransform}, i.e. c[ shearDimension ] = c[ shearDimension
 	 * ] - c[ referenceDimension ]
 	 *
-	 * @param source input, e.g. extended {@link RandomAccessibleInterval}
+	 * @param input input, e.g. extended {@link RandomAccessibleInterval}
 	 * @param interval original interval
 	 * @param shearDimension dimension to be sheared
 	 * @param referenceDimension reference dimension for shear
@@ -837,7 +839,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * to ensure that the source RandomAccessible is defined in the specified
 	 * interval.
 	 * 
-	 * @param randomAccessible the source
+	 * @param input the source
 	 * @param interval interval boundaries.
 	 * @return a RandomAccessibleInterval
 	 */
@@ -851,7 +853,7 @@ public class TransformNamespace extends AbstractNamespace {
 	/**
 	 * Translate the source such that the upper left corner is at the origin
 	 * 
-	 * @param interval the source.
+	 * @param input the source.
 	 * @return view of the source translated to the origin
 	 */
 	@OpMethod(op = net.imagej.ops.transform.zeroMinView.DefaultZeroMinView.class)
@@ -866,7 +868,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * corner is at the origin. It is the callers responsibility to ensure that
 	 * the source RandomAccessible is defined in the specified interval.
 	 * 
-	 * @param randomAccessible the source
+	 * @param input the source
 	 * @param interval the interval on source that should be cut out and
 	 *          translated to the origin.
 	 * @return a RandomAccessibleInterval
@@ -883,7 +885,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * corner is at the origin. It is the callers responsibility to ensure that
 	 * the source RandomAccessible is defined in the specified interval.
 	 * 
-	 * @param randomAccessible the source
+	 * @param input the source
 	 * @param offset offset of min corner.
 	 * @param dimension size of the interval.
 	 * @return a RandomAccessibleInterval
@@ -918,7 +920,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * {@link RandomAccessible}. This is effectively an integer scaling
 	 * transformation.
 	 * 
-	 * @param source the source
+	 * @param input the source
 	 * @param steps the subsampling step sizes
 	 * @return a subsampled {@link RandomAccessible}
 	 */
@@ -935,7 +937,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * to ensure that the source RandomAccessible is defined in the specified
 	 * interval.
 	 * 
-	 * @param randomAccessible the source
+	 * @param input the source
 	 * @param min lower bound of interval
 	 * @param max upper bound of interval
 	 * @return a RandomAccessibleInterval

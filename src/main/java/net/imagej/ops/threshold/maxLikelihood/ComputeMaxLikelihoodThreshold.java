@@ -47,8 +47,8 @@ import org.scijava.plugin.Plugin;
 // the HistThresh Toolbox (relicensed BSD 2-12-13)
 
 /**
- * Implements a maximum likelihood threshold method by Dempster, Laird, & Rubin
- * and Glasbey.
+ * Implements a maximum likelihood threshold method by Dempster, Laird,
+ * {@literal &} Rubin and Glasbey.
  * 
  * @author Barry DeZonia
  */

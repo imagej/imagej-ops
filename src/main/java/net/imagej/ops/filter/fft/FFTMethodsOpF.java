@@ -55,8 +55,8 @@ import org.scijava.plugin.Plugin;
  * Function that uses FFTMethods to perform a forward FFT
  * 
  * @author Brian Northan
- * @param <T>
- * @param <RandomAccessibleInterval<T>>
+ * @param <T> TODO Documentation
+ * @param <C> TODO Documentation
  */
 @Plugin(type = Ops.Filter.FFT.class, priority = Priority.HIGH_PRIORITY)
 public class FFTMethodsOpF<T extends RealType<T>, C extends ComplexType<C>>

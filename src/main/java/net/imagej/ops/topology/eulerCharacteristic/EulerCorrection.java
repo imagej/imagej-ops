@@ -17,17 +17,19 @@ import java.util.stream.LongStream;
  * Euler characteristic χ of the whole image. That is, it's assumed that the image is a small part cut
  * from a larger sample.
  * <p>
- * From Odgaard & Gundersen (see below): <i>"-- the Euler characteristic of the entire 3-D space will not be obtained
- * by simply adding the Euler characteristics of cubic specimens.
+ * From Odgaard {@literal &} Gundersen (see below): <i>"-- the Euler characteristic of the entire 3-D
+ * space will not be obtained by simply adding the Euler characteristics of cubic specimens.
  * By doing this, the contribution of the lower dimensional elements will not be considered".</i>
  * They give the correction as c = -1/2χ_2 - 1/4χ_1 - -1/8χ_0, where
+ * </p>
  * <ul>
  * <li>χ_2 = χ of all the faces of the stack</li>
  * <li>χ_1 = χ of all the edges of the stack</li>
  * <li>χ_0 = χ of all the corner vertices of the stack.</li>
  * </ul>
  * Each face contributes to two, each edge to four, and each corner to eight stacks.
- * </p><p>
+ * 
+ * <p>
  * Odgaard A, Gundersen HJG (1993)<br>
  * Quantification of connectivity in cancellous bone, with special emphasis on 3-D reconstructions.<br>
  * Bone 14: 173-182.<br>
@@ -35,7 +37,8 @@ import java.util.stream.LongStream;
  * </p>
  * @author Michael Doube (Royal Veterinary College, London)
  * @author Richard Domander (Royal Veterinary College, London)
- * @implNote Methods are public and static to help testing
+ * 
+ * NB: Methods are public and static to help testing
  */
 @Plugin(type = Ops.Topology.EulerCorrection.class)
 public class EulerCorrection<B extends BooleanType<B>>

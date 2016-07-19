@@ -55,10 +55,8 @@ import org.scijava.plugin.Plugin;
  * Pearu Peterson https://code.google.com/p/iocbio/
  * 
  * @author Brian Northan
- * @param <I>
- * @param <O>
- * @param <K>
- * @param <C>
+ * @param <I> TODO Documentation
+ * @param <T> TODO Documentation
  */
 @Plugin(type = Ops.Deconvolve.RichardsonLucyUpdate.class,
 	priority = Priority.HIGH_PRIORITY)

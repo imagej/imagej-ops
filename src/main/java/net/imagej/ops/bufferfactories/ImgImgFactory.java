@@ -36,8 +36,8 @@ import net.imglib2.img.Img;
 import net.imglib2.type.Type;
 
 /**
- * {@link UnaryOutputFactory} used to create an empty output {@link Img} of type <V>
- * and the dimensionality of the input {@link Img}
+ * {@link UnaryOutputFactory} used to create an empty output {@link Img} of type
+ * {@code <V>} and the dimensionality of the input {@link Img}
  * 
  * @author Christian Dietz (University of Konstanz)
  */

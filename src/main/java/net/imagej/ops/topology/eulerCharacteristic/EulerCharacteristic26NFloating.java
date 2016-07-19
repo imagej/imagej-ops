@@ -19,7 +19,7 @@ import org.scijava.plugin.Plugin;
  * <li>β_2 = number enclosed cavities</li>
  * </ul>
  * <p>
- * The Op calculates χ by using the triangulation algorithm described by Toriwaki & Yonekura (see below).<br>
+ * The Op calculates χ by using the triangulation algorithm described by Toriwaki {@literal &} Yonekura (see below).<br>
  * There it's calculated X = ∑Δχ(V), where V is a 2x2x2 neighborhood around each point in the 3D space.<br>
  * We are using the 26-neighborhood version of the algorithm. The Δχ(V) values here are predetermined.
  * </p><p>

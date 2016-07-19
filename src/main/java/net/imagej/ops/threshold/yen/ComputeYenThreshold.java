@@ -41,7 +41,8 @@ import org.scijava.plugin.Plugin;
 // plugin found in Fiji (version 1.14).
 
 /**
- * Implements Yen's threshold method (Yen, Chang, & Chang, and Sezgin & Sankur).
+ * Implements Yen's threshold method (Yen, Chang, {@literal &} Chang, and Sezgin
+ * {@literal &} Sankur).
  * 
  * @author Barry DeZonia
  * @author Gabriel Landini

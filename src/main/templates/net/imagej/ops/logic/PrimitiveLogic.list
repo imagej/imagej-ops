@@ -12,15 +12,15 @@ types = ```
 ```
 ops = ```
 [
-	[name: "And",                operator: "&&", unary: false, codes: "b",     verbs: "computes the logical AND (&&) of"],
-	[name: "Equal",              operator: "==", unary: false, codes: "bilfd", verbs: "tests for equality (==) between"],
-	[name: "GreaterThan",        operator: ">",  unary: false, codes:  "ilfd", verbs: "performs a greater-than (>) comparison on"],
-	[name: "GreaterThanOrEqual", operator: ">=", unary: false, codes:  "ilfd", verbs: "performs a greater-than-or-equal (>=) comparison on"],
-	[name: "LessThan",           operator: "<",  unary: false, codes:  "ilfd", verbs: "performs a less-than (<) comparison on"],
-	[name: "LessThanOrEqual",    operator: "<=", unary: false, codes:  "ilfd", verbs: "performs a less-than-or-equal (<=) comparison on"],
-	[name: "Not",                operator: "!",  unary: true,  codes: "b",     verbs: "computes the logical NOT (!) of"],
-	[name: "NotEqual",           operator: "!=", unary: false, codes: "bilfd", verbs: "tests for inequality (!=) between"],
-	[name: "Or",                 operator: "||", unary: false, codes: "b",     verbs: "computes the logical OR (||) of"],
-	[name: "Xor",                operator: "^",  unary: false, codes: "b",     verbs: "computes the logical XOR (^) of"]
+	[name: "And",                operator: "&&", unary: false, codes: "b",     verbs: "computes the logical AND ({@literal &&}) of"],
+	[name: "Equal",              operator: "==", unary: false, codes: "bilfd", verbs: "tests for equality ({@literal ==}) between"],
+	[name: "GreaterThan",        operator: ">",  unary: false, codes:  "ilfd", verbs: "performs a greater-than ({@literal >}) comparison on"],
+	[name: "GreaterThanOrEqual", operator: ">=", unary: false, codes:  "ilfd", verbs: "performs a greater-than-or-equal ({@literal >=}) comparison on"],
+	[name: "LessThan",           operator: "<",  unary: false, codes:  "ilfd", verbs: "performs a less-than ({@literal <}) comparison on"],
+	[name: "LessThanOrEqual",    operator: "<=", unary: false, codes:  "ilfd", verbs: "performs a less-than-or-equal ({@literal <=}) comparison on"],
+	[name: "Not",                operator: "!",  unary: true,  codes: "b",     verbs: "computes the logical NOT ({@literal !}) of"],
+	[name: "NotEqual",           operator: "!=", unary: false, codes: "bilfd", verbs: "tests for inequality ({@literal !=}) between"],
+	[name: "Or",                 operator: "||", unary: false, codes: "b",     verbs: "computes the logical OR ({@literal ||}) of"],
+	[name: "Xor",                operator: "^",  unary: false, codes: "b",     verbs: "computes the logical XOR ({@literal ^}) of"]
 ]
 ```

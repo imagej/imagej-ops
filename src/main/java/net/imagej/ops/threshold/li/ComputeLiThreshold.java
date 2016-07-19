@@ -42,8 +42,8 @@ import org.scijava.plugin.Plugin;
 // plugin found in Fiji (version 1.14).
 
 /**
- * Implements Li's threshold method by Li & Lee, and Li & Tam, and Sezgin &
- * Sankur.
+ * Implements Li's threshold method by Li {@literal &} Lee, and Li {@literal &}
+ * Tam, and Sezgin {@literal &} Sankur.
  * 
  * @author Barry DeZonia
  * @author Gabriel Landini

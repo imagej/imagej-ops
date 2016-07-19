@@ -49,7 +49,7 @@ public class BooleanTypeLogic {
 		// NB: Prevent instantiation of utility class.
 	}
 
-	/** Performs logical and (&&) between two {@link BooleanType}s. */
+	/** Performs logical and ({@literal &&}) between two {@link BooleanType}s. */
 	@Plugin(type = Ops.Logic.And.class)
 	public static class And<T extends BooleanType<T>> extends
 		AbstractBinaryHybridCFI<T, T> implements Ops.Logic.And
@@ -77,7 +77,7 @@ public class BooleanTypeLogic {
 		}
 	}
 
-	/** Performs greater-than (>) between two {@link Comparable}s. */
+	/** Performs greater-than ({@literal >}) between two {@link Comparable}s. */
 	@Plugin(type = Ops.Logic.GreaterThan.class)
 	public static class ComparableGreaterThan<I extends Comparable<I>, O extends BooleanType<O>>
 		extends AbstractBinaryComputerOp<I, I, O> implements Ops.Logic.GreaterThan
@@ -89,7 +89,7 @@ public class BooleanTypeLogic {
 		}
 	}
 
-	/** Performs greater-than-or-equal (>=) between two {@link Comparable}s. */
+	/** Performs greater-than-or-equal ({@literal >=}) between two {@link Comparable}s. */
 	@Plugin(type = Ops.Logic.GreaterThanOrEqual.class)
 	public static class ComparableGreaterThanOrEqual<I extends Comparable<I>, O extends BooleanType<O>>
 		extends AbstractBinaryComputerOp<I, I, O> implements
@@ -102,7 +102,7 @@ public class BooleanTypeLogic {
 		}
 	}
 
-	/** Performs less-than (<) between two {@link Comparable}s. */
+	/** Performs less-than ({@literal <}) between two {@link Comparable}s. */
 	@Plugin(type = Ops.Logic.LessThan.class)
 	public static class ComparableLessThan<I extends Comparable<I>, O extends BooleanType<O>>
 		extends AbstractBinaryComputerOp<I, I, O> implements Ops.Logic.LessThan
@@ -114,7 +114,7 @@ public class BooleanTypeLogic {
 		}
 	}
 
-	/** Performs less-than-or-equal (<=) between two {@link Comparable}s. */
+	/** Performs less-than-or-equal ({@literal <=}) between two {@link Comparable}s. */
 	@Plugin(type = Ops.Logic.LessThanOrEqual.class)
 	public static class ComparableLessThanOrEqual<I extends Comparable<I>, O extends BooleanType<O>>
 		extends AbstractBinaryComputerOp<I, I, O> implements
