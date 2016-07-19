@@ -64,9 +64,10 @@ public class CentroidPolygon extends
 		double area = sizeFunc.compute1(input).get();
 		double cx = 0;
 		double cy = 0;
-		for (int i = 0; i < input.getVertices().size() - 1; i++) {
+		for (int i = 0; i < input.getVertices().size(); i++) {
 			RealLocalizable p0 = input.getVertices().get(i);
-			RealLocalizable p1 = input.getVertices().get(i + 1);
+			RealLocalizable p1 = input.getVertices().get((i + 1) % input.getVertices()
+					.size());
 
 			double p0_x = p0.getDoublePosition(0);
 			double p0_y = p0.getDoublePosition(1);
