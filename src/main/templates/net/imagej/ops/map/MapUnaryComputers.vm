@@ -61,8 +61,8 @@ public class MapUnaryComputers {
 	 * {@link MapUnaryComputer} from {@link $inType.name} to
 	 * {@link $outType.name}.
 	 * 
-	 * @Param <EI> element type of inputs
-	 * @Param <EO> element type of outputs
+	 * @param <EI> element type of inputs
+	 * @param <EO> element type of outputs
 	 */
 	@Plugin(type = Ops.Map.class, priority = $priority)
 	public static class ${inType.alias}To${outType.alias}<EI, EO> extends
@@ -87,8 +87,8 @@ public class MapUnaryComputers {
 	 * Parallelized {@link MapUnaryComputer} from {@link $inType.name} to
 	 * {@link $outType.name}.
 	 * 
-	 * @Param <EI> element type of inputs
-	 * @Param <EO> element type of outputs
+	 * @param <EI> element type of inputs
+	 * @param <EO> element type of outputs
 	 */
 	@Plugin(type = Ops.Map.class, priority = $paraPrio)
 	public static class ${inType.alias}To${outType.alias}Parallel<EI, EO> extends
