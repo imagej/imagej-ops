@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
 // plugin found in Fiji (version 1.14).
 
 /**
- * Implements an intermodes threshold method by Prewitt & Mendelsohn.
+ * Implements an intermodes threshold method by Prewitt {@literal &} Mendelsohn.
  * 
  * @author Barry DeZonia
  * @author Gabriel Landini

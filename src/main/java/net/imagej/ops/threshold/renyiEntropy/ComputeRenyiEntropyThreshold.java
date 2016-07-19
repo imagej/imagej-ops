@@ -42,7 +42,8 @@ import org.scijava.plugin.Plugin;
 // plugin found in Fiji (version 1.14).
 
 /**
- * Implements a Renyi entropy based threshold method by Kapur, Sahoo, & Wong.
+ * Implements a Renyi entropy based threshold method by Kapur, Sahoo,
+ * {@literal &} Wong.
  * 
  * @author Barry DeZonia
  * @author Gabriel Landini

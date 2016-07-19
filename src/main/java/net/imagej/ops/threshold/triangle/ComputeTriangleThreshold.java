@@ -41,7 +41,8 @@ import org.scijava.plugin.Plugin;
 // plugin found in Fiji (version 1.14).
 
 /**
- * Implements a Triangle algorithm threshold method from Zack, Rogers, & Latt.
+ * Implements a Triangle algorithm threshold method from Zack, Rogers,
+ * {@literal &} Latt.
  * 
  * @author Barry DeZonia
  * @author Gabriel Landini

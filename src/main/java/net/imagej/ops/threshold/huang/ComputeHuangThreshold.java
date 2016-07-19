@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
 //plugin found in Fiji (version 1.14).
 
 /**
- * Implements Huang's threshold method by Huang & Wang.
+ * Implements Huang's threshold method by Huang {@literal &} Wang.
  * 
  * @author Barry DeZonia
  * @author Gabriel Landini
