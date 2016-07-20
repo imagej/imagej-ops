@@ -57,8 +57,7 @@ public class DefaultSizePolygon extends AbstractUnaryHybridCF<Polygon, DoubleTyp
 		double sum = 0;
 		for (int i = 0; i < input.getVertices().size(); i++) {
 
-			RealLocalizable p0 = input.getVertices().get(i % input.getVertices()
-				.size());
+			RealLocalizable p0 = input.getVertices().get(i);
 			RealLocalizable p1 = input.getVertices().get((i + 1) % input.getVertices()
 				.size());
 

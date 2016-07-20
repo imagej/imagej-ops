@@ -175,15 +175,15 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 				for (i = 0; TRIANGLE_TABLE[cubeindex][i] != -1; i += 3) {
 
 					TriangularFacet face = new TriangularFacet(new Vertex(
-						vertlist[TRIANGLE_TABLE[cubeindex][i]][0],
-						vertlist[TRIANGLE_TABLE[cubeindex][i]][1],
-						vertlist[TRIANGLE_TABLE[cubeindex][i]][2]), new Vertex(
+						vertlist[TRIANGLE_TABLE[cubeindex][i + 2]][0],
+						vertlist[TRIANGLE_TABLE[cubeindex][i + 2]][1],
+						vertlist[TRIANGLE_TABLE[cubeindex][i + 2]][2]), new Vertex(
 							vertlist[TRIANGLE_TABLE[cubeindex][i + 1]][0],
 							vertlist[TRIANGLE_TABLE[cubeindex][i + 1]][1],
 							vertlist[TRIANGLE_TABLE[cubeindex][i + 1]][2]), new Vertex(
-								vertlist[TRIANGLE_TABLE[cubeindex][i + 2]][0],
-								vertlist[TRIANGLE_TABLE[cubeindex][i + 2]][1],
-								vertlist[TRIANGLE_TABLE[cubeindex][i + 2]][2]));
+								vertlist[TRIANGLE_TABLE[cubeindex][i]][0],
+								vertlist[TRIANGLE_TABLE[cubeindex][i]][1],
+								vertlist[TRIANGLE_TABLE[cubeindex][i]][2]));
 					output.addFace(face);
 				}
 			}

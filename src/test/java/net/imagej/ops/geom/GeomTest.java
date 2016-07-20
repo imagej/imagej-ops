@@ -61,6 +61,7 @@ import net.imagej.ops.geom.geom3d.RugosityMesh;
 import net.imagej.ops.geom.geom3d.SizeConvexHullMesh;
 import net.imagej.ops.geom.geom3d.SolidityMesh;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
+import net.imglib2.IterableInterval;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.img.Img;
@@ -69,6 +70,7 @@ import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.type.numeric.real.FloatType;
 
+import net.imglib2.view.Views;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -77,6 +79,7 @@ import org.junit.Test;
  * 
  * @author Daniel Seebacher (University of Konstanz)
  * @author Tim-Oliver Buchholz (University of Konstanz)
+ * @author Robert Haase (MPI CBG Dresden)
  */
 public class GeomTest extends AbstractFeatureTest {
 
@@ -218,6 +221,36 @@ public class GeomTest extends AbstractFeatureTest {
 			AbstractFeatureTest.BIG_DELTA);
 		assertEquals(expected3, c.getDoublePosition(2),
 			AbstractFeatureTest.BIG_DELTA);
+	}
+
+	@Test
+	public void testCentroidMeshVersusRegion3D() {
+		// the centroid may differ between a mesh and the binary image it's derived from by not more than cubic root of
+		// half a pixel
+		double tolerance = Math.cbrt(0.5);
+
+		final RealPoint centroidMesh = (RealPoint) ops.geom().centroid(mesh);
+		final RealPoint centroidRegion = (RealPoint) ops.run(Ops.Geometric.Centroid.class, region3D);
+
+		for (int d = 0; d < centroidRegion.numDimensions(); d++) {
+			assertEquals(centroidMesh.getDoublePosition(d), centroidRegion.getDoublePosition(d), tolerance);
+		}
+	}
+
+	@Test
+	public void testCentroidPolygonVersusRegion2D() {
+		// the centroid may differ between a polygon and a rasterised polygon by not more than square root of half a
+		// pixel
+		double tolerance = Math.sqrt(0.5);
+
+		final RealPoint centroidPolygon = (RealPoint) ops.run(CentroidPolygon.class, contour);
+		final RealLocalizable centroidRasterisedPolygon = ops.geom().centroid(contour.rasterize());
+		final RealPoint centroidRegion = (RealPoint) ops.run(Ops.Geometric.Centroid.class, region2D);
+
+		for (int d = 0; d < centroidRegion.numDimensions(); d++) {
+			assertEquals(centroidPolygon.getDoublePosition(d), centroidRasterisedPolygon.getDoublePosition(d), tolerance);
+			assertEquals(centroidRasterisedPolygon.getDoublePosition(d), centroidRegion.getDoublePosition(d), tolerance);
+		}
 	}
 
 	@Test
