@@ -16,13 +16,13 @@ Getting started
 Each op has a list of typed input and output parameters on which it operates.
 You can think of an op as a (potentially multi-variable) function:
 ```
-c = math.add(a, b)
+sum = math.add(a, b)
 (phase, amplitude) = fft(image)
 ```
 
 In many cases you can also pass a pre-allocated output which will be populated:
 ```
-math.add(c, a, b)
+math.add(sum, a, b)
 ```
 
 Some ops take other ops as inputs, which allows for things like "execute this
