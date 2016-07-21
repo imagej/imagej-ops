@@ -34,8 +34,8 @@ output_image = map(input_image, add_op)
 
 For more details, see these tutorials:
 * [Using Ops](https://github.com/imagej/imagej-tutorials/tree/master/using-ops)
-* [Developing external Op namespaces](http://imagej.net/Adding_new_ops)
 * [Create a new Op](https://github.com/imagej/imagej-tutorials/tree/master/create-a-new-op)
+* [Developing external Op namespaces](http://imagej.net/Adding_new_ops)
 
 Working example
 ---------------
