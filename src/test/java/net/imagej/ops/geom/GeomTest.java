@@ -211,9 +211,9 @@ public class GeomTest extends AbstractFeatureTest {
 
 	@Test
 	public void testCentroidMesh() {
-		final double expected1 = expensiveTestsEnabled ? -25.700 : -12.237808234;
-		final double expected2 = expensiveTestsEnabled ? -24.644 : -12.524262243;
-		final double expected3 = expensiveTestsEnabled ? -19.945 : -9.568196449;
+		final double expected1 = expensiveTestsEnabled ? 25.700 : 12.237808234;
+		final double expected2 = expensiveTestsEnabled ? 24.644 : 12.524262243;
+		final double expected3 = expensiveTestsEnabled ? 19.945 : 9.568196449;
 		final RealPoint c = (RealPoint) ops.run(CentroidMesh.class, mesh);
 		assertEquals(expected1, c.getDoublePosition(0),
 			AbstractFeatureTest.BIG_DELTA);
@@ -290,7 +290,7 @@ public class GeomTest extends AbstractFeatureTest {
 
 	@Test
 	public void testBoundaryPixelCountConvexHull() {
-		final double expected = expensiveTestsEnabled ? 32 : 177;
+		final double expected = expensiveTestsEnabled ? 32 : 179;
 		// Verified by hand. qhull merges faces and therefore has another number
 		// of surface pixels
 		assertEquals(Ops.Geometric.BoundaryPixelCountConvexHull.NAME, expected,
