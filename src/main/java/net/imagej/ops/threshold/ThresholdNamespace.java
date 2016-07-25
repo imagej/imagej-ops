@@ -30,12 +30,14 @@
 
 package net.imagej.ops.threshold;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
+import net.imagej.ops.threshold.apply.ApplyConstantThresholdPair.ThresholdPair;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
@@ -119,6 +121,29 @@ public class ThresholdNamespace extends AbstractNamespace {
 			(BitType) ops().run(
 				net.imagej.ops.Ops.Threshold.Apply.class,
 				out, in, threshold, comparator);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.threshold.apply.ApplyConstantThresholdPair.class)
+	public <T extends RealType<T>> Iterable<BitType> apply(
+		final Iterable<BitType> out, final Iterable<T> in,
+		final ThresholdPair<T> thresholdPair)
+	{
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		final Iterable<BitType> result = (Iterable) ops().run(
+			net.imagej.ops.threshold.apply.ApplyConstantThresholdPair.class, out, in,
+			thresholdPair);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.threshold.apply.ApplyThresholdCollection.class)
+	public <T> BitType apply(final BitType out, final T in,
+		final Collection<ApplyThreshold<T, BitType>> thresholdOps)
+	{
+		final BitType result = (BitType) ops().run(
+			net.imagej.ops.threshold.apply.ApplyThresholdCollection.class, out, in,
+			thresholdOps);
 		return result;
 	}
 
