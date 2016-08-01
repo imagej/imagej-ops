@@ -55,10 +55,10 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn (University of Konstanz)
  * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Transform.Scale.class, priority = Priority.HIGH_PRIORITY)
-public class ScaleImg<T extends RealType<T>> extends
+@Plugin(type = Ops.Transform.ScaleView.class, priority = Priority.HIGH_PRIORITY)
+public class DefaultScaleView<T extends RealType<T>> extends
 	AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
-	implements Ops.Transform.Scale, Contingent
+	implements Ops.Transform.ScaleView, Contingent
 {
 
 	/**

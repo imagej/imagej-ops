@@ -51,7 +51,7 @@ public class ScaleImgTest extends AbstractOpTest {
 		Img<ByteType> in = generateByteArrayTestImg(true, new long[] { 10, 10 });
 		double[] scaleFactors = new double[] { 2, 2 };
 		@SuppressWarnings("unchecked")
-		RandomAccessibleInterval<ByteType> out = (RandomAccessibleInterval<ByteType>) ops.run(ScaleImg.class, in,
+		RandomAccessibleInterval<ByteType> out = (RandomAccessibleInterval<ByteType>) ops.run(DefaultScaleView.class, in,
 			scaleFactors, new NLinearInterpolatorFactory<ByteType>());
 
 		assertEquals(out.dimension(0), 20);
@@ -69,7 +69,7 @@ public class ScaleImgTest extends AbstractOpTest {
 	public void testContingency() {
 		Img<ByteType> in = generateByteArrayTestImg(true, new long[] { 10, 10 });
 		double[] scaleFactors = new double[] { 2, 2, 2 };
-		ops.run(ScaleImg.class, in, scaleFactors,
+		ops.run(DefaultScaleView.class, in, scaleFactors,
 			new NLinearInterpolatorFactory<ByteType>());
 	}
 }
