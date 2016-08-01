@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.transform.scale;
+package net.imagej.ops.transform.scaleView;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
