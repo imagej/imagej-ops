@@ -30,10 +30,11 @@
 
 package net.imagej.ops.transform.scale;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.interpolation.randomaccess.NLinearInterpolatorFactory;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -50,7 +51,7 @@ public class ScaleImgTest extends AbstractOpTest {
 		Img<ByteType> in = generateByteArrayTestImg(true, new long[] { 10, 10 });
 		double[] scaleFactors = new double[] { 2, 2 };
 		@SuppressWarnings("unchecked")
-		Img<ByteType> out = (Img<ByteType>) ops.run(ScaleImg.class, in,
+		RandomAccessibleInterval<ByteType> out = (RandomAccessibleInterval<ByteType>) ops.run(ScaleImg.class, in,
 			scaleFactors, new NLinearInterpolatorFactory<ByteType>());
 
 		assertEquals(out.dimension(0), 20);
@@ -62,5 +63,13 @@ public class ScaleImgTest extends AbstractOpTest {
 		outRA.setPosition(new long[] { 10, 10 });
 		assertEquals(inRA.get().get(), outRA.get().get());
 
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testContingency() {
+		Img<ByteType> in = generateByteArrayTestImg(true, new long[] { 10, 10 });
+		double[] scaleFactors = new double[] { 2, 2, 2 };
+		ops.run(ScaleImg.class, in, scaleFactors,
+			new NLinearInterpolatorFactory<ByteType>());
 	}
 }
