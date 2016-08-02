@@ -53,6 +53,7 @@ import org.scijava.plugin.Plugin;
  * The threshold namespace contains operations related to binary thresholding.
  *
  * @author Curtis Rueden
+ * @author Stefan Helfrich (University of Konstanz)
  */
 @Plugin(type = Namespace.class)
 public class ThresholdNamespace extends AbstractNamespace {
