@@ -38,9 +38,9 @@ import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imagej.ops.threshold.apply.ApplyConstantThresholdPair.ThresholdPair;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Threshold.Apply.class, priority = Priority.HIGH_PRIORITY)
 public class ApplyConstantThresholdPair<T extends RealType<T>> extends
-	AbstractBinaryComputerOp<Iterable<T>, ThresholdPair<T>, Iterable<BitType>>
+	AbstractBinaryComputerOp<Iterable<T>, Pair<T, T>, Iterable<BitType>>
 	implements Ops.Threshold.Apply
 {
 
@@ -80,50 +80,13 @@ public class ApplyConstantThresholdPair<T extends RealType<T>> extends
 	}
 
 	@Override
-	public void compute2(final Iterable<T> input1, final ThresholdPair<T> input2,
+	public void compute2(final Iterable<T> input1, final Pair<T, T> input2,
 		final Iterable<BitType> output)
 	{
-		applyThresholdMin.setInput2(input2.min);
-		applyThresholdMax.setInput2(input2.max);
+		applyThresholdMin.setInput2(input2.getA());
+		applyThresholdMax.setInput2(input2.getB());
 
 		mapper.compute1(input1, output);
-	}
-
-	// -- Helper classes --
-	/**
-	 * A class to pass threshold values as a single input
-	 *
-	 * @author Richard Domander (Royal Veterinary College, London)
-	 */
-	public static final class ThresholdPair<T extends RealType<T>> {
-
-		public final T min;
-		public final T max;
-
-		/**
-		 * Constructor for Thresholds
-		 *
-		 * @param type Type of the min and max values
-		 * @param min Minimum value for elements within threshold
-		 * @param max Maximum value for elements within threshold
-		 */
-		public ThresholdPair(final T type, final double min, final double max) {
-			this.min = type.createVariable();
-			this.min.setReal(min);
-			this.max = type.createVariable();
-			this.max.setReal(max);
-		}
-
-		/**
-		 * Constructor for Thresholds
-		 *
-		 * @param min Minimum value for elements within threshold
-		 * @param max Maximum value for elements within threshold
-		 */
-		public ThresholdPair(final T min, final T max) {
-			this.min = min;
-			this.max = max;
-		}
 	}
 
 }

@@ -37,7 +37,6 @@ import java.util.List;
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
-import net.imagej.ops.threshold.apply.ApplyConstantThresholdPair.ThresholdPair;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
@@ -46,6 +45,7 @@ import net.imglib2.histogram.Histogram1d;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Plugin;
 
@@ -128,7 +128,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		op = net.imagej.ops.threshold.apply.ApplyConstantThresholdPair.class)
 	public <T extends RealType<T>> Iterable<BitType> apply(
 		final Iterable<BitType> out, final Iterable<T> in,
-		final ThresholdPair<T> thresholdPair)
+		final Pair<T, T> thresholdPair)
 	{
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		final Iterable<BitType> result = (Iterable) ops().run(

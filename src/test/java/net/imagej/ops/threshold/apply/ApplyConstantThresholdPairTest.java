@@ -31,11 +31,12 @@
 package net.imagej.ops.threshold.apply;
 
 import net.imagej.ops.threshold.AbstractThresholdTest;
-import net.imagej.ops.threshold.apply.ApplyConstantThresholdPair.ThresholdPair;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.UnsignedShortType;
+import net.imglib2.util.Pair;
+import net.imglib2.util.ValuePair;
 
 import org.junit.Test;
 
@@ -51,7 +52,7 @@ public class ApplyConstantThresholdPairTest extends AbstractThresholdTest {
 		final Img<BitType> out = bitmap();
 		final UnsignedShortType thresholdMin = new UnsignedShortType(30000);
 		final UnsignedShortType thresholdMax = new UnsignedShortType(40000);
-		ThresholdPair<UnsignedShortType> thresholdPair = new ThresholdPair<>(
+		Pair<UnsignedShortType, UnsignedShortType> thresholdPair = new ValuePair<>(
 			thresholdMin, thresholdMax);
 		ops.run(ApplyConstantThresholdPair.class, out, in, thresholdPair);
 		assertCount(out, 15);
