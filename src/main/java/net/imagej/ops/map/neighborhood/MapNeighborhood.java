@@ -43,8 +43,8 @@ import net.imglib2.algorithm.neighborhood.Shape;
  * @param <EO> element type of outputs
  * @param <OP> type of {@link Op} which processes each neighborhood
  */
-public interface MapNeighborhood<EI, EO, PI, PO, OP extends Op> extends
-	BinaryComputerOp<PI, Shape, PO>, MapOp<OP>
+public interface MapNeighborhood<EI, EO, PI, PO, S extends Shape, OP extends Op>
+	extends BinaryComputerOp<PI, S, PO>, MapOp<OP>
 {
 	// NB: Marker interface.
 }
