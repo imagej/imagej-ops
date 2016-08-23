@@ -98,10 +98,10 @@ public class ProjectTest extends AbstractOpTest {
 				img1RandomAccess.setPosition(new long[] { x, y });
 				img2RandomAccess.setPosition(new long[] { x, y });
 
-				assertEquals(img1RandomAccess.get().get(), in.dimension(
-					PROJECTION_DIM) * (x + y));
-				assertEquals(img2RandomAccess.get().get(), in.dimension(
-					PROJECTION_DIM) * (x + y));
+				assertEquals(img1RandomAccess.get().get(), //
+					in.dimension(PROJECTION_DIM) * (x + y));
+				assertEquals(img2RandomAccess.get().get(), //
+					in.dimension(PROJECTION_DIM) * (x + y));
 			}
 		}
 	}
