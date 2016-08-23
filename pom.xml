@@ -171,7 +171,6 @@
 
 	<properties>
 		<main-class>net.imagej.ops.Main</main-class>
-		<scijava.jvm.version>1.8</scijava.jvm.version>
 	</properties>
 
 	<repositories>
