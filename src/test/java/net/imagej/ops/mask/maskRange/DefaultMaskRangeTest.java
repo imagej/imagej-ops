@@ -12,6 +12,8 @@ import net.imagej.ops.AbstractOpTest;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.util.Pair;
+import net.imglib2.util.ValuePair;
 
 import org.junit.Test;
 
@@ -26,8 +28,7 @@ public class DefaultMaskRangeTest extends AbstractOpTest {
 	public void testCompute2() throws Exception {
 		LongType min = new LongType(2L);
 		LongType max = new LongType(5L);
-		final DefaultMaskRange.Range limits = new DefaultMaskRange.Range<>(min,
-			max);
+		final Pair limits = new ValuePair<>(min, max);
 		// Create a 2x2x2x2x2 test image with values from 0 to 7
 		final Img<LongType> img = ArrayImgs.longs(2, 2, 2, 2, 2);
 		final Iterator<Long> iterator = LongStream.iterate(0, i -> (i + 1) % 8)

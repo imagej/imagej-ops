@@ -7,6 +7,7 @@ import net.imagej.ops.OpMethod;
 import net.imagej.ops.mask.maskHigh.DefaultMaskHigh;
 import net.imagej.ops.mask.maskLow.DefaultMaskLow;
 import net.imagej.ops.mask.maskRange.DefaultMaskRange;
+import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Plugin;
 
@@ -45,8 +46,8 @@ public class MaskNamespace extends AbstractNamespace {
 
 	// -- Mask range --
 	@OpMethod(ops = DefaultMaskRange.class)
-	public <T, S extends Comparable<T>> Iterable<T> maskRange(Iterable<T> in,
-		DefaultMaskRange.Range<S> range)
+	public <T, U extends Comparable<T>> Iterable<T> maskRange(Iterable<T> in,
+		Pair<U, U> range)
 	{
 		@SuppressWarnings("unchecked")
 		Iterable<T> result = (Iterable<T>) ops().run(DefaultMaskRange.class, in,
