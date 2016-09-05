@@ -72,7 +72,7 @@ public class DefaultFillHoles<T extends BooleanType<T>> extends
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		createFunc = RAIs.function(ops(), CreateImgFromInterval.class, in());
+		createFunc = RAIs.function(ops(), CreateImgFromDimsAndType.class, in(), new BitType());
 		floodFillComp = (BinaryComputerOp) Computers.binary(ops(),
 			Ops.Morphology.FloodFill.class, RandomAccessibleInterval.class, in(),
 			Localizable.class, structElement);
