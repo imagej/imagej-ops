@@ -55,9 +55,6 @@ public class DefaultExtractHolesFunction<T extends BooleanType<T>> extends
 	@Parameter(required = false)
 	private StructuringElement structElement = StructuringElement.EIGHT_CONNECTED;
 
-	@Parameter(required = false)
-	private boolean background = false;
-
 	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> createFunc;
 
 	@Override
@@ -72,7 +69,7 @@ public class DefaultExtractHolesFunction<T extends BooleanType<T>> extends
 		createWorker(final RandomAccessibleInterval<T> t)
 	{
 		return RAIs.computer(ops(), Ops.Morphology.ExtractHoles.class, t,
-			structElement, background);
+			structElement);
 	}
 
 	@Override
