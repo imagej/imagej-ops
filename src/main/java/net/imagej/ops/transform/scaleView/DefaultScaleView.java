@@ -33,18 +33,23 @@ package net.imagej.ops.transform.scaleView;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.FinalInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.RealRandomAccessible;
 import net.imglib2.interpolation.InterpolatorFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
+import net.imglib2.realtransform.AffineGet;
+import net.imglib2.realtransform.AffineRealRandomAccessible;
 import net.imglib2.realtransform.RealViews;
 import net.imglib2.realtransform.Scale;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Intervals;
 import net.imglib2.view.IntervalView;
-import net.imglib2.view.Views;
+import net.imglib2.view.RandomAccessibleOnRealRandomAccessible;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -76,18 +81,44 @@ public class DefaultScaleView<T extends RealType<T>> extends
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBoundsFactory =
 		new OutOfBoundsMirrorFactory<>(OutOfBoundsMirrorFactory.Boundary.SINGLE);
 
+	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessible<T>> extendOp;
+	private UnaryFunctionOp<RandomAccessible<T>, RealRandomAccessible<T>> interpolateOp;
+	private UnaryFunctionOp<RealRandomAccessible<T>, RandomAccessibleOnRealRandomAccessible<T>> rasterOp;
+	private UnaryFunctionOp<RandomAccessible<T>, IntervalView<T>> intervalOp;
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public void initialize() {
+		extendOp = (UnaryFunctionOp) Functions.unary(ops(),
+			Ops.Transform.ExtendView.class, RandomAccessible.class,
+			RandomAccessibleInterval.class, outOfBoundsFactory);
+		interpolateOp = (UnaryFunctionOp) Functions.unary(ops(),
+			Ops.Transform.InterpolateView.class, RealRandomAccessible.class,
+			RandomAccessible.class, interpolator);
+		rasterOp = (UnaryFunctionOp) Functions.unary(ops(),
+			Ops.Transform.RasterView.class,
+			RandomAccessibleOnRealRandomAccessible.class, RealRandomAccessible.class);
+
+		final long[] newDims = Intervals.dimensionsAsLongArray(in());
+		for (int i = 0; i < Math.min(scaleFactors.length, in().numDimensions()); i++) {
+			newDims[i] = Math.round(in().dimension(i) * scaleFactors[i]);
+		}
+		intervalOp = (UnaryFunctionOp) Functions.unary(ops(),
+			Ops.Transform.IntervalView.class, IntervalView.class,
+			RandomAccessible.class, new FinalInterval(newDims));
+	}
+
 	@Override
 	public RandomAccessibleInterval<T> compute1(RandomAccessibleInterval<T> input) {
-		final long[] newDims = Intervals.dimensionsAsLongArray(input);
-		for (int i = 0; i < Math.min(scaleFactors.length, input.numDimensions()); i++) {
-			newDims[i] = Math.round(input.dimension(i) * scaleFactors[i]);
-		}
+		RandomAccessible<T> extended = extendOp.compute1(input);
+		RealRandomAccessible<T> interpolated = interpolateOp.compute1(extended);
+		AffineRealRandomAccessible<T, AffineGet> transformed = RealViews.affineReal(
+			interpolated, new Scale(scaleFactors));
+		RandomAccessibleOnRealRandomAccessible<T> rasterized = rasterOp.compute1(
+			transformed);
+		IntervalView<T> intervaled = intervalOp.compute1(rasterized);
 
-		IntervalView<T> interval = Views.interval(Views.raster(RealViews.affineReal(
-			Views.interpolate(Views.extend(input, outOfBoundsFactory), interpolator),
-			new Scale(scaleFactors))), new FinalInterval(newDims));
-
-		return interval;
+		return intervaled;
 	}
 
 	@Override
