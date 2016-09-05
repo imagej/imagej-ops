@@ -37,6 +37,8 @@ import net.imglib2.FinalInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.interpolation.InterpolatorFactory;
+import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.realtransform.RealViews;
 import net.imglib2.realtransform.Scale;
 import net.imglib2.type.numeric.RealType;
@@ -70,6 +72,10 @@ public class DefaultScaleView<T extends RealType<T>> extends
 	@Parameter
 	private InterpolatorFactory<T, RandomAccessible<T>> interpolator;
 
+	@Parameter(required = false)
+	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBoundsFactory =
+		new OutOfBoundsMirrorFactory<>(OutOfBoundsMirrorFactory.Boundary.SINGLE);
+
 	@Override
 	public RandomAccessibleInterval<T> compute1(RandomAccessibleInterval<T> input) {
 		final long[] newDims = Intervals.dimensionsAsLongArray(input);
@@ -78,7 +84,7 @@ public class DefaultScaleView<T extends RealType<T>> extends
 		}
 
 		IntervalView<T> interval = Views.interval(Views.raster(RealViews.affineReal(
-			Views.interpolate(Views.extendMirrorSingle(input), interpolator),
+			Views.interpolate(Views.extend(input, outOfBoundsFactory), interpolator),
 			new Scale(scaleFactors))), new FinalInterval(newDims));
 
 		return interval;
