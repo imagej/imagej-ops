@@ -34,15 +34,14 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.copy.CopyRAI;
 import net.imagej.ops.create.img.CreateImgFromInterval;
 import net.imagej.ops.special.chain.RAIs;
-import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractBinaryHybridCF;
 import net.imglib2.Localizable;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.fill.FloodFill;
 import net.imglib2.algorithm.labeling.ConnectedComponents.StructuringElement;
 import net.imglib2.type.Type;
 
@@ -62,13 +61,10 @@ public class DefaultFloodFill<T extends Type<T> & Comparable<T>> extends
 	@Parameter()
 	private StructuringElement structElement = StructuringElement.EIGHT_CONNECTED;
 
-	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> copyComp;
-
 	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> createFunc;
 
 	@Override
 	public void initialize() {
-		copyComp = RAIs.computer(ops(), CopyRAI.class, in());
 		createFunc = RAIs.function(ops(), CreateImgFromInterval.class, in());
 	}
 
@@ -76,8 +72,6 @@ public class DefaultFloodFill<T extends Type<T> & Comparable<T>> extends
 	public void compute2(RandomAccessibleInterval<T> op0, Localizable loc,
 		RandomAccessibleInterval<T> r)
 	{
-		copyComp.compute1(op0, r);
-
 		long[] posAsArray = new long[loc.numDimensions()];
 		loc.localize(posAsArray);
 
