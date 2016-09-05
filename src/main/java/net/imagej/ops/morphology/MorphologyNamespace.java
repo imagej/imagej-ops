@@ -294,131 +294,67 @@ public class MorphologyNamespace extends AbstractNamespace {
 	}
 
 	// -- Named methods --
-
-	@OpMethod(op = net.imagej.ops.morphology.extractHoles.DefaultExtractHolesFunction.class)
-	public <T extends BooleanType<T>> RandomAccessibleInterval<T> extractHoles(
-		final RandomAccessibleInterval<T> in)
-	{
+	@OpMethod(op = net.imagej.ops.morphology.extractHoles.DefaultExtractHolesComputer.class)
+	public <T extends BooleanType<T>> RandomAccessibleInterval<T> extractHoles(final RandomAccessibleInterval<T> out,
+			final RandomAccessibleInterval<T> in) {
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.morphology.extractHoles.DefaultExtractHolesFunction.class, in);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.morphology.extractHoles.DefaultExtractHolesFunction.class)
-	public <T extends BooleanType<T>> RandomAccessibleInterval<T> extractHoles(
-		final RandomAccessibleInterval<T> in,
-		final StructuringElement structElement)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.morphology.extractHoles.DefaultExtractHolesComputer.class, in,
-				structElement);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.morphology.extractHoles.DefaultExtractHolesFunction.class)
-	public <T extends BooleanType<T>> RandomAccessibleInterval<T> extractHoles(
-		final RandomAccessibleInterval<T> in,
-		final StructuringElement structElement, final boolean background)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.morphology.extractHoles.DefaultExtractHolesFunction.class, in,
-				structElement, background);
+		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
+				.run(net.imagej.ops.morphology.extractHoles.DefaultExtractHolesComputer.class, out, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.morphology.extractHoles.DefaultExtractHolesComputer.class)
-	public <T extends BooleanType<T>> RandomAccessibleInterval<T> extractHoles(
-		final RandomAccessibleInterval<T> out,
-		final RandomAccessibleInterval<T> in)
-	{
+	public <T extends BooleanType<T>> RandomAccessibleInterval<T> extractHoles(final RandomAccessibleInterval<T> out,
+			final RandomAccessibleInterval<T> in, final StructuringElement structElement) {
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.morphology.extractHoles.DefaultExtractHolesComputer.class, out, in);
+		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
+				.run(net.imagej.ops.morphology.extractHoles.DefaultExtractHolesComputer.class, out, in, structElement);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.morphology.extractHoles.DefaultExtractHolesComputer.class)
-	public <T extends BooleanType<T>> RandomAccessibleInterval<T> extractHoles(
-		final RandomAccessibleInterval<T> out, final RandomAccessibleInterval<T> in,
-		final StructuringElement structElement)
-	{
+	@OpMethod(op = net.imagej.ops.morphology.extractHoles.DefaultExtractHolesFunction.class)
+	public <T extends BooleanType<T>> RandomAccessibleInterval<T> extractHoles(final RandomAccessibleInterval<T> in) {
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.morphology.extractHoles.DefaultExtractHolesComputer.class, out, in,
-				structElement);
+		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
+				.run(net.imagej.ops.morphology.extractHoles.DefaultExtractHolesFunction.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.morphology.extractHoles.DefaultExtractHolesComputer.class)
-	public <T extends BooleanType<T>> RandomAccessibleInterval<T> extractHoles(
-		final RandomAccessibleInterval<T> out, final RandomAccessibleInterval<T> in,
-		final StructuringElement structElement, final boolean background)
-	{
+	@OpMethod(op = net.imagej.ops.morphology.extractHoles.DefaultExtractHolesFunction.class)
+	public <T extends BooleanType<T>> RandomAccessibleInterval<T> extractHoles(final RandomAccessibleInterval<T> in,
+			final StructuringElement structElement) {
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.morphology.extractHoles.DefaultExtractHolesComputer.class, out, in,
-				structElement, background);
+		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
+				.run(net.imagej.ops.morphology.extractHoles.DefaultExtractHolesFunction.class, in, structElement);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.morphology.fillHoles.DefaultFillHoles.class)
-	public <T extends BooleanType<T>> RandomAccessibleInterval<T> fillHoles(
-		final RandomAccessibleInterval<T> out, final RandomAccessibleInterval<T> in,
-		final StructuringElement structElement)
-	{
+	public <T extends BooleanType<T>> RandomAccessibleInterval<T> fillHoles(final RandomAccessibleInterval<T> in) {
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.morphology.fillHoles.DefaultFillHoles.class, out, in,
-				structElement);
+		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
+				.run(net.imagej.ops.morphology.fillHoles.DefaultFillHoles.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.morphology.fillHoles.DefaultFillHoles.class)
-	public <T extends BooleanType<T>> RandomAccessibleInterval<T> fillHoles(
-		final RandomAccessibleInterval<T> out, final RandomAccessibleInterval<T> in,
-		final StructuringElement structElement, final boolean background)
-	{
+	public <T extends BooleanType<T>> RandomAccessibleInterval<T> fillHoles(final RandomAccessibleInterval<T> out,
+			final RandomAccessibleInterval<T> in) {
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.morphology.fillHoles.DefaultFillHoles.class, out, in,
-				structElement, background);
+		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
+				.run(net.imagej.ops.morphology.fillHoles.DefaultFillHoles.class, out, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.morphology.fillHoles.DefaultFillHoles.class)
-	public <T extends BooleanType<T>> RandomAccessibleInterval<T> fillHoles(
-		final RandomAccessibleInterval<T> in)
-	{
+	public <T extends BooleanType<T>> RandomAccessibleInterval<T> fillHoles(final RandomAccessibleInterval<T> out,
+			final RandomAccessibleInterval<T> in, final StructuringElement structElement) {
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.morphology.fillHoles.DefaultFillHoles.class, in);
+		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
+				.run(net.imagej.ops.morphology.fillHoles.DefaultFillHoles.class, out, in, structElement);
 		return result;
 	}
-
-	@OpMethod(op = net.imagej.ops.morphology.fillHoles.DefaultFillHoles.class)
-	public <T extends BooleanType<T>> RandomAccessibleInterval<T> fillHoles(
-		final RandomAccessibleInterval<T> out,
-		final RandomAccessibleInterval<T> in)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.morphology.fillHoles.DefaultFillHoles.class, out, in);
-		return result;
-	}
-
+	
 	@OpMethod(op = net.imagej.ops.morphology.floodFill.DefaultFloodFill.class)
 	public <T extends Type<T> & Comparable<T>> RandomAccessibleInterval<T>
 		floodFill(final RandomAccessibleInterval<T> out,

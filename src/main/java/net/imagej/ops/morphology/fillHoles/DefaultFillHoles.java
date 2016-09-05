@@ -31,6 +31,7 @@
 package net.imagej.ops.morphology.fillHoles;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.create.img.CreateImgFromDimsAndType;
 import net.imagej.ops.create.img.CreateImgFromInterval;
 import net.imagej.ops.special.chain.RAIs;
 import net.imagej.ops.special.computer.BinaryComputerOp;
@@ -43,6 +44,7 @@ import net.imglib2.Localizable;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.labeling.ConnectedComponents.StructuringElement;
 import net.imglib2.type.BooleanType;
+import net.imglib2.type.logic.BitType;
 import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
@@ -62,9 +64,6 @@ public class DefaultFillHoles<T extends BooleanType<T>> extends
 
 	@Parameter(required = false)
 	private StructuringElement structElement = StructuringElement.EIGHT_CONNECTED;
-
-	@Parameter(required = false)
-	private boolean background = false;
 
 	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> createFunc;
 	private BinaryComputerOp<RandomAccessibleInterval<T>, Localizable, RandomAccessibleInterval<T>> floodFillComp;
@@ -91,7 +90,7 @@ public class DefaultFillHoles<T extends BooleanType<T>> extends
 		Cursor<T> opc = iterOp.localizingCursor();
 		// Fill with non background marker
 		while (rc.hasNext()) {
-			rc.next().set(!background);
+			rc.next().setOne();
 		}
 
 		rc.reset();
@@ -100,7 +99,7 @@ public class DefaultFillHoles<T extends BooleanType<T>> extends
 		while (rc.hasNext()) {
 			rc.next();
 			opc.next();
-			if ((rc.get().get() != background) && (opc.get().get() == background)) {
+			if (rc.get().get() && !opc.get().get()) {
 				border = false;
 				for (int i = 0; i < r.numDimensions(); i++) {
 					if (rc.getLongPosition(i) == 0 || rc.getLongPosition(i) == dim[i] -

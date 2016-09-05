@@ -56,25 +56,21 @@ public class DefaultExtractHolesComputer<T extends BooleanType<T>> extends
 	@Parameter(required=false)
 	private StructuringElement structElement = StructuringElement.EIGHT_CONNECTED;
 
-	@Parameter(required=false)
-	private boolean background = false;
-
 	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> xorMapOp;
 
 	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> fillHolesComp;
 
 	@Override
 	public void initialize() {
-		fillHolesComp = RAIs.computer(ops(), Ops.Morphology.FillHoles.class, in(), structElement,
-			background);
+		fillHolesComp = RAIs.computer(ops(), Ops.Morphology.FillHoles.class, in(), structElement);
 		xorMapOp = RAIs.computer(ops(), Ops.Map.class, in(),
 			new AbstractUnaryComputerOp<T, T>()
 		{
 
 				@Override
 				public void compute1(T input, T output) {
-					output.set((input.get() != background) ^ (output
-						.get() != background));
+					output.set((input.get()) ^ (output
+						.get()));
 				}
 			});
 
