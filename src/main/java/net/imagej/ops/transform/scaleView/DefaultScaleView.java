@@ -46,7 +46,6 @@ import net.imglib2.realtransform.AffineGet;
 import net.imglib2.realtransform.AffineRealRandomAccessible;
 import net.imglib2.realtransform.RealViews;
 import net.imglib2.realtransform.Scale;
-import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Intervals;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.RandomAccessibleOnRealRandomAccessible;
@@ -63,7 +62,7 @@ import org.scijava.plugin.Plugin;
  * @author Stefan Helfrich (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.ScaleView.class, priority = Priority.HIGH_PRIORITY)
-public class DefaultScaleView<T extends RealType<T>> extends
+public class DefaultScaleView<T> extends
 	AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Transform.ScaleView, Contingent
 {
