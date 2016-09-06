@@ -32,6 +32,7 @@ package net.imagej.ops.transform.scaleView;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.chain.RAIs;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
@@ -80,7 +81,6 @@ public class DefaultScaleView<T> extends
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBoundsFactory =
 		new OutOfBoundsMirrorFactory<>(OutOfBoundsMirrorFactory.Boundary.SINGLE);
 
-	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessible<T>> extendOp;
 	private UnaryFunctionOp<RandomAccessible<T>, RealRandomAccessible<T>> interpolateOp;
 	private UnaryFunctionOp<RealRandomAccessible<T>, RandomAccessibleOnRealRandomAccessible<T>> rasterOp;
 	private UnaryFunctionOp<RandomAccessible<T>, IntervalView<T>> intervalOp;
@@ -88,9 +88,6 @@ public class DefaultScaleView<T> extends
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		extendOp = (UnaryFunctionOp) Functions.unary(ops(),
-			Ops.Transform.ExtendView.class, RandomAccessible.class,
-			RandomAccessibleInterval.class, outOfBoundsFactory);
 		interpolateOp = (UnaryFunctionOp) Functions.unary(ops(),
 			Ops.Transform.InterpolateView.class, RealRandomAccessible.class,
 			RandomAccessible.class, interpolator);
@@ -109,7 +106,7 @@ public class DefaultScaleView<T> extends
 
 	@Override
 	public RandomAccessibleInterval<T> compute1(RandomAccessibleInterval<T> input) {
-		RandomAccessible<T> extended = extendOp.compute1(input);
+		RandomAccessible<T> extended = RAIs.extend(input, outOfBoundsFactory);
 		RealRandomAccessible<T> interpolated = interpolateOp.compute1(extended);
 		AffineRealRandomAccessible<T, AffineGet> transformed = RealViews.affineReal(
 			interpolated, new Scale(scaleFactors));

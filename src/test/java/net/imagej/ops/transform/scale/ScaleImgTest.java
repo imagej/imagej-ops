@@ -43,12 +43,15 @@ import net.imglib2.type.numeric.integer.ByteType;
 import org.junit.Test;
 
 /**
+ * Tests {@link DefaultScaleView}.
+ * 
  * @author Martin Horn (University of Konstanz)
+ * @author Stefan Helfrich (University of Konstanz)
  */
 public class ScaleImgTest extends AbstractOpTest {
 
 	@Test
-	public void test() {
+	public void testScaling() {
 		Img<ByteType> in = generateByteArrayTestImg(true, new long[] { 10, 10 });
 		double[] scaleFactors = new double[] { 2, 2 };
 		@SuppressWarnings("unchecked")
@@ -64,6 +67,17 @@ public class ScaleImgTest extends AbstractOpTest {
 		outRA.setPosition(new long[] { 10, 10 });
 		assertEquals(inRA.get().get(), outRA.get().get());
 
+	}
+
+	@SuppressWarnings({ "unused", "unchecked" })
+	@Test
+	public void testOutOfBoundsFactoryIsNull() {
+		Img<ByteType> in = generateByteArrayTestImg(true, new long[] { 10, 10 });
+		double[] scaleFactors = new double[] { 2, 2 };
+		NLinearInterpolatorFactory<ByteType> nLinearInterpolatorFactory =
+			new NLinearInterpolatorFactory<ByteType>();
+		RandomAccessibleInterval<ByteType> out = (RandomAccessibleInterval<ByteType>) ops.run(DefaultScaleView.class, in,
+			scaleFactors, nLinearInterpolatorFactory, null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
