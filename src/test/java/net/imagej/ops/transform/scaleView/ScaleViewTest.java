@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.transform.scale;
+package net.imagej.ops.transform.scaleView;
 
 import static org.junit.Assert.*;
 
@@ -48,7 +48,7 @@ import org.junit.Test;
  * @author Martin Horn (University of Konstanz)
  * @author Stefan Helfrich (University of Konstanz)
  */
-public class ScaleImgTest extends AbstractOpTest {
+public class ScaleViewTest extends AbstractOpTest {
 
 	@Test
 	public void testScaling() {
