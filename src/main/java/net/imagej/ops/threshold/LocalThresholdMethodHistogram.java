@@ -69,16 +69,17 @@ public abstract class LocalThresholdMethodHistogram<T extends RealType<T>>
 	public void compute2(final Iterable<T> neighborhood, final T center,
 		final BitType output)
 	{
+		// TODO Move to initialize when NIL objects are available
 		if (applyThreshold == null) {
 			applyThreshold = Computers.binary(ops(), Ops.Threshold.Apply.class, output,
 				center, center);
 		}
-		
+
 		// Compute histogram for neighborhood
 		final Histogram1d<T> hist = histCreator.compute1(neighborhood);
 
 		// Compute threshold
-		T computedThreshold = center.createVariable();
+		final T computedThreshold = center.createVariable();
 		thresholdComputer.compute1(hist, computedThreshold);
 
 		// Apply threshold
