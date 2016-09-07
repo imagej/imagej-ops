@@ -40,7 +40,7 @@ import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.threshold.apply.LocalThreshold;
 import net.imglib2.histogram.Histogram1d;
-import net.imglib2.type.logic.BitType;
+import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.RealType;
 
 /**
@@ -48,13 +48,13 @@ import net.imglib2.type.numeric.RealType;
  * 
  * @author Stefan Helfrich (University of Konstanz)
  */
-public abstract class LocalThresholdMethodHistogram<T extends RealType<T>>
-	extends AbstractCenterAwareComputerOp<T, BitType>
+public abstract class LocalThresholdMethodHistogram<T extends RealType<T>, O extends BooleanType<O>>
+	extends AbstractCenterAwareComputerOp<T, O>
 {
 
 	protected UnaryFunctionOp<Iterable<T>, Histogram1d<T>> histCreator;
 	protected UnaryComputerOp<Histogram1d<T>, T> thresholdComputer;
-	protected BinaryComputerOp<T, T, BitType> applyThreshold;
+	protected BinaryComputerOp<T, T, O> applyThreshold;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
@@ -67,7 +67,7 @@ public abstract class LocalThresholdMethodHistogram<T extends RealType<T>>
 
 	@Override
 	public void compute2(final Iterable<T> neighborhood, final T center,
-		final BitType output)
+		final O output)
 	{
 		// TODO Move to initialize when NIL objects are available
 		if (applyThreshold == null) {

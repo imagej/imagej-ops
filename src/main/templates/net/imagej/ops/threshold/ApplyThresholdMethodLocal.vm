@@ -64,25 +64,23 @@ public final class ApplyThresholdMethodLocal {
 		protected CenterAwareComputerOp<T, BitType> unaryComputer(final T inClass,
 			final BitType outClass)
 		{
+			final LocalThresholdMethodHistogram<T, BitType> op =
+				new LocalThresholdMethodHistogram<T, BitType>()
 			{
-				final LocalThresholdMethodHistogram<T> op =
-					new LocalThresholdMethodHistogram<T>()
+				@SuppressWarnings({ "rawtypes", "unchecked" })
+				@Override
+				protected UnaryComputerOp<Histogram1d<T>, T>
+					getThresholdComputer()
 				{
-					@SuppressWarnings({ "rawtypes", "unchecked" })
-					@Override
-					protected UnaryComputerOp<Histogram1d<T>, T>
-						getThresholdComputer()
-					{
-						UnaryComputerOp unary = Computers.unary(ops(),
-							${iface}.class, inClass.getClass(), Histogram1d.class);
-						return unary;
-					}
-				};
+					UnaryComputerOp unary = Computers.unary(ops(),
+						${iface}.class, inClass.getClass(), Histogram1d.class);
+					return unary;
+				}
+			};
 
-				op.setEnvironment(ops());
-				op.initialize();
-				return op;
-			}
+			op.setEnvironment(ops());
+			op.initialize();
+			return op;
 		}
 
 	}
