@@ -42,6 +42,7 @@ import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.type.BooleanType;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 
@@ -194,10 +195,10 @@ public class ThresholdNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.threshold.ApplyThresholdMethod.IJ1.class)
 	public
-		<T extends RealType<T>> IterableInterval<BitType> ij1(final IterableInterval<T> in) {
+		<T extends RealType<T>> IterableInterval<? extends BooleanType> ij1(final IterableInterval<T> in) {
 		@SuppressWarnings("unchecked")
-		final IterableInterval<BitType> result =
-			(IterableInterval<BitType>) ops().run(
+		final IterableInterval<? extends BooleanType> result =
+			(IterableInterval<? extends BooleanType>) ops().run(
 				net.imagej.ops.Ops.Threshold.IJ1.class,
 				in);
 		return result;
@@ -206,12 +207,12 @@ public class ThresholdNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.threshold.ApplyThresholdMethod.IJ1.class)
 	public
-		<T extends RealType<T>> IterableInterval<BitType> ij1(final IterableInterval<BitType> out,
+		<T extends RealType<T>> IterableInterval<? extends BooleanType> ij1(final IterableInterval<? extends BooleanType> out,
 			final IterableInterval<T> in)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<BitType> result =
-			(IterableInterval<BitType>) ops().run(
+		final IterableInterval<? extends BooleanType> result =
+			(IterableInterval<? extends BooleanType>) ops().run(
 				net.imagej.ops.Ops.Threshold.IJ1.class,
 				out, in);
 		return result;

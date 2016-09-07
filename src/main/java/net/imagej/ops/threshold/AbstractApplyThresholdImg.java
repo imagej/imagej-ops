@@ -38,6 +38,7 @@ import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.img.Img;
+import net.imglib2.type.BooleanType;
 import net.imglib2.type.logic.BitType;
 
 /**
@@ -48,7 +49,7 @@ import net.imglib2.type.logic.BitType;
  * @author Christian Dietz (University of Konstanz)
  */
 public abstract class AbstractApplyThresholdImg<T> extends
-	AbstractApplyThresholdIterable<T, IterableInterval<T>, IterableInterval<BitType>>
+	AbstractApplyThresholdIterable<T, IterableInterval<T>, IterableInterval<? extends BooleanType>>
 {
 
 	protected UnaryFunctionOp<IterableInterval<T>, Histogram1d<T>> histCreator;

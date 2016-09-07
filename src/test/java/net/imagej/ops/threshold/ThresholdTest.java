@@ -30,28 +30,25 @@
 
 package net.imagej.ops.threshold;
 
-import net.imagej.ops.special.computer.BinaryComputerOp;
-import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imglib2.exception.IncompatibleTypeException;
+import net.imglib2.img.Img;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.logic.BitType;
 
+import org.junit.Test;
+
 /**
- * Abstract superclass of {@link ApplyThresholdIterable} implementations.
- *
- * @author Martin Horn (University of Konstanz)
- * @author Christian Dietz (University of Konstanz)
- * @author Curtis Rueden
+ * TODO Documentation
+ * 
+ * @author Stefan Helfrich (University of Konstanz)
  */
-public abstract class AbstractApplyThresholdIterable<T, I extends Iterable<T>, O extends Iterable<? extends BooleanType>>
-	extends AbstractUnaryHybridCF<I, O> implements
-	ApplyThresholdIterable<T, I, O>
-{
+public class ThresholdTest extends AbstractThresholdTest {
 
-	protected BinaryComputerOp<I, T, O> applyThresholdComp;
-
-	@Override
-	public void compute1(final I input, final O output) {
-		applyThresholdComp.compute2(input, getThreshold(input), output);
+	@Test
+	public void test() throws IncompatibleTypeException {
+		Img<? extends BooleanType<?>> out = in.factory().imgFactory(new BitType())
+			.create(in, new BitType());
+		ops.threshold().ij1(out, in);
 	}
 
 }
