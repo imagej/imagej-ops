@@ -32,6 +32,8 @@ package net.imagej.ops.threshold.apply;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.filter.AbstractCenterAwareNeighborhoodBasedFilter;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 
@@ -50,6 +52,13 @@ public abstract class LocalThreshold<T extends RealType<T>> extends
 	@Override
 	public boolean conforms() {
 		return true;
+	}
+
+	@Override
+	public IterableInterval<BitType> createOutput(
+		RandomAccessibleInterval<T> input)
+	{
+		return ops().create().img(input, new BitType());
 	}
 
 }

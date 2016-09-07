@@ -37,6 +37,8 @@ import net.imagej.ops.map.neighborhood.AbstractCenterAwareComputerOp;
 import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -122,4 +124,11 @@ public class DefaultSigmaFilter<T extends RealType<T>, V extends RealType<V>>
 	public boolean conforms() {
 		return range > 0.0;
 	}
+
+	@Override
+	public IterableInterval<V> createOutput(RandomAccessibleInterval<T> input) {
+		// TODO Somehow generate an II<V> from the input
+		return null;
+	}
+
 }

@@ -33,9 +33,9 @@ package net.imagej.ops.filter;
 import net.imagej.ops.Ops.Map;
 import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.special.chain.RAIs;
-import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
@@ -45,7 +45,7 @@ import net.imglib2.outofbounds.OutOfBoundsFactory;
 import org.scijava.plugin.Parameter;
 
 public abstract class AbstractCenterAwareNeighborhoodBasedFilter<I, O> extends
-	AbstractUnaryComputerOp<RandomAccessibleInterval<I>, IterableInterval<O>>
+	AbstractUnaryHybridCF<RandomAccessibleInterval<I>, IterableInterval<O>>
 {
 
 	@Parameter
