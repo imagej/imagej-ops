@@ -28,64 +28,64 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localMidGrey;
+package net.imagej.ops.threshold;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
+import net.imagej.ops.Ops.Image.Histogram;
+import net.imagej.ops.map.neighborhood.AbstractCenterAwareComputerOp;
+import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
-import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.apply.LocalThreshold;
-import net.imglib2.type.logic.BitType;
+import net.imglib2.histogram.Histogram1d;
+import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Pair;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
- * LocalThresholdMethod which thresholds against the average of the maximum and
- * minimum pixels of a neighborhood.
+ * {@link AbstractCenterAwareComputerOp} for use in {@link LocalThreshold}s.
  * 
- * @author Jonathan Hale
  * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.LocalMidGreyThreshold.class)
-public class LocalMidGreyThreshold<T extends RealType<T>> extends
-	LocalThreshold<T> implements Ops.Threshold.LocalMidGreyThreshold
+public abstract class LocalThresholdMethodHistogram<T extends RealType<T>, O extends BooleanType<O>>
+	extends AbstractCenterAwareComputerOp<T, O>
 {
 
-	@Parameter
-	private double c;
-	
+	protected UnaryFunctionOp<Iterable<T>, Histogram1d<T>> histCreator;
+	protected UnaryComputerOp<Histogram1d<T>, T> thresholdComputer;
+	protected BinaryComputerOp<T, T, O> applyThreshold;
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	protected CenterAwareComputerOp<T, BitType> unaryComputer(final T inClass,
-		final BitType outClass)
-	{
-		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
+	public void initialize() {
+		histCreator = (UnaryFunctionOp) Functions.unary(ops(), Histogram.class,
+			Histogram1d.class, in1() == null ? Iterable.class : in1());
 
-			private UnaryFunctionOp<Iterable<T>, Pair<T, T>> minMaxFunc;
-
-			@SuppressWarnings({ "unchecked", "rawtypes" })
-			@Override
-			public void compute2(final Iterable<T> neighborhood, final T center, final BitType output) {
-
-				if (minMaxFunc == null) {
-					minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(),
-						Ops.Stats.MinMax.class, Pair.class, neighborhood);
-				}
-
-				final Pair<T, T> outputs = minMaxFunc.compute1(neighborhood);
-
-				final double minValue = outputs.getA().getRealDouble();
-				final double maxValue = outputs.getB().getRealDouble();
-
-				output.set(center.getRealDouble() > ((maxValue + minValue) / 2.0) - c);
-			}
-		};
-
-		op.setEnvironment(ops());
-		return op;
+		thresholdComputer = getThresholdComputer();
 	}
+
+	@Override
+	public void compute2(final Iterable<T> neighborhood, final T center,
+		final O output)
+	{
+		// TODO Move to initialize when NIL objects are available
+		if (applyThreshold == null) {
+			applyThreshold = Computers.binary(ops(), Ops.Threshold.Apply.class, output,
+				center, center);
+		}
+
+		// Compute histogram for neighborhood
+		final Histogram1d<T> hist = histCreator.compute1(neighborhood);
+
+		// Compute threshold
+		final T computedThreshold = center.createVariable();
+		thresholdComputer.compute1(hist, computedThreshold);
+
+		// Apply threshold
+		applyThreshold.compute2(center, computedThreshold, output);
+	}
+
+	protected abstract UnaryComputerOp<Histogram1d<T>, T> getThresholdComputer();
 
 }

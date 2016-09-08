@@ -41,6 +41,7 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.outofbounds.OutOfBoundsBorderFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
 
@@ -61,7 +62,7 @@ public abstract class AbstractCenterAwareNeighborhoodBasedFilter<I, O> extends
 
 	@Override
 	public void initialize() {
-		filterOp = unaryComputer(out().firstElement());
+		filterOp = unaryComputer(Views.iterable(in()).firstElement(), out().firstElement());
 		map = Computers.unary(ops(), Map.class, out(), in(), shape, filterOp);
 	}
 
@@ -83,10 +84,13 @@ public abstract class AbstractCenterAwareNeighborhoodBasedFilter<I, O> extends
 	}
 
 	/**
-	 * @param out First element from the output {@link IterableInterval}. May be
-	 *          used for determining the class.
+	 * @param inType First element from the input {@link RandomAccessibleInterval}
+	 *          that may be used for determining the class.
+	 * @param outType First element from the output {@link IterableInterval} that
+	 *          may be used for determining the class.
 	 * @return the Computer to map to all neighborhoods of input to output.
 	 */
-	protected abstract CenterAwareComputerOp<I, O> unaryComputer(final O out);
+	protected abstract CenterAwareComputerOp<I, O> unaryComputer(final I inType,
+		final O outType);
 
 }

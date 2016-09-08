@@ -1,0 +1,21 @@
+[ApplyThresholdMethodLocal.java]
+methods = ```
+[
+	[name: "localHuang",         iface: "Huang"],
+	[name: "localIj1",           iface: "IJ1"],
+	[name: "localIntermodes",    iface: "Intermodes"],
+	[name: "localIsoData",       iface: "IsoData"],
+	[name: "localLi",            iface: "Li"],
+	[name: "localMaxEntropy",    iface: "MaxEntropy"],
+	[name: "localMaxLikelihood", iface: "MaxLikelihood"],
+	[name: "localMinError",      iface: "MinError"],
+	[name: "localMinimum",       iface: "Minimum"],
+	[name: "localMoments",       iface: "Moments"],
+	[name: "localOtsu",          iface: "Otsu"],
+	[name: "localPercentile",    iface: "Percentile"],
+	[name: "localRenyiEntropy",  iface: "RenyiEntropy"],
+	[name: "localShanbhag",      iface: "Shanbhag"],
+	[name: "localTriangle",      iface: "Triangle"],
+	[name: "localYen",           iface: "Yen"]
+]
+```

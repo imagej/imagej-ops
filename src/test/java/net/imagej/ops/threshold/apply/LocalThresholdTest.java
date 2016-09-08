@@ -33,6 +33,38 @@ package net.imagej.ops.threshold.apply;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Ops.Threshold.Huang;
+import net.imagej.ops.Ops.Threshold.IJ1;
+import net.imagej.ops.Ops.Threshold.Intermodes;
+import net.imagej.ops.Ops.Threshold.IsoData;
+import net.imagej.ops.Ops.Threshold.Li;
+import net.imagej.ops.Ops.Threshold.MaxEntropy;
+import net.imagej.ops.Ops.Threshold.MaxLikelihood;
+import net.imagej.ops.Ops.Threshold.MinError;
+import net.imagej.ops.Ops.Threshold.Minimum;
+import net.imagej.ops.Ops.Threshold.Moments;
+import net.imagej.ops.Ops.Threshold.Otsu;
+import net.imagej.ops.Ops.Threshold.Percentile;
+import net.imagej.ops.Ops.Threshold.RenyiEntropy;
+import net.imagej.ops.Ops.Threshold.Shanbhag;
+import net.imagej.ops.Ops.Threshold.Triangle;
+import net.imagej.ops.Ops.Threshold.Yen;
+import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalHuangThreshold;
+import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalIJ1Threshold;
+import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalIntermodesThreshold;
+import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalIsoDataThreshold;
+import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalLiThreshold;
+import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMaxEntropyThreshold;
+import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMaxLikelihoodThreshold;
+import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMinErrorThreshold;
+import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMinimumThreshold;
+import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMomentsThreshold;
+import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalOtsuThreshold;
+import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalPercentileThreshold;
+import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalRenyiEntropyThreshold;
+import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalShanbhagThreshold;
+import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalTriangleThreshold;
+import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalYenThreshold;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imagej.ops.threshold.localBernsen.LocalBernsenThreshold;
@@ -151,6 +183,71 @@ public class LocalThresholdTest extends AbstractOpTest {
 				Boundary.SINGLE), 0.5, 0.5);
 		ops.threshold().localSauvolaThreshold(out, in, new RectangleShape(3,
 			false));
+
+		/* Locally applied global threshold ops */
+		ops.threshold().huang(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(Boundary.SINGLE));
+		ops.threshold().huang(out, in, new RectangleShape(3, false));
+
+		ops.threshold().ij1(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(Boundary.SINGLE));
+		ops.threshold().ij1(out, in, new RectangleShape(3, false));
+
+		ops.threshold().intermodes(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(Boundary.SINGLE));
+		ops.threshold().intermodes(out, in, new RectangleShape(3, false));
+
+		ops.threshold().isoData(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(Boundary.SINGLE));
+		ops.threshold().isoData(out, in, new RectangleShape(3, false));
+
+		ops.threshold().li(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(Boundary.SINGLE));
+		ops.threshold().li(out, in, new RectangleShape(3, false));
+
+		ops.threshold().maxEntropy(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(Boundary.SINGLE));
+		ops.threshold().maxEntropy(out, in, new RectangleShape(3, false));
+
+		ops.threshold().maxLikelihood(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(Boundary.SINGLE));
+		ops.threshold().maxLikelihood(out, in, new RectangleShape(3, false));
+
+		ops.threshold().minError(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(Boundary.SINGLE));
+		ops.threshold().minError(out, in, new RectangleShape(3, false));
+
+		ops.threshold().minimum(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(Boundary.SINGLE));
+		ops.threshold().minimum(out, in, new RectangleShape(3, false));
+
+		ops.threshold().moments(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(Boundary.SINGLE));
+		ops.threshold().moments(out, in, new RectangleShape(3, false));
+
+		ops.threshold().otsu(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(Boundary.SINGLE));
+		ops.threshold().otsu(out, in, new RectangleShape(3, false));
+
+		ops.threshold().percentile(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(Boundary.SINGLE));
+		ops.threshold().percentile(out, in, new RectangleShape(3, false));
+
+		ops.threshold().renyiEntropy(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(Boundary.SINGLE));
+		ops.threshold().renyiEntropy(out, in, new RectangleShape(3, false));
+
+		ops.threshold().shanbhag(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(Boundary.SINGLE));
+		ops.threshold().shanbhag(out, in, new RectangleShape(3, false));
+
+		ops.threshold().triangle(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(Boundary.SINGLE));
+		ops.threshold().triangle(out, in, new RectangleShape(3, false));
+
+		ops.threshold().yen(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(Boundary.SINGLE));
+		ops.threshold().yen(out, in, new RectangleShape(3, false));
 	}
 
 	/**
@@ -174,6 +271,85 @@ public class LocalThresholdTest extends AbstractOpTest {
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
 
 		assertEquals(out.firstElement().get(), false);
+	}
+
+	/**
+	 * @see LocalHuangThreshold
+	 */
+	@Test
+	public void testLocalHuangThreshold() {
+		ops.run(Huang.class, out, in, new RectangleShape(1, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), true);
+	}
+
+	/**
+	 * @see LocalIJ1Threshold
+	 */
+	@Test
+	public void testLocalIJ1Threshold() {
+		ops.run(IJ1.class, out, in, new RectangleShape(1, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), true);
+	}
+
+	/**
+	 * @see LocalIntermodesThreshold
+	 */
+	@Test
+	public void testLocalIntermodesThreshold() {
+		ops.run(Intermodes.class, out, in, new RectangleShape(1, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), false);
+	}
+
+	/**
+	 * @see LocalIsoDataThreshold
+	 */
+	@Test
+	public void testLocalIsoDataThreshold() {
+		// NB: Test fails for RectangleShapes of span 1
+		ops.run(IsoData.class, out, in, new RectangleShape(2, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), true);
+	}
+
+	/**
+	 * @see LocalLiThreshold
+	 */
+	@Test
+	public void testLocalLiThreshold() {
+		ops.run(Li.class, out, in, new RectangleShape(1, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), true);
+	}
+
+	/**
+	 * @see LocalMaxEntropyThreshold
+	 */
+	@Test
+	public void testLocalMaxEntropyThreshold() {
+		ops.run(MaxEntropy.class, out, in, new RectangleShape(1, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), false);
+	}
+
+	/**
+	 * @see LocalMaxLikelihoodThreshold
+	 */
+	@Test
+	public void testLocalMaxLikelihoodThreshold() {
+		// NB: Test fails for RectangleShapes of up to span==2
+		ops.run(MaxLikelihood.class, out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), true);
 	}
 
 	/**
@@ -207,7 +383,6 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 * @see LocalMeanThresholdIntegral
 	 * @see LocalMeanThreshold
 	 */
-	@SuppressWarnings("null")
 	@Test
 	public void testLocalMeanResultsConsistency() {
 		Img<BitType> out2 = null;
@@ -257,6 +432,39 @@ public class LocalThresholdTest extends AbstractOpTest {
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE), 0.0);
 		
 		assertEquals(out.firstElement().get(), true);
+	}
+
+	/**
+	 * @see LocalMinErrorThreshold
+	 */
+	@Test
+	public void testLocalMinErrorThreshold() {
+		ops.run(MinError.class, out, in, new RectangleShape(1, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), true);
+	}
+
+	/**
+	 * @see LocalMinimumThreshold
+	 */
+	@Test
+	public void testLocalMinimumThreshold() {
+		ops.run(Minimum.class, out, in, new RectangleShape(1, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), true);
+	}
+
+	/**
+	 * @see LocalMomentsThreshold
+	 */
+	@Test
+	public void testLocalMomentsThreshold() {
+		ops.run(Moments.class, out, in, new RectangleShape(1, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), false);
 	}
 
 	/**
@@ -316,6 +524,28 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
+	 * @see LocalOtsuThreshold
+	 */
+	@Test
+	public void testLocalOtsuThreshold() {
+		ops.run(Otsu.class, out, in, new RectangleShape(1, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), false);
+	}
+
+	/**
+	 * @see LocalPercentileThreshold
+	 */
+	@Test
+	public void testLocalPercentileThreshold() {
+		ops.run(Percentile.class, out, in, new RectangleShape(1, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), false);
+	}
+
+	/**
 	 * @see LocalPhansalkarThreshold
 	 */
 	@Test
@@ -368,7 +598,18 @@ public class LocalThresholdTest extends AbstractOpTest {
 		
 		testIterableIntervalSimilarity(out2, out3);
 	}
-	
+
+	/**
+	 * @see LocalRenyiEntropyThreshold
+	 */
+	@Test
+	public void testLocalRenyiEntropyThreshold() {
+		ops.run(RenyiEntropy.class, out, in, new RectangleShape(1, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), false);
+	}
+
 	/**
 	 * @see LocalSauvolaThreshold
 	 */
@@ -421,6 +662,39 @@ public class LocalThresholdTest extends AbstractOpTest {
 			0.0, 0.0);
 		
 		testIterableIntervalSimilarity(out2, out3);
+	}
+
+	/**
+	 * @see LocalShanbhagThreshold
+	 */
+	@Test
+	public void testLocalShanbhagThreshold() {
+		ops.run(Shanbhag.class, out, in, new RectangleShape(1, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), false);
+	}
+
+	/**
+	 * @see LocalTriangleThreshold
+	 */
+	@Test
+	public void testLocalTriangleThreshold() {
+		ops.run(Triangle.class, out, in, new RectangleShape(1, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), false);
+	}
+
+	/**
+	 * @see LocalYenThreshold
+	 */
+	@Test
+	public void testLocalYenThreshold() {
+		ops.run(Yen.class, out, in, new RectangleShape(1, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), false);
 	}
 
 	@Test(expected = IllegalArgumentException.class)

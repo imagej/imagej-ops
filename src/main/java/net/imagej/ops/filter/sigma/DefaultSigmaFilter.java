@@ -63,7 +63,9 @@ public class DefaultSigmaFilter<T extends RealType<T>, V extends RealType<V>>
 	private Double minPixelFraction;
 
 	@Override
-	protected CenterAwareComputerOp<T, V> unaryComputer(final V outType) {
+	protected CenterAwareComputerOp<T, V> unaryComputer(final T inType,
+		final V outType)
+	{
 
 		final AbstractCenterAwareComputerOp<T, V> op =
 			new AbstractCenterAwareComputerOp<T, V>()
