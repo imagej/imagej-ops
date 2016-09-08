@@ -106,15 +106,14 @@ public class DefaultScaleView<T> extends
 
 	@Override
 	public RandomAccessibleInterval<T> compute1(RandomAccessibleInterval<T> input) {
-		RandomAccessible<T> extended = RAIs.extend(input, outOfBoundsFactory);
-		RealRandomAccessible<T> interpolated = interpolateOp.compute1(extended);
-		AffineRealRandomAccessible<T, AffineGet> transformed = RealViews.affineReal(
-			interpolated, new Scale(scaleFactors));
-		RandomAccessibleOnRealRandomAccessible<T> rasterized = rasterOp.compute1(
-			transformed);
-		IntervalView<T> intervaled = intervalOp.compute1(rasterized);
+		final RealRandomAccessible<T> interpolated = interpolateOp.compute1(RAIs
+			.extend(input, outOfBoundsFactory));
+		final AffineRealRandomAccessible<T, AffineGet> transformed = RealViews
+			.affineReal(interpolated, new Scale(scaleFactors));
+		final RandomAccessibleOnRealRandomAccessible<T> rasterized = rasterOp
+			.compute1(transformed);
 
-		return intervaled;
+		return intervalOp.compute1(rasterized);
 	}
 
 	@Override
