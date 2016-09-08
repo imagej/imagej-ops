@@ -33,7 +33,6 @@ package net.imagej.ops.transform.rasterView;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.RealRandomAccessible;
-import net.imglib2.type.Type;
 import net.imglib2.view.RandomAccessibleOnRealRandomAccessible;
 import net.imglib2.view.Views;
 
@@ -45,7 +44,7 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Transform.RasterView.class)
-public class DefaultRasterView<T extends Type<T>>
+public class DefaultRasterView<T>
 		extends AbstractUnaryFunctionOp<RealRandomAccessible<T>, RandomAccessibleOnRealRandomAccessible<T>>
 		implements Ops.Transform.RasterView {
 
