@@ -671,13 +671,14 @@ public class TransformNamespace extends AbstractNamespace {
 	}
 
 	/** Executes the "scale" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.transform.scale.ScaleImg.class)
-	public <T extends RealType<T>> Img<T> scale(final Img<T> in,
-			final double[] scaleFactors,
-			final InterpolatorFactory<T, RandomAccessible<T>> interpolator) {
+	@OpMethod(op = net.imagej.ops.transform.scaleView.DefaultScaleView.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> scale(
+		final RandomAccessibleInterval<T> in, final double[] scaleFactors,
+		final InterpolatorFactory<T, RandomAccessible<T>> interpolator)
+	{
 		@SuppressWarnings("unchecked")
 		final Img<T> result = (Img<T>) ops().run(
-				net.imagej.ops.transform.scale.ScaleImg.class, in, scaleFactors,
+				net.imagej.ops.transform.scaleView.DefaultScaleView.class, in, scaleFactors,
 				interpolator);
 		return result;
 	}

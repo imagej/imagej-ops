@@ -28,80 +28,70 @@
  * #L%
  */
 
-package net.imagej.ops.transform.scale;
+package net.imagej.ops.transform.scaleView;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
-import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
-import net.imglib2.FlatIterationOrder;
-import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessible;
-import net.imglib2.img.Img;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.interpolation.InterpolatorFactory;
+import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.realtransform.RealViews;
-import net.imglib2.type.numeric.RealType;
+import net.imglib2.realtransform.Scale;
+import net.imglib2.util.Intervals;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
+ * Scales a {@link RandomAccessibleInterval} in each dimension with the provided
+ * scale factors.
+ * 
  * @author Martin Horn (University of Konstanz)
+ * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Transform.Scale.class)
-public class ScaleImg<T extends RealType<T>> extends
-	AbstractUnaryFunctionOp<Img<T>, Img<T>> implements Ops.Transform.Scale
+@Plugin(type = Ops.Transform.ScaleView.class, priority = Priority.HIGH_PRIORITY+1)
+public class WrappedScaleView<T> extends
+	AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	implements Ops.Transform.ScaleView, Contingent
 {
 
+	/**
+	 * Scale factors for each dimension of the input.
+	 */
 	@Parameter
-	/*Scale factors for each dimension*/
 	private double[] scaleFactors;
 
 	@Parameter
 	private InterpolatorFactory<T, RandomAccessible<T>> interpolator;
 
-	@Override
-	public Img<T> compute1(Img<T> input) {
-		if (input.numDimensions() != scaleFactors.length) {
-			throw new IllegalArgumentException(
-				"Less/more scale factors are provided than dimensions input the image.");
-		}
+	@Parameter(required = false)
+	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBoundsFactory =
+		new OutOfBoundsMirrorFactory<>(OutOfBoundsMirrorFactory.Boundary.SINGLE);
 
-		final long[] newDims = new long[input.numDimensions()];
-		input.dimensions(newDims);
-		for (int i = 0; i < Math.min(scaleFactors.length, input
-			.numDimensions()); i++)
-		{
-			newDims[i] = Math.round(input.dimension(i) * scaleFactors[i]);
+	@Override
+	public RandomAccessibleInterval<T> compute1(RandomAccessibleInterval<T> input) {
+		final long[] newDims = Intervals.dimensionsAsLongArray(in());
+		for (int i = 0; i < Math.min(scaleFactors.length, in().numDimensions()); i++) {
+			newDims[i] = Math.round(in().dimension(i) * scaleFactors[i]);
 		}
 
 		IntervalView<T> interval = Views.interval(Views.raster(RealViews.affineReal(
 			Views.interpolate(Views.extendMirrorSingle(input), interpolator),
-			new net.imglib2.realtransform.Scale(scaleFactors))), new FinalInterval(
-				newDims));
+			new Scale(scaleFactors))), new FinalInterval(newDims));
 
-		final Img<T> out = input.factory().create(newDims, input.firstElement()
-			.createVariable());
-		Cursor<T> outC = out.cursor();
-		if (input.iterationOrder().equals(new FlatIterationOrder(input))) {
-			Cursor<T> viewC = Views.flatIterable(interval).cursor();
-			while (outC.hasNext()) {
-				outC.fwd();
-				viewC.fwd();
-				outC.get().set(viewC.get());
-			}
-		}
-		else {
-			RandomAccess<T> viewRA = interval.randomAccess();
-			while (outC.hasNext()) {
-				outC.fwd();
-				viewRA.setPosition(outC);
-				outC.get().set(viewRA.get());
-			}
-
-		}
-		return out;
+		return interval;
 	}
+
+	@Override
+	public boolean conforms() {
+		return in().numDimensions() == scaleFactors.length;
+	}
+
 }

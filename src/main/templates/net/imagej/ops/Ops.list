@@ -403,7 +403,7 @@ namespaces = ```
 		[name: "project",                        iface: "Project"],
 		[name: "rasterView",                     iface: "RasterView"],
 		[name: "rotateView",                     iface: "RotateView"],
-		[name: "scale",                          iface: "Scale",                          aliases: ["resize"]],
+		[name: "scaleView",                      iface: "ScaleView",                      aliases: ["resizeView"]],
 		[name: "shearView",                      iface: "ShearView"],
 		[name: "stackView",                      iface: "StackView"],
 		[name: "subsampleView",                  iface: "SubsampleView"],
