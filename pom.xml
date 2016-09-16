@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>net.imagej</groupId>
 		<artifactId>pom-imagej</artifactId>
-		<version>16.1.0</version>
+		<version>16.5.0</version>
 		<relativePath />
 	</parent>
 
@@ -171,6 +171,10 @@
 
 	<properties>
 		<main-class>net.imagej.ops.Main</main-class>
+		<package-name>net.imagej.ops</package-name>
+
+		<license.copyrightOwners>Board of Regents of the University of
+Wisconsin-Madison, University of Konstanz and Brian Northan.</license.copyrightOwners>
 	</properties>
 
 	<repositories>
@@ -365,25 +369,6 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<packageName>net.imagej.ops</packageName>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>license-maven-plugin</artifactId>
-				<configuration>
-					<organizationName>Board of Regents of the University of
-Wisconsin-Madison, University of Konstanz and Brian Northan.</organizationName>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
