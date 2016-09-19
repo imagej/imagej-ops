@@ -53,11 +53,12 @@ import org.scijava.plugin.Plugin;
 /**
  * Generic implementation of {@code geom.contour}.
  * 
- * This implementation assumes that foreground-pixels are True and
- * background-pixels are False.
+ * This implementation assumes that foreground-pixels are 'true' and
+ * background-pixels are 'false'.
  * 
  * @author Jonathan Hale (University of Konstanz)
  * @author Daniel Seebacher (University of Konstanz)
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.Contour.class)
 public class DefaultContour<B extends BooleanType<B>> extends
@@ -208,9 +209,9 @@ public class DefaultContour<B extends BooleanType<B>> extends
 		double[] position = new double[2];
 		double[] startPos = new double[2];
 
-		// find first black pixel
+		// find first true pixel
 		while (cInput.hasNext()) {
-			// we are looking for a black pixel
+			// we are looking for a true pixel
 			if (cInput.next().get()) {
 				raInput.setPosition(cInput);
 				raInput.localize(startPos);
