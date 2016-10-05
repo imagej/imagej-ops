@@ -52,7 +52,7 @@ public interface BinaryHybridCI<I, O extends I> extends
 	BinaryHybridCI1<I, I, O>, BinaryInplaceOp<I, O>
 {
 
-	// -- UnaryOp methods --
+	// -- BinaryOp methods --
 
 	@Override
 	default O run(final I input1, final I input2, final O output) {

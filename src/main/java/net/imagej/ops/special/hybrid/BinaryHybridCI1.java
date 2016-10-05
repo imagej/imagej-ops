@@ -62,7 +62,7 @@ public interface BinaryHybridCI1<I1, I2, O extends I1> extends
 		compute2(arg, in2(), arg);
 	}
 
-	// -- UnaryOp methods --
+	// -- BinaryOp methods --
 
 	@Override
 	default O run(final I1 input1, final I2 input2, final O output) {
@@ -76,6 +76,7 @@ public interface BinaryHybridCI1<I1, I2, O extends I1> extends
 		compute2(input1, input2, output);
 		return output;
 	}
+
 	// -- Runnable methods --
 
 	@Override
