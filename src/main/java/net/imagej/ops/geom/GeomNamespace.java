@@ -30,6 +30,8 @@
 
 package net.imagej.ops.geom;
 
+import java.util.List;
+
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
@@ -42,6 +44,7 @@ import net.imagej.ops.geom.geom3d.mesh.VertexInterpolator;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.RealLocalizable;
+import net.imglib2.roi.EllipseRegionOfInterest;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.roi.labeling.LabelRegion;
@@ -702,6 +705,13 @@ public class GeomNamespace extends AbstractNamespace {
 	public RandomAccessibleInterval<BitType> voxelization(final Mesh in, final int width, final int height) {
 		final RandomAccessibleInterval<BitType> result =
 			(RandomAccessibleInterval<BitType>) ops().run(net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class, in, width, height);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultFittingEllipse.class)
+	public EllipseRegionOfInterest fittingEllipse(final List<RealLocalizable> in) {
+		final EllipseRegionOfInterest result =
+			(EllipseRegionOfInterest) ops().run(net.imagej.ops.geom.geom2d.DefaultFittingEllipse.class, in);
 		return result;
 	}
 }
