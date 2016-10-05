@@ -80,7 +80,7 @@ import org.scijava.InstantiableException;
  * <p>
  * The following table summarizes the available kinds of special ops:
  * </p>
- * <table style="border: 1px solid black; border-collapse: collapse" summary="">
+ * <table style="border-collapse: collapse" border=1 summary="">
  * <tr>
  * <th>Name</th>
  * <th>Summary</th>
@@ -90,7 +90,7 @@ import org.scijava.InstantiableException;
  * <th>Class</th>
  * <th>Methods</th>
  * </tr>
- * <tr style="border-top: 1px solid gray">
+ * <tr>
  * <th rowspan=3>computer</th>
  * <td style="vertical-align: top" rowspan=3>An op which computes a result from
  * the given input I, storing the result into the specified preallocated output
@@ -119,7 +119,7 @@ import org.scijava.InstantiableException;
  * <td>{@link BinaryComputerOp}</td>
  * <td>{@code void compute2(O, I1, I2)}</td>
  * </tr>
- * <tr style="border-top: 1px solid gray">
+ * <tr>
  * <th rowspan=3>function</th>
  * <td style="vertical-align: top" rowspan=3>An op which computes a result from
  * the given input I, returning the result as a newly allocated output O.</td>
@@ -143,22 +143,28 @@ import org.scijava.InstantiableException;
  * <td>{@link BinaryFunctionOp}</td>
  * <td>{@code O compute2(I1, I2)}</td>
  * </tr>
- * <tr style="border-top: 1px solid gray">
- * <th rowspan=2>inplace</th>
- * <td rowspan=2 style="vertical-align: top">An op which mutates the contents of
+ * <tr>
+ * <th rowspan=3>inplace</th>
+ * <td rowspan=3 style="vertical-align: top">An op which mutates the contents of
  * its argument(s) in-place.</td>
- * <td rowspan=2 style="vertical-align: top">-</td>
- * <td rowspan=2>BOTH</td>
+ * <td rowspan=3 style="vertical-align: top">-</td>
+ * <td rowspan=3>BOTH</td>
  * <td>1</td>
  * <td>{@link UnaryInplaceOp}</td>
- * <td>{@code void mutate(A)}</td>
+ * <td>{@code void mutate(O)}</td>
+ * </tr>
+ * <tr>
+ * <td>2</td>
+ * <td>{@link BinaryInplace1Op}</td>
+ * <td>{@code void mutate1(O, I2)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
  * <td>{@link BinaryInplaceOp}</td>
- * <td>{@code void mutate(A, A)}</td>
+ * <td>{@code void mutate1(O, I2)}
+ * <br>{@code void mutate2(I1, O)}</td>
  * </tr>
- * <tr style="border-top: 3px double gray">
+ * <tr>
  * <th rowspan=3>hybrid CF</th>
  * <td style="vertical-align: top" rowspan=3>An op which is capable of behaving
  * as either a <em>computer</em> or as a <em>function</em>, providing the API
@@ -168,22 +174,22 @@ import org.scijava.InstantiableException;
  * <td rowspan=3>BOTH (optional)</td>
  * <td>0</td>
  * <td>{@link NullaryHybridCF}</td>
- * <td style="white-space: nowrap">{@code void compute0(O)} +
- * {@code O compute0()}</td>
+ * <td style="white-space: nowrap">{@code void compute0(O)}
+ * <br>{@code O compute0()}</td>
  * </tr>
  * <tr>
  * <td>1</td>
  * <td>{@link UnaryHybridCF}</td>
- * <td style="white-space: nowrap">{@code void compute1(O, I)} +
- * {@code O compute1(I)}</td>
+ * <td style="white-space: nowrap">{@code void compute1(O, I)}
+ * <br>{@code O compute1(I)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
  * <td>{@link BinaryHybridCF}</td>
- * <td style="white-space: nowrap">{@code O compute1(I1, I2)} +
- * {@code void compute2(O, I1, I2)}</td>
+ * <td style="white-space: nowrap">{@code O compute2(I1, I2)}
+ * <br>{@code void compute2(O, I1, I2)}</td>
  * </tr>
- * <tr style="border-top: 1px solid gray">
+ * <tr>
  * <th rowspan=3>hybrid CI</th>
  * <td style="vertical-align: top" rowspan=3>An op which is capable of behaving
  * as either a <em>computer</em> or an <em>inplace</em>, providing the API for
@@ -193,22 +199,23 @@ import org.scijava.InstantiableException;
  * <td rowspan=3>BOTH (optional)</td>
  * <td>1</td>
  * <td>{@link UnaryHybridCI}</td>
- * <td style="white-space: nowrap">{@code void compute1(A, A)} +
- * {@code A compute1(A)} + {@code void mutate(A)}</td>
+ * <td style="white-space: nowrap">{@code void compute1(I, O)}
+ * <br>{@code void mutate(O)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
  * <td>{@link BinaryHybridCI1}</td>
- * <td style="white-space: nowrap">{@code void compute2(A, I, A)} +
- * {@code void mutate1(A, I)}</td>
+ * <td style="white-space: nowrap">{@code void compute2(I1, I2, O)}
+ * <br>{@code void mutate1(O, I2)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
  * <td>{@link BinaryHybridCI}</td>
- * <td style="white-space: nowrap">{@code void compute2(A, A, A)} +
- * {@code void mutate1(A, A)} + {@code void mutate2(A, A)}</td>
+ * <td style="white-space: nowrap">{@code void compute2(I1, I2, O)}
+ * <br>{@code void mutate1(O, I2)}
+ * <br>{@code void mutate2(I1, O)}</td>
  * </tr>
- * <tr style="border-top: 1px solid gray">
+ * <tr>
  * <th rowspan=3>hybrid CFI</th>
  * <td style="vertical-align: top" rowspan=3>An op which is capable of behaving
  * as either a <em>computer</em>, a <em>function</em> or an <em>inplace</em>,
@@ -218,21 +225,24 @@ import org.scijava.InstantiableException;
  * <td rowspan=3>BOTH (optional)</td>
  * <td>1</td>
  * <td>{@link UnaryHybridCFI}</td>
- * <td style="white-space: nowrap">{@code void compute1(A, A)} +
- * {@code A compute1(A)} + {@code void mutate(A)}</td>
+ * <td style="white-space: nowrap">{@code void compute1(I, O)}
+ * <br>{@code O compute1(I)}
+ * <br>{@code void mutate(O)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
  * <td>{@link BinaryHybridCFI1}</td>
- * <td style="white-space: nowrap">{@code void compute2(A, I, A)} +
- * {@code A compute2(A, I)} + {@code void mutate1(A, I)}</td>
+ * <td style="white-space: nowrap">{@code void compute2(I1, I2, O)}
+ * <br>{@code O compute2(I1, I2)}
+ * <br>{@code void mutate1(O, I2)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
  * <td>{@link BinaryHybridCFI}</td>
- * <td style="white-space: nowrap">{@code void compute2(A, A, A)} +
- * {@code A compute2(A, A)} + {@code void mutate1(A, A)} +
- * {@code void mutate2(A, A)}</td>
+ * <td style="white-space: nowrap">{@code void compute2(I1, I2, O)}
+ * <br>{@code O compute2(I1, I2)}
+ * <br>{@code void mutate1(O, I2)}
+ * <br>{@code void mutate2(I1, O)}</td>
  * </tr>
  * </table>
  * <p>
