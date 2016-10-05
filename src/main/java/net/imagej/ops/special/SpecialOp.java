@@ -55,6 +55,7 @@ import net.imagej.ops.special.hybrid.NullaryHybridCF;
 import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imagej.ops.special.hybrid.UnaryHybridCFI;
 import net.imagej.ops.special.hybrid.UnaryHybridCI;
+import net.imagej.ops.special.inplace.BinaryInplace1Op;
 import net.imagej.ops.special.inplace.BinaryInplaceOp;
 import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
