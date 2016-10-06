@@ -23,7 +23,7 @@ public class DefaultFittingEllipseTest extends AbstractFeatureTest {
 	
 	@Test
 	public void defaultFittingEllipse() {
-		EllipseRegionOfInterest result = ops.geom().fittingEllipse((List<RealLocalizable>) p.getVertices());
+		EllipseRegionOfInterest result = ops.geom().fittingEllipse(p);
 		assertEquals("Center X", 39.105022524406240, result.getOrigin(0), 10e-14);
 		assertEquals("Center Y", 59.222976128044480, result.getOrigin(1), 10e-14);
 		assertEquals("Major Axis", 45.634747808580330, result.getRadius(0), 10e-14);
