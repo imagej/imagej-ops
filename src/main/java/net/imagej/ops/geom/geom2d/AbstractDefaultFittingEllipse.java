@@ -68,33 +68,26 @@ DEALINGS IN THE SOFTWARE.
  * Fitzgibbon, Maurizio Pilu, Bob Fisher.
  * 
  * More information can be found here:
- * http://research.microsoft.com/en-us/um/people/awf/ellipse/
+ * http://research.microsoft.com/en-us/um/people/awf/ellipse/ellipse-pami.pdf
  * 
  * @author Tim-Oliver buchholz, University of Konstanz
  */
-@Plugin(type = Ops.Geometric.FittingEllipse.class)
-public class DefaultFittingEllipse extends AbstractUnaryFunctionOp<List<RealLocalizable>, EllipseRegionOfInterest>
+public abstract class AbstractDefaultFittingEllipse<I> extends AbstractUnaryFunctionOp<I, EllipseRegionOfInterest>
 		implements FittingEllipse, Contingent {
+	
+	protected EllipseRegionOfInterest getEllipse(final Iterable<? extends RealLocalizable> it) {
+		final DoubleType meanX = new DoubleType(0);
+		final DoubleType sx = new DoubleType(0);
+		final DoubleType meanY = new DoubleType(0);
+		final DoubleType sy = new DoubleType(0);
 
-	@Override
-	public EllipseRegionOfInterest compute1(List<RealLocalizable> input) {
-		DoubleType meanX = new DoubleType(0);
-		DoubleType sx = new DoubleType(0);
-		DoubleType meanY = new DoubleType(0);
-		DoubleType sy = new DoubleType(0);
-		List<RealLocalizable> normalizedInput = new ArrayList<>();
+		final BlockRealMatrix D = buildDesignMatrix(getNormalizedData(it, meanX, sx, meanY, sy));
+		final BlockRealMatrix S = D.transpose().multiply(D);
+		final BlockRealMatrix C = buildConstraintMatrix();
 
-		getNormalizedData(input, meanX, sx, meanY, sy, normalizedInput);
-		BlockRealMatrix D = buildDesignMatrix(normalizedInput);
-		BlockRealMatrix S = D.transpose().multiply(D);
-		BlockRealMatrix C = buildConstraintMatrix();
+		final double[] ellipse = convertToGeometricRadiiAndCenter(
+				denormalize(solveEigenSystem(S, C), sx.get(), sy.get(), meanX.get(), meanY.get()));
 
-		final double[] A = solveEigenSystem(S, C);
-
-		final double[] par = denormalize(A, sx, sy, meanX, meanY);
-		
-		final double[] ellipse = convertToGeometricRadiiAndCenter(par);
-		
 		// Unfortunately we lose the orientation of the ellipse.
 		return new EllipseRegionOfInterest(new RealPoint(ellipse[0], ellipse[1]),
 				new double[] { ellipse[2], ellipse[3] });
@@ -115,21 +108,21 @@ public class DefaultFittingEllipse extends AbstractUnaryFunctionOp<List<RealLoca
 		final double cos_squared = cost * cost;
 		final double cos_sin = sint * cost;
 
-		final double Ao = par[5];
-		final double Au = par[3] * cost + par[4] * sint;
-		final double Av = -par[3] * sint + par[4] * cost;
-		final double Auu = par[0] * cos_squared + par[2] * sin_squared + par[1] * cos_sin;
-		final double Avv = par[0] * sin_squared + par[2] * cos_squared - par[1] * cos_sin;
+		final double ao = par[5];
+		final double au = par[3] * cost + par[4] * sint;
+		final double av = -par[3] * sint + par[4] * cost;
+		final double auu = par[0] * cos_squared + par[2] * sin_squared + par[1] * cos_sin;
+		final double avv = par[0] * sin_squared + par[2] * cos_squared - par[1] * cos_sin;
 
-		final double tuCenter = -Au / (2 * Auu);
-		final double tvCenter = -Av / (2 * Avv);
-		final double wCenter = Ao - Auu * tuCenter * tuCenter - Avv * tvCenter * tvCenter;
+		final double tuCenter = -au / (2 * auu);
+		final double tvCenter = -av / (2 * avv);
+		final double wCenter = ao - auu * tuCenter * tuCenter - avv * tvCenter * tvCenter;
 
 		final double uCenter = tuCenter * cost - tvCenter * sint;
 		final double vCenter = tuCenter * sint + tvCenter * cost;
 
-		double Ru = -wCenter / Auu;
-		double Rv = -wCenter / Avv;
+		double Ru = -wCenter / auu;
+		double Rv = -wCenter / avv;
 
 		Ru = Math.sqrt(Math.abs(Ru)) * Math.signum(Ru);
 		Rv = Math.sqrt(Math.abs(Rv)) * Math.signum(Rv);
@@ -144,11 +137,7 @@ public class DefaultFittingEllipse extends AbstractUnaryFunctionOp<List<RealLoca
 	 *            parameters of ax^2 + bxy + cy^2 + dx + ey + f = 0
 	 * @return denormalized parameters of ax^2 + bxy + cy^2 + dx + ey + f = 0
 	 */
-	private double[] denormalize(double[] a, DoubleType sX, DoubleType sY, DoubleType meanX, DoubleType meanY) {
-		final double sx = sX.get();
-		final double sy = sY.get();
-		final double mx = meanX.get();
-		final double my = meanY.get();
+	private double[] denormalize(final double[] a, final double sx, final double sy, final double mx, final double my) {
 		return new double[] { 	a[0] * sy * sy, 
 								a[1] * sx * sy, 
 								a[2] * sx * sx,
@@ -171,16 +160,16 @@ public class DefaultFittingEllipse extends AbstractUnaryFunctionOp<List<RealLoca
 	 */
 	private double[] solveEigenSystem(BlockRealMatrix s, BlockRealMatrix c) {
 
-		BlockRealMatrix tmpA = s.getSubMatrix(0, 2, 0, 2);
-		BlockRealMatrix tmpB = s.getSubMatrix(0, 2, 3, 5);
-		BlockRealMatrix tmpC = s.getSubMatrix(3, 5, 3, 5);
-		BlockRealMatrix tmpD = c.getSubMatrix(0, 2, 0, 2);
+		final BlockRealMatrix tmpA = s.getSubMatrix(0, 2, 0, 2);
+		final BlockRealMatrix tmpB = s.getSubMatrix(0, 2, 3, 5);
+		final BlockRealMatrix tmpC = s.getSubMatrix(3, 5, 3, 5);
+		final BlockRealMatrix tmpD = c.getSubMatrix(0, 2, 0, 2);
 
-		RealMatrix tmpE = MatrixUtils.inverse(tmpC).multiply(tmpB.transpose());
+		final RealMatrix tmpE = MatrixUtils.inverse(tmpC).multiply(tmpB.transpose());
 
-		EigenDecomposition ed = new EigenDecomposition(
+		final EigenDecomposition ed = new EigenDecomposition(
 				MatrixUtils.inverse(tmpD).multiply(tmpA.subtract(tmpB.multiply(tmpE))));
-		double[] eval = ed.getRealEigenvalues();
+		final double[] eval = ed.getRealEigenvalues();
 		int idx = -1;
 		for (int i = 0; i < eval.length; i++) {
 			if (eval[i] < 0 && Double.isFinite(eval[i])) {
@@ -189,7 +178,7 @@ public class DefaultFittingEllipse extends AbstractUnaryFunctionOp<List<RealLoca
 			}
 		}
 
-		RealVector vec = ed.getEigenvector(idx);
+		final RealVector vec = ed.getEigenvector(idx);
 
 		return vec.append(tmpE.scalarMultiply(-1).operate(vec)).toArray();
 	}
@@ -201,7 +190,7 @@ public class DefaultFittingEllipse extends AbstractUnaryFunctionOp<List<RealLoca
 	 * @return constraint matrix
 	 */
 	private BlockRealMatrix buildConstraintMatrix() {
-		BlockRealMatrix c = new BlockRealMatrix(6, 6);
+		final BlockRealMatrix c = new BlockRealMatrix(6, 6);
 		c.setEntry(0, 2, -2);
 		c.setEntry(1, 1, 1);
 		c.setEntry(2, 0, -2);
@@ -216,7 +205,7 @@ public class DefaultFittingEllipse extends AbstractUnaryFunctionOp<List<RealLoca
 	 */
 	private BlockRealMatrix buildDesignMatrix(final List<RealLocalizable> normalizedInput) {
 
-		BlockRealMatrix d = new BlockRealMatrix(normalizedInput.size(), 6);
+		final BlockRealMatrix d = new BlockRealMatrix(normalizedInput.size(), 6);
 
 		for (int i = 0; i < normalizedInput.size(); i++) {
 			final double x = normalizedInput.get(i).getDoublePosition(0);
@@ -240,22 +229,24 @@ public class DefaultFittingEllipse extends AbstractUnaryFunctionOp<List<RealLoca
 	 *            output
 	 * @param sy
 	 *            output
-	 * @param normalizedInput
+	 * @return normalizedInput
 	 *            the normalizedInput as output
 	 */
-	private void getNormalizedData(final List<RealLocalizable> input, DoubleType meanX, DoubleType sx, DoubleType meanY, DoubleType sy,
-			List<RealLocalizable> normalizedInput) {
-		final Iterator<RealLocalizable> it = input.iterator();
+	private List<RealLocalizable> getNormalizedData(final Iterable<? extends RealLocalizable> input, DoubleType meanX, DoubleType sx, DoubleType meanY, DoubleType sy) {
+		final List<RealLocalizable> normalizedInput = new ArrayList<>();
+		final Iterator<? extends RealLocalizable> it = input.iterator();
 		double minX = 0;
 		double mx = 0;
 		double maxX = 0;
 		double minY = 0;
 		double my = 0;
 		double maxY = 0;
+		double size = 0;
 		if (it.hasNext()) {
 			RealLocalizable p = it.next();
 			minX = mx = maxX = p.getDoublePosition(0);
 			minY = my = maxY = p.getDoublePosition(1);
+			size++;
 		}
 
 		while (it.hasNext()) {
@@ -271,11 +262,13 @@ public class DefaultFittingEllipse extends AbstractUnaryFunctionOp<List<RealLoca
 
 			minY = minY > pY ? pY : minY;
 			maxY = maxY < pY ? pY : maxY;
+			
+			size++;
 		}
 		sx.set((maxX - minX) / 2);
 		sy.set((maxY - minY) / 2);
-		meanX.set(mx / input.size());
-		meanY.set(my / input.size());
+		meanX.set(mx / size);
+		meanY.set(my / size);
 
 		final double xs = sx.get();
 		final double ys = sy.get();
@@ -285,11 +278,7 @@ public class DefaultFittingEllipse extends AbstractUnaryFunctionOp<List<RealLoca
 			normalizedInput.add(new RealPoint((p.getDoublePosition(0) - xm) / xs, (p.getDoublePosition(1) - ym) / ys));
 		});
 
-	}
-
-	@Override
-	public boolean conforms() {
-		return in().get(0).numDimensions() == 2;
+		return normalizedInput;
 	}
 
 }
