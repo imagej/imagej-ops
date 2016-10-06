@@ -141,6 +141,7 @@ namespaces = ```
 		[name: "sphericity",                     iface: "Sphericity"],
 		[name: "vertexInterpolator",             iface: "VertexInterpolator"],
 		[name: "voxelization",	      	         iface: "Voxelization"],
+		[name: "fittingEllipse", 		 iface: "FittingEllipse"],
 	]],
 	[name: "haralick", iface: "Haralick", ops: [
 		[name: "asm",                            iface: "ASM"],

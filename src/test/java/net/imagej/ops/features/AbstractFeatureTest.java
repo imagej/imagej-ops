@@ -30,6 +30,12 @@
 
 package net.imagej.ops.features;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import net.imagej.ops.AbstractOpTest;
@@ -37,12 +43,14 @@ import net.imagej.ops.OpService;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
+import net.imglib2.RealPoint;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayCursor;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.roi.EllipseRegionOfInterest;
+import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.roi.labeling.LabelRegions;
@@ -284,4 +292,22 @@ public class AbstractFeatureTest extends AbstractOpTest {
 		return labelRegions.getLabelRegion("1");
 
 	}
+	
+	protected static Polygon getPolygon() {
+		final String polygonName = "2d_geometric_features_polygon.txt";
+		List<RealPoint> vertices = new ArrayList<>();
+		try {
+			Files.lines(Paths.get(AbstractFeatureTest.class.getResource(polygonName).toURI()))
+										.forEach(l -> {
+											String[] coord = l.split(" ");
+											RealPoint v = new RealPoint(new double[]{	Double.parseDouble(coord[0]), 
+																				Double.parseDouble(coord[1])});
+											vertices.add(v);
+										});
+		} catch (IOException | URISyntaxException exc) {
+			// TODO Auto-generated catch block
+			exc.printStackTrace();
+		}
+		return new Polygon(vertices);
+}
 }
