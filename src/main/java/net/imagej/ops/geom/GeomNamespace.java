@@ -46,6 +46,7 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.EllipseRegionOfInterest;
 import net.imglib2.roi.IterableRegion;
+import net.imglib2.roi.geometric.PointCollection;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.type.BooleanType;
@@ -708,10 +709,24 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 	
-	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultFittingEllipse.class)
-	public EllipseRegionOfInterest fittingEllipse(final List<RealLocalizable> in) {
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultFittingEllipseIterable.class)
+	public EllipseRegionOfInterest fittingEllipse(final IterableInterval<Void> in) {
 		final EllipseRegionOfInterest result =
-			(EllipseRegionOfInterest) ops().run(net.imagej.ops.geom.geom2d.DefaultFittingEllipse.class, in);
+			(EllipseRegionOfInterest) ops().run(net.imagej.ops.geom.geom2d.DefaultFittingEllipseIterable.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultFittingEllipsePointCollection.class)
+	public EllipseRegionOfInterest fittingEllipse(final PointCollection in) {
+		final EllipseRegionOfInterest result =
+			(EllipseRegionOfInterest) ops().run(net.imagej.ops.geom.geom2d.DefaultFittingEllipsePointCollection.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultFittingEllipsePolygon.class)
+	public EllipseRegionOfInterest fittingEllipse(final Polygon in) {
+		final EllipseRegionOfInterest result =
+			(EllipseRegionOfInterest) ops().run(net.imagej.ops.geom.geom2d.DefaultFittingEllipsePolygon.class, in);
 		return result;
 	}
 }
