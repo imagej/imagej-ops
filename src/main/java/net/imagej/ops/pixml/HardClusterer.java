@@ -28,38 +28,21 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.pixml;
 
-import net.imagej.ops.Op;
+import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imglib2.IterableInterval;
-import net.imglib2.type.BooleanType;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
- * Default {@link GlobalThresholder} implementation.
+ * TODO Documentation
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Stefan Helfrich (University of Konstanz)
  * @param <I> type of input
  * @param <O> type of output
  */
-@Plugin(type = Op.class)
-public class DefaultGlobalThresholder<I, O extends BooleanType<O>> extends
-	AbstractGlobalThresholder<I, O>
+public interface HardClusterer<I, O> extends
+	UnaryHybridCF<IterableInterval<I>, Iterable<O>>
 {
-
-	@Parameter(required = true)
-	public ThresholdLearner<I, O> learner;
-
-	@Override
-	public void compute1(final IterableInterval<I> input,
-		final Iterable<O> output)
-	{
-		// FIXME we want to initialize this op and reset the predictor according
-		// to the input
-		ops().map(output, input, learner.compute1(input));
-	}
-
+	// NB: marker interface
 }

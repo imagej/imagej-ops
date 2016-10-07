@@ -28,33 +28,45 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.otsu;
+package net.imagej.ops.pixml;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.threshold.AbstractGlobalThresholder;
-import net.imagej.ops.threshold.ThresholdLearner;
-import net.imglib2.type.BooleanType;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.Op;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imagej.ops.threshold.GlobalThresholder;
+import net.imglib2.IterableInterval;
 
-import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Implements Otsu's threshold method.
+ * Default {@link GlobalThresholder} implementation.
  * 
+ * @author Christian Dietz (University of Konstanz)
  * @author Stefan Helfrich (University of Konstanz)
  * @param <I> type of input
  * @param <O> type of output
  */
-@Plugin(type = Ops.Threshold.Otsu.class, priority = Priority.HIGH_PRIORITY)
-public class Otsu<I extends RealType<I>, O extends BooleanType<O>> extends
-	AbstractGlobalThresholder<I, O> implements Ops.Threshold.Otsu
+@Plugin(type = Op.class)
+public class DefaultHardClusterer<I, O> extends
+	AbstractUnaryHybridCF<IterableInterval<I>, Iterable<O>> implements
+	HardClusterer<I, O>
 {
 
-	@SuppressWarnings("unchecked")
+	@Parameter(required = true)
+	public UnsupervisedLearner<I, O> learner;
+
 	@Override
-	protected ThresholdLearner<I, O> getLearner() {
-		return ops().op(OtsuThresholdLearner.class, in());
+	public void compute1(final IterableInterval<I> input,
+		final Iterable<O> output)
+	{
+		// FIXME we want to initialize this op and reset the predictor according
+		// to the input
+		ops().map(output, input, learner.compute1(input));
 	}
 
+	@Override
+	public Iterable<O> createOutput(IterableInterval<I> input) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
