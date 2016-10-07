@@ -1395,47 +1395,23 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(
-		op = net.imagej.ops.threshold.otsu.ComputeOtsuThreshold.class)
-	public <T extends RealType<T>> T otsu(final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(
-				net.imagej.ops.Ops.Threshold.Otsu.class, in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.otsu.ComputeOtsuThreshold.class)
-	public <T extends RealType<T>> T otsu(final T out, final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(
-				net.imagej.ops.Ops.Threshold.Otsu.class,
-				out, in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.ApplyThresholdMethod.Otsu.class)
-	public <T extends RealType<T>> IterableInterval<BitType> otsu(final IterableInterval<T> in) {
-		@SuppressWarnings("unchecked")
-		final IterableInterval<BitType> result =
-			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.Ops.Threshold.Otsu.class, in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.ApplyThresholdMethod.Otsu.class)
-	public <T extends RealType<T>> IterableInterval<BitType> otsu(final IterableInterval<BitType> out,
+	@OpMethod(op = net.imagej.ops.threshold.otsu.Otsu.class)
+	public <T extends RealType<T>> Iterable<BitType> otsu(
 		final IterableInterval<T> in)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<BitType> result =
-			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.Ops.Threshold.Otsu.class, out,
-				in);
+		final Iterable<BitType> result = (Iterable<BitType>) ops().run(
+			net.imagej.ops.Ops.Threshold.Otsu.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.threshold.otsu.Otsu.class)
+	public <T extends RealType<T>> Iterable<BitType> otsu(
+		final Iterable<BitType> out, final IterableInterval<T> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Iterable<BitType> result = (Iterable<BitType>) ops().run(
+			net.imagej.ops.Ops.Threshold.Otsu.class, out, in);
 		return result;
 	}
 

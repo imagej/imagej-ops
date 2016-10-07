@@ -12,7 +12,6 @@ methods = ```
 	[name: "minError",      iface: "MinError"],
 	[name: "minimum",       iface: "Minimum"],
 	[name: "moments",       iface: "Moments"],
-	[name: "otsu",          iface: "Otsu"],
 	[name: "percentile",    iface: "Percentile"],
 	[name: "renyiEntropy",  iface: "RenyiEntropy"],
 	[name: "shanbhag",      iface: "Shanbhag"],

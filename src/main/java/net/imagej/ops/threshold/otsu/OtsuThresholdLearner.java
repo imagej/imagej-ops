@@ -30,30 +30,33 @@
 
 package net.imagej.ops.threshold.otsu;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.threshold.AbstractComputeThresholdHistogram;
+import net.imagej.ops.Op;
+import net.imagej.ops.threshold.AbstractHistogramThresholdLearner;
 import net.imglib2.histogram.Histogram1d;
+import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-// NB - this plugin adapted from Gabriel Landini's code of his AutoThreshold
-// plugin found in Fiji (version 1.14).
+//NB - this plugin adapted from Gabriel Landini's code of his AutoThreshold
+//plugin found in Fiji (version 1.14).
 
 /**
  * Implements Otsu's threshold method.
  * 
  * @author Barry DeZonia
  * @author Gabriel Landini
+ * @author Stefan Helfrich (University of Konstanz)
+ * @param <I> type of input
+ * @param <O> type of output
  */
-@Plugin(type = Ops.Threshold.Otsu.class, priority = Priority.HIGH_PRIORITY)
-public class ComputeOtsuThreshold<T extends RealType<T>> extends
-	AbstractComputeThresholdHistogram<T> implements Ops.Threshold.Otsu
+@Plugin(type = Op.class)
+public class OtsuThresholdLearner<I extends RealType<I>, O extends BooleanType<O>>
+	extends AbstractHistogramThresholdLearner<I, O>
 {
 
 	@Override
-	public long computeBin(final Histogram1d<T> hist) {
+	protected long computeBin(final Histogram1d<I> hist) {
 		long[] histogram = hist.toLongArray();
 		// Otsu's threshold algorithm
 		// C++ code by Jordan Bevik <Jordan.Bevic@qtiworld.com>
