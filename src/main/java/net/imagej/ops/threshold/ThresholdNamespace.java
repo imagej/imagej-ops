@@ -1415,21 +1415,30 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(
-		op = net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalOtsuThreshold.class)
+	@OpMethod(op = net.imagej.ops.threshold.otsu.LocalOtsu.class)
+	public <T extends RealType<T>, B extends BooleanType<B>> IterableInterval<B>
+		otsu(final RandomAccessibleInterval<T> in,
+			final Shape shape)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<B> result = (IterableInterval<B>) ops().run(
+			net.imagej.ops.threshold.otsu.LocalOtsu.class,
+			in, shape);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.threshold.otsu.LocalOtsu.class)
 	public <T extends RealType<T>, B extends BooleanType<B>> IterableInterval<B>
 		otsu(final IterableInterval<B> out, final RandomAccessibleInterval<T> in,
 			final Shape shape)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<B> result = (IterableInterval<B>) ops().run(
-			net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalOtsuThreshold.class,
-			out, in, shape);
+			net.imagej.ops.threshold.otsu.LocalOtsu.class, out, in, shape);
 		return result;
 	}
 
-	@OpMethod(
-		op = net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalOtsuThreshold.class)
+	@OpMethod(op = net.imagej.ops.threshold.otsu.LocalOtsu.class)
 	public <T extends RealType<T>, B extends BooleanType<B>> IterableInterval<B>
 		otsu(final IterableInterval<B> out, final RandomAccessibleInterval<T> in,
 			final Shape shape,
@@ -1437,8 +1446,8 @@ public class ThresholdNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<B> result = (IterableInterval<B>) ops().run(
-			net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalOtsuThreshold.class,
-			out, in, shape, outOfBoundsFactory);
+			net.imagej.ops.threshold.otsu.LocalOtsu.class, out, in, shape,
+			outOfBoundsFactory);
 		return result;
 	}
 

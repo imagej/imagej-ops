@@ -59,7 +59,6 @@ import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMaxLikelihoodThre
 import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMinErrorThreshold;
 import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMinimumThreshold;
 import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMomentsThreshold;
-import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalOtsuThreshold;
 import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalPercentileThreshold;
 import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalRenyiEntropyThreshold;
 import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalShanbhagThreshold;
@@ -79,6 +78,7 @@ import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkarThreshold;
 import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkarThresholdIntegral;
 import net.imagej.ops.threshold.localSauvola.LocalSauvolaThreshold;
 import net.imagej.ops.threshold.localSauvola.LocalSauvolaThresholdIntegral;
+import net.imagej.ops.threshold.otsu.LocalOtsu;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
@@ -524,7 +524,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalOtsuThreshold
+	 * @see LocalOtsu
 	 */
 	@Test
 	public void testLocalOtsuThreshold() {
