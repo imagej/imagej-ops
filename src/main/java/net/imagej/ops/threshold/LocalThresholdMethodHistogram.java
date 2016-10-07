@@ -39,6 +39,7 @@ import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.threshold.apply.LocalThreshold;
+import net.imglib2.IterableInterval;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.RealType;
@@ -66,7 +67,7 @@ public abstract class LocalThresholdMethodHistogram<T extends RealType<T>, O ext
 	}
 
 	@Override
-	public void compute2(final Iterable<T> neighborhood, final T center,
+	public void compute2(final IterableInterval<T> neighborhood, final T center,
 		final O output)
 	{
 		// TODO Move to initialize when NIL objects are available

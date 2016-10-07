@@ -31,6 +31,7 @@
 package net.imagej.ops.map.neighborhood;
 
 import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imglib2.IterableInterval;
 
 /**
  * A <em>center aware computer</em> calculates a result from a given input and
@@ -43,7 +44,7 @@ import net.imagej.ops.special.computer.BinaryComputerOp;
  * @param <O> type of output
  */
 public interface CenterAwareComputerOp<I, O> extends
-	BinaryComputerOp<Iterable<I>, I, O>
+	BinaryComputerOp<IterableInterval<I>, I, O>
 {
 	// NB: Marker interface.
 }

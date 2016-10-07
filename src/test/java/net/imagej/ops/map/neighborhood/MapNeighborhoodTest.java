@@ -37,6 +37,7 @@ import java.util.Iterator;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imglib2.IterableInterval;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -144,7 +145,7 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 	{
 
 		@Override
-		public void compute2(final Iterable<ByteType> neighborhood, final ByteType center,
+		public void compute2(final IterableInterval<ByteType> neighborhood, final ByteType center,
 			final ByteType output)
 		{
 			ByteType a = center;

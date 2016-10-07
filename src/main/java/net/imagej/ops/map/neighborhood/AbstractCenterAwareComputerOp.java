@@ -31,6 +31,7 @@
 package net.imagej.ops.map.neighborhood;
 
 import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
+import net.imglib2.IterableInterval;
 
 /**
  * Abstract superclass for {@link CenterAwareComputerOp} implementations.
@@ -39,7 +40,7 @@ import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
  * @author Stefan Helfrich (University of Konstanz)
  */
 public abstract class AbstractCenterAwareComputerOp<I, O> extends
-	AbstractBinaryComputerOp<Iterable<I>, I, O> implements
+	AbstractBinaryComputerOp<IterableInterval<I>, I, O> implements
 	CenterAwareComputerOp<I, O>
 {
 	// NB: Empty.

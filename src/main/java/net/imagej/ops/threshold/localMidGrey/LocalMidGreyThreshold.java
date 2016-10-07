@@ -36,6 +36,7 @@ import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.apply.LocalThreshold;
+import net.imglib2.IterableInterval;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Pair;
@@ -68,7 +69,7 @@ public class LocalMidGreyThreshold<T extends RealType<T>> extends
 
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			@Override
-			public void compute2(final Iterable<T> neighborhood, final T center, final BitType output) {
+			public void compute2(final IterableInterval<T> neighborhood, final T center, final BitType output) {
 
 				if (minMaxFunc == null) {
 					minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(),

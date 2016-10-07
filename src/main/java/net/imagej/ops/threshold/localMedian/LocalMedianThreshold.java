@@ -36,6 +36,7 @@ import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.apply.LocalThreshold;
+import net.imglib2.IterableInterval;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -66,7 +67,7 @@ public class LocalMedianThreshold<T extends RealType<T>> extends LocalThreshold<
 			private UnaryComputerOp<Iterable<T>, DoubleType> median;
 
 			@Override
-			public void compute2(final Iterable<T> neighborhood, final T center, final BitType output) {
+			public void compute2(final IterableInterval<T> neighborhood, final T center, final BitType output) {
 
 				if (median == null) {
 					median = Computers
