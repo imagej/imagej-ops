@@ -14,7 +14,6 @@ methods = ```
 	[name: "moments",       iface: "Moments",       expected: 34355],
 	[name: "percentile",    iface: "Percentile",    expected: 32088],
 	[name: "renyiEntropy",  iface: "RenyiEntropy",  expected: 26546],
-	[name: "shanbhag",      iface: "Shanbhag",      expected: 27553],
 	[name: "triangle",      iface: "Triangle",      expected: 34607],
 	[name: "yen",           iface: "Yen",           expected: 24531]
 ]

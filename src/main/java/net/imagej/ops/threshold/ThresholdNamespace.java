@@ -1614,51 +1614,23 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(
-		op = net.imagej.ops.threshold.ApplyThresholdMethod.Shanbhag.class)
-	public <T extends RealType<T>> IterableInterval<BitType> shanbhag(final IterableInterval<T> in) {
-		@SuppressWarnings("unchecked")
-		final IterableInterval<BitType> result =
-			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.Ops.Threshold.Shanbhag.class,
-				in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.ApplyThresholdMethod.Shanbhag.class)
-	public <T extends RealType<T>> IterableInterval<BitType> shanbhag(final IterableInterval<BitType> out,
+	@OpMethod(op = net.imagej.ops.threshold.shanbhag.Shanbhag.class)
+	public <T extends RealType<T>> Iterable<BitType> shanbhag(
 		final IterableInterval<T> in)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<BitType> result =
-			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.Ops.Threshold.Shanbhag.class,
-				out, in);
+		final Iterable<BitType> result = (Iterable<BitType>) ops().run(
+			net.imagej.ops.Ops.Threshold.Shanbhag.class, in);
 		return result;
 	}
 
-	@OpMethod(
-		op = net.imagej.ops.threshold.shanbhag.ComputeShanbhagThreshold.class)
-	public
-		<T extends RealType<T>> T shanbhag(final Histogram1d<T> in) {
+	@OpMethod(op = net.imagej.ops.threshold.shanbhag.Shanbhag.class)
+	public <T extends RealType<T>> Iterable<BitType> shanbhag(
+		final Iterable<BitType> out, final IterableInterval<T> in)
+	{
 		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(
-				net.imagej.ops.Ops.Threshold.Shanbhag.class,
-				in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.shanbhag.ComputeShanbhagThreshold.class)
-	public
-		<T extends RealType<T>> T shanbhag(final T out, final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(
-				net.imagej.ops.Ops.Threshold.Shanbhag.class,
-				out, in);
+		final Iterable<BitType> result = (Iterable<BitType>) ops().run(
+			net.imagej.ops.Ops.Threshold.Shanbhag.class, out, in);
 		return result;
 	}
 
