@@ -139,7 +139,7 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geom.geom2d.BoundarySizeConvexHullPolygon.class)
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultBoundarySizeConvexHullPolygon.class)
 	public DoubleType boundarySizeConvexHull(final Polygon in) {
 		final DoubleType result = (DoubleType) ops().run(
 			net.imagej.ops.Ops.Geometric.BoundarySizeConvexHull.class, in);
@@ -153,10 +153,10 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geom.geom2d.BoundarySizeConvexHullPolygon.class)
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultBoundarySizeConvexHullPolygon.class)
 	public DoubleType boundarySizeConvexHull(final DoubleType out, final Polygon in) {
 		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.BoundarySizeConvexHullPolygon.class, out, in);
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultBoundarySizeConvexHullPolygon.class, out, in);
 		return result;
 	}
 
@@ -167,10 +167,10 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 	
-	@OpMethod(op = net.imagej.ops.geom.geom2d.BoxivityPolygon.class)
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultBoxivityPolygon.class)
 	public DoubleType boxivity(final Polygon in) {
 		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.BoxivityPolygon.class, in);
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultBoxivityPolygon.class, in);
 		return result;
 	}
 
@@ -181,10 +181,10 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 	
-	@OpMethod(op = net.imagej.ops.geom.geom2d.BoxivityPolygon.class)
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultBoxivityPolygon.class)
 	public DoubleType boxivity(final DoubleType out, final Polygon in) {
 		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.BoxivityPolygon.class, out, in);
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultBoxivityPolygon.class, out, in);
 		return result;
 	}
 
@@ -288,10 +288,10 @@ public class GeomNamespace extends AbstractNamespace {
 	 	return result;
 	}	
 
-	@OpMethod(op = net.imagej.ops.geom.geom2d.ConvexityPolygon.class)
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultConvexityPolygon.class)
 	public DoubleType convexity(final Polygon in) {
 		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.ConvexityPolygon.class, in);
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultConvexityPolygon.class, in);
 		return result;
 	}
 
@@ -302,10 +302,10 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 	
-	@OpMethod(op = net.imagej.ops.geom.geom2d.ConvexityPolygon.class)
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultConvexityPolygon.class)
 	public DoubleType convexity(final DoubleType out, final Polygon in) {
 		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.ConvexityPolygon.class, out, in);
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultConvexityPolygon.class, out, in);
 		return result;
 	}
 

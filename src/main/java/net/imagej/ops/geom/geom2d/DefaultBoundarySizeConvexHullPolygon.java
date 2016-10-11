@@ -43,11 +43,11 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Geometric.BoundarySizeConvexHull.class,
 	label = "Geometric (2D): Perimeter Convex Hull",
 	priority = Priority.VERY_HIGH_PRIORITY)
-public class BoundarySizeConvexHullPolygon extends
+public class DefaultBoundarySizeConvexHullPolygon extends
 	AbstractBoundarySizeConvexHull<Polygon>
 {
 
-	public BoundarySizeConvexHullPolygon() {
+	public DefaultBoundarySizeConvexHullPolygon() {
 		super(Polygon.class);
 	}
 
