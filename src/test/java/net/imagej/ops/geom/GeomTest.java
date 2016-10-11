@@ -272,7 +272,7 @@ public class GeomTest extends AbstractFeatureTest {
 
 	@Test
 	public void testRugosity() {
-		final double expected = expensiveTestsEnabled ? 1.379 : 1.035052196;
+		final double expected = expensiveTestsEnabled ? 0.966134851 : 0.966134851;
 		// This test is just here for completeness.
 		// All input values of rugosity are verified.
 		assertEquals(Ops.Geometric.Rugosity.NAME, expected, ((DoubleType) ops.run(
