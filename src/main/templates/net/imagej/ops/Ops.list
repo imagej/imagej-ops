@@ -108,8 +108,8 @@ namespaces = ```
 	[name: "geom", iface: "Geometric", ops: [
 		[name: "boundary",                       iface: "Boundary"],
 		[name: "boundaryConvexHull",             iface: "BoundaryConvexHull"],
-		[name: "boundaryPixelCount",             iface: "BoundaryPixelCount"],
-		[name: "boundaryPixelCountConvexHull",   iface: "BoundaryPixelCountConvexHull"],
+		[name: "verticesCount",                  iface: "VerticesCount"],
+		[name: "verticesCountConvexHull",        iface: "VerticesCountConvexHull"],
 		[name: "boundarySize",                   iface: "BoundarySize"],
 		[name: "boundarySizeConvexHull",         iface: "BoundarySizeConvexHull"],
 		[name: "boundingBox",                    iface: "BoundingBox"],

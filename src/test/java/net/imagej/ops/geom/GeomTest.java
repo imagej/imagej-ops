@@ -293,7 +293,7 @@ public class GeomTest extends AbstractFeatureTest {
 		final double expected = expensiveTestsEnabled ? 32 : 179;
 		// Verified by hand. qhull merges faces and therefore has another number
 		// of surface pixels
-		assertEquals(Ops.Geometric.BoundaryPixelCountConvexHull.NAME, expected,
+		assertEquals(Ops.Geometric.VerticesCountConvexHull.NAME, expected,
 			((DoubleType) ops.run(BoundaryPixelCountConvexHullMesh.class, mesh))
 				.get(), AbstractFeatureTest.BIG_DELTA);
 
@@ -329,7 +329,7 @@ public class GeomTest extends AbstractFeatureTest {
 	@Test
 	public void testBoundaryPixelCount() {
 		final double expected = expensiveTestsEnabled ? 20996.0 : 2070.0;
-		assertEquals(Ops.Geometric.BoundaryPixelCount.NAME, expected,
+		assertEquals(Ops.Geometric.VerticesCount.NAME, expected,
 			((DoubleType) ops.run(DefaultSurfacePixelCount.class, mesh)).get(),
 			AbstractFeatureTest.BIG_DELTA);
 	}

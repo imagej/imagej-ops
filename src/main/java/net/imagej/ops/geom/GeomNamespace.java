@@ -70,7 +70,7 @@ public class GeomNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultSurfacePixelCount.class)
 	public DoubleType boundaryPixelCount(final Mesh in) {
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.Ops.Geometric.BoundaryPixelCount.class, in);
+			net.imagej.ops.Ops.Geometric.VerticesCount.class, in);
 		return result;
 	}
 	
@@ -82,10 +82,10 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.geom.geom2d.BoundaryPixelCountConvexHullPolygon.class)
+		op = net.imagej.ops.geom.geom2d.VerticesCountConvexHullPolygon.class)
 	public DoubleType boundaryPixelCountConvexHull(final Polygon in) {
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.Ops.Geometric.BoundaryPixelCountConvexHull.class, in);
+			net.imagej.ops.Ops.Geometric.VerticesCountConvexHull.class, in);
 		return result;
 	}
 
@@ -93,14 +93,14 @@ public class GeomNamespace extends AbstractNamespace {
 		op = net.imagej.ops.geom.geom3d.BoundaryPixelCountConvexHullMesh.class)
 	public DoubleType boundaryPixelCountConvexHull(final Mesh in) {
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.Ops.Geometric.BoundaryPixelCountConvexHull.class, in);
+			net.imagej.ops.Ops.Geometric.VerticesCountConvexHull.class, in);
 		return result;
 	}
 	
-	@OpMethod(op = net.imagej.ops.geom.geom2d.BoundaryPixelCountConvexHullPolygon.class)
+	@OpMethod(op = net.imagej.ops.geom.geom2d.VerticesCountConvexHullPolygon.class)
 	public DoubleType boundaryPixelCountConvexHull(final DoubleType out, final Polygon in) {
 		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.BoundaryPixelCountConvexHullPolygon.class, out, in);
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.VerticesCountConvexHullPolygon.class, out, in);
 		return result;
 	}
 
@@ -704,4 +704,61 @@ public class GeomNamespace extends AbstractNamespace {
 			(RandomAccessibleInterval<BitType>) ops().run(net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class, in, width, height);
 		return result;
 	}
+	
+	@OpMethod(op = net.imagej.ops.geom.geom2d.VerticesCountPolygon.class)
+	public DoubleType verticesCount(final Polygon in) {
+		final DoubleType result =
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.VerticesCountPolygon.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geom.geom2d.VerticesCountPolygon.class)
+	public DoubleType verticesCount(final DoubleType out, final Polygon in) {
+		final DoubleType result =
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.VerticesCountPolygon.class, out, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultSurfacePixelCount.class)
+	public DoubleType verticesCount(final Mesh in) {
+		final DoubleType result =
+			(DoubleType) ops().run(net.imagej.ops.geom.geom3d.DefaultSurfacePixelCount.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultSurfacePixelCount.class)
+	public DoubleType verticesCount(final DoubleType out, final Mesh in) {
+		final DoubleType result =
+			(DoubleType) ops().run(net.imagej.ops.geom.geom3d.DefaultSurfacePixelCount.class, out, in);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.geom.geom2d.VerticesCountConvexHullPolygon.class)
+	public DoubleType verticesCountConvexHull(final Polygon in) {
+		final DoubleType result =
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.VerticesCountConvexHullPolygon.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geom.geom2d.VerticesCountConvexHullPolygon.class)
+	public DoubleType verticesCountConvexHull(final DoubleType out, final Polygon in) {
+		final DoubleType result =
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.VerticesCountConvexHullPolygon.class, out, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geom.geom3d.BoundaryPixelCountConvexHullMesh.class)
+	public DoubleType verticesCountConvexHull(final Mesh in) {
+		final DoubleType result =
+			(DoubleType) ops().run(net.imagej.ops.geom.geom3d.BoundaryPixelCountConvexHullMesh.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geom.geom3d.BoundaryPixelCountConvexHullMesh.class)
+	public DoubleType verticesCountConvexHull(final DoubleType out, final Mesh in) {
+		final DoubleType result =
+			(DoubleType) ops().run(net.imagej.ops.geom.geom3d.BoundaryPixelCountConvexHullMesh.class, out, in);
+		return result;
+	}
+
 }
