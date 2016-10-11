@@ -57,4 +57,8 @@ public class ConstantThresholder<I extends Comparable<I>, O extends BooleanType<
 		output.set(threshold.compareTo(input) > 0);
 	}
 
+	public I getThreshold() {
+		return threshold;
+	}
+
 }

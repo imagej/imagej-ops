@@ -85,12 +85,13 @@ public class AbstractThresholdTest extends AbstractOpTest {
 		return ops.image().histogram(in);
 	}
 
+	@SuppressWarnings("rawtypes")
 	protected void assertThreshold(final int expected, final Object actual) {
-		final Object value =
-			actual instanceof List ? ListUtils.first((List<?>) actual) : actual;
-		assertTrue(value instanceof UnsignedShortType);
-		final UnsignedShortType threshold = (UnsignedShortType) value;
-		assertEquals(expected, threshold.get());
+		final Object output = actual instanceof List ? ListUtils.first((List<?>) actual) : actual;
+		assertTrue(output instanceof ConstantThresholder);
+		ConstantThresholder constantThresholder = (ConstantThresholder) output;
+		final UnsignedShortType threshold = (UnsignedShortType) constantThresholder.getThreshold();
+		assertEquals(0, threshold.compareTo(new UnsignedShortType(expected)));
 	}
 
 	protected Img<BitType> bitmap() throws IncompatibleTypeException {
