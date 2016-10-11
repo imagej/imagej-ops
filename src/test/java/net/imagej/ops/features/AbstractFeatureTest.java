@@ -245,9 +245,28 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	}
 
 	protected static Img<FloatType> getTestImage2D() {
-		final String imageName = expensiveTestsEnabled ? "cZgkFsK_expensive.png"
-			: "cZgkFsK.png";
+		final String imageName = expensiveTestsEnabled ? "2d_geometric_features_testlabel_expensive.png"
+			: "2d_geometric_features_testlabel.tif";
 		return openFloatImg(AbstractFeatureTest.class, imageName);
+	}
+	
+	protected static Polygon getPolygon() {
+		final String polygonName = expensiveTestsEnabled ? "2d_geometric_features_polygon_expensive.txt"
+			: "2d_geometric_features_polygon.txt";
+		List<RealPoint> vertices = new ArrayList<>();
+		try {
+			Files.lines(Paths.get(AbstractFeatureTest.class.getResource(polygonName).toURI()))
+										.forEach(l -> {
+											String[] coord = l.split(" ");
+											RealPoint v = new RealPoint(new double[]{	Double.parseDouble(coord[0]), 
+																				Double.parseDouble(coord[1])});
+											vertices.add(v);
+										});
+		} catch (IOException | URISyntaxException exc) {
+			// TODO Auto-generated catch block
+			exc.printStackTrace();
+		}
+		return new Polygon(vertices);
 	}
 
 	protected static Img<FloatType> getTestImage3D() {
