@@ -329,13 +329,6 @@ public class GeomNamespace extends AbstractNamespace {
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultEccentricity.class, out, in);
 		return result;
 	}
-
-	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultFeret.class)
-	public Pair<RealLocalizable, RealLocalizable> feret(final Polygon in) {
-		@SuppressWarnings("unchecked")
-		final Pair<RealLocalizable, RealLocalizable> result =
-			(Pair<RealLocalizable, RealLocalizable>) ops().run(
-				net.imagej.ops.Ops.Geometric.Feret.class, in);
 		return result;
 	}
 

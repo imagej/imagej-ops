@@ -122,7 +122,6 @@ namespaces = ```
 		[name: "convexHull",                     iface: "ConvexHull"],
 		[name: "convexity",                      iface: "Convexity"],
 		[name: "eccentricity",                   iface: "Eccentricity"],
-		[name: "feret",                          iface: "Feret"],
 		[name: "feretsAngle",                    iface: "FeretsAngle"],
 		[name: "feretsDiameter",                 iface: "FeretsDiameter"],
 		[name: "mainElongation",                 iface: "MainElongation"],
