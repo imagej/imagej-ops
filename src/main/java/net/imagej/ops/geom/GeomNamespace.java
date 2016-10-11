@@ -347,14 +347,14 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultFeretsDiameter.class)
-	public DoubleType feretsDiameter(final Polygon in) {
+	public DoubleType feretsDiameter(final Pair<RealLocalizable, RealLocalizable> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultFeretsDiameter.class, in);
 		return result;
 	}
-	
+
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultFeretsDiameter.class)
-	public DoubleType feretsDiameter(final DoubleType out, final Polygon in) {
+	public DoubleType feretsDiameter(final DoubleType out, final Pair<RealLocalizable, RealLocalizable> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultFeretsDiameter.class, out, in);
 		return result;
@@ -365,6 +365,20 @@ public class GeomNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final Pair<RealLocalizable, RealLocalizable> result =
 			(Pair<RealLocalizable, RealLocalizable>) ops().run(net.imagej.ops.geom.geom2d.DefaultMaximumFeret.class, in);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMaximumFeretDiameter.class)
+	public DoubleType maximumFeretsDiameter(final Polygon in) {
+		final DoubleType result =
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultMaximumFeretDiameter.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMaximumFeretDiameter.class)
+	public DoubleType maximumFeretsDiameter(final DoubleType out, final Polygon in) {
+		final DoubleType result =
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultMaximumFeretDiameter.class, out, in);
 		return result;
 	}
 	
@@ -401,6 +415,20 @@ public class GeomNamespace extends AbstractNamespace {
 	public DoubleType minimumFeretsAngle(final DoubleType out, final Polygon in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultMinimumFeretAngle.class, out, in);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMinimumFeretDiameter.class)
+	public DoubleType minimumFeretsDiameter(final Polygon in) {
+		final DoubleType result =
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultMinimumFeretDiameter.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMinimumFeretDiameter.class)
+	public DoubleType minimumFeretsDiameter(final DoubleType out, final Polygon in) {
+		final DoubleType result =
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultMinimumFeretDiameter.class, out, in);
 		return result;
 	}
 	
