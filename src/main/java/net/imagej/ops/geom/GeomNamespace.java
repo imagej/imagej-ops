@@ -329,9 +329,21 @@ public class GeomNamespace extends AbstractNamespace {
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultEccentricity.class, out, in);
 		return result;
 	}
+	
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultFeretsDiameterForAngle.class)
+	public DoubleType feretsDiameter(final Polygon in, final double angle) {
+		final DoubleType result =
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultFeretsDiameterForAngle.class, in, angle);
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultFeretsDiameterForAngle.class)
+	public DoubleType feretsDiameter(final DoubleType out, final Polygon in, final double angle) {
+		final DoubleType result =
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultFeretsDiameterForAngle.class, out, in, angle);
+		return result;
+	}
+	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultFeretsAngle.class)
 	public DoubleType feretsAngle(final Pair<RealLocalizable, RealLocalizable> in) {
 		final DoubleType result =
