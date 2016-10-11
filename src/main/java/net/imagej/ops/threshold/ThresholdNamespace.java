@@ -126,29 +126,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 	// -- huang --
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.huang.HuangThresholdLearner.class)
-	public <T extends RealType<T>> T huang(final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops()
-				.run(
-					net.imagej.ops.Ops.Threshold.Huang.class,
-					in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.huang.HuangThresholdLearner.class)
-	public <T extends RealType<T>> T huang(final T out, final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(
-				net.imagej.ops.Ops.Threshold.Huang.class,
-				out, in);
-		return result;
-	}
-
-	@OpMethod(
 		op = net.imagej.ops.threshold.GlobalThresholders.Huang.class)
 	public <T extends RealType<T>> Iterable<BitType> huang(final IterableInterval<T> in) {
 		@SuppressWarnings("unchecked")
@@ -195,27 +172,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final IterableInterval<B> result = (IterableInterval<B>) ops().run(
 			net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalHuangThreshold.class,
 			out, in, shape, outOfBoundsFactory);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.ij1.IJ1ThresholdLearner.class)
-	public <T extends RealType<T>> T ij1(final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(
-				net.imagej.ops.Ops.Threshold.IJ1.class, in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.ij1.IJ1ThresholdLearner.class)
-	public <T extends RealType<T>> T ij1(final T out, final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(
-				net.imagej.ops.Ops.Threshold.IJ1.class, out,
-				in);
 		return result;
 	}
 
@@ -269,34 +225,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final IterableInterval<B> result = (IterableInterval<B>) ops().run(
 			net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalIJ1Threshold.class,
 			out, in, shape, outOfBoundsFactory);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.intermodes.IntermodesThresholdLearner.class)
-	public
-		<T extends RealType<T>> List<Object> intermodes(final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final List<Object> result =
-			(List<Object>) ops()
-				.run(
-					net.imagej.ops.Ops.Threshold.Intermodes.class,
-					in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.intermodes.IntermodesThresholdLearner.class)
-	public
-		<T extends RealType<T>> List<Object> intermodes(final T out,
-			final Histogram1d<T> in)
-	{
-		@SuppressWarnings("unchecked")
-		final List<Object> result =
-			(List<Object>) ops()
-				.run(
-					net.imagej.ops.Ops.Threshold.Intermodes.class,
-					out, in);
 		return result;
 	}
 
@@ -379,30 +307,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.isoData.IsoDataThresholdLearner.class)
-	public <T extends RealType<T>> List<Object> isoData(final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final List<Object> result =
-			(List<Object>) ops().run(
-				net.imagej.ops.Ops.Threshold.IsoData.class,
-				in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.isoData.IsoDataThresholdLearner.class)
-	public <T extends RealType<T>> List<Object> isoData(final T out,
-		final Histogram1d<T> in)
-	{
-		@SuppressWarnings("unchecked")
-		final List<Object> result =
-			(List<Object>) ops().run(
-				net.imagej.ops.Ops.Threshold.IsoData.class,
-				out, in);
-		return result;
-	}
-
-	@OpMethod(
 		op = net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalIsoDataThreshold.class)
 	public <T extends RealType<T>, B extends BooleanType<B>> IterableInterval<B>
 		isoData(final IterableInterval<B> out, final RandomAccessibleInterval<T> in,
@@ -449,27 +353,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 			(Iterable<BitType>) ops()
 				.run(net.imagej.ops.Ops.Threshold.Li.class,
 					out, in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.li.LiThresholdLearner.class)
-	public <T extends RealType<T>> T li(final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(
-				net.imagej.ops.Ops.Threshold.Li.class, in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.li.LiThresholdLearner.class)
-	public <T extends RealType<T>> T li(final T out, final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(
-				net.imagej.ops.Ops.Threshold.Li.class, out,
-				in);
 		return result;
 	}
 
@@ -986,32 +869,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.maxEntropy.MaxEntropyThresholdLearner.class)
-	public
-		<T extends RealType<T>> T maxEntropy(final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops()
-				.run(
-					net.imagej.ops.Ops.Threshold.MaxEntropy.class,
-					in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.maxEntropy.MaxEntropyThresholdLearner.class)
-	public
-		<T extends RealType<T>> T maxEntropy(final T out, final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops()
-				.run(
-					net.imagej.ops.Ops.Threshold.MaxEntropy.class,
-					out, in);
-		return result;
-	}
-
-	@OpMethod(
 		op = net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMaxEntropyThreshold.class)
 	public <T extends RealType<T>, B extends BooleanType<B>> IterableInterval<B>
 		maxEntropy(final IterableInterval<B> out,
@@ -1060,35 +917,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final Iterable<BitType> result =
 			(Iterable<BitType>) ops()
-				.run(
-					net.imagej.ops.Ops.Threshold.MaxLikelihood.class,
-					out, in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.maxLikelihood.MaxLikelihoodThresholdLearner.class)
-	public
-		<T extends RealType<T>> List<Object> maxLikelihood(final Histogram1d<T> in)
-	{
-		@SuppressWarnings("unchecked")
-		final List<Object> result =
-			(List<Object>) ops()
-				.run(
-					net.imagej.ops.Ops.Threshold.MaxLikelihood.class,
-					in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.maxLikelihood.MaxLikelihoodThresholdLearner.class)
-	public
-		<T extends RealType<T>> List<Object> maxLikelihood(final T out,
-			final Histogram1d<T> in)
-	{
-		@SuppressWarnings("unchecked")
-		final List<Object> result =
-			(List<Object>) ops()
 				.run(
 					net.imagej.ops.Ops.Threshold.MaxLikelihood.class,
 					out, in);
@@ -1146,27 +974,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.mean.MeanThresholdLearner.class)
-	public <T extends RealType<T>> T mean(final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(
-				net.imagej.ops.Ops.Threshold.Mean.class, in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.mean.MeanThresholdLearner.class)
-	public <T extends RealType<T>> T mean(final T out, final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(
-				net.imagej.ops.Ops.Threshold.Mean.class,
-				out, in);
-		return result;
-	}
-
-	@OpMethod(
 		op = net.imagej.ops.threshold.GlobalThresholders.MinError.class)
 	public <T extends RealType<T>> Iterable<BitType> minError(final IterableInterval<T> in) {
 		@SuppressWarnings("unchecked")
@@ -1185,32 +992,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final Iterable<BitType> result =
 			(Iterable<BitType>) ops().run(
-				net.imagej.ops.Ops.Threshold.MinError.class,
-				out, in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.minError.MinErrorThresholdLearner.class)
-	public
-		<T extends RealType<T>> List<Object> minError(final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final List<Object> result =
-			(List<Object>) ops().run(
-				net.imagej.ops.Ops.Threshold.MinError.class,
-				in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.minError.MinErrorThresholdLearner.class)
-	public
-		<T extends RealType<T>> List<Object> minError(final T out,
-			final Histogram1d<T> in)
-	{
-		@SuppressWarnings("unchecked")
-		final List<Object> result =
-			(List<Object>) ops().run(
 				net.imagej.ops.Ops.Threshold.MinError.class,
 				out, in);
 		return result;
@@ -1269,30 +1050,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.minimum.MinimumThresholdLearner.class)
-	public <T extends RealType<T>> List<Object> minimum(final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final List<Object> result =
-			(List<Object>) ops().run(
-				net.imagej.ops.Ops.Threshold.Minimum.class,
-				in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.minimum.MinimumThresholdLearner.class)
-	public <T extends RealType<T>> List<Object> minimum(final T out,
-		final Histogram1d<T> in)
-	{
-		@SuppressWarnings("unchecked")
-		final List<Object> result =
-			(List<Object>) ops().run(
-				net.imagej.ops.Ops.Threshold.Minimum.class,
-				out, in);
-		return result;
-	}
-
-	@OpMethod(
 		op = net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMinimumThreshold.class)
 	public <T extends RealType<T>, B extends BooleanType<B>> IterableInterval<B>
 		minimum(final IterableInterval<B> out, final RandomAccessibleInterval<T> in,
@@ -1316,30 +1073,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final IterableInterval<B> result = (IterableInterval<B>) ops().run(
 			net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMinimumThreshold.class,
 			out, in, shape, outOfBoundsFactory);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.moments.MomentsThresholdLearner.class)
-	public <T extends RealType<T>> T moments(final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(
-				net.imagej.ops.Ops.Threshold.Moments.class,
-				in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.moments.MomentsThresholdLearner.class)
-	public <T extends RealType<T>> T
-		moments(final T out, final Histogram1d<T> in)
-	{
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(
-				net.imagej.ops.Ops.Threshold.Moments.class,
-				out, in);
 		return result;
 	}
 
@@ -1478,32 +1211,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.percentile.PercentileThresholdLearner.class)
-	public
-		<T extends RealType<T>> T percentile(final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops()
-				.run(
-					net.imagej.ops.Ops.Threshold.Percentile.class,
-					in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.percentile.PercentileThresholdLearner.class)
-	public
-		<T extends RealType<T>> T percentile(final T out, final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops()
-				.run(
-					net.imagej.ops.Ops.Threshold.Percentile.class,
-					out, in);
-		return result;
-	}
-
-	@OpMethod(
 		op = net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalPercentileThreshold.class)
 	public <T extends RealType<T>, B extends BooleanType<B>> IterableInterval<B>
 		percentile(final IterableInterval<B> out,
@@ -1552,35 +1259,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final Iterable<BitType> result =
 			(Iterable<BitType>) ops()
-				.run(
-					net.imagej.ops.Ops.Threshold.RenyiEntropy.class,
-					out, in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.renyiEntropy.RenyiEntropyThresholdLearner.class)
-	public
-		<T extends RealType<T>> T renyiEntropy(final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops()
-				.run(
-					net.imagej.ops.Ops.Threshold.RenyiEntropy.class,
-					in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.renyiEntropy.RenyiEntropyThresholdLearner.class)
-	public
-		<T extends RealType<T>>
-		T
-		renyiEntropy(final T out, final Histogram1d<T> in)
-	{
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops()
 				.run(
 					net.imagej.ops.Ops.Threshold.RenyiEntropy.class,
 					out, in);
@@ -1686,30 +1364,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.triangle.TriangleThresholdLearner.class)
-	public
-		<T extends RealType<T>> T triangle(final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(
-				net.imagej.ops.Ops.Threshold.Triangle.class,
-				in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.triangle.TriangleThresholdLearner.class)
-	public
-		<T extends RealType<T>> T triangle(final T out, final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(
-				net.imagej.ops.Ops.Threshold.Triangle.class,
-				out, in);
-		return result;
-	}
-
-	@OpMethod(
 		op = net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalTriangleThreshold.class)
 	public <T extends RealType<T>, B extends BooleanType<B>> IterableInterval<B>
 		triangle(final IterableInterval<B> out,
@@ -1733,27 +1387,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final IterableInterval<B> result = (IterableInterval<B>) ops().run(
 			net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalTriangleThreshold.class,
 			out, in, shape, outOfBoundsFactory);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.yen.YenThresholdLearner.class)
-	public <T extends RealType<T>> T yen(final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(
-				net.imagej.ops.Ops.Threshold.Yen.class, in);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.yen.YenThresholdLearner.class)
-	public <T extends RealType<T>> T yen(final T out, final Histogram1d<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(
-				net.imagej.ops.Ops.Threshold.Yen.class, out,
-				in);
 		return result;
 	}
 
