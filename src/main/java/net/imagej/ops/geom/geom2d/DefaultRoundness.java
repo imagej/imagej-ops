@@ -42,6 +42,8 @@ import org.scijava.plugin.Plugin;
 /**
  * Generic implementation of {@code geom.roundness}.
  * 
+ * Based on https://imagej.nih.gov/ij/plugins/descriptors.html.
+ * 
  * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.Roundness.class, label = "Geometric (2D): Roundness")
