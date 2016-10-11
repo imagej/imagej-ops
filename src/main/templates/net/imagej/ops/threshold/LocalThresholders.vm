@@ -3,7 +3,7 @@
  * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 - 2016 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,57 +28,51 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.otsu;
+package net.imagej.ops.threshold;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.AbstractLocalThresholder;
-import net.imagej.ops.threshold.DefaultLocalThresholder;
-import net.imglib2.IterableInterval;
+import net.imagej.ops.threshold.ThresholdLearner;
+#foreach ($method in $methods)
+#set ($iface = "Ops.Threshold.${method.iface}")
+import net.imagej.ops.threshold.${method.name}.${method.iface}ThresholdLearner;
+#end
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.neighborhood.Shape;
-import net.imglib2.outofbounds.OutOfBoundsBorderFactory;
-import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * TODO Documentation
+ * Ops that apply a global threshold locally to a {@link RandomAccessibleInterval}.
  * 
  * @author Stefan Helfrich (University of Konstanz)
- * @param <I> type of input
- * @param <O> type of output
  */
-@Plugin(type = Ops.Threshold.Otsu.class, priority = Priority.HIGH_PRIORITY)
-public class LocalOtsu<I extends RealType<I>, O extends BooleanType<O>> extends
-	AbstractLocalThresholder<I, O> implements Ops.Threshold.Otsu
-{
+public final class LocalThresholders {
 
-	@Parameter
-	private Shape shape;
-
-	@Parameter(required = false)
-	private OutOfBoundsFactory<I, RandomAccessibleInterval<I>> outOfBoundsFactory =
-		new OutOfBoundsBorderFactory<>();
-	
-	public OtsuThresholdLearner<I, O> learner;
-	public DefaultLocalThresholder<I, O> localThresholder;
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public void initialize() {
-		learner = ops().op(OtsuThresholdLearner.class, in());
-		localThresholder = ops().op(DefaultLocalThresholder.class, in(), out(), learner, shape, outOfBoundsFactory);
+	private LocalThresholders() {
+		// NB: Prevent instantiation of utility class.
 	}
+#foreach ($method in $methods)
+#set ($iface = "Ops.Threshold.${method.iface}")
 
-	@Override
-	public void compute1(final RandomAccessibleInterval<I> input,
-		final IterableInterval<O> output)
+	/**
+	 * @param <I> type of input
+	 * @param <O> type of output
+	 */
+	@Plugin(type = ${iface}.class, priority = Priority.HIGH_PRIORITY)
+	public static class Local${method.iface}<I extends RealType<I>, O extends BooleanType<O>> extends
+		AbstractLocalThresholder<I, O> implements ${iface}
 	{
-		localThresholder.compute1(input, output);
+	
+		@SuppressWarnings("unchecked")
+		@Override
+		protected ThresholdLearner<I, O> getLearner() {
+			return ops().op(${method.iface}ThresholdLearner.class, in());
+		}
+	
 	}
+#end
 
 }

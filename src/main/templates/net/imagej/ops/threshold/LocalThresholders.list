@@ -1,0 +1,21 @@
+[LocalThresholders.java]
+methods = ```
+[
+	[name: "huang",         iface: "Huang"],
+	[name: "ij1",           iface: "IJ1"],
+	[name: "intermodes",    iface: "Intermodes"],
+	[name: "isoData",       iface: "IsoData"],
+	[name: "li",            iface: "Li"],
+	[name: "maxEntropy",    iface: "MaxEntropy"],
+	[name: "maxLikelihood", iface: "MaxLikelihood"],
+	[name: "minError",      iface: "MinError"],
+	[name: "minimum",       iface: "Minimum"],
+	[name: "moments",       iface: "Moments"],
+	[name: "otsu",          iface: "Otsu"],
+	[name: "percentile",    iface: "Percentile"],
+	[name: "renyiEntropy",  iface: "RenyiEntropy"],
+	[name: "shanbhag",      iface: "Shanbhag"],
+	[name: "triangle",      iface: "Triangle"],
+	[name: "yen",           iface: "Yen"]
+]
+```

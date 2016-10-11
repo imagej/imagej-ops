@@ -31,14 +31,21 @@
 package net.imagej.ops.threshold;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.pixml.DefaultNeighborhoodHardClusterer;
+import net.imagej.ops.pixml.NeighborhoodHardClusterer;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
-import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.neighborhood.RectangleShape;
+import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.img.Img;
+import net.imglib2.outofbounds.OutOfBoundsBorderFactory;
+import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.logic.BitType;
+
+import org.scijava.plugin.Parameter;
 
 /**
  * Abstract superclass for {@link LocalThresholder} implementations.
@@ -48,9 +55,19 @@ import net.imglib2.type.logic.BitType;
  * @param <O> type of output
  */
 public abstract class AbstractLocalThresholder<I, O extends BooleanType<O>>
-	extends AbstractUnaryHybridCF<RandomAccessibleInterval<I>, IterableInterval<O>>
+	extends AbstractUnaryHybridCF<RandomAccessibleInterval<I>, Iterable<O>>
 	implements LocalThresholder<I, O>
 {
+
+	@Parameter
+	public Shape shape;
+
+	@Parameter(required = false)
+	private OutOfBoundsFactory<I, RandomAccessibleInterval<I>> outOfBoundsFactory =
+		new OutOfBoundsBorderFactory<>();
+
+	/** Op that is used to learn and apply to the whole input */
+	public NeighborhoodHardClusterer<I, O> globalThresholder;
 
 	/** Op that is used for creating the output image */
 	protected UnaryFunctionOp<RandomAccessibleInterval<I>, Img<BitType>> imgCreator;
@@ -60,13 +77,23 @@ public abstract class AbstractLocalThresholder<I, O extends BooleanType<O>>
 	public void initialize() {
 		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
 			Img.class, in(), new BitType());
+		globalThresholder = ops().op(DefaultNeighborhoodHardClusterer.class, in(), out(),
+			getLearner(), shape, outOfBoundsFactory);
+	}
+
+	@Override
+	public void compute1(final RandomAccessibleInterval<I> input,
+		final Iterable<O> output)
+	{
+		globalThresholder.compute1(input, output);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public IterableInterval<O> createOutput(
-		final RandomAccessibleInterval<I> input)
-	{
-		return (IterableInterval<O>) imgCreator.compute1(input);
+	public Iterable<O> createOutput(RandomAccessibleInterval<I> input) {
+		return (Iterable<O>) imgCreator.compute1(input);
 	}
+
+	protected abstract ThresholdLearner<I, O> getLearner();
+
 }

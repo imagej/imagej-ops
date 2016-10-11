@@ -33,11 +33,14 @@ package net.imagej.ops.threshold.apply;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Threshold.Huang;
 import net.imagej.ops.Ops.Threshold.IJ1;
 import net.imagej.ops.Ops.Threshold.Intermodes;
 import net.imagej.ops.Ops.Threshold.IsoData;
 import net.imagej.ops.Ops.Threshold.Li;
+import net.imagej.ops.Ops.Threshold.LocalBernsenThreshold;
+import net.imagej.ops.Ops.Threshold.LocalMeanThreshold;
 import net.imagej.ops.Ops.Threshold.MaxEntropy;
 import net.imagej.ops.Ops.Threshold.MaxLikelihood;
 import net.imagej.ops.Ops.Threshold.MinError;
@@ -49,26 +52,23 @@ import net.imagej.ops.Ops.Threshold.RenyiEntropy;
 import net.imagej.ops.Ops.Threshold.Shanbhag;
 import net.imagej.ops.Ops.Threshold.Triangle;
 import net.imagej.ops.Ops.Threshold.Yen;
-import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalHuangThreshold;
-import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalIJ1Threshold;
-import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalIntermodesThreshold;
-import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalIsoDataThreshold;
-import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalLiThreshold;
-import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMaxEntropyThreshold;
-import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMaxLikelihoodThreshold;
-import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMinErrorThreshold;
-import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMinimumThreshold;
-import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMomentsThreshold;
-import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalPercentileThreshold;
-import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalRenyiEntropyThreshold;
-import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalShanbhagThreshold;
-import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalTriangleThreshold;
-import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalYenThreshold;
 import net.imagej.ops.threshold.LocalThresholdMethod;
+import net.imagej.ops.threshold.LocalThresholders.LocalHuang;
+import net.imagej.ops.threshold.LocalThresholders.LocalIJ1;
+import net.imagej.ops.threshold.LocalThresholders.LocalIntermodes;
+import net.imagej.ops.threshold.LocalThresholders.LocalIsoData;
+import net.imagej.ops.threshold.LocalThresholders.LocalLi;
+import net.imagej.ops.threshold.LocalThresholders.LocalMaxEntropy;
+import net.imagej.ops.threshold.LocalThresholders.LocalMaxLikelihood;
+import net.imagej.ops.threshold.LocalThresholders.LocalOtsu;
+import net.imagej.ops.threshold.LocalThresholders.LocalPercentile;
+import net.imagej.ops.threshold.LocalThresholders.LocalRenyiEntropy;
+import net.imagej.ops.threshold.LocalThresholders.LocalShanbhag;
+import net.imagej.ops.threshold.LocalThresholders.LocalTriangle;
+import net.imagej.ops.threshold.LocalThresholders.LocalYen;
 import net.imagej.ops.threshold.ThresholdNamespace;
-import net.imagej.ops.threshold.localBernsen.LocalBernsenThreshold;
+import net.imagej.ops.threshold.localBernsen.LocalBernsen;
 import net.imagej.ops.threshold.localContrast.LocalContrastThreshold;
-import net.imagej.ops.threshold.localMean.LocalMeanThreshold;
 import net.imagej.ops.threshold.localMean.LocalMeanThresholdIntegral;
 import net.imagej.ops.threshold.localMedian.LocalMedianThreshold;
 import net.imagej.ops.threshold.localMidGrey.LocalMidGreyThreshold;
@@ -78,7 +78,6 @@ import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkarThreshold;
 import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkarThresholdIntegral;
 import net.imagej.ops.threshold.localSauvola.LocalSauvolaThreshold;
 import net.imagej.ops.threshold.localSauvola.LocalSauvolaThresholdIntegral;
-import net.imagej.ops.threshold.otsu.LocalOtsu;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
@@ -255,7 +254,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testLocalBernsenThreshold() {
-		ops.run(LocalBernsenThreshold.class, out, in, new RectangleShape(3, false),
+		ops.run(LocalBernsen.class, out, in, new RectangleShape(3, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE), 1.0,
 			Double.MAX_VALUE * 0.5);
 
@@ -274,7 +273,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalHuangThreshold
+	 * @see LocalHuang
 	 */
 	@Test
 	public void testLocalHuangThreshold() {
@@ -285,7 +284,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalIJ1Threshold
+	 * @see LocalIJ1
 	 */
 	@Test
 	public void testLocalIJ1Threshold() {
@@ -296,7 +295,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalIntermodesThreshold
+	 * @see LocalIntermodes
 	 */
 	@Test
 	public void testLocalIntermodesThreshold() {
@@ -307,7 +306,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalIsoDataThreshold
+	 * @see LocalIsoData
 	 */
 	@Test
 	public void testLocalIsoDataThreshold() {
@@ -319,7 +318,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalLiThreshold
+	 * @see LocalLi
 	 */
 	@Test
 	public void testLocalLiThreshold() {
@@ -330,7 +329,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalMaxEntropyThreshold
+	 * @see LocalMaxEntropy
 	 */
 	@Test
 	public void testLocalMaxEntropyThreshold() {
@@ -341,7 +340,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalMaxLikelihoodThreshold
+	 * @see LocalMaxLikelihood
 	 */
 	@Test
 	public void testLocalMaxLikelihoodThreshold() {
@@ -357,7 +356,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testLocalThresholdMean() {
-		ops.run(LocalMeanThreshold.class, out, in, new RectangleShape(1, false),
+		ops.run(Ops.Threshold.LocalMeanThreshold.class, out, in, new RectangleShape(1, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
 			0.0);
 
@@ -396,7 +395,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 		}
 		
 		// Default implementation
-		ops.run(LocalMeanThreshold.class, out2, in, new RectangleShape(2, false),
+		ops.run(Ops.Threshold.LocalMeanThreshold.class, out2, in, new RectangleShape(2, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
 			0.0);
 		
@@ -535,7 +534,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalPercentileThreshold
+	 * @see LocalPercentile
 	 */
 	@Test
 	public void testLocalPercentileThreshold() {
@@ -600,7 +599,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalRenyiEntropyThreshold
+	 * @see LocalRenyiEntropy
 	 */
 	@Test
 	public void testLocalRenyiEntropyThreshold() {
@@ -665,7 +664,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalShanbhagThreshold
+	 * @see LocalShanbhag
 	 */
 	@Test
 	public void testLocalShanbhagThreshold() {
@@ -676,7 +675,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalTriangleThreshold
+	 * @see LocalTriangle
 	 */
 	@Test
 	public void testLocalTriangleThreshold() {
@@ -687,7 +686,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalYenThreshold
+	 * @see LocalYen
 	 */
 	@Test
 	public void testLocalYenThreshold() {
