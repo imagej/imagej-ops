@@ -359,7 +359,23 @@ public class GeomNamespace extends AbstractNamespace {
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultFeretsDiameter.class, out, in);
 		return result;
 	}
+	
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMaximumFeret.class)
+	public Pair<RealLocalizable, RealLocalizable> maximumFeret(final Polygon in) {
+		@SuppressWarnings("unchecked")
+		final Pair<RealLocalizable, RealLocalizable> result =
+			(Pair<RealLocalizable, RealLocalizable>) ops().run(net.imagej.ops.geom.geom2d.DefaultMaximumFeret.class, in);
+		return result;
+	}
 
+	
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMinimumFeret.class)
+	public Pair<RealLocalizable, RealLocalizable> minimumFeret(final Polygon in) {
+		@SuppressWarnings("unchecked")
+		final Pair<RealLocalizable, RealLocalizable> result =
+			(Pair<RealLocalizable, RealLocalizable>) ops().run(net.imagej.ops.geom.geom2d.DefaultMinimumFeret.class, in);
+		return result;
+	}
 	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultMainElongation.class)
 	public <B extends BooleanType<B>> DoubleType mainElongation(
 		final IterableRegion<B> in)
