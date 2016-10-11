@@ -333,19 +333,19 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultFeretsAngle.class)
-	public DoubleType feretsAngle(final Polygon in) {
+	public DoubleType feretsAngle(final Pair<RealLocalizable, RealLocalizable> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultFeretsAngle.class, in);
 		return result;
 	}
-	
+
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultFeretsAngle.class)
-	public DoubleType feretsAngle(final DoubleType out, final Polygon in) {
+	public DoubleType feretsAngle(final DoubleType out, final Pair<RealLocalizable, RealLocalizable> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultFeretsAngle.class, out, in);
 		return result;
 	}
-
+	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultFeretsDiameter.class)
 	public DoubleType feretsDiameter(final Polygon in) {
 		final DoubleType result =
@@ -367,7 +367,20 @@ public class GeomNamespace extends AbstractNamespace {
 			(Pair<RealLocalizable, RealLocalizable>) ops().run(net.imagej.ops.geom.geom2d.DefaultMaximumFeret.class, in);
 		return result;
 	}
+	
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMaximumFeretAngle.class)
+	public DoubleType maximumFeretsAngle(final Polygon in) {
+		final DoubleType result =
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultMaximumFeretAngle.class, in);
+		return result;
+	}
 
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMaximumFeretAngle.class)
+	public DoubleType maximumFeretsAngle(final DoubleType out, final Polygon in) {
+		final DoubleType result =
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultMaximumFeretAngle.class, out, in);
+		return result;
+	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMinimumFeret.class)
 	public Pair<RealLocalizable, RealLocalizable> minimumFeret(final Polygon in) {
@@ -376,6 +389,21 @@ public class GeomNamespace extends AbstractNamespace {
 			(Pair<RealLocalizable, RealLocalizable>) ops().run(net.imagej.ops.geom.geom2d.DefaultMinimumFeret.class, in);
 		return result;
 	}
+
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMinimumFeretAngle.class)
+	public DoubleType minimumFeretsAngle(final Polygon in) {
+		final DoubleType result =
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultMinimumFeretAngle.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMinimumFeretAngle.class)
+	public DoubleType minimumFeretsAngle(final DoubleType out, final Polygon in) {
+		final DoubleType result =
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultMinimumFeretAngle.class, out, in);
+		return result;
+	}
+	
 	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultMainElongation.class)
 	public <B extends BooleanType<B>> DoubleType mainElongation(
 		final IterableRegion<B> in)

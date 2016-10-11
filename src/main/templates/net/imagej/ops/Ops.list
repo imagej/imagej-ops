@@ -125,6 +125,8 @@ namespaces = ```
 		[name: "maximumFeret",		 	 iface: "MaximumFeret"],
 		[name: "minimumFeret",		 	 iface: "MinimumFeret"],
 		[name: "feretsAngle",                    iface: "FeretsAngle"],
+		[name: "maximumFeretsAngle",             iface: "MaximumFeretsAngle"],
+		[name: "minimumFeretsAngle",             iface: "MinimumFeretsAngle"],
 		[name: "feretsDiameter",                 iface: "FeretsDiameter"],
 		[name: "mainElongation",                 iface: "MainElongation"],
 		[name: "majorAxis",                      iface: "MajorAxis"],
