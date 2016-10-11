@@ -30,14 +30,14 @@
 
 package net.imagej.ops.threshold.minimum;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.threshold.AbstractComputeThresholdHistogram;
+import net.imagej.ops.Op;
+import net.imagej.ops.threshold.AbstractHistogramThresholdLearner;
 import net.imagej.ops.threshold.Thresholds;
 import net.imglib2.histogram.Histogram1d;
+import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
-import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -49,16 +49,18 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Barry DeZonia
  * @author Gabriel Landini
+ * @param <I> type of input
+ * @param <O> type of output
  */
-@Plugin(type = Ops.Threshold.Minimum.class, priority = Priority.HIGH_PRIORITY)
-public class ComputeMinimumThreshold<T extends RealType<T>> extends
-		AbstractComputeThresholdHistogram<T> implements Ops.Threshold.Minimum {
+@Plugin(type = Op.class)
+public class MinimumThresholdLearner<I extends RealType<I>, O extends BooleanType<O>>
+extends AbstractHistogramThresholdLearner<I, O> {
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private String errMsg;
 
 	@Override
-	public long computeBin(final Histogram1d<T> hist) {
+	public long computeBin(final Histogram1d<I> hist) {
 		long[] histogram = hist.toLongArray();
 		if (histogram.length < 2)
 			return 0;

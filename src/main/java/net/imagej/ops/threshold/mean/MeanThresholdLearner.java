@@ -28,33 +28,48 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.shanbhag;
+package net.imagej.ops.threshold.mean;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.threshold.AbstractGlobalThresholder;
-import net.imagej.ops.threshold.ThresholdLearner;
+import net.imagej.ops.Op;
+import net.imagej.ops.threshold.AbstractHistogramThresholdLearner;
+import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
+// NB - this plugin adapted from Gabriel Landini's code of his AutoThreshold
+// plugin found in Fiji (version 1.14).
+
 /**
- * Implements Shanbhag's threshold method.
+ * Implements a mean threshold method by Glasbey.
  * 
- * @author Stefan Helfrich (University of Konstanz)
+ * @author Barry DeZonia
+ * @author Gabriel Landini
  * @param <I> type of input
  * @param <O> type of output
  */
-@Plugin(type = Ops.Threshold.Shanbhag.class, priority = Priority.HIGH_PRIORITY)
-public class Shanbhag<I extends RealType<I>, O extends BooleanType<O>> extends
-	AbstractGlobalThresholder<I, O> implements Ops.Threshold.Shanbhag
-{
+@Plugin(type = Op.class)
+public class MeanThresholdLearner<I extends RealType<I>, O extends BooleanType<O>>
+extends AbstractHistogramThresholdLearner<I, O> {
 
-	@SuppressWarnings("unchecked")
 	@Override
-	protected ThresholdLearner<I, O> getLearner() {
-		return ops().op(ShanbhagThresholdLearner.class, in());
+	public long computeBin(final Histogram1d<I> hist) {
+		long[] histogram = hist.toLongArray();
+		// C. A. Glasbey,
+		// "An analysis of histogram-based thresholding algorithms,"
+		// CVGIP: Graphical Models and Image Processing, vol. 55, pp. 532-537,
+		// 1993.
+		//
+		// The threshold is the mean of the greyscale data
+		int threshold = -1;
+		double tot = 0, sum = 0;
+		for (int i = 0; i < histogram.length; i++) {
+			tot += histogram[i];
+			sum += (i * histogram[i]);
+		}
+		threshold = (int) Math.floor(sum / tot);
+		return threshold;
 	}
 
 }

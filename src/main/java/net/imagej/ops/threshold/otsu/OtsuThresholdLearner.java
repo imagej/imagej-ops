@@ -46,7 +46,6 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Barry DeZonia
  * @author Gabriel Landini
- * @author Stefan Helfrich (University of Konstanz)
  * @param <I> type of input
  * @param <O> type of output
  */

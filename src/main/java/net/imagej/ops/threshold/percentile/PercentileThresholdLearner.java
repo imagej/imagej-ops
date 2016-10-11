@@ -27,47 +27,72 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package net.imagej.ops.threshold.percentile;
 
-package net.imagej.ops.threshold.mean;
-
-import net.imagej.ops.Ops;
-import net.imagej.ops.threshold.AbstractComputeThresholdHistogram;
+import net.imagej.ops.Op;
+import net.imagej.ops.threshold.AbstractHistogramThresholdLearner;
 import net.imglib2.histogram.Histogram1d;
+import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 // NB - this plugin adapted from Gabriel Landini's code of his AutoThreshold
 // plugin found in Fiji (version 1.14).
 
 /**
- * Implements a mean threshold method by Glasbey.
+ * Implements a percentile threshold method by Doyle.
  * 
  * @author Barry DeZonia
  * @author Gabriel Landini
+ * @param <I> type of input
+ * @param <O> type of output
  */
-@Plugin(type = Ops.Threshold.Mean.class, priority = Priority.HIGH_PRIORITY)
-public class ComputeMeanThreshold<T extends RealType<T>> extends
-		AbstractComputeThresholdHistogram<T> implements Ops.Threshold.Mean {
+@Plugin(type = Op.class)
+public class PercentileThresholdLearner<I extends RealType<I>, O extends BooleanType<O>>
+	extends AbstractHistogramThresholdLearner<I, O>
+{
 
 	@Override
-	public long computeBin(final Histogram1d<T> hist) {
+	public long computeBin(final Histogram1d<I> hist) {
 		long[] histogram = hist.toLongArray();
-		// C. A. Glasbey,
-		// "An analysis of histogram-based thresholding algorithms,"
-		// CVGIP: Graphical Models and Image Processing, vol. 55, pp. 532-537,
-		// 1993.
-		//
-		// The threshold is the mean of the greyscale data
+		// W.
+		// Doyle,"Operation useful for similarity-invariant pattern recognition,"
+		// Journal of the Association for Computing Machinery, vol. 9,pp.
+		// 259-267,
+		// 1962.
+		// ported to ImageJ plugin by G.Landini from Antti Niemisto's Matlab
+		// code
+		// (relicensed BSD 2-12-13)
+		// Original Matlab code Copyright (C) 2004 Antti Niemisto
+		// See http://www.cs.tut.fi/~ant/histthresh/ for an excellent slide
+		// presentation and the original Matlab code.
+
 		int threshold = -1;
-		double tot = 0, sum = 0;
+		double ptile = 0.5; // default fraction of foreground pixels
+		double[] avec = new double[histogram.length];
+
+		for (int i = 0; i < histogram.length; i++)
+			avec[i] = 0.0;
+
+		double total = partialSum(histogram, histogram.length - 1);
+		double temp = 1.0;
 		for (int i = 0; i < histogram.length; i++) {
-			tot += histogram[i];
-			sum += (i * histogram[i]);
+			avec[i] = Math.abs((partialSum(histogram, i) / total) - ptile);
+			// IJ.log("Ptile["+i+"]:"+ avec[i]);
+			if (avec[i] < temp) {
+				temp = avec[i];
+				threshold = i;
+			}
 		}
-		threshold = (int) Math.floor(sum / tot);
 		return threshold;
+	}
+
+	private double partialSum(long[] y, int j) {
+		double x = 0;
+		for (int i = 0; i <= j; i++)
+			x += y[i];
+		return x;
 	}
 
 }

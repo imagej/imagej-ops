@@ -31,53 +31,52 @@
 package net.imagej.ops.threshold;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.computer.Computers;
-import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imglib2.histogram.Histogram1d;
+import net.imagej.ops.threshold.AbstractGlobalThresholder;
+import net.imagej.ops.threshold.ThresholdLearner;
+#foreach ($method in $methods)
+#set ($iface = "Ops.Threshold.${method.iface}")
+import net.imagej.ops.threshold.${method.name}.${method.iface}ThresholdLearner;
+#end
 import net.imglib2.IterableInterval;
+import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Ops which computes and apply a global threshold to an {@link Img}.
+ * Ops which computes and apply a global threshold to an
+ * {@link IterableInterval}.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  * @author Brian Northan
+ * @author Stefan Helfrich (University of Konstanz)
  */
-public final class ApplyThresholdMethod {
+public final class GlobalThresholders {
 
-	private ApplyThresholdMethod() {
+	private GlobalThresholders() {
 		// NB: Prevent instantiation of utility class.
 	}
 #foreach ($method in $methods)
 #set ($iface = "Ops.Threshold.${method.iface}")
 
+	/**
+	 * @param <I> type of input
+	 * @param <O> type of output
+	 * @see ${method.iface}ThresholdLearner
+	 */
 	@Plugin(type = ${iface}.class)
-	public static class ${method.iface}<T extends RealType<T>>
-		extends AbstractApplyThresholdImg<T>
+	public static class ${method.iface}<I extends RealType<I>, O extends BooleanType<O>>
+		extends AbstractGlobalThresholder<I, O>
 		implements ${iface}
 	{
 
-		private UnaryComputerOp<Histogram1d<T>, T> thresholdComp;
-
-		@SuppressWarnings({ "rawtypes", "unchecked" })
+		@SuppressWarnings("unchecked")
 		@Override
-		public void initialize() {
-			super.initialize();
-			thresholdComp = (UnaryComputerOp) Computers.unary(ops(),
-				Ops.Threshold.${method.iface}.class, in().firstElement().getClass(),
-				Histogram1d.class);
+		protected ThresholdLearner<I, O> getLearner() {
+			return ops().op(${method.iface}ThresholdLearner.class, in());
 		}
 
-		@Override
-		public T getThreshold(final IterableInterval<T> input) {
-			final Histogram1d<T> hist = histCreator.compute1(input);
-			final T type = input.firstElement().createVariable();
-			thresholdComp.compute1(hist, type);
-			return type;
-		}
 	}
 #end
 

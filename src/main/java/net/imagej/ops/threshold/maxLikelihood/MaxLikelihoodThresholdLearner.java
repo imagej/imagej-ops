@@ -30,15 +30,15 @@
 
 package net.imagej.ops.threshold.maxLikelihood;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.threshold.AbstractComputeThresholdHistogram;
+import net.imagej.ops.Op;
+import net.imagej.ops.threshold.AbstractHistogramThresholdLearner;
 import net.imagej.ops.threshold.Thresholds;
-import net.imagej.ops.threshold.minimum.ComputeMinimumThreshold;
+import net.imagej.ops.threshold.minimum.MinimumThresholdLearner;
 import net.imglib2.histogram.Histogram1d;
+import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
-import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -51,10 +51,12 @@ import org.scijava.plugin.Plugin;
  * {@literal &} Rubin and Glasbey.
  * 
  * @author Barry DeZonia
+ * @param <I> type of input
+ * @param <O> type of output
  */
-@Plugin(type = Ops.Threshold.MaxLikelihood.class, priority = Priority.HIGH_PRIORITY)
-public class ComputeMaxLikelihoodThreshold<T extends RealType<T>> extends
-		AbstractComputeThresholdHistogram<T> implements Ops.Threshold.MaxLikelihood
+@Plugin(type = Op.class)
+public class MaxLikelihoodThresholdLearner<I extends RealType<I>, O extends BooleanType<O>>
+extends AbstractHistogramThresholdLearner<I, O>
 {
 
 	private static final int MAX_ATTEMPTS = 10000;
@@ -63,7 +65,7 @@ public class ComputeMaxLikelihoodThreshold<T extends RealType<T>> extends
 	private String errMsg;
 
 	@Override
-	public long computeBin(final Histogram1d<T> hist) {
+	public long computeBin(final Histogram1d<I> hist) {
 		long[] histogram = hist.toLongArray();
 		/*
 		 * T = th_maxlik(I,n)
@@ -99,7 +101,7 @@ public class ComputeMaxLikelihoodThreshold<T extends RealType<T>> extends
 
 		// % The initial estimate for the threshold is found with the MINIMUM
 		// % algorithm.
-		final ComputeMinimumThreshold<T> method = new ComputeMinimumThreshold<>();
+		final MinimumThresholdLearner<I,O> method = new MinimumThresholdLearner<>();
 		int T = (int) method.computeBin(hist);
 
 		// NB: T might be -1 if ComputeMinimumThreshold doesn't converge

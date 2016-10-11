@@ -28,33 +28,70 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.otsu;
+package net.imagej.ops.threshold.ij1;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.threshold.AbstractGlobalThresholder;
-import net.imagej.ops.threshold.ThresholdLearner;
+import net.imagej.ops.Op;
+import net.imagej.ops.threshold.AbstractHistogramThresholdLearner;
+import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
+// NB - this plugin adapted from Gabriel Landini's code of his AutoThreshold
+// plugin found in Fiji (version 1.14). The method was ported from IJ1 by
+// Gabriel and somewhat enhanced ("re-implemented so we can ignore black/white
+// and set the bright or dark objects")
+
 /**
- * Implements Otsu's threshold method.
+ * Implements the default threshold method from ImageJ 1.x.
  * 
- * @author Stefan Helfrich (University of Konstanz)
+ * @author Barry DeZonia
+ * @author Gabriel Landini
  * @param <I> type of input
  * @param <O> type of output
  */
-@Plugin(type = Ops.Threshold.Otsu.class, priority = Priority.HIGH_PRIORITY)
-public class Otsu<I extends RealType<I>, O extends BooleanType<O>> extends
-	AbstractGlobalThresholder<I, O> implements Ops.Threshold.Otsu
+@Plugin(type = Op.class)
+public class IJ1ThresholdLearner<I extends RealType<I>, O extends BooleanType<O>>
+	extends AbstractHistogramThresholdLearner<I, O>
 {
 
-	@SuppressWarnings("unchecked")
 	@Override
-	protected ThresholdLearner<I, O> getLearner() {
-		return ops().op(OtsuThresholdLearner.class, in());
+	public long computeBin(final Histogram1d<I> hist) {
+		long[] histogram = hist.toLongArray();
+		// Original IJ implementation for compatibility.
+		int level;
+		int maxValue = histogram.length - 1;
+		double result, sum1, sum2, sum3, sum4;
+
+		int min = 0;
+		while (histogram[min] == 0 && min < maxValue)
+			min++;
+		int max = maxValue;
+		while (histogram[max] == 0 && max > 0)
+			max--;
+		if (min >= max) {
+			level = histogram.length / 2;
+			return level;
+		}
+
+		int movingIndex = min;
+		do {
+			sum1 = sum2 = sum3 = sum4 = 0.0;
+			for (int i = min; i <= movingIndex; i++) {
+				sum1 += i * histogram[i];
+				sum2 += histogram[i];
+			}
+			for (int i = movingIndex + 1; i <= max; i++) {
+				sum3 += i * histogram[i];
+				sum4 += histogram[i];
+			}
+			result = (sum1 / sum2 + sum3 / sum4) / 2.0;
+			movingIndex++;
+		} while (movingIndex + 1 <= result && movingIndex < max - 1);
+
+		level = (int) Math.round(result);
+		return level;
 	}
 
 }

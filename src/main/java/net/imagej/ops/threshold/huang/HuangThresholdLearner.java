@@ -30,12 +30,12 @@
 
 package net.imagej.ops.threshold.huang;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.threshold.AbstractComputeThresholdHistogram;
+import net.imagej.ops.Op;
+import net.imagej.ops.threshold.AbstractHistogramThresholdLearner;
 import net.imglib2.histogram.Histogram1d;
+import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 //NB - this plugin adapted from Gabriel Landini's code of his AutoThreshold
@@ -46,13 +46,16 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Barry DeZonia
  * @author Gabriel Landini
+ * @param <I> type of input
+ * @param <O> type of output
  */
-@Plugin(type = Ops.Threshold.Huang.class, priority = Priority.HIGH_PRIORITY)
-public class ComputeHuangThreshold<T extends RealType<T>> extends
-		AbstractComputeThresholdHistogram<T> implements Ops.Threshold.Huang {
+@Plugin(type = Op.class)
+public class HuangThresholdLearner<I extends RealType<I>, O extends BooleanType<O>>
+	extends AbstractHistogramThresholdLearner<I, O>
+{
 
 	@Override
-	public long computeBin(final Histogram1d<T> hist) {
+	public long computeBin(final Histogram1d<I> hist) {
 		long[] histogram = hist.toLongArray();
 		// Implements Huang's fuzzy thresholding method
 		// Uses Shannon's entropy function (one can also use Yager's entropy

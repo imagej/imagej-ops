@@ -30,15 +30,15 @@
 
 package net.imagej.ops.threshold.minError;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.threshold.AbstractComputeThresholdHistogram;
+import net.imagej.ops.Op;
+import net.imagej.ops.threshold.AbstractHistogramThresholdLearner;
 import net.imagej.ops.threshold.Thresholds;
-import net.imagej.ops.threshold.mean.ComputeMeanThreshold;
+import net.imagej.ops.threshold.mean.MeanThresholdLearner;
 import net.imglib2.histogram.Histogram1d;
+import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
-import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -51,16 +51,18 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Barry DeZonia
  * @author Gabriel Landini
+ * @param <I> type of input
+ * @param <O> type of output
  */
-@Plugin(type = Ops.Threshold.MinError.class, priority = Priority.HIGH_PRIORITY)
-public class ComputeMinErrorThreshold<T extends RealType<T>> extends
-		AbstractComputeThresholdHistogram<T> implements Ops.Threshold.MinError {
+@Plugin(type = Op.class)
+public class MinErrorThresholdLearner<I extends RealType<I>, O extends BooleanType<O>>
+extends AbstractHistogramThresholdLearner<I, O> {
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private String errMsg = null;
 
 	@Override
-	public long computeBin(final Histogram1d<T> hist) {
+	public long computeBin(final Histogram1d<I> hist) {
 		long[] histogram = hist.toLongArray();
 		// Kittler and J. Illingworth, "Minimum error thresholding," Pattern
 		// Recognition, vol. 19, pp. 41-47, 1986.
@@ -76,7 +78,7 @@ public class ComputeMinErrorThreshold<T extends RealType<T>> extends
 		// presentation and the original Matlab code.
 
 		// Initial estimate for the threshold is found with the MEAN algorithm.
-		int threshold = (int) new ComputeMeanThreshold<T>().computeBin(hist);
+		int threshold = (int) new MeanThresholdLearner<I,O>().computeBin(hist);
 		int Tprev = -2;
 		double mu, nu, p, q, sigma2, tau2, w0, w1, w2, sqterm, temp;
 		// int counter=1;
