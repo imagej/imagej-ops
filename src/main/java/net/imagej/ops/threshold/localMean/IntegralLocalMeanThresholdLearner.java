@@ -68,7 +68,7 @@ import org.scijava.plugin.Plugin;
  * @see IntegralLocalMean
  */
 @Plugin(type = Op.class)
-public class IntegralMeanThresholdLearner<I extends RealType<I>, O extends BooleanType<O>>
+public class IntegralLocalMeanThresholdLearner<I extends RealType<I>, O extends BooleanType<O>>
 	extends AbstractUnaryFunctionOp<RectangleNeighborhood<Composite<DoubleType>>, UnaryComputerOp<I, O>>
 	implements IntegralThresholdLearner<I, O>
 {

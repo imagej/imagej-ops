@@ -61,7 +61,7 @@ import org.scijava.plugin.Plugin;
  * @param <I> type of input
  * @param <O> type of output
  * @see LocalMean
- * @see IntegralMeanThresholdLearner
+ * @see IntegralLocalMeanThresholdLearner
  */
 @Plugin(type = Ops.Threshold.LocalMeanThreshold.class,
 	priority = Priority.LOW_PRIORITY - 1)
@@ -77,7 +77,7 @@ public class IntegralLocalMean<I, O extends BooleanType<O>> extends
 	@Override
 	protected IntegralThresholdLearner<I, O> getLearner() {
 		IntegralThresholdLearner learner = ops().op(
-			IntegralMeanThresholdLearner.class, RectangleNeighborhood.class, c);
+			IntegralLocalMeanThresholdLearner.class, RectangleNeighborhood.class, c);
 		return learner;
 	}
 
