@@ -54,7 +54,7 @@ public class ConstantThresholder<I extends Comparable<I>, O extends BooleanType<
 
 	@Override
 	public void compute1(I input, O output) {
-		output.set(threshold.compareTo(input) > 0);
+		output.set(input.compareTo(threshold) > 0);
 	}
 
 	public I getThreshold() {
