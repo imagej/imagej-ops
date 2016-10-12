@@ -50,8 +50,8 @@ public class DefaultFeretsDiameter extends AbstractUnaryHybridCF<Pair<RealLocali
 	@Override
 	public void compute1(final Pair<RealLocalizable, RealLocalizable> input, final DoubleType output) {
 
-		RealLocalizable p1 = input.getA();
-		RealLocalizable p2 = input.getB();
+		final RealLocalizable p1 = input.getA();
+		final RealLocalizable p2 = input.getB();
 
 		output.set(Math.hypot(p1.getDoublePosition(0) - p2.getDoublePosition(0),
 				p1.getDoublePosition(1) - p2.getDoublePosition(1)));

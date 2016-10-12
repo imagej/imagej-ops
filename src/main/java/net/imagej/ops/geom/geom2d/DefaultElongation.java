@@ -75,7 +75,7 @@ public class DefaultElongation extends AbstractUnaryHybridCF<Polygon, DoubleType
 				+ Math.pow(p2.getDoublePosition(1) - p3.getDoublePosition(1), 2));
 
 		if (width > length) {
-			double tmp = width;
+			final double tmp = width;
 			width = length;
 			length = tmp;
 		}

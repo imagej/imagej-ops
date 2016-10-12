@@ -42,6 +42,6 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Rugosity.class,
 	label = "Geometric (2D): Rugosity", priority = Priority.VERY_HIGH_PRIORITY)
-public class RugosityPolygon extends AbstractRugosity<Polygon> {
+public class DefaultRugosityPolygon extends AbstractRugosity<Polygon> {
 	// NB: Marker Interface
 }

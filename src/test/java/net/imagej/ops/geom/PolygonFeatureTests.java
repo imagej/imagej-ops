@@ -27,11 +27,11 @@ import net.imagej.ops.geom.geom2d.DefaultRoundness;
 import net.imagej.ops.geom.geom2d.DefaultSizePolygon;
 import net.imagej.ops.geom.geom2d.DefaultSmallestEnclosingRectangle;
 import net.imagej.ops.geom.geom2d.LabelRegionToPolygonConverter;
-import net.imagej.ops.geom.geom2d.RugosityPolygon;
-import net.imagej.ops.geom.geom2d.SizeConvexHullPolygon;
-import net.imagej.ops.geom.geom2d.SolidityPolygon;
-import net.imagej.ops.geom.geom2d.VerticesCountConvexHullPolygon;
-import net.imagej.ops.geom.geom2d.VerticesCountPolygon;
+import net.imagej.ops.geom.geom2d.DefaultRugosityPolygon;
+import net.imagej.ops.geom.geom2d.DefaultSizeConvexHullPolygon;
+import net.imagej.ops.geom.geom2d.DefaultSolidityPolygon;
+import net.imagej.ops.geom.geom2d.DefaultVerticesCountConvexHullPolygon;
+import net.imagej.ops.geom.geom2d.DefaultVerticesCountPolygon;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.geometric.Polygon;
@@ -249,6 +249,39 @@ public class PolygonFeatureTests extends AbstractFeatureTest {
 	}
 
 	@Test
+	public void rugosity() {
+		assertEquals(Ops.Geometric.Rugosity.NAME, 0.773585391928,
+				((DoubleType) ops.run(DefaultRugosityPolygon.class, contour)).get(), EPSILON);
+	}
+
+	@Test
+	public void sizeConvexHullPolygon() {
+		assertEquals(Ops.Geometric.SizeConvexHull.NAME, 4731,
+				((DoubleType) ops.run(DefaultSizeConvexHullPolygon.class, contour)).get(), EPSILON);
+	}
+
+	@Test
+	public void solidity2D() {
+		// formula is verified, ground truth computed with matlab
+		assertEquals(Ops.Geometric.Solidity.NAME, 0.742443458043,
+				((DoubleType) ops.run(DefaultSolidityPolygon.class, contour)).get(), EPSILON);
+	}
+
+	@Test
+	public void verticesCountConvexHull() {
+		// verified with matlab
+		assertEquals(Ops.Geometric.VerticesCountConvexHull.NAME, 14,
+				((DoubleType) ops.run(DefaultVerticesCountConvexHullPolygon.class, contour)).get(), EPSILON);
+	}
+
+	@Test
+	public void verticesCount() {
+		// verified with matlab
+		assertEquals(Ops.Geometric.VerticesCount.NAME, 305,
+				((DoubleType) ops.run(DefaultVerticesCountPolygon.class, contour)).get(), EPSILON);
+	}
+	
+	@Test
 	public void labelRegionToPolygonConverter() {
 		// ground truth computed with matlab
 		final LabelRegionToPolygonConverter c = new LabelRegionToPolygonConverter();
@@ -263,39 +296,6 @@ public class PolygonFeatureTests extends AbstractFeatureTest {
 			assertEquals("Polygon point " + i + " differs in y-coordinate.", expected.get(i).getDoublePosition(1),
 					received.get(i).getDoublePosition(1), EPSILON);
 		}
-	}
-
-	@Test
-	public void rugosity() {
-		assertEquals(Ops.Geometric.Rugosity.NAME, 0.773585391928,
-				((DoubleType) ops.run(RugosityPolygon.class, contour)).get(), EPSILON);
-	}
-
-	@Test
-	public void sizeConvexHullPolygon() {
-		assertEquals(Ops.Geometric.SizeConvexHull.NAME, 4731,
-				((DoubleType) ops.run(SizeConvexHullPolygon.class, contour)).get(), EPSILON);
-	}
-
-	@Test
-	public void solidity2D() {
-		// formula is verified, ground truth computed with matlab
-		assertEquals(Ops.Geometric.Solidity.NAME, 0.742443458043,
-				((DoubleType) ops.run(SolidityPolygon.class, contour)).get(), EPSILON);
-	}
-
-	@Test
-	public void verticesCountConvexHull() {
-		// verified with matlab
-		assertEquals(Ops.Geometric.VerticesCountConvexHull.NAME, 14,
-				((DoubleType) ops.run(VerticesCountConvexHullPolygon.class, contour)).get(), EPSILON);
-	}
-
-	@Test
-	public void verticesCount() {
-		// verified with matlab
-		assertEquals(Ops.Geometric.VerticesCount.NAME, 305,
-				((DoubleType) ops.run(VerticesCountPolygon.class, contour)).get(), EPSILON);
 	}
 
 	@Test

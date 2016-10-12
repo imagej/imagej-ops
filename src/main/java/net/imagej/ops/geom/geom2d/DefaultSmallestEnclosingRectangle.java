@@ -163,7 +163,7 @@ public class DefaultSmallestEnclosingRectangle extends
 
 	@Override
 	public boolean conforms() {
-		return in() instanceof Polygon;
+		return in() != null;
 	}
 
 }

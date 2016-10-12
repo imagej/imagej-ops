@@ -70,11 +70,11 @@ public class DefaultMinimumFeret
 		double distance = Double.POSITIVE_INFINITY;
 		RealLocalizable p0 = points.get(0);
 		RealLocalizable p1 = points.get(0);
+		double tmpDist = 0;
+		RealLocalizable tmpP0 = p0;
+		RealLocalizable tmpP1 = p1;
 
 		for (int i = 0; i < points.size() - 2; i++) {
-			double tmpDist = 0;
-			RealLocalizable tmpP0 = p0;
-			RealLocalizable tmpP1 = p1;
 			final RealLocalizable lineStart = points.get(i);
 			final RealLocalizable lineEnd = points.get(i + 1);
 			final Line l = new Line(new Vector2D(lineStart.getDoublePosition(0), lineStart.getDoublePosition(1)),
@@ -89,7 +89,7 @@ public class DefaultMinimumFeret
 
 					if (tmp > tmpDist) {
 						tmpDist = tmp;
-						Vector2D vp = (Vector2D) l
+						final Vector2D vp = (Vector2D) l
 								.project(new Vector2D(ttmpP0.getDoublePosition(0), ttmpP0.getDoublePosition(1)));
 						tmpP0 = new RealPoint(vp.getX(), vp.getY());
 						tmpP1 = ttmpP0;
@@ -103,9 +103,6 @@ public class DefaultMinimumFeret
 			}
 		}
 
-		double tmpDist = 0;
-		RealLocalizable tmpP0 = p0;
-		RealLocalizable tmpP1 = p1;
 		final RealLocalizable lineStart = points.get(points.size() - 1);
 		final RealLocalizable lineEnd = points.get(0);
 		final Line l = new Line(new Vector2D(lineStart.getDoublePosition(0), lineStart.getDoublePosition(1)),
@@ -119,7 +116,7 @@ public class DefaultMinimumFeret
 
 				if (tmp > tmpDist) {
 					tmpDist = tmp;
-					Vector2D vp = (Vector2D) l
+					final Vector2D vp = (Vector2D) l
 							.project(new Vector2D(ttmpP0.getDoublePosition(0), ttmpP0.getDoublePosition(1)));
 					tmpP0 = new RealPoint(vp.getX(), vp.getY());
 					tmpP1 = ttmpP0;

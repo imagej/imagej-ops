@@ -42,6 +42,8 @@ import org.scijava.plugin.Plugin;
 /**
  * Generic implementation of {@code geom.circularity}.
  * 
+ * Based on https://imagej.nih.gov/ij/plugins/circularity.html.
+ * 
  * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.Circularity.class,
@@ -51,18 +53,18 @@ public class DefaultCircularity extends AbstractUnaryHybridCF<Polygon, DoubleTyp
 {
 
 	private UnaryFunctionOp<Polygon, DoubleType> areaFunc;
-	private UnaryFunctionOp<Polygon, DoubleType> perimiterFunc;
+	private UnaryFunctionOp<Polygon, DoubleType> perimeterFunc;
 
 	@Override
 	public void initialize() {
 		areaFunc = RTs.function(ops(), Ops.Geometric.Size.class, in());
-		perimiterFunc = RTs.function(ops(), Ops.Geometric.BoundarySize.class, in());
+		perimeterFunc = RTs.function(ops(), Ops.Geometric.BoundarySize.class, in());
 	}
 	
 	@Override
 	public void compute1(Polygon input, DoubleType output) {
 		output.set(4 * Math.PI * (areaFunc.compute1(input)
-				.getRealDouble() / Math.pow(perimiterFunc.compute1(input).getRealDouble(),
+				.getRealDouble() / Math.pow(perimeterFunc.compute1(input).getRealDouble(),
 						2)));
 	}
 	

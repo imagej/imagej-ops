@@ -82,7 +82,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.geom.geom2d.VerticesCountConvexHullPolygon.class)
+		op = net.imagej.ops.geom.geom2d.DefaultVerticesCountConvexHullPolygon.class)
 	public DoubleType boundaryPixelCountConvexHull(final Polygon in) {
 		final DoubleType result = (DoubleType) ops().run(
 			net.imagej.ops.Ops.Geometric.VerticesCountConvexHull.class, in);
@@ -97,10 +97,10 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 	
-	@OpMethod(op = net.imagej.ops.geom.geom2d.VerticesCountConvexHullPolygon.class)
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultVerticesCountConvexHullPolygon.class)
 	public DoubleType boundaryPixelCountConvexHull(final DoubleType out, final Polygon in) {
 		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.VerticesCountConvexHullPolygon.class, out, in);
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultVerticesCountConvexHullPolygon.class, out, in);
 		return result;
 	}
 
@@ -561,10 +561,10 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geom.geom2d.RugosityPolygon.class)
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultRugosityPolygon.class)
 	public DoubleType rugosity(final Polygon in) {
 		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.RugosityPolygon.class, in);
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultRugosityPolygon.class, in);
 		return result;
 	}
 
@@ -575,10 +575,10 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 	
-	@OpMethod(op = net.imagej.ops.geom.geom2d.RugosityPolygon.class)
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultRugosityPolygon.class)
 	public DoubleType rugosity(final DoubleType out, final Polygon in) {
 		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.RugosityPolygon.class, out, in);
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultRugosityPolygon.class, out, in);
 		return result;
 	}
 
@@ -636,7 +636,7 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 	
-	@OpMethod(op = net.imagej.ops.geom.geom2d.SizeConvexHullPolygon.class)
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultSizeConvexHullPolygon.class)
 	public DoubleType sizeConvexHull(final Polygon in) {
 		final DoubleType result = (DoubleType) ops().run(
 				net.imagej.ops.Ops.Geometric.SizeConvexHull.class, in);
@@ -650,10 +650,10 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 	
-	@OpMethod(op = net.imagej.ops.geom.geom2d.SizeConvexHullPolygon.class)
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultSizeConvexHullPolygon.class)
 	public DoubleType sizeConvexHull(final DoubleType out, final Polygon in) {
 		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.SizeConvexHullPolygon.class, out, in);
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultSizeConvexHullPolygon.class, out, in);
 		return result;
 	}
 
@@ -672,10 +672,10 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geom.geom2d.SolidityPolygon.class)
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultSolidityPolygon.class)
 	public DoubleType solidity(final Polygon in) {
 		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.SolidityPolygon.class, in);
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultSolidityPolygon.class, in);
 		return result;
 	}
 
@@ -686,10 +686,10 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 	
-	@OpMethod(op = net.imagej.ops.geom.geom2d.SolidityPolygon.class)
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultSolidityPolygon.class)
 	public DoubleType solidity(final DoubleType out, final Polygon in) {
 		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.SolidityPolygon.class, out, in);
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultSolidityPolygon.class, out, in);
 		return result;
 	}
 
@@ -782,17 +782,17 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 	
-	@OpMethod(op = net.imagej.ops.geom.geom2d.VerticesCountPolygon.class)
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultVerticesCountPolygon.class)
 	public DoubleType verticesCount(final Polygon in) {
 		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.VerticesCountPolygon.class, in);
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultVerticesCountPolygon.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geom.geom2d.VerticesCountPolygon.class)
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultVerticesCountPolygon.class)
 	public DoubleType verticesCount(final DoubleType out, final Polygon in) {
 		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.VerticesCountPolygon.class, out, in);
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultVerticesCountPolygon.class, out, in);
 		return result;
 	}
 
@@ -810,17 +810,17 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 	
-	@OpMethod(op = net.imagej.ops.geom.geom2d.VerticesCountConvexHullPolygon.class)
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultVerticesCountConvexHullPolygon.class)
 	public DoubleType verticesCountConvexHull(final Polygon in) {
 		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.VerticesCountConvexHullPolygon.class, in);
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultVerticesCountConvexHullPolygon.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geom.geom2d.VerticesCountConvexHullPolygon.class)
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultVerticesCountConvexHullPolygon.class)
 	public DoubleType verticesCountConvexHull(final DoubleType out, final Polygon in) {
 		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.VerticesCountConvexHullPolygon.class, out, in);
+			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultVerticesCountConvexHullPolygon.class, out, in);
 		return result;
 	}
 

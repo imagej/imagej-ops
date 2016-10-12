@@ -59,9 +59,7 @@ public class DefaultMinorAxis extends AbstractUnaryHybridCF<Polygon, DoubleType>
 	@SuppressWarnings("unchecked")
 	@Override
 	public void compute1(final Polygon input, final DoubleType output) {
-		Polygon polygon = input;
-		Pair<DoubleType, DoubleType> compute = minorMajorAxisFunc.compute1(polygon);
-		output.set(compute.getA());
+		output.set(((Pair<DoubleType, DoubleType>) minorMajorAxisFunc.compute1(input)).getA());
 	}
 
 	@Override

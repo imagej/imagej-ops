@@ -39,6 +39,12 @@ import net.imglib2.type.numeric.real.DoubleType;
 /**
  * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Rugosity}.
  * 
+ * Based on Measurement and quantification of visual lobe shape characteristics from Alan H.S. Chan.
+ * 
+ * Formula in the paper: rugosity = boundarySize/convexHullBoundarySize, rugosity -> [1, Inf).
+ * 
+ * I swapped the fraction to: rugosity = convexHullBoundarySize/boundarySize, rugosity -> (0, 1].
+ * 
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 public abstract class AbstractRugosity<I> extends AbstractUnaryHybridCF<I, DoubleType>

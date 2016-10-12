@@ -31,28 +31,21 @@
 package net.imagej.ops.geom.geom2d;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Geometric.VerticesCount;
-import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imagej.ops.geom.AbstractSizeConvexHull;
 import net.imglib2.roi.geometric.Polygon;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Tim-Oliver Buchholz, University of Konstanz
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
-@Plugin(type = Ops.Geometric.VerticesCount.class, label = "Geometric (2D): Convex Hull Vertices Count", priority = Priority.VERY_HIGH_PRIORITY)
-public class VerticesCountPolygon extends AbstractUnaryHybridCF<Polygon, DoubleType> implements VerticesCount {
+@Plugin(type = Ops.Geometric.SizeConvexHull.class,
+	label = "Geometric (2D): Size ConvexHull",
+	priority = Priority.VERY_HIGH_PRIORITY)
+public class DefaultSizeConvexHullPolygon extends AbstractSizeConvexHull<Polygon> {
 
-	@Override
-	public void compute1(Polygon input, DoubleType output) {
-		output.set(input.getVertices().size());
+	public DefaultSizeConvexHullPolygon() {
+		super(Polygon.class);
 	}
-
-	@Override
-	public DoubleType createOutput(Polygon input) {
-		return new DoubleType();
-	}
-
 }

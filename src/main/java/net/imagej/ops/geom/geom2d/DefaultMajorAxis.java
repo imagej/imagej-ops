@@ -64,8 +64,7 @@ public class DefaultMajorAxis extends AbstractUnaryHybridCF<Polygon, DoubleType>
 	@SuppressWarnings("unchecked")
 	@Override
 	public void compute1(final Polygon input, final DoubleType output) {
-		final Pair<DoubleType, DoubleType> compute = minorMajorAxisFunc.compute1(input);
-		output.set(compute.getB());
+		output.set(((Pair<DoubleType, DoubleType>)minorMajorAxisFunc.compute1(input)).getB());
 	}
 	
 	@Override
