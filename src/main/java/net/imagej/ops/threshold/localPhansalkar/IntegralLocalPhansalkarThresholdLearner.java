@@ -28,30 +28,30 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localMean;
+package net.imagej.ops.threshold.localPhansalkar;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.map.neighborhood.CenterAwareIntegralComputerOp;
-import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.stats.IntegralMean;
-import net.imagej.ops.threshold.apply.LocalThresholdIntegral;
+import net.imagej.ops.stats.IntegralVariance;
+import net.imagej.ops.threshold.IntegralThresholdLearner;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
 import net.imglib2.converter.Converter;
 import net.imglib2.converter.RealDoubleConverter;
-import net.imglib2.type.logic.BitType;
+import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.composite.Composite;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
  * <p>
- * Local threshold method that uses the {@link IntegralMean} for the threshold
- * computation.
+ * Local thresholding algorithm as proposed by Phansalkar et al.
  * </p>
  * <p>
  * This implementation improves execution speed by using integral images for the
@@ -62,68 +62,79 @@ import org.scijava.plugin.Plugin;
  * required.
  * </p>
  *
- * @see LocalMeanThreshold
- * @see LocalThresholdIntegral
+ * @author Jonathan Hale
  * @author Stefan Helfrich (University of Konstanz)
+ * @param <I> type of input
+ * @param <O> type of output
+ * @see IntegralLocalPhansalkar
  */
-@Plugin(type = Ops.Threshold.LocalMeanThreshold.class,
-	priority = Priority.LOW_PRIORITY - 1)
-public class LocalMeanThresholdIntegral<T extends RealType<T>> extends
-	LocalThresholdIntegral<T> implements Ops.Threshold.LocalMeanThreshold
+@Plugin(type = Op.class)
+public class IntegralLocalPhansalkarThresholdLearner<I extends RealType<I>, O extends BooleanType<O>>
+	extends
+	AbstractUnaryFunctionOp<RectangleNeighborhood<Composite<DoubleType>>, UnaryComputerOp<I, O>>
+	implements IntegralThresholdLearner<I, O>
 {
 
-	@Parameter
-	private double c;
+	@Parameter(required = false)
+	private double k = 0.25;
+
+	@Parameter(required = false)
+	private double r = 0.5;
+
+	private final double p = 2.0;
+	private final double q = 10.0;
+
+	private IntegralMean<DoubleType> integralMean;
+	private IntegralVariance<DoubleType> integralVariance;
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected CenterAwareIntegralComputerOp<T, BitType> unaryComputer() {
-		final CenterAwareIntegralComputerOp<T, BitType> op =
-			new LocalMeanThresholdComputer<>(ops().op(IntegralMean.class,
-				DoubleType.class, RectangleNeighborhood.class));
-
-		op.setEnvironment(ops());
-		return op;
-	}
-
-	private class LocalMeanThresholdComputer<I extends RealType<I>> extends
-		AbstractBinaryComputerOp<I, RectangleNeighborhood<Composite<DoubleType>>, BitType>
-		implements CenterAwareIntegralComputerOp<I, BitType>
+	public UnaryComputerOp<I, O> compute1(final RectangleNeighborhood<Composite<DoubleType>> neighborhood)
 	{
-
-		private final IntegralMean<DoubleType> integralMean;
-
-		public LocalMeanThresholdComputer(final IntegralMean<DoubleType> integralMean)
-		{
-			super();
-			this.integralMean = integralMean;
+		if (integralMean == null) {
+			integralMean = ops().op(IntegralMean.class, DoubleType.class,
+				RectangleNeighborhood.class);
 		}
 
-		@Override
-		public void compute2(final I center,
-			final RectangleNeighborhood<Composite<DoubleType>> neighborhood,
-			final BitType output)
-		{
-
-			final DoubleType sum = new DoubleType();
-			integralMean.compute1(neighborhood, sum);
-
-			// Subtract the contrast
-			sum.sub(new DoubleType(c));
-
-			// Set value
-			final Converter<I, DoubleType> conv = new RealDoubleConverter<>();
-			final DoubleType centerPixelAsDoubleType = new DoubleType();
-			conv.convert(center, centerPixelAsDoubleType);
-
-			output.set(centerPixelAsDoubleType.compareTo(sum) > 0);
+		if (integralVariance == null) {
+			integralVariance = ops().op(IntegralVariance.class, DoubleType.class,
+				RectangleNeighborhood.class);
 		}
 
+		final DoubleType mean = new DoubleType();
+		integralMean.compute1(neighborhood, mean);
+
+		final DoubleType variance = new DoubleType();
+		integralVariance.compute1(neighborhood, variance);
+
+		final DoubleType stdDev = new DoubleType(Math.sqrt(variance.get()));
+
+		final DoubleType threshold = new DoubleType(mean.getRealDouble() * (1.0d +
+			p * Math.exp(-q * mean.getRealDouble()) + k * ((stdDev.getRealDouble() /
+				r) - 1.0)));
+
+		UnaryComputerOp<I, O> predictorOp = new AbstractUnaryComputerOp<I, O>() {
+
+			@Override
+			public void compute1(I in, O out) {
+				// Set value
+				final Converter<I, DoubleType> conv = new RealDoubleConverter<>();
+				final DoubleType centerPixelAsDoubleType = variance; // NB: Reuse
+				// DoubleType
+				conv.convert(in, centerPixelAsDoubleType);
+
+				out.set(centerPixelAsDoubleType.compareTo(threshold) > 0);
+			}
+		};
+		predictorOp.setEnvironment(ops());
+		predictorOp.initialize();
+
+		return predictorOp;
 	}
 
 	@Override
-	protected int[] requiredIntegralImages() {
-		return new int[] { 1 };
+	public int[] requiredIntegralImages() {
+		return new int[] { 1, 2 };
 	}
 
 }

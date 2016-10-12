@@ -74,20 +74,23 @@ import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imagej.ops.threshold.localBernsen.LocalBernsen;
 import net.imagej.ops.threshold.localContrast.LocalContrast;
 import net.imagej.ops.threshold.localMean.LocalMean;
-import net.imagej.ops.threshold.localMean.LocalMeanThresholdIntegral;
+import net.imagej.ops.threshold.localMean.IntegralLocalMean;
 import net.imagej.ops.threshold.localMedian.LocalMedian;
 import net.imagej.ops.threshold.localMedian.LocalMedianThresholdLearner;
 import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
 import net.imagej.ops.threshold.localMidGrey.LocalMidGreyThresholdLearner;
 import net.imagej.ops.threshold.localNiblack.LocalNiblackThresholdLearner;
 import net.imagej.ops.threshold.localNiblack.LocalNiblack;
-import net.imagej.ops.threshold.localNiblack.LocalNiblackThresholdIntegral;
+import net.imagej.ops.threshold.localNiblack.IntegralLocalNiblack;
+import net.imagej.ops.threshold.localNiblack.IntegralLocalNiblackThresholdLearner;
 import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkarThresholdLearner;
 import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar;
-import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkarThresholdIntegral;
+import net.imagej.ops.threshold.localPhansalkar.IntegralLocalPhansalkar;
+import net.imagej.ops.threshold.localPhansalkar.IntegralLocalPhansalkarThresholdLearner;
 import net.imagej.ops.threshold.localSauvola.LocalSauvolaThresholdLearner;
 import net.imagej.ops.threshold.localSauvola.LocalSauvola;
-import net.imagej.ops.threshold.localSauvola.LocalSauvolaThresholdIntegral;
+import net.imagej.ops.threshold.localSauvola.IntegralLocalSauvola;
+import net.imagej.ops.threshold.localSauvola.IntegralLocalSauvolaThresholdLearner;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
@@ -378,7 +381,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testLocalMeanThresholdIntegral() {
-		ops.run(LocalMeanThresholdIntegral.class,
+		ops.run(IntegralLocalMean.class,
 			out,
 			in,
 			new RectangleShape(3, false),
@@ -410,7 +413,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 			0.0);
 		
 		// Integral image-based implementation
-		ops.run(LocalMeanThresholdIntegral.class,
+		ops.run(IntegralLocalMean.class,
 			out3,
 			in,
 			new RectangleShape(2, false),
@@ -481,7 +484,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testLocalNiblackThreshold() {
-		ops.run(LocalNiblackThreshold.class, out, in, new RectangleShape(1, false),
+		ops.run(LocalNiblack.class, out, in, new RectangleShape(1, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
 			0.0, 0.0);
 
@@ -489,11 +492,11 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalNiblackThresholdIntegral
+	 * @see IntegralLocalNiblack
 	 */
 	@Test
 	public void testLocalNiblackThresholdIntegral() {
-		ops.run(LocalNiblackThresholdIntegral.class, out, in, new RectangleShape(3,
+		ops.run(IntegralLocalNiblack.class, out, in, new RectangleShape(3,
 			false), new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(
 				Boundary.SINGLE), 0.0, 0.0);
 
@@ -501,8 +504,8 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalNiblackThresholdIntegral
-	 * @see LocalNiblackThresholdLearner
+	 * @see LocalNiblack
+	 * @see IntegralLocalNiblack
 	 */
 	@Test
 	public void testLocalNiblackResultsConsistency() {
@@ -522,7 +525,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 			0.0, 0.0);
 		
 		// Integral image-based implementation
-		ops.run(LocalNiblackThresholdIntegral.class,
+		ops.run(IntegralLocalNiblack.class,
 			out3,
 			in,
 			new RectangleShape(2, false),
@@ -559,7 +562,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testLocalPhansalkar() {
-		ops.run(LocalPhansalkarThreshold.class, out, in, new RectangleShape(1,
+		ops.run(LocalPhansalkar.class, out, in, new RectangleShape(1,
 			false), new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(
 				Boundary.SINGLE), 0.0, 0.0);
 
@@ -567,19 +570,19 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalPhansalkarThresholdIntegral
+	 * @see IntegralLocalPhansalkar
 	 */
 	@Test
 	public void testLocalPhansalkarIntegral() {
-		ops.run(LocalPhansalkarThresholdIntegral.class, out, in, new RectangleShape(3,
+		ops.run(IntegralLocalPhansalkar.class, out, in, new RectangleShape(3,
 			false), null, 0.0, 0.0);
 
 		assertEquals(out.firstElement().get(), false);
 	}
 
 	/**
-	 * @see LocalPhansalkarThresholdIntegral
 	 * @see LocalPhansalkar
+	 * @see IntegralLocalPhansalkar
 	 */
 	@Test
 	public void testLocalPhansalkarResultsConsistency() {
@@ -599,7 +602,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 			0.0, 0.0);
 		
 		// Integral image-based implementation
-		ops.run(LocalPhansalkarThresholdIntegral.class,
+		ops.run(IntegralLocalPhansalkar.class,
 			out3,
 			in,
 			new RectangleShape(2, false), null,
@@ -624,7 +627,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testLocalSauvola() {
-		ops.run(LocalSauvolaThreshold.class, out, in, new RectangleShape(1, false),
+		ops.run(LocalSauvola.class, out, in, new RectangleShape(1, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
 			0.0, 0.0);
 
@@ -632,18 +635,18 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalSauvolaThresholdIntegral
+	 * @see IntegralLocalSauvola
 	 */
 	@Test
 	public void testLocalSauvolaIntegral() {
-		ops.run(LocalSauvolaThresholdIntegral.class, out, in, new RectangleShape(3, false), null,
+		ops.run(IntegralLocalSauvola.class, out, in, new RectangleShape(3, false), null,
 			0.0, 0.0);
 
 		assertEquals(out.firstElement().get(), false);
 	}
 
 	/**
-	 * @see LocalSauvolaThresholdIntegral
+	 * @see IntegralLocalSauvolaThresholdLearner
 	 * @see LocalSauvola
 	 */
 	@Test
@@ -664,7 +667,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 			0.0, 0.0);
 		
 		// Integral image-based implementation
-		ops.run(LocalSauvolaThresholdIntegral.class,
+		ops.run(IntegralLocalSauvola.class,
 			out3,
 			in,
 			new RectangleShape(2, false), null,

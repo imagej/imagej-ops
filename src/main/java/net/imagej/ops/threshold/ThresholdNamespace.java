@@ -521,7 +521,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.localMean.LocalMeanThresholdIntegral.class)
+		op = net.imagej.ops.threshold.localMean.IntegralLocalMean.class)
 	public <T extends RealType<T>> IterableInterval<BitType> localMeanThreshold(
 		final IterableInterval<BitType> out, final RandomAccessibleInterval<T> in,
 		final RectangleShape shape,
@@ -536,7 +536,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.localMean.LocalMeanThresholdIntegral.class)
+		op = net.imagej.ops.threshold.localMean.IntegralLocalMean.class)
 	public <T extends RealType<T>> IterableInterval<BitType> localMeanThreshold(
 		final IterableInterval<BitType> out, final RandomAccessibleInterval<T> in,
 		final RectangleShape shape, final double c)
@@ -545,6 +545,17 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
 			.run(net.imagej.ops.Ops.Threshold.LocalMeanThreshold.class, out, in,
 				shape, c);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.threshold.localMean.IntegralLocalMean.class)
+	public <T extends RealType<T>> IterableInterval<BitType> localMeanThreshold(
+		final RandomAccessibleInterval<T> in, final RectangleShape shape,
+		final double c)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
+			.run(net.imagej.ops.Ops.Threshold.LocalMeanThreshold.class, in, shape, c);
 		return result;
 	}
 
@@ -667,7 +678,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.localNiblack.LocalNiblackThresholdIntegral.class)
+		op = net.imagej.ops.threshold.localNiblack.IntegralLocalNiblack.class)
 	public <T extends RealType<T>> IterableInterval<BitType>
 		localNiblackThreshold(final IterableInterval<BitType> out,
 			final RandomAccessibleInterval<T> in, final RectangleShape shape,
@@ -682,7 +693,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.localNiblack.LocalNiblackThresholdIntegral.class)
+		op = net.imagej.ops.threshold.localNiblack.IntegralLocalNiblack.class)
 	public <T extends RealType<T>> IterableInterval<BitType>
 		localNiblackThreshold(final IterableInterval<BitType> out,
 			final RandomAccessibleInterval<T> in, final RectangleShape shape,
@@ -692,6 +703,19 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
 			.run(net.imagej.ops.Ops.Threshold.LocalNiblackThreshold.class, out, in,
 				shape, c, k);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.threshold.localNiblack.IntegralLocalNiblack.class)
+	public <T extends RealType<T>> IterableInterval<BitType>
+		localNiblackThreshold(final RandomAccessibleInterval<T> in,
+			final RectangleShape shape, final double c, final double k)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
+			.run(net.imagej.ops.Ops.Threshold.LocalNiblackThreshold.class, in, shape,
+				c, k);
 		return result;
 	}
 
@@ -812,7 +836,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.localPhansalkar.LocalPhansalkarThresholdIntegral.class)
+		op = net.imagej.ops.threshold.localPhansalkar.IntegralLocalPhansalkar.class)
 	public <T extends RealType<T>> IterableInterval<BitType>
 		localPhansalkarThreshold(final IterableInterval<BitType> out,
 			final RandomAccessibleInterval<T> in, final RectangleShape shape,
@@ -827,7 +851,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.localPhansalkar.LocalPhansalkarThresholdIntegral.class)
+		op = net.imagej.ops.threshold.localPhansalkar.IntegralLocalPhansalkar.class)
 	public <T extends RealType<T>> IterableInterval<BitType>
 		localPhansalkarThreshold(final IterableInterval<BitType> out,
 			final RandomAccessibleInterval<T> in, final RectangleShape shape,
@@ -842,7 +866,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.localPhansalkar.LocalPhansalkarThresholdIntegral.class)
+		op = net.imagej.ops.threshold.localPhansalkar.IntegralLocalPhansalkar.class)
 	public <T extends RealType<T>> IterableInterval<BitType>
 		localPhansalkarThreshold(final IterableInterval<BitType> out,
 			final RandomAccessibleInterval<T> in, final RectangleShape shape,
@@ -856,7 +880,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.localPhansalkar.LocalPhansalkarThresholdIntegral.class)
+		op = net.imagej.ops.threshold.localPhansalkar.IntegralLocalPhansalkar.class)
 	public <T extends RealType<T>> IterableInterval<BitType>
 		localPhansalkarThreshold(final IterableInterval<BitType> out,
 			final RandomAccessibleInterval<T> in, final RectangleShape shape)
@@ -864,6 +888,19 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
 			.run(net.imagej.ops.Ops.Threshold.LocalPhansalkarThreshold.class, out, in,
+				shape);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.threshold.localPhansalkar.IntegralLocalPhansalkar.class)
+	public <T extends RealType<T>> IterableInterval<BitType>
+		localPhansalkarThreshold(final RandomAccessibleInterval<T> in,
+			final RectangleShape shape)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
+			.run(net.imagej.ops.Ops.Threshold.LocalPhansalkarThreshold.class, in,
 				shape);
 		return result;
 	}
@@ -935,7 +972,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.localSauvola.LocalSauvolaThresholdIntegral.class)
+		op = net.imagej.ops.threshold.localSauvola.IntegralLocalSauvola.class)
 	public <T extends RealType<T>> IterableInterval<BitType>
 		localSauvolaThreshold(final IterableInterval<BitType> out,
 			final RandomAccessibleInterval<T> in, final RectangleShape shape,
@@ -950,7 +987,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.localSauvola.LocalSauvolaThresholdIntegral.class)
+		op = net.imagej.ops.threshold.localSauvola.IntegralLocalSauvola.class)
 	public <T extends RealType<T>> IterableInterval<BitType>
 		localSauvolaThreshold(final IterableInterval<BitType> out,
 			final RandomAccessibleInterval<T> in, final RectangleShape shape,
@@ -965,7 +1002,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.localSauvola.LocalSauvolaThresholdIntegral.class)
+		op = net.imagej.ops.threshold.localSauvola.IntegralLocalSauvola.class)
 	public <T extends RealType<T>> IterableInterval<BitType>
 		localSauvolaThreshold(final IterableInterval<BitType> out,
 			final RandomAccessibleInterval<T> in, final RectangleShape shape,
@@ -979,7 +1016,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.localSauvola.LocalSauvolaThresholdIntegral.class)
+		op = net.imagej.ops.threshold.localSauvola.IntegralLocalSauvola.class)
 	public <T extends RealType<T>> IterableInterval<BitType>
 		localSauvolaThreshold(final IterableInterval<BitType> out,
 			final RandomAccessibleInterval<T> in, final RectangleShape shape)
@@ -988,6 +1025,18 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
 			.run(net.imagej.ops.Ops.Threshold.LocalSauvolaThreshold.class, out, in,
 				shape);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.threshold.localSauvola.IntegralLocalSauvola.class)
+	public <T extends RealType<T>> IterableInterval<BitType>
+		localSauvolaThreshold(final RandomAccessibleInterval<T> in,
+			final RectangleShape shape)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
+			.run(net.imagej.ops.Ops.Threshold.LocalSauvolaThreshold.class, in, shape);
 		return result;
 	}
 
