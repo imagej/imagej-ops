@@ -31,16 +31,10 @@
 package net.imagej.ops.threshold.localPhansalkar;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
-import net.imagej.ops.special.computer.Computers;
-import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imagej.ops.threshold.LocalThresholdMethod;
-import net.imagej.ops.threshold.apply.LocalThreshold;
-import net.imglib2.IterableInterval;
+import net.imagej.ops.threshold.AbstractLocalThresholder;
+import net.imagej.ops.threshold.ThresholdLearner;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.type.BooleanType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -71,11 +65,14 @@ import org.scijava.plugin.Plugin;
  * </p>
  * 
  * @author Stefan Helfrich (University of Konstanz)
+ * @param <I> type of input
+ * @param <O> type of output
  */
 @Plugin(type = Ops.Threshold.LocalPhansalkarThreshold.class,
 	priority = Priority.LOW_PRIORITY)
-public class LocalPhansalkarThreshold<T extends RealType<T>> extends
-	LocalThreshold<T> implements Ops.Threshold.LocalPhansalkarThreshold
+public class LocalPhansalkar<I, O extends BooleanType<O>> extends
+	AbstractLocalThresholder<I, O> implements
+	Ops.Threshold.LocalPhansalkarThreshold
 {
 
 	@Parameter(required = false)
@@ -84,52 +81,16 @@ public class LocalPhansalkarThreshold<T extends RealType<T>> extends
 	@Parameter(required = false)
 	private double r = 0.5;
 
-	private double p = 2.0;
-	private double q = 10.0;
-
+	@SuppressWarnings("unchecked")
 	@Override
-	protected CenterAwareComputerOp<T, BitType> unaryComputer(final T inClass,
-		final BitType outClass)
-	{
-		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
-
-			private UnaryComputerOp<Iterable<T>, DoubleType> mean;
-			private UnaryComputerOp<Iterable<T>, DoubleType> stdDeviation;
-
-			@Override
-			public void compute2(final IterableInterval<T> neighborhood, final T center, final BitType output) {
-
-				if (mean == null) {
-					mean = Computers.unary(ops(), Ops.Stats.Mean.class, new DoubleType(),
-						neighborhood);
-				}
-
-				if (stdDeviation == null) {
-					stdDeviation = Computers.unary(ops(), Ops.Stats.StdDev.class,
-						new DoubleType(), neighborhood);
-				}
-
-				final DoubleType meanValue = new DoubleType();
-				mean.compute1(neighborhood, meanValue);
-
-				final DoubleType stdDevValue = new DoubleType();
-				stdDeviation.compute1(neighborhood, stdDevValue);
-
-				double threshold = meanValue.get() * (1.0d + p * Math.exp(-q * meanValue
-					.get()) + k * ((stdDevValue.get() / r) - 1.0));
-
-				output.set(center.getRealDouble() >= threshold);
-			}
-		};
-
-		op.setEnvironment(ops());
-		return op;
+	protected ThresholdLearner<I, O> getLearner() {
+		return ops().op(LocalPhansalkarThresholdLearner.class, in(), k, r);
 	}
 
 	@Override
 	public boolean conforms() {
-		RectangleShape rect = getShape() instanceof RectangleShape
-			? (RectangleShape) getShape() : null;
+		RectangleShape rect = shape instanceof RectangleShape
+			? (RectangleShape) shape : null;
 		if (rect == null) {
 			return true;
 		}

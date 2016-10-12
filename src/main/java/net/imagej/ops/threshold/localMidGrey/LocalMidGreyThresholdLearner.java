@@ -28,75 +28,74 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localMean;
+package net.imagej.ops.threshold.localMidGrey;
 
+import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
+import net.imagej.ops.threshold.ThresholdLearner;
 import net.imagej.ops.threshold.apply.LocalThreshold;
 import net.imglib2.IterableInterval;
-import net.imglib2.algorithm.neighborhood.RectangleShape;
+import net.imglib2.type.BooleanType;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.util.Pair;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * LocalThresholdMethod that uses the mean and operates directly of RAIs.
- *
- * @author Jonathan Hale (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
+ * LocalThresholdMethod which thresholds against the average of the maximum and
+ * minimum pixels of a neighborhood.
+ * 
+ * @author Jonathan Hale
  * @author Stefan Helfrich (University of Konstanz)
+ * @param <I> type of input
+ * @param <O> type of output
  */
-@Plugin(type = Ops.Threshold.LocalMeanThreshold.class,
-	priority = Priority.LOW_PRIORITY)
-public class LocalMeanThreshold<T extends RealType<T>> extends
-	LocalThreshold<T>	implements Ops.Threshold.LocalMeanThreshold
+@Plugin(type = Op.class)
+public class LocalMidGreyThresholdLearner<I extends RealType<I>, O extends BooleanType<O>>
+	extends AbstractUnaryFunctionOp<IterableInterval<I>, UnaryComputerOp<I, O>>
+	implements ThresholdLearner<I, O>
 {
 
 	@Parameter
 	private double c;
 
+	private UnaryFunctionOp<Iterable<I>, Pair<I, I>> minMaxFunc;
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	protected CenterAwareComputerOp<T, BitType> unaryComputer(final T inClass,
-		final BitType outClass)
-	{
-		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
-
-			private UnaryComputerOp<Iterable<T>, DoubleType> meanOp;
-
-			@Override
-			public void compute2(final IterableInterval<T> neighborhood, final T center, final BitType output) {
-
-				if (meanOp == null) {
-					meanOp = Computers.unary(ops(),	Ops.Stats.Mean.class, DoubleType.class, neighborhood);
-				}
-
-				final DoubleType m = new DoubleType();
-
-				meanOp.compute1(neighborhood, m);
-				output.set(center.getRealDouble() > m.getRealDouble() - c);
-			}
-		};
-
-		op.setEnvironment(ops());
-		return op;
-	}
-
-	@Override
-	public boolean conforms() {
-		RectangleShape rect = getShape() instanceof RectangleShape
-			? (RectangleShape) getShape() : null;
-		if (rect == null) {
-			return true;
+	public UnaryComputerOp<I, O> compute1(final IterableInterval<I> input) {
+		if (minMaxFunc == null) {
+			minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(),
+				Ops.Stats.MinMax.class, Pair.class, input);
 		}
 
-		return rect.getSpan() <= 2;
+		final Pair<I, I> outputs = minMaxFunc.compute1(input);
+
+		final double minValue = outputs.getA().getRealDouble();
+		final double maxValue = outputs.getB().getRealDouble();
+
+		UnaryComputerOp<I, O> predictorOp = new AbstractUnaryComputerOp<I, O>() {
+
+			@Override
+			public void compute1(I in, O out) {
+				out.set(in.getRealDouble() > ((maxValue + minValue) / 2.0) - c);
+			}
+		};
+		predictorOp.setEnvironment(ops());
+		predictorOp.initialize();
+
+		return predictorOp;
 	}
 
 }

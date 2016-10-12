@@ -28,88 +28,67 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localNiblack;
+package net.imagej.ops.threshold.localMedian;
 
+import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
+import net.imagej.ops.threshold.ThresholdLearner;
 import net.imagej.ops.threshold.apply.LocalThreshold;
 import net.imglib2.IterableInterval;
-import net.imglib2.algorithm.neighborhood.RectangleShape;
+import net.imglib2.type.BooleanType;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * LocalThresholdMethod using Niblack's thresholding method.
+ * LocalThresholdMethod using median.
  * 
  * @author Jonathan Hale
  * @author Stefan Helfrich (University of Konstanz)
+ * @param <I> type of input
+ * @param <O> type of output
  */
-@Plugin(type = Ops.Threshold.LocalNiblackThreshold.class,
-	priority = Priority.LOW_PRIORITY)
-public class LocalNiblackThreshold<T extends RealType<T>> extends LocalThreshold<T>
-	implements Ops.Threshold.LocalNiblackThreshold
+@Plugin(type = Op.class)
+public class LocalMedianThresholdLearner<I extends RealType<I>, O extends BooleanType<O>>
+	extends AbstractUnaryFunctionOp<IterableInterval<I>, UnaryComputerOp<I, O>>
+	implements ThresholdLearner<I, O>
 {
 
 	@Parameter
 	private double c;
 
-	@Parameter
-	private double k;
-	
-	@Override
-	protected CenterAwareComputerOp<T, BitType> unaryComputer(final T inClass,
-		final BitType outClass)
-	{
-		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
-
-			private UnaryComputerOp<Iterable<T>, DoubleType> mean;
-			private UnaryComputerOp<Iterable<T>, DoubleType> stdDeviation;
-
-			@Override
-			public void compute2(final IterableInterval<T> neighborhood, final T center, final BitType output) {
-
-				if (mean == null) {
-					mean = Computers.unary(ops(), Ops.Stats.Mean.class, new DoubleType(),
-						neighborhood);
-				}
-
-				if (stdDeviation == null) {
-					stdDeviation = Computers.unary(ops(), Ops.Stats.StdDev.class,
-						new DoubleType(), neighborhood);
-				}
-
-				final DoubleType m = new DoubleType();
-				mean.compute1(neighborhood, m);
-
-				final DoubleType stdDev = new DoubleType();
-				stdDeviation.compute1(neighborhood, stdDev);
-
-				output.set(center.getRealDouble() > m.getRealDouble() + k * stdDev
-					.getRealDouble() - c);
-			}
-		};
-
-		op.setEnvironment(ops());
-		return op;
-	}
+	private UnaryComputerOp<Iterable<I>, DoubleType> median;
 
 	@Override
-	public boolean conforms() {
-		RectangleShape rect = getShape() instanceof RectangleShape
-			? (RectangleShape) getShape() : null;
-		if (rect == null) {
-			return true;
+	public UnaryComputerOp<I, O> compute1(final IterableInterval<I> input) {
+		if (median == null) {
+			median = Computers.unary(ops(), Ops.Stats.Median.class, DoubleType.class,
+				input);
 		}
 
-		return rect.getSpan() <= 2;
+		final DoubleType m = new DoubleType();
+		median.compute1(input, m);
+
+		UnaryComputerOp<I, O> predictorOp = new AbstractUnaryComputerOp<I, O>() {
+
+			@Override
+			public void compute1(I in, O out) {
+				out.set(in.getRealDouble() > m.getRealDouble() - c);
+			}
+		};
+		predictorOp.setEnvironment(ops());
+		predictorOp.initialize();
+
+		return predictorOp;
 	}
 
 }

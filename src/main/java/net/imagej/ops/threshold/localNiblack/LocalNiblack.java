@@ -28,65 +28,54 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localMidGrey;
+package net.imagej.ops.threshold.localNiblack;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
-import net.imagej.ops.special.function.Functions;
-import net.imagej.ops.special.function.UnaryFunctionOp;
-import net.imagej.ops.threshold.LocalThresholdMethod;
-import net.imagej.ops.threshold.apply.LocalThreshold;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Pair;
+import net.imagej.ops.threshold.AbstractLocalThresholder;
+import net.imagej.ops.threshold.ThresholdLearner;
+import net.imglib2.algorithm.neighborhood.RectangleShape;
+import net.imglib2.type.BooleanType;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * LocalThresholdMethod which thresholds against the average of the maximum and
- * minimum pixels of a neighborhood.
+ * LocalThresholdMethod using Niblack's thresholding method.
  * 
  * @author Jonathan Hale
  * @author Stefan Helfrich (University of Konstanz)
+ * @param <I> type of input
+ * @param <O> type of output
  */
-@Plugin(type = Ops.Threshold.LocalMidGreyThreshold.class)
-public class LocalMidGreyThreshold<T extends RealType<T>> extends
-	LocalThreshold<T> implements Ops.Threshold.LocalMidGreyThreshold
+@Plugin(type = Ops.Threshold.LocalNiblackThreshold.class,
+	priority = Priority.LOW_PRIORITY)
+public class LocalNiblack<I, O extends BooleanType<O>> extends
+	AbstractLocalThresholder<I, O> implements
+	Ops.Threshold.LocalNiblackThreshold
 {
 
 	@Parameter
 	private double c;
-	
+
+	@Parameter
+	private double k;
+
+	@SuppressWarnings("unchecked")
 	@Override
-	protected CenterAwareComputerOp<T, BitType> unaryComputer(final T inClass,
-		final BitType outClass)
-	{
-		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
+	protected ThresholdLearner<I, O> getLearner() {
+		return ops().op(LocalNiblackThresholdLearner.class, in(), c, k);
+	}
 
-			private UnaryFunctionOp<Iterable<T>, Pair<T, T>> minMaxFunc;
+	@Override
+	public boolean conforms() {
+		RectangleShape rect = shape instanceof RectangleShape
+			? (RectangleShape) shape : null;
+		if (rect == null) {
+			return true;
+		}
 
-			@SuppressWarnings({ "unchecked", "rawtypes" })
-			@Override
-			public void compute2(final IterableInterval<T> neighborhood, final T center, final BitType output) {
-
-				if (minMaxFunc == null) {
-					minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(),
-						Ops.Stats.MinMax.class, Pair.class, neighborhood);
-				}
-
-				final Pair<T, T> outputs = minMaxFunc.compute1(neighborhood);
-
-				final double minValue = outputs.getA().getRealDouble();
-				final double maxValue = outputs.getB().getRealDouble();
-
-				output.set(center.getRealDouble() > ((maxValue + minValue) / 2.0) - c);
-			}
-		};
-
-		op.setEnvironment(ops());
-		return op;
+		return rect.getSpan() <= 2;
 	}
 
 }

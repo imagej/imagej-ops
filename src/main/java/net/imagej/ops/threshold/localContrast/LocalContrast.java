@@ -31,16 +31,11 @@
 package net.imagej.ops.threshold.localContrast;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
-import net.imagej.ops.special.function.Functions;
-import net.imagej.ops.special.function.UnaryFunctionOp;
-import net.imagej.ops.threshold.LocalThresholdMethod;
-import net.imagej.ops.threshold.apply.LocalThreshold;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Pair;
+import net.imagej.ops.threshold.AbstractLocalThresholder;
+import net.imagej.ops.threshold.ThresholdLearner;
+import net.imglib2.type.BooleanType;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -49,43 +44,20 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Jonathan Hale
  * @author Stefan Helfrich (University of Konstanz)
+ * @param <I> type of input
+ * @param <O> type of output
  */
-@Plugin(type = Ops.Threshold.LocalContrastThreshold.class)
-public class LocalContrastThreshold<T extends RealType<T>> extends
-		LocalThreshold<T> implements Ops.Threshold.LocalContrastThreshold {
+@Plugin(type = Ops.Threshold.LocalContrastThreshold.class,
+	priority = Priority.LOW_PRIORITY)
+public class LocalContrast<I, O extends BooleanType<O>> extends
+	AbstractLocalThresholder<I, O> implements
+	Ops.Threshold.LocalContrastThreshold
+{
 
+	@SuppressWarnings("unchecked")
 	@Override
-	protected CenterAwareComputerOp<T, BitType> unaryComputer(final T inClass,
-		final BitType outClass)
-	{
-		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
-
-			private UnaryFunctionOp<Iterable<T>, Pair<T, T>> minMaxFunc;
-
-			@SuppressWarnings({ "unchecked", "rawtypes" })
-			@Override
-			public void compute2(final IterableInterval<T> neighborhood, final T center, final BitType output) {
-
-				if (minMaxFunc == null) {
-					minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(),
-						Ops.Stats.MinMax.class, Pair.class, neighborhood);
-				}
-
-				final Pair<T, T> outputs = minMaxFunc.compute1(neighborhood);
-
-				final double centerValue = center.getRealDouble();
-				final double diffMin = centerValue - outputs.getA().getRealDouble();
-				final double diffMax = outputs.getB().getRealDouble() - centerValue;
-
-				// set to background (false) if pixel closer to min value,
-				// and to foreground (true) if pixel closer to max value.
-				// If diffMin and diffMax are equal, output will be set to fg.
-				output.set(diffMin <= diffMax);
-			}
-		};
-
-		op.setEnvironment(ops());
-		return op;
+	protected ThresholdLearner<I, O> getLearner() {
+		return ops().op(LocalContrastThresholdLearner.class, in());
 	}
 
 }

@@ -62,7 +62,7 @@ import org.scijava.plugin.Plugin;
  * required.
  * </p>
  *
- * @see LocalPhansalkarThreshold
+ * @see LocalPhansalkarThresholdLearner
  * @see LocalThresholdIntegral
  * @author Stefan Helfrich (University of Konstanz)
  */

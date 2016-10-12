@@ -62,7 +62,7 @@ import org.scijava.plugin.Plugin;
  * required.
  * </p>
  *
- * @see LocalNiblackThreshold
+ * @see LocalNiblackThresholdLearner
  * @see LocalThresholdIntegral
  * @author Stefan Helfrich (University of Konstanz)
  */

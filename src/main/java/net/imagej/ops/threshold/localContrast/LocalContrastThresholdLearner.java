@@ -28,78 +28,68 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localBernsen;
+package net.imagej.ops.threshold.localContrast;
 
+import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
-import net.imagej.ops.threshold.LocalThresholdMethod;
-import net.imagej.ops.threshold.apply.LocalThreshold;
-import net.imagej.ops.threshold.localMidGrey.LocalMidGreyThreshold;
+import net.imagej.ops.threshold.ThresholdLearner;
 import net.imglib2.IterableInterval;
-import net.imglib2.type.logic.BitType;
+import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Pair;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * LocalThresholdMethod which is similar to {@link LocalMidGreyThreshold}, but uses a
- * constant value rather than the value of the input pixel when the contrast in
- * the neighborhood of that pixel is too small.
- *
+ * LocalThresholdMethod which determines whether a pixel is closer to the
+ * maximum or minimum pixel of a neighborhood.
+ * 
  * @author Jonathan Hale
  * @author Stefan Helfrich (University of Konstanz)
- * @param <T> input type
+ * @param <I> type of input
+ * @param <O> type of output
  */
-@Plugin(type = Ops.Threshold.LocalBernsenThreshold.class)
-public class LocalBernsenThreshold<T extends RealType<T>> extends
-	LocalThreshold<T> implements Ops.Threshold.LocalBernsenThreshold
+@Plugin(type = Op.class)
+public class LocalContrastThresholdLearner<I extends RealType<I>, O extends BooleanType<O>>
+	extends AbstractUnaryFunctionOp<IterableInterval<I>, UnaryComputerOp<I, O>>
+	implements ThresholdLearner<I, O>
 {
 
-	@Parameter
-	private double constrastThreshold;
+	private UnaryFunctionOp<Iterable<I>, Pair<I, I>> minMaxFunc;
 
-	@Parameter
-	private double halfMaxValue;
-
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	protected CenterAwareComputerOp<T, BitType> unaryComputer(final T inClass,
-		final BitType outClass)
-	{
-		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
+	public UnaryComputerOp<I, O> compute1(final IterableInterval<I> input) {
+		if (minMaxFunc == null) {
+			minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(),
+				Ops.Stats.MinMax.class, Pair.class, input);
+		}
 
-			private UnaryFunctionOp<Iterable<T>, Pair<T, T>> minMaxFunc;
+		final Pair<I, I> outputs = minMaxFunc.compute1(input);
 
-			@SuppressWarnings({ "unchecked", "rawtypes" })
+		UnaryComputerOp<I, O> predictorOp = new AbstractUnaryComputerOp<I, O>() {
+
 			@Override
-			public void compute2(final IterableInterval<T> neighborhood, final T center,
-				final BitType output)
-			{
+			public void compute1(I in, O out) {
+				final double centerValue = in.getRealDouble();
+				final double diffMin = centerValue - outputs.getA().getRealDouble();
+				final double diffMax = outputs.getB().getRealDouble() - centerValue;
 
-				if (minMaxFunc == null) {
-					minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(), Ops.Stats.MinMax.class, Pair.class, neighborhood);
-				}
-				
-				final Pair<T, T> outputs = minMaxFunc.compute1(neighborhood);
-				final double minValue = outputs.getA().getRealDouble();
-				final double maxValue = outputs.getB().getRealDouble();
-				final double midGrey = (maxValue + minValue) / 2.0;
-
-				if ((maxValue - minValue) < constrastThreshold) {
-					output.set(midGrey >= halfMaxValue);
-				}
-				else {
-					output.set(center.getRealDouble() >= midGrey);
-				}
+				// set to background (false) if pixel closer to min value,
+				// and to foreground (true) if pixel closer to max value.
+				// If diffMin and diffMax are equal, output will be set to fg.
+				out.set(diffMin <= diffMax);
 			}
+		};
+		predictorOp.setEnvironment(ops());
+		predictorOp.initialize();
 
-			};
-		
-		op.setEnvironment(ops());	
-		return op;
+		return predictorOp;
 	}
 
 }

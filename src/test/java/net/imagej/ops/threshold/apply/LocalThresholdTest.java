@@ -39,8 +39,12 @@ import net.imagej.ops.Ops.Threshold.IJ1;
 import net.imagej.ops.Ops.Threshold.Intermodes;
 import net.imagej.ops.Ops.Threshold.IsoData;
 import net.imagej.ops.Ops.Threshold.Li;
-import net.imagej.ops.Ops.Threshold.LocalBernsenThreshold;
 import net.imagej.ops.Ops.Threshold.LocalMeanThreshold;
+import net.imagej.ops.Ops.Threshold.LocalMedianThreshold;
+import net.imagej.ops.Ops.Threshold.LocalMidGreyThreshold;
+import net.imagej.ops.Ops.Threshold.LocalNiblackThreshold;
+import net.imagej.ops.Ops.Threshold.LocalPhansalkarThreshold;
+import net.imagej.ops.Ops.Threshold.LocalSauvolaThreshold;
 import net.imagej.ops.Ops.Threshold.MaxEntropy;
 import net.imagej.ops.Ops.Threshold.MaxLikelihood;
 import net.imagej.ops.Ops.Threshold.MinError;
@@ -68,15 +72,21 @@ import net.imagej.ops.threshold.LocalThresholders.LocalTriangle;
 import net.imagej.ops.threshold.LocalThresholders.LocalYen;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imagej.ops.threshold.localBernsen.LocalBernsen;
-import net.imagej.ops.threshold.localContrast.LocalContrastThreshold;
+import net.imagej.ops.threshold.localContrast.LocalContrast;
+import net.imagej.ops.threshold.localMean.LocalMean;
 import net.imagej.ops.threshold.localMean.LocalMeanThresholdIntegral;
-import net.imagej.ops.threshold.localMedian.LocalMedianThreshold;
-import net.imagej.ops.threshold.localMidGrey.LocalMidGreyThreshold;
-import net.imagej.ops.threshold.localNiblack.LocalNiblackThreshold;
+import net.imagej.ops.threshold.localMedian.LocalMedian;
+import net.imagej.ops.threshold.localMedian.LocalMedianThresholdLearner;
+import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
+import net.imagej.ops.threshold.localMidGrey.LocalMidGreyThresholdLearner;
+import net.imagej.ops.threshold.localNiblack.LocalNiblackThresholdLearner;
+import net.imagej.ops.threshold.localNiblack.LocalNiblack;
 import net.imagej.ops.threshold.localNiblack.LocalNiblackThresholdIntegral;
-import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkarThreshold;
+import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkarThresholdLearner;
+import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar;
 import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkarThresholdIntegral;
-import net.imagej.ops.threshold.localSauvola.LocalSauvolaThreshold;
+import net.imagej.ops.threshold.localSauvola.LocalSauvolaThresholdLearner;
+import net.imagej.ops.threshold.localSauvola.LocalSauvola;
 import net.imagej.ops.threshold.localSauvola.LocalSauvolaThresholdIntegral;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -250,7 +260,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalBernsenThreshold
+	 * @see LocalBernsen
 	 */
 	@Test
 	public void testLocalBernsenThreshold() {
@@ -262,11 +272,11 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalContrastThreshold
+	 * @see LocalContrast
 	 */
 	@Test
 	public void testLocalContrastThreshold() {
-		ops.run(LocalContrastThreshold.class, out, in, new RectangleShape(3, false),
+		ops.run(LocalContrast.class, out, in, new RectangleShape(3, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
 
 		assertEquals(out.firstElement().get(), false);
@@ -352,11 +362,11 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalMeanThreshold
+	 * @see LocalMean
 	 */
 	@Test
-	public void testLocalThresholdMean() {
-		ops.run(Ops.Threshold.LocalMeanThreshold.class, out, in, new RectangleShape(1, false),
+	public void testLocalMeanThreshold() {
+		ops.run(LocalMeanThreshold.class, out, in, new RectangleShape(1, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
 			0.0);
 
@@ -411,7 +421,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalMedianThreshold
+	 * @see LocalMedian
 	 */
 	@Test
 	public void testLocalMedianThreshold() {
@@ -423,7 +433,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalMidGreyThreshold
+	 * @see LocalMidGrey
 	 */
 	@Test
 	public void testLocalMidGreyThreshold() {
@@ -467,7 +477,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalNiblackThreshold
+	 * @see LocalNiblack
 	 */
 	@Test
 	public void testLocalNiblackThreshold() {
@@ -492,7 +502,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 
 	/**
 	 * @see LocalNiblackThresholdIntegral
-	 * @see LocalNiblackThreshold
+	 * @see LocalNiblackThresholdLearner
 	 */
 	@Test
 	public void testLocalNiblackResultsConsistency() {
@@ -507,7 +517,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 		}
 		
 		// Default implementation
-		ops.run(LocalNiblackThreshold.class, out2, in, new RectangleShape(2, false),
+		ops.run(LocalNiblack.class, out2, in, new RectangleShape(2, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
 			0.0, 0.0);
 		
@@ -545,7 +555,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalPhansalkarThreshold
+	 * @see LocalPhansalkar
 	 */
 	@Test
 	public void testLocalPhansalkar() {
@@ -569,7 +579,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 
 	/**
 	 * @see LocalPhansalkarThresholdIntegral
-	 * @see LocalPhansalkarThreshold
+	 * @see LocalPhansalkar
 	 */
 	@Test
 	public void testLocalPhansalkarResultsConsistency() {
@@ -584,7 +594,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 		}
 		
 		// Default implementation
-		ops.run(LocalPhansalkarThreshold.class, out2, in, new RectangleShape(2, false),
+		ops.run(LocalPhansalkar.class, out2, in, new RectangleShape(2, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
 			0.0, 0.0);
 		
@@ -610,7 +620,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalSauvolaThreshold
+	 * @see LocalSauvola
 	 */
 	@Test
 	public void testLocalSauvola() {
@@ -634,7 +644,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 
 	/**
 	 * @see LocalSauvolaThresholdIntegral
-	 * @see LocalSauvolaThreshold
+	 * @see LocalSauvola
 	 */
 	@Test
 	public void testLocalSauvolaResultsConsistency() {
@@ -649,7 +659,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 		}
 		
 		// Default implementation
-		ops.run(LocalSauvolaThreshold.class, out2, in, new RectangleShape(2, false),
+		ops.run(LocalSauvola.class, out2, in, new RectangleShape(2, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
 			0.0, 0.0);
 		
@@ -698,7 +708,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testContingencyOfNormalImplementation() {
-		ops.run(LocalSauvolaThreshold.class, out, in, new RectangleShape(3, false),
+		ops.run(LocalSauvolaThresholdLearner.class, out, in, new RectangleShape(3, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
 			0.0, 0.0);
 	}

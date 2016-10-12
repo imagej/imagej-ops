@@ -28,16 +28,17 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localMedian;
+package net.imagej.ops.threshold.localMean;
 
+import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imagej.ops.threshold.LocalThresholdMethod;
-import net.imagej.ops.threshold.apply.LocalThreshold;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.threshold.ThresholdLearner;
 import net.imglib2.IterableInterval;
-import net.imglib2.type.logic.BitType;
+import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -45,43 +46,46 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * LocalThresholdMethod using median.
- * 
- * @author Jonathan Hale
+ * Local threshold method that uses the mean of a neighborhood.
+ *
+ * @author Jonathan Hale (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
  * @author Stefan Helfrich (University of Konstanz)
+ * @param <I> type of input
+ * @param <O> type of output
  */
-@Plugin(type = Ops.Threshold.LocalMedianThreshold.class)
-public class LocalMedianThreshold<T extends RealType<T>> extends LocalThreshold<T>
-	implements Ops.Threshold.LocalMedianThreshold
+@Plugin(type = Op.class)
+public class LocalMeanThresholdLearner<I extends RealType<I>, O extends BooleanType<O>>
+	extends AbstractUnaryFunctionOp<IterableInterval<I>, UnaryComputerOp<I, O>>
+	implements ThresholdLearner<I, O>
 {
 
 	@Parameter
 	private double c;
-
+	
+	private UnaryComputerOp<Iterable<I>, DoubleType> meanOp;
+	
 	@Override
-	protected CenterAwareComputerOp<T, BitType> unaryComputer(final T inClass,
-		final BitType outClass)
-	{
-		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
+	public UnaryComputerOp<I, O> compute1(final IterableInterval<I> input) {
+		if (meanOp == null) {
+			meanOp = Computers.unary(ops(),	Ops.Stats.Mean.class, DoubleType.class, input);
+		}
 
-			private UnaryComputerOp<Iterable<T>, DoubleType> median;
+		final DoubleType m = new DoubleType();
+
+		meanOp.compute1(input, m);
+
+		UnaryComputerOp<I, O> predictorOp = new AbstractUnaryComputerOp<I, O>() {
 
 			@Override
-			public void compute2(final IterableInterval<T> neighborhood, final T center, final BitType output) {
-
-				if (median == null) {
-					median = Computers
-							.unary(ops(), Ops.Stats.Median.class, DoubleType.class, neighborhood);
-				}
-
-				final DoubleType m = new DoubleType();
-				median.compute1(neighborhood, m);
-				output.set(center.getRealDouble() > m.getRealDouble() - c);
+			public void compute1(I in, O out) {
+				out.set(in.getRealDouble() > m.getRealDouble() - c);
 			}
 		};
+		predictorOp.setEnvironment(ops());
+		predictorOp.initialize();
 
-		op.setEnvironment(ops());
-		return op;
+		return predictorOp;
 	}
-	
+
 }

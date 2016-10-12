@@ -31,16 +31,10 @@
 package net.imagej.ops.threshold.localSauvola;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
-import net.imagej.ops.special.computer.Computers;
-import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imagej.ops.threshold.LocalThresholdMethod;
-import net.imagej.ops.threshold.apply.LocalThreshold;
-import net.imglib2.IterableInterval;
+import net.imagej.ops.threshold.AbstractLocalThresholder;
+import net.imagej.ops.threshold.ThresholdLearner;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.type.BooleanType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -63,11 +57,14 @@ import org.scijava.plugin.Plugin;
  * </p>
  * 
  * @author Stefan Helfrich (University of Konstanz)
+ * @param <I> type of input
+ * @param <O> type of output
  */
 @Plugin(type = Ops.Threshold.LocalSauvolaThreshold.class,
 	priority = Priority.LOW_PRIORITY)
-public class LocalSauvolaThreshold<T extends RealType<T>> extends LocalThreshold<T>
-	implements Ops.Threshold.LocalSauvolaThreshold
+public class LocalSauvola<I, O extends BooleanType<O>> extends
+	AbstractLocalThresholder<I, O> implements
+	Ops.Threshold.LocalSauvolaThreshold
 {
 
 	@Parameter(required = false)
@@ -76,49 +73,16 @@ public class LocalSauvolaThreshold<T extends RealType<T>> extends LocalThreshold
 	@Parameter(required = false)
 	private double r = 0.5d;
 
+	@SuppressWarnings("unchecked")
 	@Override
-	protected CenterAwareComputerOp<T, BitType> unaryComputer(final T inClass,
-		final BitType outClass)
-	{
-		final LocalThresholdMethod<T> op = new LocalThresholdMethod<T>() {
-
-			private UnaryComputerOp<Iterable<T>, DoubleType> mean;
-			private UnaryComputerOp<Iterable<T>, DoubleType> stdDeviation;
-
-			@Override
-			public void compute2(final IterableInterval<T> neighborhood, final T center, final BitType output) {
-
-				if (mean == null) {
-					mean = Computers.unary(ops(), Ops.Stats.Mean.class, new DoubleType(),
-						neighborhood);
-				}
-
-				if (stdDeviation == null) {
-					stdDeviation = Computers.unary(ops(), Ops.Stats.StdDev.class,
-						new DoubleType(), neighborhood);
-				}
-
-				final DoubleType meanValue = new DoubleType();
-				mean.compute1(neighborhood, meanValue);
-
-				final DoubleType stdDevValue = new DoubleType();
-				stdDeviation.compute1(neighborhood, stdDevValue);
-
-				double threshold = meanValue.get() * (1.0d + k * ((Math.sqrt(stdDevValue
-					.get()) / r) - 1.0));
-
-				output.set(center.getRealDouble() >= threshold);
-			}
-		};
-
-		op.setEnvironment(ops());
-		return op;
+	protected ThresholdLearner<I, O> getLearner() {
+		return ops().op(LocalSauvolaThresholdLearner.class, in(), k, r);
 	}
 
 	@Override
 	public boolean conforms() {
-		RectangleShape rect = getShape() instanceof RectangleShape
-			? (RectangleShape) getShape() : null;
+		RectangleShape rect = shape instanceof RectangleShape
+			? (RectangleShape) shape : null;
 		if (rect == null) {
 			return true;
 		}
