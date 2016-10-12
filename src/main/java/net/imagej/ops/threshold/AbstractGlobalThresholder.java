@@ -31,11 +31,10 @@
 package net.imagej.ops.threshold;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.pixml.DefaultHardClusterer;
+import net.imagej.ops.pixml.HardClusterer;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
-import net.imagej.ops.threshold.otsu.OtsuThresholdLearner;
 import net.imglib2.IterableInterval;
 import net.imglib2.img.Img;
 import net.imglib2.type.BooleanType;
@@ -54,7 +53,7 @@ public abstract class AbstractGlobalThresholder<I, O extends BooleanType<O>>
 {
 
 	/** Op that is used to learn and apply to the whole input */
-	public DefaultHardClusterer<I, O> globalThresholder;
+	public HardClusterer<I, O> globalThresholder;
 
 	/** Op that is used for creating the output image */
 	protected UnaryFunctionOp<IterableInterval<I>, Img<BitType>> imgCreator;
@@ -64,7 +63,7 @@ public abstract class AbstractGlobalThresholder<I, O extends BooleanType<O>>
 	public void initialize() {
 		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
 			Img.class, in(), new BitType());
-		globalThresholder = ops().op(DefaultHardClusterer.class, in(), out(),
+		globalThresholder = ops().op(HardClusterer.class, in(), out(),
 			getLearner());
 	}
 
