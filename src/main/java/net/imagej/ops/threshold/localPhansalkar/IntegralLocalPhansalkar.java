@@ -33,7 +33,6 @@ package net.imagej.ops.threshold.localPhansalkar;
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.AbstractIntegralLocalThresholder;
 import net.imagej.ops.threshold.IntegralThresholdLearner;
-import net.imagej.ops.threshold.apply.LocalThresholdIntegral;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
 import net.imglib2.type.BooleanType;

@@ -31,6 +31,7 @@
 package net.imagej.ops.threshold.apply;
 
 import net.imagej.ops.threshold.AbstractThresholdTest;
+import net.imagej.ops.threshold.manual.Manual;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.type.logic.BitType;
@@ -39,7 +40,7 @@ import net.imglib2.type.numeric.integer.UnsignedShortType;
 import org.junit.Test;
 
 /**
- * Tests {@link ApplyManualThreshold}.
+ * Tests {@link Manual}.
  * 
  * @author Curtis Rueden
  */
@@ -49,7 +50,7 @@ public class ApplyManualThresholdTest extends AbstractThresholdTest {
 	public void testApplyThreshold() throws IncompatibleTypeException {
 		final Img<BitType> out = bitmap();
 		final UnsignedShortType threshold = new UnsignedShortType(30000);
-		ops.run(ApplyManualThreshold.class, out, in, threshold);
+		ops.run(Manual.class, out, in, threshold);
 		assertCount(out, 54);
 	}
 

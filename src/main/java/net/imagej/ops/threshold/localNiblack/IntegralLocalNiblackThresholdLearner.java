@@ -40,7 +40,6 @@ import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.stats.IntegralMean;
 import net.imagej.ops.stats.IntegralVariance;
 import net.imagej.ops.threshold.IntegralThresholdLearner;
-import net.imagej.ops.threshold.apply.LocalThresholdIntegral;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
 import net.imglib2.converter.Converter;

@@ -56,7 +56,6 @@ import net.imagej.ops.Ops.Threshold.RenyiEntropy;
 import net.imagej.ops.Ops.Threshold.Shanbhag;
 import net.imagej.ops.Ops.Threshold.Triangle;
 import net.imagej.ops.Ops.Threshold.Yen;
-import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.LocalThresholders.LocalHuang;
 import net.imagej.ops.threshold.LocalThresholders.LocalIJ1;
 import net.imagej.ops.threshold.LocalThresholders.LocalIntermodes;

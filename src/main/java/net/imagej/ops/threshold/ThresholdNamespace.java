@@ -60,66 +60,24 @@ public class ThresholdNamespace extends AbstractNamespace {
 
 	// -- apply --
 
-	@OpMethod(
-		op = net.imagej.ops.threshold.apply.ApplyConstantThreshold.class)
-	public <T extends RealType<T>> Iterable<BitType> apply(
-		final Iterable<BitType> out, final Iterable<T> in, final T threshold)
-	{
-		@SuppressWarnings("unchecked")
-		final Iterable<BitType> result =
-			(Iterable<BitType>) ops().run(
-				net.imagej.ops.Ops.Threshold.Apply.class,
-				out, in, threshold);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.apply.ApplyManualThreshold.class)
-	public <T extends RealType<T>> IterableInterval<BitType> apply(final IterableInterval<T> in,
-		final T threshold)
-	{
-		@SuppressWarnings("unchecked")
-		final IterableInterval<BitType> result =
-			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.Ops.Threshold.Apply.class, in,
-				threshold);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.apply.ApplyManualThreshold.class)
-	public <T extends RealType<T>> IterableInterval<BitType> apply(final IterableInterval<BitType> out,
+	@OpMethod(op = net.imagej.ops.threshold.manual.Manual.class)
+	public <T extends RealType<T>> IterableInterval<BitType> manual(
 		final IterableInterval<T> in, final T threshold)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<BitType> result =
-			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.Ops.Threshold.Apply.class, out,
-				in, threshold);
+		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
+			.run(net.imagej.ops.threshold.manual.Manual.class, in, threshold);
 		return result;
 	}
 
-	@OpMethod(
-		op = net.imagej.ops.threshold.apply.ApplyThresholdComparable.class)
-	public <T> BitType apply(final BitType out,
-		final Comparable<? super T> in, final T threshold)
+	@OpMethod(op = net.imagej.ops.threshold.manual.Manual.class)
+	public <T extends RealType<T>> IterableInterval<BitType> manual(
+		final IterableInterval<BitType> out, final IterableInterval<T> in,
+		final T threshold)
 	{
-		final BitType result =
-			(BitType) ops().run(
-				net.imagej.ops.Ops.Threshold.Apply.class,
-				out, in, threshold);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.threshold.apply.ApplyThresholdComparator.class)
-	public <T> BitType apply(final BitType out, final T in,
-		final T threshold, final Comparator<? super T> comparator)
-	{
-		final BitType result =
-			(BitType) ops().run(
-				net.imagej.ops.Ops.Threshold.Apply.class,
-				out, in, threshold, comparator);
+		@SuppressWarnings("unchecked")
+		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
+			.run(net.imagej.ops.threshold.manual.Manual.class, out, in, threshold);
 		return result;
 	}
 
