@@ -31,18 +31,23 @@
 package net.imagej.ops.pixml;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Map;
 import net.imagej.ops.map.neighborhood.AbstractCenterAwareComputerOp;
 import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.special.chain.RAIs;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imagej.ops.threshold.LocalThresholder;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
+import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsBorderFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.BooleanType;
+import net.imglib2.type.logic.BitType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -71,6 +76,16 @@ public class DefaultNeighborhoodHardClusterer<I, O extends BooleanType<O>>
 	private OutOfBoundsFactory<I, RandomAccessibleInterval<I>> outOfBoundsFactory =
 		new OutOfBoundsBorderFactory<>();
 
+	/** Op that is used for creating the output image */
+	protected UnaryFunctionOp<RandomAccessibleInterval<I>, Iterable<O>> imgCreator;
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public void initialize() {
+		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+			Img.class, in(), new BitType());
+	}
+
 	@Override
 	public void compute1(final RandomAccessibleInterval<I> input,
 		final Iterable<O> output)
@@ -89,14 +104,15 @@ public class DefaultNeighborhoodHardClusterer<I, O extends BooleanType<O>>
 		learnerPredictorCombined.setEnvironment(ops());
 		learnerPredictorCombined.initialize();
 
+		// FIXME Initialize beforehand and reuse op
 		ops().run(Map.class, output, RAIs.extend(input, outOfBoundsFactory), shape,
 			learnerPredictorCombined);
 	}
 
+	@SuppressWarnings("cast")
 	@Override
-	public Iterable<O> createOutput(RandomAccessibleInterval<I> input) {
-		// TODO Auto-generated method stub
-		return null;
+	public Iterable<O> createOutput(final RandomAccessibleInterval<I> input) {
+		return (Iterable<O>) imgCreator.compute1(input);
 	}
 
 }

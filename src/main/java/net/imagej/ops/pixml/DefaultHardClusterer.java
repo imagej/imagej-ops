@@ -31,9 +31,14 @@
 package net.imagej.ops.pixml;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imagej.ops.threshold.GlobalThresholder;
 import net.imglib2.IterableInterval;
+import net.imglib2.img.Img;
+import net.imglib2.type.logic.BitType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -55,6 +60,16 @@ public class DefaultHardClusterer<I, O> extends
 	@Parameter(required = true)
 	public UnsupervisedLearner<I, O> learner;
 
+	/** Op that is used for creating the output image */
+	protected UnaryFunctionOp<IterableInterval<I>, Iterable<O>> imgCreator;
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public void initialize() {
+		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+			Img.class, in(), new BitType());
+	}
+
 	@Override
 	public void compute1(final IterableInterval<I> input,
 		final Iterable<O> output)
@@ -64,9 +79,10 @@ public class DefaultHardClusterer<I, O> extends
 		ops().map(output, input, learner.compute1(input));
 	}
 
+	@SuppressWarnings("cast")
 	@Override
-	public Iterable<O> createOutput(IterableInterval<I> input) {
-		// TODO Auto-generated method stub
-		return null;
+	public Iterable<O> createOutput(final IterableInterval<I> input) {
+		return (Iterable<O>) imgCreator.compute1(input);
 	}
+
 }
