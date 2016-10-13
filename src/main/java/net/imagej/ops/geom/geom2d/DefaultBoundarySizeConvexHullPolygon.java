@@ -31,7 +31,7 @@
 package net.imagej.ops.geom.geom2d;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.geom.AbstractSolidity;
+import net.imagej.ops.geom.AbstractBoundarySizeConvexHull;
 import net.imglib2.roi.geometric.Polygon;
 
 import org.scijava.Priority;
@@ -40,8 +40,15 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
-@Plugin(type = Ops.Geometric.Solidity.class,
-	label = "Geometric (2D): Solidity", priority = Priority.VERY_HIGH_PRIORITY)
-public class SolidityPolygon extends AbstractSolidity<Polygon> {
-	// NB: Marker Interface
+@Plugin(type = Ops.Geometric.BoundarySizeConvexHull.class,
+	label = "Geometric (2D): Perimeter Convex Hull",
+	priority = Priority.VERY_HIGH_PRIORITY)
+public class DefaultBoundarySizeConvexHullPolygon extends
+	AbstractBoundarySizeConvexHull<Polygon>
+{
+
+	public DefaultBoundarySizeConvexHullPolygon() {
+		super(Polygon.class);
+	}
+
 }

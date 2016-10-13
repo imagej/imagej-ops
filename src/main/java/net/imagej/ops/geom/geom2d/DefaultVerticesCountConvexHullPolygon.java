@@ -31,53 +31,37 @@
 package net.imagej.ops.geom.geom2d;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
-import net.imglib2.RealLocalizable;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.roi.geometric.Polygon;
-import net.imglib2.util.Pair;
-import net.imglib2.util.ValuePair;
+import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@code geom.feret}.
- * 
- * @author Daniel Seebacher (University of Konstanz)
+ * @author Tim-Oliver Buchholz, University of Konstanz
  */
-@Plugin(type = Ops.Geometric.Feret.class)
-public class DefaultFeret extends
-	AbstractUnaryFunctionOp<Polygon, Pair<RealLocalizable, RealLocalizable>> implements
-	Ops.Geometric.Feret
-{
+@Plugin(type = Ops.Geometric.VerticesCountConvexHull.class, label = "Geometric (2D): Convex Hull Vertices Count", priority = Priority.VERY_HIGH_PRIORITY)
+public class DefaultVerticesCountConvexHullPolygon extends AbstractUnaryHybridCF<Polygon, DoubleType>
+		implements Ops.Geometric.VerticesCountConvexHull {
+
+	private UnaryFunctionOp<Polygon, Polygon> convexHullFunc;
 
 	@Override
-	public Pair<RealLocalizable, RealLocalizable> compute1(final Polygon input) {
-		double distance = Double.NEGATIVE_INFINITY;
-		int in0 = -1;
-		int in1 = -1;
+	public void initialize() {
+		convexHullFunc = Functions.unary(ops(), Ops.Geometric.ConvexHull.class, Polygon.class, in());
+	}
 
-		for (int i = 0; i < input.getVertices().size(); i++) {
-			for (int j = i + 1; j < input.getVertices().size(); j++) {
-				RealLocalizable temp0 = input.getVertices().get(i);
-				RealLocalizable temp1 = input.getVertices().get(j);
+	@Override
+	public void compute1(Polygon input, DoubleType output) {
+		output.set(convexHullFunc.compute1(input).getVertices().size());
+	}
 
-				double sum = 0;
-				for (int k = 0; k < temp0.numDimensions(); k++) {
-					sum += Math.pow(temp0.getDoublePosition(k) - temp1.getDoublePosition(
-						k), 2);
-				}
-				sum = Math.sqrt(sum);
-
-				if (sum > distance) {
-					distance = sum;
-					in0 = i;
-					in1 = j;
-				}
-			}
-		}
-
-		return new ValuePair<>(input.getVertices()
-			.get(in0), input.getVertices().get(in1));
+	@Override
+	public DoubleType createOutput(Polygon input) {
+		return new DoubleType();
 	}
 
 }

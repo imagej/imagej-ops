@@ -30,6 +30,12 @@
 
 package net.imagej.ops.features;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import net.imagej.ops.AbstractOpTest;
@@ -37,12 +43,14 @@ import net.imagej.ops.OpService;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
+import net.imglib2.RealPoint;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayCursor;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.roi.EllipseRegionOfInterest;
+import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.roi.labeling.LabelRegions;
@@ -61,7 +69,7 @@ import org.scijava.Context;
  */
 public class AbstractFeatureTest extends AbstractOpTest {
 
-	protected static final boolean expensiveTestsEnabled = //
+	protected static final boolean expensiveTestsEnabled = 
 		"enabled".equals(System.getProperty("imagej.ops.expensive.tests"));
 
 	/**
@@ -183,34 +191,37 @@ public class AbstractFeatureTest extends AbstractOpTest {
 
 		/**
 		 * @param dim a long array with the desired dimensions of the image
+		 * @param constValue constant image value
 		 * @return an {@link Img} of {@link UnsignedByteType} filled with a constant
 		 *         value.
 		 */
 		public Img<UnsignedByteType> getConstantUnsignedByteImg(final long[] dim,
-			final int constant)
+			final int constValue)
 		{
 			final ArrayImg<UnsignedByteType, ByteArray> img = ArrayImgs.unsignedBytes(
 				dim);
 
 			final UnsignedByteType type = img.firstElement();
-			if (constant < type.getMinValue() || constant >= type.getMaxValue()) {
+			if (constValue < type.getMinValue() || constValue >= type.getMaxValue()) {
 				throw new IllegalArgumentException("Can't create image for constant [" +
-					constant + "]");
+					constValue + "]");
 			}
 
 			final ArrayCursor<UnsignedByteType> cursor = img.cursor();
 			while (cursor.hasNext()) {
-				cursor.next().set(constant);
+				cursor.next().set(constValue);
 			}
 
 			return img;
 		}
 
 		/**
-		 * @param dim
-		 * @param radii
+		 * @param dim dimensions of the image
+		 * @param radii of the ellipse
+		 * @param offset of the ellipse
 		 * @return an {@link Img} of {@link BitType} filled with a ellipse
 		 */
+		@SuppressWarnings({ "deprecation" })
 		public Img<UnsignedByteType> getEllipsedBitImage(final long[] dim,
 			final double[] radii, final double[] offset)
 		{
@@ -245,9 +256,28 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	}
 
 	protected static Img<FloatType> getTestImage2D() {
-		final String imageName = expensiveTestsEnabled ? "cZgkFsK_expensive.png"
-			: "cZgkFsK.png";
+		final String imageName = expensiveTestsEnabled ? "2d_geometric_features_testlabel_expensive.png"
+			: "2d_geometric_features_testlabel.tif";
 		return openFloatImg(AbstractFeatureTest.class, imageName);
+	}
+	
+	protected static Polygon getPolygon() {
+		final String polygonName = expensiveTestsEnabled ? "2d_geometric_features_polygon_expensive.txt"
+			: "2d_geometric_features_polygon.txt";
+		List<RealPoint> vertices = new ArrayList<>();
+		try {
+			Files.lines(Paths.get(AbstractFeatureTest.class.getResource(polygonName).toURI()))
+										.forEach(l -> {
+											String[] coord = l.split(" ");
+											RealPoint v = new RealPoint(new double[]{	Double.parseDouble(coord[0]), 
+																				Double.parseDouble(coord[1])});
+											vertices.add(v);
+										});
+		} catch (IOException | URISyntaxException exc) {
+			// TODO Auto-generated catch block
+			exc.printStackTrace();
+		}
+		return new Polygon(vertices);
 	}
 
 	protected static Img<FloatType> getTestImage3D() {
@@ -264,7 +294,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 			dims = new long[img.numDimensions()];
 			img.dimensions(dims);
 		}
-		final ImgLabeling<String, IntType> labeling = //
+		final ImgLabeling<String, IntType> labeling = 
 			new ImgLabeling<>(ArrayImgs.ints(dims));
 
 		final RandomAccess<LabelingType<String>> ra = labeling.randomAccess();

@@ -27,11 +27,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-
 package net.imagej.ops.geom.geom2d;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.geom.AbstractSizeConvexHull;
+import net.imagej.ops.geom.AbstractConvexity;
 import net.imglib2.roi.geometric.Polygon;
 
 import org.scijava.Priority;
@@ -40,12 +39,8 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
-@Plugin(type = Ops.Geometric.SizeConvexHull.class,
-	label = "Geometric (2D): Size ConvexHull",
-	priority = Priority.VERY_HIGH_PRIORITY)
-public class SizeConvexHullPolygon extends AbstractSizeConvexHull<Polygon> {
-
-	public SizeConvexHullPolygon() {
-		super(Polygon.class);
-	}
+@Plugin(type = Ops.Geometric.Convexity.class,
+	label = "Geometric (2D): Convexity", priority = Priority.VERY_HIGH_PRIORITY)
+public class DefaultConvexityPolygon extends AbstractConvexity<Polygon> {
+	// NB: Marker Interface
 }

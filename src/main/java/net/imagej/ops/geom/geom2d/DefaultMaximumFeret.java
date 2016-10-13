@@ -30,43 +30,59 @@
 
 package net.imagej.ops.geom.geom2d;
 
+import java.util.List;
+
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
-import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
-import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.util.Pair;
+import net.imglib2.util.ValuePair;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Tim-Oliver Buchholz (University of Konstanz)
+ * Maximum Feret of a polygon.
+ * 
+ * @author Tim-Oliver Buchholz, University of Konstanz
  */
-@Plugin(type = Ops.Geometric.BoundaryPixelCountConvexHull.class,
-	label = "Geometric (2D): Convex Hull Pixel Count",
-	priority = Priority.VERY_HIGH_PRIORITY)
-public class BoundaryPixelCountConvexHullPolygon extends
-	AbstractUnaryHybridCF<Polygon, DoubleType> implements
-	Ops.Geometric.BoundaryPixelCountConvexHull
-{
+@Plugin(type = Ops.Geometric.MaximumFeret.class)
+public class DefaultMaximumFeret extends AbstractUnaryFunctionOp<Polygon, Pair<RealLocalizable, RealLocalizable>>
+		implements Ops.Geometric.MaximumFeret {
 
-	private UnaryFunctionOp<Polygon, Polygon> convexHullFunc;
+	private UnaryFunctionOp<Polygon, Polygon> function;
 
 	@Override
 	public void initialize() {
-		convexHullFunc = Functions.unary(ops(), Ops.Geometric.ConvexHull.class, Polygon.class, in());
-	}
-	
-	@Override
-	public void compute1(Polygon input, DoubleType output) {
-		output.set(convexHullFunc.compute1(input).getVertices().size());
-	}
-	
-	@Override
-	public DoubleType createOutput(Polygon input) {
-		return new DoubleType();
+		function = Functions.unary(ops(), Ops.Geometric.ConvexHull.class, Polygon.class, in());
 	}
 
+	@Override
+	public Pair<RealLocalizable, RealLocalizable> compute1(Polygon input) {
+		final List<? extends RealLocalizable> points = function.compute1(input).getVertices();
+
+		double distance = Double.NEGATIVE_INFINITY;
+		RealLocalizable p0 = points.get(0);
+		RealLocalizable p1 = points.get(0);
+		for (int i = 0; i < points.size(); i++) {
+			for (int j = i + 2; j < points.size(); j++) {
+				final RealLocalizable tmpP0 = points.get(i);
+				final RealLocalizable tmpP1 = points.get(j);
+
+				final double tmp = Math.sqrt(Math.pow(tmpP0.getDoublePosition(0) - tmpP1.getDoublePosition(0), 2)
+						+ Math.pow(tmpP0.getDoublePosition(1) - tmpP1.getDoublePosition(1), 2));
+
+				if (tmp > distance) {
+					distance = tmp;
+					p0 = tmpP0;
+					p1 = tmpP1;
+				}
+			}
+		}
+		
+		return new ValuePair<>(p0, p1);
+	}
 
 }

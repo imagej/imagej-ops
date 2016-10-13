@@ -39,6 +39,8 @@ import net.imglib2.type.numeric.real.DoubleType;
 /**
  * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Solidity}.
  * 
+ * Based on https://de.mathworks.com/help/images/ref/regionprops.html.
+ * 
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 public abstract class AbstractSolidity<I> extends AbstractUnaryHybridCF<I, DoubleType>

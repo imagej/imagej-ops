@@ -28,50 +28,30 @@
  * #L%
  */
 
-package net.imagej.ops.geom.geom3d;
+package net.imagej.ops.geom.geom2d;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.geom.geom3d.mesh.Mesh;
-import net.imagej.ops.special.function.Functions;
-import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.Ops.Geometric.VerticesCount;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Compactness}.
- * 
- * @author Tim-Oliver Buchholz (University of Konstanz)
+ * @author Tim-Oliver Buchholz, University of Konstanz
  */
-@Plugin(type = Ops.Geometric.Compactness.class,
-	label = "Geometric (3D): Compactness", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultCompactness extends AbstractUnaryHybridCF<Mesh, DoubleType>
-	implements Ops.Geometric.Compactness
-{
-
-	private UnaryFunctionOp<Mesh, DoubleType> surfacePixel;
-
-	private UnaryFunctionOp<Mesh, DoubleType> volume;
+@Plugin(type = Ops.Geometric.VerticesCount.class, label = "Geometric (2D): Convex Hull Vertices Count", priority = Priority.VERY_HIGH_PRIORITY)
+public class DefaultVerticesCountPolygon extends AbstractUnaryHybridCF<Polygon, DoubleType> implements VerticesCount {
 
 	@Override
-	public void initialize() {
-		surfacePixel = Functions.unary(ops(), Ops.Geometric.VerticesCount.class,
-			DoubleType.class, in());
-		volume = Functions.unary(ops(), Ops.Geometric.Size.class, DoubleType.class, in());
+	public void compute1(Polygon input, DoubleType output) {
+		output.set(input.getVertices().size());
 	}
 
 	@Override
-	public void compute1(final Mesh input, final DoubleType output) {
-		double s3 = Math.pow(surfacePixel.compute1(input).get(), 3);
-		double v2 = Math.pow(volume.compute1(input).get(), 2);
-
-		output.set((v2 * 36.0 * Math.PI) / s3);
-	}
-	
-	@Override
-	public DoubleType createOutput(Mesh input) {
+	public DoubleType createOutput(Polygon input) {
 		return new DoubleType();
 	}
 

@@ -42,13 +42,14 @@ import org.scijava.plugin.Plugin;
 /**
  * Generic implementation of {@code geom.eccentricity}.
  * 
- * @author Daniel Seebacher (University of Konstanz)
+ * The eccentricity formula is based on "The Eccentricity of a Conic Section" by
+ * Ayoub B. Ayoub.
+ * 
+ * @author Tim-Oliver Buchholz, University of Konstanz
  */
-@Plugin(type = Ops.Geometric.Eccentricity.class,
-	label = "Geometric (2D): Eccentricity")
+@Plugin(type = Ops.Geometric.Eccentricity.class, label = "Geometric (2D): Eccentricity")
 public class DefaultEccentricity extends AbstractUnaryHybridCF<Polygon, DoubleType>
-	implements Ops.Geometric.Eccentricity
-{
+		implements Ops.Geometric.Eccentricity {
 
 	private UnaryFunctionOp<Polygon, DoubleType> minorAxisFunc;
 	private UnaryFunctionOp<Polygon, DoubleType> majorAxisFunc;
@@ -61,10 +62,13 @@ public class DefaultEccentricity extends AbstractUnaryHybridCF<Polygon, DoubleTy
 
 	@Override
 	public void compute1(final Polygon input, final DoubleType output) {
-		output.set(majorAxisFunc.compute1(input).getRealDouble() /
-			minorAxisFunc.compute1(input).getRealDouble());
+
+		final double a = majorAxisFunc.compute1(input).get() / 2.0;
+		final double b = minorAxisFunc.compute1(input).get() / 2.0;
+
+		output.set(Math.sqrt(1 - Math.pow(b / a, 2)));
 	}
-	
+
 	@Override
 	public DoubleType createOutput(Polygon input) {
 		return new DoubleType();

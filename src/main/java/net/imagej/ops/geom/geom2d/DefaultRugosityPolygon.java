@@ -31,7 +31,7 @@
 package net.imagej.ops.geom.geom2d;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.geom.AbstractBoundarySizeConvexHull;
+import net.imagej.ops.geom.AbstractRugosity;
 import net.imglib2.roi.geometric.Polygon;
 
 import org.scijava.Priority;
@@ -40,15 +40,8 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
-@Plugin(type = Ops.Geometric.BoundarySizeConvexHull.class,
-	label = "Geometric (2D): Perimeter Convex Hull",
-	priority = Priority.VERY_HIGH_PRIORITY)
-public class BoundarySizeConvexHullPolygon extends
-	AbstractBoundarySizeConvexHull<Polygon>
-{
-
-	public BoundarySizeConvexHullPolygon() {
-		super(Polygon.class);
-	}
-
+@Plugin(type = Ops.Geometric.Rugosity.class,
+	label = "Geometric (2D): Rugosity", priority = Priority.VERY_HIGH_PRIORITY)
+public class DefaultRugosityPolygon extends AbstractRugosity<Polygon> {
+	// NB: Marker Interface
 }
