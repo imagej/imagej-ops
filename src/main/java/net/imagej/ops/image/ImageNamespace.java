@@ -122,6 +122,30 @@ public class ImageNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	/** Executes the "distancetransform" operation on the given arguments. */
+	@OpMethod(ops = { net.imagej.ops.image.distancetransform.DefaultDistanceTransformCalibration.class,
+			net.imagej.ops.image.distancetransform.DistanceTransform2DCalibration.class,
+			net.imagej.ops.image.distancetransform.DistanceTransform3DCalibration.class })
+	public <B extends BooleanType<B>, T extends RealType<T>> RandomAccessibleInterval<T> distancetransform(
+			final RandomAccessibleInterval<T> out, final RandomAccessibleInterval<B> in, final double... calibration) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
+				.run(Ops.Image.DistanceTransform.class, out, in, calibration);
+		return result;
+	}
+
+	/** Executes the "distancetransform" operation on the given arguments. */
+	@OpMethod(ops = { net.imagej.ops.image.distancetransform.DefaultDistanceTransformCalibration.class,
+			net.imagej.ops.image.distancetransform.DistanceTransform2DCalibration.class,
+			net.imagej.ops.image.distancetransform.DistanceTransform3DCalibration.class })
+	public <B extends BooleanType<B>, T extends RealType<T>> RandomAccessibleInterval<T> distancetransform(
+			final RandomAccessibleInterval<B> in, final double... calibration) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
+				.run(Ops.Image.DistanceTransform.class, in, calibration);
+		return result;
+	}
+
 	// -- equation --
 
 	/** Executes the "equation" operation on the given arguments. */

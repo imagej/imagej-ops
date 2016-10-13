@@ -52,6 +52,9 @@ import org.scijava.plugin.Plugin;
 import org.scijava.thread.ThreadService;
 
 /**
+ * Computes a distance transform, i.e. for every foreground pixel its distance
+ * to the nearest background pixel.
+ * 
  * @author Simon Schmid (University of Konstanz)
  */
 @Plugin(type = Ops.Image.DistanceTransform.class)
@@ -70,7 +73,7 @@ public class DistanceTransform2D<B extends BooleanType<B>, T extends RealType<T>
 	@Override
 	public boolean conforms() {
 		if (in().numDimensions() == 2) {
-			long max_dist = in().dimension(0) * in().dimension(0) + in().dimension(1) * in().dimension(1);
+			final long max_dist = in().dimension(0) * in().dimension(0) + in().dimension(1) * in().dimension(1);
 			return ((in().numDimensions() == 2) && (max_dist <= Integer.MAX_VALUE));
 		}
 		return false;
