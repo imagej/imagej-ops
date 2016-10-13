@@ -32,8 +32,7 @@ package net.imagej.ops.map.neighborhood;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.map.MapOp;
-import net.imagej.ops.special.computer.BinaryComputerOp;
-import net.imglib2.algorithm.neighborhood.Shape;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 
 /**
  * Typed interface for "map" ops that work with neighborhoods.
@@ -43,8 +42,8 @@ import net.imglib2.algorithm.neighborhood.Shape;
  * @param <EO> element type of outputs
  * @param <OP> type of {@link Op} which processes each neighborhood
  */
-public interface MapNeighborhood<EI, EO, PI, PO, OP extends Op> extends
-	BinaryComputerOp<PI, Shape, PO>, MapOp<OP>
+public interface MapNeighborhood<PI, PO, OP extends Op> extends
+	UnaryComputerOp<PI, PO>, MapOp<OP>
 {
 	// NB: Marker interface.
 }

@@ -30,29 +30,28 @@
 
 package net.imagej.ops.map.neighborhood;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
-import net.imglib2.algorithm.neighborhood.Shape;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
 
 /**
  * Evaluates a {@link UnaryComputerOp} for each {@link Neighborhood} on the
  * input {@link RandomAccessibleInterval}.
  * 
  * @author Christian Dietz (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
+ * 
  * @param <I> input type
  * @param <O> output type
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
 public class DefaultMapNeighborhood<I, O> extends
-	AbstractMapNeighborhood<I, O, RandomAccessibleInterval<I>, IterableInterval<O>, UnaryComputerOp<Iterable<I>, O>>
+	AbstractMapNeighborhood<RandomAccessibleInterval<I>, IterableInterval<O>, UnaryComputerOp<Iterable<I>, O>>
 {
 
 	private UnaryComputerOp<IterableInterval<Neighborhood<I>>, IterableInterval<O>> map;
@@ -61,15 +60,15 @@ public class DefaultMapNeighborhood<I, O> extends
 	@Override
 	public void initialize() {
 		map = (UnaryComputerOp) Computers.unary(ops(), Ops.Map.class,
-			IterableInterval.class, in1() == null ? IterableInterval.class : in2()
+			IterableInterval.class, in() == null ? IterableInterval.class : getShape()
 				.neighborhoods(in()), getOp());
 	}
 
 	@Override
-	public void compute2(final RandomAccessibleInterval<I> in1, final Shape in2,
+	public void compute1(final RandomAccessibleInterval<I> in, 
 		final IterableInterval<O> out)
 	{
-		map.compute1(in2.neighborhoodsSafe(in1), out);
+		map.compute1(getShape().neighborhoodsSafe(in), out);
 	}
 
 }

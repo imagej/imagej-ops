@@ -30,18 +30,23 @@
 
 package net.imagej.ops.map.neighborhood;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Map;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
 import net.imglib2.algorithm.neighborhood.Shape;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
+import net.imglib2.util.Pair;
+import net.imglib2.view.Views;
 
 /**
  * Evaluates a {@link CenterAwareComputerOp} for each {@link Neighborhood} on
@@ -57,23 +62,36 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 1)
 public class MapNeighborhoodWithCenter<I, O> extends
-	AbstractMapNeighborhood<I, O, RandomAccessibleInterval<I>, IterableInterval<O>, CenterAwareComputerOp<I, O>>
+	AbstractMapNeighborhood<RandomAccessibleInterval<I>, IterableInterval<O>, BinaryComputerOp<Neighborhood<I>, I, O>>
 {
 
-	private BinaryComputerOp<IterableInterval<Neighborhood<I>>, RandomAccessibleInterval<I>, IterableInterval<O>> map;
+	private UnaryComputerOp<IterableInterval<Pair<Neighborhood<I>, I>>, IterableInterval<O>> map;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		map = (BinaryComputerOp) Computers.binary(ops(), Map.class, IterableInterval.class,
-			IterableInterval.class, RandomAccessibleInterval.class, getOp());
+		map = (UnaryComputerOp) Computers.unary(ops(), Map.class, IterableInterval.class,
+				RandomAccessibleInterval.class, new UnaryCViaBinary(getOp()));
 	}
 
 	@Override
-	public void compute2(final RandomAccessibleInterval<I> in1, final Shape in2,
-		final IterableInterval<O> out)
-	{
-		map.compute2(in2.neighborhoodsSafe(in1), in1, out);
+	public void compute1(RandomAccessibleInterval<I> input, IterableInterval<O> output) {
+		final RandomAccessible<Neighborhood<I>> safe = getShape().neighborhoodsRandomAccessibleSafe(input);
+		map.compute1(Views.iterable(Views.interval(Views.pair(safe, input), input)), output);		
+	}
+	
+	static class UnaryCViaBinary<I,O> extends AbstractUnaryComputerOp<Pair<Neighborhood<I>, I>, O>{
+
+		private BinaryComputerOp<Neighborhood<I>, I, O> binary;
+
+		public UnaryCViaBinary(BinaryComputerOp<Neighborhood<I>, I, O> binary){
+			this.binary = binary;
+		}
+		
+		@Override
+		public void compute1(final Pair<Neighborhood<I>, I> input, final O output) {
+			binary.compute2(input.getA(), input.getB(), output);
+		}
 	}
 
 }
