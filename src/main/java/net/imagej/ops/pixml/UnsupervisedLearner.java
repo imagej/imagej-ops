@@ -51,7 +51,7 @@ import net.imglib2.IterableInterval;
  * @author Martin Horn (University of Konstanz)
  * @author Stefan Helfrich (University of Konstanz)
  * @param <I> type of input
- * @param <O> type of input
+ * @param <O> type of output
  */
 public interface UnsupervisedLearner<I, O> extends
 	UnaryFunctionOp<IterableInterval<I>, UnaryComputerOp<I, O>>
