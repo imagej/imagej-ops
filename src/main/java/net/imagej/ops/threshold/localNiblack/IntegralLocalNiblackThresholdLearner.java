@@ -31,9 +31,6 @@
 package net.imagej.ops.threshold.localNiblack;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imagej.ops.map.neighborhood.CenterAwareIntegralComputerOp;
-import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
@@ -45,12 +42,10 @@ import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
 import net.imglib2.converter.Converter;
 import net.imglib2.converter.RealDoubleConverter;
 import net.imglib2.type.BooleanType;
-import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.composite.Composite;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 

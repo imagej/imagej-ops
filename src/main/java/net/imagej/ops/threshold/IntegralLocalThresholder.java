@@ -30,7 +30,6 @@
 
 package net.imagej.ops.threshold;
 
-import net.imagej.ops.Contingent;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;

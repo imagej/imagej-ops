@@ -32,9 +32,7 @@ package net.imagej.ops.threshold.localSauvola;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.AbstractGlobalThresholder;
-import net.imagej.ops.threshold.AbstractLocalThresholder;
 import net.imagej.ops.threshold.ThresholdLearner;
-import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.type.BooleanType;
 
 import org.scijava.Priority;

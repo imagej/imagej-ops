@@ -3,8 +3,6 @@ package net.imagej.ops.threshold.manual;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.pixml.HardClusterer;
-import net.imagej.ops.pixml.UnsupervisedLearner;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;

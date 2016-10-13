@@ -30,9 +30,6 @@
 
 package net.imagej.ops.threshold;
 
-import java.util.Comparator;
-import java.util.List;
-
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
@@ -40,7 +37,6 @@ import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.algorithm.neighborhood.Shape;
-import net.imglib2.histogram.Histogram1d;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.logic.BitType;

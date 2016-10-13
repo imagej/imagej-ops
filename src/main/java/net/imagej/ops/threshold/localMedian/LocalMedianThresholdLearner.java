@@ -32,7 +32,6 @@ package net.imagej.ops.threshold.localMedian;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
@@ -40,7 +39,6 @@ import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.threshold.ThresholdLearner;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.BooleanType;
-import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
