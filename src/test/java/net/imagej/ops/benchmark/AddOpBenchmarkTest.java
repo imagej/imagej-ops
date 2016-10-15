@@ -88,14 +88,13 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 	@Test
 	public void fTestDefaultMapperP() {
 		ops.run(IIToRAIParallel.class, out, in, ops.op(
-			NumericTypeBinaryMath.Add.class, null, NumericType.class, new ByteType(
-				(byte) 10)));
+			NumericTypeBinaryMath.Add.class, null, NumericType.class, //
+			new ByteType((byte) 10)));
 	}
 
 	@Test
-	public void fTtestAddConstantToImage() {
-		ops.run(ConstantToIIOutputRAI.Add.class, out, in,
-			new ByteType((byte) 10));
+	public void fTestAddConstantToImage() {
+		ops.run(ConstantToIIOutputRAI.Add.class, out, in, new ByteType((byte) 10));
 	}
 
 	@Test
@@ -106,8 +105,7 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void inTestAddConstantToImageInPlace() {
-		ops.run(ConstantToIIOutputII.Add.class, in, new ByteType(
-			(byte) 10));
+		ops.run(ConstantToIIOutputII.Add.class, in, new ByteType((byte) 10));
 	}
 
 	@Test
