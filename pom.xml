@@ -250,6 +250,11 @@ Wisconsin-Madison, University of Konstanz and Brian Northan.</license.copyrightO
 			<artifactId>scripting-jython</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>ij</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
