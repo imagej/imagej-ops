@@ -126,7 +126,6 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void testAddConstantToArrayByteImageDirect() {
-
 		for (int i = 0; i < arrIn.length; i++) {
 			arrOut[i] += arrIn[i] + 10;
 		}
