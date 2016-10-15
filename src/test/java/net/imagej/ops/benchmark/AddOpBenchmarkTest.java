@@ -142,4 +142,9 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 	public void inTestAddConstantToImagePlus() {
 		IJ.run(imp, "Add...", "value=10");
 	}
+
+	@Test
+	public void fTestAddConstantToByteArray() {
+		new org.scijava.util.ByteArray(arrIn).stream().map(v -> v + 10).toArray();
+	}
 }
