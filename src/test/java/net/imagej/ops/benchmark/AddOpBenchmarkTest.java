@@ -71,7 +71,7 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 	/** Sets up test images */
 	@Before
 	public void initImg() {
-		final int w = 5000, h = 5000;
+		final int w = 15000, h = 15000;
 		in = generateByteArrayTestImg(true, w, h);
 		out = generateByteArrayTestImg(false, w, h);
 		arrIn = in.update(null).getCurrentStorageArray();
