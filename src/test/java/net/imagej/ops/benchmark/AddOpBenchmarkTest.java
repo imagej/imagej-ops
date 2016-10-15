@@ -51,6 +51,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 
+import ij.IJ;
+import ij.ImagePlus;
+import ij.process.ByteProcessor;
+
 /**
  * Benchmarks the pixel-wise add operation.
  * 
@@ -63,6 +67,7 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 	private ArrayImg<ByteType, ByteArray> out;
 	private byte[] arrIn;
 	private byte[] arrOut;
+	private ImagePlus imp;
 
 	/** Needed for JUnit-Benchmarks */
 	@Rule
@@ -71,10 +76,12 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 	/** Sets up test images */
 	@Before
 	public void initImg() {
-		in = generateByteArrayTestImg(true, 5000, 5000);
-		out = generateByteArrayTestImg(false, 5000, 5000);
+		final int w = 15000, h = 15000;
+		in = generateByteArrayTestImg(true, w, h);
+		out = generateByteArrayTestImg(false, w, h);
 		arrIn = in.update(null).getCurrentStorageArray();
 		arrOut = in.update(null).getCurrentStorageArray();
+		imp = new ImagePlus("imp", new ByteProcessor(w, h, arrIn));
 	}
 
 	@Test
@@ -87,14 +94,13 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 	@Test
 	public void fTestDefaultMapperP() {
 		ops.run(IIToRAIParallel.class, out, in, ops.op(
-			NumericTypeBinaryMath.Add.class, null, NumericType.class, new ByteType(
-				(byte) 10)));
+			NumericTypeBinaryMath.Add.class, null, NumericType.class, //
+			new ByteType((byte) 10)));
 	}
 
 	@Test
-	public void fTtestAddConstantToImage() {
-		ops.run(ConstantToIIOutputRAI.Add.class, out, in,
-			new ByteType((byte) 10));
+	public void fTestAddConstantToImage() {
+		ops.run(ConstantToIIOutputRAI.Add.class, out, in, new ByteType((byte) 10));
 	}
 
 	@Test
@@ -105,8 +111,7 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void inTestAddConstantToImageInPlace() {
-		ops.run(ConstantToIIOutputII.Add.class, in, new ByteType(
-			(byte) 10));
+		ops.run(ConstantToIIOutputII.Add.class, in, new ByteType((byte) 10));
 	}
 
 	@Test
@@ -121,9 +126,25 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void testAddConstantToArrayByteImageDirect() {
-
 		for (int i = 0; i < arrIn.length; i++) {
 			arrOut[i] += arrIn[i] + 10;
 		}
+	}
+
+	@Test
+	public void inTestAddConstantToByteArrayDirect() {
+		for (int i = 0; i < arrIn.length; i++) {
+			arrIn[i] += 10;
+		}
+	}
+
+	@Test
+	public void inTestAddConstantToImagePlus() {
+		IJ.run(imp, "Add...", "value=10");
+	}
+
+	@Test
+	public void fTestAddConstantToByteArray() {
+		new org.scijava.util.ByteArray(arrIn).stream().map(v -> v + 10).toArray();
 	}
 }
