@@ -133,6 +133,13 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 	}
 
 	@Test
+	public void inTestAddConstantToByteArrayDirect() {
+		for (int i = 0; i < arrIn.length; i++) {
+			arrIn[i] += 10;
+		}
+	}
+
+	@Test
 	public void inTestAddConstantToImagePlus() {
 		IJ.run(imp, "Add...", "value=10");
 	}
