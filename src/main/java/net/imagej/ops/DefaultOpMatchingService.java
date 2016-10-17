@@ -586,6 +586,15 @@ public class DefaultOpMatchingService extends AbstractService implements
 			}
 			return true;
 		}
+		
+		final List<Class<?>> classes = GenericUtils.getClasses(item.getType());
+		boolean match = true;
+		for(final Class<?> c : classes){
+			if(!c.isInstance(arg)){ match = false; break;}
+		}
+		
+		if(match)
+			return true;
 
 		final Type type = item.getGenericType();
 		if (!canConvert(arg, type)) {
