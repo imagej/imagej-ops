@@ -56,7 +56,7 @@ public class DefaultVerticesCountConvexHullPolygon extends AbstractUnaryHybridCF
 
 	@Override
 	public void compute1(Polygon input, DoubleType output) {
-		output.set(convexHullFunc.compute1(input).getVertices().size());
+		output.set(convexHullFunc.calculate(input).getVertices().size());
 	}
 
 	@Override

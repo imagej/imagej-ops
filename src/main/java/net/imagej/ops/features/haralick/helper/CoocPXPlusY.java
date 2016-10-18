@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
 public class CoocPXPlusY extends AbstractUnaryFunctionOp<double[][], double[]> {
 
 	@Override
-	public double[] compute1(double[][] matrix) {
+	public double[] calculate(double[][] matrix) {
 
 		final int nrGrayLevels = matrix.length;
 

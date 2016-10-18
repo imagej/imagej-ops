@@ -70,7 +70,7 @@ public class LocalContrastThreshold<T extends RealType<T>> extends
 						Ops.Stats.MinMax.class, Pair.class, neighborhood);
 				}
 
-				final Pair<T, T> outputs = minMaxFunc.compute1(neighborhood);
+				final Pair<T, T> outputs = minMaxFunc.calculate(neighborhood);
 
 				final double centerValue = center.getRealDouble();
 				final double diffMin = centerValue - outputs.getA().getRealDouble();

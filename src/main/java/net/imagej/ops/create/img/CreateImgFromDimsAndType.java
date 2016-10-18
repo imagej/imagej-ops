@@ -65,7 +65,7 @@ public class CreateImgFromDimsAndType<T extends NativeType<T>> extends
 	}
 
 	@Override
-	public Img<T> compute2(final Dimensions input1, final T input2) {
+	public Img<T> calculate(final Dimensions input1, final T input2) {
 		return Imgs.create(factory, input1, input2);
 	}
 

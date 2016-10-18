@@ -54,7 +54,7 @@ public class DefaultInterpolateView<I extends EuclideanSpace, T>
 	private InterpolatorFactory<T, I> factory;
 
 	@Override
-	public RealRandomAccessible<T> compute1(I input) {
+	public RealRandomAccessible<T> calculate(I input) {
 		return Views.interpolate(input, factory);
 	}
 

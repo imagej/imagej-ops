@@ -80,7 +80,7 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>> extends
 	public RandomAccessibleInterval<T> createOutput(
 		final RandomAccessibleInterval<T> input)
 	{
-		return outputCreator.compute1(input);
+		return outputCreator.calculate(input);
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>> extends
 		input.min(translation);
 
 		final IntervalView<T> tmpInterval = Views.interval(Views.translate(
-			(RandomAccessible<T>) tmpCreator.compute1(input), translation), output);
+			(RandomAccessible<T>) tmpCreator.calculate(input), translation), output);
 
 		gauss1.compute1(input, tmpInterval);
 		gauss2.compute1(input, output);

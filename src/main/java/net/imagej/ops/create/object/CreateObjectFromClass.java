@@ -46,7 +46,7 @@ public class CreateObjectFromClass<T> extends
 {
 
 	@Override
-	public T compute1(final Class<T> input) {
+	public T calculate(final Class<T> input) {
 		try {
 			return input.newInstance();
 		}

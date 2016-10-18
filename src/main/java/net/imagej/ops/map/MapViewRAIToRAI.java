@@ -53,7 +53,7 @@ public class MapViewRAIToRAI<EI, EO extends Type<EO>>
 {
 
 	@Override
-	public RandomAccessibleInterval<EO> compute1(
+	public RandomAccessibleInterval<EO> calculate(
 		final RandomAccessibleInterval<EI> input)
 	{
 		final ComputerConverter<EI, EO> converter =

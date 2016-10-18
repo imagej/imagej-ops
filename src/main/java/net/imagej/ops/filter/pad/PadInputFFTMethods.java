@@ -85,7 +85,7 @@ public class PadInputFFTMethods<T extends ComplexType<T>, I extends RandomAccess
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public O compute2(final I input, final Dimensions paddedDimensions) {
+	public O calculate(final I input, final Dimensions paddedDimensions) {
 
 		Dimensions paddedFFTMethodsInputDimensions = FFTMethodsUtility
 			.getPaddedInputDimensionsRealToComplex(fast, paddedDimensions);
@@ -95,7 +95,7 @@ public class PadInputFFTMethods<T extends ComplexType<T>, I extends RandomAccess
 				Util.getTypeFromInterval(input).createVariable());
 		}
 
-		Interval inputInterval = paddingIntervalCentered.compute2(input,
+		Interval inputInterval = paddingIntervalCentered.calculate(input,
 			paddedFFTMethodsInputDimensions);
 
 		return (O) Views.interval(Views.extend(input, obf), inputInterval);

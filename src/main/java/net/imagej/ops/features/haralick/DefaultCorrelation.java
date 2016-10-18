@@ -75,10 +75,10 @@ public class DefaultCorrelation<T extends RealType<T>> extends
 
 		final int nrGrayLevels = matrix.length;
 
-		final double meanx = coocMeanXFunc.compute1(matrix).get();
-		final double meany = coocMeanYFunc.compute1(matrix).get();
-		final double stdx = coocStdXFunc.compute1(matrix).get();
-		final double stdy = coocStdYFunc.compute1(matrix).get();
+		final double meanx = coocMeanXFunc.calculate(matrix).get();
+		final double meany = coocMeanYFunc.calculate(matrix).get();
+		final double stdx = coocStdXFunc.calculate(matrix).get();
+		final double stdy = coocStdYFunc.calculate(matrix).get();
 
 		double res = 0;
 		for (int i = 0; i < nrGrayLevels; i++) {

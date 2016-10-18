@@ -35,8 +35,8 @@ import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.inplace.BinaryInplaceOp;
 
 /**
- * A binary <em>function</em> computes a result from two given inputs, returning
- * it as a new object. The contents of the inputs are not affected.
+ * A binary <em>function</em> calculates a result from two given inputs,
+ * returning it as a new object. The contents of the inputs are not affected.
  * <p>
  * A binary function may be treated as a {@link UnaryFunctionOp} by holding the
  * second input constant, or treated as a {@link NullaryFunctionOp} by holding
@@ -55,13 +55,13 @@ public interface BinaryFunctionOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
 {
 
 	/**
-	 * Computes the output given two inputs.
+	 * Calculates the output given two inputs.
 	 * 
 	 * @param input1 first argument to the function
 	 * @param input2 second argument to the function
 	 * @return output result of the function
 	 */
-	O compute2(I1 input1, I2 input2);
+	O calculate(I1 input1, I2 input2);
 
 	// -- BinaryOp methods --
 
@@ -74,15 +74,15 @@ public interface BinaryFunctionOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
 			throw new IllegalArgumentException(
 				"Function expects a null output reference");
 		}
-		// compute the result
-		return compute2(input1, input2);
+		// calculate the result
+		return calculate(input1, input2);
 	}
 
 	// -- UnaryFunctionOp methods --
 
 	@Override
-	default O compute1(final I1 input) {
-		return compute2(input, in2());
+	default O calculate(final I1 input) {
+		return calculate(input, in2());
 	}
 
 	// -- Threadable methods --

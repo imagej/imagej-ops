@@ -119,10 +119,10 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 	{
 		// Create integral image
 		if (Util.getTypeFromInterval(input) instanceof IntegerType) {
-			return createLongRAI.compute1(input);
+			return createLongRAI.calculate(input);
 		}
 
-		return createDoubleRAI.compute1(input);
+		return createDoubleRAI.calculate(input);
 	}
 
 	@Override

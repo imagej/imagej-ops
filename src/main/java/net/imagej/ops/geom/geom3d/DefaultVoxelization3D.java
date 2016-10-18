@@ -79,7 +79,7 @@ public class DefaultVoxelization3D extends AbstractUnaryFunctionOp<Mesh, RandomA
 	private OpService ops;
 
 	@Override
-	public RandomAccessibleInterval<BitType> compute1(Mesh input) {
+	public RandomAccessibleInterval<BitType> calculate(Mesh input) {
 
 		Img<BitType> outImg = ops.create().img(new FinalInterval(width, height, depth), new BitType());
 

@@ -106,7 +106,7 @@ public class DefaultLBP2D<I extends RealType<I>> extends AbstractLBP2DFeature<I>
 			numberList.add(new LongType(resultBinaryValue));
 		}
 
-		Histogram1d<Integer> hist = histOp.compute1(numberList);
+		Histogram1d<Integer> hist = histOp.calculate(numberList);
 		Iterator<LongType> c = hist.iterator();
 		while (c.hasNext()) {
 			output.add(new LongType(c.next().get()));

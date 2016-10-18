@@ -68,8 +68,8 @@ public class CropImgPlus<T extends Type<T>> extends
 	}
 
 	@Override
-	public ImgPlus<T> compute2(final ImgPlus<T> input, final Interval interval) {
-		final ImgPlus<T> out = new ImgPlus<>(ImgView.wrap(cropper.compute2(input, interval),
+	public ImgPlus<T> calculate(final ImgPlus<T> input, final Interval interval) {
+		final ImgPlus<T> out = new ImgPlus<>(ImgView.wrap(cropper.calculate(input, interval),
 			input.factory()));
 
 		// TODO remove metadata-util

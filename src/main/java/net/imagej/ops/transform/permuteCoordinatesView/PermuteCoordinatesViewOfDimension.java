@@ -57,7 +57,7 @@ public class PermuteCoordinatesViewOfDimension<T>
 	private int d;
 
 	@Override
-	public IntervalView<T> compute1(RandomAccessibleInterval<T> input) {
+	public IntervalView<T> calculate(RandomAccessibleInterval<T> input) {
 		return Views.permuteCoordinates(input, permutation, d);
 	}
 

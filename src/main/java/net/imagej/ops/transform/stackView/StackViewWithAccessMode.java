@@ -55,7 +55,7 @@ public class StackViewWithAccessMode<T>
 	private StackAccessMode stackAccessMode;
 
 	@Override
-	public RandomAccessibleInterval<T> compute1(List<RandomAccessibleInterval<T>> input) {
+	public RandomAccessibleInterval<T> calculate(List<RandomAccessibleInterval<T>> input) {
 		return Views.stack(stackAccessMode, input);
 	}
 

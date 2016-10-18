@@ -55,7 +55,7 @@ public class DefaultPermuteCoordinatesInverseView<T>
 	private int[] permutation;
 
 	@Override
-	public IntervalView<T> compute1(RandomAccessibleInterval<T> input) {
+	public IntervalView<T> calculate(RandomAccessibleInterval<T> input) {
 		return Views.permuteCoordinatesInverse(input, permutation);
 	}
 

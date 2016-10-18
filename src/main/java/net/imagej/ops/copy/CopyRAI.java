@@ -66,7 +66,7 @@ public class CopyRAI<T> extends
 	public RandomAccessibleInterval<T> createOutput(
 		final RandomAccessibleInterval<T> input)
 	{
-		return createFunc.compute1(input);
+		return createFunc.calculate(input);
 	}
 
 	@Override

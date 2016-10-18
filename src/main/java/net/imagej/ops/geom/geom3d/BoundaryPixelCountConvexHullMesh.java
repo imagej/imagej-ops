@@ -60,7 +60,7 @@ public class BoundaryPixelCountConvexHullMesh extends
 
 	@Override
 	public void compute1(final Mesh input, final DoubleType output) {
-		output.set(convexHullFunc.compute1(input).getVertices().size());
+		output.set(convexHullFunc.calculate(input).getVertices().size());
 	}
 	
 	@Override

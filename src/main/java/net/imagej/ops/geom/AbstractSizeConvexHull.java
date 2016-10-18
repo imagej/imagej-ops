@@ -64,7 +64,7 @@ public abstract class AbstractSizeConvexHull<I> extends
 
 	@Override
 	public void compute1(final I input, final DoubleType output) {
-		output.set(sizeFunc.compute1(convexHullFunc.compute1(input)));
+		output.set(sizeFunc.calculate(convexHullFunc.calculate(input)));
 	}
 	
 	@Override

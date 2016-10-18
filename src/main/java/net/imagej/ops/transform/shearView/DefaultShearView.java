@@ -55,7 +55,7 @@ public class DefaultShearView<T> extends AbstractUnaryFunctionOp<RandomAccessibl
 	private int referenceDimension;
 
 	@Override
-	public TransformView<T> compute1(RandomAccessible<T> input) {
+	public TransformView<T> calculate(RandomAccessible<T> input) {
 		return Views.shear(input, shearDimension, referenceDimension);
 	}
 

@@ -63,7 +63,7 @@ public abstract class AbstractRugosity<I> extends AbstractUnaryHybridCF<I, Doubl
 
 	@Override
 	public void compute1(final I input, final DoubleType output) {
-		output.set(convexHullBoundarySize.compute1(input).get() / boundarySize.compute1(input).get());
+		output.set(convexHullBoundarySize.calculate(input).get() / boundarySize.calculate(input).get());
 	}
 
 	@Override

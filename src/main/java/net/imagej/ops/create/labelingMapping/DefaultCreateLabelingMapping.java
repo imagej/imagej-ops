@@ -65,8 +65,8 @@ public class DefaultCreateLabelingMapping<L> extends
 	}
 
 	@Override
-	public LabelingMapping<L> compute0() {
-		return new LabelingMapping<>(indexTypeCreator.compute0());
+	public LabelingMapping<L> calculate() {
+		return new LabelingMapping<>(indexTypeCreator.calculate());
 	}
 
 }

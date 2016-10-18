@@ -139,7 +139,7 @@ public class HistogramOfOrientedGradients2D<T extends RealType<T>>
 	@SuppressWarnings("unchecked")
 	@Override
 	public RandomAccessibleInterval<T> createOutput(RandomAccessibleInterval<T> in) {
-		return createOp.compute1(new FinalInterval(in().dimension(0), in().dimension(1), numOrientations));
+		return createOp.calculate(new FinalInterval(in().dimension(0), in().dimension(1), numOrientations));
 	}
 
 	@Override
@@ -154,8 +154,8 @@ public class HistogramOfOrientedGradients2D<T extends RealType<T>>
 				new FloatType());
 
 		// compute partial derivative for each dimension
-		RandomAccessibleInterval<FloatType> derivative0 = createImgOp.compute0();
-		RandomAccessibleInterval<FloatType> derivative1 = createImgOp.compute0();
+		RandomAccessibleInterval<FloatType> derivative0 = createImgOp.calculate();
+		RandomAccessibleInterval<FloatType> derivative1 = createImgOp.calculate();
 
 		// case of grayscale image
 		if (in.numDimensions() == 2) {
@@ -167,8 +167,8 @@ public class HistogramOfOrientedGradients2D<T extends RealType<T>>
 			List<RandomAccessibleInterval<FloatType>> listDerivs0 = new ArrayList<>();
 			List<RandomAccessibleInterval<FloatType>> listDerivs1 = new ArrayList<>();
 			for (int i = 0; i < in.dimension(2); i++) {
-				final RandomAccessibleInterval<FloatType> deriv0 = createImgOp.compute0();
-				final RandomAccessibleInterval<FloatType> deriv1 = createImgOp.compute0();
+				final RandomAccessibleInterval<FloatType> deriv0 = createImgOp.calculate();
+				final RandomAccessibleInterval<FloatType> deriv1 = createImgOp.calculate();
 				PartialDerivative.gradientCentralDifference(
 						Views.interval(convertedIn, new long[] { 0, 0, i }, new long[] { in.max(0), in.max(1), i }),
 						deriv0, 0);
@@ -187,8 +187,8 @@ public class HistogramOfOrientedGradients2D<T extends RealType<T>>
 		final RandomAccessibleInterval<FloatType> finalderivative1 = derivative1;
 
 		// compute angles and magnitudes
-		final RandomAccessibleInterval<FloatType> angles = createImgOp.compute0();
-		final RandomAccessibleInterval<FloatType> magnitudes = createImgOp.compute0();
+		final RandomAccessibleInterval<FloatType> angles = createImgOp.calculate();
+		final RandomAccessibleInterval<FloatType> magnitudes = createImgOp.calculate();
 
 		CursorBasedChunk chunkable = new CursorBasedChunk() {
 

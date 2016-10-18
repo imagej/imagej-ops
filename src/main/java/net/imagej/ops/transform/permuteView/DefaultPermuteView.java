@@ -55,7 +55,7 @@ public class DefaultPermuteView<T> extends AbstractUnaryFunctionOp<RandomAccessi
 	private int toAxis;
 
 	@Override
-	public MixedTransformView<T> compute1(RandomAccessible<T> input) {
+	public MixedTransformView<T> calculate(RandomAccessible<T> input) {
 		return Views.permute(input, fromAxis, toAxis);
 	}
 

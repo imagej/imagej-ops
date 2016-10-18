@@ -90,7 +90,7 @@ public final class ConstantToIIOutputII {
 
 		@Override
 		public IterableInterval<T> createOutput(final IterableInterval<T> input) {
-			return outputCreator.compute1(input);
+			return outputCreator.calculate(input);
 		}
 
 		@Override

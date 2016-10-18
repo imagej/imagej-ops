@@ -51,7 +51,7 @@ public class RunByOp extends AbstractUnaryFunctionOp<Op, Object> implements
 	private Object[] args;
 
 	@Override
-	public Object compute1(final Op input) {
+	public Object calculate(final Op input) {
 		return ops().run(input, args);
 	}
 

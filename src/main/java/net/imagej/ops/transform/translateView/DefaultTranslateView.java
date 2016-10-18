@@ -52,7 +52,7 @@ public class DefaultTranslateView<T> extends AbstractUnaryFunctionOp<RandomAcces
 	private long[] translation;
 
 	@Override
-	public MixedTransformView<T> compute1(RandomAccessible<T> input) {
+	public MixedTransformView<T> calculate(RandomAccessible<T> input) {
 		return Views.translate(input, translation);
 	}
 

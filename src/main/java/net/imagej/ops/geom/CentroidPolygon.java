@@ -59,9 +59,9 @@ public class CentroidPolygon extends
 	}
 
 	@Override
-	public RealLocalizable compute1(final Polygon input) {
+	public RealLocalizable calculate(final Polygon input) {
 
-		double area = sizeFunc.compute1(input).get();
+		double area = sizeFunc.calculate(input).get();
 		double cx = 0;
 		double cy = 0;
 		for (int i = 0; i < input.getVertices().size(); i++) {

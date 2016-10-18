@@ -66,7 +66,7 @@ public class DefaultEval extends AbstractUnaryFunctionOp<String, Object>
 	}
 
 	@Override
-	public Object compute1(final String input) {
+	public Object calculate(final String input) {
 		return e.evaluate(input);
 	}
 

@@ -68,7 +68,7 @@ public class CopyImg<T extends NativeType<T>> extends
 	
 	@Override
 	public Img<T> createOutput(final Img<T> input) {
-		return createFunc.compute1(input);
+		return createFunc.calculate(input);
 	}
 
 	@Override

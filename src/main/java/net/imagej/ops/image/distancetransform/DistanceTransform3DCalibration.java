@@ -93,7 +93,7 @@ public class DistanceTransform3DCalibration<B extends BooleanType<B>, T extends 
 	@SuppressWarnings("unchecked")
 	@Override
 	public RandomAccessibleInterval<T> createOutput(final RandomAccessibleInterval<B> in) {
-		return createOp.compute1(new FinalInterval(in));
+		return createOp.calculate(new FinalInterval(in));
 	}
 
 	/*

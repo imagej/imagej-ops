@@ -74,7 +74,7 @@ public class CopyImgLabeling<T extends IntegerType<T> & NativeType<T>, L>
 	
 	@Override
 	public ImgLabeling<L, T> createOutput(final ImgLabeling<L, T> input) {
-		return outputCreator.compute1(input);
+		return outputCreator.calculate(input);
 	}
 
 	

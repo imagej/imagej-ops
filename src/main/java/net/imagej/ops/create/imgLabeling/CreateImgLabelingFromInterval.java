@@ -80,8 +80,8 @@ public class CreateImgLabelingFromInterval<L, T extends IntegerType<T>> extends
 	}
 
 	@Override
-	public ImgLabeling<L, T> compute1(final Interval input) {
-		return new ImgLabeling<>(imgCreator.compute1(input));
+	public ImgLabeling<L, T> calculate(final Interval input) {
+		return new ImgLabeling<>(imgCreator.calculate(input));
 	}
 
 }

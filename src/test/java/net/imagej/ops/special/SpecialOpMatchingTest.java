@@ -1179,7 +1179,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	{
 
 		@Override
-		public O compute0() {
+		public O calculate() {
 			return null;
 		}
 	}
@@ -1214,7 +1214,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	{
 
 		@Override
-		public O compute1(final I in) {
+		public O calculate(final I in) {
 			return null;
 		}
 	}
@@ -1574,7 +1574,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	{
 
 		@Override
-		public O compute2(final I1 in1, final I2 in2) {
+		public O calculate(final I1 in1, final I2 in2) {
 			return null;
 		}
 	}

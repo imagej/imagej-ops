@@ -79,8 +79,8 @@ public class DefaultCreateImgLabeling<L, T extends IntegerType<T>> extends
 	}
 
 	@Override
-	public ImgLabeling<L, T> compute1(final Dimensions input) {
-		return new ImgLabeling<>(imgCreator.compute1(input));
+	public ImgLabeling<L, T> calculate(final Dimensions input) {
+		return new ImgLabeling<>(imgCreator.calculate(input));
 	}
 
 }

@@ -150,10 +150,10 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 		RandomAccessibleInterval<RealType> img = null;
 		switch (order) {
 			case 1:
-				img = (RandomAccessibleInterval) integralImgOp.compute1(offsetInterval2);
+				img = (RandomAccessibleInterval) integralImgOp.calculate(offsetInterval2);
 				break;
 			case 2:
-				img = (RandomAccessibleInterval) squareIntegralImgOp.compute1(offsetInterval2);
+				img = (RandomAccessibleInterval) squareIntegralImgOp.calculate(offsetInterval2);
 				break;
 		}
 

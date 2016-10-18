@@ -65,7 +65,7 @@ public abstract class AbstractBoundarySizeConvexHull<I> extends
 	
 	@Override
 	public void compute1(I input, DoubleType output) {
-		output.set(perimeterFunc.compute1(convexHullFunc.compute1(input)));
+		output.set(perimeterFunc.calculate(convexHullFunc.calculate(input)));
 	}
 	
 	@Override

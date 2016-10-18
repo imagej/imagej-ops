@@ -58,7 +58,7 @@ public abstract class AbstractSolidity<I> extends AbstractUnaryHybridCF<I, Doubl
 
 	@Override
 	public void compute1(final I input, final DoubleType output) {
-		output.set(volume.compute1(input).get() / convexHullVolume.compute1(input).get());
+		output.set(volume.calculate(input).get() / convexHullVolume.calculate(input).get());
 	}
 
 	@Override

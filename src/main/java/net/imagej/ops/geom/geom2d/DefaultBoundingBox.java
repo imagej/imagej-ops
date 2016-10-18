@@ -52,7 +52,7 @@ public class DefaultBoundingBox extends AbstractUnaryFunctionOp<Polygon, Polygon
 {
 
 	@Override
-	public Polygon compute1(final Polygon input) {
+	public Polygon calculate(final Polygon input) {
 		double min_x = Double.POSITIVE_INFINITY;
 		double max_x = Double.NEGATIVE_INFINITY;
 		double min_y = Double.POSITIVE_INFINITY;

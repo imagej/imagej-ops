@@ -71,8 +71,8 @@ public class DefaultICM2<T extends RealType<T>> extends
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
 		double res = 0;
-		final double[] coochxy = coocHXYFunc.compute1(matrix);
-		res = Math.sqrt(1 - Math.exp(-2 * (coochxy[3] - entropy.compute1(input)
+		final double[] coochxy = coocHXYFunc.calculate(matrix);
+		res = Math.sqrt(1 - Math.exp(-2 * (coochxy[3] - entropy.calculate(input)
 			.get())));
 
 		// if NaN

@@ -97,7 +97,7 @@ public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 	public ImgLabeling<L, I> createOutput(
 		final RandomAccessibleInterval<T> input)
 	{
-		return imgLabelingCreator.compute1(input);
+		return imgLabelingCreator.calculate(input);
 	}
 
 	@Override

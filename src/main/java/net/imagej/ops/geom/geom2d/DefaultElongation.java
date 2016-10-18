@@ -63,7 +63,7 @@ public class DefaultElongation extends AbstractUnaryHybridCF<Polygon, DoubleType
 
 	@Override
 	public void compute1(final Polygon input, final DoubleType output) {
-		final List<? extends RealLocalizable> minBB = minimumBoundingBoxFunc.compute1(input).getVertices();
+		final List<? extends RealLocalizable> minBB = minimumBoundingBoxFunc.calculate(input).getVertices();
 
 		final RealLocalizable p1 = minBB.get(0);
 		final RealLocalizable p2 = minBB.get(1);

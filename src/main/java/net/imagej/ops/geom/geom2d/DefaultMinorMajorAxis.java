@@ -187,7 +187,7 @@ public class DefaultMinorMajorAxis extends
 	}
 
 	@Override
-	public Pair<DoubleType, DoubleType> compute1(final Polygon input) {
+	public Pair<DoubleType, DoubleType> calculate(final Polygon input) {
 		
 		List<RealLocalizable> points = new ArrayList<>(input
 			.getVertices());

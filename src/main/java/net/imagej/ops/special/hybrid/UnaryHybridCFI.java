@@ -40,7 +40,7 @@ import net.imagej.ops.special.inplace.UnaryInplaceOp;
  * <p>
  * To populate a preallocated output object, call
  * {@link UnaryComputerOp#compute1}; to compute a new output object, call
- * {@link UnaryFunctionOp#compute1}; to mutate an object inplace, call
+ * {@link UnaryFunctionOp#calculate}; to mutate an object inplace, call
  * {@link UnaryInplaceOp#mutate}. To do any of these things as appropriate, call
  * {@link #run(Object, Object)}.
  * </p>

@@ -35,7 +35,7 @@ import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
 /**
- * A unary <em>function</em> computes a result from the given input, returning
+ * A unary <em>function</em> calculates a result from the given input, returning
  * it as a new object. The contents of the input are not affected.
  * <p>
  * A unary function may be treated as a {@link NullaryFunctionOp} by holding the
@@ -54,12 +54,12 @@ public interface UnaryFunctionOp<I, O> extends UnaryOp<I, O>,
 {
 
 	/**
-	 * Computes the output given some input.
+	 * Calculates the output given some input.
 	 * 
 	 * @param input Argument to the function
 	 * @return output Result of the function
 	 */
-	O compute1(I input);
+	O calculate(I input);
 
 	// -- UnaryOp methods --
 
@@ -71,15 +71,15 @@ public interface UnaryFunctionOp<I, O> extends UnaryOp<I, O>,
 			throw new IllegalArgumentException(
 				"Function expects a null output reference");
 		}
-		// compute the result
-		return compute1(input);
+		// calculate the result
+		return calculate(input);
 	}
 
 	// -- NullaryFunctionOp methods --
 
 	@Override
-	default O compute0() {
-		return compute1(in());
+	default O calculate() {
+		return calculate(in());
 	}
 
 	// -- Threadable methods --

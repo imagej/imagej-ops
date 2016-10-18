@@ -51,7 +51,7 @@ public class LookupByType extends
 	private Object[] args;
 
 	@Override
-	public Op compute1(final Class<? extends Op> input) {
+	public Op calculate(final Class<? extends Op> input) {
 		return ops().op(input, args);
 	}
 

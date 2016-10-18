@@ -57,7 +57,7 @@ public class DefaultExtendRandomView<T extends RealType<T>, F extends RandomAcce
 	private double max;
 
 	@Override
-	public ExtendedRandomAccessibleInterval<T, F> compute1(F input) {
+	public ExtendedRandomAccessibleInterval<T, F> calculate(F input) {
 		return Views.extendRandom(input, min, max);
 	}
 }

@@ -49,7 +49,7 @@ public class DefaultDropSingletonDimensionsView<T>
 		implements Ops.Transform.DropSingletonDimensionsView {
 
 	@Override
-	public RandomAccessibleInterval<T> compute1(RandomAccessibleInterval<T> input) {
+	public RandomAccessibleInterval<T> calculate(RandomAccessibleInterval<T> input) {
 		return Views.dropSingletonDimensions(input);
 	}
 

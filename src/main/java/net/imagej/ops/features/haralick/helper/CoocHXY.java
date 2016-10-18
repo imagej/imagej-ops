@@ -59,7 +59,7 @@ public class CoocHXY extends AbstractUnaryFunctionOp<double[][], double[]> {
 	}
 
 	@Override
-	public double[] compute1(double[][] matrix) {
+	public double[] calculate(double[][] matrix) {
 		double hx = 0.0d;
 		double hy = 0.0d;
 		double hxy1 = 0.0d;
@@ -67,8 +67,8 @@ public class CoocHXY extends AbstractUnaryFunctionOp<double[][], double[]> {
 
 		final int nrGrayLevels = matrix.length;
 
-		final double[] px = coocPXFunc.compute1(matrix);
-		final double[] py = coocPYFunc.compute1(matrix);
+		final double[] px = coocPXFunc.calculate(matrix);
+		final double[] py = coocPYFunc.calculate(matrix);
 
 		for (int i = 0; i < px.length; i++) {
 			hx += px[i] * Math.log(px[i] + EPSILON);

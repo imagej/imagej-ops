@@ -71,7 +71,7 @@ public class CopyII<T> extends
 	public IterableInterval<T> createOutput(final IterableInterval<T> input) {
 		// FIXME: Assumption here: Create an Img. I would rather like: Create
 		// what ever is best given the input.
-		return imgCreator.compute1(input);
+		return imgCreator.calculate(input);
 	}
 
 	@Override

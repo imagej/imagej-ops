@@ -53,7 +53,7 @@ public class SubsampleViewStepsForDims<T> extends AbstractUnaryFunctionOp<Random
 	private long[] steps;
 
 	@Override
-	public SubsampleView<T> compute1(RandomAccessible<T> input) {
+	public SubsampleView<T> calculate(RandomAccessible<T> input) {
 		return Views.subsample(input, steps);
 	}
 

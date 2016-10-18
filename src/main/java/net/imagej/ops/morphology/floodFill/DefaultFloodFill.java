@@ -149,6 +149,6 @@ public class DefaultFloodFill<T extends Type<T> & Comparable<T>> extends
 	public RandomAccessibleInterval<T> createOutput(
 		RandomAccessibleInterval<T> input1, Localizable input2)
 	{
-		return createFunc.compute1(input1);
+		return createFunc.calculate(input1);
 	}
 }

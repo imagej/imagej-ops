@@ -48,7 +48,7 @@ public class DefaultExtendPeriodicView<T, F extends RandomAccessibleInterval<T>>
 		extends AbstractUnaryFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>> implements Ops.Transform.ExtendPeriodicView {
 
 	@Override
-	public ExtendedRandomAccessibleInterval<T, F> compute1(F input) {
+	public ExtendedRandomAccessibleInterval<T, F> calculate(F input) {
 		return Views.extendPeriodic(input);
 	}
 }

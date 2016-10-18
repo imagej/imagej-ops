@@ -75,7 +75,7 @@ public class LocalMidGreyThreshold<T extends RealType<T>> extends
 						Ops.Stats.MinMax.class, Pair.class, neighborhood);
 				}
 
-				final Pair<T, T> outputs = minMaxFunc.compute1(neighborhood);
+				final Pair<T, T> outputs = minMaxFunc.calculate(neighborhood);
 
 				final double minValue = outputs.getA().getRealDouble();
 				final double maxValue = outputs.getB().getRealDouble();

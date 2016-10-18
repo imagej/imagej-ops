@@ -104,7 +104,7 @@ public class ListClose<T extends RealType<T>> extends
 	public void compute2(final RandomAccessibleInterval<T> in1,
 		final List<Shape> in2, final IterableInterval<T> out)
 	{
-		final Img<T> buffer = imgCreator.compute1(out);
+		final Img<T> buffer = imgCreator.calculate(out);
 		dilateComputer.compute2(in1, in2, buffer);
 		erodeComputer.compute2(Views.interval(Views.extendValue(buffer, maxVal),
 			out), in2, out);

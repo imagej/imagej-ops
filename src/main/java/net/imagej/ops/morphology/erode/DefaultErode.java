@@ -121,9 +121,9 @@ public class DefaultErode<T extends RealType<T>> extends
 		if (isFull) {
 			final long[] dims = MorphologyUtils.computeTargetImageDimensionsAndOffset(
 				in1, in2)[0];
-			return imgCreator.compute1(new FinalInterval(dims));
+			return imgCreator.calculate(new FinalInterval(dims));
 		}
-		return imgCreator.compute1(in1);
+		return imgCreator.calculate(in1);
 	}
 
 	@Override

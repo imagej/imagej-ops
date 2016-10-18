@@ -164,13 +164,13 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 		// estimate Img and use the input as the starting point
 		if (raiExtendedEstimate == null) {
 
-			raiExtendedEstimate = create.compute1(getImgConvolutionInterval());
+			raiExtendedEstimate = create.calculate(getImgConvolutionInterval());
 
 			copy.compute1(in, raiExtendedEstimate);
 		}
 
 		// create image for the reblurred
-		raiExtendedReblurred = create.compute1(getImgConvolutionInterval());
+		raiExtendedReblurred = create.calculate(getImgConvolutionInterval());
 
 		// perform fft of psf
 		fftKernel.compute1(kernel, getFFTKernel());

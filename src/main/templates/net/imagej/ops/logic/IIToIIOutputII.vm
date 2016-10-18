@@ -92,7 +92,7 @@ public final class IIToIIOutputII {
 		public IterableInterval<T> createOutput(final IterableInterval<T> input1,
 			final IterableInterval<T> input2)
 		{
-			return outputCreator.compute1(input1);
+			return outputCreator.calculate(input1);
 		}
 
 		@Override

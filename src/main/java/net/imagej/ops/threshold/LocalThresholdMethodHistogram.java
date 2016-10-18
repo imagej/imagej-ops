@@ -76,7 +76,7 @@ public abstract class LocalThresholdMethodHistogram<T extends RealType<T>, O ext
 		}
 
 		// Compute histogram for neighborhood
-		final Histogram1d<T> hist = histCreator.compute1(neighborhood);
+		final Histogram1d<T> hist = histCreator.calculate(neighborhood);
 
 		// Compute threshold
 		final T computedThreshold = center.createVariable();

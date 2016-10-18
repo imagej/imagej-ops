@@ -28,7 +28,7 @@ public class DefaultMaximumFeretDiameter extends AbstractUnaryHybridCF<Polygon, 
 
 	@Override
 	public void compute1(Polygon input, DoubleType output) {
-		output.set(feretDiameter.compute1(maxFeret.compute1(input)).get());
+		output.set(feretDiameter.calculate(maxFeret.calculate(input)).get());
 	}
 
 	@Override

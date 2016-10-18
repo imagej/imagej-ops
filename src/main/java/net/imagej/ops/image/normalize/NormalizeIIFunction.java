@@ -86,7 +86,7 @@ public class NormalizeIIFunction<T extends RealType<T>> extends
 
 	@Override
 	public IterableInterval<T> createOutput(IterableInterval<T> input) {
-		return imgCreator.compute1(input);
+		return imgCreator.calculate(input);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -110,7 +110,7 @@ public class NormalizeIIFunction<T extends RealType<T>> extends
 		// the four elements are source min, source max, target min, and target max.
 		final double[] result = new double[4];
 		if (minMaxFunc != null) {
-			final Pair<T, T> minMax = minMaxFunc.compute1(input);
+			final Pair<T, T> minMax = minMaxFunc.calculate(input);
 			result[0] = (sourceMin == null ? minMax.getA() : sourceMin)
 				.getRealDouble();
 			result[1] = (sourceMax == null ? minMax.getB() : sourceMax)
@@ -129,13 +129,13 @@ public class NormalizeIIFunction<T extends RealType<T>> extends
 	}
 
 	@Override
-	public IterableInterval<T> compute1(final IterableInterval<T> input) {
+	public IterableInterval<T> calculate(final IterableInterval<T> input) {
 		if (isLazy) {
 			final double[] bounds = getBounds(input);
 			return new ConvertedIterableInterval<>(input,
 				new NormalizeRealTypeComputer<>(bounds[0], bounds[1], bounds[2],
 					bounds[3]), input.firstElement().createVariable());
 		}
-		return super.compute1(input);
+		return super.calculate(input);
 	}
 }

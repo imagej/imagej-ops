@@ -28,7 +28,7 @@ public class DefaultMinimumFeretDiameter extends AbstractUnaryHybridCF<Polygon, 
 
 	@Override
 	public void compute1(Polygon input, DoubleType output) {
-		output.set(feretDiameter.compute1(minFeret.compute1(input)).get());
+		output.set(feretDiameter.calculate(minFeret.calculate(input)).get());
 	}
 
 	@Override

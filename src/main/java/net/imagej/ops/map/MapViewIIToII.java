@@ -52,7 +52,7 @@ public class MapViewIIToII<EI, EO extends Type<EO>> extends
 {
 
 	@Override
-	public IterableInterval<EO> compute1(final IterableInterval<EI> input) {
+	public IterableInterval<EO> calculate(final IterableInterval<EI> input) {
 		final ComputerConverter<EI, EO> converter =
 			new ComputerConverter<>(getOp());
 		return new ConvertedIterableInterval<>(input, converter, getType());

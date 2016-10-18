@@ -78,9 +78,9 @@ public class CreateKernel2D<T extends ComplexType<T>> extends
 	}
 
 	@Override
-	public RandomAccessibleInterval<T> compute1(double[][] input) {
+	public RandomAccessibleInterval<T> calculate(double[][] input) {
 		final long[] dims = { input.length, input[0].length };
-		final RandomAccessibleInterval<T> rai = createOp.compute1(new FinalInterval(
+		final RandomAccessibleInterval<T> rai = createOp.calculate(new FinalInterval(
 			dims));
 
 		final Cursor<T> cursor = Views.iterable(rai).cursor();

@@ -66,7 +66,7 @@ public class CopyLabelingMapping<L> extends
 
 	@Override
 	public LabelingMapping<L> createOutput(final LabelingMapping<L> input) {
-		return outputCreator.compute0();
+		return outputCreator.calculate();
 	}
 
 	@Override

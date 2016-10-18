@@ -72,9 +72,9 @@ public class DefaultICM1<T extends RealType<T>> extends
 
 		double res = 0;
 
-		final double[] coochxy = coocHXYFunc.compute1(matrix);
+		final double[] coochxy = coocHXYFunc.calculate(matrix);
 
-		res = (entropy.compute1(input).get() - coochxy[2]) / (coochxy[0] > coochxy[1]
+		res = (entropy.calculate(input).get() - coochxy[2]) / (coochxy[0] > coochxy[1]
 			? coochxy[0] : coochxy[1]);
 
 		output.set(res);

@@ -60,7 +60,7 @@ public class DefaultSphericity extends AbstractUnaryHybridCF<Mesh, DoubleType>
 
 	@Override
 	public void compute1(final Mesh input, final DoubleType output) {
-		output.set(Math.pow(compactness.compute1(input).get(), (1 / 3d)));
+		output.set(Math.pow(compactness.calculate(input).get(), (1 / 3d)));
 	}
 
 	@Override

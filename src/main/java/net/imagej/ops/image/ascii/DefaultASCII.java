@@ -74,9 +74,9 @@ public class DefaultASCII<T extends RealType<T>> extends
 	}
 
 	@Override
-	public String compute1(final IterableInterval<T> input) {
+	public String calculate(final IterableInterval<T> input) {
 		if (min == null || max == null) {
-			final Pair<T, T> minMax = minMaxFunc.compute1(input);
+			final Pair<T, T> minMax = minMaxFunc.calculate(input);
 			if (min == null) min = minMax.getA();
 			if (max == null) max = minMax.getB();
 		}

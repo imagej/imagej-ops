@@ -48,7 +48,7 @@ public class DefaultExtendMirrorDoubleView<T, F extends RandomAccessibleInterval
 		AbstractUnaryFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>> implements Ops.Transform.ExtendMirrorDoubleView {
 
 	@Override
-	public ExtendedRandomAccessibleInterval<T, F> compute1(F input) {
+	public ExtendedRandomAccessibleInterval<T, F> calculate(F input) {
 		return Views.extendMirrorDouble(input);
 	}
 

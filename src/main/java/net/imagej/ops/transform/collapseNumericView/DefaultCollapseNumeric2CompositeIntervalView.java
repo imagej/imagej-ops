@@ -51,7 +51,7 @@ public class DefaultCollapseNumeric2CompositeIntervalView<T extends NumericType<
 		implements Ops.Transform.CollapseNumericView {
 
 	@Override
-	public CompositeIntervalView<T, NumericComposite<T>> compute1(RandomAccessibleInterval<T> input) {
+	public CompositeIntervalView<T, NumericComposite<T>> calculate(RandomAccessibleInterval<T> input) {
 		return Views.collapseNumeric(input);
 	}
 

@@ -50,7 +50,7 @@ public class DefaultCollapse2CompositeIntervalView<T> extends
 		implements Ops.Transform.CollapseView {
 
 	@Override
-	public CompositeIntervalView<T, ? extends GenericComposite<T>> compute1(RandomAccessibleInterval<T> input) {
+	public CompositeIntervalView<T, ? extends GenericComposite<T>> calculate(RandomAccessibleInterval<T> input) {
 		return Views.collapse(input);
 	}
 

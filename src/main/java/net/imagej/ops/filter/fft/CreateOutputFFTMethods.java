@@ -68,12 +68,12 @@ public class CreateOutputFFTMethods<T> extends
 	}
 
 	@Override
-	public Img<T> compute2(Dimensions paddedDimensions, T outType) {
+	public Img<T> calculate(Dimensions paddedDimensions, T outType) {
 
 		Dimensions paddedFFTMethodsFFTDimensions = FFTMethodsUtility
 			.getFFTDimensionsRealToComplex(fast, paddedDimensions);
 
-		return create.compute2(paddedFFTMethodsFFTDimensions, outType);
+		return create.calculate(paddedFFTMethodsFFTDimensions, outType);
 	}
 
 }

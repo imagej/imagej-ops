@@ -50,7 +50,7 @@ public class DefaultCollapse2CompositeView<T>
 		implements Ops.Transform.CollapseView {
 
 	@Override
-	public CompositeView<T, ? extends GenericComposite<T>> compute1(RandomAccessible<T> input) {
+	public CompositeView<T, ? extends GenericComposite<T>> calculate(RandomAccessible<T> input) {
 		return Views.collapse(input);
 	}
 

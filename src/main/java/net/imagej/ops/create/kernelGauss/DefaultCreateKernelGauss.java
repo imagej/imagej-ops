@@ -75,7 +75,7 @@ public class DefaultCreateKernelGauss<T extends ComplexType<T>> extends
 	}
 
 	@Override
-	public RandomAccessibleInterval<T> compute1(double[] input) {
+	public RandomAccessibleInterval<T> calculate(double[] input) {
 		final double[] sigmaPixels = new double[input.length];
 
 		final long[] dims = new long[input.length];
@@ -88,7 +88,7 @@ public class DefaultCreateKernelGauss<T extends ComplexType<T>> extends
 			kernelArrays[d] = Util.createGaussianKernel1DDouble(sigmaPixels[d], true);
 		}
 
-		final RandomAccessibleInterval<T> out = createOp.compute1(new FinalInterval(
+		final RandomAccessibleInterval<T> out = createOp.calculate(new FinalInterval(
 			dims));
 
 		final Cursor<T> cursor = Views.iterable(out).cursor();

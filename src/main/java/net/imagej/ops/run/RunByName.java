@@ -50,7 +50,7 @@ public class RunByName extends AbstractUnaryFunctionOp<String, Object>
 	private Object[] args;
 
 	@Override
-	public Object compute1(final String input) {
+	public Object calculate(final String input) {
 		return ops().run(input, args);
 	}
 

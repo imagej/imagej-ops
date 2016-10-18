@@ -71,7 +71,7 @@ public class RAIToMeshConverter extends
 				(RandomAccessibleInterval) src);
 		}
 		if (src instanceof IterableInterval<?>) {
-			return (T) marchingCubesFunc.compute1((RandomAccessibleInterval) src);
+			return (T) marchingCubesFunc.calculate((RandomAccessibleInterval) src);
 		}
 		return null;
 	}

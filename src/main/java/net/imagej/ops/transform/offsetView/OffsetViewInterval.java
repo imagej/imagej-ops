@@ -53,7 +53,7 @@ public class OffsetViewInterval<T> extends AbstractUnaryFunctionOp<RandomAccessi
 	private Interval interval;
 
 	@Override
-	public IntervalView<T> compute1(RandomAccessible<T> input) {
+	public IntervalView<T> calculate(RandomAccessible<T> input) {
 		return Views.offsetInterval(input, interval);
 	}
 

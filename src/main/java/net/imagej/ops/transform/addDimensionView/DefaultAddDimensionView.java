@@ -48,7 +48,7 @@ public class DefaultAddDimensionView<T> extends AbstractUnaryFunctionOp<RandomAc
 		implements Ops.Transform.AddDimensionView {
 
 	@Override
-	public MixedTransformView<T> compute1(RandomAccessible<T> input) {
+	public MixedTransformView<T> calculate(RandomAccessible<T> input) {
 		return Views.addDimension(input);
 	}
 

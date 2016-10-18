@@ -65,7 +65,7 @@ public class DefaultSumAverage<T extends RealType<T>> extends
 		final DoubleType output)
 	{
 		final double[][] matrix = getCooccurrenceMatrix(input);
-		final double[] pxplusy = coocPXPlusFunc.compute1(matrix);
+		final double[] pxplusy = coocPXPlusFunc.calculate(matrix);
 
 		final int nrGrayLevels = matrix.length;
 

@@ -115,7 +115,7 @@ public class ConvolveNaiveF<I extends RealType<I>, O extends RealType<O> & Nativ
 	}
 
 	@Override
-	public RandomAccessibleInterval<O> compute2(
+	public RandomAccessibleInterval<O> calculate(
 		final RandomAccessibleInterval<I> img,
 		final RandomAccessibleInterval<K> kernel)
 	{

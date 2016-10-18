@@ -132,17 +132,17 @@ import org.scijava.InstantiableException;
  * <td rowspan=3>OUTPUT</td>
  * <td>0</td>
  * <td>{@link NullaryFunctionOp}</td>
- * <td>{@code O compute0()}</td>
+ * <td>{@code O calculate()}</td>
  * </tr>
  * <tr>
  * <td>1</td>
  * <td>{@link UnaryFunctionOp}</td>
- * <td>{@code O compute1(I)}</td>
+ * <td>{@code O calculate(I)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
  * <td>{@link BinaryFunctionOp}</td>
- * <td>{@code O compute2(I1, I2)}</td>
+ * <td>{@code O calculate(I1, I2)}</td>
  * </tr>
  * <tr>
  * <th rowspan=3>inplace</th>
@@ -176,18 +176,18 @@ import org.scijava.InstantiableException;
  * <td>0</td>
  * <td>{@link NullaryHybridCF}</td>
  * <td style="white-space: nowrap">{@code void compute0(O)}
- * <br>{@code O compute0()}</td>
+ * <br>{@code O calculate()}</td>
  * </tr>
  * <tr>
  * <td>1</td>
  * <td>{@link UnaryHybridCF}</td>
  * <td style="white-space: nowrap">{@code void compute1(O, I)}
- * <br>{@code O compute1(I)}</td>
+ * <br>{@code O calculate(I)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
  * <td>{@link BinaryHybridCF}</td>
- * <td style="white-space: nowrap">{@code O compute2(I1, I2)}
+ * <td style="white-space: nowrap">{@code O calculate(I1, I2)}
  * <br>{@code void compute2(O, I1, I2)}</td>
  * </tr>
  * <tr>
@@ -227,21 +227,21 @@ import org.scijava.InstantiableException;
  * <td>1</td>
  * <td>{@link UnaryHybridCFI}</td>
  * <td style="white-space: nowrap">{@code void compute1(I, O)}
- * <br>{@code O compute1(I)}
+ * <br>{@code O calculate(I)}
  * <br>{@code void mutate(O)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
  * <td>{@link BinaryHybridCFI1}</td>
  * <td style="white-space: nowrap">{@code void compute2(I1, I2, O)}
- * <br>{@code O compute2(I1, I2)}
+ * <br>{@code O calculate(I1, I2)}
  * <br>{@code void mutate1(O, I2)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
  * <td>{@link BinaryHybridCFI}</td>
  * <td style="white-space: nowrap">{@code void compute2(I1, I2, O)}
- * <br>{@code O compute2(I1, I2)}
+ * <br>{@code O calculate(I1, I2)}
  * <br>{@code void mutate1(O, I2)}
  * <br>{@code void mutate2(I1, O)}</td>
  * </tr>
