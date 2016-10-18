@@ -47,7 +47,7 @@ public class ComputerConverter<A, B> implements Converter<A, B> {
 
 	@Override
 	public void convert(final A input, final B output) {
-		op.compute1(input, output);
+		op.compute(input, output);
 	}
 
 }

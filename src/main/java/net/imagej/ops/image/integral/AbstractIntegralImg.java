@@ -88,7 +88,7 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void compute1(final RandomAccessibleInterval<I> input,
+	public void compute(final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<RealType<?>> output)
 	{
 		if (slicewiseOps == null) {
@@ -107,7 +107,7 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 		// Create integral image
 		for (int i = 0; i < input.numDimensions(); ++i) {
 			// Slicewise integral addition in one direction
-			slicewiseOps[i].compute1(generalizedInput, output);
+			slicewiseOps[i].compute(generalizedInput, output);
 			generalizedInput = output;
 		}
 	}

@@ -64,8 +64,8 @@ public abstract class BHCFViaBC<I1 extends DI1, I2 extends DI2, O extends DO, DI
 	}
 
 	@Override
-	public void compute2(final I1 input1, final I2 input2, final O output) {
-		worker.compute2(input1, input2, output);
+	public void compute(final I1 input1, final I2 input2, final O output) {
+		worker.compute(input1, input2, output);
 	}
 
 }

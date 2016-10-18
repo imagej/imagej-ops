@@ -94,7 +94,7 @@ public final class IIToRAIOutputII {
 		}
 
 		@Override
-		public void compute2(final IterableInterval<T> input1,
+		public void compute(final IterableInterval<T> input1,
 			final RandomAccessibleInterval<T> input2,
 			final IterableInterval<T> output)
 		{

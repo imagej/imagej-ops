@@ -85,9 +85,9 @@ public class CorrelateFFTC<I extends RealType<I>, O extends RealType<O>, K exten
 	 * Call the linear filter that is set up to perform correlation
 	 */
 	@Override
-	public void compute2(RandomAccessibleInterval<I> input,
+	public void compute(RandomAccessibleInterval<I> input,
 		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
-		linearFilter.compute2(input, kernel, out);
+		linearFilter.compute(input, kernel, out);
 	}
 }

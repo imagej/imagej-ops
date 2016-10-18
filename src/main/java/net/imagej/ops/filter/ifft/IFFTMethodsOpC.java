@@ -66,7 +66,7 @@ public class IFFTMethodsOpC<C extends ComplexType<C>, T extends RealType<T>>
 	 * Compute an ND inverse FFT
 	 */
 	@Override
-	public void compute1(final RandomAccessibleInterval<C> input,
+	public void compute(final RandomAccessibleInterval<C> input,
 		final RandomAccessibleInterval<T> output)
 	{
 		for (int d = input.numDimensions() - 1; d > 0; d--)

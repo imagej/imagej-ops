@@ -99,7 +99,7 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void compute1(final RandomAccessibleInterval<I> input,
+	public void compute(final RandomAccessibleInterval<I> input,
 		final IterableInterval<BitType> output)
 	{
 
@@ -127,7 +127,7 @@ public abstract class LocalThresholdIntegral<I extends RealType<I>> extends
 				filterOp);
 		}
 
-		map.compute2(input, neighborhoods, output);
+		map.compute(input, neighborhoods, output);
 	}
 
 	/**

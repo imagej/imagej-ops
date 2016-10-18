@@ -69,7 +69,7 @@ public class DefaultFloodFill<T extends Type<T> & Comparable<T>> extends
 	}
 
 	@Override
-	public void compute2(RandomAccessibleInterval<T> op0, Localizable loc,
+	public void compute(RandomAccessibleInterval<T> op0, Localizable loc,
 		RandomAccessibleInterval<T> r)
 	{
 		long[] posAsArray = new long[loc.numDimensions()];

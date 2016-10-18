@@ -67,11 +67,11 @@ public abstract class AbstractCenterAwareNeighborhoodBasedFilter<I, O> extends
 	}
 
 	@Override
-	public void compute1(RandomAccessibleInterval<I> input,
+	public void compute(RandomAccessibleInterval<I> input,
 		IterableInterval<O> output)
 	{
 		// map computer to neighborhoods
-		map.compute1(RAIs.extend(input, outOfBoundsFactory), output);
+		map.compute(RAIs.extend(input, outOfBoundsFactory), output);
 	}
 
 	/**

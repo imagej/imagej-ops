@@ -52,14 +52,14 @@ public interface NullaryComputerOp<O> extends NullaryOp<O>, OutputMutable<O> {
 	 * @param output Object where the computation's result will be stored, which
 	 * <em>must be non-null</em>
 	 */
-	void compute0(O output);
+	void compute(O output);
 
 	// -- NullaryOp methods --
 
 	@Override
 	default O run(final O output) {
 		if (output == null) throw new NullPointerException("output is null");
-		compute0(output);
+		compute(output);
 		return output;
 	}
 

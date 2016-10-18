@@ -246,7 +246,7 @@ public class HelpCandidatesTest extends AbstractOpTest {
 	public static class AppleC1 extends AbstractUnaryComputerOp<Apple, Apple> {
 
 		@Override
-		public void compute1(final Apple out, final Apple in) {
+		public void compute(final Apple out, final Apple in) {
 			// NB: No implementation needed.
 		}
 	}

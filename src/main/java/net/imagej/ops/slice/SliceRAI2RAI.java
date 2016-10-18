@@ -75,8 +75,8 @@ public class SliceRAI2RAI<I, O>
 	}
 
 	@Override
-	public void compute1(final RandomAccessibleInterval<I> input, final RandomAccessibleInterval<O> output) {
-		mapper.compute1(new SlicesII<>(input, axisIndices, dropSingleDimensions),
+	public void compute(final RandomAccessibleInterval<I> input, final RandomAccessibleInterval<O> output) {
+		mapper.compute(new SlicesII<>(input, axisIndices, dropSingleDimensions),
 				new SlicesII<>(output, axisIndices, dropSingleDimensions));
 	}
 

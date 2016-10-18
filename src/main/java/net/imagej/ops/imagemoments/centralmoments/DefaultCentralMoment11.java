@@ -70,7 +70,7 @@ public class DefaultCentralMoment11<I extends RealType<I>, O extends RealType<O>
 	}
 
 	@Override
-	public void compute1(final IterableInterval<I> input, final O output) {
+	public void compute(final IterableInterval<I> input, final O output) {
 		final double moment00 = moment00Func.calculate(input).getRealDouble();
 		final double moment01 = moment01Func.calculate(input).getRealDouble();
 		final double moment10 = moment10Func.calculate(input).getRealDouble();

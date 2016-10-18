@@ -59,7 +59,7 @@ public class DefaultRoundness extends AbstractUnaryHybridCF<Polygon, DoubleType>
 	}
 
 	@Override
-	public void compute1(final Polygon input, final DoubleType output) {
+	public void compute(final Polygon input, final DoubleType output) {
 		output.set(4 * (areaFunc.calculate(input).getRealDouble()
 				/ (Math.PI * Math.pow(majorAxisFunc.calculate(input).getRealDouble(), 2))));
 	}

@@ -62,7 +62,7 @@ public class DefaultCircularity extends AbstractUnaryHybridCF<Polygon, DoubleTyp
 	}
 	
 	@Override
-	public void compute1(Polygon input, DoubleType output) {
+	public void compute(Polygon input, DoubleType output) {
 		output.set(4 * Math.PI * (areaFunc.calculate(input)
 				.getRealDouble() / Math.pow(perimeterFunc.calculate(input).getRealDouble(),
 						2)));

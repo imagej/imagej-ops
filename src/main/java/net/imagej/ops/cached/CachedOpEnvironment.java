@@ -253,7 +253,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 
 			if (output == null) {
 				output = createOutput(input);
-				compute1(input, output);
+				compute(input, output);
 				cache.put(hash, output);
 			}
 			return output;
@@ -265,8 +265,8 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		}
 
 		@Override
-		public void compute1(final I input, final O output) {
-			delegate.compute1(input, output);
+		public void compute(final I input, final O output) {
+			delegate.compute(input, output);
 		}
 
 		@Override

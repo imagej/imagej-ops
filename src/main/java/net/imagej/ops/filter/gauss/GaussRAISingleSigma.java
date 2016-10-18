@@ -74,10 +74,10 @@ public class GaussRAISingleSigma<T extends RealType<T> & NativeType<T>> extends
 	}
 	
 	@Override
-	public void compute1(final RandomAccessibleInterval<T> input,
+	public void compute(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<T> output)
 	{
-		gaussOp.compute1(input, output);
+		gaussOp.compute(input, output);
 	}
 
 	@Override

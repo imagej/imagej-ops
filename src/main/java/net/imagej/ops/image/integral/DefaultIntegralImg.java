@@ -75,7 +75,7 @@ public class DefaultIntegralImg<I extends RealType<I>> extends
 	{
 
 		@Override
-		public void compute1(final IterableInterval<RealType<?>> input,
+		public void compute(final IterableInterval<RealType<?>> input,
 			final IterableInterval<RealType<?>> output)
 		{
 

@@ -93,7 +93,7 @@ public final class IIToIIOutputII {
 		}
 
 		@Override
-		public void compute2(final IterableInterval<T> input1,
+		public void compute(final IterableInterval<T> input1,
 			final IterableInterval<T> input2, final IterableInterval<T> output)
 		{
 			final Cursor<T> in1Cursor = input1.cursor();

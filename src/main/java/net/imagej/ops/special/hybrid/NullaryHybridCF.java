@@ -39,7 +39,7 @@ import net.imagej.ops.special.function.NullaryFunctionOp;
  * or {@link NullaryFunctionOp}.
  * <p>
  * To populate a preallocated output object, call
- * {@link NullaryComputerOp#compute0}; to compute a new output object, call
+ * {@link NullaryComputerOp#compute}; to compute a new output object, call
  * {@link NullaryFunctionOp#calculate}. To do any of these things as
  * appropriate, call {@link #run(Object)}.
  * </p>
@@ -56,7 +56,7 @@ public interface NullaryHybridCF<O> extends NullaryComputerOp<O>,
 	@Override
 	default O calculate() {
 		final O output = createOutput();
-		compute0(output);
+		compute(output);
 		return output;
 	}
 
@@ -70,7 +70,7 @@ public interface NullaryHybridCF<O> extends NullaryComputerOp<O>,
 		}
 
 		// run as a computer
-		compute0(output);
+		compute(output);
 		return output;
 	}
 

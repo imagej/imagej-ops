@@ -64,7 +64,7 @@ public class DefaultFill<T extends Type<T>> extends
 	}
 
 	@Override
-	public void compute0(final Iterable<T> output) {
-		map.compute0(output);
+	public void compute(final Iterable<T> output) {
+		map.compute(output);
 	}
 }

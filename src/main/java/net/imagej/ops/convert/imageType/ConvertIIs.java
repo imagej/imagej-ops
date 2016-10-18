@@ -64,10 +64,10 @@ public class ConvertIIs<I extends RealType<I>, O extends RealType<O>>
 	}
 
 	@Override
-	public void compute1(final IterableInterval<I> input,
+	public void compute(final IterableInterval<I> input,
 		final IterableInterval<O> output)
 	{
-		mapper.compute1(input, output);
+		mapper.compute(input, output);
 	}
 
 }

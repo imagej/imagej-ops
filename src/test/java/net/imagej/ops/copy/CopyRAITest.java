@@ -161,14 +161,14 @@ public class CopyRAITest extends AbstractOpTest {
 			size2), new UnsignedByteType());
 
 		// copy view to output and assert that is equal to the mean of the view
-		copy.compute1(view, out);
+		copy.compute(view, out);
 		assertEquals(ops.stats().mean(out).getRealDouble(), 100.0, delta);
 
 		// also try with a planar image
 		final Img<UnsignedByteType> outFromPlanar = ops.create().img(
 			new FinalDimensions(size2), new UnsignedByteType());
 
-		copy.compute1(viewPlanar, outFromPlanar);
+		copy.compute(viewPlanar, outFromPlanar);
 		assertEquals(ops.stats().mean(outFromPlanar).getRealDouble(), 100.0, delta);
 
 	}

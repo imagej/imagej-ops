@@ -1169,7 +1169,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	{
 
 		@Override
-		public void compute0(final O out) {
+		public void compute(final O out) {
 			// NB: No implementation needed.
 		}
 	}
@@ -1194,7 +1194,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		}
 
 		@Override
-		public void compute0(final O out) {
+		public void compute(final O out) {
 			// NB: No implementation needed.
 		}
 	}
@@ -1204,7 +1204,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	{
 
 		@Override
-		public void compute1(final I in, final O out) {
+		public void compute(final I in, final O out) {
 			// NB: No implementation needed.
 		}
 	}
@@ -1229,7 +1229,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		}
 
 		@Override
-		public void compute1(final I in, final O out) {
+		public void compute(final I in, final O out) {
 			// NB: No implementation needed.
 		}
 	}
@@ -1242,7 +1242,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		private String foo;
 
 		@Override
-		public void compute1(final I in, final O out) {
+		public void compute(final I in, final O out) {
 		// NB: No implementation needed.
 		}
 	}
@@ -1260,7 +1260,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		}
 
 		@Override
-		public void compute1(final I in, final O out) {
+		public void compute(final I in, final O out) {
 		// NB: No implementation needed.
 		}
 	}
@@ -1564,7 +1564,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	{
 
 		@Override
-		public void compute2(final I1 in1, final I2 in2, final O out) {
+		public void compute(final I1 in1, final I2 in2, final O out) {
 			// NB: No implementation needed.
 		}
 	}
@@ -1589,7 +1589,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		}
 
 		@Override
-		public void compute2(final I1 in1, final I2 in2, final O out) {
+		public void compute(final I1 in1, final I2 in2, final O out) {
 			// NB: No implementation needed.
 		}
 	}
@@ -1599,7 +1599,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	{
 
 		@Override
-		public void compute2(final I1 in1, final I2 in2, final O out) {
+		public void compute(final I1 in1, final I2 in2, final O out) {
 			// NB: No implementation needed.
 		}
 
@@ -1619,7 +1619,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		}
 
 		@Override
-		public void compute2(final I1 in1, final I2 in2, final O out) {
+		public void compute(final I1 in1, final I2 in2, final O out) {
 			// NB: No implementation needed.
 		}
 
@@ -1635,7 +1635,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	{
 
 		@Override
-		public void compute2(final I in1, final I in2, final O out) {
+		public void compute(final I in1, final I in2, final O out) {
 			// NB: No implementation needed.
 		}
 
@@ -1660,7 +1660,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		}
 
 		@Override
-		public void compute2(final I in1, final I in2, final O out) {
+		public void compute(final I in1, final I in2, final O out) {
 			// NB: No implementation needed.
 		}
 

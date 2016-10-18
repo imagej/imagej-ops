@@ -124,7 +124,7 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 	{
 
 		@Override
-		public void compute1(final Iterable<ByteType> input, final ByteType output) {
+		public void compute(final Iterable<ByteType> input, final ByteType output) {
 			for (Iterator<ByteType> iter = input.iterator(); iter.hasNext(); iter
 				.next())
 			{
@@ -144,7 +144,7 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 	{
 
 		@Override
-		public void compute2(final Iterable<ByteType> neighborhood, final ByteType center,
+		public void compute(final Iterable<ByteType> neighborhood, final ByteType center,
 			final ByteType output)
 		{
 			ByteType a = center;
@@ -171,7 +171,7 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 	{
 
 		@Override
-		public void compute1(final ByteType input, final ByteType output) {
+		public void compute(final ByteType input, final ByteType output) {
 			output.set((byte) (input.get() + 1));
 		}
 	}

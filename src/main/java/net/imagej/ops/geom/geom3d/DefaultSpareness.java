@@ -74,7 +74,7 @@ public class DefaultSpareness<B extends BooleanType<B>> extends
 	}
 
 	@Override
-	public void compute1(final IterableRegion<B> input, final DoubleType output) {
+	public void compute(final IterableRegion<B> input, final DoubleType output) {
 
 		double r1 = Math.sqrt(5.0 * multivar.calculate(input).getEigenvalue(0));
 		double r2 = r1 / mainElongation.calculate(input).get();

@@ -223,7 +223,7 @@ public class NonCirculantNormalizationFactor<I extends RealType<I>, O extends Re
 		final Img<O> tempImg = create.calculate(fd);
 
 		// 3. correlate psf with the output of step 2.
-		correlater.compute1(normalization, tempImg);
+		correlater.compute(normalization, tempImg);
 
 		normalization = tempImg;
 

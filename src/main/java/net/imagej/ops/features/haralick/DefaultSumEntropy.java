@@ -63,7 +63,7 @@ public class DefaultSumEntropy<T extends RealType<T>> extends
 	}
 	
 	@Override
-	public void compute1(final IterableInterval<T> input, final DoubleType output) {
+	public void compute(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
 		final double[] pxplusy = coocPXPlusFunc.calculate(matrix);
 		final int nrGrayLevels = matrix.length;

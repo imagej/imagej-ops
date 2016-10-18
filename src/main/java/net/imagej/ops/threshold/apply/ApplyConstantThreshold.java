@@ -67,11 +67,11 @@ public class ApplyConstantThreshold<T extends RealType<T>> extends
 	}
 
 	@Override
-	public void compute2(final Iterable<T> input1, final T input2,
+	public void compute(final Iterable<T> input1, final T input2,
 		final Iterable<BitType> output)
 	{
 		applyThreshold.setInput2(input2);
-		mapper.compute1(input1, output);
+		mapper.compute(input1, output);
 	}
 
 }

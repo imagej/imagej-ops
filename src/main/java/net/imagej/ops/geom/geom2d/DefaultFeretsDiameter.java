@@ -48,7 +48,7 @@ public class DefaultFeretsDiameter extends AbstractUnaryHybridCF<Pair<RealLocali
 		implements Ops.Geometric.FeretsDiameter {
 
 	@Override
-	public void compute1(final Pair<RealLocalizable, RealLocalizable> input, final DoubleType output) {
+	public void compute(final Pair<RealLocalizable, RealLocalizable> input, final DoubleType output) {
 
 		final RealLocalizable p1 = input.getA();
 		final RealLocalizable p2 = input.getB();

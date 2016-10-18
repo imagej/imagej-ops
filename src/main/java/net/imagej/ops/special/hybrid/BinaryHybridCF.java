@@ -39,7 +39,7 @@ import net.imagej.ops.special.function.BinaryFunctionOp;
  * {@link BinaryFunctionOp}.
  * <p>
  * To populate a preallocated output object, call
- * {@link BinaryComputerOp#compute2}; to compute a new output object, call
+ * {@link BinaryComputerOp#compute}; to compute a new output object, call
  * {@link BinaryFunctionOp#calculate}. To do any of these things as appropriate,
  * call {@link #run(Object, Object, Object)}.
  * </p>
@@ -61,7 +61,7 @@ public interface BinaryHybridCF<I1, I2, O> extends BinaryComputerOp<I1, I2, O>,
 	@Override
 	default O calculate(final I1 input1, final I2 input2) {
 		final O output = createOutput(input1, input2);
-		compute2(input1, input2, output);
+		compute(input1, input2, output);
 		return output;
 	}
 
@@ -75,7 +75,7 @@ public interface BinaryHybridCF<I1, I2, O> extends BinaryComputerOp<I1, I2, O>,
 		}
 
 		// run as a computer
-		compute2(input1, input2, output);
+		compute(input1, input2, output);
 		return output;
 	}
 

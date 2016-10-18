@@ -67,7 +67,7 @@ public abstract class AbstractBoxivity<I> extends AbstractUnaryHybridCF<I, Doubl
 	}
 
 	@Override
-	public void compute1(I input, DoubleType output) {
+	public void compute(I input, DoubleType output) {
 		output.set(areaFunc.calculate(input).getRealDouble()
 				/ areaFunc.calculate(smallestEnclosingRectangleFunc.calculate(input)).getRealDouble());
 	}

@@ -102,7 +102,7 @@ public class DefaultDistanceTransformCalibration<B extends BooleanType<B>, T ext
 	 * Source: http://fab.cba.mit.edu/classes/S62.12/docs/Meijster_distance.pdf
 	 */
 	@Override
-	public void compute1(final RandomAccessibleInterval<B> in, final RandomAccessibleInterval<T> out) {
+	public void compute(final RandomAccessibleInterval<B> in, final RandomAccessibleInterval<T> out) {
 		// stores the size of each dimension
 		final int[] dimensSizes = new int[in.numDimensions()];
 

@@ -80,7 +80,7 @@ public class DefaultLBP2D<I extends RealType<I>> extends AbstractLBP2DFeature<I>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void compute1(RandomAccessibleInterval<I> input,
+	public void compute(RandomAccessibleInterval<I> input,
 		ArrayList<LongType> output)
 	{
 		ArrayList<LongType> numberList = new ArrayList<>();

@@ -108,17 +108,17 @@ import org.scijava.InstantiableException;
  * <td rowspan=3>BOTH</td>
  * <td>0</td>
  * <td>{@link NullaryComputerOp}</td>
- * <td>{@code void compute0(O)}</td>
+ * <td>{@code void compute(O)}</td>
  * </tr>
  * <tr>
  * <td>1</td>
  * <td>{@link UnaryComputerOp}</td>
- * <td>{@code void compute1(O, I)}</td>
+ * <td>{@code void compute(O, I)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
  * <td>{@link BinaryComputerOp}</td>
- * <td>{@code void compute2(O, I1, I2)}</td>
+ * <td>{@code void compute(O, I1, I2)}</td>
  * </tr>
  * <tr>
  * <th rowspan=3>function</th>
@@ -175,20 +175,20 @@ import org.scijava.InstantiableException;
  * <td rowspan=3>BOTH (optional)</td>
  * <td>0</td>
  * <td>{@link NullaryHybridCF}</td>
- * <td style="white-space: nowrap">{@code void compute0(O)}
+ * <td style="white-space: nowrap">{@code void compute(O)}
  * <br>{@code O calculate()}</td>
  * </tr>
  * <tr>
  * <td>1</td>
  * <td>{@link UnaryHybridCF}</td>
- * <td style="white-space: nowrap">{@code void compute1(O, I)}
+ * <td style="white-space: nowrap">{@code void compute(O, I)}
  * <br>{@code O calculate(I)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
  * <td>{@link BinaryHybridCF}</td>
  * <td style="white-space: nowrap">{@code O calculate(I1, I2)}
- * <br>{@code void compute2(O, I1, I2)}</td>
+ * <br>{@code void compute(O, I1, I2)}</td>
  * </tr>
  * <tr>
  * <th rowspan=3>hybrid CI</th>
@@ -200,19 +200,19 @@ import org.scijava.InstantiableException;
  * <td rowspan=3>BOTH (optional)</td>
  * <td>1</td>
  * <td>{@link UnaryHybridCI}</td>
- * <td style="white-space: nowrap">{@code void compute1(I, O)}
+ * <td style="white-space: nowrap">{@code void compute(I, O)}
  * <br>{@code void mutate(O)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
  * <td>{@link BinaryHybridCI1}</td>
- * <td style="white-space: nowrap">{@code void compute2(I1, I2, O)}
+ * <td style="white-space: nowrap">{@code void compute(I1, I2, O)}
  * <br>{@code void mutate1(O, I2)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
  * <td>{@link BinaryHybridCI}</td>
- * <td style="white-space: nowrap">{@code void compute2(I1, I2, O)}
+ * <td style="white-space: nowrap">{@code void compute(I1, I2, O)}
  * <br>{@code void mutate1(O, I2)}
  * <br>{@code void mutate2(I1, O)}</td>
  * </tr>
@@ -226,21 +226,21 @@ import org.scijava.InstantiableException;
  * <td rowspan=3>BOTH (optional)</td>
  * <td>1</td>
  * <td>{@link UnaryHybridCFI}</td>
- * <td style="white-space: nowrap">{@code void compute1(I, O)}
+ * <td style="white-space: nowrap">{@code void compute(I, O)}
  * <br>{@code O calculate(I)}
  * <br>{@code void mutate(O)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
  * <td>{@link BinaryHybridCFI1}</td>
- * <td style="white-space: nowrap">{@code void compute2(I1, I2, O)}
+ * <td style="white-space: nowrap">{@code void compute(I1, I2, O)}
  * <br>{@code O calculate(I1, I2)}
  * <br>{@code void mutate1(O, I2)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
  * <td>{@link BinaryHybridCFI}</td>
- * <td style="white-space: nowrap">{@code void compute2(I1, I2, O)}
+ * <td style="white-space: nowrap">{@code void compute(I1, I2, O)}
  * <br>{@code O calculate(I1, I2)}
  * <br>{@code void mutate1(O, I2)}
  * <br>{@code void mutate2(I1, O)}</td>

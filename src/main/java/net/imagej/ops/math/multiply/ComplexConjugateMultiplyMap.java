@@ -85,10 +85,10 @@ public class ComplexConjugateMultiplyMap<T extends ComplexType<T>> extends
 	}
 
 	@Override
-	public void compute2(final IterableInterval<T> input1,
+	public void compute(final IterableInterval<T> input1,
 		final IterableInterval<T> input2, final IterableInterval<T> output)
 	{
-		map.compute2(input1, input2, output);
+		map.compute(input1, input2, output);
 
 	}
 

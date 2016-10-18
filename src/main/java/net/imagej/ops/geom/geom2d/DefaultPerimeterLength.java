@@ -52,7 +52,7 @@ public class DefaultPerimeterLength extends
 {
 
 	@Override
-	public void compute1(final Polygon input, final DoubleType output) {
+	public void compute(final Polygon input, final DoubleType output) {
 		double perimeter = 0;
 		final List<? extends RealLocalizable> vertices = input.getVertices();
 		final int size = vertices.size();

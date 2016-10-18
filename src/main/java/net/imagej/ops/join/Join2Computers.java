@@ -48,10 +48,10 @@ public interface Join2Computers<A, B, C> extends UnaryComputerOp<A, C>,
 	// -- UnaryComputerOp methods --
 
 	@Override
-	default void compute1(final A input, final C output) {
+	default void compute(final A input, final C output) {
 		final B buffer = getBuffer(input);
-		getFirst().compute1(input, buffer);
-		getSecond().compute1(buffer, output);
+		getFirst().compute(input, buffer);
+		getSecond().compute(buffer, output);
 	}
 
 }

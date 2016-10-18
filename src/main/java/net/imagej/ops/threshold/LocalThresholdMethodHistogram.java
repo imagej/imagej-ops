@@ -66,7 +66,7 @@ public abstract class LocalThresholdMethodHistogram<T extends RealType<T>, O ext
 	}
 
 	@Override
-	public void compute2(final Iterable<T> neighborhood, final T center,
+	public void compute(final Iterable<T> neighborhood, final T center,
 		final O output)
 	{
 		// TODO Move to initialize when NIL objects are available
@@ -80,10 +80,10 @@ public abstract class LocalThresholdMethodHistogram<T extends RealType<T>, O ext
 
 		// Compute threshold
 		final T computedThreshold = center.createVariable();
-		thresholdComputer.compute1(hist, computedThreshold);
+		thresholdComputer.compute(hist, computedThreshold);
 
 		// Apply threshold
-		applyThreshold.compute2(center, computedThreshold, output);
+		applyThreshold.compute(center, computedThreshold, output);
 	}
 
 	protected abstract UnaryComputerOp<Histogram1d<T>, T> getThresholdComputer();

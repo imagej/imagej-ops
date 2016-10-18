@@ -26,7 +26,7 @@ public class DefaultMinimumFeretAngle extends AbstractUnaryHybridCF<Polygon, Dou
 	}
 
 	@Override
-	public void compute1(Polygon input, DoubleType output) {
+	public void compute(Polygon input, DoubleType output) {
 		output.set(feretAngle.calculate(minFeret.calculate(input)).get());
 	}
 

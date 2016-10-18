@@ -117,7 +117,7 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 		}
 
 		@Override
-		public void compute1(final Img<ByteType> input, final DoubleType output) {
+		public void compute(final Img<ByteType> input, final DoubleType output) {
 			ctr++;
 			output.set(ctr);
 		}

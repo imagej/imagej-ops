@@ -55,7 +55,7 @@ public class IntegralSum<I extends RealType<I>> extends
 {
 
 	@Override
-	public void compute1(final RectangleNeighborhood<I> input,
+	public void compute(final RectangleNeighborhood<I> input,
 		final DoubleType output)
 	{
 		// computation according to

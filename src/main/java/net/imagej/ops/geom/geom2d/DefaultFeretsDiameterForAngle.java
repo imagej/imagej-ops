@@ -63,7 +63,7 @@ public class DefaultFeretsDiameterForAngle extends AbstractUnaryHybridCF<Polygon
 	}
 
 	@Override
-	public void compute1(Polygon input, DoubleType output) {
+	public void compute(Polygon input, DoubleType output) {
 		final List<? extends RealLocalizable> points = function.calculate(input).getVertices();
 
 		final double angleRad = -angle * Math.PI / 180.0;

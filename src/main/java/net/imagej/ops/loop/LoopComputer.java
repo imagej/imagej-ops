@@ -53,7 +53,7 @@ public interface LoopComputer<I> extends UnaryComputerOp<I, I>,
 	// -- UnaryComputerOp methods --
 
 	@Override
-	default void compute1(final I input, final I output) {
+	default void compute(final I input, final I output) {
 		final int n = getLoopCount();
 
 		final ArrayList<UnaryComputerOp<I, I>> ops = new ArrayList<>(n);
@@ -64,7 +64,7 @@ public interface LoopComputer<I> extends UnaryComputerOp<I, I>,
 		joiner.setOps(ops);
 		joiner.setOutputFactory(getOutputFactory());
 
-		joiner.compute1(input, output);
+		joiner.compute(input, output);
 	}
 
 }

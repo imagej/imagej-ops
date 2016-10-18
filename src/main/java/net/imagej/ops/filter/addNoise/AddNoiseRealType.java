@@ -65,7 +65,7 @@ public class AddNoiseRealType<I extends RealType<I>, O extends RealType<O>>
 	// -- UnaryComputerOp methods --
 
 	@Override
-	public void compute1(final I input, final O output) {
+	public void compute(final I input, final O output) {
 		if (rng == null) rng = new Random(seed);
 		addNoise(input, output, rangeMin, rangeMax, rangeStdDev, rng);
 	}

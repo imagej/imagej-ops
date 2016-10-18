@@ -63,7 +63,7 @@ public class DefaultGeometricMean<I extends RealType<I>, O extends RealType<O>>
 	}
 	
 	@Override
-	public void compute1(final Iterable<I> input, final O output) {
+	public void compute(final Iterable<I> input, final O output) {
 		final double size = sizeFunc.calculate(input).getRealDouble();
 		final double sumOfLogs = sumOfLogsFunc.calculate(input).getRealDouble();
 

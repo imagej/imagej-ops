@@ -220,7 +220,7 @@ public class EulerCharacteristic26NFloating
     }
 
     @Override
-    public void compute1(RandomAccessibleInterval<B> interval, DoubleType output) {
+    public void compute(RandomAccessibleInterval<B> interval, DoubleType output) {
         final Octant<B> octant = new Octant<>(interval);
         int sumDeltaEuler = 0;
 

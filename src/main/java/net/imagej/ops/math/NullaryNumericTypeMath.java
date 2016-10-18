@@ -63,7 +63,7 @@ public class NullaryNumericTypeMath {
 		private T constant;
 
 		@Override
-		public void compute0(final T output) {
+		public void compute(final T output) {
 			output.set(constant);
 		}
 	}
@@ -77,7 +77,7 @@ public class NullaryNumericTypeMath {
 	{
 
 		@Override
-		public void compute0(final T output) {
+		public void compute(final T output) {
 			output.setZero();
 		}
 

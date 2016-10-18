@@ -26,7 +26,7 @@ public class DefaultMaximumFeretAngle extends AbstractUnaryHybridCF<Polygon, Dou
 	}
 
 	@Override
-	public void compute1(Polygon input, DoubleType output) {
+	public void compute(Polygon input, DoubleType output) {
 		output.set(feretAngle.calculate(maxFeret.calculate(input)).get());
 	}
 

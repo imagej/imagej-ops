@@ -72,8 +72,8 @@ public class CopyImg<T extends NativeType<T>> extends
 	}
 
 	@Override
-	public void compute1(final Img<T> input, final Img<T> output) {
-		copyComputer.compute1(input, output);
+	public void compute(final Img<T> input, final Img<T> output) {
+		copyComputer.compute(input, output);
 	}
 
 	@Override

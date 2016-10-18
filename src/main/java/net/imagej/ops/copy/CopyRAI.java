@@ -85,10 +85,10 @@ public class CopyRAI<T> extends
 	}
 
 	@Override
-	public void compute1(final RandomAccessibleInterval<T> input,
+	public void compute(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<T> output)
 	{
-		mapComputer.compute1(input, output);
+		mapComputer.compute(input, output);
 	}
 
 	@Override

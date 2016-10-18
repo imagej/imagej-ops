@@ -51,7 +51,7 @@ public class MapNullaryII<O> extends
 {
 
 	@Override
-	public void compute0(IterableInterval<O> output) {
+	public void compute(IterableInterval<O> output) {
 		ops().run(ChunkerOp.class, new CursorBasedChunk() {
 
 			@Override

@@ -114,7 +114,7 @@ public class ListDilate<T extends RealType<T>> extends
 	}
 
 	@Override
-	public void compute2(final RandomAccessibleInterval<T> in1,
+	public void compute(final RandomAccessibleInterval<T> in1,
 		final List<Shape> in2, final IterableInterval<T> out)
 	{
 		final long[][] minSize = Morphologies.computeMinSize(in1, in2);
@@ -123,7 +123,7 @@ public class ListDilate<T extends RealType<T>> extends
 		Img<T> downstream = imgCreator.calculate(interval);
 		Img<T> tmp;
 
-		dilateComputer.compute2(in1, in2.get(0), Views.translate(downstream,
+		dilateComputer.compute(in1, in2.get(0), Views.translate(downstream,
 			minSize[0]));
 		for (int i = 1; i < in2.size(); i++) {
 			// Ping-ponging intermediate results between upstream and downstream to
@@ -131,10 +131,10 @@ public class ListDilate<T extends RealType<T>> extends
 			tmp = downstream;
 			downstream = upstream;
 			upstream = tmp;
-			dilateComputer.compute2(upstream, in2.get(i), downstream);
+			dilateComputer.compute(upstream, in2.get(i), downstream);
 		}
-		if (isFull) copyImg.compute1(downstream, out);
-		else copyImg.compute1(Views.interval(Views.translate(downstream,
+		if (isFull) copyImg.compute(downstream, out);
+		else copyImg.compute(Views.interval(Views.translate(downstream,
 			minSize[0]), out), out);
 	}
 }

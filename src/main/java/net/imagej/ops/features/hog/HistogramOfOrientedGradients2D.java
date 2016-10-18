@@ -149,7 +149,7 @@ public class HistogramOfOrientedGradients2D<T extends RealType<T>>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void compute1(RandomAccessibleInterval<T> in, RandomAccessibleInterval<T> out) {
+	public void compute(RandomAccessibleInterval<T> in, RandomAccessibleInterval<T> out) {
 		RandomAccessible<FloatType> convertedIn = Converters.convert(Views.extendMirrorDouble(in), converterToFloat,
 				new FloatType());
 

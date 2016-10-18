@@ -74,7 +74,7 @@ public class DefaultHuMoment3<I extends RealType<I>, O extends RealType<O>>
 	}
 
 	@Override
-	public void compute1(final IterableInterval<I> input, final O output) {
+	public void compute(final IterableInterval<I> input, final O output) {
 
 		final double n30 =
 			normalizedCentralMoment30Func.calculate(input).getRealDouble();

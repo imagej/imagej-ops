@@ -81,7 +81,7 @@ public class EulerCorrection<B extends BooleanType<B>>
 
 
     @Override
-    public void compute1(RandomAccessibleInterval<B> interval, DoubleType output) {
+    public void compute(RandomAccessibleInterval<B> interval, DoubleType output) {
         final Traverser<B> traverser = new Traverser<>(interval);
         final long chiZero = stackCorners(traverser);
         final long e = stackEdges(traverser) + 3 * chiZero;

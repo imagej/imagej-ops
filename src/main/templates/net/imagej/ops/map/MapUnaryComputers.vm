@@ -75,7 +75,7 @@ public class MapUnaryComputers {
 		}
 
 		@Override
-		public void compute1(final $inType.name<EI> input,
+		public void compute(final $inType.name<EI> input,
 			final $outType.name<EO> output)
 		{
 			Maps.map(input, output, getOp());
@@ -101,7 +101,7 @@ public class MapUnaryComputers {
 		}
 
 		@Override
-		public void compute1(final $inType.name<EI> input,
+		public void compute(final $inType.name<EI> input,
 			final $outType.name<EO> output)
 		{
 			ops().run(ChunkerOp.class, new CursorBasedChunk() {

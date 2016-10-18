@@ -92,10 +92,10 @@ public class ListTopHat<T extends RealType<T>> extends
 	}
 
 	@Override
-	public void compute2(final RandomAccessibleInterval<T> in1,
+	public void compute(final RandomAccessibleInterval<T> in1,
 		final List<Shape> in2, final IterableInterval<T> out)
 	{
-		openComputer.compute2(in1, in2, out);
+		openComputer.compute(in1, in2, out);
 		subtractor.mutate2(Views.iterable(in1), out);
 	}
 }

@@ -157,7 +157,7 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 	}
 
 	@Override
-	public void compute2(RandomAccessibleInterval<I> in,
+	public void compute(RandomAccessibleInterval<I> in,
 		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
 		// if a starting point for the estimate was not passed in then create
@@ -166,14 +166,14 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 
 			raiExtendedEstimate = create.calculate(getImgConvolutionInterval());
 
-			copy.compute1(in, raiExtendedEstimate);
+			copy.compute(in, raiExtendedEstimate);
 		}
 
 		// create image for the reblurred
 		raiExtendedReblurred = create.calculate(getImgConvolutionInterval());
 
 		// perform fft of psf
-		fftKernel.compute1(kernel, getFFTKernel());
+		fftKernel.compute(kernel, getFFTKernel());
 
 		// -- perform iterations --
 
@@ -186,14 +186,14 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 			// create reblurred by convolving kernel with estimate
 			// NOTE: the FFT of the PSF of the kernel has been passed in as a
 			// parameter. when the op was set up, and computed above, so we can use
-			// compute1
-			convolver.compute1(raiExtendedEstimate, this.raiExtendedReblurred);
+			// compute
+			convolver.compute(raiExtendedEstimate, this.raiExtendedReblurred);
 
 			// compute correction factor
-			rlCorrection.compute2(in, raiExtendedReblurred, raiExtendedReblurred);
+			rlCorrection.compute(in, raiExtendedReblurred, raiExtendedReblurred);
 
 			// perform update to calculate new estimate
-			update.compute1(raiExtendedReblurred, raiExtendedEstimate);
+			update.compute(raiExtendedReblurred, raiExtendedEstimate);
 
 			// apply post processing
 			if (iterativePostProcessing != null) {
@@ -218,7 +218,7 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 			end[d] = start[d] + out.dimension(d) - 1;
 		}
 
-		copy2.compute1(Views.interval(raiExtendedEstimate, new FinalInterval(start,
+		copy2.compute(Views.interval(raiExtendedEstimate, new FinalInterval(start,
 			end)), out);
 	}
 

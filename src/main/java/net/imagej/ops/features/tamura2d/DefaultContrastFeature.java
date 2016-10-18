@@ -58,7 +58,7 @@ public class DefaultContrastFeature<I extends RealType<I>, O extends RealType<O>
 	}
 
 	@Override
-	public void compute1(final RandomAccessibleInterval<I> input, final O output) {
+	public void compute(final RandomAccessibleInterval<I> input, final O output) {
 
 		// Get fourth moment about mean
 		double m4 = m4Op.calculate(input).getRealDouble();

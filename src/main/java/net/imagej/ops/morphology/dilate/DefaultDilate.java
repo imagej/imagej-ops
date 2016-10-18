@@ -127,7 +127,7 @@ public class DefaultDilate<T extends RealType<T>> extends
 	}
 
 	@Override
-	public void compute2(final RandomAccessibleInterval<T> in1, final Shape in2,
+	public void compute(final RandomAccessibleInterval<T> in1, final Shape in2,
 		final IterableInterval<T> output)
 	{
 		final RandomAccessibleInterval<T> extended = RAIs.extend(in1, f);
@@ -140,7 +140,7 @@ public class DefaultDilate<T extends RealType<T>> extends
 		else {
 			shifted = extended;
 		}
-		mapper.compute2(Views.interval(shifted, output), in2, output);
+		mapper.compute(Views.interval(shifted, output), in2, output);
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class DefaultDilate<T extends RealType<T>> extends
 	{
 
 		@Override
-		public void compute1(final Iterable<BitType> input, final BitType output) {
+		public void compute(final Iterable<BitType> input, final BitType output) {
 			for (final BitType e : input)
 				if (e.get()) {
 					output.set(true);

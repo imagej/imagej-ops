@@ -128,7 +128,7 @@ public class Maps {
 		final NullaryComputerOp<O> op)
 	{
 		for (O e : a)
-			op.compute0(e);
+			op.compute(e);
 	}
 
 	public static <O> void map(final IterableInterval<O> a,
@@ -139,7 +139,7 @@ public class Maps {
 		aCursor.jumpFwd(startIndex + 1);
 		int ctr = 0;
 		while (ctr < numSteps) {
-			op.compute0(aCursor.get());
+			op.compute(aCursor.get());
 			aCursor.jumpFwd(stepSize);
 			ctr++;
 		}
@@ -153,7 +153,7 @@ public class Maps {
 		final Cursor<I> aCursor = a.cursor();
 		final Cursor<O> bCursor = b.cursor();
 		while (aCursor.hasNext()) {
-			op.compute1(aCursor.next(), bCursor.next());
+			op.compute(aCursor.next(), bCursor.next());
 		}
 	}
 
@@ -165,7 +165,7 @@ public class Maps {
 		while (aCursor.hasNext()) {
 			aCursor.fwd();
 			bAccess.setPosition(aCursor);
-			op.compute1(aCursor.get(), bAccess.get());
+			op.compute(aCursor.get(), bAccess.get());
 		}
 	}
 
@@ -177,7 +177,7 @@ public class Maps {
 		while (bCursor.hasNext()) {
 			bCursor.fwd();
 			aAccess.setPosition(bCursor);
-			op.compute1(aAccess.get(), bCursor.get());
+			op.compute(aAccess.get(), bCursor.get());
 		}
 	}
 
@@ -191,7 +191,7 @@ public class Maps {
 		final Cursor<I2> bCursor = b.cursor();
 		final Cursor<O> cCursor = c.cursor();
 		while (aCursor.hasNext()) {
-			op.compute2(aCursor.next(), bCursor.next(), cCursor.next());
+			op.compute(aCursor.next(), bCursor.next(), cCursor.next());
 		}
 	}
 
@@ -205,7 +205,7 @@ public class Maps {
 		while (aCursor.hasNext()) {
 			aCursor.fwd();
 			cAccess.setPosition(aCursor);
-			op.compute2(aCursor.get(), bCursor.next(), cAccess.get());
+			op.compute(aCursor.get(), bCursor.next(), cAccess.get());
 		}
 	}
 
@@ -219,7 +219,7 @@ public class Maps {
 		while (aCursor.hasNext()) {
 			aCursor.fwd();
 			bAccess.setPosition(aCursor);
-			op.compute2(aCursor.get(), bAccess.get(), cCursor.next());
+			op.compute(aCursor.get(), bAccess.get(), cCursor.next());
 		}
 	}
 
@@ -233,7 +233,7 @@ public class Maps {
 		while (bCursor.hasNext()) {
 			bCursor.fwd();
 			aAccess.setPosition(bCursor);
-			op.compute2(aAccess.get(), bCursor.get(), cCursor.next());
+			op.compute(aAccess.get(), bCursor.get(), cCursor.next());
 		}
 	}
 
@@ -248,7 +248,7 @@ public class Maps {
 			aCursor.fwd();
 			bAccess.setPosition(aCursor);
 			cAccess.setPosition(aCursor);
-			op.compute2(aCursor.get(), bAccess.get(), cAccess.get());
+			op.compute(aCursor.get(), bAccess.get(), cAccess.get());
 		}
 	}
 
@@ -263,7 +263,7 @@ public class Maps {
 			bCursor.fwd();
 			aAccess.setPosition(bCursor);
 			cAccess.setPosition(bCursor);
-			op.compute2(aAccess.get(), bCursor.get(), cAccess.get());
+			op.compute(aAccess.get(), bCursor.get(), cAccess.get());
 		}
 	}
 
@@ -278,7 +278,7 @@ public class Maps {
 			cCursor.fwd();
 			aAccess.setPosition(cCursor);
 			bAccess.setPosition(cCursor);
-			op.compute2(aAccess.get(), bAccess.get(), cCursor.get());
+			op.compute(aAccess.get(), bAccess.get(), cCursor.get());
 		}
 	}
 
@@ -294,7 +294,7 @@ public class Maps {
 		bCursor.jumpFwd(startIndex + 1);
 		int ctr = 0;
 		while (ctr < numSteps) {
-			op.compute1(aCursor.get(), bCursor.get());
+			op.compute(aCursor.get(), bCursor.get());
 			aCursor.jumpFwd(stepSize);
 			bCursor.jumpFwd(stepSize);
 			ctr++;
@@ -311,7 +311,7 @@ public class Maps {
 		int ctr = 0;
 		while (ctr < numSteps) {
 			bAccess.setPosition(aCursor);
-			op.compute1(aCursor.get(), bAccess.get());
+			op.compute(aCursor.get(), bAccess.get());
 			aCursor.jumpFwd(stepSize);
 			ctr++;
 		}
@@ -327,7 +327,7 @@ public class Maps {
 		int ctr = 0;
 		while (ctr < numSteps) {
 			aAccess.setPosition(bCursor);
-			op.compute1(aAccess.get(), bCursor.get());
+			op.compute(aAccess.get(), bCursor.get());
 			bCursor.jumpFwd(stepSize);
 			ctr++;
 		}
@@ -348,7 +348,7 @@ public class Maps {
 		cCursor.jumpFwd(startIndex + 1);
 		int ctr = 0;
 		while (ctr < numSteps) {
-			op.compute2(aCursor.get(), bCursor.get(), cCursor.get());
+			op.compute(aCursor.get(), bCursor.get(), cCursor.get());
 			aCursor.jumpFwd(stepSize);
 			bCursor.jumpFwd(stepSize);
 			cCursor.jumpFwd(stepSize);
@@ -369,7 +369,7 @@ public class Maps {
 		int ctr = 0;
 		while (ctr < numSteps) {
 			cAccess.setPosition(aCursor);
-			op.compute2(aCursor.get(), bCursor.get(), cAccess.get());
+			op.compute(aCursor.get(), bCursor.get(), cAccess.get());
 			aCursor.jumpFwd(stepSize);
 			bCursor.jumpFwd(stepSize);
 			ctr++;
@@ -389,7 +389,7 @@ public class Maps {
 		int ctr = 0;
 		while (ctr < numSteps) {
 			bAccess.setPosition(aCursor);
-			op.compute2(aCursor.get(), bAccess.get(), cCursor.get());
+			op.compute(aCursor.get(), bAccess.get(), cCursor.get());
 			aCursor.jumpFwd(stepSize);
 			cCursor.jumpFwd(stepSize);
 			ctr++;
@@ -409,7 +409,7 @@ public class Maps {
 		int ctr = 0;
 		while (ctr < numSteps) {
 			aAccess.setPosition(bCursor);
-			op.compute2(aAccess.get(), bCursor.get(), cCursor.get());
+			op.compute(aAccess.get(), bCursor.get(), cCursor.get());
 			bCursor.jumpFwd(stepSize);
 			cCursor.jumpFwd(stepSize);
 			ctr++;
@@ -429,7 +429,7 @@ public class Maps {
 		while (ctr < numSteps) {
 			bAccess.setPosition(aCursor);
 			cAccess.setPosition(aCursor);
-			op.compute2(aCursor.get(), bAccess.get(), cAccess.get());
+			op.compute(aCursor.get(), bAccess.get(), cAccess.get());
 			aCursor.jumpFwd(stepSize);
 			ctr++;
 		}
@@ -448,7 +448,7 @@ public class Maps {
 		while (ctr < numSteps) {
 			aAccess.setPosition(bCursor);
 			cAccess.setPosition(bCursor);
-			op.compute2(aAccess.get(), bCursor.get(), cAccess.get());
+			op.compute(aAccess.get(), bCursor.get(), cAccess.get());
 			bCursor.jumpFwd(stepSize);
 			ctr++;
 		}
@@ -467,7 +467,7 @@ public class Maps {
 		while (ctr < numSteps) {
 			aAccess.setPosition(cCursor);
 			bAccess.setPosition(cCursor);
-			op.compute2(aAccess.get(), bAccess.get(), cCursor.get());
+			op.compute(aAccess.get(), bAccess.get(), cCursor.get());
 			cCursor.jumpFwd(stepSize);
 			ctr++;
 		}

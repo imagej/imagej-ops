@@ -73,7 +73,7 @@ public class LocalNiblackThreshold<T extends RealType<T>> extends LocalThreshold
 			private UnaryComputerOp<Iterable<T>, DoubleType> stdDeviation;
 
 			@Override
-			public void compute2(final Iterable<T> neighborhood, final T center, final BitType output) {
+			public void compute(final Iterable<T> neighborhood, final T center, final BitType output) {
 
 				if (mean == null) {
 					mean = Computers.unary(ops(), Ops.Stats.Mean.class, new DoubleType(),
@@ -86,10 +86,10 @@ public class LocalNiblackThreshold<T extends RealType<T>> extends LocalThreshold
 				}
 
 				final DoubleType m = new DoubleType();
-				mean.compute1(neighborhood, m);
+				mean.compute(neighborhood, m);
 
 				final DoubleType stdDev = new DoubleType();
-				stdDeviation.compute1(neighborhood, stdDev);
+				stdDeviation.compute(neighborhood, stdDev);
 
 				output.set(center.getRealDouble() > m.getRealDouble() + k * stdDev
 					.getRealDouble() - c);

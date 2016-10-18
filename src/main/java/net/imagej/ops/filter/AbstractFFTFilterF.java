@@ -238,7 +238,7 @@ public abstract class AbstractFFTFilterF<I extends RealType<I>, O extends RealTy
 		filter = createFilterComputer(paddedInput, paddedKernel, fftImage,
 			fftKernel, output, paddedInput);
 
-		filter.compute2(paddedInput, paddedKernel, output);
+		filter.compute(paddedInput, paddedKernel, output);
 
 		return output;
 

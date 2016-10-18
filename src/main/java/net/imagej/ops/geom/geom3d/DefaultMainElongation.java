@@ -64,7 +64,7 @@ public class DefaultMainElongation<B extends BooleanType<B>> extends
 	}
 
 	@Override
-	public void compute1(final IterableRegion<B> input, final DoubleType output) {
+	public void compute(final IterableRegion<B> input, final DoubleType output) {
 		CovarianceOf2ndMultiVariate3D compute = multivar.calculate(input);
 		output.set(Math.sqrt(compute.getEigenvalue(0) / compute
 			.getEigenvalue(1)));

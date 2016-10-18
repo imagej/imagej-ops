@@ -39,7 +39,7 @@ import net.imagej.ops.special.function.UnaryFunctionOp;
  * {@link UnaryFunctionOp}.
  * <p>
  * To populate a preallocated output object, call
- * {@link UnaryComputerOp#compute1}; to compute a new output object, call
+ * {@link UnaryComputerOp#compute}; to compute a new output object, call
  * {@link UnaryFunctionOp#calculate}. To do any of these things as appropriate,
  * call {@link #run(Object, Object)}.
  * </p>
@@ -59,7 +59,7 @@ public interface UnaryHybridCF<I, O> extends UnaryComputerOp<I, O>,
 	@Override
 	default O calculate(final I input) {
 		final O output = createOutput(input);
-		compute1(input, output);
+		compute(input, output);
 		return output;
 	}
 
@@ -73,7 +73,7 @@ public interface UnaryHybridCF<I, O> extends UnaryComputerOp<I, O>,
 		}
 
 		// run as a computer
-		compute1(input, output);
+		compute(input, output);
 		return output;
 	}
 

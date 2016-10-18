@@ -65,7 +65,7 @@ public class DefaultMean<I extends RealType<I>, O extends RealType<O>> extends
 	}
 
 	@Override
-	public void compute1(final Iterable<I> input, final O output) {
+	public void compute(final Iterable<I> input, final O output) {
 		output.setReal(sumFunc.calculate(input).getRealDouble() /
 			areaFunc.calculate(input).getRealDouble());
 	}

@@ -61,19 +61,19 @@ public class BooleanTypeLogic {
 		}
 
 		@Override
-		public void compute2(final T in1, final T in2, final T out) {
+		public void compute(final T in1, final T in2, final T out) {
 			out.set(in1);
 			out.and(in2);
 		}
 
 		@Override
 		public void mutate1(final T arg, final T in) {
-			compute2(arg, in, arg);
+			compute(arg, in, arg);
 		}
 
 		@Override
 		public void mutate2(final T in, final T arg) {
-			compute2(in, arg, arg);
+			compute(in, arg, arg);
 		}
 	}
 
@@ -84,7 +84,7 @@ public class BooleanTypeLogic {
 	{
 
 		@Override
-		public void compute2(final I in1, final I in2, final O out) {
+		public void compute(final I in1, final I in2, final O out) {
 			out.set(in1.compareTo(in2) > 0);
 		}
 	}
@@ -97,7 +97,7 @@ public class BooleanTypeLogic {
 	{
 
 		@Override
-		public void compute2(final I in1, final I in2, final O out) {
+		public void compute(final I in1, final I in2, final O out) {
 			out.set(in1.compareTo(in2) >= 0);
 		}
 	}
@@ -109,7 +109,7 @@ public class BooleanTypeLogic {
 	{
 
 		@Override
-		public void compute2(final I in1, final I in2, final O out) {
+		public void compute(final I in1, final I in2, final O out) {
 			out.set(in1.compareTo(in2) < 0);
 		}
 	}
@@ -122,7 +122,7 @@ public class BooleanTypeLogic {
 	{
 
 		@Override
-		public void compute2(final I in1, final I in2, final O out) {
+		public void compute(final I in1, final I in2, final O out) {
 			out.set(in1.compareTo(in2) <= 0);
 		}
 	}
@@ -139,7 +139,7 @@ public class BooleanTypeLogic {
 		}
 
 		@Override
-		public void compute1(final T in, final T out) {
+		public void compute(final T in, final T out) {
 			out.set(in);
 			out.not();
 		}
@@ -157,7 +157,7 @@ public class BooleanTypeLogic {
 	{
 
 		@Override
-		public void compute2(final Object in1, final Object in2, final O out) {
+		public void compute(final Object in1, final Object in2, final O out) {
 			out.set(in1.equals(in2));
 		}
 	}
@@ -169,7 +169,7 @@ public class BooleanTypeLogic {
 	{
 
 		@Override
-		public void compute2(final Object in1, final Object in2, final O out) {
+		public void compute(final Object in1, final Object in2, final O out) {
 			out.set(!in1.equals(in2));
 		}
 	}
@@ -186,19 +186,19 @@ public class BooleanTypeLogic {
 		}
 
 		@Override
-		public void compute2(final T in1, final T in2, final T out) {
+		public void compute(final T in1, final T in2, final T out) {
 			out.set(in1);
 			out.or(in2);
 		}
 
 		@Override
 		public void mutate1(final T arg, final T in) {
-			compute2(arg, in, arg);
+			compute(arg, in, arg);
 		}
 
 		@Override
 		public void mutate2(final T in, final T arg) {
-			compute2(in, arg, arg);
+			compute(in, arg, arg);
 		}
 	}
 
@@ -214,19 +214,19 @@ public class BooleanTypeLogic {
 		}
 
 		@Override
-		public void compute2(final T in1, final T in2, final T out) {
+		public void compute(final T in1, final T in2, final T out) {
 			out.set(in1);
 			out.xor(in2);
 		}
 
 		@Override
 		public void mutate1(final T arg, final T in) {
-			compute2(arg, in, arg);
+			compute(arg, in, arg);
 		}
 
 		@Override
 		public void mutate2(final T in, final T arg) {
-			compute2(in, arg, arg);
+			compute(in, arg, arg);
 		}
 	}
 }

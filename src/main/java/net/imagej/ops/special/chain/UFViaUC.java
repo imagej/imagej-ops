@@ -76,7 +76,7 @@ public abstract class UFViaUC<I extends DI, O extends DO, DI, DO> extends
 	@Override
 	public O calculate(final I input) {
 		final O output = createOutput(input);
-		worker.compute1(input, output);
+		worker.compute(input, output);
 		return output;
 	}
 

@@ -83,7 +83,7 @@ public class DefaultDirectionalityFeature<I extends RealType<I>, O extends RealT
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void compute1(final RandomAccessibleInterval<I> input,
+	public void compute(final RandomAccessibleInterval<I> input,
 		final O output)
 	{
 

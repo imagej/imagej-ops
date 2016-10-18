@@ -148,7 +148,7 @@ public class FFTMethodsOpF<T extends RealType<T>, C extends ComplexType<C>>
 			paddedDimensions);
 
 		// compute and return fft
-		fftMethodsOp.compute1(paddedInput, output);
+		fftMethodsOp.compute(paddedInput, output);
 
 		return output;
 
