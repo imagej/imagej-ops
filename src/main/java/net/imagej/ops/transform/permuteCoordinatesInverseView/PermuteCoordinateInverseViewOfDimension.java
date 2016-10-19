@@ -58,7 +58,7 @@ public class PermuteCoordinateInverseViewOfDimension<T>
 	private int d;
 
 	@Override
-	public IntervalView<T> compute1(RandomAccessibleInterval<T> input) {
+	public IntervalView<T> calculate(RandomAccessibleInterval<T> input) {
 		return Views.permuteCoordinateInverse(input, permutation, d);
 	}
 

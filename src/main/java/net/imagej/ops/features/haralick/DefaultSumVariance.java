@@ -65,14 +65,14 @@ public class DefaultSumVariance<T extends RealType<T>> extends
 	}
 
 	@Override
-	public void compute1(final IterableInterval<T> input,
+	public void compute(final IterableInterval<T> input,
 		final DoubleType output)
 	{
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
-		final double[] pxplusy = coocPXPlusYFunc.compute1(matrix);
+		final double[] pxplusy = coocPXPlusYFunc.calculate(matrix);
 		final int nrGrayLevels = matrix.length;
-		final double average = sumAverageFunc.compute1(input).getRealDouble();
+		final double average = sumAverageFunc.calculate(input).getRealDouble();
 
 		double res = 0;
 		for (int i = 2; i <= 2 * nrGrayLevels; i++) {

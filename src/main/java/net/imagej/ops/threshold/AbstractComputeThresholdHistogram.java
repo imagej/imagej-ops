@@ -47,7 +47,7 @@ public abstract class AbstractComputeThresholdHistogram<T extends RealType<T>>
 	// -- UnaryComputerOp methods --
 
 	@Override
-	public void compute1(final Histogram1d<T> input, final T output) {
+	public void compute(final Histogram1d<T> input, final T output) {
 		final long binPos = computeBin(input);
 
 		// convert bin number to corresponding gray level

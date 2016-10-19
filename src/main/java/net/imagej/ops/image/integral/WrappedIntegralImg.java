@@ -57,7 +57,7 @@ public class WrappedIntegralImg<I extends RealType<I>> extends
 	private IntegralImg<I, DoubleType> integralImg;
 
 	@Override
-	public RandomAccessibleInterval<DoubleType> compute1(
+	public RandomAccessibleInterval<DoubleType> calculate(
 		final RandomAccessibleInterval<I> input)
 	{
 		// Create IntegralImg from input

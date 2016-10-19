@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
 public class MapNullaryIterable<O> extends AbstractMapNullaryComputer<O, Iterable<O>> {
 
 	@Override
-	public void compute0(Iterable<O> output) {
+	public void compute(Iterable<O> output) {
 		Maps.map(output, getOp());
 	}
 

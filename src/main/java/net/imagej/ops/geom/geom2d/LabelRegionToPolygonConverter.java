@@ -69,7 +69,7 @@ public class LabelRegionToPolygonConverter extends
 			contourFunc = (UnaryFunctionOp) Functions.unary(ops, Ops.Geometric.Contour.class, dest, src, true);
 		}
 		// FIXME: can we make this faster?
-		final Polygon p = (Polygon) contourFunc.compute1(src);
+		final Polygon p = (Polygon) contourFunc.calculate(src);
 		return (T) p;
 	}
 

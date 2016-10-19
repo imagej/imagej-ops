@@ -77,7 +77,7 @@ public final class ConstantToIIOutputII {
 		}
 
 		@Override
-		public void compute1(final IterableInterval<T> input,
+		public void compute(final IterableInterval<T> input,
 			final IterableInterval<T> output)
 		{
 			final Cursor<T> inCursor = input.cursor();
@@ -90,7 +90,7 @@ public final class ConstantToIIOutputII {
 
 		@Override
 		public IterableInterval<T> createOutput(final IterableInterval<T> input) {
-			return outputCreator.compute1(input);
+			return outputCreator.calculate(input);
 		}
 
 		@Override

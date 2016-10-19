@@ -49,7 +49,7 @@ public class DefaultRasterView<T>
 		implements Ops.Transform.RasterView {
 
 	@Override
-	public RandomAccessibleOnRealRandomAccessible<T> compute1(RealRandomAccessible<T> input) {
+	public RandomAccessibleOnRealRandomAccessible<T> calculate(RealRandomAccessible<T> input) {
 		return Views.raster(input);
 	}
 

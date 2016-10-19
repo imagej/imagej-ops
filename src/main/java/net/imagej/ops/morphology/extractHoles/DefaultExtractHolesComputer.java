@@ -68,7 +68,7 @@ public class DefaultExtractHolesComputer<T extends BooleanType<T>> extends
 		{
 
 				@Override
-				public void compute1(T input, T output) {
+				public void compute(T input, T output) {
 					output.set((input.get()) ^ (output
 						.get()));
 				}
@@ -77,11 +77,11 @@ public class DefaultExtractHolesComputer<T extends BooleanType<T>> extends
 	}
 
 	@Override
-	public void compute1(final RandomAccessibleInterval<T> input,
+	public void compute(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<T> output)
 	{
-		fillHolesComp.compute1(input, output);
-		xorMapOp.compute1(input, output);
+		fillHolesComp.compute(input, output);
+		xorMapOp.compute(input, output);
 	}
 
 }

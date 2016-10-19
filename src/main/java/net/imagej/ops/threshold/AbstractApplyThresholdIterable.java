@@ -49,8 +49,8 @@ public abstract class AbstractApplyThresholdIterable<T, I extends Iterable<T>, O
 	protected BinaryComputerOp<I, T, O> applyThresholdComp;
 
 	@Override
-	public void compute1(final I input, final O output) {
-		applyThresholdComp.compute2(input, getThreshold(input), output);
+	public void compute(final I input, final O output) {
+		applyThresholdComp.compute(input, getThreshold(input), output);
 	}
 
 }

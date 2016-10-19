@@ -61,10 +61,10 @@ public class InvertII<I extends RealType<I>, O extends RealType<O>>
 	}
 
 	@Override
-	public void compute1(final IterableInterval<I> input,
+	public void compute(final IterableInterval<I> input,
 		final IterableInterval<O> output)
 	{
-		mapper.compute1(input, output);
+		mapper.compute(input, output);
 	}
 
 	private class SignedRealInvert<II extends RealType<II>, OO extends RealType<OO>>
@@ -72,7 +72,7 @@ public class InvertII<I extends RealType<I>, O extends RealType<O>>
 	{
 
 		@Override
-		public void compute1(final II x, final OO output) {
+		public void compute(final II x, final OO output) {
 			final double value = x.getRealDouble() * -1.0 - 1;
 			output.setReal(value);
 		}
@@ -93,7 +93,7 @@ public class InvertII<I extends RealType<I>, O extends RealType<O>>
 		}
 
 		@Override
-		public void compute1(final II x, final OO output) {
+		public void compute(final II x, final OO output) {
 			final double value = max - x.getRealDouble();
 			output.setReal(value);
 		}

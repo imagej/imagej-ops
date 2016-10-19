@@ -58,7 +58,7 @@ public class IntegralVariance<I extends RealType<I>> extends
 {
 
 	@Override
-	public void compute1(final RectangleNeighborhood<Composite<I>> input,
+	public void compute(final RectangleNeighborhood<Composite<I>> input,
 		final DoubleType output)
 	{
 		// computation according to

@@ -66,7 +66,7 @@ public interface BinaryComputerOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
 	 *          <em>must be non-null and a different object than
 	 *          {@code input1} and {@code input2}</em>
 	 */
-	void compute2(I1 input1, I2 input2, O output);
+	void compute(I1 input1, I2 input2, O output);
 
 	// -- BinaryOp methods --
 
@@ -83,15 +83,15 @@ public interface BinaryComputerOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
 			throw new IllegalArgumentException("Computer expects input2 != output");
 		}
 		// compute the result
-		compute2(input1, input2, output);
+		compute(input1, input2, output);
 		return output;
 	}
 
 	// -- UnaryComputerOp methods --
 
 	@Override
-	default void compute1(final I1 input, final O output) {
-		compute2(input, in2(), output);
+	default void compute(final I1 input, final O output) {
+		compute(input, in2(), output);
 	}
 
 	// -- Runnable methods --

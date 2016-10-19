@@ -80,7 +80,7 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>> extends
 	public RandomAccessibleInterval<T> createOutput(
 		final RandomAccessibleInterval<T> input)
 	{
-		return outputCreator.compute1(input);
+		return outputCreator.calculate(input);
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>> extends
 	}
 
 	@Override
-	public void compute1(final RandomAccessibleInterval<T> input,
+	public void compute(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<T> output)
 	{
 		// input may potentially be translated
@@ -100,10 +100,10 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>> extends
 		input.min(translation);
 
 		final IntervalView<T> tmpInterval = Views.interval(Views.translate(
-			(RandomAccessible<T>) tmpCreator.compute1(input), translation), output);
+			(RandomAccessible<T>) tmpCreator.calculate(input), translation), output);
 
-		gauss1.compute1(input, tmpInterval);
-		gauss2.compute1(input, output);
+		gauss1.compute(input, tmpInterval);
+		gauss2.compute(input, output);
 
 		// TODO: Match the Subtract Op in initialize() once we have BinaryOp
 		ops().run(Ops.Math.Subtract.class, output, output, tmpInterval);

@@ -83,7 +83,7 @@ public abstract class AbstractHaralickFeature<T extends RealType<T>> extends
 	 * @return the {@link CooccurrenceMatrix2D}
 	 */
 	protected double[][] getCooccurrenceMatrix(final IterableInterval<T> input) {
-		return coocFunc.compute1(input);
+		return coocFunc.calculate(input);
 	}
 
 	@Override

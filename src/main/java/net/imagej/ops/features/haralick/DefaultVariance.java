@@ -65,14 +65,14 @@ public class DefaultVariance<T extends RealType<T>> extends
 	}
 
 	@Override
-	public void compute1(final IterableInterval<T> input,
+	public void compute(final IterableInterval<T> input,
 		final DoubleType output)
 	{
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
-		final double mux = coocMeanXFunc.compute1(matrix).getRealDouble();
+		final double mux = coocMeanXFunc.calculate(matrix).getRealDouble();
 
-		final double muy = coocMeanYFunc.compute1(matrix).getRealDouble();
+		final double muy = coocMeanYFunc.calculate(matrix).getRealDouble();
 
 		final int nrGreyLevel = matrix.length;
 

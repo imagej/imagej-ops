@@ -60,7 +60,7 @@ public class DefaultCreateIntegerType extends
 	private long maxValue;
 
 	@Override
-	public IntegerType compute0() {
+	public IntegerType calculate() {
 		if (maxValue <= 0L) return new IntType();
 		if (maxValue <= 1L) return new BitType();
 		if (maxValue <= 0x7fL) return new ByteType();

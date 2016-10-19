@@ -73,9 +73,9 @@ public final class ApplyThresholdMethod {
 
 		@Override
 		public T getThreshold(final IterableInterval<T> input) {
-			final Histogram1d<T> hist = histCreator.compute1(input);
+			final Histogram1d<T> hist = histCreator.calculate(input);
 			final T type = input.firstElement().createVariable();
-			thresholdComp.compute1(hist, type);
+			thresholdComp.compute(hist, type);
 			return type;
 		}
 	}

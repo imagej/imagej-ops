@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
 public class DefaultVerticesCountPolygon extends AbstractUnaryHybridCF<Polygon, DoubleType> implements VerticesCount {
 
 	@Override
-	public void compute1(Polygon input, DoubleType output) {
+	public void compute(Polygon input, DoubleType output) {
 		output.set(input.getVertices().size());
 	}
 

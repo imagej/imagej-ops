@@ -63,14 +63,14 @@ public class LocalContrastThreshold<T extends RealType<T>> extends
 
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			@Override
-			public void compute2(final Iterable<T> neighborhood, final T center, final BitType output) {
+			public void compute(final Iterable<T> neighborhood, final T center, final BitType output) {
 
 				if (minMaxFunc == null) {
 					minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(),
 						Ops.Stats.MinMax.class, Pair.class, neighborhood);
 				}
 
-				final Pair<T, T> outputs = minMaxFunc.compute1(neighborhood);
+				final Pair<T, T> outputs = minMaxFunc.calculate(neighborhood);
 
 				final double centerValue = center.getRealDouble();
 				final double diffMin = centerValue - outputs.getA().getRealDouble();

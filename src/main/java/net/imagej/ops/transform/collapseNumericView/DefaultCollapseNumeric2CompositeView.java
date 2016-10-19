@@ -55,7 +55,7 @@ public class DefaultCollapseNumeric2CompositeView<T extends NumericType<T>>
 	private int numChannels;
 
 	@Override
-	public CompositeView<T, NumericComposite<T>> compute1(RandomAccessible<T> input) {
+	public CompositeView<T, NumericComposite<T>> calculate(RandomAccessible<T> input) {
 		return Views.collapseNumeric(input, numChannels);
 	}
 }

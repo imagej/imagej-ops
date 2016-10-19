@@ -51,7 +51,7 @@ public class DefaultCollapseReal2CompositeIntervalView<T extends RealType<T>>
 		implements Ops.Transform.CollapseRealView {
 
 	@Override
-	public CompositeIntervalView<T, RealComposite<T>> compute1(RandomAccessibleInterval<T> input) {
+	public CompositeIntervalView<T, RealComposite<T>> calculate(RandomAccessibleInterval<T> input) {
 		return Views.collapseReal(input);
 	}
 

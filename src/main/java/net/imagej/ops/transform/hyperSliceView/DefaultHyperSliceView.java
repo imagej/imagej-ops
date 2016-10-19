@@ -55,7 +55,7 @@ public class DefaultHyperSliceView<T> extends AbstractUnaryFunctionOp<RandomAcce
 	private long pos;
 
 	@Override
-	public MixedTransformView<T> compute1(RandomAccessible<T> input) {
+	public MixedTransformView<T> calculate(RandomAccessible<T> input) {
 		return Views.hyperSlice(input, d, pos);
 	}
 

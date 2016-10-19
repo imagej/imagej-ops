@@ -59,7 +59,7 @@ public class ProjectRAIToII<T, V> extends
 	private int dim;
 
 	@Override
-	public void compute1(final RandomAccessibleInterval<T> input,
+	public void compute(final RandomAccessibleInterval<T> input,
 		final IterableInterval<V> output)
 	{
 		final Cursor<V> cursor = output.localizingCursor();
@@ -73,7 +73,7 @@ public class ProjectRAIToII<T, V> extends
 				}
 			}
 
-			method.compute1(new DimensionIterable(input.dimension(dim), access),
+			method.compute(new DimensionIterable(input.dimension(dim), access),
 				cursor.get());
 		}
 	}

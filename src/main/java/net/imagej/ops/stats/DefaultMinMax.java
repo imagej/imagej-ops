@@ -52,7 +52,7 @@ public class DefaultMinMax<I extends RealType<I>> extends
 {
 
 	@Override
-	public Pair<I, I> compute1(final Iterable<I> input) {
+	public Pair<I, I> calculate(final Iterable<I> input) {
 		double tmpMin = Double.POSITIVE_INFINITY;
 		double tmpMax = Double.NEGATIVE_INFINITY;
 

@@ -51,7 +51,7 @@ public class ApplyThresholdComparable<T> extends
 {
 
 	@Override
-	public void compute2(final Comparable<? super T> input1, final T input2,
+	public void compute(final Comparable<? super T> input1, final T input2,
 		final BitType output)
 	{
 		output.set(input1.compareTo(input2) > 0);

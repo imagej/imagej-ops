@@ -56,7 +56,7 @@ public class AddDimensionViewMinMax<T> extends AbstractUnaryFunctionOp<RandomAcc
 	private long maxOfNewDim;
 
 	@Override
-	public IntervalView<T> compute1(RandomAccessibleInterval<T> input) {
+	public IntervalView<T> calculate(RandomAccessibleInterval<T> input) {
 		return Views.addDimension(input, minOfNewDim, maxOfNewDim);
 	}
 

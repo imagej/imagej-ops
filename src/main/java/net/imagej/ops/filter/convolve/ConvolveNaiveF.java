@@ -115,7 +115,7 @@ public class ConvolveNaiveF<I extends RealType<I>, O extends RealType<O> & Nativ
 	}
 
 	@Override
-	public RandomAccessibleInterval<O> compute2(
+	public RandomAccessibleInterval<O> calculate(
 		final RandomAccessibleInterval<I> img,
 		final RandomAccessibleInterval<K> kernel)
 	{
@@ -140,7 +140,7 @@ public class ConvolveNaiveF<I extends RealType<I>, O extends RealType<O> & Nativ
 			obfOutput), out);
 
 		// ops().filter().convolve(extendedOut, extendedIn, kernel);
-		convolver.compute1(extendedIn, extendedOut);
+		convolver.compute(extendedIn, extendedOut);
 
 		return out;
 	}

@@ -49,7 +49,7 @@ public class DefaultExtendZeroView<T extends NumericType<T>, F extends RandomAcc
 		extends AbstractUnaryFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>> implements Ops.Transform.ExtendZeroView {
 
 	@Override
-	public ExtendedRandomAccessibleInterval<T, F> compute1(F input) {
+	public ExtendedRandomAccessibleInterval<T, F> calculate(F input) {
 		return Views.extendZero(input);
 	}
 

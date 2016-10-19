@@ -53,7 +53,7 @@ public class DefaultIntervalView<T> extends AbstractUnaryFunctionOp<RandomAccess
 	private Interval interval;
 
 	@Override
-	public IntervalView<T> compute1(RandomAccessible<T> input) {
+	public IntervalView<T> calculate(RandomAccessible<T> input) {
 		return Views.interval(input, interval);
 	}
 

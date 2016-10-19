@@ -56,8 +56,8 @@ public abstract class UFViaUF<I extends DI, O, DI, DO extends O> extends
 	}
 
 	@Override
-	public O compute1(final I input) {
-		return worker.compute1(input);
+	public O calculate(final I input) {
+		return worker.calculate(input);
 	}
 
 }

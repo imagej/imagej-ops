@@ -76,7 +76,7 @@ public class MapBinaryComputers {
 		}
 
 		@Override
-		public void compute2(final $in1Type.name<EI1> input1,
+		public void compute(final $in1Type.name<EI1> input1,
 			final $in2Type.name<EI2> input2, final $outType.name<EO> output)
 		{
 			Maps.map(input1, input2, output, getOp());
@@ -103,7 +103,7 @@ public class MapBinaryComputers {
 		}
 
 		@Override
-		public void compute2(final $in1Type.name<EI1> input1,
+		public void compute(final $in1Type.name<EI1> input1,
 			final $in2Type.name<EI2> input2, final $outType.name<EO> output)
 		{
 			ops().run(ChunkerOp.class, new CursorBasedChunk() {

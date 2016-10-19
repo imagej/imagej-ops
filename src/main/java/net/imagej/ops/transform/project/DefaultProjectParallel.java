@@ -63,7 +63,7 @@ public class DefaultProjectParallel<T, V> extends
 	private int dim;
 
 	@Override
-	public void compute1(final RandomAccessibleInterval<T> input,
+	public void compute(final RandomAccessibleInterval<T> input,
 		final IterableInterval<V> output)
 	{
 		ops().run(ChunkerOp.class, new CursorBasedChunk() {
@@ -86,7 +86,7 @@ public class DefaultProjectParallel<T, V> extends
 						}
 					}
 
-					method.compute1(new DimensionIterable(input.dimension(dim), access),
+					method.compute(new DimensionIterable(input.dimension(dim), access),
 						cursor.get());
 
 					cursor.jumpFwd(stepSize);

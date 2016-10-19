@@ -64,8 +64,8 @@ public class DefaultMinimumFeret
 	}
 
 	@Override
-	public Pair<RealLocalizable, RealLocalizable> compute1(Polygon input) {
-		final List<? extends RealLocalizable> points = function.compute1(input).getVertices();
+	public Pair<RealLocalizable, RealLocalizable> calculate(Polygon input) {
+		final List<? extends RealLocalizable> points = function.calculate(input).getVertices();
 
 		double distance = Double.POSITIVE_INFINITY;
 		RealLocalizable p0 = points.get(0);

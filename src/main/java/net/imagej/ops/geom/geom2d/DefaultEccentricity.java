@@ -61,10 +61,10 @@ public class DefaultEccentricity extends AbstractUnaryHybridCF<Polygon, DoubleTy
 	}
 
 	@Override
-	public void compute1(final Polygon input, final DoubleType output) {
+	public void compute(final Polygon input, final DoubleType output) {
 
-		final double a = majorAxisFunc.compute1(input).get() / 2.0;
-		final double b = minorAxisFunc.compute1(input).get() / 2.0;
+		final double a = majorAxisFunc.calculate(input).get() / 2.0;
+		final double b = minorAxisFunc.calculate(input).get() / 2.0;
 
 		output.set(Math.sqrt(1 - Math.pow(b / a, 2)));
 	}

@@ -52,7 +52,7 @@ public class DefaultSurfaceArea extends AbstractUnaryHybridCF<Mesh, DoubleType>
 {
 
 	@Override
-	public void compute1(final Mesh input, final DoubleType output) {
+	public void compute(final Mesh input, final DoubleType output) {
 		output.set(input.getSurfaceArea());
 	}
 	

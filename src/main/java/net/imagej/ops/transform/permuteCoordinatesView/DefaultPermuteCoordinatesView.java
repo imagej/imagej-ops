@@ -53,7 +53,7 @@ public class DefaultPermuteCoordinatesView<T> extends AbstractUnaryFunctionOp<Ra
 	private int[] permutation;
 
 	@Override
-	public IntervalView<T> compute1(RandomAccessibleInterval<T> input) {
+	public IntervalView<T> calculate(RandomAccessibleInterval<T> input) {
 		return Views.permuteCoordinates(input, permutation);
 	}
 

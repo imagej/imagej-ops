@@ -65,7 +65,7 @@ public class IIToIIOutputIITest extends AbstractOpTest {
 		final IIToRAIOutputII.${op.name}<FloatType> op = ops.op(IIToRAIOutputII.${op.name}.class,
 			out, in1, in2);
 		op.run();
-		final IterableInterval<FloatType> created = op.compute2(in1, in2);
+		final IterableInterval<FloatType> created = op.calculate(in1, in2);
 		op.mutate(in1);
 		final Cursor<FloatType> in1Cursor = in1.cursor();
 		final Cursor<FloatType> copy1Cursor = copy1.cursor();

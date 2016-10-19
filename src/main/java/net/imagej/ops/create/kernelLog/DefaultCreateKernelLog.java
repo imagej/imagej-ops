@@ -75,7 +75,7 @@ public class DefaultCreateKernelLog<T extends ComplexType<T>> extends
 	}
 
 	@Override
-	public RandomAccessibleInterval<T> compute1(double[] sigmas) {
+	public RandomAccessibleInterval<T> calculate(double[] sigmas) {
 		final double[] sigmaPixels = new double[sigmas.length];
 		for (int i = 0; i < sigmaPixels.length; i++) {
 			// Optimal sigma for LoG approach and dimensionality.
@@ -95,7 +95,7 @@ public class DefaultCreateKernelLog<T extends ComplexType<T>> extends
 			middle[d] = 1 + hksizes;
 		}
 
-		final RandomAccessibleInterval<T> output = createOp.compute1(
+		final RandomAccessibleInterval<T> output = createOp.calculate(
 			new FinalInterval(dims));
 
 		final Cursor<T> c = Views.iterable(output).cursor();

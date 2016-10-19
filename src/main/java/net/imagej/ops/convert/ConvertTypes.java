@@ -81,7 +81,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final C input, final BitType output) {
+		public void compute(final C input, final BitType output) {
 			output.set(input.getRealDouble() != 0);
 		}
 
@@ -99,7 +99,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final T input, final BitType output) {
+		public void compute(final T input, final BitType output) {
 			output.set(input.getIntegerLong() != 0);
 		}
 
@@ -116,7 +116,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final C input, final Unsigned2BitType output) {
+		public void compute(final C input, final Unsigned2BitType output) {
 			output.set((long) input.getRealDouble());
 		}
 
@@ -134,7 +134,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final T input, final Unsigned2BitType output) {
+		public void compute(final T input, final Unsigned2BitType output) {
 			output.set(input.getIntegerLong());
 		}
 
@@ -151,7 +151,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final C input, final Unsigned4BitType output) {
+		public void compute(final C input, final Unsigned4BitType output) {
 			output.set((long) input.getRealDouble());
 		}
 
@@ -169,7 +169,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final T input, final Unsigned4BitType output) {
+		public void compute(final T input, final Unsigned4BitType output) {
 			output.set(input.getIntegerLong());
 		}
 
@@ -187,7 +187,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final C input, final ByteType output) {
+		public void compute(final C input, final ByteType output) {
 			output.set((byte) input.getRealDouble());
 		}
 
@@ -205,7 +205,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final T input, final ByteType output) {
+		public void compute(final T input, final ByteType output) {
 			output.set((byte) input.getIntegerLong());
 		}
 
@@ -223,7 +223,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final C input, final UnsignedByteType output) {
+		public void compute(final C input, final UnsignedByteType output) {
 			output.set((int) input.getRealDouble());
 		}
 
@@ -242,7 +242,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final T input, final UnsignedByteType output) {
+		public void compute(final T input, final UnsignedByteType output) {
 			output.set(input.getInteger());
 		}
 
@@ -259,7 +259,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final C input, final Unsigned12BitType output) {
+		public void compute(final C input, final Unsigned12BitType output) {
 			output.set((long) input.getRealDouble());
 		}
 
@@ -277,7 +277,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final T input, final Unsigned12BitType output) {
+		public void compute(final T input, final Unsigned12BitType output) {
 			output.set(input.getIntegerLong());
 		}
 
@@ -295,7 +295,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final C input, final ShortType output) {
+		public void compute(final C input, final ShortType output) {
 			output.set((short) input.getRealDouble());
 		}
 
@@ -313,7 +313,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final T input, final ShortType output) {
+		public void compute(final T input, final ShortType output) {
 			output.set((short) input.getIntegerLong());
 		}
 
@@ -331,7 +331,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final C input, final UnsignedShortType output) {
+		public void compute(final C input, final UnsignedShortType output) {
 			output.set((int) input.getRealDouble());
 		}
 
@@ -350,7 +350,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final T input, final UnsignedShortType output) {
+		public void compute(final T input, final UnsignedShortType output) {
 			output.set(input.getInteger());
 		}
 
@@ -368,7 +368,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final C input, final IntType output) {
+		public void compute(final C input, final IntType output) {
 			output.set((int) input.getRealDouble());
 		}
 
@@ -387,7 +387,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final T input, final IntType output) {
+		public void compute(final T input, final IntType output) {
 			output.set(input.getInteger());
 		}
 
@@ -405,7 +405,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final C input, final UnsignedIntType output) {
+		public void compute(final C input, final UnsignedIntType output) {
 			output.set((long) input.getRealDouble());
 		}
 
@@ -424,7 +424,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final T input, final UnsignedIntType output) {
+		public void compute(final T input, final UnsignedIntType output) {
 			output.set(input.getIntegerLong());
 		}
 
@@ -442,7 +442,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final C input, final LongType output) {
+		public void compute(final C input, final LongType output) {
 			output.set((long) input.getRealDouble());
 		}
 
@@ -461,7 +461,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final T input, final LongType output) {
+		public void compute(final T input, final LongType output) {
 			output.set(input.getIntegerLong());
 		}
 
@@ -479,7 +479,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final C input, final UnsignedLongType output) {
+		public void compute(final C input, final UnsignedLongType output) {
 			final BigDecimal bd = BigDecimal.valueOf(input.getRealDouble());
 			final BigDecimal r = bd.remainder(BigDecimal.ONE);
 			if (r.compareTo(BigDecimal.ZERO) == 0) {
@@ -505,7 +505,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final T input, final UnsignedLongType output) {
+		public void compute(final T input, final UnsignedLongType output) {
 			output.set(input.getIntegerLong());
 		}
 
@@ -522,7 +522,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final C input, final Unsigned128BitType output) {
+		public void compute(final C input, final Unsigned128BitType output) {
 			final BigDecimal bd = BigDecimal.valueOf(input.getRealDouble());
 			final BigDecimal r = bd.remainder(BigDecimal.ONE);
 			if (r.compareTo(BigDecimal.ZERO) == 0) {
@@ -547,7 +547,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final T input, final Unsigned128BitType output) {
+		public void compute(final T input, final Unsigned128BitType output) {
 			output.set(input.getBigInteger());
 		}
 
@@ -565,7 +565,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final C input, final FloatType output) {
+		public void compute(final C input, final FloatType output) {
 			output.set(input.getRealFloat());
 		}
 
@@ -583,7 +583,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final C input, final ComplexFloatType output) {
+		public void compute(final C input, final ComplexFloatType output) {
 			output.set(input.getRealFloat(), input.getImaginaryFloat());
 		}
 
@@ -601,7 +601,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final C input, final DoubleType output) {
+		public void compute(final C input, final DoubleType output) {
 			output.set(input.getRealDouble());
 		}
 
@@ -619,7 +619,7 @@ public final class ConvertTypes {
 		}
 
 		@Override
-		public void compute1(final C input, final ComplexDoubleType output) {
+		public void compute(final C input, final ComplexDoubleType output) {
 			output.set(input.getRealDouble(), input.getImaginaryDouble());
 		}
 

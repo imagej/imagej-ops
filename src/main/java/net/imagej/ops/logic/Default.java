@@ -53,7 +53,7 @@ public class Default<I extends BooleanType<I>, O extends Type<O>> extends
 	private O defaultVal;
 
 	@Override
-	public void compute1(final I input, final O output) {
+	public void compute(final I input, final O output) {
 		if (!input.get()) output.set(defaultVal);
 	}
 

@@ -70,7 +70,7 @@ public class DefaultConvexHull3D extends AbstractUnaryFunctionOp<Mesh, Mesh>
 	private final double DOUBLE_PREC = 2.2204460492503131e-16;
 
 	@Override
-	public Mesh compute1(final Mesh input) {
+	public Mesh calculate(final Mesh input) {
 		DefaultMesh output = new DefaultMesh();
 		Set<Vertex> vertices = new LinkedHashSet<>();
 		for (final RealLocalizable v : input.getVertices()) {

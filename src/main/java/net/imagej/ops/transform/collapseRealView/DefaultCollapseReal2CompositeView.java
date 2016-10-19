@@ -55,7 +55,7 @@ public class DefaultCollapseReal2CompositeView<T extends RealType<T>>
 	private int numChannels;
 
 	@Override
-	public CompositeView<T, RealComposite<T>> compute1(RandomAccessible<T> input) {
+	public CompositeView<T, RealComposite<T>> calculate(RandomAccessible<T> input) {
 		return Views.collapseReal(input, numChannels);
 	}
 

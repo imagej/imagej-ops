@@ -48,7 +48,7 @@ public class DefaultExtendBorderView<T, F extends RandomAccessibleInterval<T>>
 		extends AbstractUnaryFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>> implements Ops.Transform.ExtendBorderView {
 
 	@Override
-	public ExtendedRandomAccessibleInterval<T, F> compute1(F input) {
+	public ExtendedRandomAccessibleInterval<T, F> calculate(F input) {
 		return Views.extendBorder(input);
 	}
 

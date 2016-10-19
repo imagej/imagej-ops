@@ -39,8 +39,8 @@ import net.imagej.ops.special.function.BinaryFunctionOp;
  * {@link BinaryFunctionOp}.
  * <p>
  * To populate a preallocated output object, call
- * {@link BinaryComputerOp#compute2}; to compute a new output object, call
- * {@link BinaryFunctionOp#compute2}. To do any of these things as appropriate,
+ * {@link BinaryComputerOp#compute}; to compute a new output object, call
+ * {@link BinaryFunctionOp#calculate}. To do any of these things as appropriate,
  * call {@link #run(Object, Object, Object)}.
  * </p>
  * 
@@ -59,9 +59,9 @@ public interface BinaryHybridCF<I1, I2, O> extends BinaryComputerOp<I1, I2, O>,
 	// -- BinaryFunctionOp methods --
 
 	@Override
-	default O compute2(final I1 input1, final I2 input2) {
+	default O calculate(final I1 input1, final I2 input2) {
 		final O output = createOutput(input1, input2);
-		compute2(input1, input2, output);
+		compute(input1, input2, output);
 		return output;
 	}
 
@@ -71,19 +71,19 @@ public interface BinaryHybridCF<I1, I2, O> extends BinaryComputerOp<I1, I2, O>,
 	default O run(final I1 input1, final I2 input2, final O output) {
 		if (output == null) {
 			// run as a function
-			return compute2(input1, input2);
+			return calculate(input1, input2);
 		}
 
 		// run as a computer
-		compute2(input1, input2, output);
+		compute(input1, input2, output);
 		return output;
 	}
 
 	// -- UnaryFunctionOp methods --
 
 	@Override
-	default O compute1(final I1 input) {
-		return compute2(input, in2());
+	default O calculate(final I1 input) {
+		return calculate(input, in2());
 	}
 
 	// -- UnaryOutputFactory methods --

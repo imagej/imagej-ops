@@ -53,7 +53,7 @@ public class DefaultExtendValueView<T extends Type<T>, F extends RandomAccessibl
 	private T value;
 
 	@Override
-	public ExtendedRandomAccessibleInterval<T, F> compute1(F input) {
+	public ExtendedRandomAccessibleInterval<T, F> calculate(F input) {
 		return Views.extendValue(input, value);
 	}
 

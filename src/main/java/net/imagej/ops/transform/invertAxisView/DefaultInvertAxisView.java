@@ -52,7 +52,7 @@ public class DefaultInvertAxisView<T> extends AbstractUnaryFunctionOp<RandomAcce
 	private int d;
 
 	@Override
-	public MixedTransformView<T> compute1(RandomAccessible<T> input) {
+	public MixedTransformView<T> calculate(RandomAccessible<T> input) {
 		return Views.invertAxis(input, d);
 	}
 

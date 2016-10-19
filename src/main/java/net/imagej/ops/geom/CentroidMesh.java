@@ -65,7 +65,7 @@ public class CentroidMesh extends AbstractUnaryFunctionOp<Mesh, RealLocalizable>
 	}
 
 	@Override
-	public RealLocalizable compute1(final Mesh input) {
+	public RealLocalizable calculate(final Mesh input) {
 
 		double c_x = 0;
 		double c_y = 0;
@@ -88,7 +88,7 @@ public class CentroidMesh extends AbstractUnaryFunctionOp<Mesh, RealLocalizable>
 					+ Math.pow((c.getZ() + a.getZ()), 2));
 		}
 
-		double d = 1 / (2 * sizeFunc.compute1(input).get());
+		double d = 1 / (2 * sizeFunc.calculate(input).get());
 		c_x *= d;
 		c_y *= d;
 		c_z *= d;

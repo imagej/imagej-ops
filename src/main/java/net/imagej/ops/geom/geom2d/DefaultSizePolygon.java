@@ -53,7 +53,7 @@ public class DefaultSizePolygon extends AbstractUnaryHybridCF<Polygon, DoubleTyp
 {
 
 	@Override
-	public void compute1(Polygon input, DoubleType output) {
+	public void compute(Polygon input, DoubleType output) {
 		double sum = 0;
 		final int numVertices = input.getVertices().size();
 		for (int i = 0; i < numVertices; i++) {

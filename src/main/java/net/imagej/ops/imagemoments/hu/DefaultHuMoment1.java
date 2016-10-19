@@ -66,9 +66,9 @@ public class DefaultHuMoment1<I extends RealType<I>, O extends RealType<O>>
 	}
 
 	@Override
-	public void compute1(final IterableInterval<I> input, final O output) {
-		double n20 = normalizedCentralMoment20Func.compute1(input).getRealDouble();
-		double n02 = normalizedCentralMoment02Func.compute1(input).getRealDouble();
+	public void compute(final IterableInterval<I> input, final O output) {
+		double n20 = normalizedCentralMoment20Func.calculate(input).getRealDouble();
+		double n02 = normalizedCentralMoment02Func.calculate(input).getRealDouble();
 
 		output.setReal(n20 + n02);
 	}

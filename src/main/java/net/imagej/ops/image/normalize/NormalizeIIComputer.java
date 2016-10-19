@@ -89,7 +89,7 @@ public class NormalizeIIComputer<T extends RealType<T>> extends
 		// the four elements are source min, source max, target min, and target max.
 		final double[] result = new double[4];
 		if (minMaxFunc != null) {
-			final Pair<T, T> minMax = minMaxFunc.compute1(input);
+			final Pair<T, T> minMax = minMaxFunc.calculate(input);
 			result[0] = (sourceMin == null ? minMax.getA() : sourceMin)
 				.getRealDouble();
 			result[1] = (sourceMax == null ? minMax.getB() : sourceMax)
@@ -108,11 +108,11 @@ public class NormalizeIIComputer<T extends RealType<T>> extends
 	}
 
 	@Override
-	public void compute1(final IterableInterval<T> input,
+	public void compute(final IterableInterval<T> input,
 		final IterableInterval<T> output)
 	{
 		final double[] bounds = getBounds(input);
 		normalizer.setup(bounds[0], bounds[1], bounds[2], bounds[3]);
-		mapper.compute1(input, output);
+		mapper.compute(input, output);
 	}
 }

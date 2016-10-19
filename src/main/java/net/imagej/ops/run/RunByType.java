@@ -51,7 +51,7 @@ public class RunByType extends
 	private Object[] args;
 
 	@Override
-	public Object compute1(final Class<? extends Op> input) {
+	public Object calculate(final Class<? extends Op> input) {
 		return ops().run(input, args);
 	}
 

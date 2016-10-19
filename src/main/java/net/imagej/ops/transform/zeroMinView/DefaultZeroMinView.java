@@ -48,7 +48,7 @@ public class DefaultZeroMinView<T> extends AbstractUnaryFunctionOp<RandomAccessi
 		implements Ops.Transform.ZeroMinView {
 
 	@Override
-	public IntervalView<T> compute1(RandomAccessibleInterval<T> input) {
+	public IntervalView<T> calculate(RandomAccessibleInterval<T> input) {
 		return Views.zeroMin(input);
 	}
 

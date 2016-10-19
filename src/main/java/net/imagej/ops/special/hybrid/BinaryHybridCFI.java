@@ -40,8 +40,8 @@ import net.imagej.ops.special.inplace.BinaryInplaceOp;
  * {@link BinaryFunctionOp} or {@link BinaryInplaceOp}.
  * <p>
  * To populate a preallocated output object, call
- * {@link BinaryComputerOp#compute2}; to compute a new output object, call
- * {@link BinaryFunctionOp#compute2}; to mutate an input inplace, call
+ * {@link BinaryComputerOp#compute}; to compute a new output object, call
+ * {@link BinaryFunctionOp#calculate}; to mutate an input inplace, call
  * {@link BinaryInplace1Op#mutate1} or {@link BinaryInplaceOp#mutate2}. To do
  * any of these things as appropriate, call {@link #run(Object, Object, Object)}
  * .

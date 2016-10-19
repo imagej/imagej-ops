@@ -59,7 +59,7 @@ public class PaddingIntervalOrigin<T extends ComplexType<T>, I extends RandomAcc
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public O compute2(final I input, final Interval centeredInterval) {
+	public O calculate(final I input, final Interval centeredInterval) {
 
 		int numDimensions = input.numDimensions();
 

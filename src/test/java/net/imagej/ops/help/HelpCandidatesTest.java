@@ -217,7 +217,7 @@ public class HelpCandidatesTest extends AbstractOpTest {
 	public static class AppleF0 extends AbstractNullaryFunctionOp<Apple> {
 
 		@Override
-		public Apple compute0() {
+		public Apple calculate() {
 			return new Apple();
 		}
 	}
@@ -226,7 +226,7 @@ public class HelpCandidatesTest extends AbstractOpTest {
 	public static class AppleF1 extends AbstractUnaryFunctionOp<Apple, Apple> {
 
 		@Override
-		public Apple compute1(final Apple in) {
+		public Apple calculate(final Apple in) {
 			return new Apple();
 		}
 	}
@@ -237,7 +237,7 @@ public class HelpCandidatesTest extends AbstractOpTest {
 	{
 
 		@Override
-		public Apple compute2(final Apple in1, final Apple in2) {
+		public Apple calculate(final Apple in1, final Apple in2) {
 			return new Apple();
 		}
 	}
@@ -246,7 +246,7 @@ public class HelpCandidatesTest extends AbstractOpTest {
 	public static class AppleC1 extends AbstractUnaryComputerOp<Apple, Apple> {
 
 		@Override
-		public void compute1(final Apple out, final Apple in) {
+		public void compute(final Apple out, final Apple in) {
 			// NB: No implementation needed.
 		}
 	}

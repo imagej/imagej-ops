@@ -74,9 +74,9 @@ public abstract class UFViaUC<I extends DI, O extends DO, DI, DO> extends
 	// -- UnaryFunctionOp methods --
 
 	@Override
-	public O compute1(final I input) {
+	public O calculate(final I input) {
 		final O output = createOutput(input);
-		worker.compute1(input, output);
+		worker.compute(input, output);
 		return output;
 	}
 

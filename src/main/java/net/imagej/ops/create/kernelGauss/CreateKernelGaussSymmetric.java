@@ -72,10 +72,10 @@ public class CreateKernelGaussSymmetric<T extends ComplexType<T>> extends
 	}
 
 	@Override
-	public RandomAccessibleInterval<T> compute1(final Double input) {
+	public RandomAccessibleInterval<T> calculate(final Double input) {
 		final double[] sigmas = new double[numDims];
 		Arrays.fill(sigmas, input);
-		return kernelOp.compute1(sigmas);
+		return kernelOp.calculate(sigmas);
 	}
 
 }

@@ -38,7 +38,7 @@ import net.imagej.ops.special.inplace.UnaryInplaceOp;
  * {@link UnaryInplaceOp}.
  * <p>
  * To populate a preallocated output object, call
- * {@link UnaryComputerOp#compute1}; to compute inplace, call
+ * {@link UnaryComputerOp#compute}; to compute inplace, call
  * {@link UnaryInplaceOp#mutate}. To do any of these things as appropriate, call
  * {@link #run(Object, Object)}.
  * </p>
@@ -57,7 +57,7 @@ public interface UnaryHybridCI<I, O extends I> extends UnaryComputerOp<I, O>,
 
 	@Override
 	default void mutate(final O arg) {
-		compute1(arg, arg);
+		compute(arg, arg);
 	}
 
 	// -- UnaryOp methods --
@@ -71,7 +71,7 @@ public interface UnaryHybridCI<I, O extends I> extends UnaryComputerOp<I, O>,
 		}
 
 		// run as a computer
-		compute1(input, output);
+		compute(input, output);
 		return output;
 	}
 

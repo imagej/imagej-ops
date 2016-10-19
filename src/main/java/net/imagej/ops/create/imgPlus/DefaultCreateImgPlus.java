@@ -56,7 +56,7 @@ public class DefaultCreateImgPlus<T> extends
 	private ImgPlusMetadata metadata;
 
 	@Override
-	public ImgPlus<T> compute1(final Img<T> input) {
+	public ImgPlus<T> calculate(final Img<T> input) {
 
 		if (metadata != null) {
 			return new ImgPlus<>(input, metadata);

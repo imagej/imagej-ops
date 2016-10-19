@@ -193,7 +193,7 @@ public class SliceTest extends AbstractOpTest {
 	class DummyOp extends AbstractUnaryComputerOp<Iterable<ByteType>, Iterable<ByteType>> {
 
 		@Override
-		public void compute1(final Iterable<ByteType> input, final Iterable<ByteType> output) {
+		public void compute(final Iterable<ByteType> input, final Iterable<ByteType> output) {
 			final Iterator<ByteType> itA = input.iterator();
 			final Iterator<ByteType> itB = output.iterator();
 

@@ -56,7 +56,7 @@ public class CropRAI<T>
 	private boolean dropSingleDimensions = true;
 
 	@Override
-	public RandomAccessibleInterval<T> compute2(final RandomAccessibleInterval<T> input, final Interval interval) {
+	public RandomAccessibleInterval<T> calculate(final RandomAccessibleInterval<T> input, final Interval interval) {
 		boolean oneSizedDims = false;
 
 		if (dropSingleDimensions) {

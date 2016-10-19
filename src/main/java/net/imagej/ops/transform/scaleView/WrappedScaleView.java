@@ -76,7 +76,7 @@ public class WrappedScaleView<T> extends
 		new OutOfBoundsMirrorFactory<>(OutOfBoundsMirrorFactory.Boundary.SINGLE);
 
 	@Override
-	public RandomAccessibleInterval<T> compute1(RandomAccessibleInterval<T> input) {
+	public RandomAccessibleInterval<T> calculate(RandomAccessibleInterval<T> input) {
 		final long[] newDims = Intervals.dimensionsAsLongArray(in());
 		for (int i = 0; i < Math.min(scaleFactors.length, in().numDimensions()); i++) {
 			newDims[i] = Math.round(in().dimension(i) * scaleFactors[i]);

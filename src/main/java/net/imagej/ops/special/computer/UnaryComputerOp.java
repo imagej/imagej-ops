@@ -62,7 +62,7 @@ public interface UnaryComputerOp<I, O> extends UnaryOp<I, O>,
 	 * @param output Object where the computation's result will be stored, which
 	 * <em>must be non-null and a different object than {@code input}</em>
 	 */
-	void compute1(I input, O output);
+	void compute(I input, O output);
 
 	// -- UnaryOp methods --
 
@@ -75,15 +75,15 @@ public interface UnaryComputerOp<I, O> extends UnaryOp<I, O>,
 			throw new IllegalArgumentException("Computer expects input != output");
 		}
 		// compute the result
-		compute1(input, output);
+		compute(input, output);
 		return output;
 	}
 
 	// -- NullaryComputerOp methods --
 
 	@Override
-	default void compute0(final O output) {
-		compute1(in(), output);
+	default void compute(final O output) {
+		compute(in(), output);
 	}
 
 	// -- Runnable methods --

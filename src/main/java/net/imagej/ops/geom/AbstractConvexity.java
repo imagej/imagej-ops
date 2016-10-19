@@ -57,9 +57,9 @@ public abstract class AbstractConvexity<I> extends
 	}
 
 	@Override
-	public void compute1(final I input, final DoubleType output) {
-		output.set(boundarySizeConvexHull.compute1(input).get() /
-			boundarySize.compute1(input).get());
+	public void compute(final I input, final DoubleType output) {
+		output.set(boundarySizeConvexHull.calculate(input).get() /
+			boundarySize.calculate(input).get());
 	}
 	
 	@Override

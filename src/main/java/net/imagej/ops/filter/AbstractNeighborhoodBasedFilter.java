@@ -65,10 +65,10 @@ public abstract class AbstractNeighborhoodBasedFilter<I, O> extends
 	}
 
 	@Override
-	public void compute1(RandomAccessibleInterval<I> input,
+	public void compute(RandomAccessibleInterval<I> input,
 		IterableInterval<O> output)
 	{
-		map.compute1(Views.interval(Views.extend(input, outOfBoundsFactory), input),
+		map.compute(Views.interval(Views.extend(input, outOfBoundsFactory), input),
 			output);
 	}
 

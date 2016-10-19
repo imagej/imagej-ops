@@ -96,7 +96,7 @@ public class EulerCharacteristic26N<B extends BooleanType<B>>
     public boolean conforms() { return in().numDimensions() == 3; }
 
     @Override
-    public void compute1(RandomAccessibleInterval<B> interval, DoubleType output) {
+    public void compute(RandomAccessibleInterval<B> interval, DoubleType output) {
         final RandomAccess<B> access = interval.randomAccess();
         long sumDeltaEuler = 0;
 

@@ -61,7 +61,7 @@ public class ConvolveNaiveC<I extends RealType<I>, K extends RealType<K>, O exte
 	private RandomAccessibleInterval<K> kernel;
 
 	@Override
-	public void compute1(final RandomAccessible<I> input,
+	public void compute(final RandomAccessible<I> input,
 		final RandomAccessibleInterval<O> output)
 	{
 		// TODO: try a decomposition of the kernel into n 1-dim kernels

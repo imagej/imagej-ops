@@ -51,12 +51,12 @@ public class MapIterableToIterable<EI, EO> extends
 {
 
 	@Override
-	public void compute1(final Iterable<EI> input, final Iterable<EO> output) {
+	public void compute(final Iterable<EI> input, final Iterable<EO> output) {
 		final Iterator<EI> inCursor = input.iterator();
 		final Iterator<EO> outCursor = output.iterator();
 
 		while (inCursor.hasNext()) {
-			getOp().compute1(inCursor.next(), outCursor.next());
+			getOp().compute(inCursor.next(), outCursor.next());
 		}
 	}
 }

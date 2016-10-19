@@ -65,8 +65,8 @@ public class DefaultMedianElongation<B extends BooleanType<B>> extends
 	}
 
 	@Override
-	public void compute1(final IterableRegion<B> input, final DoubleType output) {
-		CovarianceOf2ndMultiVariate3D compute = multivar.compute1(input);
+	public void compute(final IterableRegion<B> input, final DoubleType output) {
+		CovarianceOf2ndMultiVariate3D compute = multivar.calculate(input);
 		output.set(Math.sqrt(compute.getEigenvalue(1) / compute
 			.getEigenvalue(2)));
 	}

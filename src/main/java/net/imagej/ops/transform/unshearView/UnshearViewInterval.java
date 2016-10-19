@@ -59,7 +59,7 @@ public class UnshearViewInterval<T> extends AbstractUnaryFunctionOp<RandomAccess
 	private int referenceDimension;
 
 	@Override
-	public IntervalView<T> compute1(RandomAccessible<T> input) {
+	public IntervalView<T> calculate(RandomAccessible<T> input) {
 		return Views.unshear(input, interval, shearDimension, referenceDimension);
 	}
 }

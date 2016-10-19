@@ -49,7 +49,7 @@ public class DefaultCreateNativeType extends
 {
 
 	@Override
-	public DoubleType compute0() {
+	public DoubleType calculate() {
 		return new DoubleType();
 	}
 

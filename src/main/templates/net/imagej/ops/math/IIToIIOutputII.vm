@@ -89,11 +89,11 @@ public final class IIToIIOutputII {
 		public IterableInterval<T> createOutput(final IterableInterval<T> input1,
 			final IterableInterval<T> input2)
 		{
-			return outputCreator.compute1(input1);
+			return outputCreator.calculate(input1);
 		}
 
 		@Override
-		public void compute2(final IterableInterval<T> input1,
+		public void compute(final IterableInterval<T> input1,
 			final IterableInterval<T> input2, final IterableInterval<T> output)
 		{
 			final Cursor<T> in1Cursor = input1.cursor();

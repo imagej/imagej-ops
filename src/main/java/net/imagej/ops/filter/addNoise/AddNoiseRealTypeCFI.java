@@ -70,7 +70,7 @@ public class AddNoiseRealTypeCFI<T extends RealType<T>> extends
 	// -- UnaryComputerOp methods --
 
 	@Override
-	public void compute1(final T input, final T output) {
+	public void compute(final T input, final T output) {
 		if (rng == null) rng = new Random(seed);
 		AddNoiseRealType.addNoise(input, output, rangeMin, rangeMax, rangeStdDev,
 			rng);

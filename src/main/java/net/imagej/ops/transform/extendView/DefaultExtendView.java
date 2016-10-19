@@ -54,7 +54,7 @@ public class DefaultExtendView<T, F extends RandomAccessibleInterval<T>>
 	private OutOfBoundsFactory<T, ? super F> factory;
 
 	@Override
-	public ExtendedRandomAccessibleInterval<T, F> compute1(F input) {
+	public ExtendedRandomAccessibleInterval<T, F> calculate(F input) {
 		return Views.extend(input, factory);
 	}
 

@@ -45,7 +45,7 @@ public class RunDefaultChunkerArray<A> extends AbstractUnaryComputerOp<A[], A[]>
 {
 	
 	@Override
-	public void compute1(final A[] input, final A[] output) {
+	public void compute(final A[] input, final A[] output) {
 		ops().run(DefaultChunker.class, new Chunk() {
 
 			@Override

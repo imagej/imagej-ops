@@ -140,7 +140,7 @@ public class NonCirculantNormalizationFactor<I extends RealType<I>, O extends Re
 
 		// if the normalization image hasn't been computed yet, then compute it
 		if (normalization == null) {
-			normalization = create.compute1(imgConvolutionInterval);
+			normalization = create.calculate(imgConvolutionInterval);
 			this.createNormalizationImageSemiNonCirculant();
 		}
 
@@ -170,7 +170,7 @@ public class NonCirculantNormalizationFactor<I extends RealType<I>, O extends Re
 		FinalDimensions fd = new FinalDimensions(nFFT);
 
 		// create the normalization image
-		normalization = create.compute1(fd);
+		normalization = create.calculate(fd);
 
 		// size of the measurement window
 		final Point size = new Point(length);
@@ -220,10 +220,10 @@ public class NonCirculantNormalizationFactor<I extends RealType<I>, O extends Re
 			normCursor.get().setReal(1.0);
 		}
 
-		final Img<O> tempImg = create.compute1(fd);
+		final Img<O> tempImg = create.calculate(fd);
 
 		// 3. correlate psf with the output of step 2.
-		correlater.compute1(normalization, tempImg);
+		correlater.compute(normalization, tempImg);
 
 		normalization = tempImg;
 

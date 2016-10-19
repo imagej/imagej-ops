@@ -51,7 +51,7 @@ public class CreateImgFactoryFromImg<T> extends
 {
 
 	@Override
-	public ImgFactory<T> compute1(final Img<T> input) {
+	public ImgFactory<T> calculate(final Img<T> input) {
 		return input.factory();
 	}
 

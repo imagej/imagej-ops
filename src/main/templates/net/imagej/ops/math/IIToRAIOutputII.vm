@@ -90,11 +90,11 @@ public final class IIToRAIOutputII {
 		public IterableInterval<T> createOutput(final IterableInterval<T> input1,
 			final RandomAccessibleInterval<T> input2)
 		{
-			return outputCreator.compute1(input1);
+			return outputCreator.calculate(input1);
 		}
 
 		@Override
-		public void compute2(final IterableInterval<T> input1,
+		public void compute(final IterableInterval<T> input1,
 			final RandomAccessibleInterval<T> input2,
 			final IterableInterval<T> output)
 		{

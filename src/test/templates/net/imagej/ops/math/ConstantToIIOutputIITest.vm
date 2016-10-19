@@ -62,7 +62,7 @@ public class ConstantToIIOutputIITest extends AbstractOpTest {
 		final ConstantToIIOutputII.${op.name}<FloatType> op = ops.op(
 			ConstantToIIOutputII.${op.name}.class, out, in, constant);
 		op.run();
-		final IterableInterval<FloatType> created = op.compute1(in);
+		final IterableInterval<FloatType> created = op.calculate(in);
 		op.mutate(in);
 		final Cursor<FloatType> inCursor = in.cursor();
 		final Cursor<FloatType> copyCursor = copy.cursor();

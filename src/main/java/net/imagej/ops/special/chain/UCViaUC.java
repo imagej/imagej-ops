@@ -56,8 +56,8 @@ public abstract class UCViaUC<I extends DI, O extends DO, DI, DO> extends
 	}
 
 	@Override
-	public void compute1(final I input, final O output) {
-		worker.compute1(input, output);
+	public void compute(final I input, final O output) {
+		worker.compute(input, output);
 	}
 
 }

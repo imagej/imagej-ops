@@ -65,7 +65,7 @@ public class DefaultCoarsenessFeature<I extends RealType<I>, O extends RealType<
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void compute1(final RandomAccessibleInterval<I> input, final O output) {
+	public void compute(final RandomAccessibleInterval<I> input, final O output) {
 		HashMap<Integer, Img<I>> meanImages = new HashMap<>();
 
 		// get mean images

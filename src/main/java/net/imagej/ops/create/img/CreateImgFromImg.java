@@ -53,7 +53,7 @@ public class CreateImgFromImg<T extends Type<T>> extends
 {
 
 	@Override
-	public Img<T> compute1(final Img<T> input) {
+	public Img<T> calculate(final Img<T> input) {
 		return Imgs.create(input.factory(), input, input.firstElement());
 	}
 

@@ -61,7 +61,7 @@ public class PaddingIntervalCentered<T extends ComplexType<T>, I extends RandomA
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public O compute2(final I input, final Dimensions paddedDimensions) {
+	public O calculate(final I input, final Dimensions paddedDimensions) {
 
 		final long[] paddedSize = new long[paddedDimensions.numDimensions()];
 		paddedDimensions.dimensions(paddedSize);

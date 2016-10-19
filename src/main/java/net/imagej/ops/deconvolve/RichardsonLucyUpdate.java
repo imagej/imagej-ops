@@ -75,7 +75,7 @@ public class RichardsonLucyUpdate<T extends RealType<T>> extends
 	 * performs update step of the Richardson Lucy Algorithm
 	 */
 	@Override
-	public void compute1(RandomAccessibleInterval<T> correction,
+	public void compute(RandomAccessibleInterval<T> correction,
 		RandomAccessibleInterval<T> estimate)
 	{
 
@@ -86,7 +86,7 @@ public class RichardsonLucyUpdate<T extends RealType<T>> extends
 				correction, estimate);
 		}
 
-		mul.compute2(estimate, correction, estimate);
+		mul.compute(estimate, correction, estimate);
 	}
 
 }

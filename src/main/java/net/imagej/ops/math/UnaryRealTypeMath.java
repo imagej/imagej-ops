@@ -63,7 +63,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.abs(input.getRealDouble()));
 		}
 	}
@@ -78,7 +78,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.acos(input.getRealDouble()));
 		}
 	}
@@ -93,7 +93,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			double delta = Math.sqrt(xt * xt - 1);
 			if (xt <= -1) delta = -delta;
@@ -111,7 +111,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			double value = Math.atan(1.0 / input.getRealDouble());
 			if (input.getRealDouble() < 0) value += Math.PI;
 			output.setReal(value);
@@ -128,7 +128,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			output.setReal(0.5 * Math.log((xt + 1) / (xt - 1)));
 		}
@@ -150,7 +150,7 @@ public final class UnaryRealTypeMath {
 		private final DoubleType tmp = new DoubleType();
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			if ((xt > -1) && (xt < 1)) throw new IllegalArgumentException(
 				"arccsc(x) : x out of range");
@@ -158,7 +158,7 @@ public final class UnaryRealTypeMath {
 			else if (xt == 1) output.setReal(Math.PI / 2);
 			else {
 				tmp.setReal(1 / xt);
-				asin.compute1(tmp, angle);
+				asin.compute(tmp, angle);
 				output.setReal(angle.getRealDouble());
 			}
 		}
@@ -174,7 +174,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			final double delta = Math.sqrt(1 + (1 / (xt * xt)));
 			output.setReal(Math.log((1 / xt) + delta));
@@ -197,7 +197,7 @@ public final class UnaryRealTypeMath {
 		private final DoubleType tmp = new DoubleType();
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			if ((xt > -1) && (xt < 1)) throw new IllegalArgumentException(
 				"arcsec(x) : x out of range");
@@ -205,7 +205,7 @@ public final class UnaryRealTypeMath {
 			else if (xt == 1) output.setReal(0);
 			else {
 				tmp.setReal(Math.sqrt(xt * xt - 1) / xt);
-				asin.compute1(tmp, angle);
+				asin.compute(tmp, angle);
 				double value = angle.getRealDouble();
 				if (xt < -1) value += Math.PI;
 				output.setReal(value);
@@ -223,7 +223,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			final double numer = 1 + Math.sqrt(1 - xt * xt);
 			output.setReal(Math.log(numer / xt));
@@ -240,7 +240,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.asin(input.getRealDouble()));
 		}
 	}
@@ -255,7 +255,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			final double delta = Math.sqrt(xt * xt + 1);
 			output.setReal(Math.log(xt + delta));
@@ -272,7 +272,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.atan(input.getRealDouble()));
 		}
 	}
@@ -287,7 +287,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			output.setReal(0.5 * Math.log((1 + xt) / (1 - xt)));
 		}
@@ -303,7 +303,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.ceil(input.getRealDouble()));
 		}
 	}
@@ -318,7 +318,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.cos(input.getRealDouble()));
 		}
 	}
@@ -333,7 +333,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.cosh(input.getRealDouble()));
 		}
 	}
@@ -348,7 +348,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(1.0 / Math.tan(input.getRealDouble()));
 		}
 	}
@@ -363,7 +363,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(1.0 / Math.tanh(input.getRealDouble()));
 		}
 	}
@@ -378,7 +378,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(1.0 / Math.sin(input.getRealDouble()));
 		}
 	}
@@ -393,7 +393,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(1.0 / Math.sinh(input.getRealDouble()));
 		}
 	}
@@ -408,7 +408,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.cbrt(input.getRealDouble()));
 		}
 	}
@@ -423,7 +423,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.exp(input.getRealDouble()));
 		}
 	}
@@ -438,7 +438,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.exp(input.getRealDouble()) - 1);
 		}
 	}
@@ -453,7 +453,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.floor(input.getRealDouble()));
 		}
 	}
@@ -471,7 +471,7 @@ public final class UnaryRealTypeMath {
 		private double constant;
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double inputVal = input.getRealDouble();
 			if (inputVal <= 0) output.setReal(0);
 			else {
@@ -495,7 +495,7 @@ public final class UnaryRealTypeMath {
 		private double specifiedMax;
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(specifiedMax - (input.getRealDouble() - specifiedMin));
 		}
 	}
@@ -510,7 +510,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.log(input.getRealDouble()));
 		}
 	}
@@ -525,7 +525,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.log10(input.getRealDouble()));
 		}
 	}
@@ -540,7 +540,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.log(input.getRealDouble()) / Math.log(2));
 		}
 	}
@@ -556,7 +556,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.log1p(input.getRealDouble()));
 		}
 	}
@@ -575,7 +575,7 @@ public final class UnaryRealTypeMath {
 		private double constant;
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double value = input.getRealDouble();
 			if (value < constant) output.setReal(value);
 			else output.setReal(constant);
@@ -597,7 +597,7 @@ public final class UnaryRealTypeMath {
 		private double constant;
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double value = input.getRealDouble();
 			if (value > constant) output.setReal(value);
 			else output.setReal(constant);
@@ -614,7 +614,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.rint(input.getRealDouble()));
 		}
 	}
@@ -629,7 +629,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(-input.getRealDouble());
 		}
 	}
@@ -647,7 +647,7 @@ public final class UnaryRealTypeMath {
 		private double constant;
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.pow(input.getRealDouble(), constant));
 		}
 	}
@@ -677,7 +677,7 @@ public final class UnaryRealTypeMath {
 		}
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			if (rng == null) rng = new Random(seed);
 			output.setReal(rng.nextGaussian() * Math.abs(input.getRealDouble()));
 		}
@@ -706,7 +706,7 @@ public final class UnaryRealTypeMath {
 		}
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			if (rng == null) rng = new Random(seed);
 			final double r = rng.nextDouble();
 			output.setReal(r * input.getRealDouble());
@@ -726,7 +726,7 @@ public final class UnaryRealTypeMath {
 		private double dbzVal;
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double inputVal = input.getRealDouble();
 			if (inputVal == 0) output.setReal(dbzVal);
 			else output.setReal(1.0 / inputVal);
@@ -743,7 +743,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal((double) Math.round(input.getRealDouble()));
 		}
 	}
@@ -758,7 +758,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(1.0 / Math.cos(input.getRealDouble()));
 		}
 	}
@@ -773,7 +773,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(1.0 / Math.cosh(input.getRealDouble()));
 		}
 	}
@@ -790,7 +790,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.signum(input.getRealDouble()));
 		}
 	}
@@ -805,7 +805,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.sin(input.getRealDouble()));
 		}
 	}
@@ -821,7 +821,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double x = input.getRealDouble();
 			double value;
 			if (x == 0) value = 1;
@@ -841,7 +841,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double x = input.getRealDouble();
 			double value;
 			if (x == 0) value = 1;
@@ -860,7 +860,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.sinh(input.getRealDouble()));
 		}
 	}
@@ -875,7 +875,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double value = input.getRealDouble();
 			output.setReal(value * value);
 		}
@@ -891,7 +891,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.sqrt(input.getRealDouble()));
 		}
 	}
@@ -908,7 +908,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			if (input.getRealDouble() < 0) output.setZero();
 			else output.setOne();
 		}
@@ -924,7 +924,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.tan(input.getRealDouble()));
 		}
 	}
@@ -939,7 +939,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.tanh(input.getRealDouble()));
 		}
 	}
@@ -956,7 +956,7 @@ public final class UnaryRealTypeMath {
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.ulp(input.getRealDouble()));
 		}
 	}

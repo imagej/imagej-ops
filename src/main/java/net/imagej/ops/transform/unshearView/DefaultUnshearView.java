@@ -55,7 +55,7 @@ public class DefaultUnshearView<T> extends AbstractUnaryFunctionOp<RandomAccessi
 	private int referenceDimension;
 
 	@Override
-	public TransformView<T> compute1(RandomAccessible<T> input) {
+	public TransformView<T> calculate(RandomAccessible<T> input) {
 		return Views.unshear(input, shearDimension, referenceDimension);
 	}
 

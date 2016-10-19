@@ -38,7 +38,7 @@ import net.imagej.ops.special.inplace.BinaryInplace1Op;
  * {@link BinaryInplace1Op}.
  * <p>
  * To populate a preallocated output object, call
- * {@link BinaryComputerOp#compute2}; to mutate the first input inplace, call
+ * {@link BinaryComputerOp#compute}; to mutate the first input inplace, call
  * {@link BinaryInplace1Op#mutate1}. To do any of these things as appropriate,
  * call {@link #run(Object, Object, Object)}.
  * </p>
@@ -59,7 +59,7 @@ public interface BinaryHybridCI1<I1, I2, O extends I1> extends
 
 	@Override
 	default void mutate(final O arg) {
-		compute2(arg, in2(), arg);
+		compute(arg, in2(), arg);
 	}
 
 	// -- BinaryOp methods --
@@ -73,7 +73,7 @@ public interface BinaryHybridCI1<I1, I2, O extends I1> extends
 		}
 
 		// run as a computer
-		compute2(input1, input2, output);
+		compute(input1, input2, output);
 		return output;
 	}
 

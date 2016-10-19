@@ -91,26 +91,26 @@ public class FFTMethodsLinearFFTFilterC<I extends RealType<I>, O extends RealTyp
 	 * Perform convolution by multiplying the FFTs in the frequency domain
 	 */
 	@Override
-	public void compute2(RandomAccessibleInterval<I> in,
+	public void compute(RandomAccessibleInterval<I> in,
 		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
 		// perform input FFT if needed
 		if (getPerformInputFFT()) {
-			fftIn.compute1(in, getFFTInput());
+			fftIn.compute(in, getFFTInput());
 		}
 
 		// perform kernel FFT if needed
 		if (getPerformKernelFFT()) {
-			fftKernel.compute1(kernel, getFFTKernel());
+			fftKernel.compute(kernel, getFFTKernel());
 		}
 
 		// perform the operation in frequency domain (ie multiplication for
 		// convolution, complex conjugate multiplication for correlation,
 		// Wiener Filter, etc.)
-		frequencyOp.compute2(getFFTInput(), getFFTKernel(), getFFTInput());
+		frequencyOp.compute(getFFTInput(), getFFTKernel(), getFFTInput());
 
 		// perform inverse fft
-		ifft.compute1(getFFTInput(), out);
-		// linearFilter.compute2(in, kernel, out);
+		ifft.compute(getFFTInput(), out);
+		// linearFilter.compute(in, kernel, out);
 	}
 }

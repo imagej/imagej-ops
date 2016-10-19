@@ -48,7 +48,7 @@ public class DefaultFeretsAngle extends AbstractUnaryHybridCF<Pair<RealLocalizab
 		implements Ops.Geometric.FeretsAngle {
 
 	@Override
-	public void compute1(final Pair<RealLocalizable, RealLocalizable> input, final DoubleType output) {
+	public void compute(final Pair<RealLocalizable, RealLocalizable> input, final DoubleType output) {
 
 		final RealLocalizable p1 = input.getA();
 		final RealLocalizable p2 = input.getB();

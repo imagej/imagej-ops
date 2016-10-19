@@ -85,7 +85,7 @@ public class LocalSauvolaThreshold<T extends RealType<T>> extends LocalThreshold
 			private UnaryComputerOp<Iterable<T>, DoubleType> stdDeviation;
 
 			@Override
-			public void compute2(final Iterable<T> neighborhood, final T center, final BitType output) {
+			public void compute(final Iterable<T> neighborhood, final T center, final BitType output) {
 
 				if (mean == null) {
 					mean = Computers.unary(ops(), Ops.Stats.Mean.class, new DoubleType(),
@@ -98,10 +98,10 @@ public class LocalSauvolaThreshold<T extends RealType<T>> extends LocalThreshold
 				}
 
 				final DoubleType meanValue = new DoubleType();
-				mean.compute1(neighborhood, meanValue);
+				mean.compute(neighborhood, meanValue);
 
 				final DoubleType stdDevValue = new DoubleType();
-				stdDeviation.compute1(neighborhood, stdDevValue);
+				stdDeviation.compute(neighborhood, stdDevValue);
 
 				double threshold = meanValue.get() * (1.0d + k * ((Math.sqrt(stdDevValue
 					.get()) / r) - 1.0));

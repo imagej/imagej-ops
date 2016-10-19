@@ -84,10 +84,10 @@ public class AddPoissonNoiseMap<T extends ComplexType<T>> extends
 	}
 
 	@Override
-	public void compute1(final IterableInterval<T> input,
+	public void compute(final IterableInterval<T> input,
 		final IterableInterval<T> output)
 	{
-		map.compute1(input, output);
+		map.compute(input, output);
 	}
 
 }

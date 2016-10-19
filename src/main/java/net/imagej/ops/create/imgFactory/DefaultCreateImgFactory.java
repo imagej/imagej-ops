@@ -58,7 +58,7 @@ public class DefaultCreateImgFactory<T extends NativeType<T>> extends
 	private Dimensions dims;
 
 	@Override
-	public ImgFactory<T> compute0() {
+	public ImgFactory<T> calculate() {
 		return (dims == null || Intervals.numElements(dims) <= Integer.MAX_VALUE)
 			? new ArrayImgFactory<>() : new CellImgFactory<>();
 	}

@@ -63,8 +63,8 @@ public class DefaultMedian<I extends RealType<I>, O extends RealType<O>> extends
 	}
 
 	@Override
-	public void compute1(final Iterable<I> input, final O output) {
-		op.compute1(input, output);
+	public void compute(final Iterable<I> input, final O output) {
+		op.compute(input, output);
 	}
 
 }

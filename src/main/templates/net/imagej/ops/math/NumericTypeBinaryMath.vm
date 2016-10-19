@@ -75,7 +75,7 @@ public final class NumericTypeBinaryMath {
 		}
 
 		@Override
-		public void compute2(final T input1, final T input2, final T output) {
+		public void compute(final T input1, final T input2, final T output) {
 			output.set(input1);
 			output.${op.function}(input2);
 		}
@@ -88,14 +88,14 @@ public final class NumericTypeBinaryMath {
 		@Override
 		public void mutate1(final T arg, final T in) {
 			final T result = arg.createVariable();
-			compute2(arg, in, result);
+			compute(arg, in, result);
 			arg.set(result);
 		}
 
 		@Override
 		public void mutate2(final T in, final T arg) {
 			final T result = arg.createVariable();
-			compute2(in, arg, result);
+			compute(in, arg, result);
 			arg.set(result);
 		}
 

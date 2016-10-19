@@ -78,7 +78,7 @@ public class DefaultFillHoles<T extends BooleanType<T>> extends
 	}
 
 	@Override
-	public void compute1(final RandomAccessibleInterval<T> op,
+	public void compute(final RandomAccessibleInterval<T> op,
 		final RandomAccessibleInterval<T> r)
 	{
 		final IterableInterval<T> iterOp = Views.flatIterable(op);
@@ -110,7 +110,7 @@ public class DefaultFillHoles<T extends BooleanType<T>> extends
 					}
 				}
 				if (border) {
-					floodFillComp.compute2(op, rc, r);
+					floodFillComp.compute(op, rc, r);
 				}
 			}
 		}
@@ -120,7 +120,7 @@ public class DefaultFillHoles<T extends BooleanType<T>> extends
 	public RandomAccessibleInterval<T> createOutput(
 		final RandomAccessibleInterval<T> input)
 	{
-		return createFunc.compute1(input);
+		return createFunc.calculate(input);
 	}
 
 }

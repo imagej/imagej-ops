@@ -120,7 +120,7 @@ public class LoopTest extends AbstractOpTest {
 	class AddOneFunctional extends AbstractUnaryComputerOp<ByteType, ByteType> {
 
 		@Override
-		public void compute1(final ByteType input, final ByteType output) {
+		public void compute(final ByteType input, final ByteType output) {
 			output.set(input);
 			output.inc();
 		}

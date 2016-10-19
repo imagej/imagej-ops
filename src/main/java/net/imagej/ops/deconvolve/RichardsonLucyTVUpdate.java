@@ -75,7 +75,7 @@ public class RichardsonLucyTVUpdate<T extends RealType<T> & NativeType<T>, I ext
 	 * performs update step of the Richardson Lucy with Total Variation Algorithm
 	 */
 	@Override
-	public void compute1(I correction, I estimate) {
+	public void compute(I correction, I estimate) {
 
 		if (variation == null) {
 			Type<T> type = Util.getTypeFromInterval(correction);

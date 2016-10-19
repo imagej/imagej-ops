@@ -51,7 +51,7 @@ public class LookupByName extends AbstractUnaryFunctionOp<String, Op> implements
 	private Object[] args;
 
 	@Override
-	public Op compute1(final String input) {
+	public Op calculate(final String input) {
 		return ops().op(input, args);
 	}
 

@@ -58,7 +58,7 @@ public class If<I extends BooleanType<I>, O extends Type<O>> extends
 	private O ifFalseVal;
 
 	@Override
-	public void compute1(final I input, final O output) {
+	public void compute(final I input, final O output) {
 		output.set(input.get() ? ifTrueVal : ifFalseVal);
 	}
 

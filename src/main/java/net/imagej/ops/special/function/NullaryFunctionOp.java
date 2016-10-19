@@ -34,7 +34,8 @@ import net.imagej.ops.special.NullaryOp;
 import net.imagej.ops.special.hybrid.NullaryHybridCF;
 
 /**
- * A nullary <em>function</em> computes a result, returning it as a new object.
+ * A nullary <em>function</em> calculates a result, returning it as a new
+ * object.
  * 
  * @author Curtis Rueden
  * @param <O> type of output
@@ -44,11 +45,11 @@ import net.imagej.ops.special.hybrid.NullaryHybridCF;
 public interface NullaryFunctionOp<O> extends NullaryOp<O> {
 
 	/**
-	 * Computes the output value.
+	 * Calculates the output value.
 	 * 
 	 * @return output result of the function
 	 */
-	O compute0();
+	O calculate();
 
 	// -- NullaryOp methods --
 
@@ -59,8 +60,8 @@ public interface NullaryFunctionOp<O> extends NullaryOp<O> {
 			throw new IllegalArgumentException(
 				"Function expects a null output reference");
 		}
-		// compute the result
-		return compute0();
+		// calculate the result
+		return calculate();
 	}
 
 	// -- Threadable methods --

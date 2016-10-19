@@ -63,9 +63,9 @@ public class DefaultVariance<I extends RealType<I>, O extends RealType<O>>
 	}
 
 	@Override
-	public void compute1(final Iterable<I> input, final O output) {
+	public void compute(final Iterable<I> input, final O output) {
 
-		double mean = meanOp.compute1(input).getRealDouble();
+		double mean = meanOp.calculate(input).getRealDouble();
 
 		int n = 0;
 		double sum = 0d;

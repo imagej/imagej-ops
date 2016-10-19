@@ -48,7 +48,7 @@ public class DefaultFlatIterableView<T> extends AbstractUnaryFunctionOp<RandomAc
 		implements Ops.Transform.FlatIterableView {
 
 	@Override
-	public IterableInterval<T> compute1(RandomAccessibleInterval<T> input) {
+	public IterableInterval<T> calculate(RandomAccessibleInterval<T> input) {
 		return Views.flatIterable(input);
 	}
 

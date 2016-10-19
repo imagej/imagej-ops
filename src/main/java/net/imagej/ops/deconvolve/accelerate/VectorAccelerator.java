@@ -100,11 +100,11 @@ public class VectorAccelerator<T extends RealType<T> & NativeType<T>> extends
 
 			FinalDimensions dims = new FinalDimensions(temp);
 
-			yk_prediction = create.compute1(dims);
-			xkm1_previous = create.compute1(dims);
-			yk_prediction = create.compute1(dims);
-			gk = create.compute1(dims);
-			hk_vector = create.compute1(dims);
+			yk_prediction = create.calculate(dims);
+			xkm1_previous = create.calculate(dims);
+			yk_prediction = create.calculate(dims);
+			gk = create.calculate(dims);
+			hk_vector = create.calculate(dims);
 
 		}
 
@@ -235,7 +235,7 @@ public class VectorAccelerator<T extends RealType<T> & NativeType<T>> extends
 	public Img<T> AddAndScale(final RandomAccessibleInterval<T> img1,
 		final Img<T> img2, final float a)
 	{
-		Img<T> out = create.compute1(img1);
+		Img<T> out = create.calculate(img1);
 
 		final Cursor<T> cursor1 = Views.iterable(img1).cursor();
 		final Cursor<T> cursor2 = img2.cursor();

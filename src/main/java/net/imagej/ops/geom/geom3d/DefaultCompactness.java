@@ -63,9 +63,9 @@ public class DefaultCompactness extends AbstractUnaryHybridCF<Mesh, DoubleType>
 	}
 
 	@Override
-	public void compute1(final Mesh input, final DoubleType output) {
-		double s3 = Math.pow(surfacePixel.compute1(input).get(), 3);
-		double v2 = Math.pow(volume.compute1(input).get(), 2);
+	public void compute(final Mesh input, final DoubleType output) {
+		double s3 = Math.pow(surfacePixel.calculate(input).get(), 3);
+		double v2 = Math.pow(volume.calculate(input).get(), 2);
 
 		output.set((v2 * 36.0 * Math.PI) / s3);
 	}

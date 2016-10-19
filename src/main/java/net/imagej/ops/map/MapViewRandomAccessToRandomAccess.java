@@ -52,7 +52,7 @@ public class MapViewRandomAccessToRandomAccess<EI, EO extends Type<EO>> extends
 {
 
 	@Override
-	public RandomAccessible<EO> compute1(final RandomAccessible<EI> input) {
+	public RandomAccessible<EO> calculate(final RandomAccessible<EI> input) {
 		final ComputerConverter<EI, EO> converter =
 			new ComputerConverter<>(getOp());
 		return new ConvertedRandomAccessible<>(input, converter, getType());

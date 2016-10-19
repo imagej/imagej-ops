@@ -74,7 +74,7 @@ public class LocalBernsenThreshold<T extends RealType<T>> extends
 
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			@Override
-			public void compute2(final Iterable<T> neighborhood, final T center,
+			public void compute(final Iterable<T> neighborhood, final T center,
 				final BitType output)
 			{
 
@@ -82,7 +82,7 @@ public class LocalBernsenThreshold<T extends RealType<T>> extends
 					minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(), Ops.Stats.MinMax.class, Pair.class, neighborhood);
 				}
 				
-				final Pair<T, T> outputs = minMaxFunc.compute1(neighborhood);
+				final Pair<T, T> outputs = minMaxFunc.calculate(neighborhood);
 				final double minValue = outputs.getA().getRealDouble();
 				final double maxValue = outputs.getB().getRealDouble();
 				final double midGrey = (maxValue + minValue) / 2.0;

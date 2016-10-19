@@ -87,9 +87,9 @@ public class ConvolveFFTC<I extends RealType<I>, O extends RealType<O>, K extend
 	 * Call the linear filter that is set up to perform convolution
 	 */
 	@Override
-	public void compute2(RandomAccessibleInterval<I> in,
+	public void compute(RandomAccessibleInterval<I> in,
 		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
-		linearFilter.compute2(in, kernel, out);
+		linearFilter.compute(in, kernel, out);
 	}
 }

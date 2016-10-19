@@ -92,7 +92,7 @@ public class DistanceTransform2DCalibration<B extends BooleanType<B>, T extends 
 	@SuppressWarnings("unchecked")
 	@Override
 	public RandomAccessibleInterval<T> createOutput(final RandomAccessibleInterval<B> in) {
-		return createOp.compute1(new FinalInterval(in));
+		return createOp.calculate(new FinalInterval(in));
 	}
 
 	/*
@@ -100,7 +100,7 @@ public class DistanceTransform2DCalibration<B extends BooleanType<B>, T extends 
 	 * http://fab.cba.mit.edu/classes/S62.12/docs/Meijster_distance.pdf
 	 */
 	@Override
-	public void compute1(final RandomAccessibleInterval<B> in, final RandomAccessibleInterval<T> out) {
+	public void compute(final RandomAccessibleInterval<B> in, final RandomAccessibleInterval<T> out) {
 
 		// tempValues stores the integer values of the first phase, i.e. the
 		// first two scans

@@ -53,7 +53,7 @@ public class DefaultVolume
 			Contingent {
 
 	@Override
-	public DoubleType compute1(final Mesh input) {
+	public DoubleType calculate(final Mesh input) {
 		double volume = 0;
 		for (Facet f : input.getFacets()) {
 			TriangularFacet tf = (TriangularFacet) f;

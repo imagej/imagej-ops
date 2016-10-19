@@ -56,7 +56,7 @@ public class OffsetViewOriginSize<T> extends AbstractUnaryFunctionOp<RandomAcces
 	private long[] dimension;
 
 	@Override
-	public IntervalView<T> compute1(RandomAccessible<T> input) {
+	public IntervalView<T> calculate(RandomAccessible<T> input) {
 		return Views.offsetInterval(input, origin, dimension);
 	}
 

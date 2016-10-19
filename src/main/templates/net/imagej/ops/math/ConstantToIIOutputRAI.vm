@@ -66,7 +66,7 @@ public final class ConstantToIIOutputRAI {
 		private T value;
 
 		@Override
-		public void compute1(final IterableInterval<T> input,
+		public void compute(final IterableInterval<T> input,
 				final RandomAccessibleInterval<T> output) {
 			final Cursor<T> c = input.localizingCursor();
 			final RandomAccess<T> ra = output.randomAccess();

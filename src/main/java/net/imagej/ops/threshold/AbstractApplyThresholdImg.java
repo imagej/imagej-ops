@@ -70,7 +70,7 @@ public abstract class AbstractApplyThresholdImg<T> extends
 
 	@Override
 	public Img<BitType> createOutput(final IterableInterval<T> input) {
-		return imgCreator.compute1(input);
+		return imgCreator.calculate(input);
 	}
 
 }
