@@ -77,6 +77,7 @@ public class DefaultMinimumFeret
 		for (int i = 0; i < points.size() - 2; i++) {
 			final RealLocalizable lineStart = points.get(i);
 			final RealLocalizable lineEnd = points.get(i + 1);
+			tmpDist = 0;
 			final Line l = new Line(new Vector2D(lineStart.getDoublePosition(0), lineStart.getDoublePosition(1)),
 					new Vector2D(lineEnd.getDoublePosition(0), lineEnd.getDoublePosition(1)), 10e-12);
 
@@ -107,7 +108,7 @@ public class DefaultMinimumFeret
 		final RealLocalizable lineEnd = points.get(0);
 		final Line l = new Line(new Vector2D(lineStart.getDoublePosition(0), lineStart.getDoublePosition(1)),
 				new Vector2D(lineEnd.getDoublePosition(0), lineEnd.getDoublePosition(1)), 10e-12);
-
+		tmpDist = 0;
 		for (int j = 0; j < points.size(); j++) {
 			if (j != points.size() - 1 && j != 0 + 1) {
 				final RealLocalizable ttmpP0 = points.get(j);
