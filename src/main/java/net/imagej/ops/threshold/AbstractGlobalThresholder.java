@@ -31,6 +31,7 @@
 package net.imagej.ops.threshold;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.pixml.DefaultHardClustererFunctionOp;
 import net.imagej.ops.pixml.HardClusterer;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
@@ -48,12 +49,12 @@ import net.imglib2.type.logic.BitType;
  * @param <O> type of output
  */
 public abstract class AbstractGlobalThresholder<I, O extends BooleanType<O>>
-	extends AbstractUnaryHybridCF<IterableInterval<I>, Iterable<O>> implements
-	GlobalThresholder<I, O>
+	extends AbstractUnaryHybridCF<IterableInterval<I>, IterableInterval<O>>
+	implements GlobalThresholder<I, O>
 {
 
 	/** Op that is used to learn and apply to the whole input */
-	public HardClusterer<I, O> globalThresholder;
+	public HardClusterer<I, O> hardClusterer;
 
 	/** Op that is used for creating the output image */
 	protected UnaryFunctionOp<IterableInterval<I>, Img<BitType>> imgCreator;
@@ -63,22 +64,29 @@ public abstract class AbstractGlobalThresholder<I, O extends BooleanType<O>>
 	public void initialize() {
 		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
 			Img.class, in(), new BitType());
-		globalThresholder = ops().op(HardClusterer.class, in(), out(),
-			getLearner());
+		hardClusterer = ops().op(DefaultHardClustererFunctionOp.class, in(),
+			getLearner(), new BitType());
+	}
+
+	@Override
+	public IterableInterval<O> compute1(IterableInterval<I> input) {
+		return hardClusterer.compute1(input);
 	}
 
 	@Override
 	public void compute1(final IterableInterval<I> input,
-		final Iterable<O> output)
+		final IterableInterval<O> output)
 	{
-		globalThresholder.compute1(input, output);
+		IterableInterval<O> clustererOutput = hardClusterer.compute1(input);
+		ops().copy().iterableInterval(output, clustererOutput);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterable<O> createOutput(IterableInterval<I> input) {
-		return (Iterable<O>) imgCreator.compute1(input);
+	public IterableInterval<O> createOutput(IterableInterval<I> input) {
+		return (IterableInterval<O>) imgCreator.compute1(input);
 	}
 
 	protected abstract ThresholdLearner<I, O> getLearner();
+
 }

@@ -19,7 +19,7 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class)
 public class Manual<I extends RealType<I>, O extends BooleanType<O>> extends
-	AbstractUnaryHybridCF<IterableInterval<I>, Iterable<O>> implements
+	AbstractUnaryHybridCF<IterableInterval<I>, IterableInterval<O>> implements
 	GlobalThresholder<I, O>
 {
 
@@ -42,7 +42,7 @@ public class Manual<I extends RealType<I>, O extends BooleanType<O>> extends
 
 	@Override
 	public void compute1(final IterableInterval<I> input,
-		final Iterable<O> output)
+		final IterableInterval<O> output)
 	{
 		// FIXME we want to initialize this op and reset the predictor according
 		// to the input
@@ -51,8 +51,8 @@ public class Manual<I extends RealType<I>, O extends BooleanType<O>> extends
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterable<O> createOutput(IterableInterval<I> input) {
-		return (Iterable<O>) imgCreator.compute1(input);
+	public IterableInterval<O> createOutput(IterableInterval<I> input) {
+		return (IterableInterval<O>) imgCreator.compute1(input);
 	}
 
 }

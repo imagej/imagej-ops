@@ -30,11 +30,15 @@
 
 package net.imagej.ops.pixml;
 
-import net.imagej.ops.special.hybrid.UnaryHybridCF;
+import net.imagej.ops.map.MapView;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 
 /**
- * TODO Documentation
+ * Uses an {@link UnsupervisedLearner} to learn a <em>model</em> from the input
+ * and applies the model pixel-wise to the output. Applying the model is lazy,
+ * i.e. the {@code HardClusterer} will return a {@link MapView} that only
+ * applies the model when the output is queried.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Stefan Helfrich (University of Konstanz)
@@ -42,7 +46,6 @@ import net.imglib2.IterableInterval;
  * @param <O> type of output
  */
 public interface HardClusterer<I, O> extends
-	UnaryHybridCF<IterableInterval<I>, Iterable<O>>
-{
+	UnaryFunctionOp<IterableInterval<I>, IterableInterval<O>>{
 	// NB: marker interface
 }

@@ -30,8 +30,7 @@
 
 package net.imagej.ops.threshold;
 
-import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imglib2.IterableInterval;
+import net.imagej.ops.pixml.HardClusterer;
 import net.imglib2.type.BooleanType;
 
 /**
@@ -44,7 +43,7 @@ import net.imglib2.type.BooleanType;
  * @param <O> type of output
  */
 public interface GlobalThresholder<I, O extends BooleanType<O>> extends
-	UnaryComputerOp<IterableInterval<I>, Iterable<O>>
+	HardClusterer<I, O>
 {
 	// NB: marker interface
 }

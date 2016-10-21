@@ -31,20 +31,19 @@
 package net.imagej.ops.pixml;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
+import net.imagej.ops.map.MapView;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
-import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
-import net.imagej.ops.threshold.GlobalThresholder;
 import net.imglib2.IterableInterval;
-import net.imglib2.img.Img;
-import net.imglib2.type.logic.BitType;
+import net.imglib2.type.numeric.IntegerType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Default {@link GlobalThresholder} implementation.
+ * Default {@link HardClusterer} implementation.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Stefan Helfrich (University of Konstanz)
@@ -52,37 +51,34 @@ import org.scijava.plugin.Plugin;
  * @param <O> type of output
  */
 @Plugin(type = Op.class)
-public class DefaultHardClusterer<I, O> extends
-	AbstractUnaryHybridCF<IterableInterval<I>, Iterable<O>> implements
+public class DefaultHardClustererFunctionOp<I, O extends IntegerType<O>> extends
+	AbstractUnaryFunctionOp<IterableInterval<I>, IterableInterval<O>> implements
 	HardClusterer<I, O>
 {
 
 	@Parameter(required = true)
-	public UnsupervisedLearner<I, O> learner;
+	private UnsupervisedLearner<I, O> learner;
+	
+	@Parameter(required = true)
+	private O type;
 
-	/** Op that is used for creating the output image */
-	protected UnaryFunctionOp<IterableInterval<I>, Iterable<O>> imgCreator;
+	/** Maps the model (i.e. a {@code UnvaryComputerOp}) onto the input (lazy). */
+	private MapView<I, O, IterableInterval<I>, IterableInterval<O>> mapView;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
-			Img.class, in(), new BitType());
+		// FIXME is there a way to do something like following: 
+		// ops.create().typeFrom(genericOf) instead of passing the type as parameter?
+		// @ctrueden?
+		mapView = (MapView) Functions.unary(ops(), MapView.class,
+			IterableInterval.class, IterableInterval.class, UnaryComputerOp.class, type);
 	}
 
 	@Override
-	public void compute1(final IterableInterval<I> input,
-		final Iterable<O> output)
-	{
-		// FIXME we want to initialize this op and reset the predictor according
-		// to the input
-		ops().map(output, input, learner.compute1(input));
-	}
-
-	@SuppressWarnings("cast")
-	@Override
-	public Iterable<O> createOutput(final IterableInterval<I> input) {
-		return (Iterable<O>) imgCreator.compute1(input);
+	public IterableInterval<O> compute1(IterableInterval<I> input) {
+		mapView.setOp(learner.compute1(input));
+		return mapView.compute1(input);
 	}
 
 }

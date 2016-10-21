@@ -31,18 +31,28 @@
 package net.imagej.ops.threshold;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.pixml.DefaultNeighborhoodHardClusterer;
-import net.imagej.ops.pixml.NeighborhoodHardClusterer;
+import net.imagej.ops.pixml.DefaultHardClustererFunctionOp;
+import net.imagej.ops.pixml.HardClusterer;
+import net.imagej.ops.pixml.UnsupervisedLearner;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.View;
+import net.imglib2.algorithm.neighborhood.Neighborhood;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsBorderFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.logic.BitType;
+import net.imglib2.util.Pair;
+import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
 
@@ -54,7 +64,7 @@ import org.scijava.plugin.Parameter;
  * @param <O> type of output
  */
 public abstract class AbstractLocalThresholder<I, O extends BooleanType<O>>
-	extends AbstractUnaryHybridCF<RandomAccessibleInterval<I>, Iterable<O>>
+	extends AbstractUnaryHybridCF<RandomAccessibleInterval<I>, IterableInterval<O>>
 	implements LocalThresholder<I, O>
 {
 
@@ -66,33 +76,100 @@ public abstract class AbstractLocalThresholder<I, O extends BooleanType<O>>
 		new OutOfBoundsBorderFactory<>();
 
 	/** Op that is used to learn and apply to the whole input */
-	public NeighborhoodHardClusterer<I, O> globalThresholder;
+	public HardClusterer<Pair<Neighborhood<I>, I>, O> hardClusterer;
 
 	/** Op that is used for creating the output image */
 	protected UnaryFunctionOp<RandomAccessibleInterval<I>, Img<BitType>> imgCreator;
+
+	private LocalThresholder<I, O> localThresholder;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
 		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
 			Img.class, in(), new BitType());
-		globalThresholder = ops().op(DefaultNeighborhoodHardClusterer.class, in(), out(),
-			getLearner(), shape, outOfBoundsFactory);
+		localThresholder = new LocalThresholder<>(getLearner());
+		hardClusterer = ops().op(DefaultHardClustererFunctionOp.class, in(),
+			new LazyUnsupervisedLearner<>(localThresholder), new BitType());
 	}
 
 	@Override
 	public void compute1(final RandomAccessibleInterval<I> input,
-		final Iterable<O> output)
+		final IterableInterval<O> output)
 	{
-		globalThresholder.compute1(input, output);
+		final RandomAccessible<Neighborhood<I>> safe = shape
+			.neighborhoodsRandomAccessibleSafe(Views.extend(input,
+				outOfBoundsFactory));
+		final RandomAccessibleInterval<Pair<Neighborhood<I>, I>> pair = Views
+			.interval(Views.pair(safe, Views.extend(input,
+				outOfBoundsFactory)), input);
+		final IterableInterval<O> functionOut = hardClusterer.compute1(Views.iterable(pair));
+
+		// Temporary burnIn
+		if (functionOut instanceof View) {
+			ops().copy().iterableInterval(output, functionOut);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterable<O> createOutput(RandomAccessibleInterval<I> input) {
-		return (Iterable<O>) imgCreator.compute1(input);
+	public IterableInterval<O> createOutput(RandomAccessibleInterval<I> input) {
+		return (IterableInterval<O>) imgCreator.compute1(input);
 	}
 
 	protected abstract ThresholdLearner<I, O> getLearner();
+
+	/**
+	 * Wrapper for a
+	 * {@link net.imagej.ops.threshold.AbstractLocalThresholder.LocalThresholder}
+	 * that learns and applies lazily.
+	 *
+	 * @param <I> type of input
+	 * @param <O> type of output
+	 */
+	static class LazyUnsupervisedLearner<I, O extends BooleanType<O>> extends
+		AbstractUnaryFunctionOp<IterableInterval<Pair<Neighborhood<I>, I>>, UnaryComputerOp<Pair<Neighborhood<I>, I>, O>>
+		implements UnsupervisedLearner<Pair<Neighborhood<I>, I>, O>
+	{
+
+		private LocalThresholder<I, O> localThresholder;
+
+		public LazyUnsupervisedLearner(
+			final LocalThresholder<I, O> localThresholder)
+		{
+			this.localThresholder = localThresholder;
+		}
+
+		@Override
+		public UnaryComputerOp<Pair<Neighborhood<I>, I>, O> compute1(
+			final IterableInterval<Pair<Neighborhood<I>, I>> input)
+		{
+			return localThresholder;
+		}
+
+	}
+
+	/**
+	 * Uses a provided {@link ThresholdLearner} to implement a local thresholding.
+	 *
+	 * @param <I> type of input
+	 * @param <O> type of output
+	 */
+	static class LocalThresholder<I, O extends BooleanType<O>> extends
+		AbstractUnaryComputerOp<Pair<Neighborhood<I>, I>, O>
+	{
+
+		private ThresholdLearner<I, O> learner;
+
+		public LocalThresholder(final ThresholdLearner<I, O> learner) {
+			this.learner = learner;
+		}
+
+		@Override
+		public void compute1(Pair<Neighborhood<I>, I> input, O output) {
+			learner.compute1(input.getA()).compute1(input.getB(), output);
+		}
+
+	}
 
 }

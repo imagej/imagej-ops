@@ -32,6 +32,7 @@ package net.imagej.ops.threshold;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.BooleanType;
 
@@ -44,7 +45,7 @@ import net.imglib2.type.BooleanType;
  * @param <O> type of output
  */
 public interface LocalThresholder<I, O extends BooleanType<O>> extends
-	UnaryComputerOp<RandomAccessibleInterval<I>, Iterable<O>>, Contingent
+	UnaryComputerOp<RandomAccessibleInterval<I>, IterableInterval<O>>, Contingent
 {
 
 	@Override
