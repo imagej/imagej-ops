@@ -32,6 +32,7 @@ package net.imagej.ops.transform.scaleView;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.Ops.Transform.ExtendView;
 import net.imagej.ops.special.chain.RAIs;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
@@ -48,6 +49,7 @@ import net.imglib2.realtransform.AffineRealRandomAccessible;
 import net.imglib2.realtransform.RealViews;
 import net.imglib2.realtransform.Scale;
 import net.imglib2.util.Intervals;
+import net.imglib2.view.ExtendedRandomAccessibleInterval;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.RandomAccessibleOnRealRandomAccessible;
 
@@ -84,6 +86,7 @@ public class DefaultScaleView<T> extends
 	private UnaryFunctionOp<RandomAccessible<T>, RealRandomAccessible<T>> interpolateOp;
 	private UnaryFunctionOp<RealRandomAccessible<T>, RandomAccessibleOnRealRandomAccessible<T>> rasterOp;
 	private UnaryFunctionOp<RandomAccessible<T>, IntervalView<T>> intervalOp;
+	private UnaryFunctionOp<RandomAccessibleInterval<T>, ExtendedRandomAccessibleInterval<T, RandomAccessibleInterval<T>>> extendOp;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
@@ -94,6 +97,8 @@ public class DefaultScaleView<T> extends
 		rasterOp = (UnaryFunctionOp) Functions.unary(ops(),
 			Ops.Transform.RasterView.class,
 			RandomAccessibleOnRealRandomAccessible.class, RealRandomAccessible.class);
+		extendOp = (UnaryFunctionOp) Functions.unary(ops(), ExtendView.class, ExtendedRandomAccessibleInterval.class,
+				RandomAccessibleInterval.class, outOfBoundsFactory);
 
 		final long[] newDims = Intervals.dimensionsAsLongArray(in());
 		for (int i = 0; i < Math.min(scaleFactors.length, in().numDimensions()); i++) {
@@ -106,8 +111,8 @@ public class DefaultScaleView<T> extends
 
 	@Override
 	public RandomAccessibleInterval<T> calculate(RandomAccessibleInterval<T> input) {
-		final RealRandomAccessible<T> interpolated = interpolateOp.calculate(RAIs
-			.extend(input, outOfBoundsFactory));
+		final RealRandomAccessible<T> interpolated = interpolateOp
+				.calculate(extendOp.calculate(input));
 		final AffineRealRandomAccessible<T, AffineGet> transformed = RealViews
 			.affineReal(interpolated, new Scale(scaleFactors));
 		final RandomAccessibleOnRealRandomAccessible<T> rasterized = rasterOp

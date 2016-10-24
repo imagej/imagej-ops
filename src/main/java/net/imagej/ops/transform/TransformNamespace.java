@@ -87,7 +87,6 @@ import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.RealRandomAccessible;
-import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.interpolation.InterpolatorFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
@@ -677,7 +676,7 @@ public class TransformNamespace extends AbstractNamespace {
 		final InterpolatorFactory<T, RandomAccessible<T>> interpolator)
 	{
 		@SuppressWarnings("unchecked")
-		final Img<T> result = (Img<T>) ops().run(
+		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops().run(
 				net.imagej.ops.transform.scaleView.DefaultScaleView.class, in, scaleFactors,
 				interpolator);
 		return result;
