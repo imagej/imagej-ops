@@ -31,7 +31,7 @@ package net.imagej.ops.image.integral;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Ops;
-import net.imagej.ops.threshold.apply.LocalThresholdTest;
+import net.imagej.ops.threshold.LocalThresholdTest;
 import net.imglib2.FinalInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
