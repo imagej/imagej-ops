@@ -99,7 +99,8 @@ public class IntegralImgTest extends AbstractOpTest  {
 		// Define the Interval on the infinite random accessibles
 		final FinalInterval interval = new FinalInterval(min, max);
 		
-		LocalThresholdTest.testIterableIntervalSimilarity(Views.iterable(out1), Views.iterable(Views.offsetInterval(out2, interval)));
+		assertIterationsSimiliarWithinDelta(Views.iterable(out1), Views.iterable(
+			Views.offsetInterval(out2, interval)), 0.00001d);
 	}
 
 	public ArrayImg<ByteType, ByteArray> generateKnownByteArrayTestImgLarge() {

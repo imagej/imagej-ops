@@ -47,6 +47,7 @@ import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.img.basictypeaccess.array.FloatArray;
+import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.real.FloatType;
@@ -193,6 +194,19 @@ public abstract class AbstractOpTest {
 		while (e.hasNext()) {
 			assertTrue("Fewer elements than expected", a.hasNext());
 			assertEquals(e.next(), a.next());
+		}
+		assertFalse("More elements than expected", a.hasNext());
+	}
+
+	public <T extends RealType<T>, S extends RealType<S>> void
+		assertIterationsSimiliarWithinDelta(final Iterable<T> expected,
+			final Iterable<S> actual, final double delta)
+	{
+		final Iterator<T> e = expected.iterator();
+		final Iterator<S> a = actual.iterator();
+		while (e.hasNext()) {
+			assertTrue("Fewer elements than expected", a.hasNext());
+			assertEquals(e.next().getRealDouble(), a.next().getRealDouble(), delta);
 		}
 		assertFalse("More elements than expected", a.hasNext());
 	}
