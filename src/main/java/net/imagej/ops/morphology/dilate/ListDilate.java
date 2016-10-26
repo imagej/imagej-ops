@@ -35,7 +35,7 @@ import java.util.List;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.morphology.Morphologies;
-import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imagej.ops.morphology.MorphologyOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.Functions;
@@ -76,7 +76,7 @@ public class ListDilate<T extends RealType<T>> extends
 	private T minVal;
 	private UnaryFunctionOp<Interval, Img<T>> imgCreator;
 	private UnaryComputerOp<IterableInterval<T>, IterableInterval<T>> copyImg;
-	private BinaryComputerOp<RandomAccessibleInterval<T>, Shape, IterableInterval<T>> dilateComputer;
+	private MorphologyOp<T> dilateComputer;
 
 	@Override
 	public boolean conforms() {
@@ -97,7 +97,7 @@ public class ListDilate<T extends RealType<T>> extends
 			Ops.Copy.IterableInterval.class, IterableInterval.class, Views.iterable(
 				in1()));
 
-		dilateComputer = (BinaryComputerOp) Computers.unary(ops(),
+		dilateComputer = (MorphologyOp) Computers.unary(ops(),
 			Ops.Morphology.Dilate.class, IterableInterval.class, in1(), in2().get(0),
 			false);
 	}
@@ -123,7 +123,8 @@ public class ListDilate<T extends RealType<T>> extends
 		Img<T> downstream = imgCreator.compute1(interval);
 		Img<T> tmp;
 
-		dilateComputer.compute2(in1, in2.get(0), Views.translate(downstream,
+		dilateComputer.setShape(in2.get(0));
+		dilateComputer.compute1(in1, Views.translate(downstream,
 			minSize[0]));
 		for (int i = 1; i < in2.size(); i++) {
 			// Ping-ponging intermediate results between upstream and downstream to
@@ -131,7 +132,8 @@ public class ListDilate<T extends RealType<T>> extends
 			tmp = downstream;
 			downstream = upstream;
 			upstream = tmp;
-			dilateComputer.compute2(upstream, in2.get(i), downstream);
+			dilateComputer.setShape(in2.get(i));
+			dilateComputer.compute1(upstream, downstream);
 		}
 		if (isFull) copyImg.compute1(downstream, out);
 		else copyImg.compute1(Views.interval(Views.translate(downstream,

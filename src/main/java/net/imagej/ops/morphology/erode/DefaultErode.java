@@ -34,13 +34,13 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.map.Maps;
 import net.imagej.ops.map.neighborhood.MapNeighborhood;
+import net.imagej.ops.morphology.AbstractMorphologyOp;
 import net.imagej.ops.special.chain.RAIs;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
-import net.imagej.ops.special.hybrid.AbstractBinaryHybridCF;
 import net.imglib2.Dimensions;
 import net.imglib2.FinalInterval;
 import net.imglib2.IterableInterval;
@@ -68,8 +68,7 @@ import org.scijava.plugin.Plugin;
  * @see net.imglib2.algorithm.morphology.Erosion
  */
 @Plugin(type = Ops.Morphology.Erode.class)
-public class DefaultErode<T extends RealType<T>> extends
-	AbstractBinaryHybridCF<RandomAccessibleInterval<T>, Shape, IterableInterval<T>>
+public class DefaultErode<T extends RealType<T>> extends AbstractMorphologyOp<T>
 	implements Ops.Morphology.Erode, Contingent
 {
 
@@ -80,7 +79,7 @@ public class DefaultErode<T extends RealType<T>> extends
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> f;
 
 	private T maxVal;
-	private MapNeighborhood<T, T, RandomAccessibleInterval<T>, IterableInterval<T>, UnaryComputerOp<Iterable<T>, T>> mapper;
+	private MapNeighborhood<RandomAccessibleInterval<T>, IterableInterval<T>, UnaryComputerOp<Iterable<T>, T>> mapper;
 	private UnaryFunctionOp<Dimensions, Img<T>> imgCreator;
 
 	@Override
@@ -110,37 +109,37 @@ public class DefaultErode<T extends RealType<T>> extends
 
 		if (out() == null) setOutput(createOutput(in()));
 
-		mapper = ops().op(MapNeighborhood.class, out(), in1(), in2(),
+		mapper = ops().op(MapNeighborhood.class, out(), in(), getShape(),
 			neighborComputer);
 	}
 
 	@Override
-	public IterableInterval<T> createOutput(final RandomAccessibleInterval<T> in1,
-		final Shape in2)
+	public IterableInterval<T> createOutput(final RandomAccessibleInterval<T> in)
 	{
 		if (isFull) {
 			final long[] dims = MorphologyUtils.computeTargetImageDimensionsAndOffset(
-				in1, in2)[0];
+				in, getShape())[0];
 			return imgCreator.compute1(new FinalInterval(dims));
 		}
-		return imgCreator.compute1(in1);
+		return imgCreator.compute1(in);
 	}
 
 	@Override
-	public void compute2(final RandomAccessibleInterval<T> in1, final Shape in2,
+	public void compute1(final RandomAccessibleInterval<T> in,
 		final IterableInterval<T> output)
 	{
-		final RandomAccessibleInterval<T> extended = RAIs.extend(in1, f);
+		final RandomAccessibleInterval<T> extended = RAIs.extend(in, f);
 		final RandomAccessibleInterval<T> shifted;
 		if (isFull) {
 			final long[] offset = MorphologyUtils
-					.computeTargetImageDimensionsAndOffset(in1, in2)[1];
+					.computeTargetImageDimensionsAndOffset(in, getShape())[1];
 				shifted = Views.translate(extended, offset);
 		}
 		else {
 			shifted = extended;
 		}
-		mapper.compute2(Views.interval(shifted, output), in2, output);
+		mapper.setShape(getShape());
+		mapper.compute1(Views.interval(shifted, output), output);
 	}
 
 	/**

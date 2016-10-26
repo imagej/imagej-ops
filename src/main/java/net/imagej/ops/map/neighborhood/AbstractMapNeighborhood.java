@@ -30,18 +30,16 @@
 
 package net.imagej.ops.map.neighborhood;
 
-import org.scijava.plugin.Parameter;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.algorithm.neighborhood.Shape;
+
+import org.scijava.plugin.Parameter;
 
 /**
  * Abstract base class for {@link MapNeighborhood} implementations.
  * 
  * @author Leon Yang
- * @param <EI> element type of inputs
- * @param <EO> element type of outputs
  * @param <PI> producer of inputs
  * @param <PO> producer of outputs
  * @param <OP> type of {@link Op} which processes each element
@@ -66,11 +64,14 @@ public abstract class AbstractMapNeighborhood<PI, PO, OP extends Op>
 	public void setOp(final OP op) {
 		this.op = op;
 	}
-	
-	/**
-	 * @return {@link Shape} 
-	 */
+
+	@Override
 	public Shape getShape() {
 		return shape;
+	}
+
+	@Override
+	public void setShape(final Shape shape) {
+		this.shape = shape;
 	}
 }

@@ -30,15 +30,15 @@
 
 package net.imagej.ops.map.neighborhood;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
  * Evaluates a {@link UnaryComputerOp} for each {@link Neighborhood} on the

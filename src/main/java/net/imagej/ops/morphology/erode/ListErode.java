@@ -35,7 +35,7 @@ import java.util.List;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.morphology.Morphologies;
-import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imagej.ops.morphology.MorphologyOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.Functions;
@@ -76,7 +76,7 @@ public class ListErode<T extends RealType<T>> extends
 	private T maxVal;
 	private UnaryFunctionOp<Interval, Img<T>> imgCreator;
 	private UnaryComputerOp<IterableInterval<T>, IterableInterval<T>> copyImg;
-	private BinaryComputerOp<RandomAccessibleInterval<T>, Shape, IterableInterval<T>> erodeComputer;
+	private MorphologyOp<T> erodeComputer;
 
 	@Override
 	public boolean conforms() {
@@ -97,7 +97,7 @@ public class ListErode<T extends RealType<T>> extends
 			Ops.Copy.IterableInterval.class, IterableInterval.class, Views.iterable(
 				in1()));
 
-		erodeComputer = (BinaryComputerOp) Computers.unary(ops(),
+		erodeComputer = (MorphologyOp) Computers.unary(ops(),
 			Ops.Morphology.Erode.class, IterableInterval.class, in1(), in2().get(0),
 			false);
 	}
@@ -123,7 +123,8 @@ public class ListErode<T extends RealType<T>> extends
 		Img<T> downstream = imgCreator.compute1(interval);
 		Img<T> tmp;
 
-		erodeComputer.compute2(in1, in2.get(0), Views.translate(downstream,
+		erodeComputer.setShape(in2.get(0));
+		erodeComputer.compute1(in1, Views.translate(downstream,
 			minSize[0]));
 		for (int i = 1; i < in2.size(); i++) {
 			// Ping-ponging intermediate results between upstream and downstream to
@@ -131,8 +132,9 @@ public class ListErode<T extends RealType<T>> extends
 			tmp = downstream;
 			downstream = upstream;
 			upstream = tmp;
-			erodeComputer.compute2(Views.interval(Views.extendValue(upstream, maxVal),
-				interval), in2.get(i), downstream);
+			erodeComputer.setShape(in2.get(i));
+			erodeComputer.compute1(Views.interval(Views.extendValue(upstream, maxVal),
+				interval), downstream);
 		}
 		if (isFull) copyImg.compute1(downstream, out);
 		else copyImg.compute1(Views.interval(Views.translate(downstream,
