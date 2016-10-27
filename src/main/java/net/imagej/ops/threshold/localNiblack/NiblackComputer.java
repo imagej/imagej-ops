@@ -28,42 +28,44 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.threshold.localNiblack;
 
-import net.imagej.ops.pixml.DefaultHardClustererFunctionOp;
-import net.imagej.ops.pixml.HardClusterer;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.Ops;
+import net.imagej.ops.special.chain.UCViaUFAllSame;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.BooleanType;
-import net.imglib2.type.logic.BitType;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract superclass for {@link GlobalThresholder} implementations.
+ * Applies {@link LocalNiblack} globally.
  * 
  * @author Stefan Helfrich (University of Konstanz)
  * @param <I> type of input
  * @param <O> type of output
  */
-public abstract class AbstractGlobalThresholder<I, O extends BooleanType<O>>
-	extends AbstractUnaryFunctionOp<IterableInterval<I>, IterableInterval<O>>
-	implements GlobalThresholder<I, O>
+@Plugin(type = Ops.Threshold.LocalNiblackThreshold.class,
+	priority = Priority.LOW_PRIORITY)
+public class NiblackComputer<I, O extends BooleanType<O>> extends
+	UCViaUFAllSame<IterableInterval<I>, IterableInterval<O>> implements
+	Ops.Threshold.LocalNiblackThreshold
 {
 
-	/** Op that is used to learn and apply to the whole input */
-	public HardClusterer<I, O> hardClusterer;
+	@Parameter
+	private double c;
 
-	@SuppressWarnings({"unchecked" })
+	@Parameter
+	private double k;
+
+	@SuppressWarnings("unchecked")
 	@Override
-	public void initialize() {
-		hardClusterer = ops().op(DefaultHardClustererFunctionOp.class, in(),
-			getLearner(), new BitType());
+	public UnaryFunctionOp<IterableInterval<I>, IterableInterval<O>> createWorker(
+		IterableInterval<I> t)
+	{
+		return ops().op(LocalNiblackThresholdLearner.class, in(), c, k);
 	}
-
-	@Override
-	public IterableInterval<O> compute1(IterableInterval<I> input) {
-		return hardClusterer.compute1(input);
-	}
-
-	protected abstract ThresholdLearner<I, O> getLearner();
 
 }

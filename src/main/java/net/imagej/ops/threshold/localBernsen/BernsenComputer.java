@@ -28,42 +28,46 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.threshold.localBernsen;
 
-import net.imagej.ops.pixml.DefaultHardClustererFunctionOp;
-import net.imagej.ops.pixml.HardClusterer;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.Ops;
+import net.imagej.ops.special.chain.UCViaUFAllSame;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.BooleanType;
-import net.imglib2.type.logic.BitType;
+import net.imglib2.type.numeric.RealType;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract superclass for {@link GlobalThresholder} implementations.
+ * Applies {@link LocalBernsen} globally.
  * 
  * @author Stefan Helfrich (University of Konstanz)
  * @param <I> type of input
  * @param <O> type of output
+ * @see LocalBernsenThresholdLearner
  */
-public abstract class AbstractGlobalThresholder<I, O extends BooleanType<O>>
-	extends AbstractUnaryFunctionOp<IterableInterval<I>, IterableInterval<O>>
-	implements GlobalThresholder<I, O>
+@Plugin(type = Ops.Threshold.LocalBernsenThreshold.class,
+	priority = Priority.HIGH_PRIORITY)
+public class BernsenComputer<I extends RealType<I>, O extends BooleanType<O>>
+	extends UCViaUFAllSame<IterableInterval<I>, IterableInterval<O>> implements
+	Ops.Threshold.LocalBernsenThreshold
 {
 
-	/** Op that is used to learn and apply to the whole input */
-	public HardClusterer<I, O> hardClusterer;
+	@Parameter
+	private double constrastThreshold;
 
-	@SuppressWarnings({"unchecked" })
+	@Parameter
+	private double halfMaxValue;
+
+	@SuppressWarnings("unchecked")
 	@Override
-	public void initialize() {
-		hardClusterer = ops().op(DefaultHardClustererFunctionOp.class, in(),
-			getLearner(), new BitType());
+	public UnaryFunctionOp<IterableInterval<I>, IterableInterval<O>> createWorker(
+		IterableInterval<I> t)
+	{
+		return ops().op(Bernsen.class, in(), constrastThreshold, halfMaxValue);
 	}
-
-	@Override
-	public IterableInterval<O> compute1(IterableInterval<I> input) {
-		return hardClusterer.compute1(input);
-	}
-
-	protected abstract ThresholdLearner<I, O> getLearner();
 
 }

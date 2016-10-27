@@ -88,16 +88,13 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(
-		op = net.imagej.ops.threshold.GlobalThresholders.Huang.class)
-	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> huang(final IterableInterval<O> out,
-		final IterableInterval<I> in)
+	@OpMethod(op = net.imagej.ops.threshold.GlobalThresholders.HuangComputer.class)
+	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O>
+		huang(final IterableInterval<O> out, final IterableInterval<I> in)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<O> result =
-			(IterableInterval<O>) ops().run(
-				net.imagej.ops.Ops.Threshold.Huang.class, out,
-				in);
+		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
+			net.imagej.ops.Ops.Threshold.Huang.class, out, in);
 		return result;
 	}
 
@@ -154,7 +151,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.GlobalThresholders.IJ1.class)
+		op = net.imagej.ops.threshold.GlobalThresholders.IJ1Computer.class)
 	public
 		<I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> ij1(final IterableInterval<O> out,
 			final IterableInterval<I> in)
@@ -220,7 +217,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.GlobalThresholders.Intermodes.class)
+		op = net.imagej.ops.threshold.GlobalThresholders.IntermodesComputer.class)
 	public
 		<I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> intermodes(final IterableInterval<O> out,
 			final IterableInterval<I> in)
@@ -285,7 +282,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.GlobalThresholders.IsoData.class)
+		op = net.imagej.ops.threshold.GlobalThresholders.IsoDataComputer.class)
 	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> isoData(final IterableInterval<O> out,
 		final IterableInterval<I> in)
 	{
@@ -346,7 +343,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.GlobalThresholders.Li.class)
+	@OpMethod(op = net.imagej.ops.threshold.GlobalThresholders.LiComputer.class)
 	public
 		<I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> li(final IterableInterval<O> out,
 			final IterableInterval<I> in)
@@ -435,7 +432,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.localContrast.Contrast.class)
+	@OpMethod(op = net.imagej.ops.threshold.localContrast.ContrastComputer.class)
 	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> localContrastThreshold(
 		final IterableInterval<O> out, final IterableInterval<I> in)
 	{
@@ -570,7 +567,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.localMedian.Median.class)
+	@OpMethod(op = net.imagej.ops.threshold.localMedian.MedianComputer.class)
 	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> localMedianThreshold(
 		final IterableInterval<O> out, final IterableInterval<I> in, final double c)
 	{
@@ -629,7 +626,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.localMidGrey.MidGrey.class)
+	@OpMethod(op = net.imagej.ops.threshold.localMidGrey.MidGreyComputer.class)
 	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> localMidGreyThreshold(
 		final IterableInterval<O> out, final IterableInterval<I> in, final double c)
 	{
@@ -690,7 +687,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.localNiblack.Niblack.class)
+	@OpMethod(op = net.imagej.ops.threshold.localNiblack.NiblackComputer.class)
 	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> localNiblackThreshold(
 		final IterableInterval<O> out, final IterableInterval<I> in, final double c,
 		final double k)
@@ -798,7 +795,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.localBernsen.Bernsen.class)
+	@OpMethod(op = net.imagej.ops.threshold.localBernsen.BernsenComputer.class)
 	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> localBernsenThreshold(
 		final IterableInterval<O> out, final IterableInterval<I> in,
 		final double constrastThreshold, final double halfMaxValue)
@@ -893,7 +890,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.localPhansalkar.Phansalkar.class)
+	@OpMethod(op = net.imagej.ops.threshold.localPhansalkar.PhansalkarComputer.class)
 	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> localPhansalkarThreshold(
 		final IterableInterval<O> out, final IterableInterval<I> in, final double k,
 		final double r)
@@ -904,7 +901,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.localPhansalkar.Phansalkar.class)
+	@OpMethod(op = net.imagej.ops.threshold.localPhansalkar.PhansalkarComputer.class)
 	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> localPhansalkarThreshold(
 		final IterableInterval<O> out, final IterableInterval<I> in, final double k)
 	{
@@ -914,13 +911,34 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.localPhansalkar.Phansalkar.class)
+	@OpMethod(op = net.imagej.ops.threshold.localPhansalkar.PhansalkarComputer.class)
 	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> localPhansalkarThreshold(
 		final IterableInterval<O> out, final IterableInterval<I> in)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
 			net.imagej.ops.threshold.localPhansalkar.Phansalkar.class, out, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.threshold.localPhansalkar.Phansalkar.class)
+	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O>
+		localPhansalkarThreshold(final IterableInterval<I> in, final double k,
+			final double r)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
+			net.imagej.ops.threshold.localPhansalkar.Phansalkar.class, in, k, r);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.threshold.localPhansalkar.Phansalkar.class)
+	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O>
+		localPhansalkarThreshold(final IterableInterval<I> in, final double k)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
+			net.imagej.ops.threshold.localPhansalkar.Phansalkar.class, in, k);
 		return result;
 	}
 
@@ -1070,7 +1088,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.localSauvola.Sauvola.class)
+	@OpMethod(op = net.imagej.ops.threshold.localSauvola.SauvolaComputer.class)
 	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> localSauvolaThreshold(
 		final IterableInterval<O> out, final IterableInterval<I> in, final double k,
 		final double r)
@@ -1081,7 +1099,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.localSauvola.Sauvola.class)
+	@OpMethod(op = net.imagej.ops.threshold.localSauvola.SauvolaComputer.class)
 	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> localSauvolaThreshold(
 		final IterableInterval<O> out, final IterableInterval<I> in, final double k)
 	{
@@ -1091,13 +1109,34 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.localSauvola.Sauvola.class)
+	@OpMethod(op = net.imagej.ops.threshold.localSauvola.SauvolaComputer.class)
 	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> localSauvolaThreshold(
 		final IterableInterval<O> out, final IterableInterval<I> in)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
 			net.imagej.ops.threshold.localSauvola.Sauvola.class, out, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.threshold.localSauvola.Sauvola.class)
+	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O>
+		localSauvolaThreshold(final IterableInterval<I> in, final double k,
+			final double r)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
+			net.imagej.ops.threshold.localSauvola.Sauvola.class, in, k, r);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.threshold.localSauvola.Sauvola.class)
+	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O>
+		localSauvolaThreshold(final IterableInterval<I> in, final double k)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
+			net.imagej.ops.threshold.localSauvola.Sauvola.class, in, k);
 		return result;
 	}
 
@@ -1193,7 +1232,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.GlobalThresholders.MaxEntropy.class)
+		op = net.imagej.ops.threshold.GlobalThresholders.MaxEntropyComputer.class)
 	public
 		<I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> maxEntropy(final IterableInterval<O> out,
 			final IterableInterval<I> in)
@@ -1259,7 +1298,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.GlobalThresholders.MaxLikelihood.class)
+		op = net.imagej.ops.threshold.GlobalThresholders.MaxLikelihoodComputer.class)
 	public
 		<I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> maxLikelihood(final IterableInterval<O> out,
 			final IterableInterval<I> in)
@@ -1323,7 +1362,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.GlobalThresholders.Mean.class)
+		op = net.imagej.ops.threshold.GlobalThresholders.MeanComputer.class)
 	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> mean(final IterableInterval<O> out,
 		final IterableInterval<I> in)
 	{
@@ -1347,7 +1386,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.GlobalThresholders.MinError.class)
+		op = net.imagej.ops.threshold.GlobalThresholders.MinErrorComputer.class)
 	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> minError(final IterableInterval<O> out,
 		final IterableInterval<I> in)
 	{
@@ -1411,7 +1450,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.GlobalThresholders.Minimum.class)
+		op = net.imagej.ops.threshold.GlobalThresholders.MinimumComputer.class)
 	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> minimum(final IterableInterval<O> out,
 		final IterableInterval<I> in)
 	{
@@ -1475,7 +1514,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.GlobalThresholders.Moments.class)
+		op = net.imagej.ops.threshold.GlobalThresholders.MomentsComputer.class)
 	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> moments(final IterableInterval<O> out,
 		final IterableInterval<I> in)
 	{
@@ -1536,7 +1575,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.GlobalThresholders.Otsu.class)
+	@OpMethod(op = net.imagej.ops.threshold.GlobalThresholders.OtsuComputer.class)
 	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> otsu(
 		final IterableInterval<O> out, final IterableInterval<I> in)
 	{
@@ -1595,7 +1634,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.GlobalThresholders.Percentile.class)
+		op = net.imagej.ops.threshold.GlobalThresholders.PercentileComputer.class)
 	public
 		<I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> percentile(final IterableInterval<O> out,
 			final IterableInterval<I> in)
@@ -1661,7 +1700,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.GlobalThresholders.RenyiEntropy.class)
+		op = net.imagej.ops.threshold.GlobalThresholders.RenyiEntropyComputer.class)
 	public
 		<I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> renyiEntropy(final IterableInterval<O> out,
 			final IterableInterval<I> in)
@@ -1724,7 +1763,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.GlobalThresholders.Shanbhag.class)
+	@OpMethod(op = net.imagej.ops.threshold.GlobalThresholders.ShanbhagComputer.class)
 	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> shanbhag(
 		final IterableInterval<O> out, final IterableInterval<I> in)
 	{
@@ -1785,7 +1824,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.GlobalThresholders.Triangle.class)
+		op = net.imagej.ops.threshold.GlobalThresholders.TriangleComputer.class)
 	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> triangle(final IterableInterval<O> out,
 		final IterableInterval<I> in)
 	{
@@ -1847,7 +1886,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.GlobalThresholders.Yen.class)
+		op = net.imagej.ops.threshold.GlobalThresholders.YenComputer.class)
 	public <I extends RealType<I>, O extends BooleanType<O>> IterableInterval<O> yen(final IterableInterval<O> out,
 		final IterableInterval<I> in)
 	{
