@@ -28,63 +28,33 @@
  * #L%
  */
 
-package net.imagej.ops.copy;
+package net.imagej.ops.special.chain;
 
-import net.imagej.ops.Contingent;
-import net.imagej.ops.Ops;
+import net.imagej.ops.copy.CopyOp;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
-import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
-import net.imglib2.IterableInterval;
-import net.imglib2.util.Intervals;
 
-import org.scijava.plugin.Plugin;
+public abstract class UCViaUFAllSame<I, O> extends AbstractUnaryComputerOp<I, O>
+		implements DelegatingUnaryOp<I, O, I, O, UnaryFunctionOp<I, O>> {
 
-/**
- * Copies an {@link IterableInterval} into another {@link IterableInterval}
- * 
- * @author Christian Dietz (University of Konstanz)
- * @param <T>
- */
-@Plugin(type = Ops.Copy.IterableInterval.class, priority = 1.0)
-public class CopyII<T> extends
-		AbstractUnaryHybridCF<IterableInterval<T>, IterableInterval<T>> implements
-		Ops.Copy.IterableInterval, Contingent, CopyOp<IterableInterval<T>, IterableInterval<T>> {
+	private UnaryComputerOp<O, O> copy;
+	
+	private UnaryFunctionOp<I, O> worker;
 
-	// used internally
-	private UnaryComputerOp<IterableInterval<T>, IterableInterval<T>> map;
-	private UnaryFunctionOp<IterableInterval<T>, IterableInterval<T>> imgCreator;
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		map = Computers.unary(ops(), Ops.Map.class, in(), in(), Computers.unary(
-			ops(), Ops.Copy.Type.class, in().firstElement().getClass(), in()
-				.firstElement().getClass()));
-		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
-			IterableInterval.class, in(), in().firstElement());
+		worker = createWorker(in());
 	}
 
 	@Override
-	public IterableInterval<T> createOutput(final IterableInterval<T> input) {
-		// FIXME: Assumption here: Create an Img. I would rather like: Create
-		// what ever is best given the input.
-		return imgCreator.compute1(input);
+	public void compute1(final I input, final O output) {
+		O workerOut = worker.compute1(input);
+		
+		// FIXME Is there a chance we can match the copy op without executing the worker first?
+		copy = Computers.unary(ops(), CopyOp.class, out(), workerOut);
+		copy.compute1(workerOut, output);
 	}
 
-	@Override
-	public void compute1(final IterableInterval<T> input,
-			final IterableInterval<T> output) {
-		map.compute1(input, output);
-	}
-
-	@Override
-	public boolean conforms() {
-		if (out() != null) {
-			return Intervals.equalDimensions(in(), out());
-		}
-		return true;
-	}
 }

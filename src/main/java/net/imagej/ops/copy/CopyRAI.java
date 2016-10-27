@@ -55,7 +55,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Copy.RAI.class, priority = 1.0)
 public class CopyRAI<T> extends
 	AbstractUnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
-	implements Ops.Copy.RAI, Contingent
+	implements Ops.Copy.RAI, Contingent, CopyOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 {
 
 	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> mapComputer;

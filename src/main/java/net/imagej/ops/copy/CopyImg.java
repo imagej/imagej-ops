@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Copy.Img.class)
 public class CopyImg<T extends NativeType<T>> extends
-		AbstractUnaryHybridCF<Img<T>, Img<T>> implements Ops.Copy.Img, Contingent {
+		AbstractUnaryHybridCF<Img<T>, Img<T>> implements Ops.Copy.Img, Contingent, CopyOp<Img<T>, Img<T>> {
 	
 	private UnaryComputerOp<Iterable<T>, Iterable<T>> copyComputer;
 

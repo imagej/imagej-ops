@@ -56,7 +56,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Copy.ImgLabeling.class)
 public class CopyImgLabeling<T extends IntegerType<T> & NativeType<T>, L>
 		extends AbstractUnaryHybridCF<ImgLabeling<L, T>, ImgLabeling<L, T>>
-		implements Ops.Copy.ImgLabeling, Contingent {
+		implements Ops.Copy.ImgLabeling, Contingent, CopyOp<ImgLabeling<L, T>, ImgLabeling<L, T>> {
 	
 	
 	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> raiCopyOp;

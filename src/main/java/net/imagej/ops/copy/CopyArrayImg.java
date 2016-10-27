@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
 public class CopyArrayImg<T extends NativeType<T>, A extends ArrayDataAccess<A>>
 		extends
 		AbstractUnaryHybridCF<ArrayImg<T, A>, ArrayImg<T, A>>
-		implements Ops.Copy.Img, Contingent {
+		implements Ops.Copy.Img, Contingent, CopyOp<ArrayImg<T, A>, ArrayImg<T, A>> {
 
 	@Override
 	public ArrayImg<T, A> createOutput(final ArrayImg<T, A> input) {

@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class CopyLabelingMapping<L> extends
 		AbstractUnaryHybridCF<LabelingMapping<L>, LabelingMapping<L>> implements
-		Ops.Copy.LabelingMapping {
+		Ops.Copy.LabelingMapping, CopyOp<LabelingMapping<L>, LabelingMapping<L>> {
 	
 	private NullaryFunctionOp<LabelingMapping<L>> outputCreator;
 	

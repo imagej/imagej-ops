@@ -30,30 +30,12 @@
 
 package net.imagej.ops.copy;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
-import net.imglib2.type.Type;
-
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.special.hybrid.UnaryHybridCF;
 
 /**
- * Copy {@link Type} to another {@link Type}
  * 
- * @author Christian Dietz (University of Konstanz)
- * @param <T>
+ * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Copy.Type.class)
-public class CopyType<T extends Type<T>> extends AbstractUnaryHybridCF<T, T>
-		implements Ops.Copy.Type, CopyOp<T, T> {
-
-	@Override
-	public T createOutput(final T input) {
-		return input.createVariable();
-	}
-
-	@Override
-	public void compute1(final T input, final T output) {
-		output.set(input);
-	}
-
+public interface CopyOp<I, O> extends UnaryHybridCF<I, O> {
+	// NB: marker interface
 }
