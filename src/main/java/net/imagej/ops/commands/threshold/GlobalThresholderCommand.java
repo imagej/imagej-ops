@@ -35,7 +35,7 @@ import net.imagej.axis.Axis;
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.threshold.ComputeThreshold;
+import net.imagej.ops.threshold.GlobalThresholder;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 
@@ -51,10 +51,10 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Command.class, menuPath = "Image > Threshold > Apply Threshold")
-public class GlobalThresholder<T extends RealType<T>> extends AbstractOp {
+public class GlobalThresholderCommand<T extends RealType<T>> extends AbstractOp {
 
     @Parameter
-    private ComputeThreshold<ImgPlus<T>,T> method;
+    private GlobalThresholder<T, BitType> method;
 
     // should not be Dataset, DisplayService, ...
     @Parameter
