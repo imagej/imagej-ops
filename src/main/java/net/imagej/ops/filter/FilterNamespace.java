@@ -675,6 +675,19 @@ public class FilterNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	// -- hessian --
+
+	@OpMethod(op = net.imagej.ops.filter.hessian.HessianRAI.class)
+	public <T extends RealType<T>> CompositeIntervalView<T, RealComposite<T>> hessian(
+		final RandomAccessibleInterval<T> in)
+	{
+		@SuppressWarnings("unchecked")
+		final CompositeIntervalView<T, RealComposite<T>> result =
+			(CompositeIntervalView<T, RealComposite<T>>) ops().run(
+				net.imagej.ops.filter.hessian.HessianRAI.class, in);
+		return result;
+	}
+
 	// -- ifft --
 
 	/** Executes the "ifft" operation on the given arguments. */
