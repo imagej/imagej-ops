@@ -118,6 +118,7 @@ namespaces = ```
 		[name: "paddingIntervalCentered",        iface: "PaddingIntervalCentered"],
 		[name: "paddingIntervalOrigin",          iface: "PaddingIntervalOrigin"],
 		[name: "sigma",                          iface: "Sigma",               aliases: ["sigmaFilter", "filterSigma"]],
+		[name: "sobel",                          iface: "Sobel"],
 		[name: "variance",                       iface: "Variance",            aliases: ["varianceFilter", "filterVariance", "var", "varFilter", "filterVar"]],
 		[name: "frangiVesselness",			 iface: "FrangiVesselness"],
 	]],
