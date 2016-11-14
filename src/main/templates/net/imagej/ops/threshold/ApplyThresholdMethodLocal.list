@@ -17,5 +17,6 @@ methods = ```
 	[name: "localShanbhag",      iface: "Shanbhag"],
 	[name: "localTriangle",      iface: "Triangle"],
 	[name: "localYen",           iface: "Yen"]
+	[name: "localRosin",         iface: "Rosin"],
 ]
 ```
