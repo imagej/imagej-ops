@@ -36,6 +36,7 @@ import net.imglib2.IterableInterval;
 import net.imglib2.converter.read.ConvertedIterableInterval;
 import net.imglib2.type.Type;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -46,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * @param <EI> element type of inputs
  * @param <EO> element type of outputs
  */
-@Plugin(type = Ops.Map.class)
+@Plugin(type = Ops.Map.class, priority = Priority.HIGH_PRIORITY)
 public class MapViewIIToII<EI, EO extends Type<EO>> extends
 	AbstractMapView<EI, EO, IterableInterval<EI>, IterableInterval<EO>>
 {
