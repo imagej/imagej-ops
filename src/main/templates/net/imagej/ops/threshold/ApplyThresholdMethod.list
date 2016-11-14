@@ -17,6 +17,7 @@ methods = ```
 	[name: "renyiEntropy",  iface: "RenyiEntropy"],
 	[name: "shanbhag",      iface: "Shanbhag"],
 	[name: "triangle",      iface: "Triangle"],
-	[name: "yen",           iface: "Yen"]
+	[name: "yen",           iface: "Yen"],
+	[name: "rosin",         iface: "Rosin"],
 ]
 ```

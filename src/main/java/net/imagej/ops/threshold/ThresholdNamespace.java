@@ -1849,6 +1849,77 @@ public class ThresholdNamespace extends AbstractNamespace {
 			out, in, shape, outOfBoundsFactory);
 		return result;
 	}
+                
+        @OpMethod(
+		op = net.imagej.ops.threshold.rosin.ComputeRosinThreshold.class)
+	public <T extends RealType<T>> T rosin(final Histogram1d<T> in) {
+		@SuppressWarnings("unchecked")
+		final T result =
+			(T) ops().run(
+				net.imagej.ops.Ops.Threshold.Rosin.class, in);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.threshold.rosin.ComputeRosinThreshold.class)
+	public <T extends RealType<T>> T rosin(final T out, final Histogram1d<T> in) {
+		@SuppressWarnings("unchecked")
+		final T result =
+			(T) ops().run(
+				net.imagej.ops.Ops.Threshold.Rosin.class,
+				out, in);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.threshold.ApplyThresholdMethod.Rosin.class)
+	public <T extends RealType<T>> IterableInterval<BitType> rosin(final IterableInterval<T> in) {
+		@SuppressWarnings("unchecked")
+		final IterableInterval<BitType> result =
+			(IterableInterval<BitType>) ops().run(
+				net.imagej.ops.Ops.Threshold.Rosin.class, in);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.threshold.ApplyThresholdMethod.Rosin.class)
+	public <T extends RealType<T>> IterableInterval<BitType> rosin(final IterableInterval<BitType> out,
+		final IterableInterval<T> in)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<BitType> result =
+			(IterableInterval<BitType>) ops().run(
+				net.imagej.ops.Ops.Threshold.Rosin.class, out,
+				in);
+		return result;
+	}
+        
+        @OpMethod(
+		op = net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalRosinThreshold.class)
+	public <T extends RealType<T>, B extends BooleanType<B>> IterableInterval<B>
+		rosin(final IterableInterval<B> out, final RandomAccessibleInterval<T> in,
+			final Shape shape)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<B> result = (IterableInterval<B>) ops().run(
+			net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalRosinThreshold.class,
+			out, in, shape);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalRosinThreshold.class)
+	public <T extends RealType<T>, B extends BooleanType<B>> IterableInterval<B>
+		rosin(final IterableInterval<B> out, final RandomAccessibleInterval<T> in,
+			final Shape shape,
+			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBoundsFactory)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<B> result = (IterableInterval<B>) ops().run(
+			net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalRosinThreshold.class,
+			out, in, shape, outOfBoundsFactory);
+		return result;
+	}
 
 	// -- Named methods --
 

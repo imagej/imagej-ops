@@ -49,6 +49,7 @@ import net.imagej.ops.Ops.Threshold.RenyiEntropy;
 import net.imagej.ops.Ops.Threshold.Shanbhag;
 import net.imagej.ops.Ops.Threshold.Triangle;
 import net.imagej.ops.Ops.Threshold.Yen;
+import net.imagej.ops.Ops.Threshold.Rosin;
 import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalHuangThreshold;
 import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalIJ1Threshold;
 import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalIntermodesThreshold;
@@ -59,7 +60,6 @@ import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMaxLikelihoodThre
 import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMinErrorThreshold;
 import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMinimumThreshold;
 import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMomentsThreshold;
-import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalOtsuThreshold;
 import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalPercentileThreshold;
 import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalRenyiEntropyThreshold;
 import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalShanbhagThreshold;
@@ -248,6 +248,10 @@ public class LocalThresholdTest extends AbstractOpTest {
 		ops.threshold().yen(out, in, new RectangleShape(3, false),
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(Boundary.SINGLE));
 		ops.threshold().yen(out, in, new RectangleShape(3, false));
+                
+                ops.threshold().rosin(out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(Boundary.SINGLE));
+		ops.threshold().rosin(out, in, new RectangleShape(3, false));
 	}
 
 	/**
@@ -692,6 +696,17 @@ public class LocalThresholdTest extends AbstractOpTest {
 	@Test
 	public void testLocalYenThreshold() {
 		ops.run(Yen.class, out, in, new RectangleShape(1, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), false);
+	}
+        
+        /**
+	 * @see LocalRosinThreshold
+	 */
+	@Test
+	public void testLocalRosinThreshold() {
+		ops.run(Rosin.class, out, in, new RectangleShape(1, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
 
 		assertEquals(out.firstElement().get(), false);
