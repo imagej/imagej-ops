@@ -14,9 +14,9 @@ methods = ```
 	[name: "localOtsu",          iface: "Otsu"],
 	[name: "localPercentile",    iface: "Percentile"],
 	[name: "localRenyiEntropy",  iface: "RenyiEntropy"],
+	[name: "localRosin",         iface: "Rosin"],
 	[name: "localShanbhag",      iface: "Shanbhag"],
 	[name: "localTriangle",      iface: "Triangle"],
 	[name: "localYen",           iface: "Yen"]
-	[name: "localRosin",         iface: "Rosin"],
 ]
 ```
