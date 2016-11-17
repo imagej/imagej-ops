@@ -31,12 +31,8 @@
 package net.imagej.ops.threshold;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.pixml.DefaultHardClusterer;
-import net.imagej.ops.pixml.HardClusterer;
-import net.imagej.ops.pixml.UnsupervisedLearner;
+import net.imagej.ops.map.MapView;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
-import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
@@ -75,8 +71,8 @@ public abstract class AbstractLocalThresholder<I, O extends BooleanType<O>>
 	private OutOfBoundsFactory<I, RandomAccessibleInterval<I>> outOfBoundsFactory =
 		new OutOfBoundsBorderFactory<>();
 
-	/** Op that is used to learn and apply to the whole input */
-	public HardClusterer<Pair<Neighborhood<I>, I>, O> hardClusterer;
+	/** Maps the model (i.e. a {@code UnvaryComputerOp}) onto the input (lazy). */
+	private MapView<Pair<Neighborhood<I>, I>, O, IterableInterval<Pair<Neighborhood<I>, I>>, IterableInterval<O>> mapView;
 
 	/** Op that is used for creating the output image */
 	protected UnaryFunctionOp<RandomAccessibleInterval<I>, Img<BitType>> imgCreator;
@@ -89,8 +85,8 @@ public abstract class AbstractLocalThresholder<I, O extends BooleanType<O>>
 		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
 			Img.class, in(), new BitType());
 		localThresholder = new LocalThresholder<>(getLearner());
-		hardClusterer = ops().op(DefaultHardClusterer.class, in(),
-			new LazyUnsupervisedLearner<>(localThresholder), new BitType());
+		mapView = (MapView) Functions.unary(ops(), MapView.class,
+			IterableInterval.class, IterableInterval.class, localThresholder, new BitType());
 	}
 
 	@Override
@@ -103,7 +99,7 @@ public abstract class AbstractLocalThresholder<I, O extends BooleanType<O>>
 		final RandomAccessibleInterval<Pair<Neighborhood<I>, I>> pair = Views
 			.interval(Views.pair(safe, Views.extend(input,
 				outOfBoundsFactory)), input);
-		final IterableInterval<O> functionOut = hardClusterer.compute1(Views.iterable(pair));
+		final IterableInterval<O> functionOut = mapView.compute1(Views.iterable(pair));
 
 		// Temporary burnIn
 		if (functionOut instanceof View) {
@@ -118,36 +114,6 @@ public abstract class AbstractLocalThresholder<I, O extends BooleanType<O>>
 	}
 
 	protected abstract ThresholdLearner<I, O> getLearner();
-
-	/**
-	 * Wrapper for a
-	 * {@link net.imagej.ops.threshold.AbstractLocalThresholder.LocalThresholder}
-	 * that learns and applies lazily.
-	 *
-	 * @param <I> type of input
-	 * @param <O> type of output
-	 */
-	static class LazyUnsupervisedLearner<I, O extends BooleanType<O>> extends
-		AbstractUnaryFunctionOp<IterableInterval<Pair<Neighborhood<I>, I>>, UnaryComputerOp<Pair<Neighborhood<I>, I>, O>>
-		implements UnsupervisedLearner<Pair<Neighborhood<I>, I>, O>
-	{
-
-		private LocalThresholder<I, O> localThresholder;
-
-		public LazyUnsupervisedLearner(
-			final LocalThresholder<I, O> localThresholder)
-		{
-			this.localThresholder = localThresholder;
-		}
-
-		@Override
-		public UnaryComputerOp<Pair<Neighborhood<I>, I>, O> compute1(
-			final IterableInterval<Pair<Neighborhood<I>, I>> input)
-		{
-			return localThresholder;
-		}
-
-	}
 
 	/**
 	 * Uses a provided {@link ThresholdLearner} to implement a local thresholding.
