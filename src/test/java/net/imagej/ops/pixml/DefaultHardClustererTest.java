@@ -33,7 +33,7 @@ package net.imagej.ops.pixml;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.pixml.DefaultHardClustererFunctionOp;
+import net.imagej.ops.pixml.DefaultHardClusterer;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
@@ -50,7 +50,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests {@link DefaultHardClustererFunctionOp}.
+ * Tests {@link DefaultHardClusterer}.
  * 
  * @author Stefan Helfrich (University of Konstanz)
  */
@@ -76,7 +76,7 @@ public class DefaultHardClustererTest extends AbstractOpTest {
 		DumbUnsupervisedLearner<ByteType, BitType> dumbLearner =
 			new DumbUnsupervisedLearner<>();
 		IterableInterval<BitType> clustererOut = (IterableInterval<BitType>) ops
-			.run(DefaultHardClustererFunctionOp.class, in, dumbLearner,
+			.run(DefaultHardClusterer.class, in, dumbLearner,
 				new BitType());
 
 		// clustererOut is a MapView

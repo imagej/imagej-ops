@@ -31,7 +31,7 @@
 package net.imagej.ops.threshold;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.pixml.DefaultHardClustererFunctionOp;
+import net.imagej.ops.pixml.DefaultHardClusterer;
 import net.imagej.ops.pixml.HardClusterer;
 import net.imagej.ops.pixml.UnsupervisedLearner;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
@@ -89,7 +89,7 @@ public abstract class AbstractLocalThresholder<I, O extends BooleanType<O>>
 		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
 			Img.class, in(), new BitType());
 		localThresholder = new LocalThresholder<>(getLearner());
-		hardClusterer = ops().op(DefaultHardClustererFunctionOp.class, in(),
+		hardClusterer = ops().op(DefaultHardClusterer.class, in(),
 			new LazyUnsupervisedLearner<>(localThresholder), new BitType());
 	}
 

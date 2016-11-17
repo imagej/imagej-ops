@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
  * @param <O> type of output
  */
 @Plugin(type = Op.class)
-public class DefaultHardClustererFunctionOp<I, O extends IntegerType<O>> extends
+public class DefaultHardClusterer<I, O extends IntegerType<O>> extends
 	AbstractUnaryFunctionOp<IterableInterval<I>, IterableInterval<O>> implements
 	HardClusterer<I, O>
 {

@@ -30,7 +30,7 @@
 
 package net.imagej.ops.threshold;
 
-import net.imagej.ops.pixml.DefaultHardClustererFunctionOp;
+import net.imagej.ops.pixml.DefaultHardClusterer;
 import net.imagej.ops.pixml.HardClusterer;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.IterableInterval;
@@ -55,7 +55,7 @@ public abstract class AbstractGlobalThresholder<I, O extends BooleanType<O>>
 	@SuppressWarnings({"unchecked" })
 	@Override
 	public void initialize() {
-		hardClusterer = ops().op(DefaultHardClustererFunctionOp.class, in(),
+		hardClusterer = ops().op(DefaultHardClusterer.class, in(),
 			getLearner(), new BitType());
 	}
 
