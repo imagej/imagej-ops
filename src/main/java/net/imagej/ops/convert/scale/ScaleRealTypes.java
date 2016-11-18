@@ -53,6 +53,7 @@ public class ScaleRealTypes<I extends RealType<I>, O extends RealType<O>>
 
 	@Override
 	public void compute(final I input, final O output) {
+		// FIXME Throw exception if factor == 0.0
 		output.setReal((input.getRealDouble() - inMin) / factor + outMin);
 	}
 

@@ -30,7 +30,6 @@
 
 package net.imagej.ops.convert.normalizeScale;
 
-import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.convert.scale.ScaleRealTypes;
 import net.imagej.ops.special.function.Functions;
@@ -46,7 +45,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Convert.NormalizeScale.class)
 public class NormalizeScaleRealTypes<I extends RealType<I>, O extends RealType<O>>
-	extends ScaleRealTypes<I, O> implements Ops.Convert.NormalizeScale, Contingent
+	extends ScaleRealTypes<I, O> implements Ops.Convert.NormalizeScale
 {
 
 	private UnaryFunctionOp<IterableInterval<I>, Pair<I, I>> minMaxFunc;
@@ -73,14 +72,6 @@ public class NormalizeScaleRealTypes<I extends RealType<I>, O extends RealType<O
 			.getRealDouble()) / (outMax - outMin);
 
 		inMin = minMax.getA().getRealDouble();
-	}
-
-	@Override
-	public boolean conforms() {
-		// only conforms if an input source has been provided and the scale factor
-		// was calculated
-		// FIXME Prevents this op from being matched for use with Ops.Convert.ImageType
-		return factor != 0;
 	}
 
 }
