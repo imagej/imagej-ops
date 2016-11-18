@@ -32,7 +32,6 @@ package net.imagej.ops.convert.copy;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.convert.RealTypeConverter;
-import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
@@ -48,16 +47,6 @@ public class CopyRealTypes<I extends RealType<I>, O extends RealType<O>>
 	@Override
 	public void compute(final I input, final O output) {
 		output.setReal(input.getRealDouble());
-	}
-
-	@Override
-	public void checkInput(final I inType, final O outType) {
-		// nothing to do here
-	}
-
-	@Override
-	public void checkInput(final IterableInterval<I> in) {
-		// nothing to do here
 	}
 
 }

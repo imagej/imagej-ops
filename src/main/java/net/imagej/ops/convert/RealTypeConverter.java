@@ -45,9 +45,12 @@ public abstract class RealTypeConverter<I extends RealType<I>, O extends RealTyp
 
 	/**
 	 * Allows the convert pix operation to determine some parameters from the
-	 * conrete input and output types.
+	 * concrete input and output types.
 	 */
-	public abstract void checkInput(I inType, O outType);
+	@SuppressWarnings("unused")
+	public void checkInput(I inType, O outType) {
+		// NB: default implementation
+	}
 
 	/**
 	 * If the pixels to be converted stem from an {@link IterableInterval} some
@@ -55,6 +58,9 @@ public abstract class RealTypeConverter<I extends RealType<I>, O extends RealTyp
 	 * here (hence, some heavier calculation might take place here). Might never
 	 * be called!
 	 */
-	public abstract void checkInput(IterableInterval<I> in);
+	@SuppressWarnings("unused")
+	public void checkInput(IterableInterval<I> in) {
+		// NB: default implementation
+	}
 
 }
