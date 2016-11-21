@@ -35,7 +35,8 @@ import net.imagej.ops.special.chain.RAIs;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.labeling.ConnectedComponents.StructuringElement;
+import net.imglib2.algorithm.neighborhood.RectangleShape;
+import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.type.BooleanType;
 
 import org.scijava.plugin.Parameter;
@@ -54,7 +55,7 @@ public class DefaultExtractHolesComputer<T extends BooleanType<T>> extends
 {
 
 	@Parameter(required=false)
-	private StructuringElement structElement = StructuringElement.EIGHT_CONNECTED;
+	private Shape structElement = new RectangleShape(1, false);
 
 	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> xorMapOp;
 

@@ -32,7 +32,6 @@ package net.imagej.ops.morphology.fillHoles;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.create.img.CreateImgFromDimsAndType;
-import net.imagej.ops.create.img.CreateImgFromInterval;
 import net.imagej.ops.special.chain.RAIs;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
@@ -42,7 +41,8 @@ import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.Localizable;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.labeling.ConnectedComponents.StructuringElement;
+import net.imglib2.algorithm.neighborhood.RectangleShape;
+import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.view.Views;
@@ -63,7 +63,7 @@ public class DefaultFillHoles<T extends BooleanType<T>> extends
 {
 
 	@Parameter(required = false)
-	private StructuringElement structElement = StructuringElement.EIGHT_CONNECTED;
+	private Shape structElement = new RectangleShape(1, false);
 
 	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> createFunc;
 	private BinaryComputerOp<RandomAccessibleInterval<T>, Localizable, RandomAccessibleInterval<T>> floodFillComp;

@@ -36,7 +36,8 @@ import net.imagej.ops.special.chain.UFViaUCAllSame;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.labeling.ConnectedComponents.StructuringElement;
+import net.imglib2.algorithm.neighborhood.RectangleShape;
+import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.type.BooleanType;
 
 import org.scijava.plugin.Parameter;
@@ -53,7 +54,7 @@ public class DefaultExtractHolesFunction<T extends BooleanType<T>> extends
 {
 
 	@Parameter(required = false)
-	private StructuringElement structElement = StructuringElement.EIGHT_CONNECTED;
+	private Shape structElement = new RectangleShape(1, false);
 
 	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> createFunc;
 
