@@ -37,7 +37,7 @@ import net.imagej.ops.AbstractOpTest;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.labeling.ConnectedComponents.StructuringElement;
+import net.imglib2.algorithm.neighborhood.DiamondShape;
 import net.imglib2.img.Img;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.real.FloatType;
@@ -94,15 +94,14 @@ public class MorphologyOpsTest extends AbstractOpTest {
 
 	@Test
 	public void testExtractHoles() {
-		assertNotNull("Img Without Holes",
-				ops.morphology().extractHoles(imgWithoutHoles, StructuringElement.FOUR_CONNECTED));
-		assertNotNull("Img With Holes", ops.morphology().extractHoles(imgWithHoles, StructuringElement.FOUR_CONNECTED));
+		assertNotNull("Img Without Holes", ops.morphology().extractHoles(imgWithoutHoles, new DiamondShape(1)));
+		assertNotNull("Img With Holes", ops.morphology().extractHoles(imgWithHoles, new DiamondShape(1)));
 	}
 
 	@Test
 	public void testFillHoles() {
 		Img<BitType> result = ops.create().img(imgWithHoles);
-		ops.morphology().fillHoles(result, imgWithHoles, StructuringElement.FOUR_CONNECTED);
+		ops.morphology().fillHoles(result, imgWithHoles, new DiamondShape(1));
 
 		Cursor<BitType> resultC = result.cursor();
 		final BitType one = new BitType(true);
@@ -116,7 +115,7 @@ public class MorphologyOpsTest extends AbstractOpTest {
 		Img<BitType> result = ops.create().img(invertedImgWithFilledHoles);
 		Img<BitType> inverted = ops.create().img(invertedImgWithFilledHoles);
 		ops.image().invert(inverted, imgWithHoles);
-		ops.morphology().fillHoles(result, inverted, StructuringElement.FOUR_CONNECTED);
+		ops.morphology().fillHoles(result, inverted, new DiamondShape(1));
 
 		Cursor<BitType> resultC = result.localizingCursor();
 		RandomAccess<BitType> groundTruthRA = invertedImgWithFilledHoles.randomAccess();

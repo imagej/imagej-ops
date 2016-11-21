@@ -30,9 +30,6 @@
 
 package net.imagej.ops.morphology.floodFill;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-
 import net.imagej.ops.Ops;
 import net.imagej.ops.create.img.CreateImgFromInterval;
 import net.imagej.ops.special.chain.RAIs;
@@ -41,9 +38,13 @@ import net.imagej.ops.special.hybrid.AbstractBinaryHybridCF;
 import net.imglib2.Localizable;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.fill.Filter;
 import net.imglib2.algorithm.fill.FloodFill;
-import net.imglib2.algorithm.labeling.ConnectedComponents.StructuringElement;
+import net.imglib2.algorithm.neighborhood.RectangleShape;
+import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.type.Type;
+import net.imglib2.util.Pair;
+import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -59,7 +60,7 @@ public class DefaultFloodFill<T extends Type<T> & Comparable<T>> extends
 {
 
 	@Parameter()
-	private StructuringElement structElement = StructuringElement.EIGHT_CONNECTED;
+	private Shape structElement = new RectangleShape(1, false);
 
 	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> createFunc;
 
@@ -72,77 +73,16 @@ public class DefaultFloodFill<T extends Type<T> & Comparable<T>> extends
 	public void compute(RandomAccessibleInterval<T> op0, Localizable loc,
 		RandomAccessibleInterval<T> r)
 	{
-		long[] posAsArray = new long[loc.numDimensions()];
-		loc.localize(posAsArray);
-
-		final RandomAccess<T> rc = r.randomAccess();
 		final RandomAccess<T> op0c = op0.randomAccess();
 		op0c.setPosition(loc);
-		final T floodVal = op0c.get().copy();
-		final LinkedList<long[]> q = new LinkedList<>();
-		q.addFirst(posAsArray.clone());
-		long[] pos, nextPos;
-		long[] perm = new long[r.numDimensions()];
-		while (!q.isEmpty()) {
-			pos = q.removeLast();
-			rc.setPosition(pos);
-			if (rc.get().compareTo(floodVal) == 0) {
-				continue;
+		final T fillValue = op0c.get().copy();
+		FloodFill.fill(Views.extendValue(op0, fillValue), Views.extendValue(r, fillValue), loc, fillValue, structElement, new Filter<Pair<T,T >, Pair<T,T>>() {
+
+			@Override
+			public boolean accept(Pair<T, T> t, Pair<T, T> u) {
+				return !t.getB().valueEquals(u.getB()) && t.getA().valueEquals(u.getA());
 			}
-			op0c.setPosition(pos);
-			if (op0c.get().compareTo(floodVal) == 0) {
-				// set new label
-				rc.get().set(floodVal);
-				switch (structElement) {
-					case EIGHT_CONNECTED:
-						Arrays.fill(perm, -1);
-						int i = r.numDimensions() - 1;
-						boolean add;
-						while (i > -1) {
-							nextPos = pos.clone();
-							add = true;
-							// Modify position
-							for (int j = 0; j < r.numDimensions(); j++) {
-								nextPos[j] += perm[j];
-								// Check boundaries
-								if (nextPos[j] < 0 || nextPos[j] >= r.dimension(j)) {
-									add = false;
-									break;
-								}
-							}
-							if (add) {
-								q.addFirst(nextPos);
-							}
-							// Calculate next permutation
-							for (i = perm.length - 1; i > -1; i--) {
-								if (perm[i] < 1) {
-									perm[i]++;
-									for (int j = i + 1; j < perm.length; j++) {
-										perm[j] = -1;
-									}
-									break;
-								}
-							}
-						}
-						break;
-					case FOUR_CONNECTED:
-					default:
-						for (int j = 0; j < r.numDimensions(); j++) {
-							if (pos[j] + 1 < r.dimension(j)) {
-								nextPos = pos.clone();
-								nextPos[j]++;
-								q.addFirst(nextPos);
-							}
-							if (pos[j] - 1 >= 0) {
-								nextPos = pos.clone();
-								nextPos[j]--;
-								q.addFirst(nextPos);
-							}
-						}
-						break;
-				}
-			}
-		}
+		});
 	}
 
 	@Override
