@@ -37,6 +37,7 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.convert.clip.ClipRealTypes;
 import net.imagej.ops.convert.copy.CopyRealTypes;
 import net.imagej.ops.convert.imageType.ConvertIIs;
+import net.imagej.ops.convert.normalizeScale.NormalizeScaleRealTypes;
 import net.imagej.ops.convert.scale.ScaleRealTypes;
 import net.imagej.ops.special.inplace.Inplaces;
 import net.imagej.ops.special.inplace.UnaryInplaceOp;
@@ -47,6 +48,7 @@ import net.imglib2.RandomAccess;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.ShortType;
+import net.imglib2.util.Pair;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -111,10 +113,31 @@ public class ConvertIIsTest extends AbstractOpTest {
 		}
 	}
 
+	@Test
+	public void testNormalizeScale() {
+		ops.run(ConvertIIs.class, out, in,
+			ops.op(NormalizeScaleRealTypes.class, out.firstElement(), in.firstElement()));
+
+		final Cursor<ShortType> c = in.localizingCursor();
+		final RandomAccess<ByteType> ra = out.randomAccess();
+		while (c.hasNext()) {
+			final short value = c.next().get();
+			ra.setPosition(c);
+			assertEquals(normalizeScale(value), ra.get().get());
+		}
+	}
+
 	// -- Helper methods --
 
 	private byte scale(final short value) {
 		final double norm = (value + 32768) / 65535.0;
+		return (byte) Math.round((255 * norm) - 128);
+	}
+
+	private byte normalizeScale(final short value) {
+		Pair<ShortType, ShortType> minMax = ops.stats().minMax(in);
+		final double norm = (value - minMax.getA().getRealDouble()) / (minMax.getB()
+			.getRealDouble() - minMax.getA().getRealDouble());
 		return (byte) Math.round((255 * norm) - 128);
 	}
 
