@@ -45,6 +45,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Andreas Graumann (University of Konstanz)
  * @author Christian Dietz (University of Konstanz)
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Haralick.ICM1.class,
 	label = "Haralick: Information Measure of Correlation 1")
@@ -70,11 +71,9 @@ public class DefaultICM1<T extends RealType<T>> extends
 	{
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
-		double res = 0;
-
 		final double[] coochxy = coocHXYFunc.calculate(matrix);
 
-		res = (entropy.calculate(input).get() - coochxy[2]) / (coochxy[0] > coochxy[1]
+		final double res = (entropy.calculate(input).get() - coochxy[2]) / (coochxy[0] > coochxy[1]
 			? coochxy[0] : coochxy[1]);
 
 		output.set(res);

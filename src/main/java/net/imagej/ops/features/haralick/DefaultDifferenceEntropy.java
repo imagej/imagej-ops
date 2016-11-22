@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Andreas Graumann (University of Konstanz)
  * @author Christian Dietz (University of Konstanz)
- *
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Haralick.DifferenceEntropy.class, label = "Haralick: Difference Entropy")
 public class DefaultDifferenceEntropy<T extends RealType<T>> extends
@@ -70,7 +70,7 @@ public class DefaultDifferenceEntropy<T extends RealType<T>> extends
 		final int nrGrayLevels = matrix.length;
 
 		double res = 0;
-		for (int k = 0; k <= nrGrayLevels - 1; k++) {
+		for (int k = 0; k < nrGrayLevels; k++) {
 			res += pxminusy[k] * Math.log(pxminusy[k] + EPSILON);
 		}
 
