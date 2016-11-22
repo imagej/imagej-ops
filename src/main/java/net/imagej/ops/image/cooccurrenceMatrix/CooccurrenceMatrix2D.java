@@ -83,7 +83,7 @@ public class CooccurrenceMatrix2D<T extends RealType<T>> extends
 		final Cursor<? extends RealType<?>> cursor = input.localizingCursor();
 
 		final Pair<T, T> minMax = minmax.calculate(input);
-
+		
 		final double localMin = minMax.getA().getRealDouble();
 		final double localMax = minMax.getB().getRealDouble();
 
@@ -99,9 +99,10 @@ public class CooccurrenceMatrix2D<T extends RealType<T>> extends
 		final double diff = localMax - localMin;
 		while (cursor.hasNext()) {
 			cursor.fwd();
+			final int bin = (int) (((cursor.get().getRealDouble() - localMin) / diff) *
+				(nrGreyLevels));
 			pixels[cursor.getIntPosition(1) - minimumY][cursor.getIntPosition(0) -
-				minimumX] = (int) (((cursor.get().getRealDouble() - localMin) / diff) *
-					(nrGreyLevels - 1));
+				minimumX] = bin < nrGreyLevels - 1 ? bin : nrGreyLevels - 1;
 		}
 
 		int nrPairs = 0;
@@ -138,7 +139,7 @@ public class CooccurrenceMatrix2D<T extends RealType<T>> extends
 				}
 			}
 		}
-
+		
 		return output;
 	}
 
