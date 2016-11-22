@@ -52,7 +52,7 @@ public class DefaultDifferenceEntropy<T extends RealType<T>> extends
 		AbstractHaralickFeature<T> implements Ops.Haralick.DifferenceEntropy {
 
 	// Avoid log 0
-	private static final double EPSILON = 0.00000001f;
+	private static final double EPSILON = Double.MIN_NORMAL;
 
 	private UnaryFunctionOp<double[][], double[]> coocPXMinusYFunc;
 	

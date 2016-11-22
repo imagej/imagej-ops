@@ -49,8 +49,9 @@ import org.scijava.plugin.Plugin;
 public class DefaultEntropy<T extends RealType<T>> extends
 		AbstractHaralickFeature<T> implements Ops.Haralick.Entropy {
 
-	private static final double EPSILON = 0.00000001f;
-
+	// Avoid log 0
+	private static final double EPSILON = Double.MIN_NORMAL;
+	
 	@Override
 	public void compute(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
