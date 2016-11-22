@@ -45,7 +45,9 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Andreas Graumann (University of Konstanz)
  * @author Christian Dietz (University of Konstanz)
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  *
+ * Formula based on http://murphylab.web.cmu.edu/publications/boland/boland_node26.html.
  */
 @Plugin(type = Ops.Haralick.DifferenceVariance.class, label = "Haralick: Difference Variance")
 public class DefaultDifferenceVariance<T extends RealType<T>> extends
@@ -65,16 +67,11 @@ public class DefaultDifferenceVariance<T extends RealType<T>> extends
 
 		final double[] pxminusy = coocPXMinusYFunc.calculate(matrix);
 		double sum = 0.0d;
-		double res = 0;
 		for (int k = 0; k < pxminusy.length; k++) {
-			sum += k * pxminusy[k];
+			sum += k * k * pxminusy[k];
 		}
 
-		for (int k = 0; k < pxminusy.length; k++) {
-			res += (k - sum) * pxminusy[k];
-		}
-
-		output.set(res);
+		output.set(sum);
 
 	}
 

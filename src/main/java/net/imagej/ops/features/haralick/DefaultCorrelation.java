@@ -44,11 +44,12 @@ import org.scijava.plugin.Plugin;
 
 /**
  * 
- * Implementation of texture correlation haralick feature.
+ * Implementation of texture correlation haralick feature based on
+ * http://earlglynn.github.io/RNotes/package/EBImage/Haralick-Textural-Features.html .
  * 
  * @author Andreas Graumann (University of Konstanz)
  * @author Christian Dietz (University of Konstanz)
- *
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Haralick.Correlation.class, label = "Haralick: Correlation")
 public class DefaultCorrelation<T extends RealType<T>> extends
@@ -80,20 +81,15 @@ public class DefaultCorrelation<T extends RealType<T>> extends
 		final double stdx = coocStdXFunc.calculate(matrix).get();
 		final double stdy = coocStdYFunc.calculate(matrix).get();
 
-		double res = 0;
+		double sum = 0;
 		for (int i = 0; i < nrGrayLevels; i++) {
 			for (int j = 0; j < nrGrayLevels; j++) {
-				res += ((i - meanx) * (j - meany))
-						* (matrix[i][j] / (stdx * stdy));
+				sum += i*j*matrix[i][j];
 			}
 		}
+		
+		output.set((sum - (meanx*meany))/(stdx*stdy));
 
-		// if NaN
-		if (Double.isNaN(res)) {
-			output.set(0);
-		} else {
-			output.set(res);
-		}
 	}
 
 }
