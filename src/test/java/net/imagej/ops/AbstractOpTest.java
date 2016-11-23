@@ -185,6 +185,12 @@ public abstract class AbstractOpTest {
 		return IO.openFloatImgs(url.getPath()).get(0).getImg();
 	}
 
+	public static Img<UnsignedByteType> openUnsignedByteType(final Class<?> c, 
+			final String resourcePath) {
+		final URL url = c.getResource(resourcePath);
+		return IO.openUnsignedByteImgs(url.getPath()).get(0).getImg();
+	}
+	
 	public <T> void assertIterationsEqual(final Iterable<T> expected,
 		final Iterable<T> actual)
 	{

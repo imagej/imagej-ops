@@ -45,15 +45,15 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Andreas Graumann (University of Konstanz)
  * @author Christian Dietz (University of Konstanz)
- * 
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Haralick.SumEntropy.class, label = "Haralick: Sum Entropy")
 public class DefaultSumEntropy<T extends RealType<T>> extends
 		AbstractHaralickFeature<T> implements Ops.Haralick.SumEntropy {
 
 	// Avoid log 0
-	private static final double EPSILON = 0.00000001f;
-
+	private static final double EPSILON = Double.MIN_NORMAL;
+	
 	private UnaryFunctionOp<double[][], double[]> coocPXPlusFunc;
 	
 	@Override
@@ -70,7 +70,7 @@ public class DefaultSumEntropy<T extends RealType<T>> extends
 
 		double res = 0;
 		for (int i = 2; i <= 2 * nrGrayLevels; i++) {
-			res += pxplusy[i] * Math.log10(pxplusy[i] + EPSILON);
+			res += pxplusy[i] * Math.log(pxplusy[i] + EPSILON);
 		}
 
 		output.set(-res);

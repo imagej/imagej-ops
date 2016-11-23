@@ -41,11 +41,12 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Andreas Graumann (University of Konstanz)
  * @author Christian Dietz (University of Konstanz)
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = CoocHXY.class)
 public class CoocHXY extends AbstractUnaryFunctionOp<double[][], double[]> {
 
-	private static final double EPSILON = 0.00000001f;
+	private static final double EPSILON = Double.MIN_NORMAL;
 
 	private UnaryFunctionOp<double[][], double[]> coocPXFunc;
 	private UnaryFunctionOp<double[][], double[]> coocPYFunc;

@@ -42,6 +42,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Andreas Graumann (University of Konstanz)
  * @author Christian Dietz (University of Konstanz)
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = CoocStdY.class)
 public class CoocStdY extends AbstractUnaryFunctionOp<double[][], DoubleType> {
@@ -68,7 +69,7 @@ public class CoocStdY extends AbstractUnaryFunctionOp<double[][], DoubleType> {
 			res += ((i - meany) * (i - meany)) * py[i];
 		}
 
-		return new DoubleType(res);
+		return new DoubleType(Math.sqrt(res));
 	}
 
 }
