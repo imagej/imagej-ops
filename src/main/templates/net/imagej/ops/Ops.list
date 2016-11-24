@@ -136,7 +136,6 @@ namespaces = ```
 		[name: "medianElongation",               iface: "MedianElongation"],
 		[name: "minorAxis",                      iface: "MinorAxis"],
 		[name: "roundness",                      iface: "Roundness"],
-		[name: "rugosity",                       iface: "Rugosity"],
 		[name: "secondMultiVariate",             iface: "SecondMultiVariate"],
 		[name: "size",                           iface: "Size"],
 		[name: "sizeConvexHull",                 iface: "SizeConvexHull"],
