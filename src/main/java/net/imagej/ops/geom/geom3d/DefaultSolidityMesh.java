@@ -42,6 +42,6 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Solidity.class,
 	label = "Geometric (3D): Solidity", priority = Priority.VERY_HIGH_PRIORITY)
-public class SolidityMesh extends AbstractSolidity<Mesh> {
+public class DefaultSolidityMesh extends AbstractSolidity<Mesh> {
 	// NB: Marker Interface
 }

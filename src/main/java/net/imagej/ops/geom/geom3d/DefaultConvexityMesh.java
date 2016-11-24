@@ -31,7 +31,7 @@
 package net.imagej.ops.geom.geom3d;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.geom.AbstractBoxivity;
+import net.imagej.ops.geom.AbstractConvexity;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
 
 import org.scijava.Priority;
@@ -40,12 +40,8 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
-@Plugin(type = Ops.Geometric.Boxivity.class,
-	label = "Geometric (3D): Boxivity", priority = Priority.VERY_HIGH_PRIORITY)
-public class BoxivityMesh extends AbstractBoxivity<Mesh> {
-
-	public BoxivityMesh() {
-		super(Mesh.class);
-	}
-
+@Plugin(type = Ops.Geometric.Convexity.class,
+	label = "Geometric (3D): Convexity", priority = Priority.VERY_HIGH_PRIORITY)
+public class DefaultConvexityMesh extends AbstractConvexity<Mesh> {
+	// NB: Marker Interface
 }

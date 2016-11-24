@@ -31,9 +31,8 @@
 package net.imagej.ops.geom.geom3d;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.geom.GeometricOp;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
-import net.imagej.ops.special.function.Functions;
-import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -41,31 +40,25 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
+ * Generic implementation of {@code geom.boundaryPixelCount}.
+ * 
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
-@Plugin(type = Ops.Geometric.VerticesCountConvexHull.class,
-	label = "Geometric (3D): Convex Hull Pixel Count",
+@Plugin(type = Ops.Geometric.VerticesCount.class,
+	label = "Geometric3D: Surface Vertices Count",
 	priority = Priority.VERY_HIGH_PRIORITY)
-public class BoundaryPixelCountConvexHullMesh extends
-	AbstractUnaryHybridCF<Mesh, DoubleType>  implements
-	Ops.Geometric.VerticesCountConvexHull
+public class DefaultVerticesCountMesh extends
+	AbstractUnaryHybridCF<Mesh, DoubleType> implements GeometricOp<Mesh, DoubleType>,
+	Ops.Geometric.VerticesCount
 {
-
-	private UnaryFunctionOp<Mesh, Mesh> convexHullFunc;
-
-	@Override
-	public void initialize() {
-		convexHullFunc = Functions.unary(ops(), Ops.Geometric.ConvexHull.class, Mesh.class, in());
-	}
 
 	@Override
 	public void compute(final Mesh input, final DoubleType output) {
-		output.set(convexHullFunc.calculate(input).getVertices().size());
+		output.set(input.getVertices().size());
 	}
 	
 	@Override
 	public DoubleType createOutput(Mesh input) {
 		return new DoubleType();
 	}
-
 }

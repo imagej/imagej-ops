@@ -31,7 +31,7 @@
 package net.imagej.ops.geom.geom3d;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.geom.AbstractBoundarySizeConvexHull;
+import net.imagej.ops.geom.AbstractBoxivity;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
 
 import org.scijava.Priority;
@@ -40,14 +40,11 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
-@Plugin(type = Ops.Geometric.BoundarySizeConvexHull.class,
-	label = "Geometric (3D): Surface AreaO Convex Hull",
-	priority = Priority.VERY_HIGH_PRIORITY)
-public class BoundarySizeConvexHullMesh extends
-	AbstractBoundarySizeConvexHull<Mesh>
-{
+@Plugin(type = Ops.Geometric.Boxivity.class,
+	label = "Geometric (3D): Boxivity", priority = Priority.VERY_HIGH_PRIORITY)
+public class DefaultBoxivityMesh extends AbstractBoxivity<Mesh> {
 
-	public BoundarySizeConvexHullMesh() {
+	public DefaultBoxivityMesh() {
 		super(Mesh.class);
 	}
 

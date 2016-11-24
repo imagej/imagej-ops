@@ -31,8 +31,11 @@
 package net.imagej.ops.geom.geom3d;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.geom.AbstractConvexity;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
@@ -40,8 +43,29 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
-@Plugin(type = Ops.Geometric.Convexity.class,
-	label = "Geometric (3D): Convexity", priority = Priority.VERY_HIGH_PRIORITY)
-public class ConvexityMesh extends AbstractConvexity<Mesh> {
-	// NB: Marker Interface
+@Plugin(type = Ops.Geometric.VerticesCountConvexHull.class,
+	label = "Geometric (3D): Convex Hull Vertices Count",
+	priority = Priority.VERY_HIGH_PRIORITY)
+public class DefaultVerticesCountConvexHullMesh extends
+	AbstractUnaryHybridCF<Mesh, DoubleType>  implements
+	Ops.Geometric.VerticesCountConvexHull
+{
+
+	private UnaryFunctionOp<Mesh, Mesh> convexHullFunc;
+
+	@Override
+	public void initialize() {
+		convexHullFunc = Functions.unary(ops(), Ops.Geometric.ConvexHull.class, Mesh.class, in());
+	}
+
+	@Override
+	public void compute(final Mesh input, final DoubleType output) {
+		output.set(convexHullFunc.calculate(input).getVertices().size());
+	}
+	
+	@Override
+	public DoubleType createOutput(Mesh input) {
+		return new DoubleType();
+	}
+
 }
