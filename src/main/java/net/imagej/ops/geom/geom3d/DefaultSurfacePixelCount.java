@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.VerticesCount.class,
-	label = "Geometric3D: Surface Pixel Count",
+	label = "Geometric3D: Surface Vertices Count",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultSurfacePixelCount extends
 	AbstractUnaryHybridCF<Mesh, DoubleType> implements GeometricOp<Mesh, DoubleType>,

@@ -32,52 +32,61 @@ package net.imagej.ops.geom.geom3d;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.Ops.Geometric.SecondMoment;
+import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
-import net.imglib2.roi.IterableRegion;
-import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.apache.commons.math3.linear.EigenDecomposition;
+import org.apache.commons.math3.linear.RealMatrix;
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
  * Generic implementation of {@link net.imagej.ops.Ops.Geometric.MainElongation}
  * 
+ * Adapted to 3D from http://www.math.uci.edu/icamp/summer/research_11/park/
+ * shape_descriptors_survey.pdf
+ * 
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
-@Plugin(type = Ops.Geometric.MainElongation.class,
-	label = "Geometric (3D): Main Elongation",
-	priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultMainElongation<B extends BooleanType<B>> extends
-	AbstractUnaryHybridCF<IterableRegion<B>, DoubleType> implements
-	Ops.Geometric.MainElongation, Contingent
-{
+@Plugin(type = Ops.Geometric.MainElongation.class, label = "Geometric (3D): Main Elongation", priority = Priority.VERY_HIGH_PRIORITY)
+public class DefaultMainElongation extends AbstractUnaryHybridCF<Mesh, DoubleType>
+		implements Ops.Geometric.MainElongation, Contingent {
 
-	private UnaryFunctionOp<IterableRegion<B>, CovarianceOf2ndMultiVariate3D> multivar;
+	private UnaryFunctionOp<Mesh, RealMatrix> inertiaTensor;
 
 	@Override
 	public void initialize() {
-		multivar = Functions.unary(ops(), DefaultSecondMultiVariate3D.class,
-			CovarianceOf2ndMultiVariate3D.class, in());
+		inertiaTensor = Functions.unary(ops(), SecondMoment.class, RealMatrix.class, in());
 	}
 
 	@Override
-	public void compute(final IterableRegion<B> input, final DoubleType output) {
-		CovarianceOf2ndMultiVariate3D compute = multivar.calculate(input);
-		output.set(Math.sqrt(compute.getEigenvalue(0) / compute
-			.getEigenvalue(1)));
+	public void compute(final Mesh input, final DoubleType output) {
+		final RealMatrix it = inertiaTensor.calculate(input);
+		final EigenDecomposition ed = new EigenDecomposition(it);
+
+		final double l1 = ed.getRealEigenvalue(0) - ed.getRealEigenvalue(2) + ed.getRealEigenvalue(1);
+		final double l2 = ed.getRealEigenvalue(0) - ed.getRealEigenvalue(1) + ed.getRealEigenvalue(2);
+		final double l3 = ed.getRealEigenvalue(2) - ed.getRealEigenvalue(0) + ed.getRealEigenvalue(1);
+
+		final double g = 1 / (8 * Math.PI / 15);
+
+		final double a = Math.pow(g * l1 * l1 / Math.sqrt(l2 * l3), 1 / 5d);
+		final double b = Math.pow(g * l2 * l2 / Math.sqrt(l1 * l3), 1 / 5d);
+		output.set(1 - (b / a));
 	}
-	
+
 	@Override
-	public DoubleType createOutput(IterableRegion<B> input) {
+	public DoubleType createOutput(Mesh input) {
 		return new DoubleType();
 	}
 
 	@Override
 	public boolean conforms() {
-		return in().numDimensions() == 3;
+		return in() != null;
 	}
 
 }
