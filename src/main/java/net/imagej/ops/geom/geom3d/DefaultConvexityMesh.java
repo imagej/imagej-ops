@@ -42,6 +42,6 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Convexity.class,
 	label = "Geometric (3D): Convexity", priority = Priority.VERY_HIGH_PRIORITY)
-public class ConvexityMesh extends AbstractConvexity<Mesh> {
+public class DefaultConvexityMesh extends AbstractConvexity<Mesh> {
 	// NB: Marker Interface
 }

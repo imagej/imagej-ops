@@ -32,8 +32,8 @@ package net.imagej.ops.geom.geom3d;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.geom.geom3d.mesh.BitTypeVertexInterpolator;
 import net.imagej.ops.geom.geom3d.mesh.DefaultMesh;
+import net.imagej.ops.geom.geom3d.mesh.DefaultVertexInterpolator;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imagej.ops.geom.geom3d.mesh.TriangularFacet;
 import net.imagej.ops.geom.geom3d.mesh.Vertex;
@@ -70,7 +70,7 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 
 	@Parameter(type = ItemIO.INPUT, required = false)
 	private VertexInterpolator interpolatorClass =
-		new BitTypeVertexInterpolator();
+		new DefaultVertexInterpolator();
 
 	@SuppressWarnings({ "unchecked" })
 	@Override
@@ -94,30 +94,30 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 			while (cu.hasNext()) {
 				vertex_values[i++] = (cu.next().get()) ? 1 : 0;
 			}
+			// 6------7
+			// /| /|
+			// 2-----3 |
+			// | 4---|-5
+			// |/ |/
+			// 0-----1
+			vertex_values = mapFlatIterableToLookUpCube(vertex_values);
 			// 4------5
 			// /| /|
-			// 0-----1 |
-			// | 6---|-7
+			// 7-----6 |
+			// | 0---|-1
 			// |/ |/
-			// 2-----3
-			vertex_values = mapFlatIterableToLookUpCube(vertex_values);
-			// 3------2
-			// /| /|
-			// 0-----1 |
-			// | 7---|-6
-			// |/ |/
-			// 4-----5
+			// 3-----2
 			int cubeindex = getCubeIndex(vertex_values);
 
-			if (cubeindex != 0) {
-				int[] p0 = new int[] { 0 + cursorX, 0 + cursorY, 0 + cursorZ };
-				int[] p1 = new int[] { 1 + cursorX, 0 + cursorY, 0 + cursorZ };
-				int[] p2 = new int[] { 1 + cursorX, 0 + cursorY, 1 + cursorZ };
-				int[] p3 = new int[] { 0 + cursorX, 0 + cursorY, 1 + cursorZ };
-				int[] p4 = new int[] { 0 + cursorX, 1 + cursorY, 0 + cursorZ };
-				int[] p5 = new int[] { 1 + cursorX, 1 + cursorY, 0 + cursorZ };
-				int[] p6 = new int[] { 1 + cursorX, 1 + cursorY, 1 + cursorZ };
-				int[] p7 = new int[] { 0 + cursorX, 1 + cursorY, 1 + cursorZ };
+			if (EDGE_TABLE[cubeindex] != 0) {
+				int[] p0 = new int[] { 0 + cursorX, 0 + cursorY, 1 + cursorZ };
+				int[] p1 = new int[] { 1 + cursorX, 0 + cursorY, 1 + cursorZ };
+				int[] p2 = new int[] { 1 + cursorX, 0 + cursorY, 0 + cursorZ };
+				int[] p3 = new int[] { 0 + cursorX, 0 + cursorY, 0 + cursorZ };
+				int[] p4 = new int[] { 0 + cursorX, 1 + cursorY, 1 + cursorZ };
+				int[] p5 = new int[] { 1 + cursorX, 1 + cursorY, 1 + cursorZ };
+				int[] p6 = new int[] { 1 + cursorX, 1 + cursorY, 0 + cursorZ };
+				int[] p7 = new int[] { 0 + cursorX, 1 + cursorY, 0 + cursorZ };
 
 				double[][] vertlist = new double[12][];
 
@@ -184,6 +184,7 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 								vertlist[TRIANGLE_TABLE[cubeindex][i]][0],
 								vertlist[TRIANGLE_TABLE[cubeindex][i]][1],
 								vertlist[TRIANGLE_TABLE[cubeindex][i]][2]));
+					face.getArea();
 					output.addFace(face);
 				}
 			}
@@ -214,15 +215,15 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 
 	private double[] mapFlatIterableToLookUpCube(final double[] vertex_values) {
 		double[] vv = new double[8];
-
-		vv[0] = vertex_values[0];
-		vv[1] = vertex_values[1];
-		vv[2] = vertex_values[5];
-		vv[3] = vertex_values[4];
-		vv[4] = vertex_values[2];
-		vv[5] = vertex_values[3];
-		vv[6] = vertex_values[7];
-		vv[7] = vertex_values[6];
+		vv[0] = vertex_values[4];
+		vv[1] = vertex_values[5];
+		vv[2] = vertex_values[1];
+		vv[3] = vertex_values[0];
+		vv[4] = vertex_values[6];
+		vv[5] = vertex_values[7];
+		vv[6] = vertex_values[3];
+		vv[7] = vertex_values[2];
+		
 		return vv;
 	}
 

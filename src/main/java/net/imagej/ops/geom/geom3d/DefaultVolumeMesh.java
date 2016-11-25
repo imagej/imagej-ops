@@ -27,10 +27,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geom.geom3d.mesh;
+package net.imagej.ops.geom.geom3d;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.geom.geom3d.mesh.Facet;
+import net.imagej.ops.geom.geom3d.mesh.Mesh;
+import net.imagej.ops.geom.geom3d.mesh.TriangularFacet;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -45,7 +48,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Size.class, label = "Geometric3D: Volume",
 	priority = Priority.VERY_HIGH_PRIORITY-1)
-public class DefaultVolume
+public class DefaultVolumeMesh
 		extends
 			AbstractUnaryFunctionOp<Mesh, DoubleType>
 		implements

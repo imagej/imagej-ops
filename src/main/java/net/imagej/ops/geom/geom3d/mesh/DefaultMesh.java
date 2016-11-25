@@ -108,10 +108,12 @@ public class DefaultMesh implements Mesh, Iterable<Facet> {
 	 * @param f the facet to add
 	 */
 	public void addFace(final TriangularFacet f) {
-		facets.add(f);
-		area += f.getArea();
-
-		vertices.addAll(f.getVertices());
+		if (f.getArea() > 0) {
+			facets.add(f);
+			area += f.getArea();
+	
+			vertices.addAll(f.getVertices());
+		}
 	}
 
 	/**

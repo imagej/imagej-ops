@@ -50,17 +50,16 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher (University of Konstanz)
  */
-@Plugin(type = Ops.Geometric.SecondMultiVariate.class)
-public class DefaultMinorMajorAxis extends
-	AbstractUnaryFunctionOp<Polygon, Pair<DoubleType, DoubleType>> implements
-	Ops.Geometric.SecondMultiVariate
-{
+@Plugin(type = Ops.Geometric.SecondMoment.class)
+public class DefaultMinorMajorAxis extends AbstractUnaryFunctionOp<Polygon, Pair<DoubleType, DoubleType>>
+		implements Ops.Geometric.SecondMoment {
 
 	/**
-	 * Code taken from ImageJ1 (EllipseFitter -> getEllipseParam()) and adapted to
-	 * work with a {@link Polygon}
+	 * Code taken from ImageJ1 (EllipseFitter -> getEllipseParam()) and adapted
+	 * to work with a {@link Polygon}
 	 * 
-	 * @param points vertices of polygon in counter clockwise order.
+	 * @param points
+	 *            vertices of polygon in counter clockwise order.
 	 * @return minor and major axis
 	 */
 	private double[] getMinorMajorAxis(final Polygon input, final List<RealLocalizable> points) {
@@ -99,14 +98,14 @@ public class DefaultMinorMajorAxis extends
 				tmp = a22;
 				a22 = a11;
 				a11 = tmp;
-			}
-			else if (a11 != a22) {
+			} else if (a11 != a22) {
 				ta = Math.PI / 2d;
 			}
 		}
 
 		tmp = Math.sin(ta);
-		if (tmp == 0.0) tmp = 0.000001;
+		if (tmp == 0.0)
+			tmp = 0.000001;
 		double z = a12 * Math.cos(ta) / tmp;
 		double major = Math.sqrt(1.0 / Math.abs(a22 + z));
 		double minor = Math.sqrt(1.0 / Math.abs(a11 - z));
@@ -117,7 +116,8 @@ public class DefaultMinorMajorAxis extends
 		minor = minor * scale * 2.0;
 		double angle = 180.0 * ta / Math.PI;
 
-		if (angle == 180.0) angle = 0.0;
+		if (angle == 180.0)
+			angle = 0.0;
 		if (major < minor) {
 			tmp = major;
 			major = minor;
@@ -130,7 +130,8 @@ public class DefaultMinorMajorAxis extends
 	/**
 	 * Calculates moments for {@link Polygon}
 	 * 
-	 * @param points vertices of polygon in counter clockwise order.
+	 * @param points
+	 *            vertices of polygon in counter clockwise order.
 	 * @return moments m00, n20, n11 and n02
 	 * @see "On  Calculation of Arbitrary Moments of Polygons, Carsten Steger, October 1996"
 	 */
@@ -151,12 +152,12 @@ public class DefaultMinorMajorAxis extends
 			m10 += a * (getX(input, i - 1) + getX(input, i));
 			m01 += a * (getY(input, i - 1) + getY(input, i));
 
-			m20 += a * (Math.pow(getX(input, i - 1), 2) + getX(input, i - 1) * getX(input, i) + Math.pow(
-				getX(input, i), 2));
-			m11 += a * (2 * getX(input, i - 1) * getY(input, i - 1) + getX(input, i - 1) * getY(input, i) + getX(input, 
-				i) * getY(input, i - 1) + 2 * getX(input, i) * getY(input, i));
-			m02 += a * (Math.pow(getY(input, i - 1), 2) + getY(input, i - 1) * getY(input, i) + Math.pow(
-				getY(input, i), 2));
+			m20 += a * (Math.pow(getX(input, i - 1), 2) + getX(input, i - 1) * getX(input, i)
+					+ Math.pow(getX(input, i), 2));
+			m11 += a * (2 * getX(input, i - 1) * getY(input, i - 1) + getX(input, i - 1) * getY(input, i)
+					+ getX(input, i) * getY(input, i - 1) + 2 * getX(input, i) * getY(input, i));
+			m02 += a * (Math.pow(getY(input, i - 1), 2) + getY(input, i - 1) * getY(input, i)
+					+ Math.pow(getY(input, i), 2));
 		}
 
 		m00 /= 2d;
@@ -174,15 +175,17 @@ public class DefaultMinorMajorAxis extends
 		return new double[] { m00, n20, n11, n02 };
 	}
 
-	private double getY(final Polygon input,final int index) {
+	private double getY(final Polygon input, final int index) {
 		int i = index;
-		if (i == input.getVertices().size()) i = 0;
+		if (i == input.getVertices().size())
+			i = 0;
 		return input.getVertices().get(i).getDoublePosition(1);
 	}
 
 	private double getX(final Polygon input, final int index) {
 		int i = index;
-		if (i == input.getVertices().size()) i = 0;
+		if (i == input.getVertices().size())
+			i = 0;
 		return input.getVertices().get(i).getDoublePosition(0);
 	}
 
@@ -203,8 +206,7 @@ public class DefaultMinorMajorAxis extends
 				final Double o2x = new Double(o2.getDoublePosition(0));
 				final int result = o2x.compareTo(o1x);
 				if (result == 0) {
-					return new Double(o2.getDoublePosition(1)).compareTo(new Double(o1
-						.getDoublePosition(1)));
+					return new Double(o2.getDoublePosition(1)).compareTo(new Double(o1.getDoublePosition(1)));
 				}
 				return result;
 			}
@@ -213,7 +215,6 @@ public class DefaultMinorMajorAxis extends
 
 		// calculate minor and major axis
 		double[] minorMajorAxis = getMinorMajorAxis(input, points);
-		return new ValuePair<>(new DoubleType(
-			minorMajorAxis[0]), new DoubleType(minorMajorAxis[1]));
+		return new ValuePair<>(new DoubleType(minorMajorAxis[0]), new DoubleType(minorMajorAxis[1]));
 	}
 }

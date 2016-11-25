@@ -24,14 +24,13 @@ import net.imagej.ops.geom.geom2d.DefaultMinimumFeretDiameter;
 import net.imagej.ops.geom.geom2d.DefaultMinorAxis;
 import net.imagej.ops.geom.geom2d.DefaultPerimeterLength;
 import net.imagej.ops.geom.geom2d.DefaultRoundness;
+import net.imagej.ops.geom.geom2d.DefaultSizeConvexHullPolygon;
 import net.imagej.ops.geom.geom2d.DefaultSizePolygon;
 import net.imagej.ops.geom.geom2d.DefaultSmallestEnclosingRectangle;
-import net.imagej.ops.geom.geom2d.LabelRegionToPolygonConverter;
-import net.imagej.ops.geom.geom2d.DefaultRugosityPolygon;
-import net.imagej.ops.geom.geom2d.DefaultSizeConvexHullPolygon;
 import net.imagej.ops.geom.geom2d.DefaultSolidityPolygon;
 import net.imagej.ops.geom.geom2d.DefaultVerticesCountConvexHullPolygon;
 import net.imagej.ops.geom.geom2d.DefaultVerticesCountPolygon;
+import net.imagej.ops.geom.geom2d.LabelRegionToPolygonConverter;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.geometric.Polygon;
@@ -246,12 +245,6 @@ public class PolygonFeatureTests extends AbstractFeatureTest {
 			assertEquals("Polygon point " + i + " differs in y-coordinate.", expected[i].getDoublePosition(1),
 					received.get(i).getDoublePosition(1), EPSILON);
 		}
-	}
-
-	@Test
-	public void rugosity() {
-		assertEquals(Ops.Geometric.Rugosity.NAME, 0.773585391928,
-				((DoubleType) ops.run(DefaultRugosityPolygon.class, contour)).get(), EPSILON);
 	}
 
 	@Test

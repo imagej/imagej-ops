@@ -93,7 +93,7 @@ public class CentroidMesh extends AbstractUnaryFunctionOp<Mesh, RealLocalizable>
 		c_y *= d;
 		c_z *= d;
 
-		return new RealPoint(c_x, c_y, c_z);
+		return new RealPoint(-c_x, -c_y, -c_z);
 	}
 
 	@Override

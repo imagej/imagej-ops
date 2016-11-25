@@ -28,47 +28,37 @@
  * #L%
  */
 
-package net.imagej.ops.geom;
+package net.imagej.ops.geom.geom3d;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.Functions;
-import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.geom.GeometricOp;
+import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
 /**
- * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Rugosity}.
- * 
- * Based on Measurement and quantification of visual lobe shape characteristics from Alan H.S. Chan.
- * 
- * Formula in the paper: rugosity = boundarySize/convexHullBoundarySize, rugosity -> [1, Inf).
- * 
- * I swapped the fraction to: rugosity = convexHullBoundarySize/boundarySize, rugosity -> (0, 1].
+ * Generic implementation of {@code geom.boundaryPixelCount}.
  * 
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
-public abstract class AbstractRugosity<I> extends AbstractUnaryHybridCF<I, DoubleType>
-		implements Ops.Geometric.Rugosity {
-
-	private UnaryFunctionOp<I, DoubleType> boundarySize;
-
-	private UnaryFunctionOp<I, DoubleType> convexHullBoundarySize;
+@Plugin(type = Ops.Geometric.VerticesCount.class,
+	label = "Geometric3D: Surface Vertices Count",
+	priority = Priority.VERY_HIGH_PRIORITY)
+public class DefaultVerticesCountMesh extends
+	AbstractUnaryHybridCF<Mesh, DoubleType> implements GeometricOp<Mesh, DoubleType>,
+	Ops.Geometric.VerticesCount
+{
 
 	@Override
-	public void initialize() {
-		boundarySize = Functions.unary(ops(), Ops.Geometric.BoundarySize.class, DoubleType.class, in());
-		convexHullBoundarySize = Functions.unary(ops(), Ops.Geometric.BoundarySizeConvexHull.class, DoubleType.class,
-				in());
+	public void compute(final Mesh input, final DoubleType output) {
+		output.set(input.getVertices().size());
 	}
-
+	
 	@Override
-	public void compute(final I input, final DoubleType output) {
-		output.set(convexHullBoundarySize.calculate(input).get() / boundarySize.calculate(input).get());
-	}
-
-	@Override
-	public DoubleType createOutput(I input) {
+	public DoubleType createOutput(Mesh input) {
 		return new DoubleType();
 	}
-
 }
