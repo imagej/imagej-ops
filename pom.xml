@@ -3,18 +3,30 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>net.imagej</groupId>
-		<artifactId>pom-imagej</artifactId>
-		<version>16.5.0</version>
+		<groupId>org.scijava</groupId>
+		<artifactId>pom-scijava</artifactId>
+		<version>12.0.0</version>
 		<relativePath />
 	</parent>
 
+	<groupId>net.imagej</groupId>
 	<artifactId>imagej-ops</artifactId>
 	<version>0.34.1-SNAPSHOT</version>
 
 	<name>ImageJ Ops</name>
 	<description>ImageJ Operations: a framework for reusable algorithms.</description>
+	<url>http://imagej.net/ImageJ_Ops</url>
 	<inceptionYear>2014</inceptionYear>
+	<organization>
+		<name>ImageJ</name>
+		<url>http://imagej.net/</url>
+	</organization>
+	<licenses>
+		<license>
+			<name>Simplified BSD License</name>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
 	<developers>
 		<developer>
@@ -154,6 +166,13 @@
 		</contributor>
 	</contributors>
 
+	<mailingLists>
+		<mailingList>
+			<name>ImageJ Forum</name>
+			<archive>http://forum.imagej.net/</archive>
+		</mailingList>
+	</mailingLists>
+
 	<scm>
 		<connection>scm:git:git://github.com/imagej/imagej-ops</connection>
 		<developerConnection>scm:git:git@github.com:imagej/imagej-ops</developerConnection>
@@ -170,6 +189,12 @@
 	</ciManagement>
 
 	<properties>
+		<package-name>net.imagej.ops</package-name>
+		<license.licenseName>bsd_2</license.licenseName>
+		<license.copyrightOwners>Board of Regents of the University of
+Wisconsin-Madison, University of Konstanz and Brian Northan.
+1. Redistributions of source code must retain the above copyright notice,</license.copyrightOwners>
+		<license.projectName>ImageJ software for multidimensional image processing and analysis.</license.projectName>
 		<main-class>net.imagej.ops.Main</main-class>
 		<package-name>net.imagej.ops</package-name>
 
@@ -377,5 +402,4 @@ Wisconsin-Madison, University of Konstanz and Brian Northan.</license.copyrightO
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
