@@ -208,7 +208,7 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geom.CentroidII.class)
+	@OpMethod(op = net.imagej.ops.geom.pixelbased.DefaultCentroidII.class)
 	public RealLocalizable centroid(final IterableInterval<?> in) {
 		final RealLocalizable result = (RealLocalizable) ops().run(
 			net.imagej.ops.Ops.Geometric.Centroid.class, in);
@@ -556,7 +556,7 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geom.SizeII.class)
+	@OpMethod(op = net.imagej.ops.geom.pixelbased.DefaultSizeII.class)
 	public DoubleType size(final IterableInterval<?> in) {
 		final DoubleType result = (DoubleType) ops().run(
 			net.imagej.ops.Ops.Geometric.Size.class, in);

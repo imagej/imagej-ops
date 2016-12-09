@@ -27,50 +27,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geom;
 
-import net.imagej.ops.Op;
+package net.imagej.ops.geom.pixelbased;
+
 import net.imagej.ops.Ops;
+import net.imagej.ops.geom.GeometricOp;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
-import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.RealLocalizable;
-import net.imglib2.RealPoint;
-import net.imglib2.roi.IterableRegion;
+import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * This {@link Op} computes the centroid of a {@link IterableRegion} (Label).
+ * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Size}.
  * 
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
-@Plugin(type = Ops.Geometric.Centroid.class, priority = 1)
-public class CentroidII
-		extends
-			AbstractUnaryFunctionOp<IterableInterval<?>, RealLocalizable>
-		implements
-			Ops.Geometric.Centroid {
+@Plugin(type = Ops.Geometric.Size.class, label = "Geometric: Size",
+	priority = Priority.VERY_HIGH_PRIORITY)
+public class DefaultSizeII extends
+	AbstractUnaryFunctionOp<IterableInterval<?>, DoubleType> implements
+	GeometricOp<IterableInterval<?>, DoubleType>, Ops.Geometric.Size
+{
 
 	@Override
-	public RealLocalizable calculate(final IterableInterval<?> input) {
-		int numDimensions = input.numDimensions();
-		double[] output = new double[numDimensions];
-		Cursor<?> c = input.localizingCursor();
-		double[] pos = new double[numDimensions];
-		while (c.hasNext()) {
-			c.fwd();
-			c.localize(pos);
-			for (int i = 0; i < output.length; i++) {
-				output[i] += pos[i];
-			}
-		}
-
-		for (int i = 0; i < output.length; i++) {
-			output[i] = output[i] / input.size();
-		}
-
-		return new RealPoint(output);
+	public DoubleType calculate(IterableInterval<?> input) {
+		return new DoubleType(input.size());
 	}
 
 }
