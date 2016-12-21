@@ -195,6 +195,7 @@
 		<license.copyrightOwners>Board of Regents of the University of
 Wisconsin-Madison, University of Konstanz and Brian Northan.</license.copyrightOwners>
 		<license.projectName>ImageJ software for multidimensional image processing and analysis.</license.projectName>
+		<scijava-common.version>2.62.0</scijava-common.version>
 	</properties>
 
 	<repositories>

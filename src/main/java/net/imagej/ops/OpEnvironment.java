@@ -278,7 +278,6 @@ public interface OpEnvironment extends Contextual {
 	 */
 	default Module module(final Op op, final Object... args) {
 		final Module module = info(op).cInfo().createModule(op);
-		getContext().inject(module.getDelegateObject());
 		return matcher().assignInputs(module, args);
 	}
 
