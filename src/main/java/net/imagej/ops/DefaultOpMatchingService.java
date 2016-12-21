@@ -616,7 +616,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 			final Object value = convert(arg, type);
 			module.setInput(item.getName(), value);
 		}
-		module.setResolved(item.getName(), true);
+		module.resolveInput(item.getName());
 	}
 
 	/** Helper method of {@link #assign}. */
