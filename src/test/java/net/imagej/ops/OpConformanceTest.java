@@ -31,6 +31,7 @@
 package net.imagej.ops;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.scijava.InstantiableException;
@@ -59,4 +60,13 @@ public class OpConformanceTest extends AbstractOpTest {
 		}
 	}
 
+	/** Tests that all ops are valid modules. */
+	@Test
+	public void testValidModules() {
+		for (final OpInfo info : ops.infos()) {
+			if (info.cInfo().isValid()) continue;
+			fail("Invalid op\n\n" + info + //
+				"\n\nproblems: " + info.cInfo().getProblems());
+		}
+	}
 }
