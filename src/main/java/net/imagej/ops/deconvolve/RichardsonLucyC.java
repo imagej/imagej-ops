@@ -56,7 +56,6 @@ import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
 import org.scijava.Priority;
-import org.scijava.app.StatusService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -78,9 +77,6 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 	extends AbstractIterativeFFTFilterC<I, O, K, C> implements
 	Ops.Deconvolve.RichardsonLucy
 {
-
-	@Parameter(required = false)
-	private StatusService status;
 
 	/**
 	 * Op that computes Richardson Lucy update, can be overridden to implement
