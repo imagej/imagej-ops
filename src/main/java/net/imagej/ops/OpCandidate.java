@@ -102,6 +102,16 @@ public class OpCandidate {
 		return info.cInfo();
 	}
 
+	/** Gets the op's input parameters. */
+	public List<ModuleItem<?>> inputs() {
+		return opInfo().inputs();
+	}
+
+	/** Gets the op's output parameters. */
+	public List<ModuleItem<?>> outputs() {
+		return opInfo().outputs();
+	}
+
 	/** Sets the module instance associated with the attempted match. */
 	public void setModule(final Module module) {
 		this.module = module;

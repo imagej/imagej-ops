@@ -54,7 +54,7 @@ public abstract class AbstractIterativeFFTFilterC<I extends RealType<I>, O exten
 {
 
 	@Parameter(required = false)
-	private StatusService status;
+	protected StatusService status;
 
 	/**
 	 * Max number of iterations to perform

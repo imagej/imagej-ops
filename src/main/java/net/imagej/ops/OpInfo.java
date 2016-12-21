@@ -31,8 +31,10 @@
 package net.imagej.ops;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 import org.scijava.command.CommandInfo;
+import org.scijava.module.ModuleItem;
 import org.scijava.plugin.SciJavaPlugin;
 import org.scijava.util.ClassUtils;
 
@@ -58,6 +60,16 @@ public class OpInfo implements Comparable<OpInfo> {
 	/** Gets the associated {@link CommandInfo} metadata. */
 	public CommandInfo cInfo() {
 		return cInfo;
+	}
+
+	/** Gets the op's input parameters. */
+	public List<ModuleItem<?>> inputs() {
+		return OpUtils.inputs(cInfo());
+	}
+
+	/** Gets the op's output parameters. */
+	public List<ModuleItem<?>> outputs() {
+		return OpUtils.outputs(cInfo());
 	}
 
 	/** Gets whether the op has a name. */

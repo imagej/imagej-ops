@@ -30,7 +30,6 @@
 
 package net.imagej.ops.deconvolve;
 
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
@@ -61,9 +60,6 @@ public class RichardsonLucyTVF<I extends RealType<I> & NativeType<I>, O extends 
 	extends RichardsonLucyF<I, O, K, C> implements
 	Ops.Deconvolve.RichardsonLucyTV
 {
-
-	@Parameter
-	private OpService ops;
 
 	@Parameter
 	private float regularizationFactor = 0.01f;

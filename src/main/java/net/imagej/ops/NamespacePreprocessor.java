@@ -69,15 +69,16 @@ public class NamespacePreprocessor extends AbstractPreprocessorPlugin {
 	private <T> void assignNamespace(final Module module,
 		final ModuleItem<T> item)
 	{
-		if (module.isResolved(item.getName())) return;
+		if (module.isInputResolved(item.getName())) return;
 		T defaultValue = null;
 		
 		if (Namespace.class.isAssignableFrom(item.getType())) {
-			defaultValue = (T) nsService.create((Class<? extends Namespace>)item.getType(), ops);
+			defaultValue = (T) nsService.create(//
+				(Class<? extends Namespace>) item.getType(), ops);
 		}
 		if (defaultValue == null) return;
 
 		item.setValue(module, defaultValue);
-		module.setResolved(item.getName(), true);
+		module.resolveInput(item.getName());
 	}
 }

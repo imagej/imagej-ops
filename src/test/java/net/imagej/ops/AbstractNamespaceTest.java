@@ -193,7 +193,7 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		int missingCount = 0;
 		for (final OpInfo info : infos) {
 			int requiredCount = 0, inputCount = 0;
-			for (final ModuleItem<?> input : info.cInfo().inputs()) {
+			for (final ModuleItem<?> input : info.inputs()) {
 				if (input.isRequired()) requiredCount++;
 				inputCount++;
 			}
@@ -298,7 +298,7 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		// also check that raw types exactly match
 		final Object[] paddedArgs = matcher.padArgs(candidate);
 		int i = 0;
-		for (final ModuleItem<?> input : candidate.cInfo().inputs()) {
+		for (final ModuleItem<?> input : candidate.inputs()) {
 			final Object arg = paddedArgs[i++];
 			if (!typeMatches(arg, input.getType())) return false;
 		}
@@ -318,7 +318,7 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		final OpCandidate candidate)
 	{
 		final List<Type> outTypes = new ArrayList<>();
-		for (final ModuleItem<?> output : candidate.cInfo().outputs()) {
+		for (final ModuleItem<?> output : candidate.outputs()) {
 			outTypes.add(output.getGenericType());
 		}
 		if (outTypes.size() == 0) return returnType == void.class;
@@ -369,7 +369,7 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		int outputCount = 0;
 		String returnType = "void";
 		String castPrefix = "";
-		for (final ModuleItem<?> output : info.cInfo().outputs()) {
+		for (final ModuleItem<?> output : info.outputs()) {
 			if (++outputCount == 1) {
 				returnType = typeString(output);
 				castPrefix = "(" + castTypeString(output) + ") ";
@@ -393,7 +393,7 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		int optionalIndex = 0;
 		final StringBuilder args = new StringBuilder();
 		args.append(className);
-		for (final ModuleItem<?> input : info.cInfo().inputs()) {
+		for (final ModuleItem<?> input : info.inputs()) {
 			if (!input.isRequired()) {
 				// leave off unspecified optional arguments
 				if (++optionalIndex > optionalsToFill) continue;

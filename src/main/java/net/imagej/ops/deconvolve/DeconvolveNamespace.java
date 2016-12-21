@@ -602,6 +602,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			final Interval imgConvolutionInterval, final Type<O> outType,
 			final Dimensions k)
 	{
+		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
 				net.imagej.ops.deconvolve.NonCirculantFirstGuess.class, in,
