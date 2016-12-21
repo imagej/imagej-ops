@@ -61,7 +61,6 @@ public class RichardsonLucyUpdate<T extends RealType<T>> extends
 		null;
 
 	@Override
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initialize() {
 
 		// TODO: comment in when problem with initialize is fixed
