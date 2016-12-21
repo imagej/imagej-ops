@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.threshold.rosin;
 
 import net.imagej.ops.Ops;
@@ -40,147 +41,148 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Implements Rosin's threshold method. From : Rosin, Paul L. "Unimodal thresholding." Pattern
- * recognition 34.11 (2001): 2083-2096.
- *
- * Implementation inspired/copied from Paul Rosin C implementation :
- * http://users.cs.cf.ac.uk/Paul.Rosin/resources/unimodal/
+ * Implements Rosin's threshold method. From : Rosin, Paul L. "Unimodal
+ * thresholding." Pattern recognition 34.11 (2001): 2083-2096.
+ * <p>
+ * Implementation inspired/copied from
+ * <a href="http://users.cs.cf.ac.uk/Paul.Rosin/resources/unimodal/">Paul Rosin
+ * C implementation</a>.
+ * </p>
  *
  * @author Hadrien Mary
  */
 @Plugin(type = Ops.Threshold.Rosin.class, priority = Priority.HIGH_PRIORITY)
 public class ComputeRosinThreshold<T extends RealType<T>> extends
-        AbstractComputeThresholdHistogram<T> implements Ops.Threshold.Rosin {
+	AbstractComputeThresholdHistogram<T> implements Ops.Threshold.Rosin
+{
 
-        @Parameter
-        private LogService log;
+	@Parameter
+	private LogService log;
 
-        @Override
-        public long computeBin(final Histogram1d<T> histo) {;
+	@Override
+	public long computeBin(final Histogram1d<T> histo) {
+		final long[] hist = histo.toLongArray();
 
-                long[] hist = histo.toLongArray();
+		final int noPts = hist.length;
+		int pk, st, fi, d1, d2;
+		long tmp;
+		int i;
+		int thresh;
+		boolean doInvert = false;
 
-                int noPts = hist.length;
-                int pk, st, fi, d1, d2;
-                long tmp;
-                int i;
-                int thresh;
-                boolean doInvert = false;
+		pk = findStart(hist, noPts);
+		st = findFirst(hist, noPts);
+		fi = findEnd(hist, noPts);
+		d1 = pk - st;
+		d2 = fi - pk;
 
-                pk = findStart(hist, noPts);
-                st = findFirst(hist, noPts);
-                fi = findEnd(hist, noPts);
-                d1 = pk - st;
-                d2 = fi - pk;
+		if ((d1 < 0) || (d2 < 0)) {
+			log.warn("Histogram peak at a strange location");
+		}
 
-                if ((d1 < 0) || (d2 < 0)) {
-                        log.warn("Histogram peak at a strange location");
-                }
+		if (d1 > d2) {
+			doInvert = true;
+		}
 
-                if (d1 > d2) {
-                        doInvert = true;
-                }
+		if (doInvert) {
+			for (i = 0; i < noPts / 2; i++) {
+				tmp = hist[i];
+				hist[i] = hist[noPts - 1 - i];
+				hist[noPts - 1 - i] = tmp;
+			}
+		}
 
-                if (doInvert) {
-                        for (i = 0; i < noPts / 2; i++) {
-                                tmp = hist[i];
-                                hist[i] = hist[noPts - 1 - i];
-                                hist[noPts - 1 - i] = tmp;
-                        }
-                }
+		st = findStart(hist, noPts);
 
-                st = findStart(hist, noPts);
+		thresh = findCorner(hist, st, noPts);
 
-                thresh = findCorner(hist, st, noPts);
+		if (doInvert) {
+			thresh = noPts - thresh - 1;
+		}
 
-                if (doInvert) {
-                        thresh = noPts - thresh - 1;
-                }
+		return thresh;
+	}
 
-                return thresh;
-        }
+	private int findStart(final long[] Y, final int noPts) {
+		int i, st;
+		long max;
 
-        private int findStart(long[] Y, int noPts) {
-                int i, st;
-                long max;
+		// Find largest peak
+		st = 0;
+		max = Y[0];
+		for (i = 1; i < noPts; i++) {
+			if (Y[i] > max) {
+				max = Y[i];
+				st = i;
+			}
+		}
 
-                // Find largest peak
-                st = 0;
-                max = Y[0];
-                for (i = 1; i < noPts; i++) {
-                        if (Y[i] > max) {
-                                max = Y[i];
-                                st = i;
-                        }
-                }
+		return st;
+	}
 
-                return st;
-        }
+	private int findFirst(final long[] Y, final int noPts) {
+		int i, st;
 
-        private int findFirst(long[] Y, int noPts) {
-                int i, st;
+		st = 0;
+		for (i = 0; i < noPts; i++) {
+			if (Y[i] > 0) {
+				st = i;
+				break;
+			}
+		}
 
-                st = 0;
-                for (i = 0; i < noPts; i++) {
-                        if (Y[i] > 0) {
-                                st = i;
-                                break;
-                        }
-                }
+		return st;
+	}
 
-                return st;
-        }
+	private int findEnd(final long[] Y, final int noPts) {
+		int i, fi;
 
-        private int findEnd(long[] Y, int noPts) {
-                int i, fi;
+		fi = 0;
+		for (i = 1; i < noPts; i++) {
+			if (Y[i] > 0) {
+				fi = i;
+			}
+		}
 
-                fi = 0;
-                for (i = 1; i < noPts; i++) {
-                        if (Y[i] > 0) {
-                                fi = i;
-                        }
-                }
+		return fi;
+	}
 
-                return fi;
-        }
+	private int findCorner(final long[] Y, final int st, int noPts) {
+		final long[] X = new long[noPts];
+		int i;
+		float dist;
+		float maxDist = -1;
+		int thresh = -1;
+		int end;
 
-        private int findCorner(long[] Y, int st, int noPts) {
+		for (i = st; i < noPts; i++) {
+			X[i] = i;
+		}
 
-                long[] X = new long[noPts];
-                int i;
-                float dist;
-                float maxDist = -1;
-                int thresh = -1;
-                int end;
+		end = noPts - 1;
+		while ((Y[end] == 0) && (end >= 0)) {
+			end--;
+		}
+		noPts = end;
+		if (end <= 0) {
+			throw new IllegalStateException("Histogram is empty.");
+		}
 
-                for (i = st; i < noPts; i++) {
-                        X[i] = i;
-                }
+		for (i = st; i <= noPts; i++) {
+			dist = (Y[st] - Y[noPts - 1]) * X[i] //
+				- (X[st] - X[noPts - 1]) * Y[i] //
+				- (X[noPts - 1] * Y[st]) //
+				+ (X[st] * Y[noPts - 1]);
+			dist = (float) (Math.pow(dist, 2) / (Math.pow(X[st] - X[noPts - 1], 2) +
+				Math.pow(Y[st] - Y[noPts - 1], 2)));
+			dist = Math.abs(dist);
 
-                end = noPts - 1;
-                while ((Y[end] == 0) && (end >= 0)) {
-                        end--;
-                }
-                noPts = end;
-                if (end <= 0) {
-                        throw new IllegalStateException("Histogram is empty.");
-                }
+			if (dist > maxDist) {
+				maxDist = dist;
+				thresh = i;
+			}
+		}
 
-                for (i = st; i <= noPts; i++) {
-                        dist = (Y[st] - Y[noPts - 1]) * X[i]
-                                - (X[st] - X[noPts - 1]) * Y[i]
-                                - (X[noPts - 1] * Y[st])
-                                + (X[st] * Y[noPts - 1]);
-                        dist = (float) (Math.pow(dist, 2) / (Math.pow(X[st] - X[noPts - 1], 2) + Math.pow(Y[st] - Y[noPts - 1], 2)));
-                        dist = Math.abs(dist);
-
-                        if (dist > maxDist) {
-                                maxDist = dist;
-                                thresh = i;
-                        }
-                }
-
-                return thresh;
-        }
-
+		return thresh;
+	}
 }
