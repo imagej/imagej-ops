@@ -32,6 +32,7 @@ package net.imagej.ops;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -69,6 +70,16 @@ public final class OpUtils {
 			result[i++] = o;
 		}
 		return result;
+	}
+
+	/** Gets the given {@link ModuleInfo}'s list of inputs. */
+	public static List<ModuleItem<?>> inputs(final ModuleInfo info) {
+		return asList(info.inputs());
+	}
+
+	/** Gets the given {@link ModuleInfo}'s list of outputs. */
+	public static List<ModuleItem<?>> outputs(final ModuleInfo info) {
+		return asList(info.outputs());
 	}
 
 	/** Gets the namespace portion of the given op name. */
@@ -307,6 +318,13 @@ public final class OpUtils {
 	}
 
 	// -- Helper methods --
+
+	/** Converts {@link Iterable} to {@link List}. */
+	private static <T> List<T> asList(final Iterable<T> iterable) {
+		final ArrayList<T> list = new ArrayList<>();
+		iterable.forEach(input -> list.add(input));
+		return list;
+	}
 
 	/**
 	 * Helper method of {@link #opString(ModuleInfo, ModuleItem)} which parses a set of items
