@@ -35,14 +35,18 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import net.imagej.ops.OpCandidate.StatusCode;
 
+import org.scijava.Context;
 import org.scijava.command.CommandInfo;
 import org.scijava.module.Module;
 import org.scijava.module.ModuleInfo;
 import org.scijava.module.ModuleItem;
 import org.scijava.plugin.SciJavaPlugin;
+import org.scijava.service.Service;
 import org.scijava.util.GenericUtils;
 
 /**
@@ -72,9 +76,13 @@ public final class OpUtils {
 		return result;
 	}
 
-	/** Gets the given {@link ModuleInfo}'s list of inputs. */
+	/**
+	 * Gets the given {@link ModuleInfo}'s list of inputs, excluding special ones
+	 * like {@link Service}s and {@link Context}s.
+	 */
 	public static List<ModuleItem<?>> inputs(final ModuleInfo info) {
-		return asList(info.inputs());
+		final List<ModuleItem<?>> inputs = asList(info.inputs());
+		return filter(inputs, input -> !isInjectable(input.getType()));
 	}
 
 	/** Gets the given {@link ModuleInfo}'s list of outputs. */
@@ -324,6 +332,17 @@ public final class OpUtils {
 		final ArrayList<T> list = new ArrayList<>();
 		iterable.forEach(input -> list.add(input));
 		return list;
+	}
+
+	/** Filters a list with the given predicate, concealing boilerplate crap. */
+	private static <T> List<T> filter(final List<T> list, final Predicate<T> p) {
+		return list.stream().filter(p).collect(Collectors.toList());
+	}
+
+	// TODO: Move to Context.
+	private static boolean isInjectable(final Class<?> type) {
+		return Service.class.isAssignableFrom(type) || //
+			Context.class.isAssignableFrom(type);
 	}
 
 	/**
