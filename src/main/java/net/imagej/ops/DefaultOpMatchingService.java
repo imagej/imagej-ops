@@ -158,7 +158,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	@Override
 	public Module assignInputs(final Module module, final Object... args) {
 		int i = 0;
-		for (final ModuleItem<?> item : module.getInfo().inputs()) {
+		for (final ModuleItem<?> item : OpUtils.inputs(module.getInfo())) {
 			assign(module, args[i++], item);
 		}
 		return module;
@@ -167,7 +167,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	@Override
 	public Object[] padArgs(final OpCandidate candidate) {
 		int inputCount = 0, requiredCount = 0;
-		for (final ModuleItem<?> item : candidate.cInfo().inputs()) {
+		for (final ModuleItem<?> item : candidate.inputs()) {
 			inputCount++;
 			if (item.isRequired()) requiredCount++;
 		}
@@ -195,7 +195,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 		final int optionalsToFill = optionalCount - argsToPad;
 		final Object[] paddedArgs = new Object[inputCount];
 		int argIndex = 0, paddedIndex = 0, optionalIndex = 0;
-		for (final ModuleItem<?> item : candidate.cInfo().inputs()) {
+		for (final ModuleItem<?> item : candidate.inputs()) {
 			if (!item.isRequired() && optionalIndex++ >= optionalsToFill) {
 				// skip this optional parameter (pad with null)
 				paddedIndex++;
@@ -306,7 +306,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 */
 	private boolean missArgs(final OpCandidate candidate) {
 		int i = 0;
-		for (final ModuleItem<?> item : candidate.cInfo().inputs()) {
+		for (final ModuleItem<?> item : candidate.inputs()) {
 			if (candidate.getArgs()[i++] == null && item.isRequired()) {
 				candidate.setStatus(StatusCode.REQUIRED_ARG_IS_NULL, null, item);
 				return true;
@@ -325,7 +325,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	private boolean typesPerfectMatch(final OpCandidate candidate) {
 		int i = 0;
 		final Object[] args = candidate.getArgs();
-		for (final ModuleItem<?> item : candidate.cInfo().inputs()) {
+		for (final ModuleItem<?> item : candidate.inputs()) {
 			if (args[i] != null) {
 				final Class<?> typeClass = OpMatchingUtil.getClass(item.getType());
 				final Class<?> argClass = OpMatchingUtil.getClass(args[i]);
@@ -381,7 +381,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	private int findCastLevels(final OpCandidate candidate) {
 		int level = 0, i = 0;
 		final Object[] args = candidate.getArgs();
-		for (final ModuleItem<?> item : candidate.cInfo().inputs()) {
+		for (final ModuleItem<?> item : candidate.inputs()) {
 			final Class<?> type = item.getType();
 			if (args[i] != null) {
 				final int currLevel = OpMatchingUtil.findCastLevels(type, OpMatchingUtil
@@ -455,8 +455,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 		final Collection<Type> outTypes = candidate.getRef().getOutTypes();
 		if (outTypes == null) return true; // no constraints on output types
 
-		final Iterator<ModuleItem<?>> outItems = //
-			candidate.cInfo().outputs().iterator();
+		final Iterator<ModuleItem<?>> outItems = candidate.outputs().iterator();
 		for (final Type outType : outTypes) {
 			if (!outItems.hasNext()) {
 				candidate.setStatus(StatusCode.TOO_FEW_OUTPUTS);
@@ -531,7 +530,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 */
 	private int typesMatch(final OpCandidate candidate, final Object[] args) {
 		int i = 0;
-		for (final ModuleItem<?> item : candidate.cInfo().inputs()) {
+		for (final ModuleItem<?> item : candidate.inputs()) {
 			if (!canAssign(candidate, args[i], item)) return i;
 			i++;
 		}
@@ -543,7 +542,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 		final Object[] args, final int index)
 	{
 		int i = 0;
-		for (final ModuleItem<?> item : candidate.opInfo().cInfo().inputs()) {
+		for (final ModuleItem<?> item : candidate.inputs()) {
 			if (i++ == index) {
 				final Object arg = args[index];
 				final String argType = arg == null ? "null" : arg.getClass().getName();

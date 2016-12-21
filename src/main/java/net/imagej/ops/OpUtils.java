@@ -197,10 +197,10 @@ public final class OpUtils {
 		final ModuleItem<?> special)
 	{
 		final StringBuilder sb = new StringBuilder();
-		final String outputString = paramString(info.outputs(), null).trim();
+		final String outputString = paramString(outputs(info), null).trim();
 		if (!outputString.isEmpty()) sb.append("(" + outputString + ") =\n\t");
 		sb.append(info.getDelegateClassName());
-		sb.append("(" + paramString(info.inputs(), special) + ")");
+		sb.append("(" + paramString(inputs(info), special) + ")");
 		return sb.toString();
 	}
 
@@ -212,12 +212,12 @@ public final class OpUtils {
 	 */
 	public static String simpleString(final CommandInfo info) {
 		final StringBuilder sb = new StringBuilder();
-		final String outputString = paramString(info.outputs(), null, ", ").trim();
+		final String outputString = paramString(outputs(info), null, ", ").trim();
 		if (!outputString.isEmpty()) sb.append("" + outputString + "  <=  ");
 
 		final Class<? extends SciJavaPlugin> type = info.getAnnotation().type();
 		sb.append(type.getSimpleName());
-		sb.append("(" + paramString(info.inputs(), null, ", ") + ")");
+		sb.append("(" + paramString(inputs(info), null, ", ") + ")");
 		return sb.toString().replaceAll("\n|\t", "");
 	}
 
@@ -241,7 +241,7 @@ public final class OpUtils {
 			sb.append(info.getAnnotation().type().getName());
 		}
 
-		for (final ModuleItem<?> item : info.inputs()) {
+		for (final ModuleItem<?> item : inputs(info)) {
 			sb.append(", ");
 			sb.append(item.getType().getSimpleName());
 		}
@@ -304,7 +304,7 @@ public final class OpUtils {
 			if (status != null) sb.append("\t" + status + "\n");
 			if (candidate.getStatusCode() == StatusCode.DOES_NOT_CONFORM) {
 				// show argument values when a contingent op rejects them
-				for (final ModuleItem<?> item : info.inputs()) {
+				for (final ModuleItem<?> item : inputs(info)) {
 					final Object value = item.getValue(candidate.getModule());
 					sb.append("\t\t" + item.getName() + " = " + value + "\n");
 				}
