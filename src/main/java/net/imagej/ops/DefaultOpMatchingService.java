@@ -291,8 +291,9 @@ public class DefaultOpMatchingService extends AbstractService implements
 			}
 			priority = p;
 
-			if (filter.test(candidate) && moduleConforms(candidate)) matches.add(
-				candidate);
+			if (filter.test(candidate) && moduleConforms(candidate)) {
+				matches.add(candidate);
+			}
 		}
 		return matches;
 	}
