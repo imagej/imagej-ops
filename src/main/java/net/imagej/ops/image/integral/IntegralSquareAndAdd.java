@@ -30,42 +30,39 @@
 
 package net.imagej.ops.image.integral;
 
-import net.imagej.ops.Ops;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCI;
+import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.integer.LongType;
-import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
 
 /**
- * <p>
- * <i>n</i>-dimensional squared integral image that stores sums using
- * {@code RealType}. Care must be taken that sums do not overflow the capacity
- * of {@code RealType} (i.e. {@link DoubleType} or {@link LongType}). Instead of
- * the sum of values the sum of squared values is computed.
- * </p>
+ * Implements the row-wise addition required for computations of squared
+ * integral images.
  *
- * @param <I> The type of the input image.
  * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Image.SquareIntegral.class,
-	priority = Priority.LOW_PRIORITY + 1)
-public class SquareIntegralImg<I extends RealType<I>> extends
-	AbstractIntegralImg<I> implements Ops.Image.SquareIntegral
+class IntegralSquareAndAdd<I extends RealType<I>> extends
+	AbstractUnaryHybridCI<IterableInterval<I>, IterableInterval<I>>
 {
 
 	@Override
-	public AbstractUnaryHybridCI<IterableInterval<I>, IterableInterval<I>>
-		getComputer(final int dimension)
+	public void compute(final IterableInterval<I> input,
+		final IterableInterval<I> output)
 	{
-		if (dimension == 0) {
-			return new IntegralSquareAndAdd<>();
-		}
 
-		return new IntegralAdd<>();
+		final Cursor<I> inputCursor = input.cursor();
+		final Cursor<I> outputCursor = output.cursor();
+
+		double tmp = 0.0d;
+		while (outputCursor.hasNext()) {
+
+			final I inputValue = inputCursor.next();
+			final I outputValue = outputCursor.next();
+
+			tmp += Math.pow(inputValue.getRealDouble(), 2);
+
+			outputValue.setReal(tmp);
+		}
 	}
 
 }
