@@ -33,6 +33,7 @@ package net.imagej.ops.threshold.apply;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Threshold.Huang;
 import net.imagej.ops.Ops.Threshold.IJ1;
 import net.imagej.ops.Ops.Threshold.Intermodes;
@@ -60,6 +61,7 @@ import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMaxLikelihoodThre
 import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMinErrorThreshold;
 import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMinimumThreshold;
 import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalMomentsThreshold;
+import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalOtsuThreshold;
 import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalPercentileThreshold;
 import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalRenyiEntropyThreshold;
 import net.imagej.ops.threshold.ApplyThresholdMethodLocal.LocalShanbhagThreshold;
@@ -94,6 +96,8 @@ import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.UnsignedByteType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -109,6 +113,7 @@ import org.junit.Test;
 public class LocalThresholdTest extends AbstractOpTest {
 
 	Img<ByteType> in;
+	Img<DoubleType> normalizedIn;
 	Img<BitType> out;
 
 	/**
@@ -116,9 +121,12 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 *
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unchecked")
 	@Before
 	public void before() throws Exception {
 		in = generateByteArrayTestImg(true, new long[] { 10, 10 });
+		normalizedIn = (Img<DoubleType>) ops.run(Ops.Image.Normalize.class, in,
+			null, null, new DoubleType(0.0), new DoubleType(1.0), false);
 
 		out = in.factory().imgFactory(new BitType()).create(in, new BitType());
 	}
@@ -478,7 +486,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	public void testLocalNiblackThreshold() {
 		ops.run(LocalNiblackThreshold.class, out, in, new RectangleShape(1, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
-			0.0, 0.0);
+			0.2, 0.0);
 
 		assertEquals(out.firstElement().get(), true);
 	}
@@ -490,7 +498,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	public void testLocalNiblackThresholdIntegral() {
 		ops.run(LocalNiblackThresholdIntegral.class, out, in, new RectangleShape(3,
 			false), new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(
-				Boundary.SINGLE), 0.0, 0.0);
+				Boundary.SINGLE), 0.2, 0.0);
 
 		assertEquals(out.firstElement().get(), true);
 	}
@@ -510,20 +518,18 @@ public class LocalThresholdTest extends AbstractOpTest {
 		catch (IncompatibleTypeException exc) {
 			exc.printStackTrace();
 		}
-		
+
 		// Default implementation
-		ops.run(LocalNiblackThreshold.class, out2, in, new RectangleShape(2, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
-			0.0, 0.0);
-		
+		ops.run(LocalNiblackThreshold.class, out2, normalizedIn, new RectangleShape(
+			2, false), new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(
+				Boundary.SINGLE), 0.2, 1.0);
+
 		// Integral image-based implementation
-		ops.run(LocalNiblackThresholdIntegral.class,
-			out3,
-			in,
+		ops.run(LocalNiblackThresholdIntegral.class, out3, normalizedIn,
 			new RectangleShape(2, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
-			0.0, 0.0);
-		
+			0.2, 1.0);
+
 		testIterableIntervalSimilarity(out2, out3);
 	}
 
@@ -554,11 +560,12 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testLocalPhansalkar() {
-		ops.run(LocalPhansalkarThreshold.class, out, in, new RectangleShape(1,
-			false), new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(
-				Boundary.SINGLE), 0.0, 0.0);
+		ops.run(LocalPhansalkarThreshold.class, out, normalizedIn,
+			new RectangleShape(2, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
+			0.25, 0.5);
 
-		assertEquals(out.firstElement().get(), false);
+		assertEquals(out.firstElement().get(), true);
 	}
 
 	/**
@@ -566,10 +573,12 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testLocalPhansalkarIntegral() {
-		ops.run(LocalPhansalkarThresholdIntegral.class, out, in, new RectangleShape(3,
-			false), null, 0.0, 0.0);
+		ops.run(LocalPhansalkarThresholdIntegral.class, out, normalizedIn,
+			new RectangleShape(2, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
+			0.25, 0.5);
 
-		assertEquals(out.firstElement().get(), false);
+		assertEquals(out.firstElement().get(), true);
 	}
 
 	/**
@@ -587,19 +596,19 @@ public class LocalThresholdTest extends AbstractOpTest {
 		catch (IncompatibleTypeException exc) {
 			exc.printStackTrace();
 		}
-		
+
 		// Default implementation
-		ops.run(LocalPhansalkarThreshold.class, out2, in, new RectangleShape(2, false),
+		ops.run(LocalPhansalkarThreshold.class, out2, normalizedIn,
+			new RectangleShape(2, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
-			0.0, 0.0);
-		
+			0.25, 0.5);
+
 		// Integral image-based implementation
-		ops.run(LocalPhansalkarThresholdIntegral.class,
-			out3,
-			in,
-			new RectangleShape(2, false), null,
-			0.0, 0.0);
-		
+		ops.run(LocalPhansalkarThresholdIntegral.class, out3, normalizedIn,
+			new RectangleShape(2, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
+			0.25, 0.5);
+
 		testIterableIntervalSimilarity(out2, out3);
 	}
 
@@ -619,9 +628,9 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testLocalSauvola() {
-		ops.run(LocalSauvolaThreshold.class, out, in, new RectangleShape(1, false),
+		ops.run(LocalSauvolaThreshold.class, out, in, new RectangleShape(2, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
-			0.0, 0.0);
+			0.5, 0.5);
 
 		assertEquals(out.firstElement().get(), false);
 	}
@@ -631,8 +640,8 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testLocalSauvolaIntegral() {
-		ops.run(LocalSauvolaThresholdIntegral.class, out, in, new RectangleShape(3, false), null,
-			0.0, 0.0);
+		ops.run(LocalSauvolaThresholdIntegral.class, out, in, new RectangleShape(2, false), new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
+			0.5, 0.5);
 
 		assertEquals(out.firstElement().get(), false);
 	}
@@ -654,16 +663,16 @@ public class LocalThresholdTest extends AbstractOpTest {
 		}
 		
 		// Default implementation
-		ops.run(LocalSauvolaThreshold.class, out2, in, new RectangleShape(2, false),
+		ops.run(LocalSauvolaThreshold.class, out2, normalizedIn, new RectangleShape(2, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
-			0.0, 0.0);
+			0.5, 0.5);
 		
 		// Integral image-based implementation
 		ops.run(LocalSauvolaThresholdIntegral.class,
 			out3,
-			in,
-			new RectangleShape(2, false), null,
-			0.0, 0.0);
+			normalizedIn,
+			new RectangleShape(2, false), new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
+			0.5, 0.5);
 		
 		testIterableIntervalSimilarity(out2, out3);
 	}
