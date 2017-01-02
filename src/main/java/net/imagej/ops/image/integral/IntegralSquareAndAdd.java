@@ -40,6 +40,7 @@ import net.imglib2.type.numeric.RealType;
  * integral images.
  *
  * @author Stefan Helfrich (University of Konstanz)
+ * @param <I> type of inputs
  */
 class IntegralSquareAndAdd<I extends RealType<I>> extends
 	AbstractUnaryHybridCI<IterableInterval<I>, IterableInterval<I>>
