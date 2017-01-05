@@ -422,6 +422,19 @@ public class ImageNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(
+		op = net.imagej.ops.image.normalize.FlexibleNormalizeIIComputer.class)
+	public <T extends RealType<T>, O extends RealType<O>> IterableInterval<O>
+		normalize(final IterableInterval<O> out, final IterableInterval<T> in,
+			final Class<O> outType)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
+			net.imagej.ops.image.normalize.FlexibleNormalizeIIComputer.class, out, in,
+			outType);
+		return result;
+	}
+
 	@Override
 	public String getName() {
 		return "image";
