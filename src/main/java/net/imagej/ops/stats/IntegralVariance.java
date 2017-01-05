@@ -112,6 +112,7 @@ public class IntegralVariance<I extends RealType<I>> extends
 		sum1.div(valueAsDoubleType); // NB
 
 		sum2.sub(sum1);
+		valueAsDoubleType.sub(new DoubleType(1)); // NB
 		sum2.div(valueAsDoubleType); // NB
 
 		output.set(sum2);
