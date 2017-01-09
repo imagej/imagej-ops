@@ -33,10 +33,16 @@ package net.imagej.ops.image.normalize;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Ops;
+import net.imagej.ops.Ops.Create.ImgFactory;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImg;
+import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
 
 import org.junit.Test;
@@ -70,5 +76,16 @@ public class NormalizeTest extends AbstractOpTest {
 			assertEquals(outCursor.next().get(), lazyCursor.next().get());
 			assertEquals(outCursor.get().get(), notLazyCursor.next().get());
 		}
+	}
+
+	@Test
+	public void testFlexibleNormalize() {
+
+		Img<ByteType> in = generateByteArrayTestImg(true, 5, 5);
+		Img<DoubleType> out = ops.create().img(in, new DoubleType());
+
+		ops.run(FlexibleNormalizeIIComputer.class, out, in);
+
+		ops.image().normalize(out, in);
 	}
 }

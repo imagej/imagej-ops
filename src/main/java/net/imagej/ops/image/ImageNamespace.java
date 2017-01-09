@@ -265,14 +265,16 @@ public class ImageNamespace extends AbstractNamespace {
 
 	// -- normalize --
 
-	@OpMethod(op = net.imagej.ops.image.normalize.NormalizeIIComputer.class)
+	@OpMethod(ops = {
+		net.imagej.ops.image.normalize.FlexibleNormalizeIIComputer.class,
+		net.imagej.ops.image.normalize.NormalizeIIComputer.class })
 	public
-		<T extends RealType<T>> IterableInterval<T> normalize(
-			final IterableInterval<T> out, final IterableInterval<T> in)
+		<T extends RealType<T>, O extends RealType<O>> IterableInterval<O> normalize(
+			final IterableInterval<O> out, final IterableInterval<T> in)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result =
-			(IterableInterval<T>) ops()
+		final IterableInterval<O> result =
+			(IterableInterval<O>) ops()
 				.run(net.imagej.ops.Ops.Image.Normalize.class,
 					out, in);
 		return result;
@@ -419,19 +421,6 @@ public class ImageNamespace extends AbstractNamespace {
 			(IterableInterval<T>) ops().run(
 				net.imagej.ops.Ops.Image.Normalize.class,
 				in, sourceMin, sourceMax, targetMin, targetMax, isLazy);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.image.normalize.FlexibleNormalizeIIComputer.class)
-	public <T extends RealType<T>, O extends RealType<O>> IterableInterval<O>
-		normalize(final IterableInterval<O> out, final IterableInterval<T> in,
-			final Class<O> outType)
-	{
-		@SuppressWarnings("unchecked")
-		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
-			net.imagej.ops.image.normalize.FlexibleNormalizeIIComputer.class, out, in,
-			outType);
 		return result;
 	}
 

@@ -31,14 +31,11 @@
 package net.imagej.ops.image.normalize;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Convert.Float64;
-import net.imagej.ops.Ops.Image.Normalize;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -55,26 +52,27 @@ public class FlexibleNormalizeIIComputer<T extends RealType<T>, O extends RealTy
 	implements Ops.Image.Normalize
 {
 
-	@Parameter(required = true)
-	private Class<O> outType;
-
-	UnaryComputerOp<IterableInterval<T>, IterableInterval<O>> converterOp;
+	UnaryComputerOp<T, O> converterOp;
 	UnaryComputerOp<IterableInterval<O>, IterableInterval<O>> normalizeOp;
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		// TODO Get converter
-		converterOp = (UnaryComputerOp) ops().op(Ops.Convert.Float64.class, outType, in().firstElement().getClass());
-		// TODO Get Ops.Image.Normalize
-		normalizeOp = (UnaryComputerOp) ops().op(Ops.Image.Normalize.class, IterableInterval.class, IterableInterval.class);
+		// TODO Replace with Ops.Convert.Copy?
+		converterOp = (UnaryComputerOp) ops().op(Ops.Convert.Float64.class, out().firstElement().getClass(), in().firstElement().getClass());
+		normalizeOp = (UnaryComputerOp) ops().op(Ops.Image.Normalize.class,
+			out() != null ? out() : IterableInterval.class, in() != null ? in()
+				: IterableInterval.class);
 	}
 
 	@Override
 	public void compute(final IterableInterval<T> input,
 		final IterableInterval<O> output)
 	{
-		IterableInterval<O> converted = converterOp.compute(input);
+//		ops().run(Ops.Convert.ImageType.class, output, input, converterOp);
+		IterableInterval<O> converted = ops().copy().iterableInterval(output);
+		ops().map(converted, input, converterOp);
+
 		normalizeOp.compute(converted, output);
 	}
 }
