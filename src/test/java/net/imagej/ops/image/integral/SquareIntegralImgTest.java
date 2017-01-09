@@ -33,7 +33,6 @@ package net.imagej.ops.image.integral;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.apply.LocalThresholdTest;
-import net.imglib2.FinalInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
@@ -50,13 +49,13 @@ import org.junit.Test;
 /**
  * @author Stefan Helfrich (University of Konstanz)
  */
-public class IntegralImgTest extends AbstractOpTest {
+public class SquareIntegralImgTest extends AbstractOpTest {
 
 	Img<ByteType> in;
 	RandomAccessibleInterval<DoubleType> out;
 
 	/**
-	 * Initialize images.
+	 * Initialize image.
 	 *
 	 * @throws Exception
 	 */
@@ -66,63 +65,64 @@ public class IntegralImgTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see DefaultIntegralImg
 	 * @see SquareIntegralImg
 	 */
-	@SuppressWarnings({ "unchecked" })
 	@Test
 	public void testIntegralImageCreation() {
-		out = (RandomAccessibleInterval<DoubleType>) ops.run(
-			Ops.Image.Integral.class, in);
-		out = (RandomAccessibleInterval<DoubleType>) ops.run(
-			Ops.Image.SquareIntegral.class, in);
+		ops.run(Ops.Image.SquareIntegral.class, in);
 	}
 
 	/**
-	 * @see DefaultIntegralImg
 	 * @see SquareIntegralImg
 	 */
 	@SuppressWarnings({ "unchecked" })
 	@Test
-	public void testIntegralImageSimilarity() {
+	public void testSquareIntegralImageCorrectness() {
 		RandomAccessibleInterval<LongType> out1 =
-			(RandomAccessibleInterval<LongType>) ops.run(DefaultIntegralImg.class,
-				in);
-		RandomAccessibleInterval<DoubleType> out2 =
-			(RandomAccessibleInterval<DoubleType>) ops.run(WrappedIntegralImg.class,
-				in);
+			(RandomAccessibleInterval<LongType>) ops.run(SquareIntegralImg.class,
+				generateKnownByteArrayTestImg());
 
-		// Remove 0s from integralImg by shifting its interval by +1
-		final long[] min = new long[out2.numDimensions()];
-		final long[] max = new long[out2.numDimensions()];
+		Img<ByteType> bytes = generateKnownSquareIntegralImage();
 
-		for (int d = 0; d < out2.numDimensions(); ++d) {
-			min[d] = out2.min(d) + 1;
-			max[d] = out2.max(d);
-		}
-
-		// Define the Interval on the infinite random accessibles
-		final FinalInterval interval = new FinalInterval(min, max);
-
-		LocalThresholdTest.testIterableIntervalSimilarity(Views.iterable(out1),
-			Views.iterable(Views.offsetInterval(out2, interval)));
+		LocalThresholdTest.testIterableIntervalSimilarity(Views.iterable(bytes),
+			Views.iterable(out1));
 	}
 
-	public ArrayImg<ByteType, ByteArray> generateKnownByteArrayTestImgLarge() {
+	private Img<ByteType> generateKnownSquareIntegralImage() {
 		final long[] dims = new long[] { 3, 3 };
 		final byte[] array = new byte[9];
 
-		array[0] = (byte) 40;
-		array[1] = (byte) 40;
-		array[2] = (byte) 20;
+		array[0] = (byte) 16;
+		array[1] = (byte) 32;
+		array[2] = (byte) 36;
 
-		array[3] = (byte) 40;
-		array[4] = (byte) 40;
-		array[5] = (byte) 20;
+		array[3] = (byte) 32;
+		array[4] = (byte) 64;
+		array[5] = (byte) 72;
 
-		array[6] = (byte) 20;
-		array[7] = (byte) 20;
-		array[8] = (byte) 100;
+		array[6] = (byte) 36;
+		array[7] = (byte) 72;
+		array[8] = (byte) 116;
+
+		Img<ByteType> bytes = ArrayImgs.bytes(array, dims);
+		return bytes;
+	}
+
+	public ArrayImg<ByteType, ByteArray> generateKnownByteArrayTestImg() {
+		final long[] dims = new long[] { 3, 3 };
+		final byte[] array = new byte[9];
+
+		array[0] = (byte) 4;
+		array[1] = (byte) 4;
+		array[2] = (byte) 2;
+
+		array[3] = (byte) 4;
+		array[4] = (byte) 4;
+		array[5] = (byte) 2;
+
+		array[6] = (byte) 2;
+		array[7] = (byte) 2;
+		array[8] = (byte) 6;
 
 		return ArrayImgs.bytes(array, dims);
 	}

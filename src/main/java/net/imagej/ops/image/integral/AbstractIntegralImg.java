@@ -61,22 +61,19 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 	implements Contingent
 {
 
-	private AbstractUnaryHybridCI<IterableInterval<RealType<?>>, IterableInterval<RealType<?>>> integralAdd;
 	private UnaryComputerOp[] slicewiseOps;
 	private UnaryFunctionOp<Dimensions, RandomAccessibleInterval> createLongRAI;
 	private UnaryFunctionOp<Dimensions, RandomAccessibleInterval> createDoubleRAI;
 
 	@Override
 	public void initialize() {
-		integralAdd = getComputer();
-
 		if (in() != null) {
 			slicewiseOps = new UnaryComputerOp[in().numDimensions()];
 
 			for (int i = 0; i < in().numDimensions(); ++i) {
 				slicewiseOps[i] = Computers.unary(ops(), Slice.class,
 					RandomAccessibleInterval.class, RandomAccessibleInterval.class,
-					integralAdd, i);
+					getComputer(i), i);
 			}
 		}
 
@@ -91,13 +88,14 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 	public void compute(final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<RealType<?>> output)
 	{
+		// TODO Should become obsolete (duplication of initialize())
 		if (slicewiseOps == null) {
 			slicewiseOps = new UnaryComputerOp[in().numDimensions()];
 
 			for (int i = 0; i < in().numDimensions(); ++i) {
 				slicewiseOps[i] = Computers.unary(ops(), Slice.class,
 					RandomAccessibleInterval.class, RandomAccessibleInterval.class,
-					integralAdd, i);
+					getComputer(i), i);
 			}
 		}
 
@@ -136,7 +134,7 @@ public abstract class AbstractIntegralImg<I extends RealType<I>> extends
 	 * images.
 	 */
 	public abstract
-		AbstractUnaryHybridCI<IterableInterval<RealType<?>>, IterableInterval<RealType<?>>>
-		getComputer();
+		AbstractUnaryHybridCI<IterableInterval<I>, IterableInterval<I>> getComputer(
+			int dimension);
 
 }
