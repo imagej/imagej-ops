@@ -33,6 +33,8 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imagej.ops.special.inplace.BinaryInplace1Op;
+import net.imagej.ops.special.inplace.Inplaces;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.NativeType;
@@ -91,7 +93,9 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>> extends
 		gauss2.compute(input, output);
 
 		// TODO: Match the Subtract Op in initialize() once we have BinaryOp
-		ops().run(Ops.Math.Subtract.class, output, output, tmpInterval);
+		final BinaryInplace1Op<? super RandomAccessibleInterval<T>, IntervalView<T>, RandomAccessibleInterval<T>> subtractOp =
+			Inplaces.binary1(ops(), Ops.Math.Subtract.class, output, tmpInterval);
+		subtractOp.mutate1(output, tmpInterval);
 	}
 
 }
