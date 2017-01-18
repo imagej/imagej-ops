@@ -83,8 +83,6 @@ public class ZernikeComputer<T extends RealType<T>> extends
 		// get the cursor of the iterable interval
 		final Cursor<? extends RealType<?>> cur = ii.localizingCursor();
 
-		// count number of pixel inside the unit circle
-		int count = 0;
 
 		// run over itarble interval
 		while (cur.hasNext()) {
@@ -126,12 +124,28 @@ public class ZernikeComputer<T extends RealType<T>> extends
 		}
 
 		// normalization
-		normalize(moment.getZm(), moment.getN(), count);
-
+		normalize(moment.getZm(), moment.getN(), getNumberOfPixelsInUnitDisk(radius));
 		return moment;
 	}
 
 	/**
+	 * Computes the number of whole pixels within a disk with radius r. This is
+	 * based on Gauss's Circle Problem.
+	 * 
+	 * http://mathworld.wolfram.com/GausssCircleProblem.html
+	 * 
+	 * @param r
+	 *            the radius
+	 * @return number of pixels within the disk
+	 */
+	private long getNumberOfPixelsInUnitDisk(final double r) {
+		long tmp = 0;
+		for (int i = 1; i <= Math.floor(r); i++) {
+			tmp += Math.floor(Math.sqrt(r * r - i * i));
+		}
+
+		return (long) (1 + 4 * Math.floor(r)) + 4 * tmp;
+	}
 	 * 
 	 * Multiplication of pixel * rad * exp(-m*theta) using eulers formula
 	 * (pixel*rad) * (cos(m*theta) - i*sin(m*theta))
