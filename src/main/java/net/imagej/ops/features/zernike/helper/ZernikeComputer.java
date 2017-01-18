@@ -65,16 +65,13 @@ public class ZernikeComputer<T extends RealType<T>> extends
 
 	@Override
 	public ZernikeMoment calculate(IterableInterval<T> ii) {
+		final double width2 = (ii.dimension(0) - 1) / 2.0;
+		final double height2 = (ii.dimension(1) - 1) / 2.0;
 
-		// what is the acutal N
-		final double width = ii.dimension(0);
-		final double height = ii.dimension(1);
+		final double centerX = width2 + ii.min(0);
+		final double centerY = height2 + ii.min(1);
 
-		double size = (width > height) ? width : height;
-		final double centerX = width / 2.0d + ii.min(0);
-		final double centerY = height / 2.0d + ii.min(1);
-		
-		double radius = Math.sqrt((size + size) * size) / 2;
+		final double radius = Math.sqrt(width2 * width2 + height2 * height2);
 
 		// Compute pascal's triangle for binomal coefficients: d[x][y] equals (x
 		// over y)
