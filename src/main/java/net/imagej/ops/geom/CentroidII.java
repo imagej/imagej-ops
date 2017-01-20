@@ -57,9 +57,9 @@ public class CentroidII
 		int numDimensions = input.numDimensions();
 		double[] output = new double[numDimensions];
 		Cursor<?> c = input.localizingCursor();
+		double[] pos = new double[numDimensions];
 		while (c.hasNext()) {
 			c.fwd();
-			double[] pos = new double[numDimensions];
 			c.localize(pos);
 			for (int i = 0; i < output.length; i++) {
 				output[i] += pos[i];
