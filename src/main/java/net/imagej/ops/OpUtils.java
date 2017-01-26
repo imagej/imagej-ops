@@ -313,16 +313,9 @@ public final class OpUtils {
 		return sb.toString();
 	}
 
-	/** Gets the simple string name of an Op via reflection. */
-	public static String getOpName(final CommandInfo info)
-		throws NoSuchFieldException, SecurityException, InstantiationException,
-		IllegalAccessException, ClassNotFoundException
-	{
-		final Class<? extends SciJavaPlugin> type = info.getAnnotation().type();
-		final Field field = type.getField("NAME");
-		field.setAccessible(true);
-		final Object o = Class.forName(info.getDelegateClassName()).newInstance();
-		return field.get(o).toString();
+	/** Gets the string name of an op. */
+	public static String getOpName(final CommandInfo info) {
+		return new OpInfo(info).getName();
 	}
 
 	// -- Helper methods --
