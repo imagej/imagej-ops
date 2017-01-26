@@ -34,10 +34,6 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-import org.scijava.thread.ThreadService;
-
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.create.img.CreateImgFromDimsAndType;
@@ -62,6 +58,10 @@ import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.util.Intervals;
 import net.imglib2.view.Views;
 import net.imglib2.view.composite.GenericComposite;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+import org.scijava.thread.ThreadService;
 
 /**
  * Calculates a histogram of oriented gradients which is a feature descriptor.

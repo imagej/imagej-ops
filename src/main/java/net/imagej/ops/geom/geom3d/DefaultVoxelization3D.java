@@ -29,6 +29,8 @@
  */
 package net.imagej.ops.geom.geom3d;
 
+import java.util.Set;
+
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.geom3d.mesh.DefaultMesh;
@@ -43,7 +45,6 @@ import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.img.Img;
 import net.imglib2.type.logic.BitType;
-import java.util.Set;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.scijava.ItemIO;

@@ -30,10 +30,9 @@
 
 package net.imagej.ops.transform.scaleView;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.transform.scaleView.DefaultScaleView;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;

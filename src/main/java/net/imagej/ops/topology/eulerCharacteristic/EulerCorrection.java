@@ -29,6 +29,8 @@
  */
 package net.imagej.ops.topology.eulerCharacteristic;
 
+import java.util.stream.LongStream;
+
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
@@ -37,9 +39,8 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.Views;
-import org.scijava.plugin.Plugin;
 
-import java.util.stream.LongStream;
+import org.scijava.plugin.Plugin;
 
 /**
  * An Op which calculates the correction needed to approximate the contribution of the image to the

@@ -33,7 +33,6 @@ package net.imagej.ops.transform.scaleView;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Transform.ExtendView;
-import net.imagej.ops.special.chain.RAIs;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;

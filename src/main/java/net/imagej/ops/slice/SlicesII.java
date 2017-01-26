@@ -32,7 +32,6 @@ package net.imagej.ops.slice;
 
 import java.util.Iterator;
 
-import net.imagej.ops.OpEnvironment;
 import net.imglib2.AbstractInterval;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;

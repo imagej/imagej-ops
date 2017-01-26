@@ -36,6 +36,7 @@ import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
+
 import org.scijava.plugin.Plugin;
 
 /**

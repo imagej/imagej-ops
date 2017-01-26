@@ -44,7 +44,6 @@ import net.imglib2.RealLocalizable;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.roi.labeling.LabelRegion;
-import net.imglib2.type.BooleanType;
 import net.imglib2.type.Type;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;

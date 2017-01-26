@@ -29,15 +29,16 @@
  */
 package net.imagej.ops.topology.eulerCharacteristic;
 
+import static net.imagej.ops.topology.eulerCharacteristic.TestHelper.drawCube;
+import static org.junit.Assert.assertEquals;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.RandomAccess;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.type.logic.BitType;
-import org.junit.Test;
 
-import static net.imagej.ops.topology.eulerCharacteristic.TestHelper.drawCube;
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 /**
  * Tests for the {@link EulerCharacteristic26N} op

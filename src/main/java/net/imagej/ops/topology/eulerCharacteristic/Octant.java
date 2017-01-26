@@ -29,12 +29,12 @@
  */
 package net.imagej.ops.topology.eulerCharacteristic;
 
+import java.util.Arrays;
+
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.BooleanType;
 import net.imglib2.view.Views;
-
-import java.util.Arrays;
 
 /**
  * A convenience class for storing a 2x2x2 voxel neighborhood in an image

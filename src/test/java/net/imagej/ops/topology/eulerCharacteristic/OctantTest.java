@@ -29,13 +29,16 @@
  */
 package net.imagej.ops.topology.eulerCharacteristic;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import net.imglib2.RandomAccess;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.type.logic.BitType;
-import org.junit.Test;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Unit tests for the {@link Octant} convenience class

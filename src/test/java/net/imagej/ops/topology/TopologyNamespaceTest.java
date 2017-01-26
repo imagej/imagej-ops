@@ -30,6 +30,7 @@
 package net.imagej.ops.topology;
 
 import net.imagej.ops.AbstractNamespaceTest;
+
 import org.junit.Test;
 
 /**

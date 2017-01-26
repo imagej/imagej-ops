@@ -35,6 +35,7 @@ import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
+
 import org.scijava.plugin.Plugin;
 
 /**
