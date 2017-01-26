@@ -42,8 +42,8 @@ import org.scijava.plugin.Plugin;
  * Evaluates an expression.
  * <p>
  * The expression is parsed using
- * <a href="https://github.com/scijava/scijava-expression-parser">SJEP</a>, then
- * evaluated by invoking available ops.
+ * <a href="https://github.com/scijava/parsington">Parsington</a>, the SciJava
+ * expression parsing library, then evaluated by invoking available ops.
  * </p>
  * 
  * @author Curtis Rueden

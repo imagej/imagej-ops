@@ -40,14 +40,14 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.Ops;
 
-import org.scijava.sjep.Operator;
-import org.scijava.sjep.Operators;
-import org.scijava.sjep.Variable;
-import org.scijava.sjep.eval.AbstractStandardStackEvaluator;
-import org.scijava.sjep.eval.Evaluator;
+import org.scijava.parse.Operator;
+import org.scijava.parse.Operators;
+import org.scijava.parse.Variable;
+import org.scijava.parse.eval.AbstractStandardStackEvaluator;
+import org.scijava.parse.eval.Evaluator;
 
 /**
- * An SJEP {@link Evaluator} using available {@link Op}s.
+ * A Parsington {@link Evaluator} using available {@link Op}s.
  * 
  * @author Curtis Rueden
  */
@@ -55,14 +55,14 @@ public class OpEvaluator extends AbstractStandardStackEvaluator {
 
 	private final OpEnvironment ops;
 
-	/** Map of SJEP {@link Operator}s to Ops operation names. */
+	/** Map of Parsington {@link Operator}s to Ops operation names. */
 	private final HashMap<Operator, String> opMap;
 
 	public OpEvaluator(final OpEnvironment ops) {
 		this.ops = ops;
 		opMap = new HashMap<>();
 
-		// Map each standard SJEP operator to its associated op name.
+		// Map each standard Parsington operator to its associated op name.
 		// TODO: Consider creating a plugin extension point for defining these.
 
 		// -- dot --
