@@ -422,6 +422,8 @@ public class ImageNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	// -- Named methods --
+
 	@Override
 	public String getName() {
 		return "image";
