@@ -56,7 +56,7 @@ public class DefaultASCII<T extends RealType<T>> extends
 	Ops.Image.ASCII
 {
 
-	private static final String CHARS = " .,-+o*O#";
+	private static final String CHARS = "#O*o+-,. ";
 
 	@Parameter(required = false)
 	private T min;
