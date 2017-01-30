@@ -116,10 +116,10 @@ public class DefaultASCII<T extends RealType<T>> extends
 			// normalized = (value - min) / (max - min)
 			tmp.set(cursor.get());
 			tmp.sub(min);
-			tmp.div(span);
+			final double normalized = tmp.getRealDouble() / span.getRealDouble();
 
 			final int charLen = CHARS.length();
-			final int charIndex = (int) (charLen * tmp.getRealDouble());
+			final int charIndex = (int) (charLen * normalized);
 			c[index] = CHARS.charAt(charIndex < charLen ? charIndex : charLen - 1);
 		}
 
