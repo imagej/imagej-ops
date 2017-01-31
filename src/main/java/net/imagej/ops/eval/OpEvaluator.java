@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
@@ -150,6 +151,16 @@ public class OpEvaluator extends AbstractStandardStackEvaluator {
 	/** Gets the op name associated with the given {@link Operator}. */
 	public String getOpName(final Operator op) {
 		return opMap.containsKey(op) ? opMap.get(op) : op.getToken();
+	}
+
+	/**
+	 * Gets the map of {@link Operator} to op names backing this evaluator.
+	 * <p>
+	 * Changes to this map will affect evaluation accordingly.
+	 * </p>
+	 */
+	public Map<Operator, String> getOpMap() {
+		return opMap;
 	}
 
 	// -- StandardEvaluator methods --
