@@ -30,17 +30,42 @@
 package net.imagej.ops.geom.geom2d;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.geom.AbstractConvexity;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
+ * Based on http://www.math.uci.edu/icamp/summer/research_11/park/shape_descriptors_survey.pdf.
+ * 
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
-@Plugin(type = Ops.Geometric.Convexity.class,
-	label = "Geometric (2D): Convexity", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultConvexityPolygon extends AbstractConvexity<Polygon> {
-	// NB: Marker Interface
+@Plugin(type = Ops.Geometric.Convexity.class, label = "Geometric (2D): Convexity", priority = Priority.VERY_HIGH_PRIORITY)
+public class DefaultConvexityPolygon extends AbstractUnaryHybridCF<Polygon, DoubleType>
+		implements Ops.Geometric.Convexity {
+
+	private UnaryFunctionOp<Polygon, DoubleType> boundarySize;
+
+	private UnaryFunctionOp<Polygon, DoubleType> boundarySizeConvexHull;
+
+	@Override
+	public void initialize() {
+		boundarySize = Functions.unary(ops(), Ops.Geometric.BoundarySize.class, DoubleType.class, in());
+		boundarySizeConvexHull = Functions.unary(ops(), Ops.Geometric.BoundarySizeConvexHull.class, DoubleType.class,
+				in());
+	}
+
+	@Override
+	public void compute(final Polygon input, final DoubleType output) {
+		output.set(boundarySizeConvexHull.calculate(input).get() / boundarySize.calculate(input).get());
+	}
+
+	@Override
+	public DoubleType createOutput(final Polygon input) {
+		return new DoubleType();
+	}
 }

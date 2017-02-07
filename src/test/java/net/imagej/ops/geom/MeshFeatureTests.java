@@ -37,6 +37,7 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.features.AbstractFeatureTest;
 import net.imagej.ops.geom.geom3d.DefaultBoxivityMesh;
 import net.imagej.ops.geom.geom3d.DefaultCompactness;
+import net.imagej.ops.geom.geom3d.DefaultConvexHull3D;
 import net.imagej.ops.geom.geom3d.DefaultConvexityMesh;
 import net.imagej.ops.geom.geom3d.DefaultMainElongation;
 import net.imagej.ops.geom.geom3d.DefaultMarchingCubes;
@@ -60,6 +61,8 @@ import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import io.scif.img.IO;
 
 public class MeshFeatureTests extends AbstractFeatureTest {
 	private static final double EPSILON = 10e-12;
@@ -98,7 +101,7 @@ public class MeshFeatureTests extends AbstractFeatureTest {
 	@Test
 	public void convexityMesh() {
 		// formula verified and ground truth computed with matlab
-		assertEquals(Ops.Geometric.Convexity.NAME, 0.983930494866521,
+		assertEquals(Ops.Geometric.Convexity.NAME, 0.84564860426,
 				((DoubleType) ops.run(DefaultConvexityMesh.class, mesh)).get(), EPSILON);
 	}
 

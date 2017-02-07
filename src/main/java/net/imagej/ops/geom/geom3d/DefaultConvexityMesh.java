@@ -31,17 +31,41 @@
 package net.imagej.ops.geom.geom3d;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.geom.AbstractConvexity;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
+ * Based on https://www.researchgate.net/publication/
+ * 236018239_A_New_Convexity_Measurement_for_3D_Meshes (Formula (2)).
+ * 
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
-@Plugin(type = Ops.Geometric.Convexity.class,
-	label = "Geometric (3D): Convexity", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultConvexityMesh extends AbstractConvexity<Mesh> {
-	// NB: Marker Interface
+@Plugin(type = Ops.Geometric.Convexity.class, label = "Geometric (3D): Convexity", priority = Priority.VERY_HIGH_PRIORITY)
+public class DefaultConvexityMesh extends AbstractUnaryHybridCF<Mesh, DoubleType> implements Ops.Geometric.Convexity {
+
+	private UnaryFunctionOp<Mesh, DoubleType> volume;
+
+	private UnaryFunctionOp<Mesh, DoubleType> volumeConvexHull;
+
+	@Override
+	public void initialize() {
+		volume = Functions.unary(ops(), Ops.Geometric.Size.class, DoubleType.class, in());
+		volumeConvexHull = Functions.unary(ops(), Ops.Geometric.SizeConvexHull.class, DoubleType.class, in());
+	}
+
+	@Override
+	public void compute(final Mesh input, final DoubleType output) {
+		output.set(volume.calculate(input).get() / volumeConvexHull.calculate(input).get());
+	}
+
+	@Override
+	public DoubleType createOutput(final Mesh input) {
+		return new DoubleType();
+	}
 }
