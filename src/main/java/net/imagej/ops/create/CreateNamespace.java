@@ -48,7 +48,10 @@ import net.imglib2.roi.labeling.LabelingMapping;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.IntegerType;
+import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.type.numeric.complex.ComplexFloatType;
+import net.imglib2.type.numeric.complex.ComplexDoubleType;
 
 import org.scijava.plugin.Plugin;
 
@@ -473,6 +476,251 @@ public class CreateNamespace extends AbstractNamespace {
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(Ops.Create.KernelLog.class, sigma,
 				outType);
+		return result;
+	}
+
+	// -- kernelBiGauss --
+
+	/**
+	 * Convenience wrapper to create an {@link Img} of type {@link DoubleType}
+	 * with an isotropic BiGauss kernel.
+	 * Similar to {@link #kernelBiGauss(double[], int, ComplexType)}.
+	 */
+	@OpMethod(
+		op = net.imagej.ops.create.kernelBiGauss.CreateKernelBiGaussDoubleType.class)
+	public RandomAccessibleInterval<DoubleType>
+		kernelBiGauss(final double[] sigmaPair, final int numDimensions)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<DoubleType> result =
+			(RandomAccessibleInterval<DoubleType>) ops().run(
+				Ops.Create.KernelBiGauss.class, sigmaPair, (Integer)numDimensions);
+		return result;
+	}
+
+	/**
+	 * Creates an {@link Img} of the given type and of appropriate dimensions that
+	 * displays an isotropic BiGauss filter. The image should be considered as a
+	 * kernel -- an image directly suitable for convolution.
+	 * See {@link DefaultCreateKernelBiGauss} for explanation of parameters.
+	 */
+	@OpMethod(
+		op = net.imagej.ops.create.kernelBiGauss.DefaultCreateKernelBiGauss.class)
+	public <T extends ComplexType<T> & NativeType<T>> RandomAccessibleInterval<T>
+		kernelBiGauss(final double[] sigmaPair, final int numDimensions, final T outType)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				Ops.Create.KernelBiGauss.class, sigmaPair, (Integer)numDimensions, outType);
+		return result;
+	}
+
+	/**
+	 * Convenience wrapper to create an {@link Img} of type {@link DoubleType}
+	 * with an isotropic 2nd derivative of BiGauss kernel.
+	 * Similar to {@link #kernel2ndDerivBiGauss(double[], int, ComplexType)}.
+	 */
+	@OpMethod(
+		op = net.imagej.ops.create.kernelBiGauss.CreateKernel2ndDerivBiGaussDoubleType.class)
+	public RandomAccessibleInterval<DoubleType>
+		kernel2ndDerivBiGauss(final double[] sigmaPair, final int numDimensions)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<DoubleType> result =
+			(RandomAccessibleInterval<DoubleType>) ops().run(
+				Ops.Create.Kernel2ndDerivBiGauss.class, sigmaPair, (Integer)numDimensions);
+		return result;
+	}
+
+	/**
+	 * Creates an {@link Img} of the given type and of appropriate dimensions that
+	 * displays an isotropic 2nd derivative of BiGauss filter. The image should
+	 * be considered as a kernel -- an image directly suitable for convolution.
+	 * See {@link DefaultCreateKernel2ndDerivBiGauss} for explanation of parameters.
+	 */
+	@OpMethod(
+		op = net.imagej.ops.create.kernelBiGauss.DefaultCreateKernel2ndDerivBiGauss.class)
+	public <T extends ComplexType<T> & NativeType<T>> RandomAccessibleInterval<T>
+		kernel2ndDerivBiGauss(final double[] sigmaPair, final int numDimensions, final T outType)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				Ops.Create.Kernel2ndDerivBiGauss.class, sigmaPair, (Integer)numDimensions, outType);
+		return result;
+	}
+
+	// -- kernelGabor --
+
+	/**
+	 * Convenience wrapper to create an {@link Img} of type {@link FloatType}
+	 * with an isotropic Gabor kernel.
+	 * Similar to {@link #kernelGabor(double[], double[], ComplexType)}.
+	 */
+	@OpMethod(
+		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborIsotropicFloatType.class)
+	public RandomAccessibleInterval<FloatType>
+		kernelGabor_Float(final double sigma, final double[] period)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<FloatType> result =
+			(RandomAccessibleInterval<FloatType>) ops().run(
+				"IsotropicGaborFloat", (Double)sigma, period);
+		return result;
+	}
+
+	/**
+	 * Convenience wrapper to create an {@link Img} of type {@link DoubleType}
+	 * with an isotropic Gabor kernel.
+	 * Similar to {@link #kernelGabor(double[], double[], ComplexType)}.
+	 */
+	@OpMethod(
+		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborIsotropicDoubleType.class)
+	public RandomAccessibleInterval<DoubleType>
+		kernelGabor_Double(final double sigma, final double[] period)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<DoubleType> result =
+			(RandomAccessibleInterval<DoubleType>) ops().run(
+				"IsotropicGaborDouble", (Double)sigma, period);
+		return result;
+	}
+
+	/**
+	 * Convenience wrapper to create an {@link Img} of type {@link ComplexFloatType}
+	 * with an isotropic Gabor kernel.
+	 * Similar to {@link #kernelGabor(double[], double[], ComplexType)}.
+	 */
+	@OpMethod(
+		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborIsotropicComplexFloatType.class)
+	public RandomAccessibleInterval<ComplexFloatType>
+		kernelGabor_ComplexFloat(final double sigma, final double[] period)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<ComplexFloatType> result =
+			(RandomAccessibleInterval<ComplexFloatType>) ops().run(
+				"IsotropicGaborComplexFloat", (Double)sigma, period);
+		return result;
+	}
+
+	/**
+	 * Convenience wrapper to create an {@link Img} of type {@link ComplexDoubleType}
+	 * with an isotropic Gabor kernel.
+	 * Similar to {@link #kernelGabor(double[], double[], ComplexType)}.
+	 */
+	@OpMethod(
+		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborIsotropicComplexDoubleType.class)
+	public RandomAccessibleInterval<ComplexDoubleType>
+		kernelGabor_ComplexDouble(final double sigma, final double[] period)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<ComplexDoubleType> result =
+			(RandomAccessibleInterval<ComplexDoubleType>) ops().run(
+				"IsotropicGaborComplexDouble", (Double)sigma, period);
+		return result;
+	}
+
+	/**
+	 * Convenience wrapper to create an {@link Img} of type outType
+	 * with an isotropic Gabor kernel.
+	 * Similar to {@link #kernelGabor(double[], double[], ComplexType)}.
+	 */
+	@OpMethod(
+		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborIsotropic.class)
+	public <T extends ComplexType<T> & NativeType<T>> RandomAccessibleInterval<T>
+		kernelGabor(final double sigma, final double[] period, final T outType)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				Ops.Create.KernelGabor.class, (Double)sigma, period, outType);
+		return result;
+	}
+
+	/**
+	 * Convenience wrapper to create an {@link Img} of type {@link FloatType}
+	 * with a Gabor kernel.
+	 * Similar to {@link #kernelGabor(double[], double[], ComplexType)}.
+	 */
+	@OpMethod(
+		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborFloatType.class)
+	public RandomAccessibleInterval<FloatType>
+		kernelGabor_Float(final double[] sigmas, final double[] period)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<FloatType> result =
+			(RandomAccessibleInterval<FloatType>) ops().run(
+				"GaborFloat", sigmas, period);
+		return result;
+	}
+
+	/**
+	 * Convenience wrapper to create an {@link Img} of type {@link DoubleType}
+	 * with a Gabor kernel.
+	 * Similar to {@link #kernelGabor(double[], double[], ComplexType)}.
+	 */
+	@OpMethod(
+		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborDoubleType.class)
+	public RandomAccessibleInterval<DoubleType>
+		kernelGabor_Double(final double[] sigmas, final double[] period)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<DoubleType> result =
+			(RandomAccessibleInterval<DoubleType>) ops().run(
+				"GaborDouble", sigmas, period);
+		return result;
+	}
+
+	/**
+	 * Convenience wrapper to create an {@link Img} of type {@link ComplexFloatType}
+	 * with a Gabor kernel.
+	 * Similar to {@link #kernelGabor(double[], double[], ComplexType)}.
+	 */
+	@OpMethod(
+		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborComplexFloatType.class)
+	public RandomAccessibleInterval<ComplexFloatType>
+		kernelGabor_ComplexFloat(final double[] sigmas, final double[] period)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<ComplexFloatType> result =
+			(RandomAccessibleInterval<ComplexFloatType>) ops().run(
+				"GaborComplexFloat", sigmas, period);
+		return result;
+	}
+
+	/**
+	 * Convenience wrapper to create an {@link Img} of type {@link ComplexDoubleType}
+	 * with a Gabor kernel.
+	 * Similar to {@link #kernelGabor(double[], double[], ComplexType)}.
+	 */
+	@OpMethod(
+		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborComplexDoubleType.class)
+	public RandomAccessibleInterval<ComplexDoubleType>
+		kernelGabor_ComplexDouble(final double[] sigmas, final double[] period)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<ComplexDoubleType> result =
+			(RandomAccessibleInterval<ComplexDoubleType>) ops().run(
+				"GaborComplexDouble", sigmas, period);
+		return result;
+	}
+
+	/**
+	 * Creates an {@link Img} of the given type and of appropriate dimensions that
+	 * displays a Gabor filter. The image should be considered as a kernel -- an
+	 * image directly suitable for convolution. See {@link DefaultCreateKernelGabor}
+	 * for explanation of parameters.
+	 */
+	@OpMethod(
+		op = net.imagej.ops.create.kernelGabor.DefaultCreateKernelGabor.class)
+	public <T extends ComplexType<T> & NativeType<T>> RandomAccessibleInterval<T>
+		kernelGabor(final double[] sigmas, final double[] period, final T outType)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				Ops.Create.KernelGabor.class, sigmas, period, outType);
 		return result;
 	}
 
