@@ -59,7 +59,7 @@ public class LocalBernsenThreshold<T extends RealType<T>> extends
 {
 
 	@Parameter
-	private double constrastThreshold;
+	private double contrastThreshold;
 
 	@Parameter
 	private double halfMaxValue;
@@ -81,13 +81,13 @@ public class LocalBernsenThreshold<T extends RealType<T>> extends
 				if (minMaxFunc == null) {
 					minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(), Ops.Stats.MinMax.class, Pair.class, neighborhood);
 				}
-				
+
 				final Pair<T, T> outputs = minMaxFunc.calculate(neighborhood);
 				final double minValue = outputs.getA().getRealDouble();
 				final double maxValue = outputs.getB().getRealDouble();
 				final double midGrey = (maxValue + minValue) / 2.0;
 
-				if ((maxValue - minValue) < constrastThreshold) {
+				if ((maxValue - minValue) < contrastThreshold) {
 					output.set(midGrey >= halfMaxValue);
 				}
 				else {
