@@ -59,7 +59,7 @@ public class LocalBernsenThreshold<T extends RealType<T>> extends
 {
 
 	@Parameter
-	private double constrastThreshold;
+	private double contrastThreshold;
 
 	@Parameter
 	private double halfMaxValue;
