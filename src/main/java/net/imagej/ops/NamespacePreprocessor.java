@@ -56,7 +56,7 @@ public class NamespacePreprocessor extends AbstractPreprocessorPlugin {
 
 	@Override
 	public void process(final Module module) {
-		if (nsService == null || ops == null) return;
+		if (nsService == null) return;
 
 		for (final ModuleItem<?> input : module.getInfo().inputs()) {
 			assignNamespace(module, input);
@@ -70,11 +70,17 @@ public class NamespacePreprocessor extends AbstractPreprocessorPlugin {
 		final ModuleItem<T> item)
 	{
 		if (module.isInputResolved(item.getName())) return;
+
+		// if possible, extract the OpEnvironment from the delegate object
+		final Object delegate = module.getDelegateObject();
+		final OpEnvironment env = delegate instanceof Environmental ? //
+			(OpEnvironment) delegate : ops;
+		if (env == null) return;
+
 		T defaultValue = null;
-		
 		if (Namespace.class.isAssignableFrom(item.getType())) {
 			defaultValue = (T) nsService.create(//
-				(Class<? extends Namespace>) item.getType(), ops);
+				(Class<? extends Namespace>) item.getType(), env);
 		}
 		if (defaultValue == null) return;
 
