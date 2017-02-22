@@ -61,6 +61,7 @@ namespaces = ```
 		[name: "imgFactory",                     iface: "ImgFactory"],
 		[name: "imgLabeling",                    iface: "ImgLabeling"],
 		[name: "imgPlus",                        iface: "ImgPlus"],
+		[name: "instance",                       iface: "Instance"],
 		[name: "integerType",                    iface: "IntegerType"],
 		[name: "kernel",                         iface: "Kernel"],
 		[name: "kernelGauss",                    iface: "KernelGauss"],
@@ -68,7 +69,6 @@ namespaces = ```
 		[name: "labelingMapping",                iface: "LabelingMapping"],
 		[name: "nativeImg",                      iface: "NativeImg"],
 		[name: "nativeType",                     iface: "NativeType"],
-		[name: "object",                         iface: "Object"],
 		[name: "type",                           iface: "Type"],
 	]],
 	[name: "deconvolve", iface: "Deconvolve", ops: [

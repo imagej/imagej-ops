@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.create.object;
+package net.imagej.ops.create.instance;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
@@ -40,9 +40,9 @@ import org.scijava.plugin.Plugin;
  *
  * @author Curtis Rueden
  */
-@Plugin(type = Ops.Create.Object.class)
-public class CreateObjectFromClass<T> extends
-	AbstractUnaryFunctionOp<Class<T>, T> implements Ops.Create.Object
+@Plugin(type = Ops.Create.Instance.class)
+public class CreateInstanceFromClass<T> extends
+	AbstractUnaryFunctionOp<Class<T>, T> implements Ops.Create.Instance
 {
 
 	@Override

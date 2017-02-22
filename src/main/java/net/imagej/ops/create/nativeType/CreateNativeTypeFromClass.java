@@ -53,7 +53,7 @@ public class CreateNativeTypeFromClass<T extends NativeType<T>> extends
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public UnaryFunctionOp<Class<T>, T> createWorker(final Class<T> in) {
-		return (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Object.class,
+		return (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Instance.class,
 			Object.class, NativeType.class);
 	}
 
