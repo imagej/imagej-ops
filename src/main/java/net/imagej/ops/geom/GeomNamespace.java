@@ -41,6 +41,8 @@ import net.imagej.ops.geom.geom3d.mesh.VertexInterpolator;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.RealLocalizable;
+import net.imglib2.algorithm.neighborhood.Shape;
+import net.imglib2.img.Img;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.roi.labeling.LabelRegion;
@@ -48,6 +50,7 @@ import net.imglib2.type.Type;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.util.Pair;
 
 import org.apache.commons.math3.linear.RealMatrix;
@@ -65,7 +68,7 @@ public class GeomNamespace extends AbstractNamespace {
 	public String getName() {
 		return "geom";
 	}
-
+	
 	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultVerticesCountMesh.class)
 	public DoubleType boundaryPixelCount(final Mesh in) {
 		final DoubleType result = (DoubleType) ops().run(
@@ -810,6 +813,48 @@ public class GeomNamespace extends AbstractNamespace {
 	public RealMatrix secondMoment(final IterableRegion in) {
 		final RealMatrix result =
 			(RealMatrix) ops().run(net.imagej.ops.geom.geom3d.DefaultInertiaTensor3D.class, in);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.geom.pixelbased.DefaultBoundaryII.class)
+	public RandomAccessibleInterval boundary(final RandomAccessibleInterval in) {
+		final RandomAccessibleInterval result =
+			(RandomAccessibleInterval) ops().run(net.imagej.ops.geom.pixelbased.DefaultBoundaryII.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geom.pixelbased.DefaultBoundaryII.class)
+	public RandomAccessibleInterval boundary(final RandomAccessibleInterval out, final RandomAccessibleInterval in) {
+		final RandomAccessibleInterval result =
+			(RandomAccessibleInterval) ops().run(net.imagej.ops.geom.pixelbased.DefaultBoundaryII.class, out, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geom.pixelbased.DefaultBoundaryII.class)
+	public RandomAccessibleInterval boundary(final RandomAccessibleInterval out, final RandomAccessibleInterval in, final Shape shape) {
+		final RandomAccessibleInterval result =
+			(RandomAccessibleInterval) ops().run(net.imagej.ops.geom.pixelbased.DefaultBoundaryII.class, out, in, shape);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.geom.pixelbased.DefaultBoundarySizeII.class)
+	public DoubleType boundarySize(final RandomAccessibleInterval in) {
+		final DoubleType result =
+			(DoubleType) ops().run(net.imagej.ops.geom.pixelbased.DefaultBoundarySizeII.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geom.pixelbased.DefaultBoundarySizeII.class)
+	public DoubleType boundarySize(final DoubleType out, final RandomAccessibleInterval in) {
+		final DoubleType result =
+			(DoubleType) ops().run(net.imagej.ops.geom.pixelbased.DefaultBoundarySizeII.class, out, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geom.pixelbased.DefaultBoundarySizeII.class)
+	public DoubleType boundarySize(final DoubleType out, final RandomAccessibleInterval in, final Shape shape) {
+		final DoubleType result =
+			(DoubleType) ops().run(net.imagej.ops.geom.pixelbased.DefaultBoundarySizeII.class, out, in, shape);
 		return result;
 	}
 }
