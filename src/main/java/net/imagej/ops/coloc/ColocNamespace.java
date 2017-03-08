@@ -50,6 +50,11 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Namespace.class)
 public class ColocNamespace extends AbstractNamespace {
 
+	
+	// -- manders --
+	
+
+		
 	// -- icq --
 
 	@OpMethod(op = net.imagej.ops.coloc.icq.LiICQ.class)
