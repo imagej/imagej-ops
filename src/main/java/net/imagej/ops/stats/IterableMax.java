@@ -42,25 +42,21 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher (University of Konstanz)
  * @author Christian Dietz (University of Konstanz)
- * @param <I> input type
- * @param <O> output type
+ * @author Stefan Helfrich (University of Konstanz)
+ * @param <T> input type
  */
 @Plugin(type = Ops.Stats.Max.class, label = "Statistics: Max",
 	priority = Priority.VERY_HIGH_PRIORITY)
-public class IterableMax<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.Max
+public class IterableMax<T extends RealType<T>> extends
+	AbstractStatsOp<Iterable<T>, T> implements Ops.Stats.Max
 {
 
 	@Override
-	public void compute(final Iterable<I> input, final O output) {
-		double max = Double.NEGATIVE_INFINITY;
-		for (final I in : input) {
-			final double n = in.getRealDouble();
-			if (max < n) {
-				max = n;
-			}
-		}
-
-		output.setReal(max);
+	public void compute(final Iterable<T> input, final T output) {
+		// Re-use output to compare against
+		output.setReal(output.getMinValue());
+		for (final T in : input)
+			if (output.compareTo(in) < 0)
+				output.set(in);
 	}
 }
