@@ -149,17 +149,13 @@ public class StatsNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.stats.IterableMax.class)
-	public <T extends RealType<T>> T max(
-		final Iterable<T> in)
-	{
+	public <T extends RealType<T>> T max(final Iterable<T> in) {
 		final T result = (T) ops().run(net.imagej.ops.Ops.Stats.Max.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.stats.IterableMax.class)
-	public <T extends RealType<T>> T max(final T out,
-		final Iterable<T> in)
-	{
+	public <T extends RealType<T>> T max(final T out, final Iterable<T> in) {
 		final T result = (T) ops().run(net.imagej.ops.Ops.Stats.Max.class, out, in);
 		return result;
 	}
@@ -202,19 +198,14 @@ public class StatsNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.stats.IterableMin.class)
-	public <T extends RealType<T>> T min(
-		final Iterable<T> in)
-	{
+	public <T extends RealType<T>> T min(final Iterable<T> in) {
 		final T result = (T) ops().run(net.imagej.ops.Ops.Stats.Min.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.stats.IterableMin.class)
-	public <T extends RealType<T>> T min(final T out,
-		final Iterable<T> in)
-	{
+	public <T extends RealType<T>> T min(final T out, final Iterable<T> in) {
 		final T result = (T) ops().run(net.imagej.ops.Ops.Stats.Min.class, out, in);
-
 		return result;
 	}
 
