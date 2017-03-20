@@ -61,16 +61,20 @@ import net.imagej.ops.geom.geom2d.DefaultVerticesCountConvexHullPolygon;
 import net.imagej.ops.geom.geom2d.DefaultVerticesCountPolygon;
 import net.imagej.ops.geom.geom2d.LabelRegionToPolygonConverter;
 import net.imagej.ops.geom.pixelbased.DefaultBoundaryII;
+import net.imagej.table.GenericTable;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
+import net.imglib2.img.Img;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.type.numeric.real.FloatType;
+import net.imglib2.view.Views;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -85,17 +89,23 @@ import org.junit.Test;
 public class PixelBasedFeatureTests extends AbstractFeatureTest {
 
 	private static final double EPSILON = 10e-12;
-	private static LabelRegion<String> ROI;
-
-	@BeforeClass
-	public static void setupBefore() {
-		ROI = createLabelRegion(getTestImage2D(), 1, 255);
+	private static IterableInterval<BitType> IMG;
+	
+	@Override
+	@Before
+	public void setup() {
+		IMG = ops.threshold().apply(getTestImage2D(), new FloatType(1));
 	}
 
 	@Test
-	public void boundarySizeConvexHull() {
-		System.out.println(ops.geom().boundarySize(getTestImage2D()).get());
-//		DoubleType length =  ops.geom().boundaryPixelCount(getTestImage2D());
-//		System.out.println(length.get());
+	public void boundarySize() {
+		LabelRegion<String> roi = createLabelRegion(getTestImage2D(), 0, 255);
+		assertEquals(357.4629867976521, ops.geom().boundarySize(roi).get(),
+				EPSILON);
+	}
+	
+	@Test
+	public void size() {
+		assertEquals(0, ops.geom().size(IMG).get(), EPSILON);
 	}
 }
