@@ -81,6 +81,9 @@ namespaces = ```
 		[name: "richardsonLucyUpdate",    	     iface: "RichardsonLucyUpdate"],
 		
 	]],
+	[name: "fill", iface: "Fill", ops: [
+		[name: "flood",                       iface: "Flood"],
+	]],
 	[name: "filter", iface: "Filter", ops: [
 		[name: "addNoise",                       iface: "AddNoise"],
 		[name: "addPoissonNoise",                iface: "AddPoissonNoise"],
