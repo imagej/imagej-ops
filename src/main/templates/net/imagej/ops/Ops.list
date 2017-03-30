@@ -376,6 +376,7 @@ namespaces = ```
 		[name: "rosin",                          iface: "Rosin"],
 	]],
 	[name: "topology", iface: "Topology", ops: [
+		[name: "boxCount",                       iface: "BoxCount"],
 		[name: "eulerCharacteristic26N",         iface: "EulerCharacteristic26N"],
 		[name: "eulerCharacteristic26NFloating", iface: "EulerCharacteristic26NFloating"],
 		[name: "eulerCorrection",                iface: "EulerCorrection"],

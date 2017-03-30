@@ -29,6 +29,8 @@
  */
 package net.imagej.ops.topology;
 
+import java.util.List;
+
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
@@ -50,6 +52,48 @@ public class TopologyNamespace extends AbstractNamespace {
     public String getName() {
         return "topology";
     }
+
+	@OpMethod(op = net.imagej.ops.topology.BoxCount.class)
+	public <B extends BooleanType<B>> List boxCount(
+		final RandomAccessibleInterval<B> in)
+	{
+		return (List) ops().run(net.imagej.ops.Ops.Topology.BoxCount.class, in);
+	}
+
+	@OpMethod(op = net.imagej.ops.topology.BoxCount.class)
+	public <B extends BooleanType<B>> List boxCount(
+		final RandomAccessibleInterval<B> in, final Long maxSize)
+	{
+		return (List) ops().run(net.imagej.ops.Ops.Topology.BoxCount.class, in,
+			maxSize);
+	}
+
+	@OpMethod(op = net.imagej.ops.topology.BoxCount.class)
+	public <B extends BooleanType<B>> List boxCount(
+		final RandomAccessibleInterval<B> in, final Long maxSize,
+		final Long minSize)
+	{
+		return (List) ops().run(net.imagej.ops.Ops.Topology.BoxCount.class, in,
+			maxSize, minSize);
+	}
+
+	@OpMethod(op = net.imagej.ops.topology.BoxCount.class)
+	public <B extends BooleanType<B>> List boxCount(
+		final RandomAccessibleInterval<B> in, final Long maxSize,
+		final Long minSize, final Double scaling)
+	{
+		return (List) ops().run(net.imagej.ops.Ops.Topology.BoxCount.class, in,
+			maxSize, minSize, scaling);
+	}
+
+	@OpMethod(op = net.imagej.ops.topology.BoxCount.class)
+	public <B extends BooleanType<B>> List boxCount(
+		final RandomAccessibleInterval<B> in, final Long maxSize,
+		final Long minSize, final Double scaling, final Long gridMoves)
+	{
+		return (List) ops().run(net.imagej.ops.Ops.Topology.BoxCount.class, in,
+			maxSize, minSize, scaling, gridMoves);
+	}
 
     @OpMethod(op = net.imagej.ops.topology.eulerCharacteristic.EulerCharacteristic26N.class)
     public <B extends BooleanType<B>> DoubleType eulerCharacteristic26N(final RandomAccessibleInterval<B> in) {
@@ -83,4 +127,6 @@ public class TopologyNamespace extends AbstractNamespace {
             final RandomAccessibleInterval<B> in) {
         return (DoubleType) ops().run(net.imagej.ops.Ops.Topology.EulerCorrection.class, out, in);
     }
+
+
 }
