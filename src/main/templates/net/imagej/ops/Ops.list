@@ -308,6 +308,7 @@ namespaces = ```
 		[name: "fillHoles",                      iface: "FillHoles"],
 		[name: "floodFill",                      iface: "FloodFill"],
 		[name: "open",                           iface: "Open"],
+		[name: "outline",                        iface: "Outline"],
 		[name: "thin",                           iface: "Thin"],
 		[name: "topHat",                         iface: "TopHat"],
 	]],
