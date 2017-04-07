@@ -30,7 +30,6 @@
 
 package net.imagej.ops;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.scijava.command.CommandInfo;
@@ -59,6 +58,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Parameter
 	private NamespaceService namespaceService;
 
+	private OpIndex index;
+
 	// -- OpEnvironment methods --
 
 	@Override
@@ -75,14 +76,24 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public Collection<OpInfo> infos(final Class<? extends Op> opType) {
+		if (index == null) initInfos();
+		return index.get(opType);
+	}
+
+	@Override
 	public Collection<OpInfo> infos() {
-		// TODO: Consider maintaining a separate and efficient
-		// OpInfo data structure in AbstractOpEnvironment.
-		final ArrayList<OpInfo> infos = new ArrayList<>();
+		if (index == null) initInfos();
+		return index.getAll();
+	}
+
+	private void initInfos() {
+		// TODO: double checked locking
+		// NB: Cache all the ops by class, for better matching performance.
+		index = new OpIndex();
 		for (final CommandInfo cInfo : commandService.getCommandsOfType(Op.class)) {
-			infos.add(new OpInfo(cInfo));
+			index.add(new OpInfo(cInfo));
 		}
-		return infos;
 	}
 
 	@Override

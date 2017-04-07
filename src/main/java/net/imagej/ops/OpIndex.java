@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2017 Board of Regents of the University of
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -28,51 +28,54 @@
  * #L%
  */
 
-package net.imagej.ops.benchmark;
+package net.imagej.ops;
 
-import static org.junit.Assume.assumeTrue;
-
-import net.imagej.ops.AbstractOpTest;
-
-import org.junit.Before;
-import org.scijava.module.Module;
+import org.scijava.InstantiableException;
+import org.scijava.object.SortedObjectIndex;
 
 /**
- * @author Christian Dietz (University of Konstanz)
+ * Data structure for managing registered ops.
+ * 
+ * @author Curtis Rueden
  */
-public class AbstractOpBenchmark extends AbstractOpTest {
+public class OpIndex extends SortedObjectIndex<OpInfo> {
 
-	private boolean benchmarkTestsEnabled = "enabled".equals(System.getProperty("imagej.ops.benchmark.tests"));
-
-	@Before
-	public void skipBenchmarksByDefault() {
-//		assumeTrue(benchmarkTestsEnabled);
+	public OpIndex() {
+		super(OpInfo.class);
 	}
 
-	public long bestOf(final Runnable runnable, final int n) {
-		long best = Long.MAX_VALUE;
+	// -- Internal methods --
 
-		for (int i = 0; i < n; i++) {
-			long time = System.nanoTime();
-			runnable.run();
-			time = System.nanoTime() - time;
-
-			if (time < best) {
-				best = time;
-			}
+	/**
+	 * Overrides the type by which the entries are indexed.
+	 * <p>
+	 * Ops are indexed on their actual concrete types.
+	 * </p>
+	 */
+	@Override
+	protected Class<?> getType(final OpInfo info) {
+		try {
+			return info.cInfo().loadClass();
 		}
-
-		return best;
+		catch (final InstantiableException exc) {
+			return null;
+		}
 	}
 
-	public double asMilliSeconds(final long nanoTime) {
-		return nanoTime / 1000.0d / 1000.d;
+	/**
+	 * Removes the op from all type lists.
+	 * <p>
+	 * NB: This behavior differs from the default
+	 * {@link org.scijava.object.ObjectIndex} behavior in that the {@code info}
+	 * object's actual type hierarchy is not used for classification, but rather
+	 * the object is classified according to the referenced op's concrete type.
+	 * </p>
+	 */
+	@Override
+	protected boolean remove(final Object o, final boolean batch) {
+		if (!(o instanceof OpInfo)) return false;
+		final OpInfo info = (OpInfo) o;
+		return remove(info, getType(info), batch);
 	}
 
-	public void benchmarkAndPrint(final String name, final Module module,
-		final int numRuns)
-	{
-		System.out.println("[" + name + "]: " +
-			asMilliSeconds(bestOf(module, numRuns)) + "ms !");
-	}
 }

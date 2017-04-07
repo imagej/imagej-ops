@@ -290,6 +290,14 @@ public interface OpEnvironment extends Contextual {
 	}
 
 	/**
+	 * The available ops for the context, <em>including</em> those of the parent,
+	 * constrained to the given op type.
+	 *
+	 * @see #parent()
+	 */
+	Collection<OpInfo> infos(Class<? extends Op> opType);
+
+	/**
 	 * The available ops for the context, <em>including</em> those of the parent.
 	 *
 	 * @see #parent()
