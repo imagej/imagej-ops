@@ -229,6 +229,10 @@ Wisconsin-Madison, University of Konstanz and Brian Northan.</license.copyrightO
 			<groupId>net.imglib2</groupId>
 			<artifactId>imglib2-realtransform</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>net.imglib2</groupId>
+			<artifactId>imglib2-roi</artifactId>
+		</dependency>
 
 		<!-- SciJava dependencies -->
 		<dependency>
@@ -240,6 +244,7 @@ Wisconsin-Madison, University of Konstanz and Brian Northan.</license.copyrightO
 			<artifactId>scijava-common</artifactId>
 		</dependency>
 		<dependency>
+			<!-- Do not remove - Maven incorrectly identifies it as an unused dependency!  -->
 			<groupId>org.scijava</groupId>
 			<artifactId>scripting-javascript</artifactId>
 		</dependency>
@@ -267,6 +272,7 @@ Wisconsin-Madison, University of Konstanz and Brian Northan.</license.copyrightO
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<!-- Do not remove - Maven incorrectly identifies it as an unused dependency!  -->
 			<groupId>org.scijava</groupId>
 			<artifactId>scripting-jython</artifactId>
 			<scope>test</scope>
