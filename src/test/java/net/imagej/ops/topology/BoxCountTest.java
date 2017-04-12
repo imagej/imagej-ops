@@ -81,8 +81,8 @@ public class BoxCountTest extends AbstractOpTest {
 		assertNotNull(points);
 		assertEquals(ITERATIONS, points.size());
 		for (int i = 0; i < ITERATIONS; i++) {
-			assertEquals(expectedCount, points.get(i).a.get(), 1e-12);
-			assertEquals(EXPECTED_SIZES[i], points.get(i).b.get(), 1e-12);
+			assertEquals(EXPECTED_SIZES[i], points.get(i).a.get(), 1e-12);
+			assertEquals(expectedCount, points.get(i).b.get(), 1e-12);
 		}
 	}
 
@@ -102,8 +102,8 @@ public class BoxCountTest extends AbstractOpTest {
 
 		// VERIFY
 		for (int i = 0; i < ITERATIONS; i++) {
-			assertEquals(expectedCounts[i], points.get(i).a.get(), 1e-12);
-			assertEquals(EXPECTED_SIZES[i], points.get(i).b.get(), 1e-12);
+			assertEquals(EXPECTED_SIZES[i], points.get(i).a.get(), 1e-12);
+			assertEquals(expectedCounts[i], points.get(i).b.get(), 1e-12);
 		}
 	}
 
@@ -125,8 +125,8 @@ public class BoxCountTest extends AbstractOpTest {
 
 		// VERIFY
 		for (int i = 0; i < expectedSizes.length; i++) {
-			assertEquals(expectedSizes[i], points.get(i).b.get(), 1e-12);
-			assertEquals(expectedCounts[i], points.get(i).a.get(), 1e-12);
+			assertEquals(expectedSizes[i], points.get(i).a.get(), 1e-12);
+			assertEquals(expectedCounts[i], points.get(i).b.get(), 1e-12);
 		}
 	}
 
@@ -151,8 +151,8 @@ public class BoxCountTest extends AbstractOpTest {
 
 		// VERIFY
 		for (int i = 0; i < expectedSizes.length; i++) {
-			assertEquals(expectedSizes[i], points.get(i).b.get(), 1e-12);
-			assertEquals(expectedCounts[i], points.get(i).a.get(), 1e-12);
+			assertEquals(expectedSizes[i], points.get(i).a.get(), 1e-12);
+			assertEquals(expectedCounts[i], points.get(i).b.get(), 1e-12);
 		}
 	}
 
@@ -174,8 +174,8 @@ public class BoxCountTest extends AbstractOpTest {
 
 		// VERIFY
 		points.forEach(p -> {
-			assertEquals(p.a.get(), counts.next(), 1e-12);
-			assertEquals(p.b.get(), sizes.next(), 1e-12);
+			assertEquals(p.a.get(), sizes.next(), 1e-12);
+			assertEquals(p.b.get(), counts.next(), 1e-12);
 		});
 	}
 }
