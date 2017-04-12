@@ -129,10 +129,10 @@ public class BoxCount<B extends BooleanType<B>> extends
 			final LongStream foregroundCounts = countTranslatedGrids(input,
 				translations, sizes, sectionSize);
 			final long foreground = foregroundCounts.min().orElse(0);
-			final double logCount = Math.log(foreground);
 			final double logSize = -Math.log(sectionSize);
+			final double logCount = Math.log(foreground);
 			final ValuePair<DoubleType, DoubleType> point = new ValuePair<>(
-				new DoubleType(logCount), new DoubleType(logSize));
+					new DoubleType(logSize), new DoubleType(logCount));
 			points.add(point);
 		}
 		return points;
