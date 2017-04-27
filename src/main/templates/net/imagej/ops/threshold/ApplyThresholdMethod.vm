@@ -35,6 +35,7 @@ import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.IterableInterval;
+import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;

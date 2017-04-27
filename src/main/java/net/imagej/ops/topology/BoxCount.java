@@ -70,7 +70,8 @@ import org.scijava.plugin.Plugin;
  * </p>
  *
  * @author Richard Domander (Royal Veterinary College, London)
- * @author Per Christian Henden & Jens Bache-Wiig - original ImageJ1 code
+ * @author Per Christian Henden
+ * @author Jens Bache-Wiig
  */
 @Plugin(type = Ops.Topology.BoxCount.class)
 public class BoxCount<B extends BooleanType<B>> extends
