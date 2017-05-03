@@ -76,11 +76,10 @@ public class DoGVaryingSigmas<T extends NumericType<T> & NativeType<T>> extends
 	{
 		final T type = Util.getTypeFromInterval(t);
 		return RAIs.hybrid(ops(), Ops.Filter.DoG.class, t, //
-			RAIs.computer(ops(), Ops.Filter.Gauss.class, t, sigmas1), //
-			RAIs.computer(ops(), Ops.Filter.Gauss.class, t, sigmas2), //
+			RAIs.computer(ops(), Ops.Filter.Gauss.class, t, sigmas1, fac), //
+			RAIs.computer(ops(), Ops.Filter.Gauss.class, t, sigmas2, fac), //
 			RAIs.function(ops(), Ops.Create.Img.class, t), //
-			RAIs.function(ops(), Ops.Create.Img.class, t, type), //
-			fac);
+			RAIs.function(ops(), Ops.Create.Img.class, t, type));
 	}
 
 	@Override

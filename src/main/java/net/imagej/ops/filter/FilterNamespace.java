@@ -670,24 +670,6 @@ public class FilterNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.filter.dog.DefaultDoG.class)
-	public <T extends NumericType<T> & NativeType<T>> RandomAccessibleInterval<T>
-		dog(final RandomAccessibleInterval<T> out,
-			final RandomAccessibleInterval<T> in,
-			final UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss1,
-			final UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss2,
-			final UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> outputCreator,
-			final UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> tmpCreator,
-			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> fac)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.filter.dog.DefaultDoG.class, out, in, gauss1, gauss2,
-				outputCreator, tmpCreator, fac);
-		return result;
-	}
-
 	@OpMethod(op = net.imagej.ops.filter.dog.DoGVaryingSigmas.class)
 	public <T extends RealType<T>, V extends RealType<V>>
 		RandomAccessibleInterval<V> dog(final RandomAccessibleInterval<V> out,
