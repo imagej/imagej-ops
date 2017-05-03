@@ -43,7 +43,6 @@ import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
-import net.imglib2.Point;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
@@ -150,8 +149,8 @@ public class HistogramOfOrientedGradients2D<T extends RealType<T>>
 	@SuppressWarnings("unchecked")
 	@Override
 	public void compute(RandomAccessibleInterval<T> in, RandomAccessibleInterval<T> out) {
-		RandomAccessible<FloatType> convertedIn = Converters.convert(Views.extendMirrorDouble(in), converterToFloat,
-				new FloatType());
+		final RandomAccessible<FloatType> convertedIn = Converters.convert(Views.extendMirrorDouble(in),
+				converterToFloat, new FloatType());
 
 		// compute partial derivative for each dimension
 		RandomAccessibleInterval<FloatType> derivative0 = createImgOp.calculate();
@@ -190,7 +189,7 @@ public class HistogramOfOrientedGradients2D<T extends RealType<T>>
 		final RandomAccessibleInterval<FloatType> angles = createImgOp.calculate();
 		final RandomAccessibleInterval<FloatType> magnitudes = createImgOp.calculate();
 
-		CursorBasedChunk chunkable = new CursorBasedChunk() {
+		final CursorBasedChunk chunkable = new CursorBasedChunk() {
 
 			@Override
 			public void execute(int startIndex, int stepSize, int numSteps) {
@@ -270,15 +269,13 @@ public class HistogramOfOrientedGradients2D<T extends RealType<T>>
 				// sum up the magnitudes of all bins in a neighborhood
 				raNeighbor.setPosition(new long[] { i, j });
 				final Cursor<FloatType> cursorNeighborHood = raNeighbor.get().cursor();
-				final long[] posNeighbor = new long[cursorNeighborHood.numDimensions()];
 				while (cursorNeighborHood.hasNext()) {
 					cursorNeighborHood.next();
-					cursorNeighborHood.localize(posNeighbor);
-					if (Intervals.contains(interval, new Point(posNeighbor))) {
-						raAngles.setPosition(posNeighbor);
-						raMagnitudes.setPosition(posNeighbor);
-						raOut.setPosition(
-								new long[] { i, j, (int) raAngles.get().getRealFloat() / (360 / numOrientations) });
+					if (Intervals.contains(interval, cursorNeighborHood)) {
+						raAngles.setPosition(cursorNeighborHood);
+						raMagnitudes.setPosition(cursorNeighborHood);
+						raOut.setPosition(new long[] { i, j,
+								(int) (raAngles.get().getRealFloat() / (360 / numOrientations) - 0.5) });
 						raOut.get().add(raMagnitudes.get());
 					}
 				}
