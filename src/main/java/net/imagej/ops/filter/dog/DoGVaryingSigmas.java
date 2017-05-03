@@ -79,8 +79,7 @@ public class DoGVaryingSigmas<T extends NumericType<T> & NativeType<T>> extends
 			RAIs.computer(ops(), Ops.Filter.Gauss.class, t, sigmas1, fac), //
 			RAIs.computer(ops(), Ops.Filter.Gauss.class, t, sigmas2, fac), //
 			RAIs.function(ops(), Ops.Create.Img.class, t), //
-			RAIs.function(ops(), Ops.Create.Img.class, t, type), //
-			fac);
+			RAIs.function(ops(), Ops.Create.Img.class, t, type));
 	}
 
 	@Override

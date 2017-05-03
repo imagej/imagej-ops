@@ -73,22 +73,11 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>> extends
 	@Parameter
 	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> tmpCreator;
 
-	@Parameter(required = false)
-	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> fac;
-
 	@Override
 	public RandomAccessibleInterval<T> createOutput(
 		final RandomAccessibleInterval<T> input)
 	{
 		return outputCreator.calculate(input);
-	}
-
-	@Override
-	public void initialize() {
-		if (fac == null) {
-			fac = new OutOfBoundsMirrorFactory<>(
-				Boundary.SINGLE);
-		}
 	}
 
 	@Override
