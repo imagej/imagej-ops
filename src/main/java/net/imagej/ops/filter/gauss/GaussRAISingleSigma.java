@@ -40,7 +40,7 @@ import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
-import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -50,10 +50,12 @@ import org.scijava.plugin.Plugin;
  * same in each dimension.
  *
  * @author Christian Dietz (University of Konstanz)
+ * @author Stephan Saalfeld
  * @param <T> type of input
  */
 @Plugin(type = Ops.Filter.Gauss.class)
-public class GaussRAISingleSigma<T extends RealType<T> & NativeType<T>> extends
+public class GaussRAISingleSigma<T extends NumericType<T> & NativeType<T>>
+	extends
 	AbstractUnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Filter.Gauss
 {

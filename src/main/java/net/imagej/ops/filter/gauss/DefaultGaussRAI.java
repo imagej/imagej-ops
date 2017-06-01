@@ -41,7 +41,7 @@ import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.NativeType;
-import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.view.Views;
 
@@ -53,11 +53,12 @@ import org.scijava.thread.ThreadService;
  * Gaussian filter, wrapping {@link Gauss3} of imglib2-algorithms.
  *
  * @author Christian Dietz (University of Konstanz)
+ * @author Stephan Saalfeld
  * @param <T> type of input and output
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
 @Plugin(type = Ops.Filter.Gauss.class, priority = 1.0)
-public class DefaultGaussRAI<T extends RealType<T> & NativeType<T>> extends
+public class DefaultGaussRAI<T extends NumericType<T> & NativeType<T>> extends
 	AbstractUnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Filter.Gauss
 {

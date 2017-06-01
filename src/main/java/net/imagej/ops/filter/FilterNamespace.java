@@ -728,7 +728,7 @@ public class FilterNamespace extends AbstractNamespace {
 
 	/** Executes the "gauss" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.gauss.DefaultGaussRAI.class)
-	public <T extends RealType<T>, V extends RealType<V>>
+	public <T extends NumericType<T>, V extends NumericType<V>>
 		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<V> out,
 			final RandomAccessibleInterval<T> in, final double[] sigmas,
 			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
@@ -742,7 +742,7 @@ public class FilterNamespace extends AbstractNamespace {
 
 	/** Executes the "gauss" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.gauss.DefaultGaussRAI.class)
-	public <T extends RealType<T>, V extends RealType<V>>
+	public <T extends NumericType<T>, V extends NumericType<V>>
 		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<V> out,
 			final RandomAccessibleInterval<T> in, final double... sigmas)
 	{
@@ -755,7 +755,7 @@ public class FilterNamespace extends AbstractNamespace {
 
 	/** Executes the "gauss" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.gauss.DefaultGaussRAI.class)
-	public <T extends RealType<T>, V extends RealType<V>>
+	public <T extends NumericType<T>, V extends NumericType<V>>
 		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<T> in,
 			final double... sigmas)
 	{
@@ -768,7 +768,7 @@ public class FilterNamespace extends AbstractNamespace {
 
 	/** Executes the "gauss" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.gauss.GaussRAISingleSigma.class)
-	public <T extends RealType<T>, V extends RealType<V>>
+	public <T extends NumericType<T>, V extends NumericType<V>>
 		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<V> out,
 			final RandomAccessibleInterval<T> in, final double sigma)
 	{
@@ -781,7 +781,7 @@ public class FilterNamespace extends AbstractNamespace {
 
 	/** Executes the "gauss" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.gauss.GaussRAISingleSigma.class)
-	public <T extends RealType<T>, V extends RealType<V>>
+	public <T extends NumericType<T>, V extends NumericType<V>>
 		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<V> out,
 			final RandomAccessibleInterval<T> in, final double sigma,
 			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
@@ -794,7 +794,7 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.filter.gauss.GaussRAISingleSigma.class)
-	public <T extends RealType<T>, V extends RealType<V>>
+	public <T extends NumericType<T>, V extends NumericType<V>>
 		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<T> in,
 			final double sigma)
 	{
