@@ -30,6 +30,7 @@
 
 package net.imagej.ops.threshold;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
@@ -45,6 +46,7 @@ import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Plugin;
 
@@ -52,6 +54,7 @@ import org.scijava.plugin.Plugin;
  * The threshold namespace contains operations related to binary thresholding.
  *
  * @author Curtis Rueden
+ * @author Stefan Helfrich (University of Konstanz)
  */
 @Plugin(type = Namespace.class)
 public class ThresholdNamespace extends AbstractNamespace {
@@ -120,6 +123,29 @@ public class ThresholdNamespace extends AbstractNamespace {
 			(BitType) ops().run(
 				net.imagej.ops.Ops.Threshold.Apply.class,
 				out, in, threshold, comparator);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.threshold.apply.ApplyConstantThresholdPair.class)
+	public <T extends RealType<T>> Iterable<BitType> apply(
+		final Iterable<BitType> out, final Iterable<T> in,
+		final Pair<T, T> thresholdPair)
+	{
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		final Iterable<BitType> result = (Iterable) ops().run(
+			net.imagej.ops.threshold.apply.ApplyConstantThresholdPair.class, out, in,
+			thresholdPair);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.threshold.apply.ApplyThresholdCollection.class)
+	public <T> BitType apply(final BitType out, final T in,
+		final Collection<ApplyThreshold<T, BitType>> thresholdOps)
+	{
+		final BitType result = (BitType) ops().run(
+			net.imagej.ops.threshold.apply.ApplyThresholdCollection.class, out, in,
+			thresholdOps);
 		return result;
 	}
 
