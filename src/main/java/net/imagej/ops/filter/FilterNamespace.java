@@ -805,6 +805,19 @@ public class FilterNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	/** Executes the "gauss" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.gauss.DefaultGaussRA.class)
+	public <T extends NumericType<T>, V extends NumericType<V>>
+		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<V> out,
+			final RandomAccessible<T> in, final double... sigmas)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<V> result =
+			(RandomAccessibleInterval<V>) ops().run(Ops.Filter.Gauss.class, out, in,
+				sigmas);
+		return result;
+	}
+
 	// -- ifft --
 
 	/** Executes the "ifft" operation on the given arguments. */
