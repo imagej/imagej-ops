@@ -84,14 +84,6 @@
 				<role>support</role>
 			</roles>
 		</developer>
-		<developer>
-			<id>lnyng</id>
-			<name>Leon Yang</name>
-			<url>http://imagej.net/User:Leon</url>
-			<roles>
-				<role>developer</role>
-			</roles>
-		</developer>
 	</developers>
 	<contributors>
 		<contributor>
@@ -159,6 +151,11 @@
 			<name>Alison Walter</name>
 			<url>http://imagej.net/User:Awalter2</url>
 			<properties><id>awalter17</id></properties>
+		</contributor>
+		<contributor>
+			<name>Leon Yang</name>
+			<url>http://imagej.net/User:Leon</url>
+			<properties><id>lnyng</id></properties>
 		</contributor>
 		<contributor>
 			<name>Michael Zinsmaier</name>
