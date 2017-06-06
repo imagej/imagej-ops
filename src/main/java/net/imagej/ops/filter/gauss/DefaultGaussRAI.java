@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -41,7 +41,7 @@ import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.NativeType;
-import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.view.Views;
 
@@ -51,13 +51,14 @@ import org.scijava.thread.ThreadService;
 
 /**
  * Gaussian filter, wrapping {@link Gauss3} of imglib2-algorithms.
- * 
+ *
  * @author Christian Dietz (University of Konstanz)
+ * @author Stephan Saalfeld
  * @param <T> type of input and output
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
 @Plugin(type = Ops.Filter.Gauss.class, priority = 1.0)
-public class DefaultGaussRAI<T extends RealType<T> & NativeType<T>> extends
+public class DefaultGaussRAI<T extends NumericType<T> & NativeType<T>> extends
 	AbstractUnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Filter.Gauss
 {
@@ -76,18 +77,18 @@ public class DefaultGaussRAI<T extends RealType<T> & NativeType<T>> extends
 		final RandomAccessibleInterval<T> output)
 	{
 
-		if (outOfBounds == null) outOfBounds =
-			new OutOfBoundsMirrorFactory<>(
-				Boundary.SINGLE);
+		if (outOfBounds == null) {
+			outOfBounds = new OutOfBoundsMirrorFactory<>(Boundary.SINGLE);
+		}
 
-		final RandomAccessible<FloatType> eIn =
+		final RandomAccessible<FloatType> eIn = //
 			(RandomAccessible) Views.extend(input, outOfBounds);
 
 		try {
 			SeparableSymmetricConvolution.convolve(Gauss3.halfkernels(sigmas), eIn,
 				output, threads.getExecutorService());
 		}
-		catch (IncompatibleTypeException e) {
+		catch (final IncompatibleTypeException e) {
 			throw new RuntimeException(e);
 		}
 	}

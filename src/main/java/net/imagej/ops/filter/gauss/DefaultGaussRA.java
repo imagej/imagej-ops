@@ -30,63 +30,48 @@
 
 package net.imagej.ops.filter.gauss;
 
-import java.util.Arrays;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+import org.scijava.thread.ThreadService;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Filter.Gauss;
-import net.imagej.ops.special.chain.RAIs;
-import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.algorithm.gauss3.Gauss3;
+import net.imglib2.algorithm.gauss3.SeparableSymmetricConvolution;
+import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.NumericType;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 /**
- * Gaussian filter which can be called with single sigma, i.e. the sigma is the
- * same in each dimension.
+ * Gaussian filter, wrapping {@link Gauss3} of imglib2-algorithms.
  *
- * @author Christian Dietz (University of Konstanz)
  * @author Stephan Saalfeld
- * @param <T> type of input
+ * @author Christian Dietz (University of Konstanz)
+ * @param <T> type of input and output
  */
-@Plugin(type = Ops.Filter.Gauss.class)
-public class GaussRAISingleSigma<T extends NumericType<T> & NativeType<T>>
-	extends
-	AbstractUnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+@Plugin(type = Ops.Filter.Gauss.class, priority = 0.5)
+public class DefaultGaussRA<T extends NumericType<T> & NativeType<T>> extends
+	AbstractUnaryComputerOp<RandomAccessible<T>, RandomAccessibleInterval<T>>
 	implements Ops.Filter.Gauss
 {
+	@Parameter
+	private ThreadService threads;
 
 	@Parameter
-	private double sigma;
-
-	@Parameter(required = false)
-	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds;
-
-	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gaussOp;
+	private double[] sigmas;
 
 	@Override
-	public void initialize() {
-		final double[] sigmas = new double[in().numDimensions()];
-		Arrays.fill(sigmas, sigma);
-		gaussOp = RAIs.computer(ops(), Gauss.class, in(), sigmas, outOfBounds);
-	}
-
-	@Override
-	public void compute(final RandomAccessibleInterval<T> input,
+	public void compute(final RandomAccessible<T> input,
 		final RandomAccessibleInterval<T> output)
 	{
-		gaussOp.compute(input, output);
+		try {
+			SeparableSymmetricConvolution.convolve(Gauss3.halfkernels(sigmas), input,
+				output, threads.getExecutorService());
+		}
+		catch (final IncompatibleTypeException e) {
+			throw new RuntimeException(e);
+		}
 	}
-
-	@Override
-	public RandomAccessibleInterval<T> createOutput(
-		final RandomAccessibleInterval<T> input)
-	{
-		return ops().create().img(input);
-	}
-
 }

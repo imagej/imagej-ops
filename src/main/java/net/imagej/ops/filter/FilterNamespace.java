@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -36,8 +36,6 @@ import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.gauss.DefaultGaussRAI;
-import net.imagej.ops.filter.gauss.GaussRAISingleSigma;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.UnaryFunctionOp;
@@ -59,7 +57,7 @@ import org.scijava.plugin.Plugin;
 
 /**
  * The filter namespace contains ops that filter data.
- * 
+ *
  * @author Curtis Rueden
  */
 @Plugin(type = Namespace.class)
@@ -74,8 +72,7 @@ public class FilterNamespace extends AbstractNamespace {
 		final double rangeStdDev)
 	{
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(
-			net.imagej.ops.filter.addNoise.AddNoiseRealType.class, out, in, rangeMin,
+		final O result = (O) ops().run(Ops.Filter.AddNoise.class, out, in, rangeMin,
 			rangeMax, rangeStdDev);
 		return result;
 	}
@@ -97,8 +94,7 @@ public class FilterNamespace extends AbstractNamespace {
 		final double rangeMax, final double rangeStdDev)
 	{
 		@SuppressWarnings("unchecked")
-		final T result = (T) ops().run(
-			net.imagej.ops.filter.addNoise.AddNoiseRealTypeCFI.class, in, rangeMin,
+		final T result = (T) ops().run(Ops.Filter.AddNoise.class, in, rangeMin,
 			rangeMax, rangeStdDev);
 		return result;
 	}
@@ -111,9 +107,7 @@ public class FilterNamespace extends AbstractNamespace {
 		final O out, final I in)
 	{
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(
-			net.imagej.ops.filter.addPoissonNoise.AddPoissonNoiseRealType.class, out,
-			in);
+		final O result = (O) ops().run(Ops.Filter.AddPoissonNoise.class, out, in);
 		return result;
 	}
 
@@ -123,9 +117,8 @@ public class FilterNamespace extends AbstractNamespace {
 		final O out, final I in, final long seed)
 	{
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(
-			net.imagej.ops.filter.addPoissonNoise.AddPoissonNoiseRealType.class, out,
-			in, seed);
+		final O result = (O) ops().run(Ops.Filter.AddPoissonNoise.class, out, in,
+			seed);
 		return result;
 	}
 
@@ -136,7 +129,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
-			net.imagej.ops.filter.addPoissonNoise.AddPoissonNoiseMap.class, out, in);
+			Ops.Filter.AddPoissonNoise.class, out, in);
 		return result;
 	}
 
@@ -150,7 +143,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.NAME, in,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, in,
 				kernel);
 		return result;
 	}
@@ -164,7 +157,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.NAME, in,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, in,
 				kernel, obf);
 		return result;
 	}
@@ -179,7 +172,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.NAME, in,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, in,
 				kernel, obf, outType);
 		return result;
 	}
@@ -192,7 +185,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.NAME, in,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, in,
 				kernel, borderSize);
 		return result;
 	}
@@ -206,7 +199,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.NAME, in,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, in,
 				kernel, borderSize, obfInput);
 		return result;
 	}
@@ -221,7 +214,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.NAME, in,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, in,
 				kernel, borderSize, obfInput, obfKernel);
 		return result;
 	}
@@ -237,7 +230,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.NAME, in,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, in,
 				kernel, borderSize, obfInput, obfKernel, outType);
 		return result;
 	}
@@ -254,9 +247,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.convolve.ConvolveFFTF.class, in, kernel,
-				borderSize, obfInput, obfKernel, outType, fftType);
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, in,
+				kernel, borderSize, obfInput, obfKernel, outType, fftType);
 		return result;
 	}
 
@@ -268,8 +260,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.convolve.ConvolveNaiveC.class, out, in, kernel);
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, out,
+				in, kernel);
 		return result;
 	}
 
@@ -286,8 +278,8 @@ public class FilterNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<C> fftKernel)
 	{
 		@SuppressWarnings("unchecked")
-		RandomAccessibleInterval<O> result = (RandomAccessibleInterval<O>) ops()
-			.run(net.imagej.ops.filter.convolve.ConvolveFFTC.class, output,
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, output,
 				raiExtendedInput, raiExtendedKernel, fftInput, fftKernel);
 		return result;
 	}
@@ -304,8 +296,8 @@ public class FilterNamespace extends AbstractNamespace {
 			final boolean performInputFFT)
 	{
 		@SuppressWarnings("unchecked")
-		RandomAccessibleInterval<O> result = (RandomAccessibleInterval<O>) ops()
-			.run(net.imagej.ops.filter.convolve.ConvolveFFTC.class, output,
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, output,
 				raiExtendedInput, raiExtendedKernel, fftInput, fftKernel,
 				performInputFFT);
 		return result;
@@ -323,8 +315,8 @@ public class FilterNamespace extends AbstractNamespace {
 			final boolean performInputFFT, final boolean performKernelFFT)
 	{
 		@SuppressWarnings("unchecked")
-		RandomAccessibleInterval<O> result = (RandomAccessibleInterval<O>) ops()
-			.run(net.imagej.ops.filter.convolve.ConvolveFFTC.class, output,
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, output,
 				raiExtendedInput, raiExtendedKernel, fftInput, fftKernel,
 				performInputFFT, performKernelFFT);
 		return result;
@@ -341,8 +333,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.correlate.CorrelateFFTF.class, in, kernel);
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class, in,
+				kernel);
 		return result;
 	}
 
@@ -357,9 +349,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.correlate.CorrelateFFTF.class, in, kernel,
-				borderSize);
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class, in,
+				kernel, borderSize);
 		return result;
 	}
 
@@ -375,9 +366,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.correlate.CorrelateFFTF.class, in, kernel,
-				borderSize, obfInput);
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class, in,
+				kernel, borderSize, obfInput);
 		return result;
 	}
 
@@ -394,9 +384,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.correlate.CorrelateFFTF.class, in, kernel,
-				borderSize, obfInput, obfKernel);
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class, in,
+				kernel, borderSize, obfInput, obfKernel);
 		return result;
 	}
 
@@ -414,9 +403,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.correlate.CorrelateFFTF.class, in, kernel,
-				borderSize, obfInput, obfKernel, outType);
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class, in,
+				kernel, borderSize, obfInput, obfKernel, outType);
 		return result;
 	}
 
@@ -434,9 +422,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.correlate.CorrelateFFTF.class, in, kernel,
-				borderSize, obfInput, obfKernel, outType, fftType);
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class, in,
+				kernel, borderSize, obfInput, obfKernel, outType, fftType);
 		return result;
 	}
 
@@ -453,9 +440,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.correlate.CorrelateFFTC.class, output,
-				raiExtendedInput, raiExtendedKernel, fftInput, fftKernel);
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class,
+				output, raiExtendedInput, raiExtendedKernel, fftInput, fftKernel);
 		return result;
 	}
 
@@ -473,9 +459,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.correlate.CorrelateFFTC.class, output,
-				raiExtendedInput, raiExtendedKernel, fftInput, fftKernel,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class,
+				output, raiExtendedInput, raiExtendedKernel, fftInput, fftKernel,
 				performInputFFT);
 		return result;
 	}
@@ -494,9 +479,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.correlate.CorrelateFFTC.class, output,
-				raiExtendedInput, raiExtendedKernel, fftInput, fftKernel,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class,
+				output, raiExtendedInput, raiExtendedKernel, fftInput, fftKernel,
 				performInputFFT, performKernelFFT);
 		return result;
 	}
@@ -506,8 +490,8 @@ public class FilterNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.filter.fft.CreateOutputFFTMethods.class)
 	public <T> Img<T> createFFTOutput(final Dimensions in1, final T in2) {
 		@SuppressWarnings("unchecked")
-		final Img<T> result = (Img<T>) ops().run(
-			net.imagej.ops.filter.fft.CreateOutputFFTMethods.class, in1, in2);
+		final Img<T> result = (Img<T>) ops().run(Ops.Filter.CreateFFTOutput.class,
+			in1, in2);
 		return result;
 	}
 
@@ -516,8 +500,8 @@ public class FilterNamespace extends AbstractNamespace {
 		final boolean fast)
 	{
 		@SuppressWarnings("unchecked")
-		final Img<T> result = (Img<T>) ops().run(
-			net.imagej.ops.filter.fft.CreateOutputFFTMethods.class, in1, in2, fast);
+		final Img<T> result = (Img<T>) ops().run(Ops.Filter.CreateFFTOutput.class,
+			in1, in2, fast);
 		return result;
 	}
 
@@ -531,8 +515,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<C> result =
-			(RandomAccessibleInterval<C>) ops().run(
-				net.imagej.ops.filter.fft.FFTMethodsOpF.class, in);
+			(RandomAccessibleInterval<C>) ops().run(Ops.Filter.FFT.class, in);
 		return result;
 	}
 
@@ -545,8 +528,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<C> result =
-			(RandomAccessibleInterval<C>) ops().run(
-				net.imagej.ops.filter.fft.FFTMethodsOpF.class, in, borderSize);
+			(RandomAccessibleInterval<C>) ops().run(Ops.Filter.FFT.class, in,
+				borderSize);
 		return result;
 	}
 
@@ -559,8 +542,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<C> result =
-			(RandomAccessibleInterval<C>) ops().run(
-				net.imagej.ops.filter.fft.FFTMethodsOpF.class, in, borderSize, fast);
+			(RandomAccessibleInterval<C>) ops().run(Ops.Filter.FFT.class, in,
+				borderSize, fast);
 		return result;
 	}
 
@@ -574,9 +557,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<C> result =
-			(RandomAccessibleInterval<C>) ops().run(
-				net.imagej.ops.filter.fft.FFTMethodsOpF.class, in, borderSize, fast,
-				obf);
+			(RandomAccessibleInterval<C>) ops().run(Ops.Filter.FFT.class, in,
+				borderSize, fast, obf);
 		return result;
 	}
 
@@ -587,13 +569,12 @@ public class FilterNamespace extends AbstractNamespace {
 		RandomAccessibleInterval<C> fft(final RandomAccessibleInterval<T> in,
 			final long[] borderSize, final boolean fast,
 			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf,
-			Type<C> fftType)
+			final Type<C> fftType)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<C> result =
-			(RandomAccessibleInterval<C>) ops().run(
-				net.imagej.ops.filter.fft.FFTMethodsOpF.class, in, borderSize, fast,
-				obf, fftType);
+			(RandomAccessibleInterval<C>) ops().run(Ops.Filter.FFT.class, in,
+				borderSize, fast, obf, fftType);
 		return result;
 	}
 
@@ -605,8 +586,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<C> result =
-			(RandomAccessibleInterval<C>) ops().run(
-				net.imagej.ops.filter.fft.FFTMethodsOpC.class, out, in);
+			(RandomAccessibleInterval<C>) ops().run(Ops.Filter.FFT.class, out, in);
 		return result;
 	}
 
@@ -620,8 +600,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final List<long[]> result = (List<long[]>) ops().run(
-			net.imagej.ops.filter.fftSize.ComputeFFTSize.class, inputSize, paddedSize,
-			fftSize, forward, fast);
+			Ops.Filter.FFTSize.class, inputSize, paddedSize, fftSize, forward, fast);
 		return result;
 	}
 
@@ -629,9 +608,8 @@ public class FilterNamespace extends AbstractNamespace {
 	public long[][] fftSize(final Dimensions in1, final boolean forward,
 		final boolean fast)
 	{
-		final long[][] result = (long[][]) ops().run(
-			net.imagej.ops.filter.fftSize.ComputeFFTMethodsSize.class, in1, forward,
-			fast);
+		final long[][] result = (long[][]) ops().run(Ops.Filter.FFTSize.class, in1,
+			forward, fast);
 		return result;
 	}
 
@@ -647,9 +625,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.filter.dog.DefaultDoG.class, in, gauss1, gauss2,
-				outputCreator, tmpCreator);
+			(RandomAccessibleInterval<T>) ops().run(Ops.Filter.DoG.class, in, gauss1,
+				gauss2, outputCreator, tmpCreator);
 		return result;
 	}
 
@@ -664,9 +641,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.filter.dog.DefaultDoG.class, out, in, gauss1, gauss2,
-				outputCreator, tmpCreator);
+			(RandomAccessibleInterval<T>) ops().run(Ops.Filter.DoG.class, out, in,
+				gauss1, gauss2, outputCreator, tmpCreator);
 		return result;
 	}
 
@@ -679,9 +655,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) ops().run(
-				net.imagej.ops.filter.dog.DoGVaryingSigmas.class, out, in, sigmas1,
-				sigmas2, outOfBounds);
+			(RandomAccessibleInterval<V>) ops().run(Ops.Filter.DoG.class, out, in,
+				sigmas1, sigmas2, outOfBounds);
 		return result;
 	}
 
@@ -693,9 +668,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) ops().run(
-				net.imagej.ops.filter.dog.DoGVaryingSigmas.class, out, in, sigmas1,
-				sigmas2);
+			(RandomAccessibleInterval<V>) ops().run(Ops.Filter.DoG.class, out, in,
+				sigmas1, sigmas2);
 		return result;
 	}
 
@@ -706,8 +680,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) ops().run(
-				net.imagej.ops.filter.dog.DoGVaryingSigmas.class, in, sigmas1, sigmas2);
+			(RandomAccessibleInterval<V>) ops().run(Ops.Filter.DoG.class, in, sigmas1,
+				sigmas2);
 		return result;
 	}
 
@@ -720,9 +694,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) ops().run(
-				net.imagej.ops.filter.dog.DoGSingleSigmas.class, out, in, sigma1,
-				sigma2, outOfBounds);
+			(RandomAccessibleInterval<V>) ops().run(Ops.Filter.DoG.class, out, in,
+				sigma1, sigma2, outOfBounds);
 		return result;
 	}
 
@@ -734,9 +707,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) ops().run(
-				net.imagej.ops.filter.dog.DoGSingleSigmas.class, out, in, sigma1,
-				sigma2);
+			(RandomAccessibleInterval<V>) ops().run(Ops.Filter.DoG.class, out, in,
+				sigma1, sigma2);
 		return result;
 	}
 
@@ -747,9 +719,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) ops().run(
-				net.imagej.ops.filter.dog.DoGSingleSigmas.class, null, in, sigma1,
-				sigma2);
+			(RandomAccessibleInterval<V>) ops().run(Ops.Filter.DoG.class, null, in,
+				sigma1, sigma2);
 		return result;
 	}
 
@@ -757,80 +728,93 @@ public class FilterNamespace extends AbstractNamespace {
 
 	/** Executes the "gauss" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.gauss.DefaultGaussRAI.class)
-	public <T extends RealType<T>, V extends RealType<V>>
+	public <T extends NumericType<T>, V extends NumericType<V>>
 		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<V> out,
 			final RandomAccessibleInterval<T> in, final double[] sigmas,
 			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) ops().run(DefaultGaussRAI.class, out, in,
+			(RandomAccessibleInterval<V>) ops().run(Ops.Filter.Gauss.class, out, in,
 				sigmas, outOfBounds);
 		return result;
 	}
 
 	/** Executes the "gauss" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.gauss.DefaultGaussRAI.class)
-	public <T extends RealType<T>, V extends RealType<V>>
+	public <T extends NumericType<T>, V extends NumericType<V>>
 		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<V> out,
 			final RandomAccessibleInterval<T> in, final double... sigmas)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) ops().run(DefaultGaussRAI.class, out, in,
+			(RandomAccessibleInterval<V>) ops().run(Ops.Filter.Gauss.class, out, in,
 				sigmas);
 		return result;
 	}
 
 	/** Executes the "gauss" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.gauss.DefaultGaussRAI.class)
-	public <T extends RealType<T>, V extends RealType<V>>
+	public <T extends NumericType<T>, V extends NumericType<V>>
 		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<T> in,
 			final double... sigmas)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) ops().run(DefaultGaussRAI.class, in,
+			(RandomAccessibleInterval<V>) ops().run(Ops.Filter.Gauss.class, in,
 				sigmas);
 		return result;
 	}
 
 	/** Executes the "gauss" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.gauss.GaussRAISingleSigma.class)
-	public <T extends RealType<T>, V extends RealType<V>>
-		RandomAccessibleInterval<V> gauss(RandomAccessibleInterval<V> out,
-			RandomAccessibleInterval<T> in, double sigma)
+	public <T extends NumericType<T>, V extends NumericType<V>>
+		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<V> out,
+			final RandomAccessibleInterval<T> in, final double sigma)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) ops().run(GaussRAISingleSigma.class, out,
-				in, sigma);
+			(RandomAccessibleInterval<V>) ops().run(Ops.Filter.Gauss.class, out, in,
+				sigma);
 		return result;
 	}
 
 	/** Executes the "gauss" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.gauss.GaussRAISingleSigma.class)
-	public <T extends RealType<T>, V extends RealType<V>>
-		RandomAccessibleInterval<V> gauss(RandomAccessibleInterval<V> out,
-			RandomAccessibleInterval<T> in, double sigma,
-			OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
+	public <T extends NumericType<T>, V extends NumericType<V>>
+		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<V> out,
+			final RandomAccessibleInterval<T> in, final double sigma,
+			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) ops().run(GaussRAISingleSigma.class, out,
-				in, sigma, outOfBounds);
+			(RandomAccessibleInterval<V>) ops().run(Ops.Filter.Gauss.class, out, in,
+				sigma, outOfBounds);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.filter.gauss.GaussRAISingleSigma.class)
-	public <T extends RealType<T>, V extends RealType<V>>
+	public <T extends NumericType<T>, V extends NumericType<V>>
 		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<T> in,
 			final double sigma)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) ops().run(
-				net.imagej.ops.filter.gauss.GaussRAISingleSigma.class, in, sigma);
+			(RandomAccessibleInterval<V>) ops().run(Ops.Filter.Gauss.class, in,
+				sigma);
+		return result;
+	}
+
+	/** Executes the "gauss" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.gauss.DefaultGaussRA.class)
+	public <T extends NumericType<T>, V extends NumericType<V>>
+		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<V> out,
+			final RandomAccessible<T> in, final double... sigmas)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<V> result =
+			(RandomAccessibleInterval<V>) ops().run(Ops.Filter.Gauss.class, out, in,
+				sigmas);
 		return result;
 	}
 
@@ -844,8 +828,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.filter.ifft.IFFTMethodsOpC.class, out, in);
+			(RandomAccessibleInterval<T>) ops().run(Ops.Filter.IFFT.class, out, in);
 		return result;
 	}
 
@@ -855,8 +838,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<C> result =
-			(RandomAccessibleInterval<C>) ops().run(
-				net.imagej.ops.filter.ifft.IFFTMethodsOpI.class, arg);
+			(RandomAccessibleInterval<C>) ops().run(Ops.Filter.IFFT.class, arg);
 		return result;
 	}
 
@@ -876,9 +858,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.FFTMethodsLinearFFTFilterC.class, out, in1, in2,
-				fftInput, fftKernel, frequencyOp);
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.LinearFilter.class,
+				out, in1, in2, fftInput, fftKernel, frequencyOp);
 		return result;
 	}
 
@@ -897,9 +878,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.FFTMethodsLinearFFTFilterC.class, out, in1, in2,
-				fftInput, fftKernel, performInputFFT, frequencyOp);
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.LinearFilter.class,
+				out, in1, in2, fftInput, fftKernel, performInputFFT, frequencyOp);
 		return result;
 	}
 
@@ -918,9 +898,9 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.FFTMethodsLinearFFTFilterC.class, out, in1, in2,
-				fftInput, fftKernel, performInputFFT, performKernelFFT, frequencyOp);
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.LinearFilter.class,
+				out, in1, in2, fftInput, fftKernel, performInputFFT, performKernelFFT,
+				frequencyOp);
 		return result;
 	}
 
@@ -934,7 +914,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
-			net.imagej.ops.filter.mean.DefaultMeanFilter.class, out, in, shape);
+			Ops.Filter.Mean.class, out, in, shape);
 		return result;
 	}
 
@@ -947,8 +927,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
-			net.imagej.ops.filter.mean.DefaultMeanFilter.class, out, in, shape,
-			outOfBoundsFactory);
+			Ops.Filter.Mean.class, out, in, shape, outOfBoundsFactory);
 		return result;
 	}
 
@@ -962,7 +941,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.filter.max.DefaultMaxFilter.class, out, in, shape);
+			Ops.Filter.Max.class, out, in, shape);
 		return result;
 	}
 
@@ -974,8 +953,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.filter.max.DefaultMaxFilter.class, out, in, shape,
-			outOfBoundsFactory);
+			Ops.Filter.Max.class, out, in, shape, outOfBoundsFactory);
 		return result;
 	}
 
@@ -987,7 +965,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.filter.median.DefaultMedianFilter.class, out, in, shape);
+			Ops.Filter.Median.class, out, in, shape);
 		return result;
 	}
 
@@ -999,8 +977,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.filter.median.DefaultMedianFilter.class, out, in, shape,
-			outOfBoundsFactory);
+			Ops.Filter.Median.class, out, in, shape, outOfBoundsFactory);
 		return result;
 	}
 
@@ -1012,7 +989,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.filter.min.DefaultMinFilter.class, out, in, shape);
+			Ops.Filter.Min.class, out, in, shape);
 		return result;
 	}
 
@@ -1024,8 +1001,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.filter.min.DefaultMinFilter.class, out, in, shape,
-			outOfBoundsFactory);
+			Ops.Filter.Min.class, out, in, shape, outOfBoundsFactory);
 		return result;
 	}
 
@@ -1037,8 +1013,7 @@ public class FilterNamespace extends AbstractNamespace {
 		final RandomAccessibleInterval<T> in, final Dimensions paddedDimensions)
 	{
 		final Interval result = (Interval) ops().run(
-			net.imagej.ops.filter.pad.PaddingIntervalCentered.class, in,
-			paddedDimensions);
+			Ops.Filter.PaddingIntervalCentered.class, in, paddedDimensions);
 		return result;
 	}
 
@@ -1048,24 +1023,23 @@ public class FilterNamespace extends AbstractNamespace {
 		final RandomAccessibleInterval<T> in, final Interval centeredInterval)
 	{
 		final Interval result = (Interval) ops().run(
-			net.imagej.ops.filter.pad.PaddingIntervalOrigin.class, in,
-			centeredInterval);
+			Ops.Filter.PaddingIntervalOrigin.class, in, centeredInterval);
 		return result;
 	}
 
-	/** Executes the "padFilter" filter operation on the given arguments. */
+	/** Executes the "padInput" filter operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.pad.PadInput.class)
 	public <T extends ComplexType<T>> RandomAccessibleInterval<T> padInput(
 		final RandomAccessibleInterval<T> in, final Dimensions paddedDimensions)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.filter.pad.PadInput.class, in, paddedDimensions);
+			(RandomAccessibleInterval<T>) ops().run(Ops.Filter.PadInput.class, in,
+				paddedDimensions);
 		return result;
 	}
 
-	/** Executes the "padFilter" filter operation on the given arguments. */
+	/** Executes the "padInput" filter operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.pad.PadInput.class)
 	public <T extends ComplexType<T>> RandomAccessibleInterval<T> padInput(
 		final RandomAccessibleInterval<T> in, final Dimensions paddedDimensions,
@@ -1073,15 +1047,15 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.filter.pad.PadInput.class, in, paddedDimensions, obf);
+			(RandomAccessibleInterval<T>) ops().run(Ops.Filter.PadInput.class, in,
+				paddedDimensions, obf);
 		return result;
 	}
 
 	// -- pad input fft methods
 
 	/**
-	 * Executes the "padInputFFTMethods" filter operation on the given arguments.
+	 * Executes the "padInputFFT" filter operation on the given arguments.
 	 */
 	@OpMethod(op = net.imagej.ops.filter.pad.PadInputFFTMethods.class)
 	public <T extends ComplexType<T>> RandomAccessibleInterval<T> padFFTInput(
@@ -1089,13 +1063,13 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.filter.pad.PadInputFFTMethods.class, in1, in2);
+			(RandomAccessibleInterval<T>) ops().run(Ops.Filter.PadFFTInput.class, in1,
+				in2);
 		return result;
 	}
 
 	/**
-	 * Executes the "padInputFFTMethods" filter operation on the given arguments.
+	 * Executes the "padInputFFT" filter operation on the given arguments.
 	 */
 	@OpMethod(op = net.imagej.ops.filter.pad.PadInputFFTMethods.class)
 	public <T extends ComplexType<T>> RandomAccessibleInterval<T> padFFTInput(
@@ -1104,13 +1078,13 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.filter.pad.PadInputFFTMethods.class, in1, in2, fast);
+			(RandomAccessibleInterval<T>) ops().run(Ops.Filter.PadFFTInput.class, in1,
+				in2, fast);
 		return result;
 	}
 
 	/**
-	 * Executes the "padInputFFTMethods" filter operation on the given arguments.
+	 * Executes the "padInputFFT" filter operation on the given arguments.
 	 */
 	@OpMethod(op = net.imagej.ops.filter.pad.PadInputFFTMethods.class)
 	public <T extends ComplexType<T>> RandomAccessibleInterval<T> padFFTInput(
@@ -1120,9 +1094,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.filter.pad.PadInputFFTMethods.class, in1, in2, fast,
-				obf);
+			(RandomAccessibleInterval<T>) ops().run(Ops.Filter.PadFFTInput.class, in1,
+				in2, fast, obf);
 		return result;
 	}
 
@@ -1140,7 +1113,7 @@ public class FilterNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.filter.pad.PadShiftKernelFFTMethods.class, in1, in2);
+				Ops.Filter.PadShiftFFTKernel.class, in1, in2);
 		return result;
 	}
 
@@ -1155,8 +1128,7 @@ public class FilterNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.filter.pad.PadShiftKernelFFTMethods.class, in1, in2,
-				fast);
+				Ops.Filter.PadShiftFFTKernel.class, in1, in2, fast);
 		return result;
 	}
 
@@ -1168,8 +1140,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.filter.sigma.DefaultSigmaFilter.class, out, in, shape,
-			range, minPixelFraction);
+			Ops.Filter.Sigma.class, out, in, shape, range, minPixelFraction);
 		return result;
 	}
 
@@ -1182,8 +1153,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.filter.sigma.DefaultSigmaFilter.class, out, in, shape,
-			outOfBoundsFactory, range, minPixelFraction);
+			Ops.Filter.Sigma.class, out, in, shape, outOfBoundsFactory, range,
+			minPixelFraction);
 		return result;
 	}
 
@@ -1195,8 +1166,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.filter.variance.DefaultVarianceFilter.class, out, in,
-			shape);
+			Ops.Filter.Variance.class, out, in, shape);
 		return result;
 	}
 
@@ -1208,8 +1178,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.filter.variance.DefaultVarianceFilter.class, out, in,
-			shape, outOfBoundsFactory);
+			Ops.Filter.Variance.class, out, in, shape, outOfBoundsFactory);
 		return result;
 	}
 
