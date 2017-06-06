@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -44,7 +44,7 @@ import net.imglib2.util.Pair;
 
 /**
  * Tests {@link net.imagej.ops.Ops.Coloc.ICQ}.
- * 
+ *
  * @author Curtis Rueden
  */
 public class LiICQTest extends AbstractOpTest {
@@ -57,10 +57,9 @@ public class LiICQTest extends AbstractOpTest {
 		final DoubleType mean1 = ops.stats().mean(new DoubleType(), img1);
 		final DoubleType mean2 = ops.stats().mean(new DoubleType(), img2);
 
-		Iterable<Pair<ByteType, ByteType>> pairs = new IterablePair<ByteType, ByteType>(img1, img2);
-		
-		final Object icqValue =
-			ops.run(LiICQ.class, pairs, mean1.get(), mean2.get());
+		final Iterable<Pair<ByteType, ByteType>> pairs = new IterablePair<ByteType, ByteType>(img1, img2);
+
+		final Object icqValue = ops.run(LiICQ.class, pairs, mean1.get(), mean2.get());
 
 		assertTrue(icqValue instanceof Double);
 		assertEquals(0.5, (Double) icqValue, 0.0);
