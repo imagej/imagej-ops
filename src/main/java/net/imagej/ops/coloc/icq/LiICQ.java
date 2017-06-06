@@ -31,10 +31,10 @@ public class LiICQ<T extends RealType<T>, U extends RealType<U>> extends Abstrac
 	@Parameter
 	private Iterable<U> image2;
 
-	@Parameter
+	@Parameter(required = false)
 	private DoubleType mean1;
 
-	@Parameter
+	@Parameter(required = false)
 	private DoubleType mean2;
 
 	@Override
@@ -42,8 +42,8 @@ public class LiICQ<T extends RealType<T>, U extends RealType<U>> extends Abstrac
 
 		final Iterable<Pair<T, U>> samples = new IterablePair<>(image1, image2);
 
-		final double m1 = mean1.get();
-		final double m2 = mean2.get();
+		final double m1 = mean1 == null ? computeMeanOf(image1) : mean1.get();
+		final double m2 = mean2 == null ? computeMeanOf(image2) : mean2.get();
 
 		// variables to count the positive and negative results
 		// of Li's product of the difference of means.
@@ -69,5 +69,9 @@ public class LiICQ<T extends RealType<T>, U extends RealType<U>> extends Abstrac
 		 * to the total number of pixels. Then shift it in the -0.5,0.5 range.
 		 */
 		icqValue = ((double) numPositiveProducts / (double) (numNegativeProducts + numPositiveProducts)) - 0.5;
+	}
+
+	private <V extends RealType<V>> double computeMeanOf(final Iterable<V> in) {
+		return ops().stats().mean(in).getRealDouble();
 	}
 }

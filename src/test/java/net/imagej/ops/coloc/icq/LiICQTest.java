@@ -38,7 +38,6 @@ import org.junit.Test;
 import net.imagej.ops.coloc.ColocalisationTest;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
-import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * Tests {@link net.imagej.ops.Ops.Coloc.ICQ}.
@@ -52,10 +51,7 @@ public class LiICQTest extends ColocalisationTest {
 		final Img<ByteType> img1 = generateByteArrayTestImg(true, 10, 15, 20);
 		final Img<ByteType> img2 = generateByteArrayTestImg(true, 10, 15, 20);
 
-		final DoubleType mean1 = ops.stats().mean(new DoubleType(), img1);
-		final DoubleType mean2 = ops.stats().mean(new DoubleType(), img2);
-
-		final Object icqValue = ops.run(LiICQ.class, img1, img2, mean1, mean2);
+		final Object icqValue = ops.run(LiICQ.class, img1, img2);
 
 		assertTrue(icqValue instanceof Double);
 		assertEquals(0.5, (Double) icqValue, 0.0);
@@ -66,9 +62,7 @@ public class LiICQTest extends ColocalisationTest {
 	 */
 	@Test
 	public void liPositiveCorrTest() {
-		final Object icqValue = ops.run(LiICQ.class, positiveCorrelationImageCh1,
-				positiveCorrelationImageCh2, new DoubleType(positiveCorrelationImageCh1Mean),
-				new DoubleType(positiveCorrelationImageCh2Mean));
+		final Object icqValue = ops.run(LiICQ.class, positiveCorrelationImageCh1, positiveCorrelationImageCh2);
 
 		assertTrue(icqValue instanceof Double);
 		final double icq = (Double) icqValue;
@@ -81,8 +75,7 @@ public class LiICQTest extends ColocalisationTest {
 	 */
 	@Test
 	public void liZeroCorrTest() {
-		final Object icqValue = ops.run(LiICQ.class, zeroCorrelationImageCh1,
-				zeroCorrelationImageCh2, new DoubleType(zeroCorrelationImageCh1Mean), new DoubleType(zeroCorrelationImageCh2Mean));
+		final Object icqValue = ops.run(LiICQ.class, zeroCorrelationImageCh1, zeroCorrelationImageCh2);
 
 		assertTrue(icqValue instanceof Double);
 		final double icq = (Double) icqValue;
