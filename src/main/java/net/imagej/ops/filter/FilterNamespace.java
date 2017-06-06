@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -59,7 +59,7 @@ import org.scijava.plugin.Plugin;
 
 /**
  * The filter namespace contains ops that filter data.
- * 
+ *
  * @author Curtis Rueden
  */
 @Plugin(type = Namespace.class)
@@ -286,8 +286,9 @@ public class FilterNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<C> fftKernel)
 	{
 		@SuppressWarnings("unchecked")
-		RandomAccessibleInterval<O> result = (RandomAccessibleInterval<O>) ops()
-			.run(net.imagej.ops.filter.convolve.ConvolveFFTC.class, output,
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(
+				net.imagej.ops.filter.convolve.ConvolveFFTC.class, output,
 				raiExtendedInput, raiExtendedKernel, fftInput, fftKernel);
 		return result;
 	}
@@ -304,8 +305,9 @@ public class FilterNamespace extends AbstractNamespace {
 			final boolean performInputFFT)
 	{
 		@SuppressWarnings("unchecked")
-		RandomAccessibleInterval<O> result = (RandomAccessibleInterval<O>) ops()
-			.run(net.imagej.ops.filter.convolve.ConvolveFFTC.class, output,
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(
+				net.imagej.ops.filter.convolve.ConvolveFFTC.class, output,
 				raiExtendedInput, raiExtendedKernel, fftInput, fftKernel,
 				performInputFFT);
 		return result;
@@ -323,8 +325,9 @@ public class FilterNamespace extends AbstractNamespace {
 			final boolean performInputFFT, final boolean performKernelFFT)
 	{
 		@SuppressWarnings("unchecked")
-		RandomAccessibleInterval<O> result = (RandomAccessibleInterval<O>) ops()
-			.run(net.imagej.ops.filter.convolve.ConvolveFFTC.class, output,
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(
+				net.imagej.ops.filter.convolve.ConvolveFFTC.class, output,
 				raiExtendedInput, raiExtendedKernel, fftInput, fftKernel,
 				performInputFFT, performKernelFFT);
 		return result;
@@ -587,7 +590,7 @@ public class FilterNamespace extends AbstractNamespace {
 		RandomAccessibleInterval<C> fft(final RandomAccessibleInterval<T> in,
 			final long[] borderSize, final boolean fast,
 			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf,
-			Type<C> fftType)
+			final Type<C> fftType)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<C> result =
@@ -798,8 +801,8 @@ public class FilterNamespace extends AbstractNamespace {
 	/** Executes the "gauss" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.gauss.GaussRAISingleSigma.class)
 	public <T extends RealType<T>, V extends RealType<V>>
-		RandomAccessibleInterval<V> gauss(RandomAccessibleInterval<V> out,
-			RandomAccessibleInterval<T> in, double sigma)
+		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<V> out,
+			final RandomAccessibleInterval<T> in, final double sigma)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<V> result =
@@ -811,9 +814,9 @@ public class FilterNamespace extends AbstractNamespace {
 	/** Executes the "gauss" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.gauss.GaussRAISingleSigma.class)
 	public <T extends RealType<T>, V extends RealType<V>>
-		RandomAccessibleInterval<V> gauss(RandomAccessibleInterval<V> out,
-			RandomAccessibleInterval<T> in, double sigma,
-			OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
+		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<V> out,
+			final RandomAccessibleInterval<T> in, final double sigma,
+			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<V> result =
