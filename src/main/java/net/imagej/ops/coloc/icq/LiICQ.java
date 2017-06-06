@@ -7,6 +7,8 @@ import org.scijava.plugin.Plugin;
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.util.IterablePair;
 import net.imglib2.util.Pair;
 
 /**
@@ -24,16 +26,25 @@ public class LiICQ<T extends RealType<T>, U extends RealType<U>> extends Abstrac
 	private double icqValue;
 
 	@Parameter
-	private Iterable<Pair<T, U>> samples;
+	private Iterable<T> image1;
 
 	@Parameter
-	private double mean1;
+	private Iterable<U> image2;
 
 	@Parameter
-	private double mean2;
+	private DoubleType mean1;
+
+	@Parameter
+	private DoubleType mean2;
 
 	@Override
 	public void run() {
+
+		final Iterable<Pair<T, U>> samples = new IterablePair<>(image1, image2);
+
+		final double m1 = mean1.get();
+		final double m2 = mean2.get();
+
 		// variables to count the positive and negative results
 		// of Li's product of the difference of means.
 		long numPositiveProducts = 0;
@@ -44,7 +55,7 @@ public class LiICQ<T extends RealType<T>, U extends RealType<U>> extends Abstrac
 			final double ch1 = value.getA().getRealDouble();
 			final double ch2 = value.getB().getRealDouble();
 
-			final double productOfDifferenceOfMeans = (mean1 - ch1) * (mean2 - ch2);
+			final double productOfDifferenceOfMeans = (m1 - ch1) * (m2 - ch2);
 
 			// check for positive and negative values
 			if (productOfDifferenceOfMeans < 0.0)

@@ -35,8 +35,9 @@ import org.scijava.plugin.Plugin;
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
+import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Pair;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * The coloc namespace contains ops that facilitate colocalization analysis.
@@ -49,9 +50,9 @@ public class ColocNamespace extends AbstractNamespace {
 	// -- icq --
 	
 	@OpMethod(op = net.imagej.ops.coloc.icq.LiICQ.class)
-	public <T extends RealType<T>,U extends RealType<U>> double icq(final Iterable<Pair<T, U>> samples, final double mean1, final double mean2) {
+	public <T extends RealType<T>,U extends RealType<U>> double icq(final Iterable<T> image1, final Iterable<T> image2, final DoubleType mean1, final DoubleType mean2) {
 		final double result =
-			(Double) ops().run(net.imagej.ops.coloc.icq.LiICQ.class, samples, mean1, mean2);
+			(Double) ops().run(net.imagej.ops.coloc.icq.LiICQ.class, image1, image2, mean1, mean2);
 		return result;
 	}
 	

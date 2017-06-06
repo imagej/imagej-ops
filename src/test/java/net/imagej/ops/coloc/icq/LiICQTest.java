@@ -38,10 +38,7 @@ import org.junit.Test;
 import net.imagej.ops.coloc.ColocalisationTest;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
-import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.util.IterablePair;
-import net.imglib2.util.Pair;
 
 /**
  * Tests {@link net.imagej.ops.Ops.Coloc.ICQ}.
@@ -58,9 +55,7 @@ public class LiICQTest extends ColocalisationTest {
 		final DoubleType mean1 = ops.stats().mean(new DoubleType(), img1);
 		final DoubleType mean2 = ops.stats().mean(new DoubleType(), img2);
 
-		final Iterable<Pair<ByteType, ByteType>> pairs = new IterablePair<ByteType, ByteType>(img1, img2);
-
-		final Object icqValue = ops.run(LiICQ.class, pairs, mean1.get(), mean2.get());
+		final Object icqValue = ops.run(LiICQ.class, img1, img2, mean1, mean2);
 
 		assertTrue(icqValue instanceof Double);
 		assertEquals(0.5, (Double) icqValue, 0.0);
@@ -71,11 +66,9 @@ public class LiICQTest extends ColocalisationTest {
 	 */
 	@Test
 	public void liPositiveCorrTest() {
-		final Iterable<Pair<UnsignedByteType, UnsignedByteType>> pairs = new IterablePair<>(positiveCorrelationImageCh1,
-				positiveCorrelationImageCh2);
-
-		final Object icqValue = ops.run(LiICQ.class, pairs, positiveCorrelationImageCh1Mean,
-				positiveCorrelationImageCh2Mean);
+		final Object icqValue = ops.run(LiICQ.class, positiveCorrelationImageCh1,
+				positiveCorrelationImageCh2, new DoubleType(positiveCorrelationImageCh1Mean),
+				new DoubleType(positiveCorrelationImageCh2Mean));
 
 		assertTrue(icqValue instanceof Double);
 		final double icq = (Double) icqValue;
@@ -88,13 +81,12 @@ public class LiICQTest extends ColocalisationTest {
 	 */
 	@Test
 	public void liZeroCorrTest() {
-		final Iterable<Pair<UnsignedByteType, UnsignedByteType>> pairs = new IterablePair<>(zeroCorrelationImageCh1,
-				zeroCorrelationImageCh2);
-
-		final Object icqValue = ops.run(LiICQ.class, pairs, zeroCorrelationImageCh1Mean, zeroCorrelationImageCh2Mean);
+		final Object icqValue = ops.run(LiICQ.class, zeroCorrelationImageCh1,
+				zeroCorrelationImageCh2, new DoubleType(zeroCorrelationImageCh1Mean), new DoubleType(zeroCorrelationImageCh2Mean));
 
 		assertTrue(icqValue instanceof Double);
 		final double icq = (Double) icqValue;
 		assertTrue(Math.abs(icq) < 0.01);
 	}
+
 }
