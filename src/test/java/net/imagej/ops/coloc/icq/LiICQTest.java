@@ -35,9 +35,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.coloc.ColocalisationTest;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.IterablePair;
 import net.imglib2.util.Pair;
@@ -47,7 +48,7 @@ import net.imglib2.util.Pair;
  *
  * @author Curtis Rueden
  */
-public class LiICQTest extends AbstractOpTest {
+public class LiICQTest extends ColocalisationTest {
 
 	@Test
 	public void testICQ() {
@@ -63,5 +64,37 @@ public class LiICQTest extends AbstractOpTest {
 
 		assertTrue(icqValue instanceof Double);
 		assertEquals(0.5, (Double) icqValue, 0.0);
+	}
+
+	/**
+	 * Checks Li's ICQ value for positive correlated images.
+	 */
+	@Test
+	public void liPositiveCorrTest() {
+		final Iterable<Pair<UnsignedByteType, UnsignedByteType>> pairs = new IterablePair<>(positiveCorrelationImageCh1,
+				positiveCorrelationImageCh2);
+
+		final Object icqValue = ops.run(LiICQ.class, pairs, positiveCorrelationImageCh1Mean,
+				positiveCorrelationImageCh2Mean);
+
+		assertTrue(icqValue instanceof Double);
+		final double icq = (Double) icqValue;
+		assertTrue(icq > 0.34 && icq < 0.35);
+	}
+
+	/**
+	 * Checks Li's ICQ value for zero correlated images. The ICQ value should be
+	 * about zero.
+	 */
+	@Test
+	public void liZeroCorrTest() {
+		final Iterable<Pair<UnsignedByteType, UnsignedByteType>> pairs = new IterablePair<>(zeroCorrelationImageCh1,
+				zeroCorrelationImageCh2);
+
+		final Object icqValue = ops.run(LiICQ.class, pairs, zeroCorrelationImageCh1Mean, zeroCorrelationImageCh2Mean);
+
+		assertTrue(icqValue instanceof Double);
+		final double icq = (Double) icqValue;
+		assertTrue(Math.abs(icq) < 0.01);
 	}
 }
