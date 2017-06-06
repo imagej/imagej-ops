@@ -1,11 +1,10 @@
 package net.imagej.ops.coloc.icq;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.IterablePair;
@@ -20,16 +19,8 @@ import net.imglib2.util.Pair;
  *            Type of the second image
  */
 @Plugin(type = Ops.Coloc.ICQ.class)
-public class LiICQ<T extends RealType<T>, U extends RealType<U>> extends AbstractOp implements Ops.Coloc.ICQ {
-	/** the resulting ICQ value. */
-	@Parameter(type = ItemIO.OUTPUT)
-	private double icqValue;
-
-	@Parameter
-	private Iterable<T> image1;
-
-	@Parameter
-	private Iterable<U> image2;
+public class LiICQ<T extends RealType<T>, U extends RealType<U>>
+		extends AbstractBinaryFunctionOp<Iterable<T>, Iterable<U>, Double> implements Ops.Coloc.ICQ {
 
 	@Parameter(required = false)
 	private DoubleType mean1;
@@ -38,7 +29,7 @@ public class LiICQ<T extends RealType<T>, U extends RealType<U>> extends Abstrac
 	private DoubleType mean2;
 
 	@Override
-	public void run() {
+	public Double calculate(final Iterable<T> image1, final Iterable<U> image2) {
 
 		final Iterable<Pair<T, U>> samples = new IterablePair<>(image1, image2);
 
@@ -68,7 +59,9 @@ public class LiICQ<T extends RealType<T>, U extends RealType<U>> extends Abstrac
 		 * calculate Li's ICQ value by dividing the amount of "positive pixels"
 		 * to the total number of pixels. Then shift it in the -0.5,0.5 range.
 		 */
-		icqValue = ((double) numPositiveProducts / (double) (numNegativeProducts + numPositiveProducts)) - 0.5;
+		final double icqValue = ((double) numPositiveProducts / (double) (numNegativeProducts + numPositiveProducts))
+				- 0.5;
+		return icqValue;
 	}
 
 	private <V extends RealType<V>> double computeMeanOf(final Iterable<V> in) {
