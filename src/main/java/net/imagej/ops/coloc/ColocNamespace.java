@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -35,27 +35,26 @@ import org.scijava.plugin.Plugin;
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
-import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
- * The coloc namespace contains ops that facilitate colocalization analysis.
- *b
+ * The coloc namespace contains ops that facilitate colocalization analysis. b
+ * 
  * @author Curtis Rueden
  */
 @Plugin(type = Namespace.class)
 public class ColocNamespace extends AbstractNamespace {
 
 	// -- icq --
-	
+
 	@OpMethod(op = net.imagej.ops.coloc.icq.LiICQ.class)
-	public <T extends RealType<T>,U extends RealType<U>> double icq(final Iterable<T> image1, final Iterable<T> image2, final DoubleType mean1, final DoubleType mean2) {
-		final double result =
-			(Double) ops().run(net.imagej.ops.coloc.icq.LiICQ.class, image1, image2, mean1, mean2);
+	public <T extends RealType<T>, U extends RealType<U>> double icq(final Iterable<T> image1, final Iterable<T> image2,
+			final DoubleType mean1, final DoubleType mean2) {
+		final double result = (Double) ops().run(net.imagej.ops.coloc.icq.LiICQ.class, image1, image2, mean1, mean2);
 		return result;
 	}
-	
+
 	// -- Namespace methods --
 
 	@Override
