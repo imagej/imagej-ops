@@ -25,7 +25,8 @@ namespaces = ```
 [
 	[name: "coloc", iface: "Coloc", ops: [
 		[name: "costes",                      iface: "Costes"],
-		[name: "icq",                      	  iface: "ICQ"],
+		[name: "icq",                         iface: "ICQ"],
+		[name: "kendallTau",		      iface: "KendallTau"],
 		[name: "manders",                     iface: "Manders"],
 		[name: "pearsons",                    iface: "Pearsons"],
 		[name: "spearman",                    iface: "Spearman"],
