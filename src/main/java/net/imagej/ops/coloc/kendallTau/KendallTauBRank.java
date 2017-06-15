@@ -1,20 +1,16 @@
 package net.imagej.ops.coloc.kendallTau;
 
 import java.util.Arrays;
-import java.util.Iterator;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.coloc.IntArraySorter;
 import net.imagej.ops.coloc.IntComparator;
-import net.imagej.ops.coloc.PairIterator;
 import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.IterablePair;
 import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Plugin;
-
-import ij.IJ;
 
 /**
  * This algorithm calculates Kendall's Tau-b rank correlation coefficient
@@ -63,7 +59,7 @@ public class KendallTauBRank<T extends RealType<T>, U extends RealType<U>>
 		// TODO: it is ridiculous that this has to be counted all the time (i.e. in most if not all measurements!).
 		// We only need an upper bound to begin with, so even the number of pixels in the first channel would be enough!
 		int capacity = 0;
-		for (Pair<T, U> sample : samples) {
+		for (@SuppressWarnings("unused") Pair<T, U> sample : samples) {
 			capacity++;
 		}
 
@@ -205,8 +201,6 @@ public class KendallTauBRank<T extends RealType<T>, U extends RealType<U>>
 		 * <p>
 		 * This implements a non-recursive merge sort.
 		 * </p>
-		 * @param begin
-		 * @param end
 		 * @return the equivalent number of BubbleSort swaps
 		 */
 		public long sort() {
