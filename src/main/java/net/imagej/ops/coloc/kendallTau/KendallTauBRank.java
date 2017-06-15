@@ -59,70 +59,6 @@ public class KendallTauBRank<T extends RealType<T>, U extends RealType<U>>
 		return calculateMergeSort(samples);
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-
-	public static<T extends RealType<T>> double calculateNaive(final PairIterator<T> iterator) {
-		if (!iterator.hasNext()) {
-			return Double.NaN;
-		}
-
-		// See http://en.wikipedia.org/wiki/Kendall_tau_rank_correlation_coefficient
-		int n = 0, max1 = 0, max2 = 0, max = 255;
-		int[][] histogram = new int[max + 1][max + 1];
-		while (iterator.hasNext()) {
-			iterator.fwd();
-			T type1 = iterator.getFirst();
-			T type2 = iterator.getSecond();
-			double ch1 = type1.getRealDouble();
-			double ch2 = type2.getRealDouble();
-			if (ch1 < 0 || ch2 < 0 || ch1 > max || ch2 > max) {
-				IJ.log("Error: The current Kendall Tau implementation is limited to 8-bit data");
-				return Double.NaN;
-			}
-			n++;
-			int ch1Int = (int)Math.round(ch1);
-			int ch2Int = (int)Math.round(ch2);
-			histogram[ch1Int][ch2Int]++;
-			if (max1 < ch1Int) {
-				max1 = ch1Int;
-			}
-			if (max2 < ch2Int) {
-				max2 = ch2Int;
-			}
-		}
-		long n0 = n * (long)(n - 1) / 2, n1 = 0, n2 = 0, nc = 0, nd = 0;
-		for (int i1 = 0; i1 <= max1; i1++) {
-			IJ.log("" + i1 + "/" + max1);
-			int ch1 = 0;
-			for (int i2 = 0; i2 <= max2; i2++) {
-				ch1 += histogram[i1][i2];
-
-				int count = histogram[i1][i2];
-				for (int j1 = 0; j1 < i1; j1++) {
-					for (int j2 = 0; j2 < i2; j2++) {
-						nc += count * histogram[j1][j2];
-					}
-				}
-				for (int j1 = 0; j1 < i1; j1++) {
-					for (int j2 = i2 + 1; j2 <= max2; j2++) {
-						nd += count * histogram[j1][j2];
-					}
-				}
-			}
-			n1 += ch1 * (long)(ch1 - 1) / 2;
-		}
-		for (int i2 = 0; i2 <= max2; i2++) {
-			int ch2 = 0;
-			for (int i1 = 0; i1 <= max1; i1++) {
-				ch2 += histogram[i1][i2];
-			}
-			n2 += ch2 * (long)(ch2 - 1) / 2;
-		}
-
-		return (nc - nd) / Math.sqrt((n0 - n1) * (double)(n0 - n2));
-	}
-
 	private double[][] getPairs(final Iterable<Pair<T, U>> samples) {
 		// TODO: it is ridiculous that this has to be counted all the time (i.e. in most if not all measurements!).
 		// We only need an upper bound to begin with, so even the number of pixels in the first channel would be enough!
@@ -166,7 +102,7 @@ public class KendallTauBRank<T extends RealType<T>, U extends RealType<U>>
 	 * @param samples the iterator of the pairs
 	 * @return Tau-b
 	 */
-	public double calculateMergeSort(final Iterable<Pair<T, U>> samples) {
+	private double calculateMergeSort(final Iterable<Pair<T, U>> samples) {
 		final double[][] pairs = getPairs(samples);
 		final double[] x = pairs[0];
 		final double[] y = pairs[1];
