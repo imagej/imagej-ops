@@ -74,7 +74,7 @@ public class NamespacePreprocessor extends AbstractPreprocessorPlugin {
 		// if possible, extract the OpEnvironment from the delegate object
 		final Object delegate = module.getDelegateObject();
 		final OpEnvironment env = delegate instanceof Environmental ? //
-			(OpEnvironment) delegate : ops;
+			((Environmental) delegate).ops() : ops;
 		if (env == null) return;
 
 		T defaultValue = null;
