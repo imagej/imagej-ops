@@ -33,70 +33,54 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
  * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Ops.Image.Invert.class, priority = Priority.NORMAL_PRIORITY + 1)
-public class InvertII<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractUnaryComputerOp<IterableInterval<I>, IterableInterval<O>>
-	implements Ops.Image.Invert
+public class InvertII<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractUnaryComputerOp<IterableInterval<I>, IterableInterval<O>> implements
+	Ops.Image.Invert
 {
 
-	private UnaryComputerOp<IterableInterval<I>, IterableInterval<O>> mapper;
+	@Parameter(required = false)
+	private I min;
 
-	@Override
-	public void initialize() {
-		final I inType = in().firstElement().createVariable();
-		final double minVal = inType.getMinValue();
-		final UnaryComputerOp<I, O> invert = minVal < 0 ? new SignedRealInvert<>()
-			: new UnsignedRealInvert<>(inType.getMaxValue());
-		mapper = Computers.unary(ops(), Ops.Map.class, out(), in(), invert);
-	}
+	@Parameter(required = false)
+	private I max;
+
+	private UnaryComputerOp<IterableInterval<I>, IterableInterval<O>> mapper;
 
 	@Override
 	public void compute(final IterableInterval<I> input,
 		final IterableInterval<O> output)
 	{
+		if (mapper == null) {
+			final double minValue = min == null ? input.firstElement().getMinValue() : //
+				min.getRealDouble();
+			final double maxValue = max == null ? input.firstElement().getMaxValue() : //
+				max.getRealDouble();
+			final double minMax = maxValue + minValue;
+			mapper = Computers.unary(ops(), Ops.Map.class, output, input,
+				new AbstractUnaryComputerOp<I, O>()
+			{
+
+					@Override
+					public void compute(I in, O out) {
+							out.setReal(minMax - in.getRealDouble());
+					}
+				});
+		}
 		mapper.compute(input, output);
-	}
-
-	private class SignedRealInvert<II extends RealType<II>, OO extends RealType<OO>>
-		extends AbstractUnaryComputerOp<II, OO>
-	{
-
-		@Override
-		public void compute(final II x, final OO output) {
-			final double value = x.getRealDouble() * -1.0 - 1;
-			output.setReal(value);
-		}
-
-	}
-
-	private class UnsignedRealInvert<II extends RealType<II>, OO extends RealType<OO>>
-		extends AbstractUnaryComputerOp<II, OO>
-	{
-
-		private final double max;
-
-		/**
-		 * @param max - maximum value of the range to invert about
-		 */
-		public UnsignedRealInvert(final double max) {
-			this.max = max;
-		}
-
-		@Override
-		public void compute(final II x, final OO output) {
-			final double value = max - x.getRealDouble();
-			output.setReal(value);
-		}
-
 	}
 
 }

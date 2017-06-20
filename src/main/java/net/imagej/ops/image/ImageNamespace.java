@@ -262,6 +262,30 @@ public class ImageNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	/** Executes the "invert" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.image.invert.InvertII.class)
+	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O>
+		invert(final IterableInterval<O> out, final IterableInterval<I> in,
+			final I min)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
+			net.imagej.ops.Ops.Image.Invert.class, out, in, min);
+		return result;
+	}
+
+	/** Executes the "invert" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.image.invert.InvertII.class)
+	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O>
+		invert(final IterableInterval<O> out, final IterableInterval<I> in,
+			final I min, final I max)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
+			net.imagej.ops.Ops.Image.Invert.class, out, in, min, max);
+		return result;
+	}
+
 	// -- normalize --
 
 	@OpMethod(op = net.imagej.ops.image.normalize.NormalizeIIComputer.class)
