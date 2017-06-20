@@ -58,7 +58,7 @@ public class CreateKernelGaborTest extends AbstractOpTest {
 
 		//test the main convenience function:
 		RandomAccessibleInterval<DoubleType> kernelD
-			= ops.create().kernelGabor_Double(sigmas, period);
+			= ops.create().kernelGaborDouble(sigmas, period);
 
 		//sizes are okay?
 		assertEquals(kernelD.dimension(0), 37);
@@ -74,14 +74,14 @@ public class CreateKernelGaborTest extends AbstractOpTest {
 		int wasCaught = 0;
 		final double[] shortSigmas = {2.0*sigma};
 		try {
-			kernelD = ops.create().kernelGabor_Double(shortSigmas, period);
+			kernelD = ops.create().kernelGaborDouble(shortSigmas, period);
 		}
 		catch (IllegalArgumentException e)
 		{
 			++wasCaught;
 		}
 		try {
-			kernelD = ops.create().kernelGabor_Double(-sigma, period);
+			kernelD = ops.create().kernelGaborDouble(-sigma, period);
 		}
 		catch (IllegalArgumentException e)
 		{
@@ -91,7 +91,7 @@ public class CreateKernelGaborTest extends AbstractOpTest {
 
 		//does it work also for pure complex types?
 		RandomAccessibleInterval<ComplexDoubleType> kernelCD
-			= ops.create().kernelGabor_ComplexDouble(sigmas, period);
+			= ops.create().kernelGaborComplexDouble(sigmas, period);
 		RandomAccess<ComplexDoubleType> samplerCD = kernelCD.randomAccess();
 		samplerCD.setPosition(position);
 		assertEquals(samplerD.get().getRealDouble(),
@@ -116,7 +116,7 @@ public class CreateKernelGaborTest extends AbstractOpTest {
 		final double[] sigmas3D = { 0.0, 5.0, 0.0 };
 		final double[] period3D = { 0.0, 2.0, 0.0 };
 		final RandomAccessibleInterval<FloatType> kernelF
-			= ops.create().kernelGabor_Float(sigmas3D, period3D);
+			= ops.create().kernelGaborFloat(sigmas3D, period3D);
 		RandomAccess<FloatType> samplerF = kernelF.randomAccess();
 
 		//minimal size in x and z axes?
