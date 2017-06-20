@@ -494,7 +494,8 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<DoubleType> result =
 			(RandomAccessibleInterval<DoubleType>) ops().run(
-				Ops.Create.KernelBiGauss.class, sigmaPair, (Integer)numDimensions);
+				net.imagej.ops.create.kernelBiGauss.CreateKernelBiGaussDoubleType.class,
+				sigmaPair, (Integer)numDimensions);
 		return result;
 	}
 
@@ -512,7 +513,8 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
-				Ops.Create.KernelBiGauss.class, sigmaPair, (Integer)numDimensions, outType);
+				net.imagej.ops.create.kernelBiGauss.DefaultCreateKernelBiGauss.class,
+				sigmaPair, (Integer)numDimensions, outType);
 		return result;
 	}
 
@@ -529,7 +531,8 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<DoubleType> result =
 			(RandomAccessibleInterval<DoubleType>) ops().run(
-				Ops.Create.Kernel2ndDerivBiGauss.class, sigmaPair, (Integer)numDimensions);
+				net.imagej.ops.create.kernelBiGauss.CreateKernel2ndDerivBiGaussDoubleType.class,
+				sigmaPair, (Integer)numDimensions);
 		return result;
 	}
 
@@ -547,7 +550,8 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
-				Ops.Create.Kernel2ndDerivBiGauss.class, sigmaPair, (Integer)numDimensions, outType);
+				net.imagej.ops.create.kernelBiGauss.DefaultCreateKernel2ndDerivBiGauss.class,
+				sigmaPair, (Integer)numDimensions, outType);
 		return result;
 	}
 
@@ -566,7 +570,8 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<FloatType> result =
 			(RandomAccessibleInterval<FloatType>) ops().run(
-				"IsotropicGaborFloat", (Double)sigma, period);
+				net.imagej.ops.create.kernelGabor.CreateKernelGaborIsotropicFloatType.class,
+				(Double)sigma, period);
 		return result;
 	}
 
@@ -583,7 +588,8 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<DoubleType> result =
 			(RandomAccessibleInterval<DoubleType>) ops().run(
-				"IsotropicGaborDouble", (Double)sigma, period);
+				net.imagej.ops.create.kernelGabor.CreateKernelGaborIsotropicDoubleType.class,
+				(Double)sigma, period);
 		return result;
 	}
 
@@ -600,7 +606,8 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<ComplexFloatType> result =
 			(RandomAccessibleInterval<ComplexFloatType>) ops().run(
-				"IsotropicGaborComplexFloat", (Double)sigma, period);
+				net.imagej.ops.create.kernelGabor.CreateKernelGaborIsotropicComplexFloatType.class,
+				(Double)sigma, period);
 		return result;
 	}
 
@@ -617,7 +624,8 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<ComplexDoubleType> result =
 			(RandomAccessibleInterval<ComplexDoubleType>) ops().run(
-				"IsotropicGaborComplexDouble", (Double)sigma, period);
+				net.imagej.ops.create.kernelGabor.CreateKernelGaborIsotropicComplexDoubleType.class,
+				(Double)sigma, period);
 		return result;
 	}
 
@@ -634,7 +642,8 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
-				Ops.Create.KernelGabor.class, (Double)sigma, period, outType);
+				net.imagej.ops.create.kernelGabor.CreateKernelGaborIsotropic.class,
+				(Double)sigma, period, outType);
 		return result;
 	}
 
@@ -651,7 +660,8 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<FloatType> result =
 			(RandomAccessibleInterval<FloatType>) ops().run(
-				"GaborFloat", sigmas, period);
+				net.imagej.ops.create.kernelGabor.CreateKernelGaborFloatType.class,
+				sigmas, period);
 		return result;
 	}
 
@@ -668,7 +678,8 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<DoubleType> result =
 			(RandomAccessibleInterval<DoubleType>) ops().run(
-				"GaborDouble", sigmas, period);
+				net.imagej.ops.create.kernelGabor.CreateKernelGaborDoubleType.class,
+				sigmas, period);
 		return result;
 	}
 
@@ -685,7 +696,8 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<ComplexFloatType> result =
 			(RandomAccessibleInterval<ComplexFloatType>) ops().run(
-				"GaborComplexFloat", sigmas, period);
+				net.imagej.ops.create.kernelGabor.CreateKernelGaborComplexFloatType.class,
+				sigmas, period);
 		return result;
 	}
 
@@ -702,7 +714,8 @@ public class CreateNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<ComplexDoubleType> result =
 			(RandomAccessibleInterval<ComplexDoubleType>) ops().run(
-				"GaborComplexDouble", sigmas, period);
+				net.imagej.ops.create.kernelGabor.CreateKernelGaborComplexDoubleType.class,
+				sigmas, period);
 		return result;
 	}
 
