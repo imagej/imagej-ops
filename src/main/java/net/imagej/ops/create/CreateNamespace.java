@@ -565,7 +565,7 @@ public class CreateNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborIsotropicFloatType.class)
 	public RandomAccessibleInterval<FloatType>
-		kernelGabor_Float(final double sigma, final double[] period)
+		kernelGaborFloat(final double sigma, final double[] period)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<FloatType> result =
@@ -583,7 +583,7 @@ public class CreateNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborIsotropicDoubleType.class)
 	public RandomAccessibleInterval<DoubleType>
-		kernelGabor_Double(final double sigma, final double[] period)
+		kernelGaborDouble(final double sigma, final double[] period)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<DoubleType> result =
@@ -601,7 +601,7 @@ public class CreateNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborIsotropicComplexFloatType.class)
 	public RandomAccessibleInterval<ComplexFloatType>
-		kernelGabor_ComplexFloat(final double sigma, final double[] period)
+		kernelGaborComplexFloat(final double sigma, final double[] period)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<ComplexFloatType> result =
@@ -619,7 +619,7 @@ public class CreateNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborIsotropicComplexDoubleType.class)
 	public RandomAccessibleInterval<ComplexDoubleType>
-		kernelGabor_ComplexDouble(final double sigma, final double[] period)
+		kernelGaborComplexDouble(final double sigma, final double[] period)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<ComplexDoubleType> result =
@@ -655,7 +655,7 @@ public class CreateNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborFloatType.class)
 	public RandomAccessibleInterval<FloatType>
-		kernelGabor_Float(final double[] sigmas, final double[] period)
+		kernelGaborFloat(final double[] sigmas, final double[] period)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<FloatType> result =
@@ -673,7 +673,7 @@ public class CreateNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborDoubleType.class)
 	public RandomAccessibleInterval<DoubleType>
-		kernelGabor_Double(final double[] sigmas, final double[] period)
+		kernelGaborDouble(final double[] sigmas, final double[] period)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<DoubleType> result =
@@ -691,7 +691,7 @@ public class CreateNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborComplexFloatType.class)
 	public RandomAccessibleInterval<ComplexFloatType>
-		kernelGabor_ComplexFloat(final double[] sigmas, final double[] period)
+		kernelGaborComplexFloat(final double[] sigmas, final double[] period)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<ComplexFloatType> result =
@@ -709,7 +709,7 @@ public class CreateNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborComplexDoubleType.class)
 	public RandomAccessibleInterval<ComplexDoubleType>
-		kernelGabor_ComplexDouble(final double[] sigmas, final double[] period)
+		kernelGaborComplexDouble(final double[] sigmas, final double[] period)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<ComplexDoubleType> result =
