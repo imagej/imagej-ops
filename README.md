@@ -33,8 +33,8 @@ output_image = map(input_image, add_op)
 ```
 
 For more details, see these tutorials:
-* [Using Ops](https://github.com/imagej/imagej-tutorials/tree/master/using-ops)
-* [Create a new Op](https://github.com/imagej/imagej-tutorials/tree/master/create-a-new-op)
+* [Using Ops](https://github.com/imagej/tutorials/tree/master/maven-projects/using-ops)
+* [Create a new Op](https://github.com/imagej/tutorials/tree/master/maven-projects/create-a-new-op)
 * [Developing external Op namespaces](http://imagej.net/Adding_new_ops)
 
 Working example
