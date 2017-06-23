@@ -80,7 +80,7 @@ public class WatershedBinary<B extends BooleanType<B>, T extends RealType<T>>
 	float sigma;
 
 	@Override
-	public void compute1(final RandomAccessibleInterval<B> in, final ImgLabeling<Integer, IntType> out) {
+	public void compute(final RandomAccessibleInterval<B> in, final ImgLabeling<Integer, IntType> out) {
 
 		// compute distance transform
 		final RandomAccessibleInterval<FloatType> distMap = ops().image().distancetransform(in);
@@ -100,7 +100,7 @@ public class WatershedBinary<B extends BooleanType<B>, T extends RealType<T>>
 	@SuppressWarnings("unchecked")
 	@Override
 	public ImgLabeling<Integer, IntType> createOutput(final RandomAccessibleInterval<B> in) {
-		return createOp.compute1(new FinalInterval(in));
+		return createOp.calculate(new FinalInterval(in));
 	}
 
 	@Override

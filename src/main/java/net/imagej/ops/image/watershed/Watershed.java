@@ -95,7 +95,7 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 
 	@SuppressWarnings("null")
 	@Override
-	public void compute1(final RandomAccessibleInterval<T> in, final ImgLabeling<Integer, IntType> out) {
+	public void compute(final RandomAccessibleInterval<T> in, final ImgLabeling<Integer, IntType> out) {
 		final RandomAccess<T> raIn = in.randomAccess();
 		RandomAccess<B> raMask = null;
 		if (mask != null) {
@@ -382,7 +382,7 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 	@SuppressWarnings("unchecked")
 	@Override
 	public ImgLabeling<Integer, IntType> createOutput(final RandomAccessibleInterval<T> in) {
-		return createOp.compute1(new FinalInterval(in));
+		return createOp.calculate(new FinalInterval(in));
 	}
 
 	@Override
