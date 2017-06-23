@@ -63,10 +63,11 @@ public class MapTest extends AbstractOpTest {
 	public void testIterable() {
 		final Img<ByteType> in = generateByteArrayTestImg(true, 10, 10);
 
-		Op nullary = Computers.nullary(ops, Ops.Math.Zero.class, ByteType.class);
+		final Op nullary = Computers.nullary(ops, Ops.Math.Zero.class,
+			ByteType.class);
 		ops.run(MapNullaryIterable.class, in, nullary);
 
-		for (ByteType ps : in)
+		for (final ByteType ps : in)
 			assertEquals(ps.get(), 0);
 	}
 
@@ -74,10 +75,11 @@ public class MapTest extends AbstractOpTest {
 	public void testII() {
 		final Img<ByteType> in = generateByteArrayTestImg(true, 10, 10);
 
-		Op nullary = Computers.nullary(ops, Ops.Math.Zero.class, ByteType.class);
+		final Op nullary = Computers.nullary(ops, Ops.Math.Zero.class,
+			ByteType.class);
 		ops.run(MapNullaryII.class, in, nullary);
 
-		for (ByteType ps : in)
+		for (final ByteType ps : in)
 			assertEquals(ps.get(), 0);
 	}
 
@@ -86,7 +88,7 @@ public class MapTest extends AbstractOpTest {
 		final Img<ByteType> first = generateByteArrayTestImg(true, 10, 10);
 		final Img<ByteType> firstCopy = first.copy();
 		final Img<ByteType> second = generateByteArrayTestImg(false, 10, 10);
-		for (ByteType px : second)
+		for (final ByteType px : second)
 			px.set((byte) 1);
 		final Img<ByteType> secondCopy = second.copy();
 		final Img<ByteType> secondDiffDims = generateByteArrayTestImg(false, 10, 10,
@@ -111,7 +113,7 @@ public class MapTest extends AbstractOpTest {
 		final Img<ByteType> first = generateByteArrayTestImg(true, 10, 10);
 		final Img<ByteType> firstCopy = first.copy();
 		final Img<ByteType> second = generateByteArrayTestImg(false, 10, 10);
-		for (ByteType px : second)
+		for (final ByteType px : second)
 			px.set((byte) 1);
 		final Img<ByteType> secondCopy = second.copy();
 		final Img<ByteType> secondDiffDims = generateByteArrayTestImg(false, 10, 10,
@@ -214,8 +216,8 @@ public class MapTest extends AbstractOpTest {
 
 	// -- helper methods --
 
-	private static void assertImgSubEquals(Img<ByteType> in1, Img<ByteType> in2,
-		Img<ByteType> out)
+	private static void assertImgSubEquals(final Img<ByteType> in1,
+		final Img<ByteType> in2, final Img<ByteType> out)
 	{
 		final Cursor<ByteType> in1Cursor = in1.cursor();
 		final Cursor<ByteType> in2Cursor = in2.cursor();
@@ -227,8 +229,8 @@ public class MapTest extends AbstractOpTest {
 		}
 	}
 
-	private static void assertImgSubOneEquals(Img<ByteType> in,
-		Img<ByteType> out)
+	private static void assertImgSubOneEquals(final Img<ByteType> in,
+		final Img<ByteType> out)
 	{
 		final Cursor<ByteType> in1Cursor = in.cursor();
 		final Cursor<ByteType> outCursor = out.cursor();
