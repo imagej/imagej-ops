@@ -49,6 +49,7 @@ import net.imglib2.algorithm.neighborhood.DiamondShape;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.algorithm.neighborhood.Shape;
+import net.imglib2.roi.Regions;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelingType;
 import net.imglib2.type.BooleanType;
@@ -100,36 +101,30 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 		if (mask != null) {
 			raMask = mask.randomAccess();
 		}
-		final int[] pos = new int[in.numDimensions()];
+		final long[] pos = new long[in.numDimensions()];
 		// stores the size of each dimension
-		final int[] dimensSizes = new int[in.numDimensions()];
+		final long[] dimensSizes = new long[in.numDimensions()];
 
 		// calculates the number of points in the n-d space
-		int numPixels = 1;
-		for (int i = 0; i < in.numDimensions(); i++) {
-			dimensSizes[i] = (int) in.dimension(i);
-			numPixels *= dimensSizes[i];
-		}
+		long numPixels = Intervals.numElements(in);
 
 		// the pixels indices are stored in an array, which is sorted depending
 		// on the pixel values
-		final List<Integer> imiList = new ArrayList<>();
+		final List<Long> imiList = new ArrayList<>();
 
 		if (mask != null) {
-			final Cursor<B> cursorMask = Views.flatIterable(mask).cursor();
-			while (cursorMask.hasNext()) {
-				cursorMask.fwd();
-				if (cursorMask.get().get()) {
-					cursorMask.localize(pos);
-					imiList.add(IntervalIndexer.positionToIndex(pos, dimensSizes));
-				}
+			final Cursor<Void> c = Regions.iterable(mask).localizingCursor();
+			while (c.hasNext()) {
+				c.next();
+				c.localize(pos);
+				imiList.add(IntervalIndexer.positionToIndex(pos, dimensSizes));
 			}
 		} else {
-			for (int i = 0; i < numPixels; i++) {
+			for (long i = 0; i < numPixels; i++) {
 				imiList.add(i);
 			}
 		}
-		final Integer[] imi = imiList.toArray(new Integer[imiList.size()]);
+		final Long[] imi = imiList.toArray(new Long[imiList.size()]);
 
 		// lab and dist store the values calculated after each phase
 		final RandomAccessibleInterval<IntType> lab = ops().create().img(in, new IntType());
@@ -146,7 +141,7 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 		}
 		int current_label = 0;
 		int current_dist;
-		final ArrayList<Integer> fifo = new ArrayList<>();
+		final ArrayList<Long> fifo = new ArrayList<>();
 
 		// RandomAccess for Neighborhoods
 		final Shape shape;
@@ -162,9 +157,9 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 		 * Sort the pixels of imi in the increasing order of their grey value
 		 * (only the pixel indices are stored)
 		 */
-		Arrays.sort(imi, new Comparator<Integer>() {
+		Arrays.sort(imi, new Comparator<Long>() {
 			@Override
-			public int compare(final Integer o1, final Integer o2) {
+			public int compare(final Long o1, final Long o2) {
 				IntervalIndexer.indexToPosition(o1, dimensSizes, pos);
 				raIn.setPosition(pos);
 				final float value = raIn.get().getRealFloat();
@@ -183,7 +178,7 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 			final float actualH = raIn.get().getRealFloat();
 			int i = j;
 			while (Float.compare(actualH, raIn.get().getRealFloat()) == 0) {
-				final int p = imi[i];
+				final long p = imi[i];
 				IntervalIndexer.indexToPosition(p, dimensSizes, pos);
 				raIn.setPosition(pos);
 				raLab.setPosition(pos);
@@ -213,14 +208,14 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 			}
 
 			current_dist = 1;
-			fifo.add(-1); // add fictitious pixel
+			fifo.add(-1l); // add fictitious pixel
 			while (true) {
-				int p = fifo.remove(0);
+				long p = fifo.remove(0);
 				if (p == -1) {
 					if (fifo.isEmpty()) {
 						break;
 					}
-					fifo.add(-1);
+					fifo.add(-1l);
 					current_dist++;
 					p = fifo.remove(0);
 				}
@@ -233,7 +228,7 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 				raLab.setPosition(pos);
 				int labp = raLab.get().get();
 
-				final int[] posNeighbor = new int[neighborHood.numDimensions()];
+				final long[] posNeighbor = new long[neighborHood.numDimensions()];
 				while (neighborHood.hasNext()) {
 					neighborHood.fwd();
 					neighborHood.localize(posNeighbor);
@@ -276,7 +271,7 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 			raIn.setPosition(pos);
 			i = j;
 			while (Float.compare(actualH, raIn.get().getRealFloat()) == 0) {
-				final int p = imi[i];
+				final long p = imi[i];
 				IntervalIndexer.indexToPosition(p, dimensSizes, pos);
 				// the distance associated with p is reseted to 0
 				raDist.setPosition(pos);
@@ -288,17 +283,17 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 					fifo.add(p);
 					raLab.get().set(current_label);
 					while (!fifo.isEmpty()) {
-						final int q = fifo.remove(0);
+						final long q = fifo.remove(0);
 						IntervalIndexer.indexToPosition(q, dimensSizes, pos);
 						raNeighbor.setPosition(pos);
 						final Cursor<T> neighborHood = raNeighbor.get().cursor();
 
-						final int[] posNeighbor = new int[neighborHood.numDimensions()];
+						final long[] posNeighbor = new long[neighborHood.numDimensions()];
 						while (neighborHood.hasNext()) {
 							neighborHood.fwd();
 							neighborHood.localize(posNeighbor);
 							if (Intervals.contains(in, neighborHood)) {
-								final int r = IntervalIndexer.positionToIndex(posNeighbor, dimensSizes);
+								final long r = IntervalIndexer.positionToIndex(posNeighbor, dimensSizes);
 								raLab.setPosition(posNeighbor);
 								if (raLab.get().get() == MASK) {
 									fifo.add(r);
