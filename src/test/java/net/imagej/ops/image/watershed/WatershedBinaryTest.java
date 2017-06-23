@@ -34,10 +34,11 @@ import static org.junit.Assert.assertEquals;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.Test;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
-import net.imglib2.img.display.imagej.ImageJFunctions;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelingType;
 import net.imglib2.type.logic.BitType;
@@ -45,10 +46,6 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.IntType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.view.Views;
-
-import org.junit.Test;
-
-import ij.io.Opener;
 
 /**
  * Test for the binary watershed op.
@@ -62,8 +59,7 @@ public class WatershedBinaryTest<T extends RealType<T>> extends AbstractOpTest {
 	public void test() {
 
 		// load test image
-		Img<FloatType> watershedTestImg = ImageJFunctions.convertFloat(
-				new Opener().openImage(WatershedBinaryTest.class.getResource("WatershedTestImage.png").getPath()));
+		Img<FloatType> watershedTestImg = openFloatImg(WatershedTest.class, "WatershedTestImage.png");
 
 		// threshold it
 		RandomAccessibleInterval<BitType> thresholdedImg = ops.create().img(watershedTestImg, new BitType());
@@ -72,7 +68,7 @@ public class WatershedBinaryTest<T extends RealType<T>> extends AbstractOpTest {
 
 		// compute result
 		ImgLabeling<Integer, IntType> out = (ImgLabeling<Integer, IntType>) ops.run(WatershedBinary.class,
-				thresholdedImg, true, 3);
+				thresholdedImg, true, new double[]{3, 3});
 
 		// count labels
 		Set<Integer> labels = new HashSet<>();
