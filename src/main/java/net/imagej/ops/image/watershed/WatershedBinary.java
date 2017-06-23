@@ -74,7 +74,7 @@ public class WatershedBinary<B extends BooleanType<B>, T extends RealType<T>>
 	private UnaryFunctionOp<FinalInterval, ImgLabeling> createOp;
 
 	@Parameter(required = true)
-	boolean eightConnectivity;
+	private boolean eightConnectivity;
 
 	@Parameter(required = true)
 	float sigma;

@@ -89,18 +89,17 @@ public class WatershedSeeded<B extends BooleanType<B>, T extends RealType<T>>
 	private UnaryFunctionOp<FinalInterval, ImgLabeling> createOp;
 
 	@Parameter(required = true)
-	ImgLabeling<Integer, IntType> seeds;
+	private ImgLabeling<Integer, IntType> seeds;
 
 	@Parameter(required = true)
-	boolean eightConnectivity;
+	private boolean eightConnectivity;
 
 	@Parameter(required = true)
-	boolean withWatersheds;
+	private boolean withWatersheds;
 
 	@Parameter(required = false)
-	RandomAccessibleInterval<B> mask;
+	private RandomAccessibleInterval<B> mask;
 
-	@SuppressWarnings("null")
 	@Override
 	public void compute(final RandomAccessibleInterval<T> in, final ImgLabeling<Integer, IntType> out) {
 		RandomAccess<B> raMask = null;

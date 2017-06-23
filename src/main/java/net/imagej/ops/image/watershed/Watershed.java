@@ -88,12 +88,11 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 	private UnaryFunctionOp<FinalInterval, ImgLabeling> createOp;
 
 	@Parameter(required = true)
-	boolean eightConnectivity;
+	private boolean eightConnectivity;
 
 	@Parameter(required = false)
-	RandomAccessibleInterval<B> mask;
+	private RandomAccessibleInterval<B> mask;
 
-	@SuppressWarnings("null")
 	@Override
 	public void compute(final RandomAccessibleInterval<T> in, final ImgLabeling<Integer, IntType> out) {
 		final RandomAccess<T> raIn = in.randomAccess();
