@@ -47,6 +47,8 @@ import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.img.basictypeaccess.array.FloatArray;
+import net.imglib2.img.cell.CellImg;
+import net.imglib2.img.cell.CellImgFactory;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.real.FloatType;
@@ -142,20 +144,34 @@ public abstract class AbstractOpTest {
 		return ArrayImgs.unsignedBytes(array, dims);
 	}
 
-	public ArrayImg<FloatType, FloatArray> generateFloatArrayTestImg(
-		final boolean fill, final long... dims)
+	public CellImg<ByteType, ?> generateByteTestCellImg(final boolean fill,
+		final long... dims)
 	{
-		final float[] array = new float[(int) Intervals.numElements(
-			new FinalInterval(dims))];
+		final CellImg<ByteType, ?> img = new CellImgFactory<ByteType>().create(dims,
+			new ByteType());
 
 		if (fill) {
-			seed = 17;
-			for (int i = 0; i < array.length; i++) {
-				array[i] = (float) pseudoRandom() / (float) Integer.MAX_VALUE;
-			}
+			final Cursor<ByteType> c = img.cursor();
+			while (c.hasNext())
+				c.next().set((byte) pseudoRandom());
 		}
 
-		return ArrayImgs.floats(array, dims);
+		return img;
+	}
+
+	public CellImg<ByteType, ?> generateByteTestCellImg(final boolean fill,
+		final int[] cellDims, final long... dims)
+	{
+		final CellImg<ByteType, ?> img = new CellImgFactory<ByteType>(cellDims)
+			.create(dims, new ByteType());
+
+		if (fill) {
+			final Cursor<ByteType> c = img.cursor();
+			while (c.hasNext())
+				c.next().set((byte) pseudoRandom());
+		}
+
+		return img;
 	}
 
 	public Img<UnsignedByteType>
@@ -172,6 +188,22 @@ public abstract class AbstractOpTest {
 		}
 
 		return img;
+	}
+
+	public ArrayImg<FloatType, FloatArray> generateFloatArrayTestImg(
+		final boolean fill, final long... dims)
+	{
+		final float[] array = new float[(int) Intervals.numElements(
+			new FinalInterval(dims))];
+
+		if (fill) {
+			seed = 17;
+			for (int i = 0; i < array.length; i++) {
+				array[i] = (float) pseudoRandom() / (float) Integer.MAX_VALUE;
+			}
+		}
+
+		return ArrayImgs.floats(array, dims);
 	}
 
 	public Img<FloatType> openFloatImg(final String resourcePath) {
