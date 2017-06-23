@@ -34,20 +34,17 @@ import static org.junit.Assert.assertEquals;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.Test;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
-import net.imglib2.img.display.imagej.ImageJFunctions;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelingType;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.IntType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.view.Views;
-
-import org.junit.Test;
-
-import ij.io.Opener;
 
 /**
  * Test for the watershed op.
@@ -60,8 +57,7 @@ public class WatershedTest extends AbstractOpTest {
 	@Test
 	public void test() {
 		// load test image
-		Img<FloatType> watershedTestImg = ImageJFunctions.convertFloat(
-				new Opener().openImage(WatershedBinaryTest.class.getResource("WatershedTestImage.png").getPath()));
+		Img<FloatType> watershedTestImg = openFloatImg(WatershedTest.class, "WatershedTestImage.png");
 
 		// threshold it
 		RandomAccessibleInterval<BitType> thresholdedImg = ops.create().img(watershedTestImg, new BitType());
@@ -73,7 +69,7 @@ public class WatershedTest extends AbstractOpTest {
 		final RandomAccessibleInterval<FloatType> distMap = ops.image().distancetransform(thresholdedImg);
 		final RandomAccessibleInterval<FloatType> invertedDistMap = ops.create().img(distMap, new FloatType());
 		ops.image().invert(Views.iterable(invertedDistMap), Views.iterable(distMap));
-		final RandomAccessibleInterval<FloatType> gauss = ops.filter().gauss(invertedDistMap, 3);
+		final RandomAccessibleInterval<FloatType> gauss = ops.filter().gauss(invertedDistMap, 3, 3);
 
 		// compute result
 		ImgLabeling<Integer, IntType> out = (ImgLabeling<Integer, IntType>) ops.run(Watershed.class, null, gauss, true,

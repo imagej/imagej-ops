@@ -34,21 +34,18 @@ import static org.junit.Assert.assertEquals;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.Test;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.labeling.ConnectedComponents.StructuringElement;
 import net.imglib2.img.Img;
-import net.imglib2.img.display.imagej.ImageJFunctions;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelingType;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.IntType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.view.Views;
-
-import org.junit.Test;
-
-import ij.io.Opener;
 
 /**
  * Test for the seeded watershed op.
@@ -62,10 +59,8 @@ public class WatershedSeededTest extends AbstractOpTest {
 	public void test() {
 
 		// load test image and seeds
-		Img<FloatType> watershedTestImg = ImageJFunctions.convertFloat(
-				new Opener().openImage(WatershedBinaryTest.class.getResource("WatershedTestImage.png").getPath()));
-		Img<FloatType> seeds = ImageJFunctions
-				.convertFloat(new Opener().openImage(WatershedBinaryTest.class.getResource("Seeds.png").getPath()));
+		Img<FloatType> watershedTestImg = openFloatImg(WatershedTest.class, "WatershedTestImage.png");
+		Img<FloatType> seeds = openFloatImg(WatershedBinaryTest.class, "Seeds.png");
 
 		// threshold them
 		RandomAccessibleInterval<BitType> thresholdedImg = ops.create().img(watershedTestImg, new BitType());
