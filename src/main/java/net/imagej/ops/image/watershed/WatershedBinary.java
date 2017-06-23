@@ -77,7 +77,7 @@ public class WatershedBinary<B extends BooleanType<B>, T extends RealType<T>>
 	private boolean eightConnectivity;
 
 	@Parameter(required = true)
-	float sigma;
+	private double[] sigma;
 
 	@Override
 	public void compute(final RandomAccessibleInterval<B> in, final ImgLabeling<Integer, IntType> out) {
@@ -94,7 +94,11 @@ public class WatershedBinary<B extends BooleanType<B>, T extends RealType<T>>
 
 	@Override
 	public boolean conforms() {
-		return (sigma >= 0);
+		boolean conforms = true;
+		for (int i = 0; i < sigma.length; i++) {
+			conforms &= sigma[i] >= 0;
+		}
+		return conforms;
 	}
 
 	@SuppressWarnings("unchecked")
