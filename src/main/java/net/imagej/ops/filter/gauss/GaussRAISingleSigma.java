@@ -42,6 +42,7 @@ import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.NumericType;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -53,7 +54,7 @@ import org.scijava.plugin.Plugin;
  * @author Stephan Saalfeld
  * @param <T> type of input
  */
-@Plugin(type = Ops.Filter.Gauss.class)
+@Plugin(type = Ops.Filter.Gauss.class, priority = Priority.HIGH_PRIORITY)
 public class GaussRAISingleSigma<T extends NumericType<T> & NativeType<T>>
 	extends
 	AbstractUnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
