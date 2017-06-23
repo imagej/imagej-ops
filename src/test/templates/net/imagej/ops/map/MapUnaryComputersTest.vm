@@ -60,11 +60,15 @@ public class MapUnaryComputersTest extends AbstractOpTest {
 	private Img<ByteType> in;
 	private Img<ByteType> out;
 	private Op add;
+	private Img<ByteType> cellIn;
+	private Img<ByteType> cellOut;
 
 	@Before
 	public void initImg() {
 		in = generateByteArrayTestImg(true, 10, 10);
 		out = generateByteArrayTestImg(false, 10, 10);
+		cellIn = generateByteTestCellImg(true, 20, 10);
+		cellOut = generateByteTestCellImg(false, 20, 10);
 		add = Computers.unary(ops, Ops.Math.Add.class, ByteType.class, ByteType.class,
 			new ByteType((byte) 1));
 	}
@@ -83,6 +87,21 @@ public class MapUnaryComputersTest extends AbstractOpTest {
 	}
 
 #end
+#end
+#set ($count = $count - 1)
+#end
+#end
+#set ($count = 3)
+#foreach ($inType in $types)
+#foreach ($outType in $types)
+#if ($count > 0)
+#set ($className = "${inType}To${outType}Parallel")
+	@Test
+	public void test${className}CellImg() {
+		ops.run(${className}.class, cellOut, cellIn, add);
+		assertImgAddOneEquals(cellIn, cellOut);
+	}
+
 #end
 #set ($count = $count - 1)
 #end

@@ -67,6 +67,9 @@ public class MapBinaryComputersTest extends AbstractOpTest {
 	private Img<ByteType> in1;
 	private Img<ByteType> in2;
 	private Img<ByteType> out;
+	private Img<ByteType> cellIn1;
+	private Img<ByteType> cellIn2;
+	private Img<ByteType> cellOut;
 	private Op add;
 
 	@Before
@@ -76,6 +79,9 @@ public class MapBinaryComputersTest extends AbstractOpTest {
 		for (ByteType px : in2)
 			px.set((byte) 1);
 		out = generateByteArrayTestImg(false, 10, 10);
+		cellIn1 = generateByteTestCellImg(true, 20, 10);
+		cellIn2 = generateByteTestCellImg(true, 20, 10);
+		cellOut = generateByteTestCellImg(false, 20, 10);
 		add = Computers.binary(ops, Ops.Math.Add.class, ByteType.class,
 			ByteType.class, ByteType.class);
 	}
@@ -95,6 +101,23 @@ public class MapBinaryComputersTest extends AbstractOpTest {
 	}
 
 #end
+#end
+#set ($count = $count - 1)
+#end
+#end
+#end
+#set ($count = 7)
+#foreach ($in1Type in $types)
+#foreach ($in2Type in $types)
+#foreach ($outType in $types)
+#if ($count > 0)
+#set ($className = "${in1Type}And${in2Type}To${outType}Parallel")
+	@Test
+	public void test${className}CellImg() {
+		ops.run(${className}.class, cellOut, cellIn1, cellIn2, add);
+		assertImgAddEquals(cellIn1, cellIn2, cellOut);
+	}
+
 #end
 #set ($count = $count - 1)
 #end
