@@ -94,7 +94,7 @@ public class MapTest extends AbstractOpTest {
 
 		sub = Inplaces.binary(ops, Ops.Math.Subtract.class, ByteType.class);
 		final BinaryInplaceOp<? super Img<ByteType>, Img<ByteType>> map = Inplaces
-			.binary(ops, MapIIAndIIInplaceParallel.class, firstCopy, second, sub);
+			.binary(ops, MapIIAndIIInplace.class, firstCopy, second, sub);
 		map.run(firstCopy, second, firstCopy);
 		map.run(first, secondCopy, secondCopy);
 
@@ -128,7 +128,7 @@ public class MapTest extends AbstractOpTest {
 
 		// Expect exception when in2 has different dimensions
 		thrown.expect(IllegalArgumentException.class);
-		ops.op(MapIIAndIIInplace.class, first, secondDiffDims, sub);
+		ops.op(MapIIAndIIInplaceParallel.class, first, secondDiffDims, sub);
 	}
 
 	@Test
