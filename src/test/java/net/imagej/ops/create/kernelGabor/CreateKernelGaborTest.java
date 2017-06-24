@@ -33,7 +33,6 @@ package net.imagej.ops.create.kernelGabor;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.RandomAccess;
 
