@@ -62,7 +62,7 @@ public interface UnaryComputerOp<I, O> extends UnaryOp<I, O>,
 	 * @param output Object where the computation's result will be stored, which
 	 * <em>must be non-null and a different object than {@code input}</em>
 	 */
-	void compute(I input, O output);
+	void compute(final I input, final O output);
 
 	// -- UnaryOp methods --
 
