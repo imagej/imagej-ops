@@ -31,10 +31,12 @@
 package net.imagej.ops.cached;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 import java.util.ArrayList;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Op;
 import net.imagej.ops.OpInfo;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.Functions;
@@ -48,6 +50,7 @@ import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.scijava.plugin.Parameter;
 
 /**
  * JUnit-Tests for the {@link CachedOpEnvironment}.
@@ -72,6 +75,7 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 	public void initCustomOps() {
 		final ArrayList<OpInfo> customOps = new ArrayList<>();
 		customOps.add(new OpInfo(MyMin.class));
+		customOps.add(new OpInfo(MyOptionalParameterOp.class));
 
 		env = new CachedOpEnvironment(ops, customOps);
 
@@ -106,6 +110,15 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 		assertEquals(2.0, hybrid.calculate(imgB).getRealDouble(), 0.0);
 	}
 
+	@Test
+	public void testOptionalParameter() {
+		UnaryFunctionOp<DoubleType, Object> f = Functions.unary(env, OptionalParameterOp.class, Object.class, DoubleType.class);
+		Object result = f.calculate(new DoubleType());
+		UnaryFunctionOp<DoubleType, Object> f2 = Functions.unary(env, OptionalParameterOp.class, Object.class, DoubleType.class);
+		Object sameResult = f2.calculate(new DoubleType());
+		assertSame(result, sameResult);
+	}
+
 	// some specialized ops to track number of counts
 	public static class MyMin extends AbstractUnaryHybridCF<Img<ByteType>, DoubleType>
 		implements Ops.Stats.Min
@@ -124,4 +137,26 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 
 	}
 
+	private interface OptionalParameterOp extends Op {
+		String name = "optional.parameter.op";
+	}
+	// specialized op returns a new Object for each calculation
+	public static class MyOptionalParameterOp extends AbstractUnaryHybridCF<DoubleType, Object>
+			implements OptionalParameterOp
+	{
+
+		@Parameter(required = false)
+		ByteType optionalParameter;
+
+		@Override
+		public Object createOutput(final DoubleType input) {
+			return new Object();
+		}
+
+		@Override
+		public void compute(final DoubleType input, final Object output) {
+			// ignore
+		}
+
+	}
 }
