@@ -32,7 +32,9 @@ package net.imagej.ops.cached;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.CustomOpEnvironment;
@@ -289,13 +291,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		private final int hash;
 
 		public Hash(final Object o1, final Object o2, final Object[] args) {
-			long h = o1.hashCode() ^ o2.getClass().getSimpleName().hashCode();
-
-			for (final Object o : args) {
-				h ^= o.hashCode();
-			}
-
-			hash = (int) h;
+			hash = Objects.hash(o1, o2.getClass(), Arrays.hashCode(args));
 		}
 
 		@Override
