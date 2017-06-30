@@ -457,24 +457,30 @@ public class ImageNamespace extends AbstractNamespace {
 	}
 
 	// -- watershedBinary --
-
-	/** Executes the "watershedBinary" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.watershed.WatershedBinary.class)
-	public <B extends BooleanType<B>> ImgLabeling<Integer, IntType> watershed(final RandomAccessibleInterval<B> in,
-			final boolean eightConnectivity, final float sigma) {
+	public <T extends RealType<T>> ImgLabeling<Integer, IntType> watershed(
+		final RandomAccessibleInterval<T> in, final boolean eightConnectivity,
+		final double ... sigma)
+	{
 		@SuppressWarnings("unchecked")
-		final ImgLabeling<Integer, IntType> result = (ImgLabeling<Integer, IntType>) ops()
-				.run(net.imagej.ops.image.watershed.WatershedBinary.class, in, eightConnectivity, sigma);
+		final ImgLabeling<Integer, IntType> result =
+		(ImgLabeling<Integer, IntType>) ops().run(
+			net.imagej.ops.image.watershed.WatershedBinary.class, in,
+			eightConnectivity, sigma);
 		return result;
 	}
-
-	/** Executes the "watershedBinary" operation on the given arguments. */
+	
 	@OpMethod(op = net.imagej.ops.image.watershed.WatershedBinary.class)
-	public <B extends BooleanType<B>> ImgLabeling<Integer, IntType> watershed(ImgLabeling<Integer, IntType> out,
-			final RandomAccessibleInterval<B> in, final boolean eightConnectivity, final float sigma) {
+	public <T extends RealType<T>> ImgLabeling<Integer, IntType> watershed(
+		final ImgLabeling<Integer, IntType> out,
+		final RandomAccessibleInterval<T> in, final boolean eightConnectivity,
+		final double ... sigma)
+	{
 		@SuppressWarnings("unchecked")
-		final ImgLabeling<Integer, IntType> result = (ImgLabeling<Integer, IntType>) ops()
-				.run(net.imagej.ops.image.watershed.WatershedBinary.class, out, in, eightConnectivity, sigma);
+		final ImgLabeling<Integer, IntType> result =
+		(ImgLabeling<Integer, IntType>) ops().run(
+			net.imagej.ops.image.watershed.WatershedBinary.class, out, in,
+			eightConnectivity, sigma);
 		return result;
 	}
 
