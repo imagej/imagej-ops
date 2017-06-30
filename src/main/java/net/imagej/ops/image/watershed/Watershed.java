@@ -104,6 +104,7 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 		final long[] pos = new long[in.numDimensions()];
 		// stores the size of each dimension
 		final long[] dimensSizes = new long[in.numDimensions()];
+		in.dimensions(dimensSizes);
 
 		// calculates the number of points in the n-d space
 		long numPixels = Intervals.numElements(in);
