@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -64,7 +64,7 @@ import org.scijava.plugin.Parameter;
  * <i>All</i> {@link Op} unit tests need to have an {@link OpService} instance.
  * Following the DRY principle, we should implement it only once. Here.
  * </p>
- * 
+ *
  * @author Johannes Schindelin
  * @author Curtis Rueden
  */
@@ -110,11 +110,11 @@ public abstract class AbstractOpTest {
 		return seed = 3170425 * seed + 132102;
 	}
 
-	public ArrayImg<ByteType, ByteArray> generateByteArrayTestImg(final boolean fill,
-		final long... dims)
+	public ArrayImg<ByteType, ByteArray> generateByteArrayTestImg(
+		final boolean fill, final long... dims)
 	{
-		final byte[] array =
-			new byte[(int) Intervals.numElements(new FinalInterval(dims))];
+		final byte[] array = new byte[(int) Intervals.numElements(new FinalInterval(
+			dims))];
 
 		if (fill) {
 			seed = 17;
@@ -126,11 +126,11 @@ public abstract class AbstractOpTest {
 		return ArrayImgs.bytes(array, dims);
 	}
 
-	public ArrayImg<UnsignedByteType, ByteArray> generateUnsignedByteArrayTestImg(final boolean fill,
-		final long... dims)
+	public ArrayImg<UnsignedByteType, ByteArray> generateUnsignedByteArrayTestImg(
+		final boolean fill, final long... dims)
 	{
-		final byte[] array =
-			new byte[(int) Intervals.numElements(new FinalInterval(dims))];
+		final byte[] array = new byte[(int) Intervals.numElements(new FinalInterval(
+			dims))];
 
 		if (fill) {
 			seed = 17;
@@ -145,8 +145,8 @@ public abstract class AbstractOpTest {
 	public ArrayImg<FloatType, FloatArray> generateFloatArrayTestImg(
 		final boolean fill, final long... dims)
 	{
-		final float[] array =
-			new float[(int) Intervals.numElements(new FinalInterval(dims))];
+		final float[] array = new float[(int) Intervals.numElements(
+			new FinalInterval(dims))];
 
 		if (fill) {
 			seed = 17;
@@ -160,12 +160,12 @@ public abstract class AbstractOpTest {
 
 	public Img<UnsignedByteType>
 		generateRandomlyFilledUnsignedByteTestImgWithSeed(final long[] dims,
-			long tempSeed)
+			final long tempSeed)
 	{
 
-		Img<UnsignedByteType> img = ArrayImgs.unsignedBytes(dims);
+		final Img<UnsignedByteType> img = ArrayImgs.unsignedBytes(dims);
 
-		Random rand = new Random(tempSeed);
+		final Random rand = new Random(tempSeed);
 		final Cursor<UnsignedByteType> cursor = img.cursor();
 		while (cursor.hasNext()) {
 			cursor.next().set(rand.nextInt((int) img.firstElement().getMaxValue()));
@@ -185,12 +185,13 @@ public abstract class AbstractOpTest {
 		return IO.openFloatImgs(url.getPath()).get(0).getImg();
 	}
 
-	public static Img<UnsignedByteType> openUnsignedByteType(final Class<?> c, 
-			final String resourcePath) {
+	public static Img<UnsignedByteType> openUnsignedByteType(final Class<?> c,
+		final String resourcePath)
+	{
 		final URL url = c.getResource(resourcePath);
 		return IO.openUnsignedByteImgs(url.getPath()).get(0).getImg();
 	}
-	
+
 	public <T> void assertIterationsEqual(final Iterable<T> expected,
 		final Iterable<T> actual)
 	{
