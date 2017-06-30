@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -44,7 +44,7 @@ import net.imglib2.util.Intervals;
 
 /**
  * Utility class for {@link MapOp}s.
- * 
+ *
  * @author Leon Yang
  */
 public class Maps {
@@ -83,23 +83,23 @@ public class Maps {
 	public static <I1, I2, O> boolean compatible(final IterableInterval<I1> a,
 		final IterableInterval<I2> b, final RandomAccessibleInterval<O> c)
 	{
-		return a.iterationOrder().equals(b.iterationOrder()) && Intervals
-			.contains(c, a);
+		return a.iterationOrder().equals(b.iterationOrder()) && Intervals.contains(
+			c, a);
 	}
 
 	public static <I1, I2, O> boolean compatible(final IterableInterval<I1> a,
 		final RandomAccessibleInterval<I2> b, final IterableInterval<O> c)
 	{
-		return a.iterationOrder().equals(c.iterationOrder()) && Intervals
-			.contains(b, a);
+		return a.iterationOrder().equals(c.iterationOrder()) && Intervals.contains(
+			b, a);
 	}
 
 	public static <I1, I2, O> boolean compatible(
 		final RandomAccessibleInterval<I1> a, final IterableInterval<I2> b,
 		final IterableInterval<O> c)
 	{
-		return b.iterationOrder().equals(c.iterationOrder()) && Intervals
-			.contains(a, b);
+		return b.iterationOrder().equals(c.iterationOrder()) && Intervals.contains(
+			a, b);
 	}
 
 	public static <I1, I2, O> boolean compatible(final IterableInterval<I1> a,
@@ -127,7 +127,7 @@ public class Maps {
 	public static <O> void map(final Iterable<O> a,
 		final NullaryComputerOp<O> op)
 	{
-		for (O e : a)
+		for (final O e : a)
 			op.compute(e);
 	}
 
