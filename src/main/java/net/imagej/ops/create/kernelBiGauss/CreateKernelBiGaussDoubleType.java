@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  *
  * @author Vladimír Ulman
  */
-@Plugin(type = Ops.Create.KernelBiGauss.class)
+@Plugin(type = Ops.Create.KernelBiGauss.class, name = "kernelBiGauss")
 public class CreateKernelBiGaussDoubleType
 	extends BFViaBFSameIO<double[], Integer, RandomAccessibleInterval<DoubleType>>
 	implements Ops.Create.KernelBiGauss

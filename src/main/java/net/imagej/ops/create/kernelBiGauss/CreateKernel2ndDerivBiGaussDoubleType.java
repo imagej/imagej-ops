@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  *
  * @author Vladimír Ulman
  */
-@Plugin(type = Ops.Create.Kernel2ndDerivBiGauss.class)
+@Plugin(type = Ops.Create.Kernel2ndDerivBiGauss.class, name = "kernel2ndDerivBiGauss")
 public class CreateKernel2ndDerivBiGaussDoubleType
 	extends BFViaBFSameIO<double[], Integer, RandomAccessibleInterval<DoubleType>>
 	implements Ops.Create.Kernel2ndDerivBiGauss

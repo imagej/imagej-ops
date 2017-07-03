@@ -484,18 +484,18 @@ public class CreateNamespace extends AbstractNamespace {
 	/**
 	 * Convenience wrapper to create an {@link Img} of type {@link DoubleType}
 	 * with an isotropic BiGauss kernel.
-	 * Similar to {@link #kernelBiGauss(double[], int, ComplexType)}.
+	 * Similar to {@link #kernelBiGauss(double[], Integer, ComplexType)}.
 	 */
 	@OpMethod(
 		op = net.imagej.ops.create.kernelBiGauss.CreateKernelBiGaussDoubleType.class)
 	public RandomAccessibleInterval<DoubleType>
-		kernelBiGauss(final double[] sigmaPair, final int numDimensions)
+		kernelBiGauss(final double[] sigmaPair, final Integer numDimensions)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<DoubleType> result =
 			(RandomAccessibleInterval<DoubleType>) ops().run(
 				net.imagej.ops.create.kernelBiGauss.CreateKernelBiGaussDoubleType.class,
-				sigmaPair, (Integer)numDimensions);
+				sigmaPair, numDimensions);
 		return result;
 	}
 
@@ -508,31 +508,31 @@ public class CreateNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.create.kernelBiGauss.DefaultCreateKernelBiGauss.class)
 	public <T extends ComplexType<T> & NativeType<T>> RandomAccessibleInterval<T>
-		kernelBiGauss(final double[] sigmaPair, final int numDimensions, final T outType)
+		kernelBiGauss(final double[] sigmaPair, final Integer numDimensions, final T outType)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
 				net.imagej.ops.create.kernelBiGauss.DefaultCreateKernelBiGauss.class,
-				sigmaPair, (Integer)numDimensions, outType);
+				sigmaPair, numDimensions, outType);
 		return result;
 	}
 
 	/**
 	 * Convenience wrapper to create an {@link Img} of type {@link DoubleType}
 	 * with an isotropic 2nd derivative of BiGauss kernel.
-	 * Similar to {@link #kernel2ndDerivBiGauss(double[], int, ComplexType)}.
+	 * Similar to {@link #kernel2ndDerivBiGauss(double[], Integer, ComplexType)}.
 	 */
 	@OpMethod(
 		op = net.imagej.ops.create.kernelBiGauss.CreateKernel2ndDerivBiGaussDoubleType.class)
 	public RandomAccessibleInterval<DoubleType>
-		kernel2ndDerivBiGauss(final double[] sigmaPair, final int numDimensions)
+		kernel2ndDerivBiGauss(final double[] sigmaPair, final Integer numDimensions)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<DoubleType> result =
 			(RandomAccessibleInterval<DoubleType>) ops().run(
 				net.imagej.ops.create.kernelBiGauss.CreateKernel2ndDerivBiGaussDoubleType.class,
-				sigmaPair, (Integer)numDimensions);
+				sigmaPair, numDimensions);
 		return result;
 	}
 
@@ -545,13 +545,13 @@ public class CreateNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.create.kernelBiGauss.DefaultCreateKernel2ndDerivBiGauss.class)
 	public <T extends ComplexType<T> & NativeType<T>> RandomAccessibleInterval<T>
-		kernel2ndDerivBiGauss(final double[] sigmaPair, final int numDimensions, final T outType)
+		kernel2ndDerivBiGauss(final double[] sigmaPair, final Integer numDimensions, final T outType)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
 				net.imagej.ops.create.kernelBiGauss.DefaultCreateKernel2ndDerivBiGauss.class,
-				sigmaPair, (Integer)numDimensions, outType);
+				sigmaPair, numDimensions, outType);
 		return result;
 	}
 
