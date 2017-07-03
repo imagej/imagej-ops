@@ -65,6 +65,6 @@ public class MapIIAndIIInplace<EA> extends
 	public void mutate2(final IterableInterval<EA> in,
 		final IterableInterval<EA> arg)
 	{
-		Maps.inplace(arg, in, getOp());
+		Maps.inplace(in, arg, getOp());
 	}
 }

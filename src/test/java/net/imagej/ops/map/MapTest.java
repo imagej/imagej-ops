@@ -63,10 +63,11 @@ public class MapTest extends AbstractOpTest {
 	public void testIterable() {
 		final Img<ByteType> in = generateByteArrayTestImg(true, 10, 10);
 
-		Op nullary = Computers.nullary(ops, Ops.Math.Zero.class, ByteType.class);
+		final Op nullary = Computers.nullary(ops, Ops.Math.Zero.class,
+			ByteType.class);
 		ops.run(MapNullaryIterable.class, in, nullary);
 
-		for (ByteType ps : in)
+		for (final ByteType ps : in)
 			assertEquals(ps.get(), 0);
 	}
 
@@ -74,10 +75,11 @@ public class MapTest extends AbstractOpTest {
 	public void testII() {
 		final Img<ByteType> in = generateByteArrayTestImg(true, 10, 10);
 
-		Op nullary = Computers.nullary(ops, Ops.Math.Zero.class, ByteType.class);
+		final Op nullary = Computers.nullary(ops, Ops.Math.Zero.class,
+			ByteType.class);
 		ops.run(MapNullaryII.class, in, nullary);
 
-		for (ByteType ps : in)
+		for (final ByteType ps : in)
 			assertEquals(ps.get(), 0);
 	}
 
@@ -86,7 +88,7 @@ public class MapTest extends AbstractOpTest {
 		final Img<ByteType> first = generateByteArrayTestImg(true, 10, 10);
 		final Img<ByteType> firstCopy = first.copy();
 		final Img<ByteType> second = generateByteArrayTestImg(false, 10, 10);
-		for (ByteType px : second)
+		for (final ByteType px : second)
 			px.set((byte) 1);
 		final Img<ByteType> secondCopy = second.copy();
 		final Img<ByteType> secondDiffDims = generateByteArrayTestImg(false, 10, 10,
@@ -94,7 +96,7 @@ public class MapTest extends AbstractOpTest {
 
 		sub = Inplaces.binary(ops, Ops.Math.Subtract.class, ByteType.class);
 		final BinaryInplaceOp<? super Img<ByteType>, Img<ByteType>> map = Inplaces
-			.binary(ops, MapIIAndIIInplaceParallel.class, firstCopy, second, sub);
+			.binary(ops, MapIIAndIIInplace.class, firstCopy, second, sub);
 		map.run(firstCopy, second, firstCopy);
 		map.run(first, secondCopy, secondCopy);
 
@@ -111,7 +113,7 @@ public class MapTest extends AbstractOpTest {
 		final Img<ByteType> first = generateByteArrayTestImg(true, 10, 10);
 		final Img<ByteType> firstCopy = first.copy();
 		final Img<ByteType> second = generateByteArrayTestImg(false, 10, 10);
-		for (ByteType px : second)
+		for (final ByteType px : second)
 			px.set((byte) 1);
 		final Img<ByteType> secondCopy = second.copy();
 		final Img<ByteType> secondDiffDims = generateByteArrayTestImg(false, 10, 10,
@@ -128,11 +130,11 @@ public class MapTest extends AbstractOpTest {
 
 		// Expect exception when in2 has different dimensions
 		thrown.expect(IllegalArgumentException.class);
-		ops.op(MapIIAndIIInplace.class, first, secondDiffDims, sub);
+		ops.op(MapIIAndIIInplaceParallel.class, first, secondDiffDims, sub);
 	}
 
 	@Test
-	public void testIIInplaceParallal() {
+	public void testIIInplaceParallel() {
 		final Img<ByteType> arg = generateByteArrayTestImg(true, 10, 10);
 		final Img<ByteType> argCopy = arg.copy();
 
@@ -167,10 +169,55 @@ public class MapTest extends AbstractOpTest {
 		assertImgSubOneEquals(in, out);
 	}
 
+	// -- Test with CellImg --
+
+	@Test
+	public void testIICellImg() {
+		final Img<ByteType> in = generateByteTestCellImg(true, 40, 20);
+
+		final Op nullary = Computers.nullary(ops, Ops.Math.Zero.class,
+			ByteType.class);
+		ops.run(MapNullaryII.class, in, nullary);
+
+		for (final ByteType ps : in)
+			assertEquals(ps.get(), 0);
+	}
+
+	@Test
+	public void testIIAndIIInplaceParallelCellImg() {
+		final Img<ByteType> first = generateByteTestCellImg(true, 40, 20);
+		final Img<ByteType> firstCopy = first.copy();
+		final Img<ByteType> second = generateByteTestCellImg(false, 40, 20);
+		for (final ByteType px : second)
+			px.set((byte) 1);
+		final Img<ByteType> secondCopy = second.copy();
+
+		sub = Inplaces.binary(ops, Ops.Math.Subtract.class, ByteType.class);
+		final BinaryInplaceOp<? super Img<ByteType>, Img<ByteType>> map = Inplaces
+			.binary(ops, MapIIAndIIInplaceParallel.class, firstCopy, second, sub);
+		map.run(firstCopy, second, firstCopy);
+		map.run(first, secondCopy, secondCopy);
+
+		assertImgSubEquals(first, second, firstCopy);
+		assertImgSubEquals(first, second, secondCopy);
+	}
+
+	@Test
+	public void testIIInplaceParallelCellImg() {
+		final Img<ByteType> arg = generateByteTestCellImg(true, 40, 20);
+		final Img<ByteType> argCopy = arg.copy();
+
+		sub = Inplaces.unary(ops, Ops.Math.Subtract.class, ByteType.class,
+			new ByteType((byte) 1));
+		ops.run(MapIIInplaceParallel.class, argCopy, sub);
+
+		assertImgSubOneEquals(arg, argCopy);
+	}
+
 	// -- helper methods --
 
-	private static void assertImgSubEquals(Img<ByteType> in1, Img<ByteType> in2,
-		Img<ByteType> out)
+	private static void assertImgSubEquals(final Img<ByteType> in1,
+		final Img<ByteType> in2, final Img<ByteType> out)
 	{
 		final Cursor<ByteType> in1Cursor = in1.cursor();
 		final Cursor<ByteType> in2Cursor = in2.cursor();
@@ -182,8 +229,8 @@ public class MapTest extends AbstractOpTest {
 		}
 	}
 
-	private static void assertImgSubOneEquals(Img<ByteType> in,
-		Img<ByteType> out)
+	private static void assertImgSubOneEquals(final Img<ByteType> in,
+		final Img<ByteType> out)
 	{
 		final Cursor<ByteType> in1Cursor = in.cursor();
 		final Cursor<ByteType> outCursor = out.cursor();
