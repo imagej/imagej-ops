@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  *
  * @author Vladimír Ulman
  */
-@Plugin(type = Ops.Create.KernelGabor.class, name = "GaborComplexDouble")
+@Plugin(type = Ops.Create.KernelGabor.class, name = "kernelGaborComplexDouble")
 public class CreateKernelGaborComplexDoubleType
 	extends BFViaBFSameIO<double[], double[], RandomAccessibleInterval<ComplexDoubleType>>
 	implements Ops.Create.KernelGabor

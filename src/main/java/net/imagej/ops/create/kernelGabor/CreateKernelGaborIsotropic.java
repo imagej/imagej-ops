@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
  * @author Vladimír Ulman
  * @param <T>
  */
-@Plugin(type = Ops.Create.KernelGabor.class)
+@Plugin(type = Ops.Create.KernelGabor.class, name = "kernelGabor")
 public class CreateKernelGaborIsotropic<T extends ComplexType<T>>
 	extends AbstractBinaryFunctionOp<Double, double[], RandomAccessibleInterval<T>>
 	implements Ops.Create.KernelGabor
