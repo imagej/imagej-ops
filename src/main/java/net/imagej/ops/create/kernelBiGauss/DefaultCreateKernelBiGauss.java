@@ -71,7 +71,7 @@ import org.scijava.plugin.Plugin;
  * @author Vladimír Ulman
  * @param <T>
  */
-@Plugin(type = Ops.Create.KernelBiGauss.class, name = "kernelBiGauss")
+@Plugin(type = Ops.Create.KernelBiGauss.class)
 public class DefaultCreateKernelBiGauss<T extends ComplexType<T>>
 	extends AbstractBinaryFunctionOp<double[], Integer, RandomAccessibleInterval<T>>
 	implements Ops.Create.KernelBiGauss
