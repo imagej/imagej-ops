@@ -71,6 +71,7 @@ import net.imagej.ops.transform.permuteCoordinatesView.PermuteCoordinatesViewOfD
 import net.imagej.ops.transform.permuteView.DefaultPermuteView;
 import net.imagej.ops.transform.rasterView.DefaultRasterView;
 import net.imagej.ops.transform.rotateView.DefaultRotateView;
+import net.imagej.ops.transform.rotateView.IntervalRotateView;
 import net.imagej.ops.transform.shearView.DefaultShearView;
 import net.imagej.ops.transform.shearView.ShearViewInterval;
 import net.imagej.ops.transform.stackView.DefaultStackView;
@@ -984,6 +985,29 @@ public class TransformNamespace extends AbstractNamespace {
 		final RandomAccessible<T> input, final int fromAxis, final int toAxis)
 	{
 		return (MixedTransformView<T>) ops().run(Ops.Transform.RotateView.class, input,
+			fromAxis, toAxis);
+	}
+	
+	/**
+	 * Create view that is rotated by 90 degrees and preserves interval bounds.
+	 * The rotation is specified by the fromAxis and toAxis arguments. If
+	 * fromAxis=0 and toAxis=1, this means that the X-axis of the source view is
+	 * mapped to the Y-Axis of the rotated view. That is, it corresponds to a 90
+	 * degree clock-wise rotation of the source view in the XY plane. fromAxis=1
+	 * and toAxis=0 corresponds to a counter-clock-wise rotation in the XY
+	 * plane.
+	 * 
+	 * @param input
+	 * @param fromAxis
+	 * @param toAxis
+	 * @return
+	 */
+	
+	@OpMethod(op = net.imagej.ops.transform.rotateView.IntervalRotateView.class)
+	public <T> IntervalView<T> rotateView(
+		final RandomAccessibleInterval<T> input, final int fromAxis, final int toAxis)
+	{
+		return (IntervalView<T>) ops().run(Ops.Transform.RotateView.class, input,
 			fromAxis, toAxis);
 	}
 
