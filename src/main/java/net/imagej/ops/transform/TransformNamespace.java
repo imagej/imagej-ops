@@ -928,6 +928,26 @@ public class TransformNamespace extends AbstractNamespace {
 		return (MixedTransformView<T>) ops().run(Ops.Transform.TranslateView.class, input,
 			translation);
 	}
+	
+	/**
+	 * Translate the source view by the given translation vector, preserving
+	 * interval bounds. Pixel <em>x</em> in the source view has coordinates
+	 * <em>(x + translation)</em> in the resulting view.
+	 * 
+	 * @param input
+	 *            the source
+	 * @param translation
+	 *            translation vector of the source view. The pixel at <em>x</em>
+	 *            in the source view becomes <em>(x + translation)</em> in the
+	 *            resulting view.
+	 */
+	@OpMethod(op = net.imagej.ops.transform.translateView.IntervalTranslateView.class)
+	public <T> IntervalView<T> translateView(
+		final RandomAccessibleInterval<T> input, final long... translation)
+	{
+		return (IntervalView<T>) ops().run(Ops.Transform.TranslateView.class, input,
+			translation);
+	}	
 
 	/**
 	 * Negative shear transform of a RandomAccessible using
