@@ -58,7 +58,7 @@ public class ExtendValueViewTest extends AbstractOpTest {
 
 		OutOfBounds<DoubleType> il2 = Views.extendValue(img, new DoubleType(0)).randomAccess();
 
-		OutOfBounds<DoubleType> opr = ops.transform().extendValue(img, new DoubleType(0)).randomAccess();
+		OutOfBounds<DoubleType> opr = ops.transform().extendValueView(img, new DoubleType(0)).randomAccess();
 
 		il2.setPosition(new int[] { -1, -1 });
 		opr.setPosition(new int[] { -1, -1 });

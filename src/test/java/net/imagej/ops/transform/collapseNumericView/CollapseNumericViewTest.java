@@ -65,14 +65,14 @@ public class CollapseNumericViewTest extends AbstractOpTest {
 		CompositeIntervalView<NativeARGBDoubleType, NumericComposite<NativeARGBDoubleType>> il2 = Views
 				.collapseNumeric((RandomAccessibleInterval<NativeARGBDoubleType>) img);
 		CompositeIntervalView<NativeARGBDoubleType, NumericComposite<NativeARGBDoubleType>> opr = ops.transform()
-				.collapseNumeric((RandomAccessibleInterval<NativeARGBDoubleType>) img);
+				.collapseNumericView((RandomAccessibleInterval<NativeARGBDoubleType>) img);
 
 		assertEquals(il2.numDimensions(), opr.numDimensions());
 
 		CompositeView<NativeARGBDoubleType, NumericComposite<NativeARGBDoubleType>> il2_2 = Views
 				.collapseNumeric((RandomAccessible<NativeARGBDoubleType>) img, 1);
 		CompositeView<NativeARGBDoubleType, NumericComposite<NativeARGBDoubleType>> opr_2 = ops.transform()
-				.collapseNumeric((RandomAccessible<NativeARGBDoubleType>) img, 1);
+				.collapseNumericView((RandomAccessible<NativeARGBDoubleType>) img, 1);
 
 		assertEquals(il2_2.numDimensions(), opr_2.numDimensions());
 	}

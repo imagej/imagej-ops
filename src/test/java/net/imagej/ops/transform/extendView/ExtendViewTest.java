@@ -64,7 +64,7 @@ public class ExtendViewTest extends AbstractOpTest {
 				.randomAccess();
 
 		OutOfBounds<DoubleType> opr = ops.transform()
-				.extend(img, new OutOfBoundsBorderFactory<DoubleType, RandomAccessibleInterval<DoubleType>>())
+				.extendView(img, new OutOfBoundsBorderFactory<DoubleType, RandomAccessibleInterval<DoubleType>>())
 				.randomAccess();
 
 		il2.setPosition(new int[] { -1, -1 });

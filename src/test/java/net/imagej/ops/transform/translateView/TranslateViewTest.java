@@ -58,7 +58,7 @@ public class TranslateViewTest extends AbstractOpTest {
 		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
 
 		MixedTransformView<DoubleType> il2 = Views.translate((RandomAccessible<DoubleType>) img, 2, 5);
-		MixedTransformView<DoubleType> opr = ops.transform().translate(img, 2, 5);
+		MixedTransformView<DoubleType> opr = ops.transform().translateView(img, 2, 5);
 
 		for (int i = 0; i < il2.getTransformToSource().getMatrix().length; i++) {
 			for (int j = 0; j < il2.getTransformToSource().getMatrix()[i].length; j++) {

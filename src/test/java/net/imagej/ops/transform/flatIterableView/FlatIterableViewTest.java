@@ -58,7 +58,7 @@ public class FlatIterableViewTest extends AbstractOpTest {
 
 		Cursor<DoubleType> il2 = Views.flatIterable(img).cursor();
 
-		Cursor<DoubleType> opr = ops.transform().flatIterable(img).cursor();
+		Cursor<DoubleType> opr = ops.transform().flatIterableView(img).cursor();
 
 		while (il2.hasNext()) {
 			il2.next();

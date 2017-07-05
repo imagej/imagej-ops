@@ -64,7 +64,7 @@ public class CollapseViewTest extends AbstractOpTest {
 		CompositeIntervalView<DoubleType, ? extends GenericComposite<DoubleType>> il2 = Views
 				.collapse(img);
 		CompositeIntervalView<DoubleType, ? extends GenericComposite<DoubleType>> opr = ops.transform()
-				.collapse(img);
+				.collapseView(img);
 
 		assertEquals(il2.numDimensions(), opr.numDimensions());
 	}
@@ -78,7 +78,7 @@ public class CollapseViewTest extends AbstractOpTest {
 				.collapse((RandomAccessible<DoubleType>) img);
 
 		CompositeView<DoubleType, ? extends GenericComposite<DoubleType>> opr = ops.transform()
-				.collapse((RandomAccessible<DoubleType>) img);
+				.collapseView((RandomAccessible<DoubleType>) img);
 
 		assertEquals(il2.numDimensions(), opr.numDimensions());
 	}
@@ -92,7 +92,7 @@ public class CollapseViewTest extends AbstractOpTest {
 				.collapse((RandomAccessibleInterval<DoubleType>) img);
 
 		CompositeIntervalView<DoubleType, ? extends GenericComposite<DoubleType>> opr = ops.transform()
-				.collapse((RandomAccessibleInterval<DoubleType>) img);
+				.collapseView((RandomAccessibleInterval<DoubleType>) img);
 
 		assertEquals(il2.numDimensions(), opr.numDimensions());
 	}

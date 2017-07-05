@@ -65,7 +65,7 @@ public class StackViewTest extends AbstractOpTest {
 		list.add(img);
 		
 		RandomAccessibleInterval<DoubleType> il2 = Views.stack(list);
-		RandomAccessibleInterval<DoubleType> opr = ops.transform().stack(list);
+		RandomAccessibleInterval<DoubleType> opr = ops.transform().stackView(list);
 
 		assertEquals(il2.dimension(2), opr.dimension(2));
 	}
@@ -79,7 +79,7 @@ public class StackViewTest extends AbstractOpTest {
 		list.add(img);
 		
 		RandomAccessibleInterval<DoubleType> il2 = Views.stack(StackAccessMode.DEFAULT, list);
-		RandomAccessibleInterval<DoubleType> opr = ops.transform().stack(list, StackAccessMode.DEFAULT);
+		RandomAccessibleInterval<DoubleType> opr = ops.transform().stackView(list, StackAccessMode.DEFAULT);
 
 		assertEquals(il2.dimension(2), opr.dimension(2));
 	}

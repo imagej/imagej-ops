@@ -47,6 +47,6 @@ public class TransformNamespaceTest extends AbstractNamespaceTest {
 	 */
 	@Test
 	public void testCompleteness() {
-		assertComplete("view", TransformNamespace.class);
+		assertComplete("transform", TransformNamespace.class);
 	}
 }

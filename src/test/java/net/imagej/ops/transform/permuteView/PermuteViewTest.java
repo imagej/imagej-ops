@@ -63,7 +63,7 @@ public class PermuteViewTest extends AbstractOpTest {
 		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{10, 10}, new DoubleType());
 		
 		MixedTransformView<DoubleType> il2 = Views.permute((RandomAccessible<DoubleType>)img, 1, 0);
-		MixedTransformView<DoubleType> opr = ops.transform().permute(img, 1, 0);
+		MixedTransformView<DoubleType> opr = ops.transform().permuteView(img, 1, 0);
 		
 		for (int i = 0; i < il2.getTransformToSource().getMatrix().length; i++) {
 			for (int j = 0; j < il2.getTransformToSource().getMatrix()[i].length; j++) {
@@ -82,7 +82,7 @@ public class PermuteViewTest extends AbstractOpTest {
 			c.next().set(r.nextDouble());
 		}
 		Cursor<DoubleType> il2 = Views.permuteCoordinates(img, new int[]{0, 1}).cursor();
-		RandomAccess<DoubleType> opr = ops.transform().permuteCoordinates(img, new int[]{0, 1}).randomAccess();
+		RandomAccess<DoubleType> opr = ops.transform().permuteCoordinatesView(img, new int[]{0, 1}).randomAccess();
 		
 		while (il2.hasNext()) {
 			il2.next();
@@ -101,7 +101,7 @@ public class PermuteViewTest extends AbstractOpTest {
 			c.next().set(r.nextDouble());
 		}
 		Cursor<DoubleType> il2 = Views.permuteCoordinates(img, new int[]{0, 1}, 1).cursor();
-		RandomAccess<DoubleType> opr = ops.transform().permuteCoordinates(img, new int[]{0, 1}, 1).randomAccess();
+		RandomAccess<DoubleType> opr = ops.transform().permuteCoordinatesView(img, new int[]{0, 1}, 1).randomAccess();
 		
 		while (il2.hasNext()) {
 			il2.next();
@@ -120,7 +120,7 @@ public class PermuteViewTest extends AbstractOpTest {
 			c.next().set(r.nextDouble());
 		}
 		Cursor<DoubleType> il2 = Views.permuteCoordinatesInverse(img, new int[]{0, 1}).cursor();
-		RandomAccess<DoubleType> opr = ops.transform().permuteCoordinatesInverse(img, new int[]{0, 1}).randomAccess();
+		RandomAccess<DoubleType> opr = ops.transform().permuteCoordinatesInverseView(img, new int[]{0, 1}).randomAccess();
 		
 		while (il2.hasNext()) {
 			il2.next();
@@ -141,7 +141,7 @@ public class PermuteViewTest extends AbstractOpTest {
 		IntervalView<DoubleType> out = Views.permuteCoordinateInverse(img, new int[]{0, 1}, 1);
 		
 		Cursor<DoubleType> il2 = out.cursor();
-		RandomAccess<DoubleType> opr = ops.transform().permuteCoordinatesInverse(img, new int[]{0, 1}, 1).randomAccess();
+		RandomAccess<DoubleType> opr = ops.transform().permuteCoordinatesInverseView(img, new int[]{0, 1}, 1).randomAccess();
 		
 		while (il2.hasNext()) {
 			il2.next();

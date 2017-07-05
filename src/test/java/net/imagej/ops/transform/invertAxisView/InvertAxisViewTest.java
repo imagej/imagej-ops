@@ -59,7 +59,7 @@ public class InvertAxisViewTest extends AbstractOpTest {
 		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
 
 		MixedTransformView<DoubleType> il2 = Views.invertAxis((RandomAccessible<DoubleType>) img, 1);
-		MixedTransformView<DoubleType> opr = ops.transform().invertAxis(img, 1);
+		MixedTransformView<DoubleType> opr = ops.transform().invertAxisView(img, 1);
 
 		for (int i = 0; i < il2.getTransformToSource().getMatrix().length; i++) {
 			for (int j = 0; j < il2.getTransformToSource().getMatrix()[i].length; j++) {

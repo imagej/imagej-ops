@@ -61,7 +61,7 @@ public class OffsetViewTest extends AbstractOpTest {
 		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
 
 		MixedTransformView<DoubleType> il2 = Views.offset((RandomAccessible<DoubleType>) img, new long[] { 2, 2 });
-		MixedTransformView<DoubleType> opr = ops.transform().offset((RandomAccessible<DoubleType>) img, new long[] { 2, 2 });
+		MixedTransformView<DoubleType> opr = ops.transform().offsetView((RandomAccessible<DoubleType>) img, new long[] { 2, 2 });
 
 		for (int i = 0; i < il2.getTransformToSource().getMatrix().length; i++) {
 			for (int j = 0; j < il2.getTransformToSource().getMatrix()[i].length; j++) {
@@ -78,7 +78,7 @@ public class OffsetViewTest extends AbstractOpTest {
 
 		IntervalView<DoubleType> il2 = Views.offsetInterval(img,
 				new FinalInterval(new long[] { 2, 2 }, new long[] { 9, 9 }));
-		IntervalView<DoubleType> opr = ops.transform().offset(img,
+		IntervalView<DoubleType> opr = ops.transform().offsetView(img,
 				new FinalInterval(new long[] { 2, 2 }, new long[] { 9, 9 }));
 
 		assertEquals(il2.realMax(0), opr.realMax(0), 1e-10);
@@ -93,7 +93,7 @@ public class OffsetViewTest extends AbstractOpTest {
 		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
 
 		IntervalView<DoubleType> il2 = Views.offsetInterval(img, new long[] { 2, 2 }, new long[] { 9, 9 });
-		IntervalView<DoubleType> opr = ops.transform().offset(img, new long[] { 2, 2 }, new long[] { 9, 9 });
+		IntervalView<DoubleType> opr = ops.transform().offsetView(img, new long[] { 2, 2 }, new long[] { 9, 9 });
 
 		assertEquals(il2.realMax(0), opr.realMax(0), 1e-10);
 		assertEquals(il2.realMin(0), opr.realMin(0), 1e-10);

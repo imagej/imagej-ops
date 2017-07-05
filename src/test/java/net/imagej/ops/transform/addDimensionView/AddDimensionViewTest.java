@@ -60,7 +60,7 @@ public class AddDimensionViewTest extends AbstractOpTest {
 		
 		MixedTransformView<DoubleType> il2 = Views.addDimension((RandomAccessible<DoubleType>)img);
 		
-		MixedTransformView<DoubleType> opr = ops.transform().addDimension((RandomAccessible<DoubleType>)img);
+		MixedTransformView<DoubleType> opr = ops.transform().addDimensionView((RandomAccessible<DoubleType>)img);
 		
 		assertEquals(il2.numDimensions(), opr.numDimensions());
 		boolean[] il2Transform = new boolean[3];
@@ -80,7 +80,7 @@ public class AddDimensionViewTest extends AbstractOpTest {
 		
 		IntervalView<DoubleType> il2 = Views.addDimension(img, min, max);
 		
-		IntervalView<DoubleType> opr = ops.transform().addDimension(img, min, max);
+		IntervalView<DoubleType> opr = ops.transform().addDimensionView(img, min, max);
 		
 		assertEquals(il2.numDimensions(), opr.numDimensions(), 0.0);
 		for (int i = 0; i < il2.numDimensions(); i++) {

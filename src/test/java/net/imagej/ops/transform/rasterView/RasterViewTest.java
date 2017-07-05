@@ -68,7 +68,7 @@ public class RasterViewTest extends AbstractOpTest {
 		RealRandomAccessible<DoubleType> realImg = Views.interpolate(img, new FloorInterpolatorFactory<DoubleType>());
 		
 		RandomAccessibleOnRealRandomAccessible<DoubleType> il2 = Views.raster(realImg);
-		RandomAccessibleOnRealRandomAccessible<DoubleType> opr = ops.transform().raster(realImg);
+		RandomAccessibleOnRealRandomAccessible<DoubleType> opr = ops.transform().rasterView(realImg);
 		
 		Cursor<DoubleType> il2C = Views.interval(il2, img).localizingCursor();
 		RandomAccess<DoubleType> oprRA = Views.interval(opr, img).randomAccess();

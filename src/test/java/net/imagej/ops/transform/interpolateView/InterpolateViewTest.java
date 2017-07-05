@@ -65,7 +65,7 @@ public class InterpolateViewTest extends AbstractOpTest {
 		}
 		
 		RealRandomAccess<DoubleType> il2 = Views.interpolate(img, new FloorInterpolatorFactory<DoubleType>()).realRandomAccess();
-		RealRandomAccess<DoubleType> opr = ops.transform().interpolate(img, new FloorInterpolatorFactory<DoubleType>()).realRandomAccess();
+		RealRandomAccess<DoubleType> opr = ops.transform().interpolateView(img, new FloorInterpolatorFactory<DoubleType>()).realRandomAccess();
 		
 		il2.setPosition(new double[]{1.75, 5.34});
 		opr.setPosition(new double[]{1.75, 5.34});
