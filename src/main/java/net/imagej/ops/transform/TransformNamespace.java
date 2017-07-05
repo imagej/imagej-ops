@@ -62,6 +62,7 @@ import net.imagej.ops.transform.interpolateView.DefaultInterpolateView;
 import net.imagej.ops.transform.intervalView.DefaultIntervalView;
 import net.imagej.ops.transform.intervalView.IntervalViewMinMax;
 import net.imagej.ops.transform.invertAxisView.DefaultInvertAxisView;
+import net.imagej.ops.transform.invertAxisView.IntervalInvertAxisView;
 import net.imagej.ops.transform.offsetView.DefaultOffsetView;
 import net.imagej.ops.transform.offsetView.OffsetViewInterval;
 import net.imagej.ops.transform.offsetView.OffsetViewOriginSize;
@@ -536,6 +537,19 @@ public class TransformNamespace extends AbstractNamespace {
 		final RandomAccessible<T> input, final int d)
 	{
 		return (MixedTransformView<T>) ops().run(Ops.Transform.InvertAxisView.class, input, d);
+	}
+	
+	/**
+	 * Invert the d-axis while preserving interval bounds.
+	 * 
+	 * @param input the source
+	 * @param d the axis to invert
+	 */
+	@OpMethod(op = net.imagej.ops.transform.invertAxisView.IntervalInvertAxisView.class)
+	public <T> IntervalView<T> invertAxisView(
+		final RandomAccessibleInterval<T> input, final int d)
+	{
+		return (IntervalView<T>) ops().run(Ops.Transform.InvertAxisView.class, input, d);
 	}
 
 	/**
