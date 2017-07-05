@@ -71,6 +71,7 @@ import net.imagej.ops.transform.permuteCoordinatesInverseView.PermuteCoordinateI
 import net.imagej.ops.transform.permuteCoordinatesView.DefaultPermuteCoordinatesView;
 import net.imagej.ops.transform.permuteCoordinatesView.PermuteCoordinatesViewOfDimension;
 import net.imagej.ops.transform.permuteView.DefaultPermuteView;
+import net.imagej.ops.transform.permuteView.IntervalPermuteView;
 import net.imagej.ops.transform.rasterView.DefaultRasterView;
 import net.imagej.ops.transform.rotateView.DefaultRotateView;
 import net.imagej.ops.transform.rotateView.IntervalRotateView;
@@ -584,6 +585,25 @@ public class TransformNamespace extends AbstractNamespace {
 		final RandomAccessible<T> input, final int fromAxis, final int toAxis)
 	{
 		return (MixedTransformView<T>) ops().run(Ops.Transform.PermuteView.class, input,
+			fromAxis, toAxis);
+	}
+	
+	/**
+	 * Create view with permuted axes while preserving interval bounds. fromAxis
+	 * and toAxis are swapped. If fromAxis=0 and toAxis=2, this means that the
+	 * X-axis of the source view is mapped to the Z-Axis of the permuted view
+	 * and vice versa. For a XYZ source, a ZYX view would be created.
+	 * 
+	 * @param input
+	 * @param fromAxis
+	 * @param toAxis
+	 * @return
+	 */
+	@OpMethod(op = net.imagej.ops.transform.permuteView.IntervalPermuteView.class)
+	public <T> IntervalView<T> permuteView(
+		final RandomAccessibleInterval<T> input, final int fromAxis, final int toAxis)
+	{
+		return (IntervalView<T>) ops().run(Ops.Transform.PermuteView.class, input,
 			fromAxis, toAxis);
 	}
 
