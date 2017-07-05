@@ -57,6 +57,7 @@ import net.imagej.ops.transform.extendView.DefaultExtendView;
 import net.imagej.ops.transform.extendZeroView.DefaultExtendZeroView;
 import net.imagej.ops.transform.flatIterableView.DefaultFlatIterableView;
 import net.imagej.ops.transform.hyperSliceView.DefaultHyperSliceView;
+import net.imagej.ops.transform.hyperSliceView.IntervalHyperSliceView;
 import net.imagej.ops.transform.interpolateView.DefaultInterpolateView;
 import net.imagej.ops.transform.intervalView.DefaultIntervalView;
 import net.imagej.ops.transform.intervalView.IntervalViewMinMax;
@@ -489,6 +490,22 @@ public class TransformNamespace extends AbstractNamespace {
 		final RandomAccessible<T> input, final int d, final long pos)
 	{
 		return (MixedTransformView<T>) ops().run(Ops.Transform.HyperSliceView.class, input, d,
+			pos);
+	}
+	
+	/**
+	 * take a (n-1)-dimensional slice of a n-dimensional view, fixing d-component
+	 * of coordinates to pos and preserving interval bounds.
+	 * @param input
+	 * @param d
+	 * @param pos
+	 * @return
+	 */
+	@OpMethod(op = net.imagej.ops.transform.hyperSliceView.IntervalHyperSliceView.class)
+	public <T> IntervalView<T> hyperSliceView(
+		final RandomAccessibleInterval<T> input, final int d, final long pos)
+	{
+		return (IntervalView<T>) ops().run(Ops.Transform.HyperSliceView.class, input, d,
 			pos);
 	}
 

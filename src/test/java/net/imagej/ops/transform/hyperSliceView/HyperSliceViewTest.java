@@ -6,13 +6,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -32,9 +32,11 @@ import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.RandomAccessible;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.view.IntervalView;
 import net.imglib2.view.MixedTransformView;
 import net.imglib2.view.Views;
 
@@ -49,16 +51,18 @@ import org.junit.Test;
  * </p>
  *
  * @author Tim-Oliver Buchholz (University of Konstanz)
+ * @author Gabe Selzer
  */
 public class HyperSliceViewTest extends AbstractOpTest {
 
 	@Test
 	public void defaultHyperSliceTest() {
 
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10, 10 }, new DoubleType());
+		final Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10, 10 },
+				new DoubleType());
 
-		MixedTransformView<DoubleType> il2 = Views.hyperSlice((RandomAccessible<DoubleType>) img, 1, 8);
-		MixedTransformView<DoubleType> opr = ops.transform().hyperSliceView(img, 1, 8);
+		final MixedTransformView<DoubleType> il2 = Views.hyperSlice((RandomAccessible<DoubleType>) img, 1, 8);
+		final MixedTransformView<DoubleType> opr = ops.transform().hyperSliceView(deinterval(img), 1, 8);
 
 		for (int i = 0; i < il2.getTransformToSource().getMatrix().length; i++) {
 			for (int j = 0; j < il2.getTransformToSource().getMatrix()[i].length; j++) {
@@ -66,5 +70,28 @@ public class HyperSliceViewTest extends AbstractOpTest {
 						1e-10);
 			}
 		}
+	}
+
+	@Test
+	public void IntervalHyperSliceTest() {
+
+		final Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10, 10 },
+				new DoubleType());
+
+		final IntervalView<DoubleType> il2 = Views.hyperSlice((RandomAccessibleInterval<DoubleType>) img, 1, 8);
+		final IntervalView<DoubleType> opr = ops.transform().hyperSliceView(img, 1, 8);
+
+		for (int i = 0; i < ((MixedTransformView<DoubleType>) il2.getSource()).getTransformToSource()
+				.getMatrix().length; i++) {
+			for (int j = 0; j < ((MixedTransformView<DoubleType>) il2.getSource()).getTransformToSource()
+					.getMatrix()[i].length; j++) {
+				assertEquals(
+						((MixedTransformView<DoubleType>) il2.getSource()).getTransformToSource().getMatrix()[i][j],
+						((MixedTransformView<DoubleType>) opr.getSource()).getTransformToSource().getMatrix()[i][j],
+						1e-10);
+			}
+		}
+
+		assertEquals(img.numDimensions() - 1, opr.numDimensions());
 	}
 }
