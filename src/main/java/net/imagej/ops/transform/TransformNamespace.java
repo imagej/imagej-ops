@@ -718,8 +718,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * @param interpolator
 	 * @return
 	 */
-	@OpMethod(ops = { net.imagej.ops.transform.scaleView.DefaultScaleView.class,
-		net.imagej.ops.transform.scaleView.WrappedScaleView.class })
+	@OpMethod(op = net.imagej.ops.transform.scaleView.DefaultScaleView.class)
 	public <T extends RealType<T>> RandomAccessibleInterval<T> scaleView(
 		final RandomAccessibleInterval<T> in, final double[] scaleFactors,
 		final InterpolatorFactory<T, RandomAccessible<T>> interpolator)
@@ -741,8 +740,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * @param outOfBoundsFactory
 	 * @return
 	 */
-	@OpMethod(ops = { net.imagej.ops.transform.scaleView.DefaultScaleView.class,
-		net.imagej.ops.transform.scaleView.WrappedScaleView.class })
+	@OpMethod(ops = net.imagej.ops.transform.scaleView.DefaultScaleView.class)
 	public <T extends RealType<T>> RandomAccessibleInterval<T> scaleView(final RandomAccessibleInterval<T> in,
 			final double[] scaleFactors, final InterpolatorFactory<T, RandomAccessible<T>> interpolator,
 			final OutOfBoundsFactory<T, RandomAccessible<T>> outOfBoundsFactory) {
