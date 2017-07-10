@@ -37,6 +37,10 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.plugin.Plugin;
 
 /**
+ * Scales input values to their corresponding value in the output type range.
+ * This scale only considers the range of the input type and the range of the
+ * output type, not the range of a data set.
+ *
  * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Ops.Convert.Scale.class)

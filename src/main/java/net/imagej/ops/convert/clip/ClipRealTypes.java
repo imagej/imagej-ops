@@ -37,6 +37,9 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.plugin.Plugin;
 
 /**
+ * Copies the value of one {@link RealType} to another, and clips values which
+ * are outside of the output types range.
+ *
  * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Ops.Convert.Clip.class)

@@ -41,6 +41,10 @@ import net.imglib2.util.Pair;
 import org.scijava.plugin.Plugin;
 
 /**
+ * Scales input values to their corresponding value in the output type range
+ * based on the min/max values of an {@link IterableInterval} not the range of
+ * the input type.
+ *
  * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Ops.Convert.NormalizeScale.class)
