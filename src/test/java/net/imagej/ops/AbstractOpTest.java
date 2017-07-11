@@ -50,12 +50,26 @@ import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
+import net.imglib2.img.basictypeaccess.array.DoubleArray;
 import net.imglib2.img.basictypeaccess.array.FloatArray;
+import net.imglib2.img.basictypeaccess.array.IntArray;
+import net.imglib2.img.basictypeaccess.array.LongArray;
+import net.imglib2.img.basictypeaccess.array.ShortArray;
 import net.imglib2.img.cell.CellImg;
 import net.imglib2.img.cell.CellImgFactory;
+import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.IntType;
+import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.type.numeric.integer.ShortType;
+import net.imglib2.type.numeric.integer.Unsigned12BitType;
+import net.imglib2.type.numeric.integer.Unsigned2BitType;
+import net.imglib2.type.numeric.integer.Unsigned4BitType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
+import net.imglib2.type.numeric.integer.UnsignedIntType;
+import net.imglib2.type.numeric.integer.UnsignedLongType;
+import net.imglib2.type.numeric.integer.UnsignedShortType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.util.Intervals;
@@ -66,6 +80,7 @@ import org.junit.Before;
 import org.scijava.Context;
 import org.scijava.cache.CacheService;
 import org.scijava.plugin.Parameter;
+import org.scijava.util.MersenneTwisterFast;
 
 /**
  * Base class for {@link Op} unit testing.
@@ -115,12 +130,69 @@ public abstract class AbstractOpTest {
 
 	private int seed;
 
+
 	private int pseudoRandom() {
 		return seed = 3170425 * seed + 132102;
 	}
 
-	public ArrayImg<ByteType, ByteArray> generateByteArrayTestImg(
+	public ArrayImg<BitType, LongArray> generateBitArrayTestImg(final boolean fill,
+		final long... dims)
+	{
+		ArrayImg<BitType, LongArray> bits = ArrayImgs.bits(dims);
+		
+		if (fill) {
+			MersenneTwisterFast betterRNG = new MersenneTwisterFast(0xf1eece);
+			for (BitType b : bits) {
+				b.set(betterRNG.nextBoolean());
+			}
+		}
+		return bits;
+	}
+	
+	public ArrayImg<Unsigned2BitType, LongArray> generateUnsigned2BitArrayTestImg(
 		final boolean fill, final long... dims)
+	{
+		ArrayImg<Unsigned2BitType, LongArray> bits = ArrayImgs.unsigned2Bits(dims);
+
+		if (fill) {
+			MersenneTwisterFast betterRNG = new MersenneTwisterFast(0xf1eece);
+			for (Unsigned2BitType b : bits) {
+				b.set(betterRNG.nextLong());
+			}
+		}
+		return bits;
+	}
+	
+	public ArrayImg<Unsigned4BitType, LongArray> generateUnsigned4BitArrayTestImg(
+		final boolean fill, final long... dims)
+	{
+		ArrayImg<Unsigned4BitType, LongArray> bits = ArrayImgs.unsigned4Bits(dims);
+
+		if (fill) {
+			MersenneTwisterFast betterRNG = new MersenneTwisterFast(0xf1eece);
+			for (Unsigned4BitType b : bits) {
+				b.set(betterRNG.nextLong());
+			}
+		}
+		return bits;
+	}
+	
+	public ArrayImg<Unsigned12BitType, LongArray> generateUnsigned12BitArrayTestImg(
+		final boolean fill, final long... dims)
+	{
+		ArrayImg<Unsigned12BitType, LongArray> bits = ArrayImgs.unsigned12Bits(dims);
+
+		if (fill) {
+			MersenneTwisterFast betterRNG = new MersenneTwisterFast(0xf1eece);
+			for (Unsigned12BitType b : bits) {
+				b.set(betterRNG.nextLong());
+			}
+		}
+		return bits;
+	}
+	
+	public ArrayImg<ByteType, ByteArray> generateByteArrayTestImg(final boolean fill,
+		final long... dims)
 	{
 		final byte[] array = new byte[(int) Intervals.numElements(new FinalInterval(
 			dims))];
@@ -149,6 +221,32 @@ public abstract class AbstractOpTest {
 		}
 
 		return ArrayImgs.unsignedBytes(array, dims);
+	}
+	
+	public ArrayImg<IntType, IntArray> generateIntArrayTestImg(final boolean fill, final long... dims){
+		final int[] array = new int[(int) Intervals.numElements(new FinalInterval(dims))];
+		
+		if(fill) {
+			seed = 17;
+			for(int i = 0; i < array.length; i++){
+				array[i] = (int) pseudoRandom() / (int) Integer.MAX_VALUE;
+			}
+		}
+		
+		return ArrayImgs.ints(array, dims);
+	}
+	
+	public ArrayImg<UnsignedIntType, IntArray> generateUnsignedIntArrayTestImg(final boolean fill, final long... dims){
+		final int[] array = new int[(int) Intervals.numElements(new FinalInterval(dims))];
+		
+		if(fill) {
+			seed = 17;
+			for(int i = 0; i < array.length; i++){
+				array[i] = (int) pseudoRandom() / (int) Integer.MAX_VALUE;
+			}
+		}
+		
+		return ArrayImgs.unsignedInts(array, dims);
 	}
 
 	public CellImg<ByteType, ?> generateByteTestCellImg(final boolean fill,
@@ -179,6 +277,74 @@ public abstract class AbstractOpTest {
 		}
 
 		return img;
+	}
+	
+	public ArrayImg<DoubleType, DoubleArray> generateDoubleArrayTestImg(
+		final boolean fill, final long... dims)
+	{
+		final double[] array =
+			new double[(int) Intervals.numElements(new FinalInterval(dims))];
+
+		if (fill) {
+			seed = 17;
+			for (int i = 0; i < array.length; i++) {
+				array[i] = (double) pseudoRandom() / (double) Integer.MAX_VALUE;
+			}
+		}
+
+		return ArrayImgs.doubles(array, dims);
+	}
+	
+	public ArrayImg<LongType, LongArray> generateLongArrayTestImg(final boolean fill, final long... dims){
+		final long[] array = new long[(int) Intervals.numElements(new FinalInterval(dims))];
+		
+		if(fill) {
+			seed = 17;
+			for(int i = 0; i < array.length; i++){
+				array[i] =  (long) (pseudoRandom() /  Integer.MAX_VALUE);
+			}
+		}
+		
+		return ArrayImgs.longs(array, dims);
+	}
+	
+	public ArrayImg<UnsignedLongType, LongArray> generateUnsignedLongArrayTestImg(final boolean fill, final long... dims){
+		final long[] array = new long[(int) Intervals.numElements(new FinalInterval(dims))];
+		
+		if(fill) {
+			seed = 17;
+			for(int i = 0; i < array.length; i++){
+				array[i] =  (long) (pseudoRandom() /  Integer.MAX_VALUE);
+			}
+		}
+		
+		return ArrayImgs.unsignedLongs(array, dims);
+	}
+	
+	public ArrayImg<ShortType, ShortArray> generateShortArrayTestImg(final boolean fill, final long... dims){
+		final short[] array = new short[(int) Intervals.numElements(new FinalInterval(dims))];
+		
+		if(fill) {
+			seed = 17;
+			for(int i = 0; i < array.length; i++){
+				array[i] =  (short) (pseudoRandom() /  Integer.MAX_VALUE);
+			}
+		}
+		
+		return ArrayImgs.shorts(array, dims);
+	}
+	
+	public ArrayImg<UnsignedShortType, ShortArray> generateUnsignedShortArrayTestImg(final boolean fill, final long... dims){
+		final short[] array = new short[(int) Intervals.numElements(new FinalInterval(dims))];
+		
+		if(fill) {
+			seed = 17;
+			for(int i = 0; i < array.length; i++){
+				array[i] =  (short) (pseudoRandom() /  Integer.MAX_VALUE);
+			}
+		}
+		
+		return ArrayImgs.unsignedShorts(array, dims);
 	}
 
 	public Img<UnsignedByteType>
