@@ -29,6 +29,8 @@
 
 package net.imagej.ops.image.invert;
 
+import java.math.BigDecimal;
+
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
@@ -76,7 +78,9 @@ public class InvertII<I extends RealType<I>, O extends RealType<O>> extends
 
 					@Override
 					public void compute(I in, O out) {
-							out.setReal(minMax - in.getRealDouble());
+						if(in.getRealDouble() >= out.getMaxValue() || (minMax - in.getRealDouble()) <= out.getMinValue()) out.setReal(out.getMinValue());
+						else if(in.getRealDouble() <= out.getMinValue() || (minMax - in.getRealDouble()) >= out.getMaxValue()) out.setReal(out.getMaxValue());
+						else 	out.setReal(minMax - in.getRealDouble());
 					}
 				});
 		}
