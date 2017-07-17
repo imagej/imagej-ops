@@ -80,12 +80,12 @@ public class InvertII<I extends RealType<I>, O extends RealType<O>> extends
 
 					@Override
 					public void compute(I in, O out) {
-						if ((minMax - in
-							.getRealDouble()) <= out.getMinValue()) out.setReal(out
-								.getMinValue());
-						else if ((minMax - in
-							.getRealDouble()) >= out.getMaxValue()) out.setReal(out
-								.getMaxValue());
+						if ((minMax - in.getRealDouble()) <= out.getMinValue()) {
+							out.setReal(out.getMinValue());
+						}
+						else if ((minMax - in.getRealDouble()) >= out.getMaxValue()) {
+							out.setReal(out.getMaxValue());
+						}
 						else out.setReal(minMax - in.getRealDouble());
 					}
 				});
