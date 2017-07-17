@@ -87,8 +87,8 @@ public class InvertIIInteger<I extends IntegerType<I>, O extends IntegerType<O>>
 					public void compute(I in, O out) {
 						BigInteger inverted = minMax.subtract(in.getBigInteger());	
 						
-						if(in.getBigInteger().compareTo(maxValue(out).getBigInteger()) >= 0 || inverted.compareTo(minValue(out).getBigInteger()) <= 0) out.set(minValue(out));
-						else if(in.getBigInteger().compareTo(minValue(out).getBigInteger()) <= 0 || (inverted.compareTo(maxValue(out).getBigInteger())) >= 0) out.set(maxValue(out));
+						if( inverted.compareTo(minValue(out).getBigInteger()) <= 0) out.set(minValue(out));
+						else if(inverted.compareTo(maxValue(out).getBigInteger()) >= 0) out.set(maxValue(out));
 						else out.setBigInteger(inverted);
 						
 						

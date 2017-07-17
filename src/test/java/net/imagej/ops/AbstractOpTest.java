@@ -397,7 +397,7 @@ public abstract class AbstractOpTest {
 		if (fill) {
 			seed = 17;
 			for (int i = 0; i < array.length; i++) {
-				array[i] = (long) (pseudoRandom() / Integer.MAX_VALUE);
+				array[i] = (long) (((pseudoRandom() / Integer.MAX_VALUE)) % (Math.pow(2, nbits))) ;
 			}
 		}
 

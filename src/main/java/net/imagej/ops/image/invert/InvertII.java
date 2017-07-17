@@ -48,6 +48,7 @@ import org.scijava.plugin.Plugin;
 
 /**
  * @author Martin Horn (University of Konstanz)
+ * @author Gabe Selzer
  */
 @Plugin(type = Ops.Image.Invert.class, priority = Priority.NORMAL_PRIORITY)
 public class InvertII<I extends RealType<I>, O extends RealType<O>> extends
@@ -79,10 +80,10 @@ public class InvertII<I extends RealType<I>, O extends RealType<O>> extends
 
 					@Override
 					public void compute(I in, O out) {
-						if (in.getRealDouble() >= out.getMaxValue() || (minMax - in
+						if ((minMax - in
 							.getRealDouble()) <= out.getMinValue()) out.setReal(out
 								.getMinValue());
-						else if (in.getRealDouble() <= out.getMinValue() || (minMax - in
+						else if ((minMax - in
 							.getRealDouble()) >= out.getMaxValue()) out.setReal(out
 								.getMaxValue());
 						else out.setReal(minMax - in.getRealDouble());
