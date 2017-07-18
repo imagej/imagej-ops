@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,30 +28,40 @@
  * #L%
  */
 
-package net.imagej.ops.transform.stackView;
+package net.imagej.ops.transform.concatenateView;
 
 import java.util.List;
 
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.view.StackView.StackAccessMode;
 import net.imglib2.view.Views;
 
 /**
- * Wraps the {@link Views#stack(List)} method.
+ * Wraps the {@link Views#concatenate(int, StackAccessMode, List)} method.
  *
- * @author Tim-Oliver Buchholz (University of Konstanz)
+ * @author Philipp Hanslovsky
  */
-@Plugin(type = Ops.Transform.StackView.class)
-public class DefaultStackView<T>
-		extends AbstractUnaryFunctionOp<List<RandomAccessibleInterval<T>>, RandomAccessibleInterval<T>>
-		implements Ops.Transform.StackView {
+@Plugin( type = Ops.Transform.ConcatenateView.class )
+public class ConcatenateViewWithAccessMode<T>
+extends AbstractUnaryFunctionOp< List< ? extends RandomAccessibleInterval< T > >, RandomAccessibleInterval< T > >
+implements Ops.Transform.ConcatenateView
+{
+
+	@Parameter
+	private int concatenationAxis;
+
+	@Parameter
+	private StackAccessMode stackAccessMode;
 
 	@Override
-	public RandomAccessibleInterval<T> calculate(final List<RandomAccessibleInterval<T>> input) {
-		return Views.stack(input);
+	public RandomAccessibleInterval< T > calculate( final List< ? extends RandomAccessibleInterval< T > > input )
+	{
+		return Views.concatenate( concatenationAxis, stackAccessMode, input );
 	}
 
 }

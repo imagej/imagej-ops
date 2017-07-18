@@ -45,6 +45,8 @@ import net.imagej.ops.transform.collapseRealView.DefaultCollapseReal2CompositeIn
 import net.imagej.ops.transform.collapseRealView.DefaultCollapseReal2CompositeView;
 import net.imagej.ops.transform.collapseView.DefaultCollapse2CompositeIntervalView;
 import net.imagej.ops.transform.collapseView.DefaultCollapse2CompositeView;
+import net.imagej.ops.transform.concatenateView.ConcatenateViewWithAccessMode;
+import net.imagej.ops.transform.concatenateView.DefaultConcatenateView;
 import net.imagej.ops.transform.dropSingletonDimensionsView.DefaultDropSingletonDimensionsView;
 import net.imagej.ops.transform.extendBorderView.DefaultExtendBorderView;
 import net.imagej.ops.transform.extendMirrorDoubleView.DefaultExtendMirrorDoubleView;
@@ -115,6 +117,7 @@ import org.scijava.plugin.Plugin;
 
 /**
  * @author Tim-Oliver Buchholz (University of Konstanz)
+ * @author Philipp Hanslovsky
  *
  * All method descriptions are from {@link net.imglib2.view.Views}.
  */
@@ -1024,6 +1027,53 @@ public class TransformNamespace extends AbstractNamespace {
 	@Override
 	public String getName() {
 		return "transform";
+	}
+
+	/**
+	 * Concatenate {@link List} of {@link RandomAccessibleInterval} along the
+	 * specified axis.
+	 *
+	 * @param input
+	 *            a list of <em>n</em>-dimensional
+	 *            {@link RandomAccessibleInterval} with same size in every
+	 *            dimension except for the concatenation dimension.
+	 * @param concatenationAxis
+	 *            Concatenate along this dimension.
+	 * @return <em>n</em>-dimensional {@link RandomAccessibleInterval}. The size
+	 *         of the concatenation dimension is the sum of sizes of all sources
+	 *         in that dimension.
+	 *
+	 */
+	@OpMethod( op = net.imagej.ops.transform.concatenateView.DefaultConcatenateView.class )
+	public < T extends Type< T > > RandomAccessibleInterval< T > concatenateView(
+			final List< ? extends RandomAccessibleInterval< T > > source,
+					final int concatenationAxis )
+	{
+		return ( RandomAccessibleInterval< T > ) ops().run( DefaultConcatenateView.class, source, concatenationAxis );
+	}
+
+	/**
+	 * Concatenate {@link List} of {@link RandomAccessibleInterval} along the
+	 * specified axis.
+	 *
+	 * @param input
+	 *            a list of <em>n</em>-dimensional
+	 *            {@link RandomAccessibleInterval} with same size in every
+	 *            dimension except for the concatenation dimension.
+	 * @param concatenationAxis
+	 *            Concatenate along this dimension.
+	 * @return <em>n</em>-dimensional {@link RandomAccessibleInterval}. The size
+	 *         of the concatenation dimension is the sum of sizes of all sources
+	 *         in that dimension.
+	 *
+	 */
+	@OpMethod( op = net.imagej.ops.transform.concatenateView.ConcatenateViewWithAccessMode.class )
+	public < T extends Type< T > > RandomAccessibleInterval< T > concatenateView(
+			final List< ? extends RandomAccessibleInterval< T > > source,
+					final int concatenationAxis,
+					final StackAccessMode mode )
+	{
+		return ( RandomAccessibleInterval< T > ) ops().run( ConcatenateViewWithAccessMode.class, source, concatenationAxis, mode );
 	}
 
 }
