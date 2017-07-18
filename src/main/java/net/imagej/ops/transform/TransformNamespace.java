@@ -659,7 +659,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * Turns a {@link RealRandomAccessible} into a {@link RandomAccessible},
 	 * providing {@link RandomAccess} at integer coordinates.
 	 * 
-	 * @see #interpolate(net.imglib2.EuclideanSpace,
+	 * @see #interpolateView(net.imglib2.EuclideanSpace,
 	 *      net.imglib2.interpolation.InterpolatorFactory)
 	 * @param input the {@link RealRandomAccessible} to be rasterized.
 	 * @return a {@link RandomAccessibleOnRealRandomAccessible} wrapping source.
