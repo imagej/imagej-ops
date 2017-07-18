@@ -51,7 +51,7 @@ import net.imglib2.view.StackView.StackAccessMode;
 import net.imglib2.view.Views;
 
 /**
- * Tests {@link net.imagej.ops.Ops.Transform.CompositeView} ops.
+ * Tests {@link net.imagej.ops.Ops.Transform.ConcatenateView} ops.
  * <p>
  * This test only checks if the op call works with all parameters and that the
  * result is equal to that of the {@link Views} method call. It is not a
