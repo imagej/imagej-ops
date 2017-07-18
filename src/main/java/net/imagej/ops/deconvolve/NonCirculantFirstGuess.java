@@ -108,7 +108,11 @@ public class NonCirculantFirstGuess<I extends RealType<I>, O extends RealType<O>
 		final O s = sum.calculate(in);
 
 		// then the number of pixels
-		final long numPixels = k.dimension(0) * k.dimension(1) * k.dimension(2);
+		long numPixels = 1;
+
+		for (int d = 0; d < k.numDimensions(); d++) {
+			numPixels = numPixels * k.dimension(d);
+		}
 
 		// then the average value...
 		final double average = s.getRealDouble() / (numPixels);

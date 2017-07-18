@@ -232,8 +232,8 @@ public class NonCirculantNormalizationFactor<I extends RealType<I>, O extends Re
 		while (cursorN.hasNext()) {
 			cursorN.fwd();
 
-			if (cursorN.get().getRealFloat() <= 1e-7f) {
-				cursorN.get().setReal(0.0f);
+			if (cursorN.get().getRealFloat() <= 1e-3f) {
+				cursorN.get().setReal(1.0f);
 
 			}
 		}
