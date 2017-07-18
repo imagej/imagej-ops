@@ -475,7 +475,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 			(RandomAccessibleInterval<O>) ops().run(
 				net.imagej.ops.deconvolve.RichardsonLucyTVF.class, in, kernel,
 				borderSize, obfInput, obfKernel, outType, fftType, maxIterations,
-				regularizationFactor, nonCirculant);
+				nonCirculant, regularizationFactor);
 		return result;
 	}
 
