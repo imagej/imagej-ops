@@ -847,7 +847,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 */
 	@OpMethod(op = net.imagej.ops.transform.stackView.DefaultStackView.class)
 	public <T extends Type<T>> RandomAccessibleInterval<T> stackView(
-		final List<RandomAccessibleInterval<T>> input)
+		final List<? extends RandomAccessibleInterval<T>> input)
 	{
 		return (RandomAccessibleInterval<T>) ops().run(
 			Ops.Transform.StackView.class, input);
@@ -869,7 +869,7 @@ public class TransformNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.transform.stackView.StackViewWithAccessMode.class)
 	public <T> RandomAccessibleInterval<T> stackView(
-		final List<RandomAccessibleInterval<T>> input,
+		final List<? extends RandomAccessibleInterval<T>> input,
 		final StackAccessMode stackAccessMode)
 	{
 		return (RandomAccessibleInterval<T>) ops().run(

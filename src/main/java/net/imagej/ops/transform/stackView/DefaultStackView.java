@@ -45,11 +45,11 @@ import net.imglib2.view.Views;
  */
 @Plugin(type = Ops.Transform.StackView.class)
 public class DefaultStackView<T>
-		extends AbstractUnaryFunctionOp<List<RandomAccessibleInterval<T>>, RandomAccessibleInterval<T>>
+		extends AbstractUnaryFunctionOp<List<? extends RandomAccessibleInterval<T>>, RandomAccessibleInterval<T>>
 		implements Ops.Transform.StackView {
 
 	@Override
-	public RandomAccessibleInterval<T> calculate(final List<RandomAccessibleInterval<T>> input) {
+	public RandomAccessibleInterval<T> calculate(List<? extends RandomAccessibleInterval<T>> input) {
 		return Views.stack(input);
 	}
 
