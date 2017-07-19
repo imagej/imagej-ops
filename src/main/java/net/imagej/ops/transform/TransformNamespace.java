@@ -1033,7 +1033,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * Concatenate {@link List} of {@link RandomAccessibleInterval} along the
 	 * specified axis.
 	 *
-	 * @param input
+	 * @param source
 	 *            a list of <em>n</em>-dimensional
 	 *            {@link RandomAccessibleInterval} with same size in every
 	 *            dimension except for the concatenation dimension.
@@ -1056,7 +1056,7 @@ public class TransformNamespace extends AbstractNamespace {
 	 * Concatenate {@link List} of {@link RandomAccessibleInterval} along the
 	 * specified axis.
 	 *
-	 * @param input
+	 * @param source
 	 *            a list of <em>n</em>-dimensional
 	 *            {@link RandomAccessibleInterval} with same size in every
 	 *            dimension except for the concatenation dimension.
