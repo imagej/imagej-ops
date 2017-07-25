@@ -48,7 +48,12 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Performs a bilateral filter on an image
+ * Performs a bilateral filter on an image. The parameter m_SigmaS refers to the
+ * spatial smoothing parameter; the greater the sigma, the smoother the image.
+ * The parameter m_SigmaR refers to the range smoothing parameter. The greater
+ * the sigma, the greater the effect of intensity differences. The parameter
+ * m_radius refers to the square that is considered when doing the filter on
+ * each individual picture.
  *
  * @author Gabe Selzer
  * @param <I>
