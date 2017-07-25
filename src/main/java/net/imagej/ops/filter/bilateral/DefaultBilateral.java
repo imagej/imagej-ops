@@ -48,12 +48,12 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Performs a bilateral filter on an image. The parameter m_SigmaS refers to the
+ * Performs a bilateral filter on an image. The sigmaS parameter refers to the
  * spatial smoothing parameter; the greater the sigma, the smoother the image.
- * The parameter m_SigmaR refers to the range smoothing parameter. The greater
- * the sigma, the greater the effect of intensity differences. The parameter
- * m_radius refers to the square that is considered when doing the filter on
- * each individual picture.
+ * The sigmaR parameter refers to the range smoothing parameter. The greater the
+ * sigma, the greater the effect of intensity differences. The radius parameter
+ * refers to the square that is considered when doing the filter on each
+ * individual picture.
  *
  * @author Gabe Selzer
  * @param <I>
@@ -72,13 +72,13 @@ public class DefaultBilateral<I extends RealType<I>, O extends RealType<O>>
 	public final static int MAX_DIMS = 2;
 
 	@Parameter
-	private double m_sigmaR;
+	private double sigmaR;
 
 	@Parameter
-	private double m_sigmaS;
+	private double sigmaS;
 
 	@Parameter
-	private int m_radius;
+	private int radius;
 
 	private static double gauss(final double x, final double sigma) {
 		final double mu = 0.0;
@@ -113,10 +113,10 @@ public class DefaultBilateral<I extends RealType<I>, O extends RealType<O>>
 			double d;
 			cp.localize(mi);
 			cp.localize(ma);
-			mi[0] = Math.max(0, mi[0] - m_radius);
-			mi[1] = Math.max(0, mi[1] - m_radius);
-			ma[0] = Math.min(mma1, ma[0] + m_radius);
-			ma[1] = Math.min(mma2, ma[1] + m_radius);
+			mi[0] = Math.max(0, mi[0] - radius);
+			mi[1] = Math.max(0, mi[1] - radius);
+			ma[0] = Math.min(mma1, ma[0] + radius);
+			ma[1] = Math.min(mma2, ma[1] + radius);
 			final Interval in = new FinalInterval(mi, ma);
 			final RectangleNeighborhoodFactory<I> fac = RectangleNeighborhood
 				.factory();
@@ -130,11 +130,11 @@ public class DefaultBilateral<I extends RealType<I>, O extends RealType<O>>
 				d = ((p[0] - q[0] - mi[0]) * (p[0] - q[0] - mi[0])) + ((p[1] - q[1] -
 					mi[1]) * (p[1] - q[1] - mi[1]));
 				d = Math.sqrt(d);// distance between pixels
-				s = gauss(d, m_sigmaS);// spatial kernel
+				s = gauss(d, sigmaS);// spatial kernel
 
 				d = Math.abs(cp.get().getRealDouble() - cq.get().getRealDouble());// intensity
 																																					// difference
-				s *= gauss(d, m_sigmaR);// range kernel, then exponent addition
+				s *= gauss(d, sigmaR);// range kernel, then exponent addition
 
 				v += s * cq.get().getRealDouble();
 				w += s;

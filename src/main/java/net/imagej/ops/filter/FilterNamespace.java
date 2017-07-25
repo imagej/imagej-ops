@@ -138,20 +138,20 @@ public class FilterNamespace extends AbstractNamespace {
 	 * 
 	 * @param in
 	 * @param out
-	 * @param m_SigmaR
-	 * @param m_SigmaS
-	 * @param m_radius
+	 * @param sigmaR
+	 * @param sigmaS
+	 * @param radius
 	 * @return
 	 */
 	@OpMethod(op = net.imagej.ops.filter.bilateral.DefaultBilateral.class)
 	public <I extends RealType<I>, O extends RealType<O>> RandomAccessibleInterval<O>
 		bilateral(final RandomAccessibleInterval<O> out,
-			final RandomAccessibleInterval<I> in, final double m_SigmaR,
-			final double m_SigmaS, final int m_radius)
+			final RandomAccessibleInterval<I> in, final double sigmaR,
+			final double sigmaS, final int radius)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result = (RandomAccessibleInterval<O>) ops().run(
-			Ops.Filter.Bilateral.class, out, in, m_SigmaR, m_SigmaS, m_radius);
+			Ops.Filter.Bilateral.class, out, in, sigmaR, sigmaS, radius);
 		return result;
 	}
 
