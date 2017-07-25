@@ -42,6 +42,9 @@ import java.util.Random;
 
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessible;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
@@ -49,6 +52,7 @@ import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.img.basictypeaccess.array.FloatArray;
 import net.imglib2.img.cell.CellImg;
 import net.imglib2.img.cell.CellImgFactory;
+import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.real.FloatType;
@@ -234,6 +238,18 @@ public abstract class AbstractOpTest {
 			assertEquals(e.next(), a.next());
 		}
 		assertFalse("More elements than expected", a.hasNext());
+	}
+
+	public <T extends RealType<T>> boolean areCongruent(final IterableInterval<T> in, final RandomAccessible<T> out){
+		Cursor<T> cin = in.localizingCursor();
+		RandomAccess<T> raOut = out.randomAccess();
+		
+		while(cin.hasNext()){
+			cin.fwd();
+			raOut.setPosition(cin);
+			if(cin.get().getRealDouble() != raOut.get().getRealDouble()) return false;
+		}
+		return true;
 	}
 
 	public static class NoOp extends AbstractOp {
