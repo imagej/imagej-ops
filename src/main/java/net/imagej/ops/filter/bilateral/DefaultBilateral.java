@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -30,18 +30,16 @@
 
 package net.imagej.ops.filter.bilateral;
 
+import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
-import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
 import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
 import net.imglib2.algorithm.neighborhood.RectangleNeighborhoodFactory;
-import net.imglib2.algorithm.neighborhood.RectangleNeighborhoodSkipCenter;
-import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.view.Views;
 
@@ -49,11 +47,9 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.Ops;
-
 /**
  * Performs a bilateral filter on an image
- * 
+ *
  * @author Gabe Selzer
  * @param <I>
  * @param <O>
@@ -61,7 +57,8 @@ import net.imagej.ops.Ops;
 
 @Plugin(type = Ops.Filter.Bilateral.class, priority = Priority.NORMAL_PRIORITY)
 public class DefaultBilateral<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractUnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	extends
+	AbstractUnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 	implements Ops.Filter.Bilateral
 {
 
@@ -116,7 +113,8 @@ public class DefaultBilateral<I extends RealType<I>, O extends RealType<O>>
 			ma[0] = Math.min(mma1, ma[0] + m_radius);
 			ma[1] = Math.min(mma2, ma[1] + m_radius);
 			final Interval in = new FinalInterval(mi, ma);
-			RectangleNeighborhoodFactory<I> fac = RectangleNeighborhood.factory();
+			final RectangleNeighborhoodFactory<I> fac = RectangleNeighborhood
+				.factory();
 			rn = fac.create(p, mi, ma, in, input.randomAccess());
 			cq = rn.localizingCursor();
 			double s, v = 0.0;
@@ -126,15 +124,17 @@ public class DefaultBilateral<I extends RealType<I>, O extends RealType<O>>
 				cq.localize(q);
 				d = ((p[0] - q[0] - mi[0]) * (p[0] - q[0] - mi[0])) + ((p[1] - q[1] -
 					mi[1]) * (p[1] - q[1] - mi[1]));
-				d = Math.sqrt(d);//distance between pixels
-				s = gauss(d, m_sigmaS);//spatial kernel
+				d = Math.sqrt(d);// distance between pixels
+				s = gauss(d, m_sigmaS);// spatial kernel
 
-				d = Math.abs(cp.get().getRealDouble() - cq.get().getRealDouble());//intensity difference
-				s *= gauss(d, m_sigmaR);//range kernel, then exponent addition
+				d = Math.abs(cp.get().getRealDouble() - cq.get().getRealDouble());// intensity
+																																					// difference
+				s *= gauss(d, m_sigmaR);// range kernel, then exponent addition
 
 				v += s * cq.get().getRealDouble();
 				w += s;
-			} while (cq.hasNext());
+			}
+			while (cq.hasNext());
 			cr.setPosition(p);
 			cr.get().setReal(v / w);
 		}
