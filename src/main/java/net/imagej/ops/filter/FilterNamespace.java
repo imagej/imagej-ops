@@ -942,6 +942,16 @@ public class FilterNamespace extends AbstractNamespace {
 				outOfBoundsFactory);
 		return result;
 	}
+	
+	/** Executes the "Frangi Vesselness" filter operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.vesselness.DefaultFrangi.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> vesselness(
+			final RandomAccessibleInterval<T> in, final RandomAccessibleInterval<T> out, final float[] spacing)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops().run(Ops.Filter.Vesselness.class, in, out, spacing);
+		return result;
+	}
 
 	// -- Namespace methods --
 
