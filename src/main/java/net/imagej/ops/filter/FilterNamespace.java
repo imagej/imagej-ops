@@ -46,6 +46,7 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.type.BooleanType;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
@@ -943,13 +944,28 @@ public class FilterNamespace extends AbstractNamespace {
 		return result;
 	}
 	
-	/** Executes the "Frangi Vesselness" filter operation on the given arguments. */
+	/**
+	 * Executes the "Frangi Vesselness" filter operation on the given arguments.
+	 * 
+	 * @param in
+	 *            - input image
+	 * @param out
+	 *            - output image
+	 * @param spacing
+	 *            - n-dimensional array indicating the physical distance between
+	 *            data points in the image
+	 * @param scale
+	 *            - the scale (number of pixels) over which the filter calculates.
+	 *            The smaller the value, the more sensitive the filter. Multiple
+	 *            values can be given to run over multiple scales and filter out
+	 *            different-sized vessels.
+	 */
 	@OpMethod(op = net.imagej.ops.filter.vesselness.DefaultFrangi.class)
-	public <T extends RealType<T>> RandomAccessibleInterval<T> vesselness(
-			final RandomAccessibleInterval<T> in, final RandomAccessibleInterval<T> out, final float[] spacing)
-	{
+	public <T extends RealType<T>, B extends BooleanType<B>> RandomAccessibleInterval<B> vesselness(final RandomAccessibleInterval<T> in,
+			final RandomAccessibleInterval<B> out, final double[] spacing, final double...scale) {
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops().run(Ops.Filter.Vesselness.class, in, out, spacing);
+		final RandomAccessibleInterval<B> result = (RandomAccessibleInterval<B>) ops().run(Ops.Filter.Vesselness.class,
+				in, out, spacing, scale);
 		return result;
 	}
 

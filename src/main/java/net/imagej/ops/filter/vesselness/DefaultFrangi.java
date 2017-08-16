@@ -30,9 +30,10 @@
 
 package net.imagej.ops.filter.vesselness;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -50,33 +51,35 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.view.Views;
 
 /**
+ * Input is a 2- or 3-dimensional grayscales image.
+ * 
  * Applies the Frangi Vesselness filter to an image to highlight vessel-like
  * structures. The spacing parameter refers to the physical distance between
- * data points in the RandomAccessibleInterval, and can vary for each
- * dimension of the image.
- * 
+ * data points in the RandomAccessibleInterval, and can vary for each dimension
+ * of the image.
+ *
  * @author Gabe Selzer
  */
-public class DefaultFrangi<T extends RealType<T>>
-		extends AbstractUnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+@Plugin(type = Ops.Filter.Vesselness.class)
+public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>>
+		extends AbstractUnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<U>>
 		implements Ops.Filter.Vesselness {
-	
+
 	public final static int MIN_DIMS = 2;
-	
+
 	public final static int MAX_DIMS = 3;
-	
+
 	@Parameter
-	private int scaleIndex;
-	
+	private double[] spacing;
+
 	@Parameter
-	private float[] spacing;
-	
+	private double[] scales;
+
 	protected double alpha = 0.5;
 	protected double beta = 0.5;
-	
+
 	protected double minimumVesselness = Double.MIN_VALUE;
 	protected double maximumVesselness = Double.MAX_VALUE;
-	
 
 	public double getMinimumVesselness() {
 		return minimumVesselness;
@@ -90,7 +93,7 @@ public class DefaultFrangi<T extends RealType<T>>
 		double distance = 0;
 
 		for (int i = 0; i < d; i++) {
-			double separation = (ahead.getLongPosition(d) - behind.getLongPosition(d)) * spacing[d];
+			double separation = (ahead.getLongPosition(i) - behind.getLongPosition(i)) * spacing[i];
 			if (separation != 0) {
 				distance += (separation * separation);
 			}
@@ -103,80 +106,110 @@ public class DefaultFrangi<T extends RealType<T>>
 	private double derivative(double val1, double val2, double distance) {
 		return ((val2 - val1) / distance);
 	}
-	
-	public long numberOfPoints( RandomAccessibleInterval<T> image ) {
+
+	public long numberOfPoints(RandomAccessibleInterval<T> image) {
 		long totalPoints = 1;
-		long [] dimensions = null;
+		long[] dimensions = null;
 		image.dimensions(dimensions);
-		for( long length : dimensions ) {
+		for (long length : dimensions) {
 			totalPoints *= length;
 		}
 		return totalPoints;
 	}
 
 	@Override
-	public void compute(final RandomAccessibleInterval<T> input, final RandomAccessibleInterval<T> output) {
+	public void compute(final RandomAccessibleInterval<T> input, final RandomAccessibleInterval<U> output) {
+
+		// set spacing if the parameter is not passed.
+		if (spacing == null) {
+			spacing = new double[input.numDimensions()];
+			for (int i = 0; i < input.numDimensions(); i++)
+				spacing[i] = 1;
+		}
+
+		HashMap<RandomAccessibleInterval<U>, RandomAccess<U>> filters = new HashMap<RandomAccessibleInterval<U>, RandomAccess<U>>();
+		Cursor<U> cursor = Views.iterable(output).localizingCursor();
+		RandomAccess<U> outputRA = output.randomAccess();
+
+		for (int i = 0; i < scales.length; i++) {
+			double step = scales[i];
+			RandomAccessibleInterval<U> filter = (RandomAccessibleInterval<U>) ops()
+					.run(net.imagej.ops.copy.CopyRAI.class, output);
+			frangi(input, filter, step);
+			RandomAccess<U> ra = filter.randomAccess();
+			filters.put(filter, ra);
+		}
+
+		while (cursor.hasNext()) {
+			cursor.fwd();
+			outputRA.setPosition(cursor);
+			for (RandomAccessibleInterval<U> key : filters.keySet()) {
+				filters.get(key).setPosition(cursor);
+				if (filters.get(key).get().getRealDouble() > outputRA.get().getRealDouble()) {
+					outputRA.get().setReal(filters.get(key).get().getRealDouble());
+
+				}
+
+			}
+		}
+
+	}
+
+	private void frangi(RandomAccessibleInterval<T> in, RandomAccessibleInterval<U> out, double step) {
 
 		// create denominators used for gaussians later.
 		double ad = 2 * alpha * alpha;
 		double bd = 2 * beta * beta;
 
-		// set spacing if the parameter is not passed.
-		if (spacing == null) {
-			spacing = new float[input.numDimensions()];
-			for (int i = 0; i < input.numDimensions(); i++)
-				spacing[i] = 1;
-		}
-
 		// OutOfBoundsMirrorStrategy for use when the cursor reaches the edges.
 		OutOfBoundsMirrorFactory<T, RandomAccessibleInterval<T>> osmf = new OutOfBoundsMirrorFactory<T, RandomAccessibleInterval<T>>(
 				Boundary.SINGLE);
 
-		Cursor<T> cursor = Views.iterable(input).localizingCursor();
+		Cursor<T> cursor = Views.iterable(in).localizingCursor();
 
-		Matrix hessian = new Matrix(input.numDimensions(), input.numDimensions());
+		Matrix hessian = new Matrix(in.numDimensions(), in.numDimensions());
 
 		// use three RandomAccess<T> Objects to find the values needed to calculate the
 		// second derivatives.
-		RandomAccess<T> current = osmf.create(input);
-		RandomAccess<T> behind = osmf.create(input);
-		RandomAccess<T> ahead = osmf.create(input);
+		RandomAccess<T> current = osmf.create(in);
+		RandomAccess<T> behind = osmf.create(in);
+		RandomAccess<T> ahead = osmf.create(in);
 
-		RandomAccess<T> outputRA = output.randomAccess();
+		RandomAccess<U> outputRA = out.randomAccess();
 
 		while (cursor.hasNext()) {
 
 			cursor.fwd();
 
 			// calculate the hessian
-			for (int m = 0; m < input.numDimensions(); m++) {
-				for (int n = 0; n < input.numDimensions(); n++) {
+			for (int m = 0; m < in.numDimensions(); m++) {
+				for (int n = 0; n < in.numDimensions(); n++) {
 
 					current.setPosition(cursor);
 					ahead.setPosition(cursor);
 					behind.setPosition(cursor);
 
 					// move one behind to take the first derivative
-					behind.move(-1, m);
+					behind.move(-((int) step), m);
 					if (m != n)
-						behind.move(-1, n);
+						behind.move(-((int) step), n);
 
 					// take the derivative between the two points
 					double derivativeA = derivative(behind.get().getRealDouble(), current.get().getRealDouble(),
-							getDistance(behind, current, input.numDimensions()));
+							getDistance(behind, current, in.numDimensions()));
 
 					// move one ahead to take the other first derivative
-					ahead.move(1, m);
+					ahead.move(((int) step), m);
 					if (m != n)
-						ahead.move(1, n);
+						ahead.move(((int) step), n);
 
 					// take the derivative between the two points
 					double derivativeB = derivative(current.get().getRealDouble(), ahead.get().getRealDouble(),
-							getDistance(current, ahead, input.numDimensions()));
+							getDistance(current, ahead, in.numDimensions()));
 
 					// take the second derivative using the two first derivatives
 					double derivative2 = derivative(derivativeA, derivativeB,
-							getDistance(behind, ahead, input.numDimensions()));
+							getDistance(behind, ahead, in.numDimensions()));
 
 					hessian.set(m, n, derivative2);
 
@@ -185,7 +218,7 @@ public class DefaultFrangi<T extends RealType<T>>
 
 			// find the FrobeniusNorm (used later)
 			double s = hessian.normF();
-			double cn = -(s * s);
+			double cn = -(s * s * s * s);
 
 			// find and sort the eigenvalues and eigenvectors of the Hessian
 			EigenvalueDecomposition e = hessian.eig();
@@ -193,46 +226,55 @@ public class DefaultFrangi<T extends RealType<T>>
 			ArrayList<Double> eigenvaluesArrayList = new ArrayList<Double>();
 			for (double d : eigenvaluesArray)
 				eigenvaluesArrayList.add(d);
-			Collections.sort(eigenvaluesArrayList);
+			Collections.sort(eigenvaluesArrayList, Comparator.comparingDouble(Math::abs));
 
 			// vesselness value
 			double v = 0;
 
-			if (input.numDimensions() == 2) {
+			if (in.numDimensions() == 2) {
 				double c = 15;
 				double cd = 2 * c * c;
 
 				// lambda values
 				double l1 = eigenvaluesArrayList.get(0);
+				double al1 = Math.abs(l1);
 				double l2 = eigenvaluesArrayList.get(1);
+				double al2 = Math.abs(l2);
 
-				// ratio Rb
-				double rb = l1 / l2;
+				// Check to see if the point is on a tubular structure.
+				if (l2 < 0 && (al2 - al1) >= (step / 2)) {
 
-				// values for ease of final calculation
-				double bn = -(rb * rb);
+					// ratio Rb
+					double rb = al1 / al2;
 
-				if (l2 <= 0)
+					// values for ease of final calculation
+					double bn = -(rb * rb);
 					v = Math.exp(bn / bd) * (1 - Math.exp(cn / cd));
-			} else if (input.numDimensions() == 3) {
+				}
+			} else if (in.numDimensions() == 3) {
 				double c = 500;
 				double cd = 2 * c * c;
 
 				// lambda values
 				double l1 = eigenvaluesArrayList.get(0);
+				double al1 = Math.abs(l1);
 				double l2 = eigenvaluesArrayList.get(1);
+				double al2 = Math.abs(l2);
 				double l3 = eigenvaluesArrayList.get(2);
+				double al3 = Math.abs(l3);
 
-				// ratios Rb and Ra
-				double rb = Math.abs(l1) / Math.sqrt(Math.abs(l2 * l3));
-				double ra = Math.abs(l2) / Math.abs(l3);
+				// Check to see if the point is on a tubular structure.
+				if (l2 < 0 && l3 < 0 && (al2 - al1) >= (step / 2) && Math.abs(al3 - al2) <= 1) {
+					// ratios Rb and Ra
+					double rb = al1 / Math.sqrt(al2 * al3);
+					double ra = al2 / al3;
 
-				// values for ease of final calculation
-				double an = -(ra * ra);
-				double bn = -(rb * rb);
+					// values for ease of final calculation
+					double an = -(ra * ra);
+					double bn = -(rb * rb);
 
-				if (l2 <= 0 && l3 <= 0)
 					v = (1 - Math.exp(an / ad)) * Math.exp(bn / bd) * (1 - Math.exp(cn / cd));
+				}
 
 			} else
 				throw new RuntimeException("Currently only 2 or 3 dimensional images are supported");
@@ -244,7 +286,6 @@ public class DefaultFrangi<T extends RealType<T>>
 
 			outputRA.setPosition(cursor);
 			outputRA.get().setReal(v);
-
 		}
 	}
 
