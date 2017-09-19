@@ -180,6 +180,7 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>>
 		while (cursor.hasNext()) {
 
 			cursor.fwd();
+			
 
 			// calculate the hessian
 			for (int m = 0; m < in.numDimensions(); m++) {
@@ -252,7 +253,7 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>>
 					v = Math.exp(bn / bd) * (1 - Math.exp(cn / cd));
 				}
 			} else if (in.numDimensions() == 3) {
-				double c = 500;
+				double c = 200;
 				double cd = 2 * c * c;
 
 				// lambda values
@@ -262,9 +263,10 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>>
 				double al2 = Math.abs(l2);
 				double l3 = eigenvaluesArrayList.get(2);
 				double al3 = Math.abs(l3);
+				
 
 				// Check to see if the point is on a tubular structure.
-				if (l2 < 0 && l3 < 0 && (al2 - al1) >= (step / 2) && Math.abs(al3 - al2) <= 1) {
+				if (/*(l2 < 0 &&*/ l3 < 0/*)*/)  {
 					// ratios Rb and Ra
 					double rb = al1 / Math.sqrt(al2 * al3);
 					double ra = al2 / al3;
@@ -272,6 +274,8 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>>
 					// values for ease of final calculation
 					double an = -(ra * ra);
 					double bn = -(rb * rb);
+					
+//					System.out.println(l1 + "  " + l2 + "  " + l3);
 
 					v = (1 - Math.exp(an / ad)) * Math.exp(bn / bd) * (1 - Math.exp(cn / cd));
 				}
@@ -287,6 +291,7 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>>
 			outputRA.setPosition(cursor);
 			outputRA.get().setReal(v);
 		}
+		
 	}
 
 }
