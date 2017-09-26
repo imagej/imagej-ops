@@ -2,6 +2,7 @@ package net.imagej.ops.filter;
 
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.type.numeric.integer.ByteType;
 
 import static org.junit.Assert.assertEquals;
@@ -16,14 +17,10 @@ public class DefaultBilateralTest extends AbstractOpTest{
 	
 	@Test
 	public void testBigImage(){
-		final Img<ByteType> in = generateByteArrayTestImg(false, 6, 6);
-		final Img<ByteType> out = generateByteArrayTestImg(false, 6, 6);
-		Cursor<ByteType> cin = in.cursor();
 		final byte[] data = {7, 8, 9, 1, 2, 3, 7, 9, 8, 1, 3, 2, 8, 7, 9, 2, 1, 3, 8, 9, 7, 2, 3, 1, 9, 7, 8, 3, 1, 2, 9, 8, 7, 3, 2, 1};
+		final Img<ByteType> in = ArrayImgs.bytes(data, 6, 6);
+		final Img<ByteType> out = generateByteArrayTestImg(false, 6, 6);
 		
-		for(byte b: data){
-			cin.next().set(b);
-		}
 		ops.run(DefaultBilateral.class, out, in, 15, 5, 2);
 		
 		final byte[] expected = {8, 7, 6, 4, 4, 2, 8, 7, 6, 4, 4, 2, 8, 7, 6, 4, 4, 2, 8, 7, 6, 4, 4, 2, 8, 7, 6, 4, 3, 2, 8, 7, 6, 4, 3, 2};
@@ -36,13 +33,10 @@ public class DefaultBilateralTest extends AbstractOpTest{
 
 	@Test
 	public void testMath(){ 
-		final Img<ByteType> in = generateByteArrayTestImg(false, 2, 2);
-		final Img<ByteType> out = generateByteArrayTestImg(false, 2, 2);
-		Cursor<ByteType> cin = in.cursor();
 		final byte[] data = {7, 4, 9, 1};
-		for(byte b: data){
-			cin.next().set(b);
-		}
+		final Img<ByteType> in = ArrayImgs.bytes(data, 2, 2);
+		final Img<ByteType> out = generateByteArrayTestImg(false, 2, 2);
+
 		ops.run(DefaultBilateral.class, out, in, 15, 5, 1);
 		
 		Cursor<ByteType> cout = out.cursor();
@@ -56,15 +50,12 @@ public class DefaultBilateralTest extends AbstractOpTest{
 
 	@Test
 	public void testArrayToCellImg(){
-		final Img<ByteType> in = generateByteArrayTestImg(false, 6, 6);
+
+		final byte[] data = {7, 8, 9, 1, 2, 3, 7, 9, 8, 1, 3, 2, 8, 7, 9, 2, 1, 3, 8, 9, 7, 2, 3, 1, 9, 7, 8, 3, 1, 2, 9, 8, 7, 3, 2, 1};
+		final Img<ByteType> in = ArrayImgs.bytes(data, 6, 6);
 		final Img<ByteType> out = generateByteArrayTestImg(false, 6, 6);
 		final Img<ByteType> cellOut = generateByteTestCellImg(false, 6, 6);
-		Cursor<ByteType> cin = in.localizingCursor();
-		final byte[] data = {7, 8, 9, 1, 2, 3, 7, 9, 8, 1, 3, 2, 8, 7, 9, 2, 1, 3, 8, 9, 7, 2, 3, 1, 9, 7, 8, 3, 1, 2, 9, 8, 7, 3, 2, 1};
-
-		for(byte b: data){
-			cin.next().set(b);
-		}
+		
 		ops.run(DefaultBilateral.class, out, in, 15, 5, 2);
 		ops.run(DefaultBilateral.class, cellOut, in, 15, 5, 2);
 
@@ -79,15 +70,11 @@ public class DefaultBilateralTest extends AbstractOpTest{
 
 	@Test
 	public void testGaussianVsBilateral(){
-		final Img<ByteType> in = generateByteArrayTestImg(false, 6, 6);
+		final byte[] data = {7, 8, 9, 1, 2, 3, 7, 9, 8, 1, 3, 2, 8, 7, 9, 2, 1, 3, 8, 9, 7, 2, 3, 1, 9, 7, 8, 3, 1, 2, 9, 8, 7, 3, 2, 1};
+		final Img<ByteType> in = ArrayImgs.bytes(data, 6, 6);
 		final Img<ByteType> gaussOut = generateByteArrayTestImg(false, 6, 6);
 		final Img<ByteType> bilateralOut = generateByteTestCellImg(false, 6, 6);
-		Cursor<ByteType> cin = in.localizingCursor();
-		final byte[] data = {7, 8, 9, 1, 2, 3, 7, 9, 8, 1, 3, 2, 8, 7, 9, 2, 1, 3, 8, 9, 7, 2, 3, 1, 9, 7, 8, 3, 1, 2, 9, 8, 7, 3, 2, 1};
-
-		for(byte b: data){
-			cin.next().set(b);
-		}
+		
 		ops.run(DefaultBilateral.class, bilateralOut, in, 15, 5, 2);
 		final double sigma = 5;
 		ops.run(GaussRAISingleSigma.class, gaussOut, in, sigma);
@@ -96,14 +83,10 @@ public class DefaultBilateralTest extends AbstractOpTest{
 
 	@Test
 	public void testZeroes() {
-		final Img<ByteType> in = generateByteArrayTestImg(false, 6, 6);
-		final Img<ByteType> out = generateByteArrayTestImg(false, 6, 6);
-		Cursor<ByteType> cin = in.localizingCursor();
 		final byte[] data = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		final Img<ByteType> in = ArrayImgs.bytes(data, 6, 6);
+		final Img<ByteType> out = generateByteArrayTestImg(false, 6, 6);
 
-		for(byte b: data){
-			cin.next().set(b);
-		}
 		ops.run(DefaultBilateral.class, out, in, 15, 5, 2);
 
 		Cursor<ByteType> cout = out.cursor();
@@ -115,14 +98,10 @@ public class DefaultBilateralTest extends AbstractOpTest{
 	
 	@Test
 	public void testNegatives() {
-		final Img<ByteType> in = generateByteArrayTestImg(false, 6, 6);
-		final Img<ByteType> out = generateByteArrayTestImg(false, 6, 6);
-		Cursor<ByteType> cin = in.localizingCursor();
 		final byte[] data = {-7, -8, -9, -1, -2, -3, -7, -9, -8, -1, -3, -2, -8, -7, -9, -2, -1, -3, -8, -9, -7, -2, -3, -1, -9, -7, -8, -3, -1, -2, -9, -8, -7, -3, -2, -1};
+		final Img<ByteType> in = ArrayImgs.bytes(data, 6, 6);
+		final Img<ByteType> out = generateByteArrayTestImg(false, 6, 6);
 
-		for(byte b: data){
-			cin.next().set(b);
-		}
 		ops.run(DefaultBilateral.class, out, in, 15, 5, 2);
 		
 		final byte[] expected = {-8, -7, -6, -4, -4, -2, -8, -7, -6, -4, -4, -2, -8, -7, -6, -4, -4, -2, -8, -7, -6, -4, -4, -2, -8, -7, -6, -4, -3, -2, -8, -7, -6, -4, -3, -2};
@@ -135,14 +114,10 @@ public class DefaultBilateralTest extends AbstractOpTest{
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testTooManyDimensions() {
-		final Img<ByteType> in = generateByteArrayTestImg(false, 2, 2, 2);
-		final Img<ByteType> out = generateByteArrayTestImg(false, 2, 2, 2);
-		Cursor<ByteType> cin = in.localizingCursor();
 		final byte[] data = {2, 2, 2, 2, 2, 2, 2, 2};
+		final Img<ByteType> in = ArrayImgs.bytes(data, 2, 2);
+		final Img<ByteType> out = generateByteArrayTestImg(false, 2, 2, 2);
 
-		for(byte b: data){
-			cin.next().set(b);
-		}
 		ops.run(DefaultBilateral.class, out, in, 15, 5, 2);
 		
 		final byte[] expected = {2, 2, 2, 2, 2, 2, 2, 2};
@@ -155,14 +130,10 @@ public class DefaultBilateralTest extends AbstractOpTest{
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testMismatchedDimensions() {
-		final Img<ByteType> in = generateByteArrayTestImg(false, 2, 3);
-		final Img<ByteType> out = generateByteArrayTestImg(false, 3, 2);
-		Cursor<ByteType> cin = in.localizingCursor();
 		final byte[] data = {1, 1, 1, 1, 1, 1};
+		final Img<ByteType> in = ArrayImgs.bytes(data, 2, 3);
+		final Img<ByteType> out = generateByteArrayTestImg(false, 3, 2);
 
-		for(byte b: data){
-			cin.next().set(b);
-		}
 		ops.run(DefaultBilateral.class, out, in, 15, 5, 2);
 		
 		final byte[] expected = {1, 1, 1, 1, 1, 1};
