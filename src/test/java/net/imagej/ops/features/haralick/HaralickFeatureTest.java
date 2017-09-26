@@ -100,7 +100,7 @@ public class HaralickFeatureTest extends AbstractOpTest {
 
 	@Test
 	public void differenceVariance() {
-		assertEquals(2.829684210526315e+03,
+		assertEquals(8.885861218836561e+02,
 				ops.haralick().differenceVariance(img, 128, 1, MatrixOrientation2D.HORIZONTAL).get(), EPSILON);
 	}
 
