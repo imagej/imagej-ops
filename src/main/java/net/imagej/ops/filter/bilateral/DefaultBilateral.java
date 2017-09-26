@@ -44,6 +44,8 @@ import net.imglib2.algorithm.neighborhood.RectangleNeighborhoodFactory;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.view.Views;
 
+import java.util.Arrays;
+
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -151,6 +153,11 @@ public class DefaultBilateral<I extends RealType<I>, O extends RealType<O>>
 
 	@Override
 	public boolean conforms() {
-		return (in().numDimensions() == 2);
+		long dimsIn[] = new long[in().numDimensions()];
+		in().dimensions(dimsIn);
+		long dimsOut[] = new long[out().numDimensions()];
+		out().dimensions(dimsOut);
+		
+		return (in().numDimensions() == 2 && Arrays.equals(dimsIn, dimsOut));
 	}
 }
