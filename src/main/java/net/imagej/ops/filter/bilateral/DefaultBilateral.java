@@ -30,6 +30,7 @@
 
 package net.imagej.ops.filter.bilateral;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.Cursor;
@@ -59,7 +60,7 @@ import org.scijava.plugin.Plugin;
 public class DefaultBilateral<I extends RealType<I>, O extends RealType<O>>
 	extends
 	AbstractUnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
-	implements Ops.Filter.Bilateral
+	implements Ops.Filter.Bilateral, Contingent
 {
 
 	public final static int MIN_DIMS = 2;
@@ -96,9 +97,6 @@ public class DefaultBilateral<I extends RealType<I>, O extends RealType<O>>
 	public void compute(final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<O> output)
 	{
-		if (input.numDimensions() != 2) {
-			throw new IllegalArgumentException("Input must be two dimensional");
-		}
 
 		final long[] size = new long[input.numDimensions()];
 		input.dimensions(size);
@@ -113,6 +111,7 @@ public class DefaultBilateral<I extends RealType<I>, O extends RealType<O>>
 		final long mma2 = input.max(1);
 		Neighborhood<I> rn;
 		Cursor<I> cq;
+		final RectangleNeighborhoodFactory<I> fac = RectangleNeighborhood.factory();
 		while (cp.hasNext()) {
 			cp.fwd();
 			cp.localize(p);
@@ -124,8 +123,6 @@ public class DefaultBilateral<I extends RealType<I>, O extends RealType<O>>
 			ma[0] = Math.min(mma1, ma[0] + radius);
 			ma[1] = Math.min(mma2, ma[1] + radius);
 			final Interval in = new FinalInterval(mi, ma);
-			final RectangleNeighborhoodFactory<I> fac = RectangleNeighborhood
-				.factory();
 			rn = fac.create(p, mi, ma, in, input.randomAccess());
 			cq = rn.localizingCursor();
 			double s, v = 0.0;
@@ -150,5 +147,10 @@ public class DefaultBilateral<I extends RealType<I>, O extends RealType<O>>
 			cr.get().setReal(v / w);
 		}
 
+	}
+
+	@Override
+	public boolean conforms() {
+		return (in().numDimensions() == 2);
 	}
 }

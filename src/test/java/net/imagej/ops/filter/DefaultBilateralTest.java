@@ -132,5 +132,25 @@ public class DefaultBilateralTest extends AbstractOpTest{
 			assertEquals(cout.next().get(), expected[i]);
 		}
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testTooManyDimensions() {
+		final Img<ByteType> in = generateByteArrayTestImg(false, 2, 2, 2);
+		final Img<ByteType> out = generateByteArrayTestImg(false, 2, 2, 2);
+		Cursor<ByteType> cin = in.localizingCursor();
+		final byte[] data = {2, 2, 2, 2, 2, 2, 2, 2};
+
+		for(byte b: data){
+			cin.next().set(b);
+		}
+		ops.run(DefaultBilateral.class, out, in, 15, 5, 2);
+		
+		final byte[] expected = {2, 2, 2, 2, 2, 2, 2, 2};
+
+		Cursor<ByteType> cout = out.cursor();
+		for(int i = 0; i < expected.length; i++){
+			assertEquals(cout.next().get(), expected[i]);
+		}
+	}
 
 }
