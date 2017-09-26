@@ -48,12 +48,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Performs a bilateral filter on an image. The sigmaS parameter refers to the
- * spatial smoothing parameter; the greater the sigma, the smoother the image.
- * The sigmaR parameter refers to the range smoothing parameter. The greater the
- * sigma, the greater the effect of intensity differences. The radius parameter
- * refers to the square that is considered when doing the filter on each
- * individual picture.
+ * Performs a bilateral filter on an image.
  *
  * @author Gabe Selzer
  * @param <I>
@@ -71,12 +66,23 @@ public class DefaultBilateral<I extends RealType<I>, O extends RealType<O>>
 
 	public final static int MAX_DIMS = 2;
 
+	/**
+	 * refers to the range smoothing parameter; the greater the sigma, the greater
+	 * the effect of intensity differences.
+	 */
 	@Parameter
 	private double sigmaR;
 
+	/**
+	 * refers to the spatial smoothing parameter; the greater the sigma, the
+	 * smoother the image.
+	 */
 	@Parameter
 	private double sigmaS;
 
+	/**
+	 * refers to the square that is considered when doing the filter on each individual picture.
+	 */
 	@Parameter
 	private int radius;
 
