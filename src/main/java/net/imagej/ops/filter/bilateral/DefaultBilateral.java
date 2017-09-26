@@ -103,50 +103,49 @@ public class DefaultBilateral<I extends RealType<I>, O extends RealType<O>>
 		final long[] size = new long[input.numDimensions()];
 		input.dimensions(size);
 
-		final RandomAccess<O> cr = output.randomAccess();
-		final Cursor<I> cp = Views.iterable(input).localizingCursor();
-		final long[] p = new long[input.numDimensions()];
-		final int[] q = new int[input.numDimensions()];
-		final long[] mi = new long[input.numDimensions()];
-		final long[] ma = new long[input.numDimensions()];
-		final long mma1 = input.max(0);
-		final long mma2 = input.max(1);
-		Neighborhood<I> rn;
-		Cursor<I> cq;
+		final RandomAccess<O> outputRA = output.randomAccess();
+		final Cursor<I> inputCursor = Views.iterable(input).localizingCursor();
+		final long[] currentPos = new long[input.numDimensions()];
+		final long[] neighborhoodPos = new long[input.numDimensions()];
+		final long[] neighborhoodMin = new long[input.numDimensions()];
+		final long[] neighborhoodMax = new long[input.numDimensions()];
+		Neighborhood<I> neighborhood;
+		Cursor<I> neighborhoodCursor;
 		final RectangleNeighborhoodFactory<I> fac = RectangleNeighborhood.factory();
-		while (cp.hasNext()) {
-			cp.fwd();
-			cp.localize(p);
-			double d;
-			cp.localize(mi);
-			cp.localize(ma);
-			mi[0] = Math.max(0, mi[0] - radius);
-			mi[1] = Math.max(0, mi[1] - radius);
-			ma[0] = Math.min(mma1, ma[0] + radius);
-			ma[1] = Math.min(mma2, ma[1] + radius);
-			final Interval in = new FinalInterval(mi, ma);
-			rn = fac.create(p, mi, ma, in, input.randomAccess());
-			cq = rn.localizingCursor();
-			double s, v = 0.0;
+		while (inputCursor.hasNext()) {
+			inputCursor.fwd();
+			inputCursor.localize(currentPos);
+			double distance;
+			inputCursor.localize(neighborhoodMin);
+			inputCursor.localize(neighborhoodMax);
+			neighborhoodMin[0] = Math.max(0, neighborhoodMin[0] - radius);
+			neighborhoodMin[1] = Math.max(0, neighborhoodMin[1] - radius);
+			neighborhoodMax[0] = Math.min(input.max(0), neighborhoodMax[0] + radius);
+			neighborhoodMax[1] = Math.min(input.max(1), neighborhoodMax[1] + radius);
+			final Interval interval = new FinalInterval(neighborhoodMin, neighborhoodMax);
+			neighborhood = fac.create(currentPos, neighborhoodMin, neighborhoodMax, interval, input.randomAccess());
+			neighborhoodCursor = neighborhood.localizingCursor();
+			double weight, v = 0.0;
 			double w = 0.0;
 			do {
-				cq.fwd();
-				cq.localize(q);
-				d = ((p[0] - q[0] - mi[0]) * (p[0] - q[0] - mi[0])) + ((p[1] - q[1] -
-					mi[1]) * (p[1] - q[1] - mi[1]));
-				d = Math.sqrt(d);// distance between pixels
-				s = gauss(d, sigmaS);// spatial kernel
+				neighborhoodCursor.fwd();
+				neighborhoodCursor.localize(neighborhoodPos);
+				distance = ((currentPos[0] - neighborhoodPos[0] - neighborhoodMin[0])
+						* (currentPos[0] - neighborhoodPos[0] - neighborhoodMin[0]))
+						+ ((currentPos[1] - neighborhoodPos[1] - neighborhoodMin[1])
+								* (currentPos[1] - neighborhoodPos[1] - neighborhoodMin[1]));
+				distance = Math.sqrt(distance);// distance between pixels
+				weight = gauss(distance, sigmaS);// spatial kernel
 
-				d = Math.abs(cp.get().getRealDouble() - cq.get().getRealDouble());// intensity
-																																					// difference
-				s *= gauss(d, sigmaR);// range kernel, then exponent addition
+				distance = Math.abs(inputCursor.get().getRealDouble() - neighborhoodCursor.get().getRealDouble());// intensity
+																													// difference
+				weight *= gauss(distance, sigmaR);// range kernel, then exponent addition
 
-				v += s * cq.get().getRealDouble();
-				w += s;
-			}
-			while (cq.hasNext());
-			cr.setPosition(p);
-			cr.get().setReal(v / w);
+				v += weight * neighborhoodCursor.get().getRealDouble();
+				w += weight;
+			} while (neighborhoodCursor.hasNext());
+			outputRA.setPosition(currentPos);
+			outputRA.get().setReal(v / w);
 		}
 
 	}
