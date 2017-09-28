@@ -47,32 +47,37 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  * @author Tim-Oliver Buchholz (University of Konstanz)
  *
- * Formula based on http://murphylab.web.cmu.edu/publications/boland/boland_node26.html.
+ * Formula based on: http://haralick.org/journals/TexturalFeatures.pdf
  */
 @Plugin(type = Ops.Haralick.DifferenceVariance.class, label = "Haralick: Difference Variance")
-public class DefaultDifferenceVariance<T extends RealType<T>> extends
-		AbstractHaralickFeature<T> implements Ops.Haralick.DifferenceVariance {
+public class DefaultDifferenceVariance<T extends RealType<T>> extends AbstractHaralickFeature<T>
+		implements Ops.Haralick.DifferenceVariance {
 
 	private UnaryFunctionOp<double[][], double[]> coocPXMinusYFunc;
-	
+
 	@Override
 	public void initialize() {
 		super.initialize();
 		coocPXMinusYFunc = Functions.unary(ops(), CoocPXMinusY.class, double[].class, double[][].class);
 	}
-	
+
 	@Override
 	public void compute(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
-
 		final double[] pxminusy = coocPXMinusYFunc.calculate(matrix);
+
+		double mu = 0.0;
+
+		for (int i = 0; i < numGreyLevels; i++) {
+			mu += i * pxminusy[i];
+		}
+
 		double sum = 0.0d;
-		for (int k = 0; k < pxminusy.length; k++) {
-			sum += k * k * pxminusy[k];
+		for (int k = 0; k < numGreyLevels; k++) {
+			sum += Math.pow(k - mu, 2) * pxminusy[k];
 		}
 
 		output.set(sum);
-
 	}
 
 }
