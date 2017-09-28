@@ -78,7 +78,7 @@ public class DefaultBilateralTest extends AbstractOpTest{
 		ops.run(DefaultBilateral.class, bilateralOut, in, 15, 5, 2);
 		final double sigma = 5;
 		ops.run(GaussRAISingleSigma.class, gaussOut, in, sigma);
-		assertEquals(areCongruent(gaussOut, bilateralOut), false);
+		assertEquals(areCongruent(gaussOut, bilateralOut, 0), false);
 	}
 
 	@Test
