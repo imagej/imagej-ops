@@ -37,9 +37,16 @@ import java.util.Set;
 import org.junit.Test;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imglib2.Cursor;
+import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.labeling.ConnectedComponents.StructuringElement;
 import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImg;
+import net.imglib2.img.array.ArrayImgs;
+import net.imglib2.img.basictypeaccess.array.LongArray;
+import net.imglib2.roi.IterableRegion;
+import net.imglib2.roi.Regions;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelingType;
 import net.imglib2.type.logic.BitType;
@@ -73,28 +80,80 @@ public class WatershedSeededTest extends AbstractOpTest {
 		final ImgLabeling<Integer, IntType> labeledSeeds = ops.labeling().cca(thresholdedSeeds,
 				StructuringElement.EIGHT_CONNECTED);
 
+		// FIXME Using the input image as mask?!
 		// compute result
 		ImgLabeling<Integer, IntType> out = (ImgLabeling<Integer, IntType>) ops.run(WatershedSeeded.class, null,
 				thresholdedImg, labeledSeeds, true, false, thresholdedImg);
 
+		// Sample the output image based on the mask
+		// FIXME The dummy label is set somewhere outside of the mask
+		IterableRegion<BitType> regions = Regions.iterable(thresholdedImg);
+
 		// count labels
 		Set<Integer> labelSet = new HashSet<>();
-		for (LabelingType<Integer> pixel : Views.iterable(out)) {
+		for (LabelingType<Integer> pixel : Regions.sample(regions, out)) {
 			labelSet.addAll(pixel);
 		}
 
 		// count seeds
 		Set<Integer> seedSet = new HashSet<>();
-		for (LabelingType<Integer> pixel : Views.iterable(labeledSeeds)) {
+		for (LabelingType<Integer> pixel : Regions.sample(regions, labeledSeeds)) {
 			seedSet.addAll(pixel);
 		}
 
 		// assert equals
-		assertEquals(out.numDimensions(), watershedTestImg.numDimensions());
-		assertEquals(out.dimension(0), watershedTestImg.dimension(0));
-		assertEquals(out.dimension(1), watershedTestImg.dimension(1));
-		assertEquals(labelSet.size(), seedSet.size());
+		assertEquals(watershedTestImg.numDimensions(), out.numDimensions());
+		assertEquals(watershedTestImg.dimension(0), out.dimension(0));
+		assertEquals(watershedTestImg.dimension(1), out.dimension(1));
+		assertEquals(seedSet.size(), labelSet.size());
 
+	}
+
+	@Test
+	public void testSmall() {
+		// create input image
+		Img<BitType> input = ArrayImgs.bits(5, 3);
+		for (BitType b : input) {
+			b.not();
+		}
+
+		// create seeds
+		Img<BitType> bits = ArrayImgs.bits(5, 3);
+		RandomAccess<BitType> ra = bits.randomAccess();
+		ra.setPosition(new int[] {1, 1});
+		ra.get().set(true);
+		ra.setPosition(new int[] {3, 1});
+		ra.get().set(true);
+
+		// compute labeled seeds
+		final ImgLabeling<Integer, IntType> labeledSeeds = ops.labeling().cca(bits, StructuringElement.EIGHT_CONNECTED);
+
+		// FIXME Using the input image as mask?!
+		// compute result
+		ImgLabeling<Integer, IntType> out = (ImgLabeling<Integer, IntType>) ops.run(WatershedSeeded.class, null,
+				input, labeledSeeds, true, false, input);
+
+		// Sample the output image based on the mask
+		// FIXME The dummy label is set somewhere outside of the mask
+		IterableRegion<BitType> regions = Regions.iterable(input);
+
+		// count labels
+		Set<Integer> labelSet = new HashSet<>();
+		for (LabelingType<Integer> pixel : Regions.sample(regions, out)) {
+			labelSet.addAll(pixel);
+		}
+
+		// count seeds
+		Set<Integer> seedSet = new HashSet<>();
+		for (LabelingType<Integer> pixel : Regions.sample(regions, labeledSeeds)) {
+			seedSet.addAll(pixel);
+		}
+
+		// assert equals
+		assertEquals(input.numDimensions(), out.numDimensions());
+		assertEquals(input.dimension(0), out.dimension(0));
+		assertEquals(input.dimension(1), out.dimension(1));
+		assertEquals(seedSet.size(), labelSet.size());
 	}
 
 }
