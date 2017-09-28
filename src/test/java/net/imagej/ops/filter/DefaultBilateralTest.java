@@ -23,7 +23,7 @@ public class DefaultBilateralTest extends AbstractOpTest{
 		
 		ops.run(DefaultBilateral.class, out, in, 15, 5, 2);
 		
-		final byte[] expected = {8, 7, 6, 4, 4, 2, 8, 7, 6, 4, 4, 2, 8, 7, 6, 4, 4, 2, 8, 7, 6, 4, 4, 2, 8, 7, 6, 4, 3, 2, 8, 7, 6, 4, 3, 2};
+		final byte[] expected = {8, 7, 6, 4, 3, 2, 8, 7, 6, 4, 3, 2, 8, 7, 6, 4, 3, 2, 8, 7, 6, 4, 3, 2, 8, 7, 6, 4, 3, 2, 8, 7, 6, 4, 3, 2};
 		
 		Cursor<ByteType> cout = out.cursor();
 		for(int i = 0; i < expected.length; i++){
@@ -104,7 +104,7 @@ public class DefaultBilateralTest extends AbstractOpTest{
 
 		ops.run(DefaultBilateral.class, out, in, 15, 5, 2);
 		
-		final byte[] expected = {-8, -7, -6, -4, -4, -2, -8, -7, -6, -4, -4, -2, -8, -7, -6, -4, -4, -2, -8, -7, -6, -4, -4, -2, -8, -7, -6, -4, -3, -2, -8, -7, -6, -4, -3, -2};
+		final byte[] expected = {-8, -7, -6, -4, -3, -2, -8, -7, -6, -4, -3, -2, -8, -7, -6, -4, -3, -2, -8, -7, -6, -4, -3, -2, -8, -7, -6, -4, -3, -2, -8, -7, -6, -4, -3, -2};
 
 		Cursor<ByteType> cout = out.cursor();
 		for(int i = 0; i < expected.length; i++){

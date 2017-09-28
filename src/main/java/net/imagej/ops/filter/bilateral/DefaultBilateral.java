@@ -94,6 +94,20 @@ public class DefaultBilateral<I extends RealType<I>, O extends RealType<O>>
 		return (1 / (sigma * Math.sqrt(2 * Math.PI))) * Math.exp((-0.5 * (x - mu) *
 			(x - mu)) / (sigma * sigma));
 	}
+	
+	private double getDistance(long[] x, long[] y) {
+		double distance = 0;
+
+		for (int i = 0; i < x.length; i++) {
+			double separation = (x[i] - y[i]);
+			if (separation != 0) {
+				distance += (separation * separation);
+			}
+
+		}
+
+		return Math.sqrt(distance);
+	}
 
 	@Override
 	public void compute(final RandomAccessibleInterval<I> input,
@@ -130,11 +144,7 @@ public class DefaultBilateral<I extends RealType<I>, O extends RealType<O>>
 			do {
 				neighborhoodCursor.fwd();
 				neighborhoodCursor.localize(neighborhoodPos);
-				distance = ((currentPos[0] - neighborhoodPos[0] - neighborhoodMin[0])
-						* (currentPos[0] - neighborhoodPos[0] - neighborhoodMin[0]))
-						+ ((currentPos[1] - neighborhoodPos[1] - neighborhoodMin[1])
-								* (currentPos[1] - neighborhoodPos[1] - neighborhoodMin[1]));
-				distance = Math.sqrt(distance);// distance between pixels
+				distance = getDistance(currentPos, neighborhoodPos);
 				weight = gauss(distance, sigmaS);// spatial kernel
 
 				distance = Math.abs(inputCursor.get().getRealDouble() - neighborhoodCursor.get().getRealDouble());// intensity
