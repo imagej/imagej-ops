@@ -193,7 +193,8 @@
 Wisconsin-Madison, University of Konstanz and Brian Northan.</license.copyrightOwners>
 		<license.projectName>ImageJ software for multidimensional image processing and analysis.</license.projectName>
 		<imglib2.version>4.2.1</imglib2.version>
-		<scifio.version>0.32.0</scifio.version>
+		<scifio.version>0.32.1-SNAPSHOT</scifio.version>
+		<enforcer.skip>true</enforcer.skip>
 	</properties>
 
 	<repositories>

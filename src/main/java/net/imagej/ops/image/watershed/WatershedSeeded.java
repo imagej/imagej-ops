@@ -42,6 +42,7 @@ import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
+import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
@@ -49,6 +50,8 @@ import net.imglib2.algorithm.neighborhood.DiamondShape;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.algorithm.neighborhood.Shape;
+import net.imglib2.roi.IterableRegion;
+import net.imglib2.roi.Regions;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelingType;
 import net.imglib2.type.BooleanType;
@@ -65,20 +68,24 @@ import org.scijava.plugin.Plugin;
  * The Watershed algorithm segments and labels a grayscale image analogous to a
  * heightmap. In short, a drop of water following the gradient of an image flows
  * along a path to finally reach a local minimum.
- *
+ * <p>
  * Lee Vincent, Pierre Soille, Watersheds in digital spaces: An efficient
  * algorithm based on immersion simulations, IEEE Trans. Pattern Anal. Machine
  * Intell., 13(6) 583-598 (1991)
- *
+ *</p>
+ * <p>
  * Input is a grayscale image with arbitrary number of dimensions, defining the
  * heightmap, and labeling image defining where the seeds, i.e. the minima are.
  * It needs to be defined whether a neighborhood with eight- or
  * four-connectivity (respective to 2D) is used. A binary image can be set as
  * mask which defines the area where computation shall be done.
- *
+ * </p>
+ * <p>
  * Output is a labeling of the different catchment basins.
- *
+ * </p>
  * @author Simon Schmid (University of Konstanz)
+ * 
+ * TODO Javadoc for types
  */
 @Plugin(type = Ops.Image.Watershed.class)
 public class WatershedSeeded<B extends BooleanType<B>, T extends RealType<T>>
@@ -100,6 +107,12 @@ public class WatershedSeeded<B extends BooleanType<B>, T extends RealType<T>>
 	@Parameter(required = false)
 	private RandomAccessibleInterval<B> mask;
 
+	/** Default label for watersheds */
+	private final static int WSHED = -1;
+
+	/** Default dummy label */
+	private final static int DUMMY = -2;
+
 	@Override
 	public void compute(final RandomAccessibleInterval<T> in, final ImgLabeling<Integer, IntType> out) {
 		RandomAccess<B> raMask = null;
@@ -114,8 +127,9 @@ public class WatershedSeeded<B extends BooleanType<B>, T extends RealType<T>>
 			shape = new DiamondShape(1);
 		}
 		final RandomAccessible<Neighborhood<T>> neighborhoods = shape.neighborhoodsRandomAccessible(in);
-		final RandomAccess<Neighborhood<T>> raNeighbor = neighborhoods.randomAccess();
+		final RandomAccess<Neighborhood<T>> raNeighborhoods = neighborhoods.randomAccess();
 
+		// TODO What is the reasoning behind the currentLabeling?
 		final ImgLabeling<Integer, IntType> currentLabeling = ops().create().imgLabeling(in);
 		final RandomAccess<LabelingType<Integer>> raCurrentLabeling = currentLabeling.randomAccess();
 
@@ -125,13 +139,13 @@ public class WatershedSeeded<B extends BooleanType<B>, T extends RealType<T>>
 		/*
 		 * start by loading up a list with the seeded pixels
 		 */
-		final List<Integer> pq = new ArrayList<>();
-		final Cursor<LabelingType<Integer>> cursorSeeds = Views.iterable(seeds).localizingCursor();
+		// TODO Why was the PriorityQueue used in the MorphoLibJ implementation?
+		final List<Long> pq = new ArrayList<>();
 
-		final long[] dimensions = new long[in.numDimensions()];
-		out.dimensions(dimensions);
-		final long[] position = new long[in.numDimensions()];
-		final long[] destPosition = new long[in.numDimensions()];
+		// Only iterate seeds that are not excluded by the mask
+		IterableRegion<B> maskRegions = Regions.iterable(mask);
+		IterableInterval<LabelingType<Integer>> seedsMasked = Regions.sample(maskRegions, seeds);
+		final Cursor<LabelingType<Integer>> cursorSeeds = seedsMasked.localizingCursor();
 
 		/*
 		 * carries over the seeding points to the new label and adds them to the
@@ -143,17 +157,18 @@ public class WatershedSeeded<B extends BooleanType<B>, T extends RealType<T>>
 				continue;
 			}
 
-			cursorSeeds.localize(position);
-			raIn.setPosition(position);
-			raOut.setPosition(position);
-			if (Intervals.contains(in, raIn)) {
-				final LabelingType<Integer> tDest = raOut.get();
-				tDest.clear();
-				tDest.add(l.iterator().next());
-				pq.add((int) IntervalIndexer.positionToIndex(position, dimensions));
-				raCurrentLabeling.setPosition(position);
-				raCurrentLabeling.get().addAll(tDest);
-			}
+			// Overwrite label in output with the seed label
+			raOut.setPosition(cursorSeeds);
+			final LabelingType<Integer> tDest = raOut.get();
+			tDest.clear();
+			tDest.add(l.iterator().next()); // FIXME I guess having having seed pixels/voxels with multiple labels should end the computation?
+
+			// Add to queue
+			pq.add(IntervalIndexer.positionToIndex(cursorSeeds, out));
+
+			// Write seed label into raCurrentLabeling
+			raCurrentLabeling.setPosition(cursorSeeds);
+			raCurrentLabeling.get().addAll(tDest);
 		}
 
 		/*
@@ -161,46 +176,48 @@ public class WatershedSeeded<B extends BooleanType<B>, T extends RealType<T>>
 		 * connected pixels.
 		 */
 		// label to mark the watersheds
-		final Set<Integer> watersheds = new HashSet<>();
-		final int WSHED = -1;
+		final LabelingType<Integer> watersheds = out.firstElement().createVariable();
 		watersheds.add(WSHED);
 
 		// dummy to mark nodes as visited
-		final Set<Integer> dummy = new HashSet<>();
-		final int DUMMY = -2;
+		final LabelingType<Integer> dummy = out.firstElement().createVariable();
 		dummy.add(DUMMY);
 
+		// iterate the queue
 		while (!pq.isEmpty()) {
-			IntervalIndexer.indexToPosition(pq.remove(0), dimensions, position);
-			raCurrentLabeling.setPosition(position);
+			IntervalIndexer.indexToPosition(pq.remove(0), currentLabeling, raCurrentLabeling);
+			raIn.setPosition(raCurrentLabeling); // use raIn to remember position
+
 			Set<Integer> l = new HashSet<>();
 			l.addAll(raCurrentLabeling.get());
-			raNeighbor.setPosition(position);
-			final Cursor<T> neighborHood = raNeighbor.get().cursor();
 
+			// iterate the neighborhood of the pixel
+			raNeighborhoods.setPosition(raCurrentLabeling);
+			final Cursor<T> neighborhood = raNeighborhoods.get().cursor();
+			// FIXME Maybe this could be replaced with a dedicated BOUNDARY label with which we extend the image
 			boolean isBoundaries = true;
-			while (neighborHood.hasNext()) {
-				neighborHood.fwd();
-				raOut.setPosition(neighborHood);
-				raIn.setPosition(neighborHood);
+			while (neighborhood.hasNext()) {
+				neighborhood.fwd();
+				raOut.setPosition(neighborhood);
 				final LabelingType<Integer> outputLabelingType = raOut.get();
 				if (!Intervals.contains(out, raOut)) {
 					continue;
 				}
 
 				if (outputLabelingType.isEmpty()) {
-					raOut.localize(destPosition);
+					// We can't get rid of this check I guess because Neighborhood is not a RandomAccessible and can't be sampled
 					if (mask != null) {
-						raMask.setPosition(destPosition);
+						raMask.setPosition(raOut);
 						if (raMask.get().get()) {
-							pq.add((int) IntervalIndexer.positionToIndex(destPosition, dimensions));
-							raCurrentLabeling.setPosition(destPosition);
+							pq.add(IntervalIndexer.positionToIndex(raOut, out));
+							raCurrentLabeling.setPosition(raOut);
 							raCurrentLabeling.get().addAll(l);
 						}
 					} else {
-						pq.add((int) IntervalIndexer.positionToIndex(destPosition, dimensions));
-						raCurrentLabeling.setPosition(destPosition);
+						pq.add(IntervalIndexer.positionToIndex(raOut, out));
+						raCurrentLabeling.setPosition(raOut);
 						raCurrentLabeling.get().addAll(l);
+
 					}
 					// dummy to mark positions as visited
 					outputLabelingType.clear();
@@ -216,7 +233,7 @@ public class WatershedSeeded<B extends BooleanType<B>, T extends RealType<T>>
 			if (isBoundaries) {
 				l = watersheds;
 			}
-			raOut.setPosition(position);
+			raOut.setPosition(raIn);
 			final LabelingType<Integer> outputLabelingType = raOut.get();
 			outputLabelingType.clear();
 			outputLabelingType.addAll(l);
@@ -225,32 +242,29 @@ public class WatershedSeeded<B extends BooleanType<B>, T extends RealType<T>>
 		/*
 		 * Set Output
 		 */
-		final Cursor<LabelingType<Integer>> cursorOut = out.cursor();
+		IterableInterval<LabelingType<Integer>> sampledOut = Regions.sample(maskRegions, out);
+		final Cursor<LabelingType<Integer>> cursorOut = sampledOut.cursor();
 		while (cursorOut.hasNext()) {
 			cursorOut.fwd();
-			boolean maskValue = true;
-			if (mask != null) {
-				raMask.setPosition(cursorOut);
-				if (!raMask.get().get()) {
-					maskValue = false;
-				}
-			}
 			raOut.setPosition(cursorOut);
-			if (!maskValue) {
-				cursorOut.get().clear();
-			} else {
 				if (raOut.get().contains(WSHED)) {
 					if (withWatersheds) {
 						cursorOut.get().clear();
 					} else {
-						raNeighbor.setPosition(cursorOut);
-						final Cursor<T> neighborHood = raNeighbor.get().cursor();
+						raNeighborhoods.setPosition(cursorOut);
+						final Cursor<T> neighborhood = raNeighborhoods.get().cursor();
 						boolean newLab = false;
 						final List<Integer> allLabels = new ArrayList<>();
-						while (neighborHood.hasNext()) {
-							neighborHood.fwd();
-							raOut.setPosition(neighborHood);
-							if (Intervals.contains(in, neighborHood)) {
+						while (neighborhood.hasNext()) {
+							neighborhood.fwd();
+							raOut.setPosition(neighborhood);
+							// Why do we need that check?
+							// ---------------- TODO
+							LabelingType<Integer> labelingType = cursorOut.get().createVariable();
+							labelingType.add(DUMMY);
+							Views.extendValue(out, labelingType);
+							// ---------------- TODO
+							if (Intervals.contains(in, neighborhood)) {
 								if ((!raOut.get().contains(WSHED)) && (!raOut.get().contains(DUMMY))) {
 									cursorOut.get().clear();
 									cursorOut.get().addAll(raOut.get());
@@ -264,7 +278,6 @@ public class WatershedSeeded<B extends BooleanType<B>, T extends RealType<T>>
 						}
 					}
 				}
-			}
 		}
 	}
 
