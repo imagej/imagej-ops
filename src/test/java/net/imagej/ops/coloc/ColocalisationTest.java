@@ -76,6 +76,10 @@ public abstract class ColocalisationTest extends AbstractOpTest {
 	protected Img<UnsignedByteType> positiveCorrelationImageCh1;
 	protected Img<UnsignedByteType> positiveCorrelationImageCh2;
 
+	// images and meta data for a synthetic negative correlation dataset
+	protected Img<UnsignedByteType> syntheticNegativeCorrelationImageCh1;
+	protected Img<UnsignedByteType> syntheticNegativeCorrelationImageCh2;
+
 	/**
 	 * This method is run before every single test is run and is meant to set up
 	 * the images and meta data needed for testing image colocalisation.
@@ -87,6 +91,9 @@ public abstract class ColocalisationTest extends AbstractOpTest {
 
 		positiveCorrelationImageCh1 = loadTiffFromJar("colocsample1b-green.tif");
 		positiveCorrelationImageCh2 = loadTiffFromJar("colocsample1b-red.tif");
+
+		syntheticNegativeCorrelationImageCh1 = loadTiffFromJar("syntheticNegCh1.tif");
+		syntheticNegativeCorrelationImageCh2 = loadTiffFromJar("syntheticNegCh2.tif");
 	}
 
 	/**
