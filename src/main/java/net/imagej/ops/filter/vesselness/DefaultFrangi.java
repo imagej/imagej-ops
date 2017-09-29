@@ -219,7 +219,7 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>>
 
 			// find the FrobeniusNorm (used later)
 			double s = hessian.normF();
-			double cn = -(s * s * s * s);
+			double cn = -(s * s);
 
 			// find and sort the eigenvalues and eigenvectors of the Hessian
 			EigenvalueDecomposition e = hessian.eig();
@@ -266,7 +266,7 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>>
 				
 
 				// Check to see if the point is on a tubular structure.
-				if (/*(l2 < 0 &&*/ l3 < 0/*)*/)  {
+				if ((l3 < 0))  {
 					// ratios Rb and Ra
 					double rb = al1 / Math.sqrt(al2 * al3);
 					double ra = al2 / al3;
