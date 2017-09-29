@@ -247,7 +247,7 @@ public abstract class AbstractOpTest {
 		while(cin.hasNext()){
 			cin.fwd();
 			raOut.setPosition(cin);
-			if((cin.get().getRealDouble() - raOut.get().getRealDouble()) > epsilon) return false;
+			if(Math.abs(cin.get().getRealDouble() - raOut.get().getRealDouble()) > epsilon) return false;
 		}
 		return true;
 	}
