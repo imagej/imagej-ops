@@ -30,6 +30,10 @@
 
 package net.imagej.ops.filter.bilateral;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
@@ -45,12 +49,6 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Intervals;
 import net.imglib2.view.Views;
 
-import java.util.Arrays;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 /**
  * Performs a bilateral filter on an image.
  *
@@ -61,10 +59,8 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Ops.Filter.Bilateral.class, priority = Priority.NORMAL_PRIORITY)
 public class DefaultBilateral<I extends RealType<I>, O extends RealType<O>>
-	extends
-	AbstractUnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
-	implements Ops.Filter.Bilateral, Contingent
-{
+		extends AbstractUnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+		implements Ops.Filter.Bilateral, Contingent {
 
 	public final static int MIN_DIMS = 2;
 
@@ -85,17 +81,17 @@ public class DefaultBilateral<I extends RealType<I>, O extends RealType<O>>
 	private double sigmaS;
 
 	/**
-	 * refers to the square that is considered when doing the filter on each individual picture.
+	 * refers to the square that is considered when doing the filter on each
+	 * individual picture.
 	 */
 	@Parameter
 	private int radius;
 
 	private static double gauss(final double x, final double sigma) {
 		final double mu = 0.0;
-		return (1 / (sigma * Math.sqrt(2 * Math.PI))) * Math.exp((-0.5 * (x - mu) *
-			(x - mu)) / (sigma * sigma));
+		return (1 / (sigma * Math.sqrt(2 * Math.PI))) * Math.exp((-0.5 * (x - mu) * (x - mu)) / (sigma * sigma));
 	}
-	
+
 	private double getDistance(long[] x, long[] y) {
 		double distance = 0;
 
@@ -111,9 +107,7 @@ public class DefaultBilateral<I extends RealType<I>, O extends RealType<O>>
 	}
 
 	@Override
-	public void compute(final RandomAccessibleInterval<I> input,
-		final RandomAccessibleInterval<O> output)
-	{
+	public void compute(final RandomAccessibleInterval<I> input, final RandomAccessibleInterval<O> output) {
 
 		final long[] size = new long[input.numDimensions()];
 		input.dimensions(size);
