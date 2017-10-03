@@ -133,6 +133,28 @@ public class FilterNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	/**
+	 * Executes a bilateral filter on the given arguments.
+	 * 
+	 * @param in
+	 * @param out
+	 * @param sigmaR
+	 * @param sigmaS
+	 * @param radius
+	 * @return
+	 */
+	@OpMethod(op = net.imagej.ops.filter.bilateral.DefaultBilateral.class)
+	public <I extends RealType<I>, O extends RealType<O>> RandomAccessibleInterval<O>
+		bilateral(final RandomAccessibleInterval<O> out,
+			final RandomAccessibleInterval<I> in, final double sigmaR,
+			final double sigmaS, final int radius)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<O> result = (RandomAccessibleInterval<O>) ops().run(
+			Ops.Filter.Bilateral.class, out, in, sigmaR, sigmaS, radius);
+		return result;
+	}
+
 	// -- convolve --
 	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTF.class,
