@@ -163,6 +163,6 @@ public class DefaultBilateral<I extends RealType<I>, O extends RealType<O>>
 
 	@Override
 	public boolean conforms() {
-		return (in().numDimensions() == 2 && Intervals.equalDimensions(in(), out()));
+		return (Intervals.equalDimensions(in(), out()));
 	}
 }
