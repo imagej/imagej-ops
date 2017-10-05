@@ -243,6 +243,16 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>>
 				double al2 = Math.abs(l2);
 
 				// Check to see if the point is on a tubular structure.
+				/*
+				 * N.B. This conditional not only takes into account the sign of
+				 * the second-smallest eigenvalue but also depends on the
+				 * difference in magnitude of the first and second eigenvalues.
+				 * This condition was added to reduce noise and appearance of
+				 * blob-like structures from the filter, improving the result.
+				 * The basis for this addition is outlined on page 3 of the
+				 * paper outlining the filter: 
+				 * http://http://www.tecn.upf.es/~afrangi/articles/miccai1998.pdf 
+				 */
 				if (l2 < 0 && (al2 - al1) >= (step / 2)) {
 
 					// ratio Rb
@@ -266,6 +276,16 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>>
 				
 
 				// Check to see if the point is on a tubular structure.
+				/*
+				 * N.B. This conditional statement only takes into account the sign 
+				 * on the third-smallest eigenvalue, not both the second and third as 
+				 * described in the paper. Original versions of this filter took the
+				 * signs of both into account, but the result of the filter was an 
+				 * empty image. Only by removing the condition of the sign of the 
+				 * second eigenvalue were we able to obtain results that matched 
+				 * human expectations of a 3-D version of the filter. This conditional
+				 * in particular achieved results best aligned with human expectation.
+				 */
 				if ((l3 < 0))  {
 					// ratios Rb and Ra
 					double rb = al1 / Math.sqrt(al2 * al3);
