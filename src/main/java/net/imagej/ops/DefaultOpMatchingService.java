@@ -463,8 +463,10 @@ public class DefaultOpMatchingService extends AbstractService implements
 			}
 			// FIXME: Use generic assignability test, once it exists.
 			final Class<?> raw = GenericUtils.getClass(outType);
-			if (!ConversionUtils.canCast(outItems.next().getType(), raw)) {
-				candidate.setStatus(StatusCode.OUTPUT_TYPES_DO_NOT_MATCH);
+			final Class<?> outItemClass = outItems.next().getType();
+			if (!ConversionUtils.canCast(outItemClass, raw)) {
+				candidate.setStatus(StatusCode.OUTPUT_TYPES_DO_NOT_MATCH, //
+					"request=" + raw.getName() + ", actual=" + outItemClass.getName());
 				return false;
 			}
 		}
