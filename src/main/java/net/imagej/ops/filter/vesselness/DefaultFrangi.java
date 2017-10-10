@@ -73,7 +73,7 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>>
 	private double[] spacing;
 
 	@Parameter
-	private double[] scales;
+	private int scale;
 
 	protected double alpha = 0.5;
 	protected double beta = 0.5;
@@ -126,36 +126,11 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>>
 			for (int i = 0; i < input.numDimensions(); i++)
 				spacing[i] = 1;
 		}
-
-		HashMap<RandomAccessibleInterval<U>, RandomAccess<U>> filters = new HashMap<RandomAccessibleInterval<U>, RandomAccess<U>>();
-		Cursor<U> cursor = Views.iterable(output).localizingCursor();
-		RandomAccess<U> outputRA = output.randomAccess();
-
-		for (int i = 0; i < scales.length; i++) {
-			double step = scales[i];
-			RandomAccessibleInterval<U> filter = (RandomAccessibleInterval<U>) ops()
-					.run(net.imagej.ops.copy.CopyRAI.class, output);
-			frangi(input, filter, step);
-			RandomAccess<U> ra = filter.randomAccess();
-			filters.put(filter, ra);
-		}
-
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			outputRA.setPosition(cursor);
-			for (RandomAccessibleInterval<U> key : filters.keySet()) {
-				filters.get(key).setPosition(cursor);
-				if (filters.get(key).get().getRealDouble() > outputRA.get().getRealDouble()) {
-					outputRA.get().setReal(filters.get(key).get().getRealDouble());
-
-				}
-
-			}
-		}
-
+		
+		frangi(input, output, scale);
 	}
 
-	private void frangi(RandomAccessibleInterval<T> in, RandomAccessibleInterval<U> out, double step) {
+	private void frangi(RandomAccessibleInterval<T> in, RandomAccessibleInterval<U> out, int step) {
 
 		// create denominators used for gaussians later.
 		double ad = 2 * alpha * alpha;
@@ -191,18 +166,18 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>>
 					behind.setPosition(cursor);
 
 					// move one behind to take the first derivative
-					behind.move(-((int) step), m);
+					behind.move(-step, m);
 					if (m != n)
-						behind.move(-((int) step), n);
+						behind.move(-step, n);
 
 					// take the derivative between the two points
 					double derivativeA = derivative(behind.get().getRealDouble(), current.get().getRealDouble(),
 							getDistance(behind, current, in.numDimensions()));
 
 					// move one ahead to take the other first derivative
-					ahead.move(((int) step), m);
+					ahead.move(step, m);
 					if (m != n)
-						ahead.move(((int) step), n);
+						ahead.move(step, n);
 
 					// take the derivative between the two points
 					double derivativeB = derivative(current.get().getRealDouble(), ahead.get().getRealDouble(),

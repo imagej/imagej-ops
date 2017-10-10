@@ -69,7 +69,7 @@ public class FrangiVesselnessTest extends AbstractOpTest {
 		Img<FloatType> actualOutput = ArrayImgs.floats(dims);
 
 		// scale over which the filter operates (sensitivity)
-		double[] scale = { 1 };
+		int scale = 1;
 
 		// physical spacing between data points (1,1 since I got it from the computer)
 		double[] spacing = { 1, 1 };

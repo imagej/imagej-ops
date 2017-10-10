@@ -956,16 +956,14 @@ public class FilterNamespace extends AbstractNamespace {
 	 *            data points in the image
 	 * @param scale
 	 *            - the scale (number of pixels) over which the filter calculates.
-	 *            The smaller the value, the more sensitive the filter. Multiple
-	 *            values can be given to run over multiple scales and filter out
-	 *            different-sized vessels.
+	 *            The smaller the value, the more sensitive the filter.
 	 */
 	@OpMethod(op = net.imagej.ops.filter.vesselness.DefaultFrangi.class)
-	public <T extends RealType<T>, B extends BooleanType<B>> RandomAccessibleInterval<B> vesselness(final RandomAccessibleInterval<T> in,
-			final RandomAccessibleInterval<B> out, final double[] spacing, final double...scale) {
+	public <T extends RealType<T>, U extends RealType<U>> RandomAccessibleInterval<U> frangiVesselness(final RandomAccessibleInterval<U> out,
+			final RandomAccessibleInterval<T> in, final double[] spacing, final int scale) {
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<B> result = (RandomAccessibleInterval<B>) ops().run(Ops.Filter.Vesselness.class,
-				in, out, spacing, scale);
+		final RandomAccessibleInterval<U> result = (RandomAccessibleInterval<U>) ops().run(Ops.Filter.Vesselness.class,
+				out, in, spacing, scale);
 		return result;
 	}
 
