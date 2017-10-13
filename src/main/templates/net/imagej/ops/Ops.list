@@ -312,6 +312,9 @@ namespaces = ```
 		[name: "thin",                           iface: "Thin"],
 		[name: "topHat",                         iface: "TopHat"],
 	]],
+	[name: "segment", iface: "Segment", ops: [
+		[name: "houghCircle",                    iface: "HoughCircle"],
+	]],
 	[name: "stats", iface: "Stats", ops: [
 		[name: "geometricMean",                  iface: "GeometricMean"],
 		[name: "harmonicMean",                   iface: "HarmonicMean"],
