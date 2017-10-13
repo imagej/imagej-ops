@@ -38,6 +38,7 @@ import net.imagej.ops.OpMethod;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.roi.geom.real.Sphere;
 import net.imglib2.type.BooleanType;
+import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
 
@@ -52,12 +53,12 @@ public class SegmentNamespace extends AbstractNamespace {
 	// -- Segmentation namespace ops --
 
 	@OpMethod(op = net.imagej.ops.segment.hough.CircleTransform.class)
-	public <B extends BooleanType<B>> List<Sphere> circleTransform(
-		final RandomAccessibleInterval<B> in, final List<Sphere> out)
+	public <T extends RealType<T>> List<Sphere> circleTransform(
+		final RandomAccessibleInterval<T> in, final List<Sphere> out, int radius, int threshold)
 	{
 		@SuppressWarnings("unchecked")
 		final List<Sphere> result = (List<Sphere>) ops().run(
-			net.imagej.ops.Ops.Segment.HoughCircle.class, in, out);
+			net.imagej.ops.Ops.Segment.HoughCircle.class, in, out, radius, threshold);
 		return result;
 	}
 
