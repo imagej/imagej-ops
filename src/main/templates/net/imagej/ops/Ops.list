@@ -334,6 +334,8 @@ namespaces = ```
 		[name: "thinZhangSuen",                  iface: "ThinZhangSuen"],
 		[name: "topHat",                         iface: "TopHat"],
 	]],
+	[name: "segment", iface: "Segment", ops: [
+	]],
 	[name: "stats", iface: "Stats", ops: [
 		[name: "geometricMean",                  iface: "GeometricMean"],
 		[name: "harmonicMean",                   iface: "HarmonicMean"],
