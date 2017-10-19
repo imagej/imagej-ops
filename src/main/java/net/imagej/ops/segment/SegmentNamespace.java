@@ -52,13 +52,45 @@ public class SegmentNamespace extends AbstractNamespace {
 
 	// -- Segmentation namespace ops --
 
+	/**
+	 * Performs the Hough Circle Transform on a set radius
+	 * 
+	 * @param in
+	 * @param out
+	 * @param radius
+	 * @param threshold
+	 * @return
+	 */
 	@OpMethod(op = net.imagej.ops.segment.hough.CircleTransform.class)
 	public <T extends RealType<T>> List<Sphere> circleTransform(
-		final RandomAccessibleInterval<T> in, final List<Sphere> out, int radius, int threshold)
+		final RandomAccessibleInterval<T> in, final List<Sphere> out, int radius,
+		int threshold)
 	{
 		@SuppressWarnings("unchecked")
 		final List<Sphere> result = (List<Sphere>) ops().run(
 			net.imagej.ops.Ops.Segment.HoughCircle.class, in, out, radius, threshold);
+		return result;
+	}
+
+	/**
+	 * Performs the Hough Circle Transform on a variable radius.
+	 * 
+	 * @param in
+	 * @param out
+	 * @param radius
+	 * @param threshold
+	 * @return
+	 */
+	@OpMethod(
+		op = net.imagej.ops.segment.hough.CircleTransformVariableRadius.class)
+	public <T extends RealType<T>> List<Sphere> circleTransform(
+		final RandomAccessibleInterval<T> in, final List<Sphere> out, int minRadius,
+		int maxRadius, int stepRadius, int threshold)
+	{
+		@SuppressWarnings("unchecked")
+		final List<Sphere> result = (List<Sphere>) ops().run(
+			net.imagej.ops.Ops.Segment.HoughCircle.class, in, out, minRadius,
+			maxRadius, stepRadius, threshold);
 		return result;
 	}
 

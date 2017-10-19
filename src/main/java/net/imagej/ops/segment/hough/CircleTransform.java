@@ -71,7 +71,7 @@ public class CircleTransform<T extends RealType<T>> extends
 	Contingent, Ops.Segment.HoughCircle
 {
 
-	@Parameter(min = "4", description = "The radius to search for.")
+	@Parameter(min = "4", description = "The radius to search for, in pixels.")
 	int radius;
 
 	@Parameter(min = "2",
