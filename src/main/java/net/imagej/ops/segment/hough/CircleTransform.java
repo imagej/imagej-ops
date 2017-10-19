@@ -36,7 +36,6 @@ package net.imagej.ops.segment.hough;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import net.imagej.ops.Contingent;
@@ -60,9 +59,9 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * This op performs the Hough Circle Transform on a Binary RealType Image (typically one
- * that has first gone through edge detection.) This op performs on a set radius
- * on 2-D images.
+ * This op performs the Hough Circle Transform on a Binary RealType Image
+ * (typically one that has first gone through edge detection.) This op performs
+ * on a set radius on 2-D images.
  * 
  * @author Gabe Selzer
  */
@@ -71,7 +70,7 @@ public class CircleTransform<T extends RealType<T>> extends
 	AbstractUnaryComputerOp<RandomAccessibleInterval<T>, List<Sphere>> implements
 	Contingent, Ops.Segment.HoughCircle
 {
-	
+
 	@Parameter(min = "4", description = "The radius to search for.")
 	int radius;
 
@@ -85,34 +84,49 @@ public class CircleTransform<T extends RealType<T>> extends
 
 	// This method fills up the LookUpTable (lut).
 	private void buildLUT() {
-		
 		// We create a total of 2*radius coordinates for a total of 2*radius checks
 		// along the radius of the hypothetical circle. The length of the array
 		// scales with the size of the radius, allowing for more accuracy with
 		// larger circles.
 		lut = new int[2 * radius][2];
 		double increment = (Math.PI / radius);
-		//fill the array with rcos(theta) in lut[0] and rsin(theta) in lut[1]
+		// fill the array with rcos(theta) in lut[0] and rsin(theta) in lut[1]
 		for (int i = 0; i < 2 * radius; i++) {
 			lut[i][0] = (int) Math.round((double) radius * Math.cos(i * increment));
 			lut[i][1] = (int) Math.round((double) radius * Math.sin(i * increment));
 		}
 	}
 
+	// scans the current output for any circles similar to the one just found (to
+	// eliminate near duplicates).
+	private boolean checkForSimilar(Point p, List<Sphere> output) {
+		for (Sphere s : output) {
+			double[] center = s.center();
+			double Diff = Math.sqrt(Math.pow(p.getLongPosition(0) - center[0], 2) +
+				Math.pow(p.getLongPosition(1) - center[1], 2));
+			if (Diff < Math.sqrt(radius)) return true;
+		}
+		return false;
+	}
+
 	@Override
 	public void compute(RandomAccessibleInterval<T> input, List<Sphere> output) {
+		// create a value of 0 (false) to use past the edges of the RAI.
 		final T falseValue = input.randomAccess().get().createVariable();
-		//assign false to all values out of the bounds of the image.
+		// assign false to all values out of the bounds of the image.
 		Img<IntType> acc = ops().create().img(input, new IntType());
 		OutOfBoundsConstantValueFactory<T, RandomAccessibleInterval<T>> obcvf =
-			new OutOfBoundsConstantValueFactory<T, RandomAccessibleInterval<T>>(falseValue);
-		//cursor for both input and output
+			new OutOfBoundsConstantValueFactory<T, RandomAccessibleInterval<T>>(
+				falseValue);
+		// cursor for both input and output
 		Cursor<IntType> accCursor = acc.localizingCursor();
-		//randomAccess for setting output value
+		// randomAccess for setting output value
 		RandomAccess<IntType> accRA = acc.randomAccess();
-		//randomAccess for obtaining input value
+		// randomAccess for obtaining input value
 		RandomAccess<T> pointCheck = obcvf.create(input);
+		// coordinates of position on hypothetical circle radius.
 		long[] assertionPos = { 0, 0 };
+		// count of verified points on the hypothetical circle.
 		byte pointsOnCircle;
 
 		// build lookup table based on radius
@@ -120,49 +134,32 @@ public class CircleTransform<T extends RealType<T>> extends
 
 		// voting space
 		while (accCursor.hasNext()) {
-//			System.out.println("Next Circle:");
 			accCursor.fwd();
 			pointsOnCircle = 0;
-			for (int[] i: lut) {
+			for (int[] i : lut) {
 				// get x pos
 				assertionPos[0] = accCursor.getLongPosition(0) + i[0];
 				// get y pos
 				assertionPos[1] = accCursor.getLongPosition(1) + i[1];
-//				System.out.println(Arrays.toString(assertionPos));
 
 				pointCheck.setPosition(assertionPos);
-				if (pointCheck.get().getRealDouble() != 0) {
-					pointsOnCircle++;
-//					if(pointsOnCircle >= threshold)System.out.println(pointsOnCircle);
-				}
+				if (pointCheck.get().getRealDouble() != 0) pointsOnCircle++;
 			}
 			accRA.setPosition(accCursor);
 			accRA.get().set(pointsOnCircle);
 		}
 
 		// find the local extrema
-		ExecutorService exs = Executors.newSingleThreadExecutor();
-		final IntType dThreshold = new IntType(threshold);
-		MaximumCheck<IntType> max = new MaximumCheck<IntType>(dThreshold);
-		ArrayList<Point> centers = LocalExtrema.findLocalExtrema(acc, max, Executors.newSingleThreadExecutor());
-		
-		//create spheres from the centers and add them to output
-		for(Point p: centers) {
-			double[] center = {p.getLongPosition(0), p.getLongPosition(1)};
-			Sphere sphere = new ClosedSphere(center, radius);
-			if(checkForSimilar(p, output) == false)
-			output.add(sphere);
-		}
-	}
+		ArrayList<Point> centers = LocalExtrema.findLocalExtrema(acc,
+			new MaximumCheck<IntType>(new IntType(threshold)), Executors
+				.newSingleThreadExecutor());
 
-	private boolean checkForSimilar(Point p, List<Sphere> output) {
-		for(Sphere s: output) {
-			
-			double[] center = s.center();
-			double Diff = Math.sqrt(Math.pow(p.getLongPosition(0) - center[0], 2)+ Math.pow(p.getLongPosition(1) - center[1], 2));
-			if(Diff < Math.sqrt(radius)) return true; 
+		// create spheres from the centers and add them to output
+		for (Point p : centers) {
+			double[] center = { p.getLongPosition(0), p.getLongPosition(1) };
+			Sphere sphere = new ClosedSphere(center, radius);
+			if (checkForSimilar(p, output) == false) output.add(sphere);
 		}
-		return false;
 	}
 
 	@Override
