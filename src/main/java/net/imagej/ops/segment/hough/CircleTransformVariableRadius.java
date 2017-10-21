@@ -58,34 +58,58 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = HoughCircle.class, priority = Priority.HIGH_PRIORITY)
 public class CircleTransformVariableRadius<T extends RealType<T>> extends
-AbstractUnaryComputerOp<RandomAccessibleInterval<T>, List<Sphere>> implements
-Contingent, Ops.Segment.HoughCircle {
+	AbstractUnaryComputerOp<RandomAccessibleInterval<T>, List<Sphere>> implements
+	Contingent, Ops.Segment.HoughCircle
+{
 
 	@Parameter(min = "4", description = "The radius to search for, in pixels.")
 	int minRadius;
-	
+
 	@Parameter(description = "The maximum radius to search for, in pixels.")
 	int maxRadius;
-	
-	@Parameter(description = "The increase in the radius between runs of the transform")
+
+	@Parameter(
+		description = "The increase in the radius between runs of the transform")
 	int stepRadius = 1;
-	
+
 	@Parameter(min = "2",
 		description = "The number of points required to consider a circle.")
 	int threshold;
-	
+
+	// checks the current sphere against all of the other spheres for center and
+	// radius
+	private boolean checkForSimilar(Sphere s, List<Sphere> output) {
+		for (Sphere t : output) {
+			double[] sCenter = s.center();
+			double[] tCenter = t.center();
+			double diff = Math.sqrt(Math.pow(tCenter[0] - sCenter[0], 2) + Math.pow(
+				tCenter[1] - sCenter[1], 2));
+			// if the centers are close to each other and the radii are pretty close,
+			// then the two are too similar to be two different circles
+			if (diff < Math.sqrt(s.radius()) || diff < Math.sqrt(t.radius())) {
+				if (Math.abs(t.radius() - s.radius()) < 3) return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public void compute(RandomAccessibleInterval<T> input, List<Sphere> output) {
-		
-		// List of spheres generated during each iteration, added to output at end of iteration.
+
+		// List of spheres generated during each iteration, added to output at end
+		// of iteration.
 		List<Sphere> currentOutput;
-		
-		//loop through radii, call set radius transform at each step, add step output to total output.
-		for(int i = minRadius; i <= maxRadius; i += stepRadius) {
+
+		// loop through radii, call set radius transform at each step, add step
+		// output to total output.
+		for (int i = minRadius; i <= maxRadius; i += stepRadius) {
 			currentOutput = new ArrayList<Sphere>();
-			ops().run(net.imagej.ops.segment.hough.CircleTransform.class, currentOutput, input, i, threshold);
-			
-			for(Sphere s: currentOutput) output.add(s);
+			ops().run(net.imagej.ops.segment.hough.CircleTransform.class,
+				currentOutput, input, i, threshold);
+
+			for (Sphere s : currentOutput) {
+				if (!checkForSimilar(s, output)) output.add(s);
+			}
 		}
 	}
 
