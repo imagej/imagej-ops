@@ -49,10 +49,9 @@ import org.scijava.plugin.Plugin;
 
 /**
  * This command applied the Frangi Vesselness filter operation onto an image,
- * allowing users to specify:
- * 		1) The scales desired for the filter application
- * 		2) The physical spacing between image data points
- * 		3) Whether or not the gaussian filter should be performed at each scale before the filter runs.
+ * allowing users to specify: 1) The scales desired for the filter application
+ * 2) The physical spacing between image data points 3) Whether or not the
+ * gaussian filter should be performed at each scale before the filter runs.
  * 
  * @author Gabe Selzer
  */
@@ -110,19 +109,23 @@ public class FrangiVesselness<T extends RealType<T>> implements Command {
 
 	@Override
 	public void run() {
-	//parse the spacing, and scales strings.
+		// parse the spacing, and scales strings.
 		spacing = checkDimensions(spacingString, input.numDimensions(), "Spacings");
-		scales = Arrays.stream(scaleString.split(regex)).mapToInt(
-				Integer::parseInt).toArray();
+		scales = Arrays.stream(scaleString.split(regex)).mapToInt(Integer::parseInt)
+			.toArray();
 		Dimensions resultDims = Views.addDimension(input, 0, scales.length - 1);
-		//create output image, potentially-filtered input
+		// create output image, potentially-filtered input
 		result = opService.create().img(resultDims, new FloatType());
 
 		for (int s = 0; s < scales.length; s++) {
-			//Determine whether or not the user would like to apply the gaussian beforehand and do it.
-			RandomAccessibleInterval<T> vesselnessInput = doGauss ? opService.filter().gauss(input, scales[s]) : input;
-			IntervalView<FloatType> scaleResult = Views.hyperSlice(result, result.numDimensions() - 1, s);
-			opService.filter().frangiVesselness(scaleResult, vesselnessInput, spacing, scales[s]);
+			// Determine whether or not the user would like to apply the gaussian
+			// beforehand and do it.
+			RandomAccessibleInterval<T> vesselnessInput = doGauss ? opService.filter()
+				.gauss(input, scales[s]) : input;
+			IntervalView<FloatType> scaleResult = Views.hyperSlice(result, result
+				.numDimensions() - 1, s);
+			opService.filter().frangiVesselness(scaleResult, vesselnessInput, spacing,
+				scales[s]);
 		}
 	}
 }
