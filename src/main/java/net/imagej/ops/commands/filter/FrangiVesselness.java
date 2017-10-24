@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
  * allowing users to specify:
  * 		1) The scales desired for the filter application
  * 		2) The physical spacing between image data points
- * 		3) Whether or not the pre-Gaussian filter should be performed.
+ * 		3) Whether or not the gaussian filter should be performed at each scale before the filter runs.
  * 
  * @author Gabe Selzer
  */
@@ -68,11 +68,11 @@ public class FrangiVesselness<T extends RealType<T>> implements Command {
 	@Parameter
 	private Img<T> input;
 
-	@Parameter(label = "Gauss before:")
+	@Parameter(label = "Apply Gaussian at each scale:")
 	private boolean doGauss;
 
 	@Parameter(label = "Spacing",
-		description = "Physical distance between the observed data points")
+		description = "Relative distance between the observed data points")
 	private String spacingString = "1, 1";
 
 	@Parameter(label = "Scale",
