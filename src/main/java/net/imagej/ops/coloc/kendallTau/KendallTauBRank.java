@@ -2,7 +2,9 @@ package net.imagej.ops.coloc.kendallTau;
 
 import java.util.Arrays;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.coloc.ColocUtil;
 import net.imagej.ops.coloc.IntArraySorter;
 import net.imagej.ops.coloc.IntComparator;
 import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
@@ -47,7 +49,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Coloc.KendallTau.class)
 public class KendallTauBRank<T extends RealType<T>, U extends RealType<U>>
 		/* extends Algorithm<T> */ extends AbstractBinaryFunctionOp<Iterable<T>, Iterable<U>, Double>
-		implements Ops.Coloc.KendallTau {
+		implements Ops.Coloc.KendallTau, Contingent {
 	
 	@Override
 	public Double calculate(Iterable<T> image1, Iterable<U> image2) {
@@ -252,5 +254,10 @@ public class KendallTauBRank<T extends RealType<T>, U extends RealType<U>>
 
 			return swaps;
 		}
+	}
+
+	@Override
+	public boolean conforms() {
+		return ColocUtil.sameIterationOrder(in1(), in2());
 	}
 }

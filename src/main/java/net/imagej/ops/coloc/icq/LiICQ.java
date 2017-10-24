@@ -1,14 +1,16 @@
 package net.imagej.ops.coloc.icq;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.coloc.ColocUtil;
 import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.IterablePair;
 import net.imglib2.util.Pair;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * This algorithm calculates Li et al.'s ICQ (intensity correlation quotient).
@@ -20,7 +22,7 @@ import net.imglib2.util.Pair;
  */
 @Plugin(type = Ops.Coloc.ICQ.class)
 public class LiICQ<T extends RealType<T>, U extends RealType<U>>
-		extends AbstractBinaryFunctionOp<Iterable<T>, Iterable<U>, Double> implements Ops.Coloc.ICQ {
+		extends AbstractBinaryFunctionOp<Iterable<T>, Iterable<U>, Double> implements Ops.Coloc.ICQ, Contingent {
 
 	@Parameter(required = false)
 	private DoubleType mean1;
@@ -66,5 +68,10 @@ public class LiICQ<T extends RealType<T>, U extends RealType<U>>
 
 	private <V extends RealType<V>> double computeMeanOf(final Iterable<V> in) {
 		return ops().stats().mean(in).getRealDouble();
+	}
+
+	@Override
+	public boolean conforms() {
+		return ColocUtil.sameIterationOrder(in1(), in2());
 	}
 }
