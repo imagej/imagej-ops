@@ -8,8 +8,8 @@ import net.imglib2.util.Util;
 /**
  * Utility class for coloc ops.
  *
+ * @author Ellen Arena
  */
-
 public final class ColocUtil
 {
 		private ColocUtil() {
