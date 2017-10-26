@@ -59,10 +59,10 @@ import net.imglib2.view.Views;
  *
  * @author Gabe Selzer
  */
-@Plugin(type = Ops.Filter.Vesselness.class)
+@Plugin(type = Ops.Filter.FrangiVesselness.class)
 public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>> extends
 	AbstractUnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<U>>
-	implements Ops.Filter.Vesselness
+	implements Ops.Filter.FrangiVesselness
 {
 
 	public final static int MIN_DIMS = 2;
