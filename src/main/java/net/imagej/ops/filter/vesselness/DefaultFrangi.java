@@ -48,6 +48,7 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Intervals;
 import net.imglib2.view.Views;
 
 /**
@@ -103,18 +104,12 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>>
 		return Math.sqrt(distance);
 	}
 
-	private double derivative(double val1, double val2, double distance) {
+	private double derive(double val1, double val2, double distance) {
 		return ((val2 - val1) / distance);
 	}
 
 	public long numberOfPoints(RandomAccessibleInterval<T> image) {
-		long totalPoints = 1;
-		long[] dimensions = null;
-		image.dimensions(dimensions);
-		for (long length : dimensions) {
-			totalPoints *= length;
-		}
-		return totalPoints;
+		return Intervals.numElements(image);
 	}
 
 	@Override
@@ -130,7 +125,7 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>>
 		frangi(input, output, scale);
 	}
 
-	private void frangi(RandomAccessibleInterval<T> in, RandomAccessibleInterval<U> out, int step) {
+	private final void frangi(RandomAccessibleInterval<T> in, RandomAccessibleInterval<U> out, int step) {
 
 		// create denominators used for gaussians later.
 		double ad = 2 * alpha * alpha;
@@ -171,7 +166,7 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>>
 						behind.move(-step, n);
 
 					// take the derivative between the two points
-					double derivativeA = derivative(behind.get().getRealDouble(), current.get().getRealDouble(),
+					double derivativeA = derive(behind.get().getRealDouble(), current.get().getRealDouble(),
 							getDistance(behind, current, in.numDimensions()));
 
 					// move one ahead to take the other first derivative
@@ -180,11 +175,11 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>>
 						ahead.move(step, n);
 
 					// take the derivative between the two points
-					double derivativeB = derivative(current.get().getRealDouble(), ahead.get().getRealDouble(),
+					double derivativeB = derive(current.get().getRealDouble(), ahead.get().getRealDouble(),
 							getDistance(current, ahead, in.numDimensions()));
 
 					// take the second derivative using the two first derivatives
-					double derivative2 = derivative(derivativeA, derivativeB,
+					double derivative2 = derive(derivativeA, derivativeB,
 							getDistance(behind, ahead, in.numDimensions()));
 
 					hessian.set(m, n, derivative2);
