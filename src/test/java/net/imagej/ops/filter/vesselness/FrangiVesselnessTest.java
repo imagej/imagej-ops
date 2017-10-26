@@ -59,9 +59,11 @@ public class FrangiVesselnessTest extends AbstractOpTest {
 	public void regressionTest() throws Exception {
 
 		// load in input image and expected output image.
-		Img<FloatType> inputImg = (Img<FloatType>) ops.run(net.imagej.ops.image.equation.DefaultEquation.class,
-				"Math.tan(0.3*p[0]) + Math.tan(0.1*p[1])");
-		Img<FloatType> expectedOutput = ((Img<FloatType>) openFloatImg("Result.tif"));
+		Img<FloatType> inputImg = (Img<FloatType>) ops.run(
+			net.imagej.ops.image.equation.DefaultEquation.class,
+			"Math.tan(0.3*p[0]) + Math.tan(0.1*p[1])");
+		Img<FloatType> expectedOutput = ((Img<FloatType>) openFloatImg(
+			"Result.tif"));
 
 		// create ouput image
 		long[] dims = new long[inputImg.numDimensions()];
@@ -71,11 +73,13 @@ public class FrangiVesselnessTest extends AbstractOpTest {
 		// scale over which the filter operates (sensitivity)
 		int scale = 1;
 
-		// physical spacing between data points (1,1 since I got it from the computer)
+		// physical spacing between data points (1,1 since I got it from the
+		// computer)
 		double[] spacing = { 1, 1 };
 
 		// run the op
-		ops.run(net.imagej.ops.filter.vesselness.DefaultFrangi.class, actualOutput, inputImg, spacing, scale);
+		ops.run(net.imagej.ops.filter.vesselness.DefaultFrangi.class, actualOutput,
+			inputImg, spacing, scale);
 
 		// compare the output image data to that stored in the file.
 		Cursor<FloatType> cursor = Views.iterable(actualOutput).localizingCursor();
@@ -92,7 +96,8 @@ public class FrangiVesselnessTest extends AbstractOpTest {
 
 	@Override
 	protected Context createContext() {
-		return new Context(OpService.class, OpMatchingService.class, CacheService.class, ScriptService.class);
+		return new Context(OpService.class, OpMatchingService.class,
+			CacheService.class, ScriptService.class);
 	}
 
 }
