@@ -110,10 +110,6 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>> extends
 		return ((val2 - val1) / distance);
 	}
 
-	public long numberOfPoints(RandomAccessibleInterval<T> image) {
-		return Intervals.numElements(image);
-	}
-
 	@Override
 	public void compute(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<U> output)
