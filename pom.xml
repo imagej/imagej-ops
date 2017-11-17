@@ -189,8 +189,7 @@
 		<package-name>net.imagej.ops</package-name>
 		<main-class>net.imagej.ops.Main</main-class>
 		<license.licenseName>bsd_2</license.licenseName>
-		<license.copyrightOwners>Board of Regents of the University of
-Wisconsin-Madison, University of Konstanz and Brian Northan.</license.copyrightOwners>
+		<license.copyrightOwners>ImageJ developers.</license.copyrightOwners>
 		<license.projectName>ImageJ software for multidimensional image processing and analysis.</license.projectName>
 		<imglib2.version>4.2.1</imglib2.version>
 		<scifio.version>0.32.0</scifio.version>
