@@ -225,7 +225,7 @@ public abstract class AbstractFFTFilterF<I extends RealType<I>, O extends RealTy
 		RandomAccessibleInterval<K> paddedKernel = padKernelOp.calculate(kernel,
 			new FinalDimensions(paddedSize));
 
-		RandomAccessibleInterval<C> fftImage = createOp.calculate(
+		RandomAccessibleInterval<C> fftInput = createOp.calculate(
 			new FinalDimensions(paddedSize));
 
 		RandomAccessibleInterval<C> fftKernel = createOp.calculate(
@@ -234,7 +234,7 @@ public abstract class AbstractFFTFilterF<I extends RealType<I>, O extends RealTy
 		// TODO: in this case it is difficult to match the filter op in the
 		// 'initialize' as we don't know the size yet, thus we can't create memory
 		// for the FFTs
-		filter = createFilterComputer(paddedInput, paddedKernel, fftImage,
+		filter = createFilterComputer(paddedInput, paddedKernel, fftInput,
 			fftKernel, output, paddedInput);
 
 		filter.compute(paddedInput, paddedKernel, output);
