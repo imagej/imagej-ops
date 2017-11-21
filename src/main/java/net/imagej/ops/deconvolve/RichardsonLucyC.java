@@ -82,7 +82,7 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 	 * variations of the algorithm (like RichardsonLucyTV)
 	 */
 	@Parameter(required = false)
-	private UnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> update =
+	private UnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> updateOp =
 		null;
 
 	/**
@@ -99,20 +99,20 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 	 * normalization, etc.)
 	 */
 	@Parameter(required = false)
-	private ArrayList<UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>> iterativePostProcessing =
+	private ArrayList<UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>> iterativePostProcessingOps =
 		null;
 
-	private BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> rlCorrection;
+	private BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> rlCorrectionOp;
 
-	private UnaryFunctionOp<Interval, Img<O>> create;
+	private UnaryFunctionOp<Interval, Img<O>> createOp;
 
-	private UnaryComputerOp<RandomAccessibleInterval<K>, RandomAccessibleInterval<C>> fftKernel;
+	private UnaryComputerOp<RandomAccessibleInterval<K>, RandomAccessibleInterval<C>> fftKernelOp;
 
-	private BinaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>> convolver;
+	private BinaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>> convolverOp;
 
-	private UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> copy;
+	private UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> copyOp;
 
-	private UnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> copy2;
+	private UnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> copy2Op;
 
 	private RandomAccessibleInterval<O> raiExtendedReblurred;
 
@@ -121,30 +121,30 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 	public void initialize() {
 		super.initialize();
 
-		if (update == null) {
-			update = (UnaryComputerOp) Computers.unary(ops(),
+		if (updateOp == null) {
+			updateOp = (UnaryComputerOp) Computers.unary(ops(),
 				RichardsonLucyUpdate.class, RandomAccessibleInterval.class,
 				RandomAccessibleInterval.class);
 		}
 
-		rlCorrection = (BinaryComputerOp) Computers.binary(ops(),
+		rlCorrectionOp = (BinaryComputerOp) Computers.binary(ops(),
 			RichardsonLucyCorrection.class, RandomAccessibleInterval.class,
 			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
 			getFFTInput(), getFFTKernel());
 
-		fftKernel = (UnaryComputerOp) Computers.unary(ops(), FFTMethodsOpC.class,
+		fftKernelOp = (UnaryComputerOp) Computers.unary(ops(), FFTMethodsOpC.class,
 			getFFTKernel(), RandomAccessibleInterval.class);
 
-		copy = (UnaryHybridCF) Hybrids.unaryCF(ops(), Ops.Copy.RAI.class,
+		copyOp = (UnaryHybridCF) Hybrids.unaryCF(ops(), Ops.Copy.RAI.class,
 			RandomAccessibleInterval.class, IntervalView.class);
 
-		copy2 = (UnaryHybridCF) Hybrids.unaryCF(ops(), Ops.Copy.RAI.class,
+		copy2Op = (UnaryHybridCF) Hybrids.unaryCF(ops(), Ops.Copy.RAI.class,
 			RandomAccessibleInterval.class, IntervalView.class);
 
-		create = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+		createOp = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
 			Img.class, Dimensions.class, Util.getTypeFromInterval(out()));
 
-		convolver = (BinaryComputerOp) Computers.binary(ops(), ConvolveFFTC.class,
+		convolverOp = (BinaryComputerOp) Computers.binary(ops(), ConvolveFFTC.class,
 			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
 			RandomAccessibleInterval.class, this.getFFTInput(), this.getFFTKernel(),
 			true, false);
@@ -159,16 +159,16 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 		// estimate Img and use the input as the starting point
 		if (raiExtendedEstimate == null) {
 
-			raiExtendedEstimate = create.calculate(getImgConvolutionInterval());
+			raiExtendedEstimate = createOp.calculate(getImgConvolutionInterval());
 
-			copy.compute(in, raiExtendedEstimate);
+			copyOp.compute(in, raiExtendedEstimate);
 		}
 
 		// create image for the reblurred
-		raiExtendedReblurred = create.calculate(getImgConvolutionInterval());
+		raiExtendedReblurred = createOp.calculate(getImgConvolutionInterval());
 
 		// perform fft of psf
-		fftKernel.compute(kernel, getFFTKernel());
+		fftKernelOp.compute(kernel, getFFTKernel());
 
 		// -- perform iterations --
 
@@ -182,17 +182,17 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 			// NOTE: the FFT of the PSF of the kernel has been passed in as a
 			// parameter. when the op was set up, and computed above, so we can use
 			// compute
-			convolver.compute(raiExtendedEstimate, this.raiExtendedReblurred);
+			convolverOp.compute(raiExtendedEstimate, this.raiExtendedReblurred);
 
 			// compute correction factor
-			rlCorrection.compute(in, raiExtendedReblurred, raiExtendedReblurred);
+			rlCorrectionOp.compute(in, raiExtendedReblurred, raiExtendedReblurred);
 
 			// perform update to calculate new estimate
-			update.compute(raiExtendedReblurred, raiExtendedEstimate);
+			updateOp.compute(raiExtendedReblurred, raiExtendedEstimate);
 
 			// apply post processing
-			if (iterativePostProcessing != null) {
-				for (UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> pp : iterativePostProcessing) {
+			if (iterativePostProcessingOps != null) {
+				for (UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> pp : iterativePostProcessingOps) {
 					pp.mutate(raiExtendedEstimate);
 				}
 			}
@@ -213,7 +213,7 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 			end[d] = start[d] + out.dimension(d) - 1;
 		}
 
-		copy2.compute(Views.interval(raiExtendedEstimate, new FinalInterval(start,
+		copy2Op.compute(Views.interval(raiExtendedEstimate, new FinalInterval(start,
 			end)), out);
 	}
 
