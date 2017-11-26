@@ -29,50 +29,83 @@
 
 package net.imagej.ops.filter.pad;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Filter.PadFFTInput;
-import net.imagej.ops.filter.fftSize.ComputeFFTMethodsSize;
+import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
+import net.imagej.ops.special.function.BinaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.Dimensions;
+import net.imglib2.FinalDimensions;
+import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.numeric.ComplexType;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import net.imglib2.util.Util;
+import net.imglib2.view.Views;
 
 /**
- * Op used to pad the image to a size that is compatible with FFTMethods
+ * Op used to pad the image by extending the borders
  * 
  * @author bnorthan
  * @param <T>
  * @param <I>
  * @param <O>
  */
-@Plugin(type = Ops.Filter.PadFFTInput.class, priority = Priority.HIGH_PRIORITY)
-public class PadInputFFTMethods<T extends ComplexType<T>, I extends RandomAccessibleInterval<T>, O extends RandomAccessibleInterval<T>>
-		extends DefaultPadInputFFT<T, I, O> implements PadFFTInput {
-
-	@Parameter(required = false)
-	private boolean fast = true;
+public abstract class DefaultPadInputFFT<T extends ComplexType<T>, I extends RandomAccessibleInterval<T>, O extends RandomAccessibleInterval<T>>
+		extends AbstractBinaryFunctionOp<I, Dimensions, O> {
 
 	/**
 	 * The OutOfBoundsFactory used to extend the image
 	 */
-	@Parameter(required = false)
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf = null;
+
+	public OutOfBoundsFactory<T, RandomAccessibleInterval<T>> getObf() {
+		return obf;
+	}
+
+	public void setObf(OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf) {
+		this.obf = obf;
+	}
+
+	private BinaryFunctionOp<I, Dimensions, O> paddingIntervalCentered;
+
+	private UnaryFunctionOp<Dimensions, long[][]> fftSizeOp;
 
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initialize() {
 		super.initialize();
 
-		setFFTSizeOp(Functions.unary(ops(), ComputeFFTMethodsSize.class, long[][].class, Dimensions.class, true, fast));
-
-		if (obf != null) {
-			setObf(obf);
-		}
+		paddingIntervalCentered = (BinaryFunctionOp) Functions.unary(ops(), PaddingIntervalCentered.class,
+				Interval.class, RandomAccessibleInterval.class, Interval.class);
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
+	public O calculate(final I input, final Dimensions paddedDimensions) {
+
+		Dimensions paddedFFTInputDimensions;
+
+		// if an fftsize op has been set recompute padded size
+		if (fftSizeOp != null) {
+			long[][] sizes = fftSizeOp.calculate(paddedDimensions);
+
+			paddedFFTInputDimensions = new FinalDimensions(sizes[0]);
+		} else {
+			paddedFFTInputDimensions = paddedDimensions;
+
+		}
+
+		if (obf == null) {
+			obf = new OutOfBoundsConstantValueFactory<>(Util.getTypeFromInterval(input).createVariable());
+		}
+
+		Interval inputInterval = paddingIntervalCentered.calculate(input, paddedFFTInputDimensions);
+
+		return (O) Views.interval(Views.extend(input, obf), inputInterval);
+	}
+
+	protected void setFFTSizeOp(UnaryFunctionOp<Dimensions, long[][]> fftSizeOp) {
+		this.fftSizeOp = fftSizeOp;
+	}
 }

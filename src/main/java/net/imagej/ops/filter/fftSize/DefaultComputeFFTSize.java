@@ -27,52 +27,54 @@
  * #L%
  */
 
-package net.imagej.ops.filter.pad;
+package net.imagej.ops.filter.fftSize;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Filter.PadFFTInput;
-import net.imagej.ops.filter.fftSize.ComputeFFTMethodsSize;
-import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.Dimensions;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.outofbounds.OutOfBoundsFactory;
-import net.imglib2.type.numeric.ComplexType;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Op used to pad the image to a size that is compatible with FFTMethods
+ * Op that calculates FFT fast sizes according to the following logic.
  * 
- * @author bnorthan
- * @param <T>
- * @param <I>
- * @param <O>
+ * If powerOfTwo=true compute next power of 2
+ * 
+ * If powerOfTwo=false compute next smooth size
+ * 
+ * @author Brian Northan
  */
-@Plugin(type = Ops.Filter.PadFFTInput.class, priority = Priority.HIGH_PRIORITY)
-public class PadInputFFTMethods<T extends ComplexType<T>, I extends RandomAccessibleInterval<T>, O extends RandomAccessibleInterval<T>>
-		extends DefaultPadInputFFT<T, I, O> implements PadFFTInput {
+@Plugin(type = Ops.Filter.FFTSize.class)
+public class DefaultComputeFFTSize extends AbstractUnaryFunctionOp<Dimensions, long[][]> implements Ops.Filter.FFTSize {
 
-	@Parameter(required = false)
-	private boolean fast = true;
-
-	/**
-	 * The OutOfBoundsFactory used to extend the image
-	 */
-	@Parameter(required = false)
-	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf = null;
+	@Parameter
+	private boolean powerOfTwo;
 
 	@Override
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void initialize() {
-		super.initialize();
+	public long[][] calculate(Dimensions inputDimensions) {
 
-		setFFTSizeOp(Functions.unary(ops(), ComputeFFTMethodsSize.class, long[][].class, Dimensions.class, true, fast));
+		long[][] size = new long[2][];
+		size[0] = new long[inputDimensions.numDimensions()];
+		size[1] = new long[inputDimensions.numDimensions()];
 
-		if (obf != null) {
-			setObf(obf);
+		for (int i = 0; i < inputDimensions.numDimensions(); i++) {
+			// real size
+			if (powerOfTwo) {
+				size[0][i] = NextPowerOfTwo.nextPowerOfTwo(inputDimensions.dimension(i));
+			} else {
+				size[0][i] = (long) NextSmoothNumber.nextSmooth((int) inputDimensions.dimension(i));
+			}
+			// complex size
+			if (i == 0) {
+				size[1][i] = (size[0][i] / 2 + 1);
+			} else {
+				size[1][i] = size[0][i];
+			}
 		}
+
+		return size;
+
 	}
 
 }
