@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Filter.PadFFTInput.class, priority = Priority.HIGH_PRIORITY)
 public class PadInputFFTMethods<T extends ComplexType<T>, I extends RandomAccessibleInterval<T>, O extends RandomAccessibleInterval<T>>
-		extends DefaultPadInputFFT<T, I, O> implements PadFFTInput {
+		extends PadInputFFT<T, I, O> implements PadFFTInput {
 
 	@Parameter(required = false)
 	private boolean fast = true;
@@ -64,7 +64,6 @@ public class PadInputFFTMethods<T extends ComplexType<T>, I extends RandomAccess
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf = null;
 
 	@Override
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initialize() {
 		super.initialize();
 

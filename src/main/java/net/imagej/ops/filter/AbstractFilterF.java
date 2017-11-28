@@ -29,11 +29,8 @@
 
 package net.imagej.ops.filter;
 
-import net.imagej.ops.filter.pad.PadInputFFTMethods;
-import net.imagej.ops.filter.pad.PadShiftKernelFFTMethods;
 import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
 import net.imagej.ops.special.function.BinaryFunctionOp;
-import net.imagej.ops.special.function.Functions;
 import net.imglib2.Dimensions;
 import net.imglib2.FinalDimensions;
 import net.imglib2.RandomAccessibleInterval;
@@ -51,7 +48,7 @@ import org.scijava.plugin.Parameter;
 
 /**
  * Abstract class for binary filter that performs operations using an image and
- * kernel in the frequency domain.
+ * kernel
  * 
  * @author Brian Northan
  * @param <I>
@@ -93,6 +90,23 @@ public abstract class AbstractFilterF<I extends RealType<I>, O extends RealType<
 	 */
 	private BinaryFunctionOp<RandomAccessibleInterval<I>, Dimensions, RandomAccessibleInterval<I>> padOp;
 
+	public BinaryFunctionOp<RandomAccessibleInterval<I>, Dimensions, RandomAccessibleInterval<I>> getPadOp() {
+		return padOp;
+	}
+
+	public void setPadOp(BinaryFunctionOp<RandomAccessibleInterval<I>, Dimensions, RandomAccessibleInterval<I>> padOp) {
+		this.padOp = padOp;
+	}
+
+	public BinaryFunctionOp<RandomAccessibleInterval<K>, Dimensions, RandomAccessibleInterval<K>> getPadKernelOp() {
+		return padKernelOp;
+	}
+
+	public void setPadKernelOp(
+			BinaryFunctionOp<RandomAccessibleInterval<K>, Dimensions, RandomAccessibleInterval<K>> padKernelOp) {
+		this.padKernelOp = padKernelOp;
+	}
+
 	/**
 	 * Op used to pad the kernel
 	 */
@@ -106,18 +120,6 @@ public abstract class AbstractFilterF<I extends RealType<I>, O extends RealType<
 		if (this.obfInput == null) {
 			obfInput = new OutOfBoundsMirrorFactory<>(Boundary.SINGLE);
 		}
-
-		/**
-		 * Op used to pad the input
-		 */
-		padOp = (BinaryFunctionOp) Functions.binary(ops(), PadInputFFTMethods.class, RandomAccessibleInterval.class,
-				RandomAccessibleInterval.class, Dimensions.class, true, obfInput);
-
-		/**
-		 * Op used to pad the kernel
-		 */
-		padKernelOp = (BinaryFunctionOp) Functions.binary(ops(), PadShiftKernelFFTMethods.class,
-				RandomAccessibleInterval.class, RandomAccessibleInterval.class, Dimensions.class, true);
 
 	}
 
@@ -187,7 +189,7 @@ public abstract class AbstractFilterF<I extends RealType<I>, O extends RealType<
 
 	}
 
-	abstract public void computeFilter(final RandomAccessibleInterval<I> input,
+	abstract protected void computeFilter(final RandomAccessibleInterval<I> input,
 			final RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> output, long[] paddedSize);
 
 	protected long[] getBorderSize() {

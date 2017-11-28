@@ -30,12 +30,10 @@
 package net.imagej.ops.filter.pad;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Filter.PadFFTInput;
 import net.imagej.ops.filter.fftSize.DefaultComputeFFTSize;
 import net.imagej.ops.special.function.Functions;
 import net.imglib2.Dimensions;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.numeric.ComplexType;
 
 import org.scijava.Priority;
@@ -43,39 +41,26 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Op used to pad the image using the default FFT padding scheme
- * 
- * if fast = true -> pad to next power of 2 if fast = false -> pad to next
- * smooth number
+ * Op used to pad the kernel using the default FFT padding scheme and shift the center
+ * of the kernel to the origin
  * 
  * @author bnorthan
  * @param <T>
  * @param <I>
  * @param <O>
  */
-@Plugin(type = Ops.Filter.PadFFTInput.class, priority = Priority.HIGH_PRIORITY)
-public class DefaultPadInputFFT<T extends ComplexType<T>, I extends RandomAccessibleInterval<T>, O extends RandomAccessibleInterval<T>>
-		extends PadInputFFT<T, I, O> implements PadFFTInput {
+@Plugin(type = Ops.Filter.PadShiftFFTKernel.class, priority = Priority.HIGH_PRIORITY)
+public class DefaultPadShiftKernelFFT<T extends ComplexType<T>, I extends RandomAccessibleInterval<T>, O extends RandomAccessibleInterval<T>>
+		extends PadShiftKernel<T, I, O> {
 
 	@Parameter(required = false)
 	private boolean fast = true;
 
-	/**
-	 * The OutOfBoundsFactory used to extend the image
-	 */
-	@Parameter(required = false)
-	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf = null;
-
 	@Override
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initialize() {
 		super.initialize();
 
 		setFFTSizeOp(Functions.unary(ops(), DefaultComputeFFTSize.class, long[][].class, Dimensions.class, fast));
-
-		if (obf != null) {
-			setObf(obf);
-		}
 	}
 
 }

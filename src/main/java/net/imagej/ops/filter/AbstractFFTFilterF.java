@@ -30,7 +30,10 @@
 package net.imagej.ops.filter;
 
 import net.imagej.ops.filter.fft.CreateOutputFFTMethods;
+import net.imagej.ops.filter.pad.PadInputFFTMethods;
+import net.imagej.ops.filter.pad.PadShiftKernelFFTMethods;
 import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imagej.ops.special.function.BinaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.Dimensions;
@@ -46,7 +49,7 @@ import org.scijava.plugin.Parameter;
 
 /**
  * Abstract class for binary filter that performs operations using an image and
- * kernel in the frequency domain.
+ * kernel in the frequency domain using the imglib2 FFTMethods library.
  * 
  * @author Brian Northan
  * @param <I>
@@ -77,6 +80,18 @@ public abstract class AbstractFFTFilterF<I extends RealType<I>, O extends RealTy
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initialize() {
 		super.initialize();
+		
+		/**
+		 * Op used to pad the input
+		 */
+		setPadOp( (BinaryFunctionOp) Functions.binary(ops(), PadInputFFTMethods.class, RandomAccessibleInterval.class,
+				RandomAccessibleInterval.class, Dimensions.class, true, getOBFInput()));
+
+		/**
+		 * Op used to pad the kernel
+		 */
+		setPadKernelOp ((BinaryFunctionOp) Functions.binary(ops(), PadShiftKernelFFTMethods.class,
+				RandomAccessibleInterval.class, RandomAccessibleInterval.class, Dimensions.class, true));
 
 		if (fftType == null) {
 			fftType = (ComplexType<C>) ops().create().nativeType(ComplexFloatType.class);
@@ -108,6 +123,7 @@ public abstract class AbstractFFTFilterF<I extends RealType<I>, O extends RealTy
 
 		filter.compute(input, kernel, output);
 	}
+	
 
 	/**
 	 * This function is called after the RAIs and FFTs are set up and create the
