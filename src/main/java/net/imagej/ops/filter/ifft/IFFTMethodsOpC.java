@@ -31,7 +31,9 @@ package net.imagej.ops.filter.ifft;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.chain.RAIs;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.fft2.FFTMethods;
 import net.imglib2.type.numeric.ComplexType;
@@ -61,6 +63,14 @@ public class IFFTMethodsOpC<C extends ComplexType<C>, T extends RealType<T>>
 	@Parameter
 	ThreadService ts;
 
+	private UnaryFunctionOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> copyOp;
+
+	@Override
+	public void initialize() {
+		super.initialize();
+		copyOp = RAIs.function(ops(), Ops.Copy.RAI.class, in());
+	}
+
 	/**
 	 * Compute an ND inverse FFT
 	 */
@@ -68,13 +78,14 @@ public class IFFTMethodsOpC<C extends ComplexType<C>, T extends RealType<T>>
 	public void compute(final RandomAccessibleInterval<C> input,
 		final RandomAccessibleInterval<T> output)
 	{
+		final RandomAccessibleInterval<C> temp = copyOp.calculate(input);
+
 		for (int d = input.numDimensions() - 1; d > 0; d--)
-			FFTMethods.complexToComplex(input, d, false, true, ts
+			FFTMethods.complexToComplex(temp, d, false, true, ts
 				.getExecutorService());
 
-		FFTMethods.complexToReal(input, output, FFTMethods
-			.unpaddingIntervalCentered(input, output), 0, true, ts
-				.getExecutorService());
+		FFTMethods.complexToReal(temp, output, FFTMethods.unpaddingIntervalCentered(
+			temp, output), 0, true, ts.getExecutorService());
 	}
 
 	/**
