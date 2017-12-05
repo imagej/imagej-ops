@@ -574,6 +574,32 @@ public class FilterNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	// -- frangiVesselness --
+
+	/**
+	 * Executes the "Frangi Vesselness" filter operation on the given arguments.
+	 * 
+	 * @param in - input image
+	 * @param out - output image
+	 * @param spacing - n-dimensional array indicating the physical distance
+	 *          between data points in the image
+	 * @param scale - the scale (number of pixels) over which the filter
+	 *          calculates. The smaller the value, the more sensitive the filter.
+	 */
+	@OpMethod(op = net.imagej.ops.filter.vesselness.DefaultFrangi.class)
+	public <T extends RealType<T>, U extends RealType<U>>
+		RandomAccessibleInterval<U> frangiVesselness(
+			final RandomAccessibleInterval<U> out,
+			final RandomAccessibleInterval<T> in, final double[] spacing,
+			final int scale)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<U> result =
+			(RandomAccessibleInterval<U>) ops().run(Ops.Filter.FrangiVesselness.class,
+				out, in, spacing, scale);
+		return result;
+	}
+
 	// -- gauss --
 
 	/** Executes the "gauss" operation on the given arguments. */
@@ -942,7 +968,7 @@ public class FilterNamespace extends AbstractNamespace {
 				outOfBoundsFactory);
 		return result;
 	}
-
+	
 	// -- Namespace methods --
 
 	@Override
