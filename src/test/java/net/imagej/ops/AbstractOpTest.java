@@ -44,6 +44,7 @@ import net.imglib2.FinalInterval;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessible;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
@@ -56,6 +57,7 @@ import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.util.Intervals;
+import net.imglib2.view.Views;
 
 import org.junit.After;
 import org.junit.Before;
@@ -237,6 +239,10 @@ public abstract class AbstractOpTest {
 			assertEquals(e.next(), a.next());
 		}
 		assertFalse("More elements than expected", a.hasNext());
+	}
+
+	public static <T> RandomAccessible<T> deinterval(RandomAccessibleInterval<T> input){
+		return Views.extendBorder(input);
 	}
 
 	public <T extends RealType<T>> boolean areCongruent(final IterableInterval<T> in, final RandomAccessible<T> out, final double epsilon){

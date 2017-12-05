@@ -29,12 +29,16 @@
 package net.imagej.ops.transform.translateView;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.RandomAccessible;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.util.Intervals;
+import net.imglib2.view.IntervalView;
 import net.imglib2.view.MixedTransformView;
 import net.imglib2.view.Views;
 
@@ -49,6 +53,7 @@ import org.junit.Test;
  * </p>
  *
  * @author Tim-Oliver Buchholz (University of Konstanz)
+ * @author Gabe Selzer
  */
 public class TranslateViewTest extends AbstractOpTest {
 
@@ -56,8 +61,9 @@ public class TranslateViewTest extends AbstractOpTest {
 	public void defaultTranslateTest() {
 		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
 
-		MixedTransformView<DoubleType> il2 = Views.translate((RandomAccessible<DoubleType>) img, 2, 5);
-		MixedTransformView<DoubleType> opr = ops.transform().translateView(img, 2, 5);
+		MixedTransformView<DoubleType> il2 = Views.translate( deinterval(img), 2, 5);
+		MixedTransformView<DoubleType> opr = ops.transform().translateView( deinterval(img), 2, 5);
+
 
 		for (int i = 0; i < il2.getTransformToSource().getMatrix().length; i++) {
 			for (int j = 0; j < il2.getTransformToSource().getMatrix()[i].length; j++) {
@@ -65,5 +71,22 @@ public class TranslateViewTest extends AbstractOpTest {
 						1e-10);
 			}
 		}
+	}
+	
+	@Test
+	public void testIntervalTranslate() {
+		Img<DoubleType> img = ArrayImgs.doubles(10,10);
+
+		IntervalView<DoubleType> expected = Views.translate(img, 2, 5);
+		IntervalView<DoubleType> actual = ops.transform().translateView(img, 2, 5);
+
+		for (int i = 0; i < ((MixedTransformView<DoubleType>) expected.getSource()).getTransformToSource().getMatrix().length; i++) {
+			for (int j = 0; j < ((MixedTransformView<DoubleType>) expected.getSource()).getTransformToSource().getMatrix()[i].length; j++) {
+				assertEquals(((MixedTransformView<DoubleType>) expected.getSource()).getTransformToSource().getMatrix()[i][j], ((MixedTransformView<DoubleType>) actual.getSource()).getTransformToSource().getMatrix()[i][j],
+						1e-10);
+			}
+		}
+		
+		assertTrue(Intervals.equals(expected, actual));
 	}
 }

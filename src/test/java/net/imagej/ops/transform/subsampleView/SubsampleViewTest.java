@@ -29,6 +29,7 @@
 package net.imagej.ops.transform.subsampleView;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
 
@@ -36,9 +37,14 @@ import net.imagej.ops.AbstractOpTest;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessible;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.util.Intervals;
+import net.imglib2.view.IntervalView;
+import net.imglib2.view.SubsampleIntervalView;
 import net.imglib2.view.SubsampleView;
 import net.imglib2.view.Views;
 
@@ -96,5 +102,51 @@ public class SubsampleViewTest extends AbstractOpTest {
 			oprRA.setPosition(il2C);
 			assertEquals(il2C.get().get(), oprRA.get().get(), 1e-10);
 		}
+	}
+	
+	@Test
+	public void testIntervalSubsample() {
+		Img<DoubleType> img = ArrayImgs.doubles(10, 10);
+		Random r = new Random();
+		for (DoubleType d : img) {
+			d.set(r.nextDouble());
+		}
+
+		SubsampleIntervalView<DoubleType> expected = Views.subsample((RandomAccessibleInterval<DoubleType>) img, 2);
+		SubsampleIntervalView<DoubleType> actual = (SubsampleIntervalView<DoubleType>) ops.transform().subsampleView((RandomAccessibleInterval<DoubleType>)img, 2);
+
+		Cursor<DoubleType> il2C = Views.interval(expected, new long[] { 0, 0 }, new long[] { 4, 4 }).localizingCursor();
+		RandomAccess<DoubleType> oprRA = actual.randomAccess();
+
+		while (il2C.hasNext()) {
+			il2C.next();
+			oprRA.setPosition(il2C);
+			assertEquals(il2C.get().get(), oprRA.get().get(), 1e-10);
+		}
+		
+		assertTrue(Intervals.equals(expected, actual));
+	}
+	
+	@Test
+	public void testIntervalSubsampleSteps() {
+		Img<DoubleType> img = ArrayImgs.doubles(10,10);
+		Random r = new Random();
+		for (DoubleType d : img) {
+			d.set(r.nextDouble());
+		}
+
+		SubsampleIntervalView<DoubleType> expected = Views.subsample((RandomAccessibleInterval<DoubleType>) img, 2, 1);
+		SubsampleIntervalView<DoubleType> actual = (SubsampleIntervalView<DoubleType>) ops.transform().subsampleView((RandomAccessibleInterval<DoubleType>)img, 2, 1);
+
+		Cursor<DoubleType> il2C = Views.interval(expected, new long[] { 0, 0 }, new long[] { 4, 9 }).localizingCursor();
+		RandomAccess<DoubleType> oprRA = actual.randomAccess();
+
+		while (il2C.hasNext()) {
+			il2C.next();
+			oprRA.setPosition(il2C);
+			assertEquals(il2C.get().get(), oprRA.get().get(), 1e-10);
+		}
+		
+		assertTrue(Intervals.equals(expected, actual));
 	}
 }

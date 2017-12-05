@@ -31,25 +31,18 @@ package net.imagej.ops.transform.scaleView;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Transform.ExtendView;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
-import net.imagej.ops.special.function.Functions;
-import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.FinalInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.RealRandomAccessible;
 import net.imglib2.interpolation.InterpolatorFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
-import net.imglib2.realtransform.AffineGet;
-import net.imglib2.realtransform.AffineRealRandomAccessible;
 import net.imglib2.realtransform.RealViews;
 import net.imglib2.realtransform.Scale;
 import net.imglib2.util.Intervals;
-import net.imglib2.view.ExtendedRandomAccessibleInterval;
 import net.imglib2.view.IntervalView;
-import net.imglib2.view.RandomAccessibleOnRealRandomAccessible;
+import net.imglib2.view.Views;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -62,7 +55,7 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn (University of Konstanz)
  * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Transform.ScaleView.class, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Transform.ScaleView.class, priority = Priority.HIGH_PRIORITY+1)
 public class DefaultScaleView<T> extends
 	AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Transform.ScaleView, Contingent
@@ -81,42 +74,18 @@ public class DefaultScaleView<T> extends
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBoundsFactory =
 		new OutOfBoundsMirrorFactory<>(OutOfBoundsMirrorFactory.Boundary.SINGLE);
 
-	private UnaryFunctionOp<RandomAccessible<T>, RealRandomAccessible<T>> interpolateOp;
-	private UnaryFunctionOp<RealRandomAccessible<T>, RandomAccessibleOnRealRandomAccessible<T>> rasterOp;
-	private UnaryFunctionOp<RandomAccessible<T>, IntervalView<T>> intervalOp;
-	private UnaryFunctionOp<RandomAccessibleInterval<T>, ExtendedRandomAccessibleInterval<T, RandomAccessibleInterval<T>>> extendOp;
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public void initialize() {
-		interpolateOp = (UnaryFunctionOp) Functions.unary(ops(),
-			Ops.Transform.InterpolateView.class, RealRandomAccessible.class,
-			RandomAccessible.class, interpolator);
-		rasterOp = (UnaryFunctionOp) Functions.unary(ops(),
-			Ops.Transform.RasterView.class,
-			RandomAccessibleOnRealRandomAccessible.class, RealRandomAccessible.class);
-		extendOp = (UnaryFunctionOp) Functions.unary(ops(), ExtendView.class, ExtendedRandomAccessibleInterval.class,
-				RandomAccessibleInterval.class, outOfBoundsFactory);
-
+	public RandomAccessibleInterval<T> calculate(RandomAccessibleInterval<T> input) {
 		final long[] newDims = Intervals.dimensionsAsLongArray(in());
 		for (int i = 0; i < Math.min(scaleFactors.length, in().numDimensions()); i++) {
 			newDims[i] = Math.round(in().dimension(i) * scaleFactors[i]);
 		}
-		intervalOp = (UnaryFunctionOp) Functions.unary(ops(),
-			Ops.Transform.IntervalView.class, IntervalView.class,
-			RandomAccessible.class, new FinalInterval(newDims));
-	}
 
-	@Override
-	public RandomAccessibleInterval<T> calculate(RandomAccessibleInterval<T> input) {
-		final RealRandomAccessible<T> interpolated = interpolateOp
-				.calculate(extendOp.calculate(input));
-		final AffineRealRandomAccessible<T, AffineGet> transformed = RealViews
-			.affineReal(interpolated, new Scale(scaleFactors));
-		final RandomAccessibleOnRealRandomAccessible<T> rasterized = rasterOp
-			.calculate(transformed);
+		IntervalView<T> interval = Views.interval(Views.raster(RealViews.affineReal(
+			Views.interpolate(Views.extendMirrorSingle(input), interpolator),
+			new Scale(scaleFactors))), new FinalInterval(newDims));
 
-		return intervalOp.calculate(rasterized);
+		return interval;
 	}
 
 	@Override
