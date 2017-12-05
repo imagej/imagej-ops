@@ -64,7 +64,6 @@ public class DefaultPadInputFFT<T extends ComplexType<T>, I extends RandomAccess
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf = null;
 
 	@Override
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initialize() {
 		super.initialize();
 
