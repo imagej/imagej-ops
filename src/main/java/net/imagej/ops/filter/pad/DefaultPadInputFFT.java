@@ -43,15 +43,12 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Op used to pad the image using the default FFT padding scheme
+ * Op used to pad the image using the default FFT padding scheme.
+ * <p>
+ * If fast is true, pad to next power of 2, else pad to next smooth number.
+ * </p>
  * 
- * if fast = true -> pad to next power of 2 if fast = false -> pad to next
- * smooth number
- * 
- * @author bnorthan
- * @param <T>
- * @param <I>
- * @param <O>
+ * @author Brian Northan
  */
 @Plugin(type = Ops.Filter.PadFFTInput.class, priority = Priority.HIGH_PRIORITY)
 public class DefaultPadInputFFT<T extends ComplexType<T>, I extends RandomAccessibleInterval<T>, O extends RandomAccessibleInterval<T>>
