@@ -35,6 +35,9 @@ import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
+import net.imagej.ops.create.kernelBiGauss.DefaultCreateKernel2ndDerivBiGauss;
+import net.imagej.ops.create.kernelBiGauss.DefaultCreateKernelBiGauss;
+import net.imagej.ops.create.kernelGabor.DefaultCreateKernelGabor;
 import net.imglib2.Dimensions;
 import net.imglib2.FinalDimensions;
 import net.imglib2.Interval;
@@ -483,7 +486,6 @@ public class CreateNamespace extends AbstractNamespace {
 	/**
 	 * Convenience wrapper to create an {@link Img} of type {@link DoubleType}
 	 * with an isotropic BiGauss kernel.
-	 * Similar to {@link #kernelBiGauss(double[], Integer, ComplexType)}.
 	 */
 	@OpMethod(
 		op = net.imagej.ops.create.kernelBiGauss.CreateKernelBiGaussDoubleType.class)
@@ -520,7 +522,6 @@ public class CreateNamespace extends AbstractNamespace {
 	/**
 	 * Convenience wrapper to create an {@link Img} of type {@link DoubleType}
 	 * with an isotropic 2nd derivative of BiGauss kernel.
-	 * Similar to {@link #kernel2ndDerivBiGauss(double[], Integer, ComplexType)}.
 	 */
 	@OpMethod(
 		op = net.imagej.ops.create.kernelBiGauss.CreateKernel2ndDerivBiGaussDoubleType.class)
@@ -559,7 +560,6 @@ public class CreateNamespace extends AbstractNamespace {
 	/**
 	 * Convenience wrapper to create an {@link Img} of type {@link FloatType}
 	 * with an isotropic Gabor kernel.
-	 * Similar to {@link #kernelGabor(double[], double[], ComplexType)}.
 	 */
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborIsotropic.class)
@@ -577,7 +577,6 @@ public class CreateNamespace extends AbstractNamespace {
 	/**
 	 * Convenience wrapper to create an {@link Img} of type {@link DoubleType}
 	 * with an isotropic Gabor kernel.
-	 * Similar to {@link #kernelGabor(double[], double[], ComplexType)}.
 	 */
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborIsotropicDoubleType.class)
@@ -595,7 +594,6 @@ public class CreateNamespace extends AbstractNamespace {
 	/**
 	 * Convenience wrapper to create an {@link Img} of type {@link ComplexFloatType}
 	 * with an isotropic Gabor kernel.
-	 * Similar to {@link #kernelGabor(double[], double[], ComplexType)}.
 	 */
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborIsotropic.class)
@@ -613,7 +611,6 @@ public class CreateNamespace extends AbstractNamespace {
 	/**
 	 * Convenience wrapper to create an {@link Img} of type {@link ComplexDoubleType}
 	 * with an isotropic Gabor kernel.
-	 * Similar to {@link #kernelGabor(double[], double[], ComplexType)}.
 	 */
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborIsotropicComplexDoubleType.class)
@@ -631,7 +628,6 @@ public class CreateNamespace extends AbstractNamespace {
 	/**
 	 * Convenience wrapper to create an {@link Img} of type outType
 	 * with an isotropic Gabor kernel.
-	 * Similar to {@link #kernelGabor(double[], double[], ComplexType)}.
 	 */
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborIsotropic.class)
@@ -650,7 +646,6 @@ public class CreateNamespace extends AbstractNamespace {
 	/**
 	 * Convenience wrapper to create an {@link Img} of type {@link FloatType}
 	 * with a Gabor kernel.
-	 * Similar to {@link #kernelGabor(double[], double[], ComplexType)}.
 	 */
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGabor.DefaultCreateKernelGabor.class)
@@ -668,7 +663,6 @@ public class CreateNamespace extends AbstractNamespace {
 	/**
 	 * Convenience wrapper to create an {@link Img} of type {@link DoubleType}
 	 * with a Gabor kernel.
-	 * Similar to {@link #kernelGabor(double[], double[], ComplexType)}.
 	 */
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborDoubleType.class)
@@ -686,7 +680,6 @@ public class CreateNamespace extends AbstractNamespace {
 	/**
 	 * Convenience wrapper to create an {@link Img} of type {@link ComplexFloatType}
 	 * with a Gabor kernel.
-	 * Similar to {@link #kernelGabor(double[], double[], ComplexType)}.
 	 */
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGabor.DefaultCreateKernelGabor.class)
@@ -704,7 +697,6 @@ public class CreateNamespace extends AbstractNamespace {
 	/**
 	 * Convenience wrapper to create an {@link Img} of type {@link ComplexDoubleType}
 	 * with a Gabor kernel.
-	 * Similar to {@link #kernelGabor(double[], double[], ComplexType)}.
 	 */
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborComplexDoubleType.class)
