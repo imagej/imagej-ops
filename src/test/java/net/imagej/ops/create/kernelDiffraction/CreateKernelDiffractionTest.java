@@ -1,0 +1,102 @@
+/*
+ * #%L
+ * ImageJ software for multidimensional image processing and analysis.
+ * %%
+ * Copyright (C) 2014 - 2017 Board of Regents of the University of
+ * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * %%
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * #L%
+ */
+
+package net.imagej.ops.create.kernelDiffraction;
+
+import static org.junit.Assert.assertArrayEquals;
+
+import net.imagej.ops.AbstractOpTest;
+import net.imglib2.Dimensions;
+import net.imglib2.FinalDimensions;
+import net.imglib2.img.Img;
+import net.imglib2.type.numeric.real.DoubleType;
+
+import org.junit.Test;
+
+/**
+ * Tests {@link DefaultCreateKernelGibsonLanni}.
+ * 
+ * @author Curtis Rueden
+ */
+public class CreateKernelDiffractionTest extends AbstractOpTest {
+
+	@Test
+	public void testKernelDiffraction() {
+		final Dimensions dims = new FinalDimensions(10, 10);
+		final double NA = 1.4; // numerical aperture
+		final double lambda = 610E-09; // wavelength
+		final double ns = 1.33; // specimen refractive index
+		final double ni = 1.5; // immersion refractive index, experimental
+		final double resLateral = 100E-9; // lateral pixel size
+		final double resAxial = 250E-9; // axial pixel size
+		final double pZ = 2000E-9D; // position of particle
+		final DoubleType type = new DoubleType(); // pixel type of created kernel
+
+		final Img<DoubleType> kernel = //
+			ops.create().kernelDiffraction(dims, NA, lambda, ns, ni, resLateral,
+				resAxial, pZ, type);
+
+		final double[] expected = { 0.015445077655132132, 0.022247387973940352,
+			0.022795684919971644, 0.02706367769772324, 0.03078774201673043,
+			0.03078774201673043, 0.02706367769772324, 0.022795684919971644,
+			0.022247387973940352, 0.015445077655132132, 0.022247387973940352,
+			0.023501764725544688, 0.04112435564602049, 0.06802755120595408,
+			0.08499878659046572, 0.08499878659046572, 0.06802755120595408,
+			0.04112435564602049, 0.023501764725544688, 0.022247387973940352,
+			0.022795684919971644, 0.04112435564602049, 0.08499878659046572,
+			0.11972287753527089, 0.1487050840261174, 0.1487050840261174,
+			0.11972287753527089, 0.08499878659046572, 0.04112435564602049,
+			0.022795684919971644, 0.02706367769772324, 0.06802755120595408,
+			0.11972287753527089, 0.23679311257787136, 0.4587761265326826,
+			0.4587761265326826, 0.23679311257787136, 0.11972287753527089,
+			0.06802755120595408, 0.02706367769772324, 0.03078774201673043,
+			0.08499878659046572, 0.1487050840261174, 0.4587761265326826, 1.0, 1.0,
+			0.4587761265326826, 0.1487050840261174, 0.08499878659046572,
+			0.03078774201673043, 0.03078774201673043, 0.08499878659046572,
+			0.1487050840261174, 0.4587761265326826, 1.0, 1.0, 0.4587761265326826,
+			0.1487050840261174, 0.08499878659046572, 0.03078774201673043,
+			0.02706367769772324, 0.06802755120595408, 0.11972287753527089,
+			0.23679311257787136, 0.4587761265326826, 0.4587761265326826,
+			0.23679311257787136, 0.11972287753527089, 0.06802755120595408,
+			0.02706367769772324, 0.022795684919971644, 0.04112435564602049,
+			0.08499878659046572, 0.11972287753527089, 0.1487050840261174,
+			0.1487050840261174, 0.11972287753527089, 0.08499878659046572,
+			0.04112435564602049, 0.022795684919971644, 0.022247387973940352,
+			0.023501764725544688, 0.04112435564602049, 0.06802755120595408,
+			0.08499878659046572, 0.08499878659046572, 0.06802755120595408,
+			0.04112435564602049, 0.023501764725544688, 0.022247387973940352,
+			0.015445077655132132, 0.022247387973940352, 0.022795684919971644,
+			0.02706367769772324, 0.03078774201673043, 0.03078774201673043,
+			0.02706367769772324, 0.022795684919971644, 0.022247387973940352,
+			0.015445077655132132 };
+
+		assertArrayEquals(expected, asArray(kernel), 0.0);
+	}
+}
