@@ -30,7 +30,6 @@
 package net.imagej.ops.morphology.thin;
 
 import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessible;
 import net.imglib2.type.logic.BitType;
 
 /**
@@ -67,14 +66,6 @@ public abstract class Abstract3x3NeighbourhoodThinning implements
 	protected Abstract3x3NeighbourhoodThinning(final boolean foreground) {
 		m_foreground = foreground;
 		m_background = !foreground;
-	}
-
-	@Override
-	public boolean removePixel(final long[] position,
-		final RandomAccessible<BitType> access, final int iteration)
-	{
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	/**
