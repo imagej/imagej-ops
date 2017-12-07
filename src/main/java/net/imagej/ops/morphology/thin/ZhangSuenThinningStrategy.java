@@ -93,9 +93,7 @@ public class ZhangSuenThinningStrategy extends
 		if ((iteration % 2) != 1) {
 			return evenIteration(vals);
 		}
-		else {
-			return oddIteration(vals);
-		}
+		return oddIteration(vals);
 
 	}
 
