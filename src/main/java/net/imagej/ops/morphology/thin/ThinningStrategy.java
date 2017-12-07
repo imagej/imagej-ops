@@ -46,7 +46,8 @@ public interface ThinningStrategy extends SingletonPlugin {
 	 * This method should determine whether to keep a foreground pixel or not.
 	 *
 	 * @param position Long Array containing the current position in the image.
-	 * @param access The image to thin.
+	 * @param accessible The image to thin.
+	 * @param iteration The iteration number.
 	 * @return True if pixel can be switched to background, false otherwise.
 	 */
 	public boolean removePixel(final long[] position,
