@@ -29,13 +29,16 @@
 
 package net.imagej.ops.morphology.thin;
 
-import net.imagej.ops.Ops;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
-import net.imglib2.*;
+import net.imglib2.Cursor;
+import net.imglib2.FinalDimensions;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessible;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.view.Views;
-import org.scijava.plugin.Plugin;
 
 /**
  * Thinning Operation
@@ -44,20 +47,20 @@ import org.scijava.plugin.Plugin;
  * @author Kyle Harrington, Beth Israel Deaconess Medical Center
  */
 public abstract class AbstractThin extends
-        AbstractUnaryHybridCF<RandomAccessibleInterval<BitType>, RandomAccessibleInterval<BitType>>
+	AbstractUnaryHybridCF<RandomAccessibleInterval<BitType>, RandomAccessibleInterval<BitType>>
 {
 
 	protected ThinningStrategy m_strategy;
 
-    @Override
-    public RandomAccessibleInterval<BitType> createOutput(
-            final RandomAccessibleInterval<BitType> input)
-    {
-        final long[] dims = new long[input.numDimensions()];
-        input.dimensions(dims);
-        final FinalDimensions dimensions = new FinalDimensions(dims);
-        return ops().create().img(dimensions, new BitType());
-    }
+	@Override
+	public RandomAccessibleInterval<BitType> createOutput(
+		final RandomAccessibleInterval<BitType> input)
+	{
+		final long[] dims = new long[input.numDimensions()];
+		input.dimensions(dims);
+		final FinalDimensions dimensions = new FinalDimensions(dims);
+		return ops().create().img(dimensions, new BitType());
+	}
 
 	private void copy(final RandomAccessibleInterval<BitType> source,
 		final RandomAccessibleInterval<BitType> target)
@@ -103,9 +106,9 @@ public abstract class AbstractThin extends
 		// Extend the buffer in order to be able to iterate care-free later.
 		final RandomAccessible<BitType> ra1 = Views.extendBorder(buffer);
 		final RandomAccessible<BitType> ra2 = Views.extendBorder(output);
-		RandomAccessible<BitType> currRa = Views.extendBorder(input); // Used only
-																	// in first
-																	// iteration.
+
+		// Used only in first iteration.
+		RandomAccessible<BitType> currRa = Views.extendBorder(input);
 
 		// Create cursors.
 		final Cursor<BitType> firstCursor = it1.localizingCursor();

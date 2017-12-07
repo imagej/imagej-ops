@@ -36,7 +36,7 @@ import org.scijava.plugin.SingletonPlugin;
 
 /**
  * An interface for a simple thinning strategy employed by the thinningOp.
- * 
+ *
  * @author Andreas Burger, University of Konstanz
  */
 
@@ -71,7 +71,7 @@ public interface ThinningStrategy extends SingletonPlugin {
 
 	/**
 	 * Returns a seperate copy of this strategy.
-	 * 
+	 *
 	 * @return A new instance of this strategy with the same values.
 	 */
 	public ThinningStrategy copy();

@@ -38,7 +38,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Implementation of the thinning algorithm proposed by T. Y. Zhang and C. Y.
  * Suen.
- * 
+ *
  * @author Andreas Burger, University of Konstanz
  */
 @Plugin(type = ThinningStrategy.class, name = "ZhangSuen")

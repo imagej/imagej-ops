@@ -37,11 +37,13 @@ import org.scijava.plugin.Plugin;
 
 /**
  * A Class implementing a standard morphological thinning.
- * 
+ *
  * @author Andreas Burger, University of Konstanz
  */
 @Plugin(type = ThinningStrategy.class, name = "Morphological")
-public class MorphologicalThinningStrategy extends Abstract3x3NeighbourhoodThinning {
+public class MorphologicalThinningStrategy extends
+	Abstract3x3NeighbourhoodThinning
+{
 
 	public MorphologicalThinningStrategy() {
 		super();

@@ -30,11 +30,7 @@
 package net.imagej.ops.morphology.thin;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
-import net.imglib2.*;
-import net.imglib2.img.Img;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.view.Views;
+
 import org.scijava.plugin.Plugin;
 
 /**
@@ -44,10 +40,11 @@ import org.scijava.plugin.Plugin;
  * @author Kyle Harrington, Beth Israel Deaconess Medical Center
  */
 @Plugin(type = Ops.Morphology.ThinHilditch.class)
-public class ThinHilditch extends AbstractThin
-		implements Ops.Morphology.ThinHilditch
+public class ThinHilditch extends AbstractThin implements
+	Ops.Morphology.ThinHilditch
 {
 
+	@Override
 	public void initialize() {
 		m_strategy = new HilditchThinningStrategy();
 	}

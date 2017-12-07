@@ -29,34 +29,20 @@
 
 package net.imagej.ops.morphology.thin;
 
-import io.scif.img.IO;
+import static org.junit.Assert.assertEquals;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.features.AbstractFeatureTest;
-import net.imagej.ops.morphology.open.ListOpen;
 import net.imglib2.Cursor;
-import net.imglib2.FinalDimensions;
-import net.imglib2.IterableInterval;
-import net.imglib2.algorithm.morphology.Opening;
-import net.imglib2.algorithm.neighborhood.DiamondShape;
-import net.imglib2.algorithm.neighborhood.HorizontalLineShape;
-import net.imglib2.algorithm.neighborhood.RectangleShape;
-import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.img.Img;
 import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.integer.ByteType;
-import net.imglib2.type.numeric.integer.UnsignedByteType;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-
 /**
  * Tests for {@link net.imagej.ops.Ops.Morphology.Thin}
- * 
+ *
  * @author Kyle Harrington
  */
 public class ThinningTest extends AbstractOpTest {
@@ -65,43 +51,48 @@ public class ThinningTest extends AbstractOpTest {
 
 	@Before
 	public void initialize() {
-        in = ops.convert().bit( openFloatImg(AbstractFeatureTest.class,"3d_geometric_features_testlabel.tif") );
+		in = ops.convert().bit(openFloatImg(AbstractFeatureTest.class,
+			"3d_geometric_features_testlabel.tif"));
 	}
 
 	@Test
 	public void testThinGuoHall() {
 		final Img<BitType> out1 = (Img<BitType>) ops.run(ThinGuoHall.class,
-                Img.class, in);
-        final Img<BitType> out2 = (Img<BitType>) ops.run(ThinHilditch.class,
-                Img.class, in);
-        final Img<BitType> out3 = (Img<BitType>) ops.run(ThinMorphological.class,
-                Img.class, in);
-        final Img<BitType> out4 = (Img<BitType>) ops.run(ThinZhangSuen.class,
-                Img.class, in);
+			Img.class, in);
+		final Img<BitType> out2 = (Img<BitType>) ops.run(ThinHilditch.class,
+			Img.class, in);
+		final Img<BitType> out3 = (Img<BitType>) ops.run(ThinMorphological.class,
+			Img.class, in);
+		final Img<BitType> out4 = (Img<BitType>) ops.run(ThinZhangSuen.class,
+			Img.class, in);
 
-        Img<BitType> target1 = ops.convert().bit(openFloatImg(AbstractThin.class, "result_guoHall.tif"));
-        Cursor<BitType> c1 = out1.cursor();
-        Cursor<BitType> c2 = target1.cursor();
-        while (c1.hasNext())
-            assertEquals(c1.next().get(), c2.next().get());
+		final Img<BitType> target1 = ops.convert().bit(openFloatImg(
+			AbstractThin.class, "result_guoHall.tif"));
+		Cursor<BitType> c1 = out1.cursor();
+		Cursor<BitType> c2 = target1.cursor();
+		while (c1.hasNext())
+			assertEquals(c1.next().get(), c2.next().get());
 
-        Img<BitType> target2 = ops.convert().bit(openFloatImg(AbstractThin.class, "result_hilditch.tif"));
-        c1 = out1.cursor();
-        c2 = target1.cursor();
-        while (c1.hasNext())
-            assertEquals(c1.next().get(), c2.next().get());
+		final Img<BitType> target2 = ops.convert().bit(openFloatImg(
+			AbstractThin.class, "result_hilditch.tif"));
+		c1 = out1.cursor();
+		c2 = target1.cursor();
+		while (c1.hasNext())
+			assertEquals(c1.next().get(), c2.next().get());
 
-        Img<BitType> target3 = ops.convert().bit(openFloatImg(AbstractThin.class, "result_morphological.tif"));
-        c1 = out1.cursor();
-        c2 = target1.cursor();
-        while (c1.hasNext())
-            assertEquals(c1.next().get(), c2.next().get());
+		final Img<BitType> target3 = ops.convert().bit(openFloatImg(
+			AbstractThin.class, "result_morphological.tif"));
+		c1 = out1.cursor();
+		c2 = target1.cursor();
+		while (c1.hasNext())
+			assertEquals(c1.next().get(), c2.next().get());
 
-        Img<BitType> target4 = ops.convert().bit(openFloatImg(AbstractThin.class, "result_zhangSuen.tif"));
-        c1 = out1.cursor();
-        c2 = target1.cursor();
-        while (c1.hasNext())
-            assertEquals(c1.next().get(), c2.next().get());
+		final Img<BitType> target4 = ops.convert().bit(openFloatImg(
+			AbstractThin.class, "result_zhangSuen.tif"));
+		c1 = out1.cursor();
+		c2 = target1.cursor();
+		while (c1.hasNext())
+			assertEquals(c1.next().get(), c2.next().get());
 	}
 
 }

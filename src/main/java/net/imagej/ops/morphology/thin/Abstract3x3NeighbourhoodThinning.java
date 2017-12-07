@@ -125,7 +125,7 @@ public abstract class Abstract3x3NeighbourhoodThinning implements
 	/**
 	 * Returns the amount of switches from foreground to background occurring in
 	 * the circle around vals[1]
-	 * 
+	 *
 	 * @param vals Boolean Array holding the neighbourhood.
 	 * @return Amount of true-false switches in the neighbourhood.
 	 */

@@ -30,15 +30,7 @@
 package net.imagej.ops.morphology.thin;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
-import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
-import net.imglib2.*;
-import net.imglib2.img.Img;
-import net.imglib2.type.BooleanType;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.view.Views;
-import org.scijava.plugin.Parameter;
+
 import org.scijava.plugin.Plugin;
 
 /**
@@ -48,12 +40,13 @@ import org.scijava.plugin.Plugin;
  * @author Kyle Harrington, Beth Israel Deaconess Medical Center
  */
 @Plugin(type = Ops.Morphology.ThinGuoHall.class)
-public class ThinGuoHall extends AbstractThin
-	implements Ops.Morphology.ThinGuoHall
+public class ThinGuoHall extends AbstractThin implements
+	Ops.Morphology.ThinGuoHall
 {
 
-    public void initialize() {
-        m_strategy = new GuoHallThinningStrategy();
-    }
+	@Override
+	public void initialize() {
+		m_strategy = new GuoHallThinningStrategy();
+	}
 
 }

@@ -37,7 +37,7 @@ import org.scijava.plugin.Plugin;
 
 /**
  * Represents the thinning algorithm proposed by Z. Guo and R. W. Hall.
- * 
+ *
  * @author Andreas Burger, University of Konstanz
  */
 @Plugin(type = ThinningStrategy.class, name = "GuoHall")
