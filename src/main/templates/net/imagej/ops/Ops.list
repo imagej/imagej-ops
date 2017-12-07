@@ -75,6 +75,7 @@ namespaces = ```
 		[name: "kernelLog",                      iface: "KernelLog"],
 		[name: "kernelBiGauss",                  iface: "KernelBiGauss"],
 		[name: "kernel2ndDerivBiGauss",          iface: "Kernel2ndDerivBiGauss"],
+		[name: "kernelDiffraction",              iface: "KernelDiffraction"],
 		[name: "kernelGabor",                    iface: "KernelGabor"],
 		[name: "kernelSobel",                    iface: "KernelSobel"],
 		[name: "labelingMapping",                iface: "LabelingMapping"],

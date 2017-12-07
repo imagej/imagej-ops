@@ -50,10 +50,10 @@ import net.imglib2.roi.labeling.LabelingMapping;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.IntegerType;
-import net.imglib2.type.numeric.real.FloatType;
-import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.type.numeric.complex.ComplexFloatType;
 import net.imglib2.type.numeric.complex.ComplexDoubleType;
+import net.imglib2.type.numeric.complex.ComplexFloatType;
+import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.type.numeric.real.FloatType;
 
 import org.scijava.plugin.Plugin;
 
@@ -478,6 +478,22 @@ public class CreateNamespace extends AbstractNamespace {
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(Ops.Create.KernelLog.class, sigma,
 				outType);
+		return result;
+	}
+	
+	// -- kernelDiffraction --
+
+	@OpMethod(
+		op = net.imagej.ops.create.kernelDiffraction.DefaultCreateKernelGibsonLanni.class)
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelDiffraction(
+		final Dimensions in, final double NA, final double lambda, final double ns,
+		final double ni, final double resLateral, final double resAxial, double pZ,
+		final T type)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			net.imagej.ops.Ops.Create.KernelDiffraction.class, in, NA, lambda, ns, ni,
+			resLateral, resAxial, pZ, type);
 		return result;
 	}
 

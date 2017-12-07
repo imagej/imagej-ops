@@ -38,6 +38,7 @@ import io.scif.img.IO;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.stream.StreamSupport;
 
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
@@ -255,6 +256,11 @@ public abstract class AbstractOpTest {
 			if(Math.abs(cin.get().getRealDouble() - raOut.get().getRealDouble()) > epsilon) return false;
 		}
 		return true;
+	}
+
+	public <T extends RealType<T>> double[] asArray(final Iterable<T> image) {
+		return StreamSupport.stream(image.spliterator(), false).mapToDouble(t -> t
+			.getRealDouble()).toArray();
 	}
 
 	public static class NoOp extends AbstractOp {
