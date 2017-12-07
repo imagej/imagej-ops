@@ -51,6 +51,8 @@ import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.view.composite.CompositeIntervalView;
+import net.imglib2.view.composite.RealComposite;
 
 import org.scijava.plugin.Plugin;
 
@@ -673,6 +675,19 @@ public class FilterNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	// -- hessian --
+
+	@OpMethod(op = net.imagej.ops.filter.hessian.HessianRAI.class)
+	public <T extends RealType<T>> CompositeIntervalView<T, RealComposite<T>> hessian(
+		final RandomAccessibleInterval<T> in)
+	{
+		@SuppressWarnings("unchecked")
+		final CompositeIntervalView<T, RealComposite<T>> result =
+			(CompositeIntervalView<T, RealComposite<T>>) ops().run(
+				net.imagej.ops.filter.hessian.HessianRAI.class, in);
+		return result;
+	}
+
 	// -- ifft --
 
 	/** Executes the "ifft" operation on the given arguments. */
@@ -927,6 +942,35 @@ public class FilterNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	// -- partial derivative --
+
+	/** Executes the "partial derivative" operation on the given arguments */
+	@OpMethod(op = net.imagej.ops.filter.derivative.PartialDerivativeRAI.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> partialDerivative(final RandomAccessibleInterval<T> in, final int dimension) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(net.imagej.ops.filter.derivative.PartialDerivativeRAI.class, in, dimension);
+		return result;
+	}
+
+	/** Executes the "partial derivative" operation on the given arguments */
+	@OpMethod(op = net.imagej.ops.filter.derivative.PartialDerivativeRAI.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> partialDerivative(final RandomAccessibleInterval<T> out, final RandomAccessibleInterval<T> in, final int dimension) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(net.imagej.ops.filter.derivative.PartialDerivativeRAI.class, out, in, dimension);
+		return result;
+	}
+
+	/** Executes the "partial derivative" operation on all dimensions */
+	@OpMethod(op = net.imagej.ops.filter.derivative.PartialDerivativesRAI.class)
+	public <T extends RealType<T>> CompositeIntervalView<T, RealComposite<T>> allPartialDerivatives(final RandomAccessibleInterval<T> in) {
+		@SuppressWarnings("unchecked")
+		final CompositeIntervalView<T, RealComposite<T>> result =
+			(CompositeIntervalView<T, RealComposite<T>>) ops().run(net.imagej.ops.filter.derivative.PartialDerivativesRAI.class, in);
+		return result;
+	}
+
 	/** Executes the "sigma" filter operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.sigma.DefaultSigmaFilter.class)
 	public <T extends RealType<T>> IterableInterval<T> sigma(final IterableInterval<T> out,
@@ -946,6 +990,31 @@ public class FilterNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(Ops.Filter.Sigma.class, out, in, shape,
 				outOfBoundsFactory, range, minPixelFraction);
+		return result;
+	}
+
+	// -- Sobel
+
+    @OpMethod(op = net.imagej.ops.filter.sobel.SobelRAI.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> sobel(
+		final RandomAccessibleInterval<T> in)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.filter.sobel.SobelRAI.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.filter.sobel.SobelRAI.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> sobel(
+		final RandomAccessibleInterval<T> out,
+		final RandomAccessibleInterval<T> in)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.filter.sobel.SobelRAI.class, out, in);
 		return result;
 	}
 

@@ -730,6 +730,16 @@ public class CreateNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	// -- kernelSobel --
+
+	@OpMethod(op = net.imagej.ops.create.kernelSobel.CreateKernelSobel.class)
+	public <T extends ComplexType<T>> RandomAccessibleInterval<T> kernelSobel(final T outType) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops().run(
+			net.imagej.ops.create.kernelSobel.CreateKernelSobel.class, outType);
+		return result;
+	}
+
 	// -- labelingMapping --
 
 	@OpMethod(
