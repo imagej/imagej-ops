@@ -50,10 +50,10 @@ import net.imglib2.roi.labeling.LabelingMapping;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.IntegerType;
-import net.imglib2.type.numeric.real.FloatType;
-import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.type.numeric.complex.ComplexFloatType;
 import net.imglib2.type.numeric.complex.ComplexDoubleType;
+import net.imglib2.type.numeric.complex.ComplexFloatType;
+import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.type.numeric.real.FloatType;
 
 import org.scijava.plugin.Plugin;
 
