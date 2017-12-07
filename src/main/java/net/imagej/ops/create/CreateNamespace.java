@@ -485,31 +485,15 @@ public class CreateNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.create.kernelDiffraction.DefaultCreateKernelGibsonLanni.class)
-	public <T extends ComplexType<T> & NativeType<T>> RandomAccessibleInterval<T>
-		kernelDiffraction(final Dimensions in, final double NA, final double lambda,
-			final double ns, final double ni, final double resLateral,
-			final double resAxial, double pZ)
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelDiffraction(
+		final Dimensions in, final double NA, final double lambda, final double ns,
+		final double ni, final double resLateral, final double resAxial, double pZ,
+		final T type)
 	{
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.create.kernelDiffraction.DefaultCreateKernelGibsonLanni.class,
-				in, NA, lambda, ns, ni, resLateral, resAxial, pZ);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.create.kernelDiffraction.DefaultCreateKernelGibsonLanni.class)
-	public <T extends ComplexType<T> & NativeType<T>> RandomAccessibleInterval<T>
-		kernelDiffraction(final Dimensions in, final double NA, final double lambda,
-			final double ns, final double ni, final double resLateral,
-			final double resAxial, double pZ, final ComplexType<T> type)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.create.kernelDiffraction.DefaultCreateKernelGibsonLanni.class,
-				in, NA, lambda, ns, ni, resLateral, resAxial, pZ, type);
+		final Img<T> result = (Img<T>) ops().run(
+			net.imagej.ops.Ops.Create.KernelDiffraction.class, in, NA, lambda, ns, ni,
+			resLateral, resAxial, pZ, type);
 		return result;
 	}
 

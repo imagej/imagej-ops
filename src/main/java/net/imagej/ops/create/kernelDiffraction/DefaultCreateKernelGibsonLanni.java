@@ -31,14 +31,13 @@ package net.imagej.ops.create.kernelDiffraction;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.BinaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
-import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.Dimensions;
 import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.Img;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
-import net.imglib2.type.numeric.real.FloatType;
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.DecompositionSolver;
@@ -49,7 +48,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Creates a Gibson Lanni Kernel
+ * Creates a Gibson Lanni Kernel.
  *
  * @author Jizhou Li
  * @author Brian Northan
@@ -57,11 +56,11 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.KernelDiffraction.class)
 public class DefaultCreateKernelGibsonLanni<T extends ComplexType<T> & NativeType<T>>
-	extends AbstractUnaryFunctionOp<Dimensions, RandomAccessibleInterval<T>>
-	implements Ops.Create.KernelDiffraction
+	extends AbstractUnaryFunctionOp<Dimensions, Img<T>> implements
+	Ops.Create.KernelDiffraction
 {
 
-	private UnaryFunctionOp<Dimensions, RandomAccessibleInterval<T>> createOp;
+	private BinaryFunctionOp<Dimensions, T, Img<T>> createOp;
 
 	// //////// physical parameters /////////////
 
@@ -86,8 +85,12 @@ public class DefaultCreateKernelGibsonLanni<T extends ComplexType<T> & NativeTyp
 	@Parameter
 	private double pZ = 2000E-9D; // position of particle
 
-	@Parameter(required = false)
-	private T type = null;
+	@Parameter
+	// HACK: Must declare class as ComplexType rather than T,
+	// to avoid current Ops generics matching limitations.
+	// Without this, the ConvertService returns null when
+	// attempting to convert an input type instance to T.
+	private ComplexType<T> type; // pixel type of created kernel
 
 	private double ng0 = 1.5; // coverslip refractive index, design value
 	private double ng = 1.5; // coverslip refractive index, experimental
@@ -106,18 +109,12 @@ public class DefaultCreateKernelGibsonLanni<T extends ComplexType<T> & NativeTyp
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-
-		if (type == null) {
-			type = (T) new FloatType();
-		}
-
-		// createOp = RAIs.function(ops(), Ops.Copy.RAI.class, in());
-		createOp = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
-			RandomAccessibleInterval.class, Dimensions.class, type);
+		createOp = (BinaryFunctionOp) Functions.binary(ops(), Ops.Create.Img.class,
+			Img.class, Dimensions.class, NativeType.class);
 	}
 
 	@Override
-	public RandomAccessibleInterval<T> calculate(Dimensions size) {
+	public Img<T> calculate(Dimensions size) {
 		int nx = -1; // psf size
 		int ny = -1;
 		int nz = -1;
@@ -281,7 +278,8 @@ public class DefaultCreateKernelGibsonLanni<T extends ComplexType<T> & NativeTyp
 		}
 
 		// create an RAI to store the PSF
-		final RandomAccessibleInterval<T> psf3d = createOp.calculate(size);
+		@SuppressWarnings("unchecked")
+		final Img<T> psf3d = createOp.calculate(size, (T) type);
 
 		// use a RandomAccess to access pixels
 		RandomAccess<T> ra = psf3d.randomAccess();
