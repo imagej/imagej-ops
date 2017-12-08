@@ -29,17 +29,21 @@
 
 package net.imagej.ops.image;
 
+import java.util.function.DoubleBinaryOperator;
+
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
 import net.imagej.ops.image.cooccurrenceMatrix.MatrixOrientation;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
 
@@ -57,7 +61,7 @@ public class ImageNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.image.ascii.DefaultASCII.class)
 	public <T extends RealType<T>> String ascii(final IterableInterval<T> image) {
 		final String result = (String) ops().run(
-				net.imagej.ops.Ops.Image.ASCII.class, image);
+			net.imagej.ops.Ops.Image.ASCII.class, image);
 		return result;
 	}
 
@@ -67,7 +71,7 @@ public class ImageNamespace extends AbstractNamespace {
 		final T min)
 	{
 		final String result = (String) ops().run(
-				net.imagej.ops.Ops.Image.ASCII.class, image, min);
+			net.imagej.ops.Ops.Image.ASCII.class, image, min);
 		return result;
 	}
 
@@ -77,47 +81,57 @@ public class ImageNamespace extends AbstractNamespace {
 		final T min, final T max)
 	{
 		final String result = (String) ops().run(
-				net.imagej.ops.Ops.Image.ASCII.class, image, min, max);
+			net.imagej.ops.Ops.Image.ASCII.class, image, min, max);
 		return result;
 	}
 
 	// -- cooccurrence matrix --
 
 	@OpMethod(ops = {
-			net.imagej.ops.image.cooccurrenceMatrix.CooccurrenceMatrix3D.class,
-			net.imagej.ops.image.cooccurrenceMatrix.CooccurrenceMatrix2D.class })
+		net.imagej.ops.image.cooccurrenceMatrix.CooccurrenceMatrix3D.class,
+		net.imagej.ops.image.cooccurrenceMatrix.CooccurrenceMatrix2D.class })
 	public <T extends RealType<T>> double[][] cooccurrenceMatrix(
-			final IterableInterval<T> in, final int nrGreyLevels,
-			final int distance, final MatrixOrientation orientation) {
+		final IterableInterval<T> in, final int nrGreyLevels, final int distance,
+		final MatrixOrientation orientation)
+	{
 		final double[][] result = (double[][]) ops().run(
-				Ops.Image.CooccurrenceMatrix.class, in, nrGreyLevels, distance,
-				orientation);
+			Ops.Image.CooccurrenceMatrix.class, in, nrGreyLevels, distance,
+			orientation);
 		return result;
 	}
 
 	// -- distance transform --
 
 	/** Executes the "distancetransform" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.image.distancetransform.DefaultDistanceTransform.class,
-			net.imagej.ops.image.distancetransform.DistanceTransform2D.class,
-			net.imagej.ops.image.distancetransform.DistanceTransform3D.class })
-	public <B extends BooleanType<B>, T extends RealType<T>> RandomAccessibleInterval<T> distancetransform(
-			final RandomAccessibleInterval<B> in, final RandomAccessibleInterval<T> out) {
+	@OpMethod(ops = {
+		net.imagej.ops.image.distancetransform.DefaultDistanceTransform.class,
+		net.imagej.ops.image.distancetransform.DistanceTransform2D.class,
+		net.imagej.ops.image.distancetransform.DistanceTransform3D.class })
+	public <B extends BooleanType<B>, T extends RealType<T>>
+		RandomAccessibleInterval<T> distancetransform(
+			final RandomAccessibleInterval<B> in,
+			final RandomAccessibleInterval<T> out)
+	{
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
-				.run(Ops.Image.DistanceTransform.class, in, out);
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(Ops.Image.DistanceTransform.class,
+				in, out);
 		return result;
 	}
-	
+
 	/** Executes the "distancetransform" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.image.distancetransform.DefaultDistanceTransform.class,
-			net.imagej.ops.image.distancetransform.DistanceTransform2D.class,
-			net.imagej.ops.image.distancetransform.DistanceTransform3D.class })
-	public <B extends BooleanType<B>, T extends RealType<T>> RandomAccessibleInterval<T> distancetransform(
-			final RandomAccessibleInterval<B> in) {
+	@OpMethod(ops = {
+		net.imagej.ops.image.distancetransform.DefaultDistanceTransform.class,
+		net.imagej.ops.image.distancetransform.DistanceTransform2D.class,
+		net.imagej.ops.image.distancetransform.DistanceTransform3D.class })
+	public <B extends BooleanType<B>, T extends RealType<T>>
+		RandomAccessibleInterval<T> distancetransform(
+			final RandomAccessibleInterval<B> in)
+	{
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
-				.run(Ops.Image.DistanceTransform.class, in);
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(Ops.Image.DistanceTransform.class,
+				in);
 		return result;
 	}
 
@@ -152,17 +166,18 @@ public class ImageNamespace extends AbstractNamespace {
 	public <T extends RealType<T>> IterableInterval<T> equation(final String in) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-				net.imagej.ops.Ops.Image.Equation.class, in);
+			net.imagej.ops.Ops.Image.Equation.class, in);
 		return result;
 	}
 
 	/** Executes the "equation" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.equation.DefaultEquation.class)
 	public <T extends RealType<T>> IterableInterval<T> equation(
-			final IterableInterval<T> out, final String in) {
+		final IterableInterval<T> out, final String in)
+	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-				net.imagej.ops.Ops.Image.Equation.class, out, in);
+			net.imagej.ops.Ops.Image.Equation.class, out, in);
 		return result;
 	}
 
@@ -183,25 +198,27 @@ public class ImageNamespace extends AbstractNamespace {
 
 	/** Executes the "histogram" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.histogram.HistogramCreate.class)
-	public <T extends RealType<T>> Histogram1d<T> histogram(final Iterable<T> in) {
+	public <T extends RealType<T>> Histogram1d<T> histogram(
+		final Iterable<T> in)
+	{
 		@SuppressWarnings("unchecked")
 		final Histogram1d<T> result = (Histogram1d<T>) ops().run(
-				net.imagej.ops.Ops.Image.Histogram.class, in);
+			net.imagej.ops.Ops.Image.Histogram.class, in);
 		return result;
 	}
 
 	/** Executes the "histogram" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.histogram.HistogramCreate.class)
-	public <T extends RealType<T>> Histogram1d<T> histogram(
-			final Iterable<T> in, final int numBins) {
+	public <T extends RealType<T>> Histogram1d<T> histogram(final Iterable<T> in,
+		final int numBins)
+	{
 		@SuppressWarnings("unchecked")
 		final Histogram1d<T> result = (Histogram1d<T>) ops().run(
-				net.imagej.ops.Ops.Image.Histogram.class, in,
-				numBins);
+			net.imagej.ops.Ops.Image.Histogram.class, in, numBins);
 		return result;
 	}
 
-	//-- integral --
+	// -- integral --
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@OpMethod(op = net.imagej.ops.image.integral.DefaultIntegralImg.class)
@@ -222,8 +239,7 @@ public class ImageNamespace extends AbstractNamespace {
 		final RandomAccessibleInterval<T> in)
 	{
 		final RandomAccessibleInterval<RealType> result =
-			(RandomAccessibleInterval) ops().run(
-				Ops.Image.Integral.class, in);
+			(RandomAccessibleInterval) ops().run(Ops.Image.Integral.class, in);
 		return result;
 	}
 
@@ -253,171 +269,209 @@ public class ImageNamespace extends AbstractNamespace {
 
 	/** Executes the "invert" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.invert.InvertII.class)
-	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O> invert(
-			final IterableInterval<O> out, final IterableInterval<I> in) {
+	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O>
+		invert(final IterableInterval<O> out, final IterableInterval<I> in)
+	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
-				net.imagej.ops.Ops.Image.Invert.class, out,
-				in);
+			net.imagej.ops.Ops.Image.Invert.class, out, in);
 		return result;
 	}
 
 	// -- normalize --
 
 	@OpMethod(op = net.imagej.ops.image.normalize.NormalizeIIComputer.class)
-	public
-		<T extends RealType<T>> IterableInterval<T> normalize(
-			final IterableInterval<T> out, final IterableInterval<T> in)
+	public <T extends RealType<T>> IterableInterval<T> normalize(
+		final IterableInterval<T> out, final IterableInterval<T> in)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result =
-			(IterableInterval<T>) ops()
-				.run(net.imagej.ops.Ops.Image.Normalize.class,
-					out, in);
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.Ops.Image.Normalize.class, out, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.image.normalize.NormalizeIIComputer.class)
-	public
-		<T extends RealType<T>> IterableInterval<T> normalize(
-			final IterableInterval<T> out, final IterableInterval<T> in,
-			final T sourceMin)
+	public <T extends RealType<T>> IterableInterval<T> normalize(
+		final IterableInterval<T> out, final IterableInterval<T> in,
+		final T sourceMin)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result =
-			(IterableInterval<T>) ops().run(
-				net.imagej.ops.Ops.Image.Normalize.class, out,
-				in, sourceMin);
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.Ops.Image.Normalize.class, out, in, sourceMin);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.image.normalize.NormalizeIIComputer.class)
-	public
-		<T extends RealType<T>> IterableInterval<T> normalize(
-			final IterableInterval<T> out, final IterableInterval<T> in,
-			final T sourceMin, final T sourceMax)
+	public <T extends RealType<T>> IterableInterval<T> normalize(
+		final IterableInterval<T> out, final IterableInterval<T> in,
+		final T sourceMin, final T sourceMax)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result =
-			(IterableInterval<T>) ops().run(
-				net.imagej.ops.Ops.Image.Normalize.class, out,
-				in, sourceMin, sourceMax);
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.Ops.Image.Normalize.class, out, in, sourceMin, sourceMax);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.image.normalize.NormalizeIIComputer.class)
-	public
-		<T extends RealType<T>> IterableInterval<T> normalize(
-			final IterableInterval<T> out, final IterableInterval<T> in,
-			final T sourceMin, final T sourceMax, final T targetMin)
+	public <T extends RealType<T>> IterableInterval<T> normalize(
+		final IterableInterval<T> out, final IterableInterval<T> in,
+		final T sourceMin, final T sourceMax, final T targetMin)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result =
-			(IterableInterval<T>) ops().run(
-				net.imagej.ops.Ops.Image.Normalize.class, out,
-				in, sourceMin, sourceMax, targetMin);
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.Ops.Image.Normalize.class, out, in, sourceMin, sourceMax,
+			targetMin);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.image.normalize.NormalizeIIComputer.class)
-	public
-		<T extends RealType<T>>
-		IterableInterval<T>
-		normalize(final IterableInterval<T> out, final IterableInterval<T> in,
-			final T sourceMin, final T sourceMax, final T targetMin, final T targetMax)
+	public <T extends RealType<T>> IterableInterval<T> normalize(
+		final IterableInterval<T> out, final IterableInterval<T> in,
+		final T sourceMin, final T sourceMax, final T targetMin,
+		final T targetMax)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result =
-			(IterableInterval<T>) ops().run(
-				net.imagej.ops.Ops.Image.Normalize.class, out,
-				in, sourceMin, sourceMax, targetMin, targetMax);
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.Ops.Image.Normalize.class, out, in, sourceMin, sourceMax,
+			targetMin, targetMax);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.image.normalize.NormalizeIIFunction.class)
+	public <T extends RealType<T>> IterableInterval<T> normalize(
+		final IterableInterval<T> in)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.Ops.Image.Normalize.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.image.normalize.NormalizeIIFunction.class)
+	public <T extends RealType<T>> IterableInterval<T> normalize(
+		final IterableInterval<T> in, final T sourceMin)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.Ops.Image.Normalize.class, in, sourceMin);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.image.normalize.NormalizeIIFunction.class)
+	public <T extends RealType<T>> IterableInterval<T> normalize(
+		final IterableInterval<T> in, final T sourceMin, final T sourceMax)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.Ops.Image.Normalize.class, in, sourceMin, sourceMax);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.image.normalize.NormalizeIIFunction.class)
+	public <T extends RealType<T>> IterableInterval<T> normalize(
+		final IterableInterval<T> in, final T sourceMin, final T sourceMax,
+		final T targetMin)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.Ops.Image.Normalize.class, in, sourceMin, sourceMax,
+			targetMin);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.image.normalize.NormalizeIIFunction.class)
+	public <T extends RealType<T>> IterableInterval<T> normalize(
+		final IterableInterval<T> in, final T sourceMin, final T sourceMax,
+		final T targetMin, final T targetMax)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.Ops.Image.Normalize.class, in, sourceMin, sourceMax,
+			targetMin, targetMax);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.image.normalize.NormalizeIIFunction.class)
+	public <T extends RealType<T>> IterableInterval<T> normalize(
+		final IterableInterval<T> in, final T sourceMin, final T sourceMax,
+		final T targetMin, final T targetMax, final boolean isLazy)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.Ops.Image.Normalize.class, in, sourceMin, sourceMax,
+			targetMin, targetMax, isLazy);
+		return result;
+	}
+
+	// -- calibrated equation --
+	@OpMethod(op = net.imagej.ops.image.equation.DefaultCalibratedEquation.class)
+	public <T extends RealType<T>> IterableInterval<T> equation(
+		final IterableInterval<T> out, final UnaryFunctionOp<double[], Double> in)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.image.equation.DefaultCalibratedEquation.class, out, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.image.equation.DefaultCalibratedEquation.class)
+	public <T extends RealType<T>> IterableInterval<T> equation(
+		final IterableInterval<T> out, final UnaryFunctionOp<double[], Double> in,
+		final double... origin)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.image.equation.DefaultCalibratedEquation.class, out, in,
+			origin);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.image.equation.DefaultCalibratedEquation.class)
+	public <T extends RealType<T>> IterableInterval<T> equation(
+		final IterableInterval<T> out, final UnaryFunctionOp<double[], Double> in,
+		final double[] origin, final double... calibration)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.image.equation.DefaultCalibratedEquation.class, out, in,
+			origin, calibration);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.image.normalize.NormalizeIIFunction.class)
-	public
-		<T extends RealType<T>> IterableInterval<T> normalize(
-			final IterableInterval<T> in)
+		op = net.imagej.ops.image.equation.DefaultXYCalibratedEquation.class)
+	public <T extends RealType<T>> IterableInterval<T> equation(
+		final IterableInterval<T> out, final DoubleBinaryOperator in)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result =
-			(IterableInterval<T>) ops().run(
-				net.imagej.ops.Ops.Image.Normalize.class,
-				in);
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.image.equation.DefaultXYCalibratedEquation.class, out, in);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.image.normalize.NormalizeIIFunction.class)
-	public
-		<T extends RealType<T>> IterableInterval<T> normalize(
-			final IterableInterval<T> in, final T sourceMin)
+		op = net.imagej.ops.image.equation.DefaultXYCalibratedEquation.class)
+	public <T extends RealType<T>> IterableInterval<T> equation(
+		final IterableInterval<T> out, final DoubleBinaryOperator in,
+		final double... origin)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result =
-			(IterableInterval<T>) ops().run(
-				net.imagej.ops.Ops.Image.Normalize.class,
-				in, sourceMin);
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.image.equation.DefaultXYCalibratedEquation.class, out, in,
+			origin);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.image.normalize.NormalizeIIFunction.class)
-	public
-		<T extends RealType<T>> IterableInterval<T> normalize(
-			final IterableInterval<T> in, final T sourceMin, final T sourceMax)
+		op = net.imagej.ops.image.equation.DefaultXYCalibratedEquation.class)
+	public <T extends RealType<T>> IterableInterval<T> equation(
+		final IterableInterval<T> out, final DoubleBinaryOperator in,
+		final double[] origin, final double... calibration)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result =
-			(IterableInterval<T>) ops().run(
-				net.imagej.ops.Ops.Image.Normalize.class,
-				in, sourceMin, sourceMax);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.image.normalize.NormalizeIIFunction.class)
-	public
-		<T extends RealType<T>> IterableInterval<T> normalize(
-			final IterableInterval<T> in, final T sourceMin, final T sourceMax,
-			final T targetMin)
-	{
-		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result =
-			(IterableInterval<T>) ops().run(
-				net.imagej.ops.Ops.Image.Normalize.class,
-				in, sourceMin, sourceMax, targetMin);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.image.normalize.NormalizeIIFunction.class)
-	public
-		<T extends RealType<T>> IterableInterval<T> normalize(
-			final IterableInterval<T> in, final T sourceMin, final T sourceMax,
-			final T targetMin, final T targetMax)
-	{
-		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result =
-			(IterableInterval<T>) ops().run(
-				net.imagej.ops.Ops.Image.Normalize.class,
-				in, sourceMin, sourceMax, targetMin, targetMax);
-		return result;
-	}
-
-	@OpMethod(
-		op = net.imagej.ops.image.normalize.NormalizeIIFunction.class)
-	public
-		<T extends RealType<T>> IterableInterval<T> normalize(
-			final IterableInterval<T> in, final T sourceMin, final T sourceMax,
-			final T targetMin, final T targetMax, final boolean isLazy)
-	{
-		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result =
-			(IterableInterval<T>) ops().run(
-				net.imagej.ops.Ops.Image.Normalize.class,
-				in, sourceMin, sourceMax, targetMin, targetMax, isLazy);
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.image.equation.DefaultXYCalibratedEquation.class, out, in,
+			origin, calibration);
 		return result;
 	}
 
