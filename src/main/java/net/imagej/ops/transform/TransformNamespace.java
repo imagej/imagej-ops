@@ -50,7 +50,7 @@ import net.imglib2.RealRandomAccessible;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.interpolation.InterpolatorFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
-import net.imglib2.realtransform.RealTransform;
+import net.imglib2.realtransform.InvertibleRealTransform;
 import net.imglib2.transform.integer.shear.InverseShearTransform;
 import net.imglib2.transform.integer.shear.ShearTransform;
 import net.imglib2.type.Type;
@@ -1205,6 +1205,61 @@ public class TransformNamespace extends AbstractNamespace {
 	{
 		return (RandomAccessibleInterval<T>) ops().run(
 			ConcatenateViewWithAccessMode.class, source, concatenationAxis, mode);
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.transform.realTransform.DefaultTransformView.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> realTransform(
+		final RandomAccessibleInterval<T> in,
+		final InvertibleRealTransform transform)
+	{
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.transform.realTransform.DefaultTransformView.class, in,
+				transform);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.transform.realTransform.DefaultTransformView.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> realTransform(
+		final RandomAccessibleInterval<T> in,
+		final InvertibleRealTransform transform, final Interval outputInterval)
+	{
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.transform.realTransform.DefaultTransformView.class, in,
+				transform, outputInterval);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.transform.realTransform.DefaultTransformView.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> realTransform(
+		final RandomAccessibleInterval<T> in,
+		final InvertibleRealTransform transform, final Interval outputInterval,
+		final InterpolatorFactory<T, RandomAccessible<T>> interpolator)
+	{
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.transform.realTransform.DefaultTransformView.class, in,
+				transform, outputInterval, interpolator);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.transform.realTransform.DefaultTransformView.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> realTransform(
+		final RandomAccessibleInterval<T> in,
+		final InvertibleRealTransform transform, final Interval outputInterval,
+		final InterpolatorFactory<T, RandomAccessible<T>> interpolator,
+		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBoundsFactory)
+	{
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.transform.realTransform.DefaultTransformView.class, in,
+				transform, outputInterval, interpolator, outOfBoundsFactory);
+		return result;
 	}
 
 }
