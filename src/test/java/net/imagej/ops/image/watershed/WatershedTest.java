@@ -61,7 +61,7 @@ public class WatershedTest extends AbstractOpTest {
 	@Test
 	public void test() {
 		// load test image
-		Img<FloatType> watershedTestImg = openFloatImg(WatershedTest.class, "WatershedTestImage.png");
+		Img<FloatType> watershedTestImg = openFloatImg(WatershedTest.class, "watershed_test_image.png");
 
 		// threshold it
 		RandomAccessibleInterval<BitType> thresholdedImg = ops.create().img(watershedTestImg, new BitType());
@@ -198,13 +198,9 @@ public class WatershedTest extends AbstractOpTest {
 		assertEquals(in.dimension(0), out.dimension(0));
 		assertEquals(in.dimension(1), out.dimension(1));
 		if (smallMask) {
-				assertEquals(17 + (withWatersheds ? 1 : 0), labelSet.size());
+			assertEquals(3 + (withWatersheds ? 1 : 0), labelSet.size());
 		} else {
-			if (useEighConnect) {
-				assertEquals(42 + (withWatersheds ? 1 : 0), labelSet.size());
-			} else {
-				assertEquals(44 + (withWatersheds ? 1 : 0), labelSet.size());
-			}
+			assertEquals(10 + (withWatersheds ? 1 : 0), labelSet.size());
 		}
 	}
 

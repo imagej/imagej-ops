@@ -58,7 +58,7 @@ public class WatershedBinaryTest extends AbstractOpTest {
 	@Test
 	public void test() {
 		// load test image
-		Img<FloatType> watershedTestImg = openFloatImg(WatershedTest.class, "WatershedTestImage.png");
+		Img<FloatType> watershedTestImg = openFloatImg(WatershedTest.class, "watershed_test_image.png");
 
 		// threshold it
 		RandomAccessibleInterval<BitType> thresholdedImg = ops.create().img(watershedTestImg, new BitType());
