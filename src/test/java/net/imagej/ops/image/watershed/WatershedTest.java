@@ -37,8 +37,13 @@ import java.util.Set;
 import org.junit.Test;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imglib2.Cursor;
+import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImgs;
+import net.imglib2.roi.IterableRegion;
+import net.imglib2.roi.Regions;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelingType;
 import net.imglib2.type.logic.BitType;
@@ -53,7 +58,6 @@ import net.imglib2.view.Views;
  **/
 public class WatershedTest extends AbstractOpTest {
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void test() {
 		// load test image
@@ -71,21 +75,137 @@ public class WatershedTest extends AbstractOpTest {
 		ops.image().invert(Views.iterable(invertedDistMap), Views.iterable(distMap));
 		final RandomAccessibleInterval<FloatType> gauss = ops.filter().gauss(invertedDistMap, 3, 3);
 
-		// compute result
-		ImgLabeling<Integer, IntType> out = (ImgLabeling<Integer, IntType>) ops.run(Watershed.class, null, gauss, true,
-				thresholdedImg);
+		testWithoutMask(gauss);
+
+		testWithMask(gauss);
+	}
+
+	@SuppressWarnings("unchecked")
+	private void testWithoutMask(final RandomAccessibleInterval<FloatType> in) {
+		// create mask which is 1 everywhere
+		long[] dims = new long[in.numDimensions()];
+		in.dimensions(dims);
+		Img<BitType> mask = ArrayImgs.bits(dims);
+		for (BitType b : mask) {
+			b.setOne();
+		}
+
+		/*
+		 * use 8-connected neighborhood
+		 */
+		// compute result without watersheds
+		ImgLabeling<Integer, IntType> out = (ImgLabeling<Integer, IntType>) ops.run(Watershed.class, null, in, true,
+				false);
+
+		assertResults(in, out, mask, true, false, false);
+
+		// compute result with watersheds
+		ImgLabeling<Integer, IntType> out2 = (ImgLabeling<Integer, IntType>) ops.run(Watershed.class, null, in, true,
+				true);
+
+		assertResults(in, out2, mask, true, true, false);
+
+		/*
+		 * use 4-connected neighborhood
+		 */
+		// compute result without watersheds
+		ImgLabeling<Integer, IntType> out3 = (ImgLabeling<Integer, IntType>) ops.run(Watershed.class, null, in, false,
+				false);
+
+		assertResults(in, out3, mask, false, false, false);
+
+		// compute result with watersheds
+		ImgLabeling<Integer, IntType> out4 = (ImgLabeling<Integer, IntType>) ops.run(Watershed.class, null, in, false,
+				true);
+
+		assertResults(in, out4, mask, false, true, false);
+	}
+
+	@SuppressWarnings("unchecked")
+	private void testWithMask(final RandomAccessibleInterval<FloatType> in) {
+		// create mask which is 1 everywhere
+		long[] dims = new long[in.numDimensions()];
+		in.dimensions(dims);
+		Img<BitType> mask = ArrayImgs.bits(dims);
+		RandomAccess<BitType> raMask = mask.randomAccess();
+		for (BitType b : mask) {
+			b.setZero();
+		}
+		for (int x = 0; x < dims[0] / 2; x++) {
+			for (int y = 0; y < dims[1] / 2; y++) {
+				raMask.setPosition(new int[] { x, y });
+				raMask.get().setOne();
+			}
+		}
+
+		/*
+		 * use 8-connected neighborhood
+		 */
+		// compute result without watersheds
+		ImgLabeling<Integer, IntType> out = (ImgLabeling<Integer, IntType>) ops.run(Watershed.class, null, in, true,
+				false, mask);
+
+		assertResults(in, out, mask, true, false, true);
+
+		// compute result with watersheds
+		ImgLabeling<Integer, IntType> out2 = (ImgLabeling<Integer, IntType>) ops.run(Watershed.class, null, in, true,
+				true, mask);
+
+		assertResults(in, out2, mask, true, true, true);
+
+		/*
+		 * use 4-connected neighborhood
+		 */
+		// compute result without watersheds
+		ImgLabeling<Integer, IntType> out3 = (ImgLabeling<Integer, IntType>) ops.run(Watershed.class, null, in, false,
+				false, mask);
+
+		assertResults(in, out3, mask, false, false, true);
+
+		// compute result with watersheds
+		ImgLabeling<Integer, IntType> out4 = (ImgLabeling<Integer, IntType>) ops.run(Watershed.class, null, in, false,
+				true, mask);
+
+		assertResults(in, out4, mask, false, true, true);
+	}
+
+	private void assertResults(final RandomAccessibleInterval<FloatType> in, final ImgLabeling<Integer, IntType> out,
+			final RandomAccessibleInterval<BitType> mask, final boolean useEighConnect, final boolean withWatersheds,
+			final boolean smallMask) {
+
+		final Cursor<LabelingType<Integer>> curOut = out.cursor();
+		final RandomAccess<BitType> raMask = mask.randomAccess();
+		while (curOut.hasNext()) {
+			curOut.fwd();
+			raMask.setPosition(curOut);
+			if (raMask.get().get()) {
+				assertEquals(true, curOut.get().size() == 0 || curOut.get().size() == 1);
+			} else {
+				assertEquals(true, curOut.get().isEmpty());
+			}
+		}
+		// Sample the output image based on the mask
+		IterableRegion<BitType> regions = Regions.iterable(mask);
 
 		// count labels
-		Set<Integer> labels = new HashSet<>();
-		for (LabelingType<Integer> pixel : Views.iterable(out)) {
-			labels.addAll(pixel);
+		Set<Integer> labelSet = new HashSet<>();
+		for (LabelingType<Integer> pixel : Regions.sample(regions, out)) {
+			labelSet.addAll(pixel);
 		}
 
 		// assert equals
-		assertEquals(out.numDimensions(), watershedTestImg.numDimensions());
-		assertEquals(out.dimension(0), watershedTestImg.dimension(0));
-		assertEquals(out.dimension(1), watershedTestImg.dimension(1));
-		assertEquals(labels.size(), 42);
+		assertEquals(in.numDimensions(), out.numDimensions());
+		assertEquals(in.dimension(0), out.dimension(0));
+		assertEquals(in.dimension(1), out.dimension(1));
+		if (smallMask) {
+				assertEquals(17 + (withWatersheds ? 1 : 0), labelSet.size());
+		} else {
+			if (useEighConnect) {
+				assertEquals(42 + (withWatersheds ? 1 : 0), labelSet.size());
+			} else {
+				assertEquals(44 + (withWatersheds ? 1 : 0), labelSet.size());
+			}
+		}
 	}
 
 }

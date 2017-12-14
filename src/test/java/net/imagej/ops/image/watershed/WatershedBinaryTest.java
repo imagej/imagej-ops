@@ -31,18 +31,18 @@ package net.imagej.ops.image.watershed;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Random;
 
 import org.junit.Test;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imglib2.Cursor;
+import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelingType;
 import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.IntType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.view.Views;
@@ -52,12 +52,11 @@ import net.imglib2.view.Views;
  * 
  * @author Simon Schmid (University of Konstanz)
  **/
-public class WatershedBinaryTest<T extends RealType<T>> extends AbstractOpTest {
+public class WatershedBinaryTest extends AbstractOpTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
 	public void test() {
-
 		// load test image
 		Img<FloatType> watershedTestImg = openFloatImg(WatershedTest.class, "WatershedTestImage.png");
 
@@ -66,21 +65,59 @@ public class WatershedBinaryTest<T extends RealType<T>> extends AbstractOpTest {
 		ops.threshold().apply(Views.flatIterable(thresholdedImg), Views.flatIterable(watershedTestImg),
 				new FloatType(1));
 
-		// compute result
-		ImgLabeling<Integer, IntType> out = (ImgLabeling<Integer, IntType>) ops.run(WatershedBinary.class,
-				thresholdedImg, true, new double[]{3, 3});
+		// compute inverted distance transform and smooth it with gaussian
+		// filtering
+		final RandomAccessibleInterval<FloatType> distMap = ops.image().distancetransform(thresholdedImg);
+		final RandomAccessibleInterval<FloatType> invertedDistMap = ops.create().img(distMap, new FloatType());
+		ops.image().invert(Views.iterable(invertedDistMap), Views.iterable(distMap));
 
-		// count labels
-		Set<Integer> labels = new HashSet<>();
-		for (LabelingType<Integer> pixel : Views.iterable(out)) {
-			labels.addAll(pixel);
+		double[] sigma = { 3.0, 3.0 };
+		final RandomAccessibleInterval<FloatType> gauss = ops.filter().gauss(invertedDistMap, sigma[0], sigma[1]);
+
+		// run randomly only one configuration to save execution time
+		int nextInt = new Random().nextInt(3);
+		if (nextInt == 0) {
+			// compute result
+			final ImgLabeling<Integer, IntType> out1 = (ImgLabeling<Integer, IntType>) ops.run(WatershedBinary.class,
+					thresholdedImg, true, false, sigma);
+
+			final ImgLabeling<Integer, IntType> expOut1 = (ImgLabeling<Integer, IntType>) ops.run(Watershed.class, null,
+					gauss, true, false, thresholdedImg);
+
+			assertResults(expOut1, out1);
+		} else if (nextInt == 1) {
+			// compute result
+			final ImgLabeling<Integer, IntType> out2 = (ImgLabeling<Integer, IntType>) ops.run(WatershedBinary.class,
+					thresholdedImg, true, true, sigma);
+
+			final ImgLabeling<Integer, IntType> expOut2 = (ImgLabeling<Integer, IntType>) ops.run(Watershed.class, null,
+					gauss, true, true, thresholdedImg);
+
+			assertResults(expOut2, out2);
+		} else {
+			// compute result
+			final ImgLabeling<Integer, IntType> out3 = (ImgLabeling<Integer, IntType>) ops.run(WatershedBinary.class,
+					thresholdedImg, false, true, sigma);
+
+			final ImgLabeling<Integer, IntType> expOut3 = (ImgLabeling<Integer, IntType>) ops.run(Watershed.class, null,
+					gauss, false, true, thresholdedImg);
+
+			assertResults(expOut3, out3);
 		}
 
-		// assert equals
-		assertEquals(out.numDimensions(), watershedTestImg.numDimensions());
-		assertEquals(out.dimension(0), watershedTestImg.dimension(0));
-		assertEquals(out.dimension(1), watershedTestImg.dimension(1));
-		assertEquals(labels.size(), 42);
 	}
 
+	private void assertResults(final ImgLabeling<Integer, IntType> expOut, final ImgLabeling<Integer, IntType> out) {
+		Cursor<LabelingType<Integer>> expOutCursor = expOut.cursor();
+		RandomAccess<LabelingType<Integer>> raOut = out.randomAccess();
+
+		while (expOutCursor.hasNext()) {
+			expOutCursor.fwd();
+			raOut.setPosition(expOutCursor);
+			assertEquals(expOutCursor.get().size(), raOut.get().size());
+			if (expOutCursor.get().size() > 0)
+				assertEquals(expOutCursor.get().iterator().next(), raOut.get().iterator().next());
+		}
+
+	}
 }

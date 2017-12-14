@@ -34,6 +34,9 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.create.imgLabeling.CreateImgLabelingFromInterval;
@@ -49,6 +52,7 @@ import net.imglib2.algorithm.neighborhood.DiamondShape;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.algorithm.neighborhood.Shape;
+import net.imglib2.outofbounds.OutOfBounds;
 import net.imglib2.roi.Regions;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelingType;
@@ -57,26 +61,34 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.IntType;
 import net.imglib2.util.IntervalIndexer;
 import net.imglib2.util.Intervals;
+import net.imglib2.view.ExtendedRandomAccessibleInterval;
 import net.imglib2.view.Views;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 /**
+ * <p>
  * The Watershed algorithm segments and labels a grayscale image analogous to a
  * heightmap. In short, a drop of water following the gradient of an image flows
  * along a path to finally reach a local minimum.
- *
+ * </p>
+ * <p>
  * Lee Vincent, Pierre Soille, Watersheds in digital spaces: An efficient
  * algorithm based on immersion simulations, IEEE Trans. Pattern Anal. Machine
  * Intell., 13(6) 583-598 (1991)
- *
+ * </p>
+ * <p>
  * Input is a grayscale image with arbitrary number of dimensions, defining the
  * heightmap. It needs to be defined whether a neighborhood with eight- or
  * four-connectivity (respective to 2D) is used. A binary image can be set as
- * mask which defines the area where computation shall be done.
- *
+ * mask which defines the area where computation shall be done. If desired, the
+ * watersheds are drawn and labeled as 0. Otherwise the watersheds will be
+ * labeled as one of their neighbors.
+ * </p>
+ * <p>
  * Output is a labeling of the different catchment basins.
+ * </p>
+ *
+ * @param <B> a {@link BooleanType}
+ * @param <T> a {@link RealType}
  *
  * @author Simon Schmid (University of Konstanz)
  */
@@ -89,14 +101,27 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 	private UnaryFunctionOp<FinalInterval, ImgLabeling> createOp;
 
 	@Parameter(required = true)
-	private boolean eightConnectivity;
+	private boolean useEightConnectivity;
+
+	@Parameter(required = true)
+	private boolean drawWatersheds;
 
 	@Parameter(required = false)
 	private RandomAccessibleInterval<B> mask;
 
+	/** Default label for watershed */
+	private static final int WSHED = -1;
+
+	/** Default label for initialization */
+	private static final int INIT = -2;
+
+	/** Default label for mask */
+	private static final int MASK = -3;
+
 	@Override
 	public void compute(final RandomAccessibleInterval<T> in, final ImgLabeling<Integer, IntType> out) {
 		final RandomAccess<T> raIn = in.randomAccess();
+
 		RandomAccess<B> raMask = null;
 		if (mask != null) {
 			raMask = mask.randomAccess();
@@ -129,14 +154,14 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 
 		// lab and dist store the values calculated after each phase
 		final RandomAccessibleInterval<IntType> lab = ops().create().img(in, new IntType());
-		final RandomAccess<IntType> raLab = lab.randomAccess();
+		// extend border to be able to do a quick check, if a voxel is inside
+		final ExtendedRandomAccessibleInterval<IntType, RandomAccessibleInterval<IntType>> labExt = Views
+				.extendBorder(lab);
+		final OutOfBounds<IntType> raLab = labExt.randomAccess();
 		final RandomAccessibleInterval<IntType> dist = ops().create().img(in, new IntType());
 		final RandomAccess<IntType> raDist = dist.randomAccess();
 
 		// initial values
-		final int MASK = -2;
-		final int WSHED = 0;
-		final int INIT = -1;
 		for (final IntType pixel : Views.flatIterable(lab)) {
 			pixel.set(INIT);
 		}
@@ -146,7 +171,7 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 
 		// RandomAccess for Neighborhoods
 		final Shape shape;
-		if (eightConnectivity) {
+		if (useEightConnectivity) {
 			shape = new RectangleShape(1, true);
 		} else {
 			shape = new DiamondShape(1);
@@ -189,8 +214,8 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 
 				while (neighborHood.hasNext()) {
 					neighborHood.fwd();
-					if (Intervals.contains(in, neighborHood)) {
-						raLab.setPosition(neighborHood);
+					raLab.setPosition(neighborHood);
+					if (!raLab.isOutOfBounds()) {
 						final int f = raLab.get().get();
 						if ((f > 0) || (f == WSHED)) {
 							raDist.setPosition(pos);
@@ -233,8 +258,8 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 				while (neighborHood.hasNext()) {
 					neighborHood.fwd();
 					neighborHood.localize(posNeighbor);
-					if (Intervals.contains(in, neighborHood)) {
-						raLab.setPosition(posNeighbor);
+					raLab.setPosition(posNeighbor);
+					if (!raLab.isOutOfBounds()) {
 						raDist.setPosition(posNeighbor);
 						final int labq = raLab.get().get();
 						final int distq = raDist.get().get();
@@ -293,9 +318,9 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 						while (neighborHood.hasNext()) {
 							neighborHood.fwd();
 							neighborHood.localize(posNeighbor);
-							if (Intervals.contains(in, neighborHood)) {
+							raLab.setPosition(posNeighbor);
+							if (!raLab.isOutOfBounds()) {
 								final long r = IntervalIndexer.positionToIndex(posNeighbor, dimensSizes);
-								raLab.setPosition(posNeighbor);
 								if (raLab.get().get() == MASK) {
 									fifo.add(r);
 									raLab.get().set(current_label);
@@ -315,7 +340,7 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 		}
 
 		/*
-		 * Set Output
+		 * Draw output and remove as the case may be the watersheds
 		 */
 		final Cursor<LabelingType<Integer>> cursorOut = out.cursor();
 		while (cursorOut.hasNext()) {
@@ -331,22 +356,22 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 			if (!maskValue) {
 				cursorOut.get().clear();
 			} else {
-				if (raLab.get().get() == WSHED) {
+				if (!drawWatersheds && raLab.get().get() == WSHED) {
 					raNeighbor.setPosition(cursorOut);
 					final Cursor<T> neighborHood = raNeighbor.get().cursor();
-					int newLab = 0;
-					while (neighborHood.hasNext()) {
-						neighborHood.fwd();
-						raLab.setPosition(neighborHood);
-						if (Intervals.contains(in, neighborHood)) {
-							newLab = raLab.get().get();
-							if (newLab != 0) {
-								break;
-							}
-						}
+					int newLab = WSHED;
+                    while (neighborHood.hasNext()) {
+                            neighborHood.fwd();
+                            raLab.setPosition(neighborHood);
+                            if (!raLab.isOutOfBounds()) {
+                                    newLab = raLab.get().get();
+                                    if (newLab > WSHED) {
+                                            break;
+                                    }
+                            }
 
-					}
-					if (newLab <= 0) {
+                    }
+                    if (newLab == WSHED) {
 						cursorOut.get().clear();
 					} else {
 						cursorOut.get().add(newLab);
@@ -354,6 +379,21 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 				} else {
 					cursorOut.get().add(raLab.get().get());
 				}
+			}
+		}
+
+		/*
+		 * Merge already present labels before calculation of watershed
+		 */
+		if (out() != null) {
+			final Cursor<LabelingType<Integer>> cursor = out().cursor();
+			final RandomAccess<LabelingType<Integer>> raOut = out.randomAccess();
+			while (cursor.hasNext()) {
+				cursor.fwd();
+				raOut.setPosition(cursor);
+				final List<Integer> labels = new ArrayList<>();
+				cursor.get().iterator().forEachRemaining(labels::add);
+				raOut.get().addAll(labels);
 			}
 		}
 	}

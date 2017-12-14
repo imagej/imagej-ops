@@ -30,9 +30,17 @@
 package net.imagej.ops.image.watershed;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
@@ -43,6 +51,7 @@ import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.IterableInterval;
+import net.imglib2.Point;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
@@ -50,42 +59,45 @@ import net.imglib2.algorithm.neighborhood.DiamondShape;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.algorithm.neighborhood.Shape;
+import net.imglib2.outofbounds.OutOfBounds;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.roi.Regions;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelingType;
 import net.imglib2.type.BooleanType;
+import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.IntType;
 import net.imglib2.util.IntervalIndexer;
-import net.imglib2.util.Intervals;
+import net.imglib2.view.ExtendedRandomAccessibleInterval;
 import net.imglib2.view.Views;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
  * The Watershed algorithm segments and labels a grayscale image analogous to a
  * heightmap. In short, a drop of water following the gradient of an image flows
  * along a path to finally reach a local minimum.
  * <p>
- * Lee Vincent, Pierre Soille, Watersheds in digital spaces: An efficient
- * algorithm based on immersion simulations, IEEE Trans. Pattern Anal. Machine
- * Intell., 13(6) 583-598 (1991)
- *</p>
+ * Beucher, Serge, and Fernand Meyer. "The morphological approach to
+ * segmentation: the watershed transformation." Optical Engineering-New
+ * York-Marcel Dekker Incorporated- 34 (1992): 433-433.
+ * </p>
  * <p>
  * Input is a grayscale image with arbitrary number of dimensions, defining the
  * heightmap, and labeling image defining where the seeds, i.e. the minima are.
  * It needs to be defined whether a neighborhood with eight- or
  * four-connectivity (respective to 2D) is used. A binary image can be set as
- * mask which defines the area where computation shall be done.
+ * mask which defines the area where computation shall be done. If desired, the
+ * watersheds are drawn and labeled as 0. Otherwise the watersheds will be
+ * labeled as one of their neighbors.
  * </p>
  * <p>
  * Output is a labeling of the different catchment basins.
  * </p>
- * @author Simon Schmid (University of Konstanz)
  * 
- * TODO Javadoc for types
+ * @param <B> a {@link BooleanType}
+ * @param <T> a {@link RealType}
+ * 
+ * @author Simon Schmid (University of Konstanz)
  */
 @Plugin(type = Ops.Image.Watershed.class)
 public class WatershedSeeded<B extends BooleanType<B>, T extends RealType<T>>
@@ -99,186 +111,222 @@ public class WatershedSeeded<B extends BooleanType<B>, T extends RealType<T>>
 	private ImgLabeling<Integer, IntType> seeds;
 
 	@Parameter(required = true)
-	private boolean eightConnectivity;
+	private boolean useEightConnectivity;
 
 	@Parameter(required = true)
-	private boolean withWatersheds;
+	private boolean drawWatersheds;
 
 	@Parameter(required = false)
 	private RandomAccessibleInterval<B> mask;
 
-	/** Default label for watersheds */
-	private final static int WSHED = -1;
+	/** Default label for watershed, input seeds must have a greater label*/
+	private static final int WSHED = -1;
 
-	/** Default dummy label */
-	private final static int DUMMY = -2;
+	/** Default label for initialization, must be lower than WSHED */
+	private static final int INIT = -2;
 
+	/** Default label for in queue, must be lower than WSHED */
+	private static final int INQUEUE = -3;
+
+	/** Used by {@link WatershedVoxel} */
+	private static final AtomicLong seq = new AtomicLong();
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public void compute(final RandomAccessibleInterval<T> in, final ImgLabeling<Integer, IntType> out) {
-		RandomAccess<B> raMask = null;
-		if (mask != null) {
-			raMask = mask.randomAccess();
+		final RandomAccess<T> raIn = in.randomAccess();
+
+		// extend border to be able to do a quick check, if a voxel is inside
+		final ExtendedRandomAccessibleInterval<LabelingType<Integer>, ImgLabeling<Integer, IntType>> outExt = Views
+				.extendBorder(out);
+		final OutOfBounds<LabelingType<Integer>> raOut = outExt.randomAccess();
+
+		// if no mask provided, set the mask to the whole image
+		if (mask == null) {
+			mask = (RandomAccessibleInterval<B>) ops().create().img(in, new BitType());
+			for (B b : Views.flatIterable(mask)) {
+				b.set(true);
+			}
 		}
-		// RandomAccess for Neighborhoods
+
+		// initialize output labels
+		final Cursor<B> maskCursor = Views.flatIterable(mask).cursor();
+		while (maskCursor.hasNext()) {
+			maskCursor.fwd();
+			if (maskCursor.get().get()) {
+				raOut.setPosition(maskCursor);
+				raOut.get().clear();
+				raOut.get().add(INIT);
+			}
+		}
+
+		// RandomAccess for Mask, Seeds and Neighborhoods
+		final RandomAccess<B> raMask = mask.randomAccess();
+		final RandomAccess<LabelingType<Integer>> raSeeds = seeds.randomAccess();
 		final Shape shape;
-		if (eightConnectivity) {
+		if (useEightConnectivity) {
 			shape = new RectangleShape(1, true);
 		} else {
 			shape = new DiamondShape(1);
 		}
 		final RandomAccessible<Neighborhood<T>> neighborhoods = shape.neighborhoodsRandomAccessible(in);
-		final RandomAccess<Neighborhood<T>> raNeighborhoods = neighborhoods.randomAccess();
-
-		// TODO What is the reasoning behind the currentLabeling?
-		final ImgLabeling<Integer, IntType> currentLabeling = ops().create().imgLabeling(in);
-		final RandomAccess<LabelingType<Integer>> raCurrentLabeling = currentLabeling.randomAccess();
-
-		final RandomAccess<LabelingType<Integer>> raOut = out.randomAccess();
-		final RandomAccess<T> raIn = in.randomAccess();
+		final RandomAccess<Neighborhood<T>> raNeigh = neighborhoods.randomAccess();
 
 		/*
-		 * start by loading up a list with the seeded pixels
+		 * Carry over the seeding points to the new label and adds them to a
+		 * voxel priority queue
 		 */
-		// TODO Why was the PriorityQueue used in the MorphoLibJ implementation?
-		final List<Long> pq = new ArrayList<>();
+		final PriorityQueue<WatershedVoxel> pq = new PriorityQueue<>();
 
 		// Only iterate seeds that are not excluded by the mask
-		IterableRegion<B> maskRegions = Regions.iterable(mask);
-		IterableInterval<LabelingType<Integer>> seedsMasked = Regions.sample(maskRegions, seeds);
+		final IterableRegion<B> maskRegions = Regions.iterable(mask);
+		final IterableInterval<LabelingType<Integer>> seedsMasked = Regions.sample(maskRegions, seeds);
 		final Cursor<LabelingType<Integer>> cursorSeeds = seedsMasked.localizingCursor();
 
-		/*
-		 * carries over the seeding points to the new label and adds them to the
-		 * pixel priority queue
-		 */
 		while (cursorSeeds.hasNext()) {
 			final Set<Integer> l = cursorSeeds.next();
 			if (l.isEmpty()) {
 				continue;
 			}
+			if (l.size() > 1) {
+				throw new IllegalArgumentException("Seeds must have exactly one label!");
+			}
+			final Integer label = l.iterator().next();
+			if (label < 0) {
+				throw new IllegalArgumentException("Seeds must have positive integers as labels!");
+			}
+			raNeigh.setPosition(cursorSeeds);
+
+			final Cursor<T> neighborhood = raNeigh.get().cursor();
+
+			// Add unlabeled neighbors to priority queue
+			while (neighborhood.hasNext()) {
+				neighborhood.fwd();
+				raSeeds.setPosition(neighborhood);
+				raMask.setPosition(neighborhood);
+				raOut.setPosition(neighborhood);
+				if (!raOut.isOutOfBounds() && raMask.get().get() && raSeeds.get().isEmpty()
+						&& !raOut.get().contains(INQUEUE)) {
+					raIn.setPosition(neighborhood);
+					raOut.setPosition(neighborhood);
+					pq.add(new WatershedVoxel(IntervalIndexer.positionToIndex(raIn, in), raIn.get().getRealDouble()));
+					raOut.get().clear();
+					raOut.get().add(INQUEUE);
+				}
+			}
 
 			// Overwrite label in output with the seed label
 			raOut.setPosition(cursorSeeds);
-			final LabelingType<Integer> tDest = raOut.get();
-			tDest.clear();
-			tDest.add(l.iterator().next()); // FIXME I guess having having seed pixels/voxels with multiple labels should end the computation?
-
-			// Add to queue
-			pq.add(IntervalIndexer.positionToIndex(cursorSeeds, out));
-
-			// Write seed label into raCurrentLabeling
-			raCurrentLabeling.setPosition(cursorSeeds);
-			raCurrentLabeling.get().addAll(tDest);
+			raOut.get().clear();
+			raOut.get().add(label);
 		}
 
 		/*
-		 * pop the head of the priority queue, label and push all unlabeled
-		 * connected pixels.
+		 * Pop the head of the priority queue, label and push all unlabeled
+		 * neighbored pixels.
 		 */
-		// label to mark the watersheds
-		final LabelingType<Integer> watersheds = out.firstElement().createVariable();
-		watersheds.add(WSHED);
 
-		// dummy to mark nodes as visited
-		final LabelingType<Integer> dummy = out.firstElement().createVariable();
-		dummy.add(DUMMY);
+		// list to store neighbor labels
+		final ArrayList<Integer> neighborLabels = new ArrayList<Integer>();
+		// list to store neighbor voxels
+		final ArrayList<WatershedVoxel> neighborVoxels = new ArrayList<>();
 
 		// iterate the queue
+		final Point pos = new Point(in.numDimensions());
 		while (!pq.isEmpty()) {
-			IntervalIndexer.indexToPosition(pq.remove(0), currentLabeling, raCurrentLabeling);
-			raIn.setPosition(raCurrentLabeling); // use raIn to remember position
+			IntervalIndexer.indexToPosition(pq.poll().getPos(), out, pos);
 
-			Set<Integer> l = new HashSet<>();
-			l.addAll(raCurrentLabeling.get());
+			// reset list of neighbor labels
+			neighborLabels.clear();
+
+			// reset list of neighbor voxels
+			neighborVoxels.clear();
 
 			// iterate the neighborhood of the pixel
-			raNeighborhoods.setPosition(raCurrentLabeling);
-			final Cursor<T> neighborhood = raNeighborhoods.get().cursor();
-			// FIXME Maybe this could be replaced with a dedicated BOUNDARY label with which we extend the image
-			boolean isBoundaries = true;
+			raNeigh.setPosition(pos);
+			final Cursor<T> neighborhood = raNeigh.get().cursor();
 			while (neighborhood.hasNext()) {
 				neighborhood.fwd();
+				// Unlabeled neighbors go into the queue if they are not there
+				// yet
 				raOut.setPosition(neighborhood);
-				final LabelingType<Integer> outputLabelingType = raOut.get();
-				if (!Intervals.contains(out, raOut)) {
-					continue;
-				}
-
-				if (outputLabelingType.isEmpty()) {
-					// We can't get rid of this check I guess because Neighborhood is not a RandomAccessible and can't be sampled
-					if (mask != null) {
-						raMask.setPosition(raOut);
-						if (raMask.get().get()) {
-							pq.add(IntervalIndexer.positionToIndex(raOut, out));
-							raCurrentLabeling.setPosition(raOut);
-							raCurrentLabeling.get().addAll(l);
-						}
+				raMask.setPosition(raOut);
+				if (!raOut.get().isEmpty() && !raOut.isOutOfBounds()) {
+					final Integer label = raOut.get().iterator().next();
+					if (label == INIT && raMask.get().get()) {
+						raIn.setPosition(neighborhood);
+						neighborVoxels.add(new WatershedVoxel(IntervalIndexer.positionToIndex(raIn, out),
+								raIn.get().getRealDouble()));
 					} else {
-						pq.add(IntervalIndexer.positionToIndex(raOut, out));
-						raCurrentLabeling.setPosition(raOut);
-						raCurrentLabeling.get().addAll(l);
-
+						if (label > WSHED && (!drawWatersheds || !neighborLabels.contains(label))) {
+							// store labels of neighbors in a list
+							neighborLabels.add(label);
+						}
 					}
-					// dummy to mark positions as visited
-					outputLabelingType.clear();
-					outputLabelingType.addAll(dummy);
-
-				} else if (!outputLabelingType.equals(l) && !outputLabelingType.equals(dummy)
-						&& !outputLabelingType.equals(watersheds)) {
-					l = watersheds;
 				}
-				isBoundaries = false;
 
 			}
-			if (isBoundaries) {
-				l = watersheds;
+
+			if (drawWatersheds) {
+				// if the neighbors of the extracted voxel that have already
+				// been labeled
+				// all have the same label, then the voxel is labeled with their
+				// label.
+				raOut.setPosition(pos);
+				raOut.get().clear();
+				if (neighborLabels.size() == 1) {
+					raOut.get().add(neighborLabels.get(0));
+					// now that we know the voxel is labeled, add neighbors to
+					// list
+					for (final WatershedVoxel v : neighborVoxels) {
+						IntervalIndexer.indexToPosition(v.getPos(), out, raOut);
+						raOut.get().clear();
+						raOut.get().add(INQUEUE);
+						pq.add(v);
+					}
+				} else if (neighborLabels.size() > 1)
+					raOut.get().add(WSHED);
+			} else {
+				if (neighborLabels.size() > 0) {
+					raOut.setPosition(pos);
+					raOut.get().clear();
+
+					// take the label which most of the neighbors have
+					if (neighborLabels.size() > 2) {
+						final Map<Integer, Long> countLabels = neighborLabels.stream()
+								.collect(Collectors.groupingBy(e -> e, Collectors.counting()));
+						final Integer keyMax = Collections
+								.max(countLabels.entrySet(), Comparator.comparingLong(Map.Entry::getValue)).getKey();
+						raOut.get().add(keyMax);
+					} else {
+						raOut.get().add(neighborLabels.get(0));
+					}
+					// now that we know the voxel is labeled, add neighbors to
+					// list
+					for (final WatershedVoxel v : neighborVoxels) {
+						IntervalIndexer.indexToPosition(v.getPos(), out, raOut);
+						raOut.get().clear();
+						raOut.get().add(INQUEUE);
+						pq.add(v);
+					}
+				}
 			}
-			raOut.setPosition(raIn);
-			final LabelingType<Integer> outputLabelingType = raOut.get();
-			outputLabelingType.clear();
-			outputLabelingType.addAll(l);
 		}
 
 		/*
-		 * Set Output
+		 * Merge already present labels before calculation of watershed
 		 */
-		IterableInterval<LabelingType<Integer>> sampledOut = Regions.sample(maskRegions, out);
-		final Cursor<LabelingType<Integer>> cursorOut = sampledOut.cursor();
-		while (cursorOut.hasNext()) {
-			cursorOut.fwd();
-			raOut.setPosition(cursorOut);
-				if (raOut.get().contains(WSHED)) {
-					if (withWatersheds) {
-						cursorOut.get().clear();
-					} else {
-						raNeighborhoods.setPosition(cursorOut);
-						final Cursor<T> neighborhood = raNeighborhoods.get().cursor();
-						boolean newLab = false;
-						final List<Integer> allLabels = new ArrayList<>();
-						while (neighborhood.hasNext()) {
-							neighborhood.fwd();
-							raOut.setPosition(neighborhood);
-							// Why do we need that check?
-							// ---------------- TODO
-							LabelingType<Integer> labelingType = cursorOut.get().createVariable();
-							labelingType.add(DUMMY);
-							Views.extendValue(out, labelingType);
-							// ---------------- TODO
-							if (Intervals.contains(in, neighborhood)) {
-								if ((!raOut.get().contains(WSHED)) && (!raOut.get().contains(DUMMY))) {
-									cursorOut.get().clear();
-									cursorOut.get().addAll(raOut.get());
-									allLabels.addAll(raOut.get());
-									newLab = true;
-								}
-							}
-						}
-						if (!newLab) {
-							cursorOut.get().clear();
-						}
-					}
-				}
+		if (out() != null) {
+			final Cursor<LabelingType<Integer>> cursor = out().cursor();
+			while (cursor.hasNext()) {
+				cursor.fwd();
+				raOut.setPosition(cursor);
+				final List<Integer> labels = new ArrayList<>();
+				cursor.get().iterator().forEachRemaining(labels::add);
+				raOut.get().addAll(labels);
+			}
 		}
+
 	}
 
 	@Override
@@ -316,4 +364,41 @@ public class WatershedSeeded<B extends BooleanType<B>, T extends RealType<T>>
 		createOp = Functions.unary(ops(), CreateImgLabelingFromInterval.class, ImgLabeling.class,
 				new FinalInterval(in()));
 	}
+
+	/**
+	 * Used to store the voxels in the priority queue. "Lower" voxels will be
+	 * given out first. If two voxels have the same value, the one which joined
+	 * the queue earlier will be given out.
+	 */
+	class WatershedVoxel implements Comparable<WatershedVoxel> {
+
+		private final long pos;
+		private final double value;
+		private final long seqNum;
+
+		public WatershedVoxel(final long pos, final double value) {
+			this.pos = pos;
+			this.value = value;
+			seqNum = seq.getAndIncrement();
+		}
+
+		public long getPos() {
+			return pos;
+		}
+
+		public double getValue() {
+			return value;
+		}
+
+		@Override
+		public int compareTo(WatershedVoxel o) {
+			int res = Double.compare(value, o.value);
+			if (res == 0)
+				res = (seqNum < o.seqNum ? -1 : 1);
+
+			return res;
+		}
+
+	}
+
 }

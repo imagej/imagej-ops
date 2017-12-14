@@ -29,6 +29,9 @@
  */
 package net.imagej.ops.image.watershed;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.create.imgLabeling.CreateImgLabelingFromInterval;
@@ -44,24 +47,32 @@ import net.imglib2.type.numeric.integer.IntType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.view.Views;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 /**
+ * <p>
  * The Watershed algorithm segments and labels a grayscale image analogous to a
  * heightmap. In short, a drop of water following the gradient of an image flows
  * along a path to finally reach a local minimum.
- *
+ * </p>
+ * <p>
  * Lee Vincent, Pierre Soille, Watersheds in digital spaces: An efficient
  * algorithm based on immersion simulations, IEEE Trans. Pattern Anal. Machine
  * Intell., 13(6) 583-598 (1991)
- *
+ * </p>
+ * <p>
  * Input is a binary image with arbitrary number of dimensions. The heightmap is
- * calculated by an inverse distance transform, which is smoothed with an
- * gaussian filter with parameter sigma. It needs to be defined whether a
- * neighborhood with eight- or four-connectivity (respective to 2D) is used.
- *
+ * calculated by an inverse distance transform, which can optionally be smoothed
+ * with an gaussian filter with parameter sigma to prevent having many small
+ * segments in the result. Sigma can be null. It needs to be defined whether a neighborhood with
+ * eight- or four-connectivity (respective to 2D) is used. If desired, the
+ * watersheds are drawn and labeled as 0. Otherwise the watersheds will be
+ * labeled as one of their neighbors.
+ * </p>
+ * <p>
  * Output is a labeling of the different catchment basins.
+ * </p>
+ *
+ * @param <B> a {@link BooleanType}
+ * @param <T> a {@link RealType}
  *
  * @author Simon Schmid (University of Konstanz)
  */
@@ -74,7 +85,10 @@ public class WatershedBinary<B extends BooleanType<B>, T extends RealType<T>>
 	private UnaryFunctionOp<FinalInterval, ImgLabeling> createOp;
 
 	@Parameter(required = true)
-	private boolean eightConnectivity;
+	private boolean useEightConnectivity;
+
+	@Parameter(required = true)
+	private boolean drawWatersheds;
 
 	@Parameter(required = true)
 	private double[] sigma;
@@ -86,17 +100,22 @@ public class WatershedBinary<B extends BooleanType<B>, T extends RealType<T>>
 		final RandomAccessibleInterval<FloatType> distMap = ops().image().distancetransform(in);
 		final RandomAccessibleInterval<FloatType> invertedDT = ops().create().img(in, new FloatType());
 		ops().image().invert(Views.iterable(invertedDT), Views.iterable(distMap));
-		final RandomAccessibleInterval<FloatType> gauss = ops().filter().gauss(invertedDT, sigma);
-
-		// run the default watershed
-		ops().run(Watershed.class, out, gauss, eightConnectivity, in);
+		if (sigma != null) {
+			final RandomAccessibleInterval<FloatType> gauss = ops().filter().gauss(invertedDT, sigma);
+			// run the default watershed
+			ops().run(Watershed.class, out, gauss, useEightConnectivity, drawWatersheds, in);
+		} else {
+			ops().run(Watershed.class, out, invertedDT, useEightConnectivity, drawWatersheds, in);
+		}
 	}
 
 	@Override
 	public boolean conforms() {
 		boolean conforms = true;
-		for (int i = 0; i < sigma.length; i++) {
-			conforms &= sigma[i] >= 0;
+		if (sigma != null) {
+			for (int i = 0; i < sigma.length; i++) {
+				conforms &= sigma[i] >= 0;
+			}
 		}
 		return conforms;
 	}

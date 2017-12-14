@@ -32,6 +32,7 @@ package net.imagej.ops.image.watershed;
 import static org.junit.Assert.assertEquals;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import org.junit.Test;
@@ -42,9 +43,7 @@ import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.labeling.ConnectedComponents.StructuringElement;
 import net.imglib2.img.Img;
-import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
-import net.imglib2.img.basictypeaccess.array.LongArray;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.roi.Regions;
 import net.imglib2.roi.labeling.ImgLabeling;
@@ -52,7 +51,6 @@ import net.imglib2.roi.labeling.LabelingType;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.IntType;
 import net.imglib2.type.numeric.real.FloatType;
-import net.imglib2.view.Views;
 
 /**
  * Test for the seeded watershed op.
@@ -61,81 +59,141 @@ import net.imglib2.view.Views;
  **/
 public class WatershedSeededTest extends AbstractOpTest {
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void test() {
-
-		// load test image and seeds
-		Img<FloatType> watershedTestImg = openFloatImg(WatershedTest.class, "WatershedTestImage.png");
-		Img<FloatType> seeds = openFloatImg(WatershedBinaryTest.class, "Seeds.png");
-
-		// threshold them
-		RandomAccessibleInterval<BitType> thresholdedImg = ops.create().img(watershedTestImg, new BitType());
-		ops.threshold().apply(Views.flatIterable(thresholdedImg), Views.flatIterable(watershedTestImg),
-				new FloatType(1));
-		RandomAccessibleInterval<BitType> thresholdedSeeds = ops.create().img(seeds, new BitType());
-		ops.threshold().apply(Views.flatIterable(thresholdedSeeds), Views.flatIterable(seeds), new FloatType(1));
-
-		// compute labeled seeds
-		final ImgLabeling<Integer, IntType> labeledSeeds = ops.labeling().cca(thresholdedSeeds,
-				StructuringElement.EIGHT_CONNECTED);
-
-		// FIXME Using the input image as mask?!
-		// compute result
-		ImgLabeling<Integer, IntType> out = (ImgLabeling<Integer, IntType>) ops.run(WatershedSeeded.class, null,
-				thresholdedImg, labeledSeeds, true, false, thresholdedImg);
-
-		// Sample the output image based on the mask
-		// FIXME The dummy label is set somewhere outside of the mask
-		IterableRegion<BitType> regions = Regions.iterable(thresholdedImg);
-
-		// count labels
-		Set<Integer> labelSet = new HashSet<>();
-		for (LabelingType<Integer> pixel : Regions.sample(regions, out)) {
-			labelSet.addAll(pixel);
-		}
-
-		// count seeds
-		Set<Integer> seedSet = new HashSet<>();
-		for (LabelingType<Integer> pixel : Regions.sample(regions, labeledSeeds)) {
-			seedSet.addAll(pixel);
-		}
-
-		// assert equals
-		assertEquals(watershedTestImg.numDimensions(), out.numDimensions());
-		assertEquals(watershedTestImg.dimension(0), out.dimension(0));
-		assertEquals(watershedTestImg.dimension(1), out.dimension(1));
-		assertEquals(seedSet.size(), labelSet.size());
-
-	}
-
-	@Test
-	public void testSmall() {
+		long[] dims = { 15, 30 };
 		// create input image
-		Img<BitType> input = ArrayImgs.bits(5, 3);
-		for (BitType b : input) {
-			b.not();
+		Img<FloatType> input = ArrayImgs.floats(dims);
+		Random random = new Random();
+		for (FloatType b : input) {
+			b.setReal(random.nextDouble());
 		}
 
-		// create seeds
-		Img<BitType> bits = ArrayImgs.bits(5, 3);
+		// create 3 seeds
+		Img<BitType> bits = ArrayImgs.bits(dims);
 		RandomAccess<BitType> ra = bits.randomAccess();
-		ra.setPosition(new int[] {1, 1});
+		ra.setPosition(new int[] { 1, 1 });
 		ra.get().set(true);
-		ra.setPosition(new int[] {3, 1});
+		ra.setPosition(new int[] { 4, 6 });
+		ra.get().set(true);
+		ra.setPosition(new int[] { 10, 20 });
 		ra.get().set(true);
 
 		// compute labeled seeds
 		final ImgLabeling<Integer, IntType> labeledSeeds = ops.labeling().cca(bits, StructuringElement.EIGHT_CONNECTED);
 
-		// FIXME Using the input image as mask?!
-		// compute result
-		ImgLabeling<Integer, IntType> out = (ImgLabeling<Integer, IntType>) ops.run(WatershedSeeded.class, null,
-				input, labeledSeeds, true, false, input);
+		testWithoutMask(input, labeledSeeds);
 
+		testWithMask(input, labeledSeeds);
+	}
+
+	@SuppressWarnings("unchecked")
+	private void testWithoutMask(final RandomAccessibleInterval<FloatType> in,
+			final ImgLabeling<Integer, IntType> seeds) {
+		// create mask which is 1 everywhere
+		long[] dims = new long[in.numDimensions()];
+		in.dimensions(dims);
+		Img<BitType> mask = ArrayImgs.bits(dims);
+		for (BitType b : mask) {
+			b.setOne();
+		}
+
+		/*
+		 * use 8-connected neighborhood
+		 */
+		// compute result without watersheds
+		ImgLabeling<Integer, IntType> out = (ImgLabeling<Integer, IntType>) ops.run(WatershedSeeded.class, null, in,
+				seeds, true, false);
+
+		assertResults(in, out, seeds, mask, false, false);
+
+		// compute result with watersheds
+		ImgLabeling<Integer, IntType> out2 = (ImgLabeling<Integer, IntType>) ops.run(WatershedSeeded.class, null, in,
+				seeds, true, true);
+
+		assertResults(in, out2, seeds, mask, true, false);
+
+		/*
+		 * use 4-connected neighborhood
+		 */
+		// compute result without watersheds
+		ImgLabeling<Integer, IntType> out3 = (ImgLabeling<Integer, IntType>) ops.run(WatershedSeeded.class, null, in,
+				seeds, false, false);
+
+		assertResults(in, out3, seeds, mask, false, false);
+
+		// compute result with watersheds
+		ImgLabeling<Integer, IntType> out4 = (ImgLabeling<Integer, IntType>) ops.run(WatershedSeeded.class, null, in,
+				seeds, false, true);
+
+		assertResults(in, out4, seeds, mask, true, false);
+	}
+
+	@SuppressWarnings("unchecked")
+	private void testWithMask(final RandomAccessibleInterval<FloatType> in, final ImgLabeling<Integer, IntType> seeds) {
+		// create mask which is 1 everywhere
+		long[] dims = new long[in.numDimensions()];
+		in.dimensions(dims);
+		Img<BitType> mask = ArrayImgs.bits(dims);
+		RandomAccess<BitType> raMask = mask.randomAccess();
+		for (BitType b : mask) {
+			b.setZero();
+		}
+		for (int x = 0; x < 10; x++) {
+			for (int y = 0; y < 10; y++) {
+				raMask.setPosition(new int[] { x, y });
+				raMask.get().setOne();
+			}
+		}
+
+		/*
+		 * use 8-connected neighborhood
+		 */
+		// compute result without watersheds
+		ImgLabeling<Integer, IntType> out = (ImgLabeling<Integer, IntType>) ops.run(WatershedSeeded.class, null, in,
+				seeds, true, false, mask);
+
+		assertResults(in, out, seeds, mask, false, true);
+
+		// compute result with watersheds
+		ImgLabeling<Integer, IntType> out2 = (ImgLabeling<Integer, IntType>) ops.run(WatershedSeeded.class, null, in,
+				seeds, true, true, mask);
+
+		assertResults(in, out2, seeds, mask, true, true);
+
+		/*
+		 * use 4-connected neighborhood
+		 */
+		// compute result without watersheds
+		ImgLabeling<Integer, IntType> out3 = (ImgLabeling<Integer, IntType>) ops.run(WatershedSeeded.class, null, in,
+				seeds, false, false, mask);
+
+		assertResults(in, out3, seeds, mask, false, true);
+
+		// compute result with watersheds
+		ImgLabeling<Integer, IntType> out4 = (ImgLabeling<Integer, IntType>) ops.run(WatershedSeeded.class, null, in,
+				seeds, false, true, mask);
+
+		assertResults(in, out4, seeds, mask, true, true);
+	}
+
+	private void assertResults(final RandomAccessibleInterval<FloatType> in, final ImgLabeling<Integer, IntType> out,
+			final ImgLabeling<Integer, IntType> seeds, final RandomAccessibleInterval<BitType> mask,
+			final boolean withWatersheds, final boolean smallMask) {
+
+		final Cursor<LabelingType<Integer>> curOut = out.cursor();
+		final RandomAccess<BitType> raMask = mask.randomAccess();
+		while (curOut.hasNext()) {
+			curOut.fwd();
+			raMask.setPosition(curOut);
+			if (raMask.get().get()) {
+				assertEquals(1, curOut.get().size());
+			} else {
+				assertEquals(true, curOut.get().isEmpty());
+			}
+		}
 		// Sample the output image based on the mask
-		// FIXME The dummy label is set somewhere outside of the mask
-		IterableRegion<BitType> regions = Regions.iterable(input);
+		IterableRegion<BitType> regions = Regions.iterable(mask);
 
 		// count labels
 		Set<Integer> labelSet = new HashSet<>();
@@ -143,17 +201,11 @@ public class WatershedSeededTest extends AbstractOpTest {
 			labelSet.addAll(pixel);
 		}
 
-		// count seeds
-		Set<Integer> seedSet = new HashSet<>();
-		for (LabelingType<Integer> pixel : Regions.sample(regions, labeledSeeds)) {
-			seedSet.addAll(pixel);
-		}
-
 		// assert equals
-		assertEquals(input.numDimensions(), out.numDimensions());
-		assertEquals(input.dimension(0), out.dimension(0));
-		assertEquals(input.dimension(1), out.dimension(1));
-		assertEquals(seedSet.size(), labelSet.size());
+		assertEquals(in.numDimensions(), out.numDimensions());
+		assertEquals(in.dimension(0), out.dimension(0));
+		assertEquals(in.dimension(1), out.dimension(1));
+		assertEquals(3 + (withWatersheds ? 1 : 0), labelSet.size() + (smallMask ? 1 : 0));
 	}
 
 }

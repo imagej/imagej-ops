@@ -428,20 +428,20 @@ public class ImageNamespace extends AbstractNamespace {
 	/** Executes the "watershed" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.watershed.Watershed.class)
 	public <T extends RealType<T>> ImgLabeling<Integer, IntType> watershed(final ImgLabeling<Integer, IntType> out,
-			final RandomAccessibleInterval<T> in, final boolean eightConnectivity) {
+			final RandomAccessibleInterval<T> in, final boolean eightConnectivity, final boolean drawWatersheds) {
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<Integer, IntType> result = (ImgLabeling<Integer, IntType>) ops()
-				.run(net.imagej.ops.image.watershed.Watershed.class, out, in, eightConnectivity);
+				.run(net.imagej.ops.image.watershed.Watershed.class, out, in, eightConnectivity, drawWatersheds);
 		return result;
 	}
 
 	/** Executes the "watershed" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.watershed.Watershed.class)
 	public <T extends RealType<T>> ImgLabeling<Integer, IntType> watershed(final RandomAccessibleInterval<T> in,
-			final boolean eightConnectivity) {
+			final boolean eightConnectivity, final boolean drawWatersheds) {
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<Integer, IntType> result = (ImgLabeling<Integer, IntType>) ops()
-				.run(net.imagej.ops.image.watershed.Watershed.class, in, eightConnectivity);
+				.run(net.imagej.ops.image.watershed.Watershed.class, in, eightConnectivity, drawWatersheds);
 		return result;
 	}
 
@@ -449,50 +449,51 @@ public class ImageNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.image.watershed.Watershed.class)
 	public <B extends BooleanType<B>, T extends RealType<T>> ImgLabeling<Integer, IntType> watershed(
 			final ImgLabeling<Integer, IntType> out, final RandomAccessibleInterval<T> in,
-			final boolean eightConnectivity, final RandomAccessibleInterval<B> mask) {
+			final boolean eightConnectivity, final boolean drawWatersheds, final RandomAccessibleInterval<B> mask) {
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<Integer, IntType> result = (ImgLabeling<Integer, IntType>) ops()
-				.run(net.imagej.ops.image.watershed.Watershed.class, out, in, eightConnectivity, mask);
+				.run(net.imagej.ops.image.watershed.Watershed.class, out, in, eightConnectivity, drawWatersheds, mask);
 		return result;
 	}
 
 	// -- watershedBinary --
 	@OpMethod(op = net.imagej.ops.image.watershed.WatershedBinary.class)
 	public <T extends RealType<T>> ImgLabeling<Integer, IntType> watershed(
-		final RandomAccessibleInterval<T> in, final boolean eightConnectivity,
+		final RandomAccessibleInterval<T> in, final boolean eightConnectivity, final boolean drawWatersheds,
 		final double ... sigma)
 	{
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<Integer, IntType> result =
 		(ImgLabeling<Integer, IntType>) ops().run(
 			net.imagej.ops.image.watershed.WatershedBinary.class, in,
-			eightConnectivity, sigma);
+			eightConnectivity, drawWatersheds, sigma);
 		return result;
 	}
 	
 	@OpMethod(op = net.imagej.ops.image.watershed.WatershedBinary.class)
 	public <T extends RealType<T>> ImgLabeling<Integer, IntType> watershed(
 		final ImgLabeling<Integer, IntType> out,
-		final RandomAccessibleInterval<T> in, final boolean eightConnectivity,
+		final RandomAccessibleInterval<T> in, final boolean eightConnectivity, final boolean drawWatersheds,
 		final double ... sigma)
 	{
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<Integer, IntType> result =
 		(ImgLabeling<Integer, IntType>) ops().run(
 			net.imagej.ops.image.watershed.WatershedBinary.class, out, in,
-			eightConnectivity, sigma);
+			eightConnectivity, drawWatersheds, sigma);
 		return result;
 	}
 
 	// -- watershedSeeded --
+	
 
 	/** Executes the "watershedSeeded" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.watershed.WatershedSeeded.class)
 	public <T extends RealType<T>> ImgLabeling<Integer, IntType> watershed(final RandomAccessibleInterval<T> in,
-			final ImgLabeling<Integer, IntType> seeds, final boolean eightConnectivity, final boolean withWatersheds) {
+			final ImgLabeling<Integer, IntType> seeds, final boolean eightConnectivity, final boolean drawWatersheds) {
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<Integer, IntType> result = ((ImgLabeling<Integer, IntType>) ops().run(
-				net.imagej.ops.image.watershed.WatershedSeeded.class, in, seeds, eightConnectivity, withWatersheds));
+				net.imagej.ops.image.watershed.WatershedSeeded.class, in, seeds, eightConnectivity, drawWatersheds));
 		return result;
 	}
 
@@ -500,11 +501,11 @@ public class ImageNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.image.watershed.WatershedSeeded.class)
 	public <T extends RealType<T>> ImgLabeling<Integer, IntType> watershed(final ImgLabeling<Integer, IntType> out,
 			final RandomAccessibleInterval<T> in, final ImgLabeling<Integer, IntType> seeds,
-			final boolean eightConnectivity, final boolean withWatersheds) {
+			final boolean eightConnectivity, final boolean drawWatersheds) {
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<Integer, IntType> result = (ImgLabeling<Integer, IntType>) ops().run(
 				net.imagej.ops.image.watershed.WatershedSeeded.class, out, in, seeds, eightConnectivity,
-				withWatersheds);
+				drawWatersheds);
 		return result;
 	}
 
@@ -512,11 +513,11 @@ public class ImageNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.image.watershed.WatershedSeeded.class)
 	public <B extends BooleanType<B>, T extends RealType<T>> ImgLabeling<Integer, IntType> watershed(
 			final ImgLabeling<Integer, IntType> out, final RandomAccessibleInterval<T> in,
-			final ImgLabeling<Integer, IntType> seeds, final boolean eightConnectivity, final boolean withWatersheds,
+			final ImgLabeling<Integer, IntType> seeds, final boolean eightConnectivity, final boolean drawWatersheds,
 			final RandomAccessibleInterval<B> mask) {
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<Integer, IntType> result = (ImgLabeling<Integer, IntType>) ops().run(
-				net.imagej.ops.image.watershed.WatershedSeeded.class, out, in, seeds, eightConnectivity, withWatersheds,
+				net.imagej.ops.image.watershed.WatershedSeeded.class, out, in, seeds, eightConnectivity, drawWatersheds,
 				mask);
 		return result;
 	}
