@@ -72,7 +72,7 @@ public class WatershedSeededTest extends AbstractOpTest {
 		// create 3 seeds
 		Img<BitType> bits = ArrayImgs.bits(dims);
 		RandomAccess<BitType> ra = bits.randomAccess();
-		ra.setPosition(new int[] { 1, 1 });
+		ra.setPosition(new int[] { 0, 0 });
 		ra.get().set(true);
 		ra.setPosition(new int[] { 4, 6 });
 		ra.get().set(true);

@@ -44,7 +44,7 @@ import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.Cursor;
-import net.imglib2.FinalInterval;
+import net.imglib2.Interval;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
@@ -87,18 +87,18 @@ import net.imglib2.view.Views;
  * Output is a labeling of the different catchment basins.
  * </p>
  *
- * @param <B> a {@link BooleanType}
- * @param <T> a {@link RealType}
+ * @param <T> element type of input
+ * @param <B> element type of mask
  *
  * @author Simon Schmid (University of Konstanz)
  */
 @Plugin(type = Ops.Image.Watershed.class)
-public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
+public class Watershed<T extends RealType<T>, B extends BooleanType<B>>
 		extends AbstractUnaryHybridCF<RandomAccessibleInterval<T>, ImgLabeling<Integer, IntType>>
 		implements Ops.Image.Watershed, Contingent {
 
 	@SuppressWarnings("rawtypes")
-	private UnaryFunctionOp<FinalInterval, ImgLabeling> createOp;
+	private UnaryFunctionOp<Interval, ImgLabeling> createOp;
 
 	@Parameter(required = true)
 	private boolean useEightConnectivity;
@@ -126,7 +126,6 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 		if (mask != null) {
 			raMask = mask.randomAccess();
 		}
-		final long[] pos = new long[in.numDimensions()];
 		// stores the size of each dimension
 		final long[] dimensSizes = new long[in.numDimensions()];
 		in.dimensions(dimensSizes);
@@ -142,8 +141,7 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 			final Cursor<Void> c = Regions.iterable(mask).localizingCursor();
 			while (c.hasNext()) {
 				c.next();
-				c.localize(pos);
-				imiList.add(IntervalIndexer.positionToIndex(pos, dimensSizes));
+				imiList.add(IntervalIndexer.positionToIndex(c, in));
 			}
 		} else {
 			for (long i = 0; i < numPixels; i++) {
@@ -151,6 +149,20 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 			}
 		}
 		final Long[] imi = imiList.toArray(new Long[imiList.size()]);
+		
+		/*
+		 * Sort the pixels of imi in the increasing order of their grey value
+		 * (only the pixel indices are stored)
+		 */
+		Arrays.sort(imi, new Comparator<Long>() {
+		    @Override
+		    public int compare(final Long o1, final Long o2) {
+			IntervalIndexer.indexToPosition(o1, in, raIn);
+			final T value = raIn.get().copy();
+			IntervalIndexer.indexToPosition(o2, in, raIn);
+			return value.compareTo(raIn.get());
+		    }
+		});
 
 		// lab and dist store the values calculated after each phase
 		final RandomAccessibleInterval<IntType> lab = ops().create().img(in, new IntType());
@@ -180,36 +192,18 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 		final RandomAccess<Neighborhood<T>> raNeighbor = neighborhoods.randomAccess();
 
 		/*
-		 * Sort the pixels of imi in the increasing order of their grey value
-		 * (only the pixel indices are stored)
-		 */
-		Arrays.sort(imi, new Comparator<Long>() {
-			@Override
-			public int compare(final Long o1, final Long o2) {
-				IntervalIndexer.indexToPosition(o1, dimensSizes, pos);
-				raIn.setPosition(pos);
-				final float value = raIn.get().getRealFloat();
-				IntervalIndexer.indexToPosition(o2, dimensSizes, pos);
-				raIn.setPosition(pos);
-				return Float.compare(value, raIn.get().getRealFloat());
-			}
-		});
-
-		/*
 		 * Start flooding
 		 */
 		for (int j = 0; j < imi.length; j++) {
-			IntervalIndexer.indexToPosition(imi[j], dimensSizes, pos);
-			raIn.setPosition(pos);
-			final float actualH = raIn.get().getRealFloat();
+			IntervalIndexer.indexToPosition(imi[j], in, raIn);
+			final T actualH = raIn.get().copy();
 			int i = j;
-			while (Float.compare(actualH, raIn.get().getRealFloat()) == 0) {
+			while (actualH.compareTo(raIn.get()) == 0) {
 				final long p = imi[i];
-				IntervalIndexer.indexToPosition(p, dimensSizes, pos);
-				raIn.setPosition(pos);
-				raLab.setPosition(pos);
+				IntervalIndexer.indexToPosition(p, in, raIn);
+				raLab.setPosition(raIn);
 				raLab.get().set(MASK);
-				raNeighbor.setPosition(pos);
+				raNeighbor.setPosition(raIn);
 				final Cursor<T> neighborHood = raNeighbor.get().cursor();
 
 				while (neighborHood.hasNext()) {
@@ -218,7 +212,7 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 					if (!raLab.isOutOfBounds()) {
 						final int f = raLab.get().get();
 						if ((f > 0) || (f == WSHED)) {
-							raDist.setPosition(pos);
+							raDist.setPosition(raIn);
 							raDist.get().set(1);
 							fifo.add(p);
 							break;
@@ -229,8 +223,7 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 				if (i == imi.length) {
 					break;
 				}
-				IntervalIndexer.indexToPosition(imi[i], dimensSizes, pos);
-				raIn.setPosition(pos);
+				IntervalIndexer.indexToPosition(imi[i], in, raIn);
 			}
 
 			current_dist = 1;
@@ -246,12 +239,11 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 					p = fifo.remove(0);
 				}
 
-				IntervalIndexer.indexToPosition(p, dimensSizes, pos);
+				IntervalIndexer.indexToPosition(p, in, raNeighbor);
 
-				raNeighbor.setPosition(pos);
 				final Cursor<T> neighborHood = raNeighbor.get().cursor();
 
-				raLab.setPosition(pos);
+				raLab.setPosition(raNeighbor);
 				int labp = raLab.get().get();
 
 				final long[] posNeighbor = new long[neighborHood.numDimensions()];
@@ -279,7 +271,7 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 									labp = WSHED;
 								}
 							}
-							raLab.setPosition(pos);
+							raLab.setPosition(raNeighbor);
 							raLab.get().set(labp);
 						} else {
 							if ((labq == MASK) && (distq == 0)) {
@@ -293,16 +285,14 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 			}
 
 			// checks if new minima have been discovered
-			IntervalIndexer.indexToPosition(imi[j], dimensSizes, pos);
-			raIn.setPosition(pos);
+			IntervalIndexer.indexToPosition(imi[j], in, raIn);
 			i = j;
-			while (Float.compare(actualH, raIn.get().getRealFloat()) == 0) {
+			while (actualH.compareTo(raIn.get()) == 0) {
 				final long p = imi[i];
-				IntervalIndexer.indexToPosition(p, dimensSizes, pos);
+				IntervalIndexer.indexToPosition(p, dist, raDist);
 				// the distance associated with p is reseted to 0
-				raDist.setPosition(pos);
 				raDist.get().set(0);
-				raLab.setPosition(pos);
+				raLab.setPosition(raDist);
 
 				if (raLab.get().get() == MASK) {
 					current_label++;
@@ -310,8 +300,7 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 					raLab.get().set(current_label);
 					while (!fifo.isEmpty()) {
 						final long q = fifo.remove(0);
-						IntervalIndexer.indexToPosition(q, dimensSizes, pos);
-						raNeighbor.setPosition(pos);
+						IntervalIndexer.indexToPosition(q, in, raNeighbor);
 						final Cursor<T> neighborHood = raNeighbor.get().cursor();
 
 						final long[] posNeighbor = new long[neighborHood.numDimensions()];
@@ -333,8 +322,7 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 				if (i == imi.length) {
 					break;
 				}
-				IntervalIndexer.indexToPosition(imi[i], dimensSizes, pos);
-				raIn.setPosition(pos);
+				IntervalIndexer.indexToPosition(imi[i], in, raIn);
 			}
 			j = i - 1;
 		}
@@ -360,18 +348,18 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 					raNeighbor.setPosition(cursorOut);
 					final Cursor<T> neighborHood = raNeighbor.get().cursor();
 					int newLab = WSHED;
-                    while (neighborHood.hasNext()) {
-                            neighborHood.fwd();
-                            raLab.setPosition(neighborHood);
-                            if (!raLab.isOutOfBounds()) {
-                                    newLab = raLab.get().get();
-                                    if (newLab > WSHED) {
-                                            break;
-                                    }
-                            }
-
-                    }
-                    if (newLab == WSHED) {
+                                        while (neighborHood.hasNext()) {
+                                                neighborHood.fwd();
+                                                raLab.setPosition(neighborHood);
+                                                if (!raLab.isOutOfBounds()) {
+                                                        newLab = raLab.get().get();
+                                                        if (newLab > WSHED) {
+                                                                break;
+                                                        }
+                                                }
+                    
+                                        }
+                                        if (newLab == WSHED) {
 						cursorOut.get().clear();
 					} else {
 						cursorOut.get().add(newLab);
@@ -400,29 +388,20 @@ public class Watershed<B extends BooleanType<B>, T extends RealType<T>>
 
 	@Override
 	public boolean conforms() {
-		boolean conformed = true;
-		if (mask != null) {
-			if (mask.numDimensions() != in().numDimensions())
-				conformed = false;
-			else {
-				for (int i = 0; i < mask.numDimensions(); i++) {
-					if (mask.dimension(i) != in().dimension(i))
-						conformed = false;
-				}
-			}
-		}
-		return conformed;
+	    	if (mask != null) {
+	    	    	return Intervals.equalDimensions(mask, in());
+	    	}
+	    	return true;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public ImgLabeling<Integer, IntType> createOutput(final RandomAccessibleInterval<T> in) {
-		return createOp.calculate(new FinalInterval(in));
+		return createOp.calculate(in);
 	}
 
 	@Override
 	public void initialize() {
-		createOp = Functions.unary(ops(), CreateImgLabelingFromInterval.class, ImgLabeling.class,
-				new FinalInterval(in()));
+		createOp = Functions.unary(ops(), CreateImgLabelingFromInterval.class, ImgLabeling.class, in());
 	}
 }

@@ -49,7 +49,7 @@ import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.Cursor;
-import net.imglib2.FinalInterval;
+import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
 import net.imglib2.Point;
 import net.imglib2.RandomAccess;
@@ -69,6 +69,7 @@ import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.IntType;
 import net.imglib2.util.IntervalIndexer;
+import net.imglib2.util.Intervals;
 import net.imglib2.view.ExtendedRandomAccessibleInterval;
 import net.imglib2.view.Views;
 
@@ -94,18 +95,18 @@ import net.imglib2.view.Views;
  * Output is a labeling of the different catchment basins.
  * </p>
  * 
- * @param <B> a {@link BooleanType}
- * @param <T> a {@link RealType}
+ * @param <T> element type of input
+ * @param <B> element type of mask
  * 
  * @author Simon Schmid (University of Konstanz)
  */
 @Plugin(type = Ops.Image.Watershed.class)
-public class WatershedSeeded<B extends BooleanType<B>, T extends RealType<T>>
+public class WatershedSeeded<T extends RealType<T>, B extends BooleanType<B>>
 		extends AbstractUnaryHybridCF<RandomAccessibleInterval<T>, ImgLabeling<Integer, IntType>>
 		implements Ops.Image.Watershed, Contingent {
 
 	@SuppressWarnings("rawtypes")
-	private UnaryFunctionOp<FinalInterval, ImgLabeling> createOp;
+	private UnaryFunctionOp<Interval, ImgLabeling> createOp;
 
 	@Parameter(required = true)
 	private ImgLabeling<Integer, IntType> seeds;
@@ -127,6 +128,9 @@ public class WatershedSeeded<B extends BooleanType<B>, T extends RealType<T>>
 
 	/** Default label for in queue, must be lower than WSHED */
 	private static final int INQUEUE = -3;
+	
+	/** Default label for in out of bounds, must be lower than WSHED */
+	private static final int OUTSIDE = -4;
 
 	/** Used by {@link WatershedVoxel} */
 	private static final AtomicLong seq = new AtomicLong();
@@ -134,11 +138,12 @@ public class WatershedSeeded<B extends BooleanType<B>, T extends RealType<T>>
 	@SuppressWarnings("unchecked")
 	@Override
 	public void compute(final RandomAccessibleInterval<T> in, final ImgLabeling<Integer, IntType> out) {
-		final RandomAccess<T> raIn = in.randomAccess();
-
 		// extend border to be able to do a quick check, if a voxel is inside
+	    	final LabelingType<Integer> oustide = out.firstElement().copy();
+	    	oustide.clear();
+	    	oustide.add(OUTSIDE);
 		final ExtendedRandomAccessibleInterval<LabelingType<Integer>, ImgLabeling<Integer, IntType>> outExt = Views
-				.extendBorder(out);
+				.extendValue(out, oustide);
 		final OutOfBounds<LabelingType<Integer>> raOut = outExt.randomAccess();
 
 		// if no mask provided, set the mask to the whole image
@@ -205,11 +210,11 @@ public class WatershedSeeded<B extends BooleanType<B>, T extends RealType<T>>
 				raSeeds.setPosition(neighborhood);
 				raMask.setPosition(neighborhood);
 				raOut.setPosition(neighborhood);
-				if (!raOut.isOutOfBounds() && raMask.get().get() && raSeeds.get().isEmpty()
-						&& !raOut.get().contains(INQUEUE)) {
-					raIn.setPosition(neighborhood);
+				final Integer labelNeigh = raOut.get().iterator().next();
+				if (labelNeigh != INQUEUE && labelNeigh != OUTSIDE && !raOut.isOutOfBounds() && raMask.get().get() 
+						&& raSeeds.get().isEmpty()) {
 					raOut.setPosition(neighborhood);
-					pq.add(new WatershedVoxel(IntervalIndexer.positionToIndex(raIn, in), raIn.get().getRealDouble()));
+					pq.add(new WatershedVoxel(IntervalIndexer.positionToIndex(neighborhood, in), neighborhood.get().getRealDouble()));
 					raOut.get().clear();
 					raOut.get().add(INQUEUE);
 				}
@@ -227,7 +232,7 @@ public class WatershedSeeded<B extends BooleanType<B>, T extends RealType<T>>
 		 */
 
 		// list to store neighbor labels
-		final ArrayList<Integer> neighborLabels = new ArrayList<Integer>();
+		final ArrayList<Integer> neighborLabels = new ArrayList<>();
 		// list to store neighbor voxels
 		final ArrayList<WatershedVoxel> neighborVoxels = new ArrayList<>();
 
@@ -251,12 +256,11 @@ public class WatershedSeeded<B extends BooleanType<B>, T extends RealType<T>>
 				// yet
 				raOut.setPosition(neighborhood);
 				raMask.setPosition(raOut);
-				if (!raOut.get().isEmpty() && !raOut.isOutOfBounds()) {
+				if (!raOut.get().isEmpty()) {
 					final Integer label = raOut.get().iterator().next();
 					if (label == INIT && raMask.get().get()) {
-						raIn.setPosition(neighborhood);
-						neighborVoxels.add(new WatershedVoxel(IntervalIndexer.positionToIndex(raIn, out),
-								raIn.get().getRealDouble()));
+						neighborVoxels.add(new WatershedVoxel(IntervalIndexer.positionToIndex(neighborhood, out),
+							neighborhood.get().getRealDouble()));
 					} else {
 						if (label > WSHED && (!drawWatersheds || !neighborLabels.contains(label))) {
 							// store labels of neighbors in a list
@@ -333,36 +337,21 @@ public class WatershedSeeded<B extends BooleanType<B>, T extends RealType<T>>
 	public boolean conforms() {
 		boolean conformed = true;
 		if (mask != null) {
-			if (mask.numDimensions() != in().numDimensions())
-				conformed = false;
-			else {
-				for (int i = 0; i < mask.numDimensions(); i++) {
-					if (mask.dimension(i) != in().dimension(i))
-						conformed = false;
-				}
-			}
+		    	conformed = Intervals.equalDimensions(mask, in());
 		}
-		if (seeds.numDimensions() != in().numDimensions())
-			conformed = false;
-		else {
-			for (int i = 0; i < seeds.numDimensions(); i++) {
-				if (seeds.dimension(i) != in().dimension(i))
-					conformed = false;
-			}
-		}
+		conformed &= Intervals.equalDimensions(seeds, in());
 		return conformed;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public ImgLabeling<Integer, IntType> createOutput(final RandomAccessibleInterval<T> in) {
-		return createOp.calculate(new FinalInterval(in));
+		return createOp.calculate(in);
 	}
 
 	@Override
 	public void initialize() {
-		createOp = Functions.unary(ops(), CreateImgLabelingFromInterval.class, ImgLabeling.class,
-				new FinalInterval(in()));
+		createOp = Functions.unary(ops(), CreateImgLabelingFromInterval.class, ImgLabeling.class, in());
 	}
 
 	/**

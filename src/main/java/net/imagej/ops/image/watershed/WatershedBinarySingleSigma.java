@@ -62,12 +62,12 @@ import net.imglib2.view.Views;
  * Input is a binary image with arbitrary number of dimensions. The heightmap is
  * calculated by an inverse distance transform, which can optionally be smoothed
  * with an gaussian filter with parameter sigma to prevent having many small
- * segments in the result. Sigma must have the same dimension as the input image.
- * It needs to be defined whether a neighborhood with eight- or four-connectivity 
- * (respective to 2D) is used. A binary image can be set as mask which defines the
- * area where computation shall be done. It may make sense to use the input as 
- * mask as well. If desired, the watersheds are drawn and labeled as 0. Otherwise 
- * the watersheds will be labeled as one of their neighbors.
+ * segments in the result. It needs to be defined whether a neighborhood with 
+ * eight- or four-connectivity (respective to 2D) is used. A binary image can be 
+ * set as mask which defines the area where computation shall be done. It may 
+ * make sense to use the input as mask as well. If desired, the watersheds are 
+ * drawn and labeled as 0. Otherwise the watersheds will be labeled as one of 
+ * their neighbors.
  * </p>
  * <p>
  * Output is a labeling of the different catchment basins.
@@ -78,7 +78,7 @@ import net.imglib2.view.Views;
  * @author Simon Schmid (University of Konstanz)
  */
 @Plugin(type = Ops.Image.Watershed.class)
-public class WatershedBinary<B extends BooleanType<B>>
+public class WatershedBinarySingleSigma<B extends BooleanType<B>>
 		extends AbstractUnaryHybridCF<RandomAccessibleInterval<B>, ImgLabeling<Integer, IntType>>
 		implements Ops.Image.Watershed, Contingent {
 
@@ -92,7 +92,7 @@ public class WatershedBinary<B extends BooleanType<B>>
 	private boolean drawWatersheds;
 
 	@Parameter(required = true)
-	private double[] sigma;
+	private double sigma;
 	
 	@Parameter(required = false)
 	private RandomAccessibleInterval<B> mask;
@@ -111,10 +111,7 @@ public class WatershedBinary<B extends BooleanType<B>>
 
 	@Override
 	public boolean conforms() {
-		boolean conformed = sigma.length != in().numDimensions();
-		for (int i = 0; i < sigma.length; i++) {
-			conformed &= sigma[i] >= 0;
-		}
+		boolean conformed = sigma >= 0;
 		if (mask != null) {
 		    	conformed &= Intervals.equalDimensions(mask, in());
 		}

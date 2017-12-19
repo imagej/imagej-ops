@@ -52,7 +52,7 @@ import net.imglib2.view.Views;
  * 
  * @author Simon Schmid (University of Konstanz)
  **/
-public class WatershedBinaryTest extends AbstractOpTest {
+public class WatershedBinarySingleSigmaTest extends AbstractOpTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
@@ -71,14 +71,14 @@ public class WatershedBinaryTest extends AbstractOpTest {
 		final RandomAccessibleInterval<FloatType> invertedDistMap = ops.create().img(distMap, new FloatType());
 		ops.image().invert(Views.iterable(invertedDistMap), Views.iterable(distMap));
 
-		double[] sigma = { 3.0, 3.0, 0.0 };
-		final RandomAccessibleInterval<FloatType> gauss = ops.filter().gauss(invertedDistMap, sigma[0], sigma[1]);
+		double sigma = 3.0;
+		final RandomAccessibleInterval<FloatType> gauss = ops.filter().gauss(invertedDistMap, sigma);
 
 		// run randomly only one configuration to save execution time
 		int nextInt = new Random().nextInt(3);
 		if (nextInt == 0) {
 			// compute result
-			final ImgLabeling<Integer, IntType> out1 = (ImgLabeling<Integer, IntType>) ops.run(WatershedBinary.class,
+			final ImgLabeling<Integer, IntType> out1 = (ImgLabeling<Integer, IntType>) ops.run(WatershedBinarySingleSigma.class,
 					null, thresholdedImg, true, false, sigma, thresholdedImg);
 
 			final ImgLabeling<Integer, IntType> expOut1 = (ImgLabeling<Integer, IntType>) ops.run(Watershed.class, null,
@@ -86,7 +86,7 @@ public class WatershedBinaryTest extends AbstractOpTest {
 
 			assertResults(expOut1, out1);
 			
-			final ImgLabeling<Integer, IntType> out2 = (ImgLabeling<Integer, IntType>) ops.run(WatershedBinary.class,
+			final ImgLabeling<Integer, IntType> out2 = (ImgLabeling<Integer, IntType>) ops.run(WatershedBinarySingleSigma.class,
 				null, thresholdedImg, true, false, sigma);
 
 			final ImgLabeling<Integer, IntType> expOut2 = (ImgLabeling<Integer, IntType>) ops.run(Watershed.class, null,
@@ -95,7 +95,7 @@ public class WatershedBinaryTest extends AbstractOpTest {
 			assertResults(expOut2, out2);
 		} else if (nextInt == 1) {
 			// compute result
-			final ImgLabeling<Integer, IntType> out1 = (ImgLabeling<Integer, IntType>) ops.run(WatershedBinary.class,
+			final ImgLabeling<Integer, IntType> out1 = (ImgLabeling<Integer, IntType>) ops.run(WatershedBinarySingleSigma.class,
 				null, thresholdedImg, true, true, sigma, thresholdedImg);
 
 			final ImgLabeling<Integer, IntType> expOut1 = (ImgLabeling<Integer, IntType>) ops.run(Watershed.class, null,
@@ -103,7 +103,7 @@ public class WatershedBinaryTest extends AbstractOpTest {
 
 			assertResults(expOut1, out1);
 			
-			final ImgLabeling<Integer, IntType> out2 = (ImgLabeling<Integer, IntType>) ops.run(WatershedBinary.class,
+			final ImgLabeling<Integer, IntType> out2 = (ImgLabeling<Integer, IntType>) ops.run(WatershedBinarySingleSigma.class,
 				null, thresholdedImg, true, true, sigma);
 
 			final ImgLabeling<Integer, IntType> expOut2 = (ImgLabeling<Integer, IntType>) ops.run(Watershed.class, null,
@@ -112,7 +112,7 @@ public class WatershedBinaryTest extends AbstractOpTest {
 			assertResults(expOut2, out2);
 		} else {
 			// compute result
-			final ImgLabeling<Integer, IntType> out1 = (ImgLabeling<Integer, IntType>) ops.run(WatershedBinary.class,
+			final ImgLabeling<Integer, IntType> out1 = (ImgLabeling<Integer, IntType>) ops.run(WatershedBinarySingleSigma.class,
 				null, thresholdedImg, false, true, sigma, thresholdedImg);
 
 			final ImgLabeling<Integer, IntType> expOut1 = (ImgLabeling<Integer, IntType>) ops.run(Watershed.class, null,
@@ -120,7 +120,7 @@ public class WatershedBinaryTest extends AbstractOpTest {
 
 			assertResults(expOut1, out1);
 			
-			final ImgLabeling<Integer, IntType> out2 = (ImgLabeling<Integer, IntType>) ops.run(WatershedBinary.class,
+			final ImgLabeling<Integer, IntType> out2 = (ImgLabeling<Integer, IntType>) ops.run(WatershedBinarySingleSigma.class,
 				null, thresholdedImg, false, true, sigma);
 
 			final ImgLabeling<Integer, IntType> expOut2 = (ImgLabeling<Integer, IntType>) ops.run(Watershed.class, null,
