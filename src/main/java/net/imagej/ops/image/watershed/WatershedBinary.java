@@ -73,13 +73,14 @@ import net.imglib2.view.Views;
  * Output is a labeling of the different catchment basins.
  * </p>
  *
+ * @param <T> element type of input
  * @param <B> element type of mask
  *
  * @author Simon Schmid (University of Konstanz)
  */
 @Plugin(type = Ops.Image.Watershed.class)
-public class WatershedBinary<B extends BooleanType<B>>
-		extends AbstractUnaryHybridCF<RandomAccessibleInterval<B>, ImgLabeling<Integer, IntType>>
+public class WatershedBinary<T extends BooleanType<T>, B extends BooleanType<B>>
+		extends AbstractUnaryHybridCF<RandomAccessibleInterval<T>, ImgLabeling<Integer, IntType>>
 		implements Ops.Image.Watershed, Contingent {
 
 	@SuppressWarnings("rawtypes")
@@ -98,7 +99,7 @@ public class WatershedBinary<B extends BooleanType<B>>
 	private RandomAccessibleInterval<B> mask;
 
 	@Override
-	public void compute(final RandomAccessibleInterval<B> in, final ImgLabeling<Integer, IntType> out) {
+	public void compute(final RandomAccessibleInterval<T> in, final ImgLabeling<Integer, IntType> out) {
 		// compute distance transform
 		final RandomAccessibleInterval<FloatType> distMap = ops().image().distancetransform(in);
 		final RandomAccessibleInterval<FloatType> invertedDT = ops().create().img(in, new FloatType());
@@ -122,7 +123,7 @@ public class WatershedBinary<B extends BooleanType<B>>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ImgLabeling<Integer, IntType> createOutput(final RandomAccessibleInterval<B> in) {
+	public ImgLabeling<Integer, IntType> createOutput(final RandomAccessibleInterval<T> in) {
 		return createOp.calculate(in);
 	}
 

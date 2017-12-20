@@ -499,7 +499,7 @@ public class ImageNamespace extends AbstractNamespace {
 	// -- watershedBinarySingleSigma --
 	
 	@OpMethod(op = net.imagej.ops.image.watershed.WatershedBinarySingleSigma.class)
-	public <B extends BooleanType<B>> ImgLabeling<Integer, IntType> watershed(final RandomAccessibleInterval<B> in, 
+	public <T extends BooleanType<T>> ImgLabeling<Integer, IntType> watershed(final RandomAccessibleInterval<T> in, 
 		final boolean useEightConnectivity, final boolean drawWatersheds, final double sigma) {
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<Integer, IntType> result =
@@ -509,8 +509,8 @@ public class ImageNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.image.watershed.WatershedBinarySingleSigma.class)
-	public <B extends BooleanType<B>> ImgLabeling<Integer, IntType> watershed(final ImgLabeling<Integer, IntType> out, 
-		final RandomAccessibleInterval<B> in, final boolean useEightConnectivity, final boolean drawWatersheds, final double sigma) {
+	public <T extends BooleanType<T>> ImgLabeling<Integer, IntType> watershed(final ImgLabeling<Integer, IntType> out, 
+		final RandomAccessibleInterval<T> in, final boolean useEightConnectivity, final boolean drawWatersheds, final double sigma) {
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<Integer, IntType> result =
 			(ImgLabeling<Integer, IntType>) ops().run(net.imagej.ops.image.watershed.WatershedBinarySingleSigma.class, out, 
@@ -519,8 +519,8 @@ public class ImageNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.image.watershed.WatershedBinarySingleSigma.class)
-	public <B extends BooleanType<B>> ImgLabeling<Integer, IntType> watershed(final ImgLabeling<Integer, IntType> out, 
-		final RandomAccessibleInterval<B> in, final boolean useEightConnectivity, final boolean drawWatersheds, final double sigma, 
+	public <T extends BooleanType<T>, B extends BooleanType<B>> ImgLabeling<Integer, IntType> watershed(final ImgLabeling<Integer, IntType> out, 
+		final RandomAccessibleInterval<T> in, final boolean useEightConnectivity, final boolean drawWatersheds, final double sigma, 
 		final RandomAccessibleInterval<B> mask) {
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<Integer, IntType> result =
