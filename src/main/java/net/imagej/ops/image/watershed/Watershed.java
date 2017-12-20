@@ -155,13 +155,13 @@ public class Watershed<T extends RealType<T>, B extends BooleanType<B>>
 		 * (only the pixel indices are stored)
 		 */
 		Arrays.sort(imi, new Comparator<Long>() {
-		    @Override
-		    public int compare(final Long o1, final Long o2) {
-			IntervalIndexer.indexToPosition(o1, in, raIn);
-			final T value = raIn.get().copy();
-			IntervalIndexer.indexToPosition(o2, in, raIn);
-			return value.compareTo(raIn.get());
-		    }
+			@Override
+			public int compare(final Long o1, final Long o2) {
+				IntervalIndexer.indexToPosition(o1, in, raIn);
+				final T value = raIn.get().copy();
+				IntervalIndexer.indexToPosition(o2, in, raIn);
+				return value.compareTo(raIn.get());
+			}
 		});
 
 		// lab and dist store the values calculated after each phase
@@ -348,18 +348,17 @@ public class Watershed<T extends RealType<T>, B extends BooleanType<B>>
 					raNeighbor.setPosition(cursorOut);
 					final Cursor<T> neighborHood = raNeighbor.get().cursor();
 					int newLab = WSHED;
-                                        while (neighborHood.hasNext()) {
-                                                neighborHood.fwd();
-                                                raLab.setPosition(neighborHood);
-                                                if (!raLab.isOutOfBounds()) {
-                                                        newLab = raLab.get().get();
-                                                        if (newLab > WSHED) {
-                                                                break;
-                                                        }
-                                                }
-                    
-                                        }
-                                        if (newLab == WSHED) {
+					while (neighborHood.hasNext()) {
+						neighborHood.fwd();
+						raLab.setPosition(neighborHood);
+						if (!raLab.isOutOfBounds()) {
+							newLab = raLab.get().get();
+							if (newLab > WSHED) {
+								break;
+							}
+						}
+					}
+					if (newLab == WSHED) {
 						cursorOut.get().clear();
 					} else {
 						cursorOut.get().add(newLab);
@@ -388,10 +387,10 @@ public class Watershed<T extends RealType<T>, B extends BooleanType<B>>
 
 	@Override
 	public boolean conforms() {
-	    	if (mask != null) {
-	    	    	return Intervals.equalDimensions(mask, in());
-	    	}
-	    	return true;
+		if (mask != null) {
+			return Intervals.equalDimensions(mask, in());
+		}
+		return true;
 	}
 
 	@SuppressWarnings("unchecked")

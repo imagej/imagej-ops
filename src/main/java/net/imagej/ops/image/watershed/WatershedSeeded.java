@@ -128,20 +128,20 @@ public class WatershedSeeded<T extends RealType<T>, B extends BooleanType<B>>
 
 	/** Default label for in queue, must be lower than WSHED */
 	private static final int INQUEUE = -3;
-	
+
 	/** Default label for in out of bounds, must be lower than WSHED */
 	private static final int OUTSIDE = -4;
 
-	/** Used by {@link WatershedVoxel} */
+	/** Used by {@link WatershedSeeded.WatershedVoxel} */
 	private static final AtomicLong seq = new AtomicLong();
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void compute(final RandomAccessibleInterval<T> in, final ImgLabeling<Integer, IntType> out) {
 		// extend border to be able to do a quick check, if a voxel is inside
-	    	final LabelingType<Integer> oustide = out.firstElement().copy();
-	    	oustide.clear();
-	    	oustide.add(OUTSIDE);
+		final LabelingType<Integer> oustide = out.firstElement().copy();
+		oustide.clear();
+		oustide.add(OUTSIDE);
 		final ExtendedRandomAccessibleInterval<LabelingType<Integer>, ImgLabeling<Integer, IntType>> outExt = Views
 				.extendValue(out, oustide);
 		final OutOfBounds<LabelingType<Integer>> raOut = outExt.randomAccess();
@@ -337,7 +337,7 @@ public class WatershedSeeded<T extends RealType<T>, B extends BooleanType<B>>
 	public boolean conforms() {
 		boolean conformed = true;
 		if (mask != null) {
-		    	conformed = Intervals.equalDimensions(mask, in());
+			conformed = Intervals.equalDimensions(mask, in());
 		}
 		conformed &= Intervals.equalDimensions(seeds, in());
 		return conformed;

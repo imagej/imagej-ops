@@ -99,7 +99,6 @@ public class WatershedBinarySingleSigma<B extends BooleanType<B>>
 
 	@Override
 	public void compute(final RandomAccessibleInterval<B> in, final ImgLabeling<Integer, IntType> out) {
-
 		// compute distance transform
 		final RandomAccessibleInterval<FloatType> distMap = ops().image().distancetransform(in);
 		final RandomAccessibleInterval<FloatType> invertedDT = ops().create().img(in, new FloatType());
@@ -113,7 +112,7 @@ public class WatershedBinarySingleSigma<B extends BooleanType<B>>
 	public boolean conforms() {
 		boolean conformed = sigma >= 0;
 		if (mask != null) {
-		    	conformed &= Intervals.equalDimensions(mask, in());
+			conformed &= Intervals.equalDimensions(mask, in());
 		}
 		return conformed;
 	}
