@@ -32,6 +32,7 @@ package net.imagej.ops.morphology.topHat;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.imagej.ops.AbstractOpTest;
@@ -65,9 +66,10 @@ public class TopHatTest extends AbstractOpTest {
 	@Test
 	public void testSingleTopHat() {
 		final Shape shape = new DiamondShape(1);
+		final List<Shape> shapes = Arrays.asList(shape);
 		@SuppressWarnings("unchecked")
 		final Img<ByteType> out1 = (Img<ByteType>) ops.run(ListTopHat.class,
-			Img.class, in, shape);
+			Img.class, in, shapes);
 		final Img<ByteType> out2 = TopHat.topHat(in, shape, 1);
 		final Cursor<ByteType> c1 = out1.cursor();
 		final Cursor<ByteType> c2 = out2.cursor();
