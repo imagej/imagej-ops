@@ -31,11 +31,12 @@ package net.imagej.ops.deconvolve;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.correlate.CorrelateFFTC;
-import net.imagej.ops.math.divide.DivideHandleZeroMap;
+import net.imagej.ops.map.MapBinaryInplace1s;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.inplace.AbstractBinaryInplace1Op;
 import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
 import net.imagej.ops.special.inplace.BinaryInplace1Op;
 import net.imagej.ops.special.inplace.Inplaces;
@@ -44,10 +45,12 @@ import net.imglib2.Dimensions;
 import net.imglib2.FinalDimensions;
 import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
+import net.imglib2.IterableInterval;
 import net.imglib2.Point;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
+import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Util;
 import net.imglib2.view.Views;
@@ -110,13 +113,11 @@ public class NonCirculantNormalizationFactor<I extends RealType<I>, O extends Re
 
 	private BinaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>> correlater;
 
-	private BinaryInplace1Op<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> divide;
+	private DivideHandleZeroMap<O> divide;
 
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initialize() {
-		super.initialize();
-
 		create = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
 			Img.class, Dimensions.class, Util.getTypeFromInterval(out()));
 
@@ -124,10 +125,9 @@ public class NonCirculantNormalizationFactor<I extends RealType<I>, O extends Re
 			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
 			RandomAccessibleInterval.class, fftInput, fftKernel, true, false);
 
-		divide = (BinaryInplace1Op) Inplaces.binary1(ops(),
-			DivideHandleZeroMap.class, RandomAccessibleInterval.class,
-			RandomAccessibleInterval.class);
-
+		divide = new DivideHandleZeroMap<>();
+		divide.setEnvironment(ops());
+		divide.initialize();
 	}
 
 	/**
@@ -136,7 +136,6 @@ public class NonCirculantNormalizationFactor<I extends RealType<I>, O extends Re
 	 */
 	@Override
 	public void mutate(RandomAccessibleInterval<O> arg) {
-
 		// if the normalization image hasn't been computed yet, then compute it
 		if (normalization == null) {
 			normalization = create.calculate(imgConvolutionInterval);
@@ -144,8 +143,7 @@ public class NonCirculantNormalizationFactor<I extends RealType<I>, O extends Re
 		}
 
 		// normalize for non-circulant deconvolution
-		divide.mutate1(normalization, arg);
-
+		divide.mutate1(normalization, Views.iterable(arg));
 	}
 
 	protected void createNormalizationImageSemiNonCirculant() {
@@ -238,4 +236,53 @@ public class NonCirculantNormalizationFactor<I extends RealType<I>, O extends Re
 		}
 	}
 
+	// -- Helper classes --
+
+	private static class DivideHandleZeroMap<T extends RealType<T>> extends
+		AbstractBinaryInplace1Op<IterableInterval<T>, IterableInterval<T>>
+	{
+
+		private BinaryInplace1Op<T, T, T> divide;
+
+		private BinaryInplace1Op<IterableInterval<T>, IterableInterval<T>, IterableInterval<T>> map;
+
+		@Override
+		@SuppressWarnings("unchecked")
+		public void initialize() {
+			divide = new DivideHandleZeroOp<>();
+			divide.setEnvironment(ops());
+			divide.initialize();
+
+			map = (BinaryInplace1Op) Inplaces.binary1(ops(),
+				MapBinaryInplace1s.IIAndII.class, IterableInterval.class,
+				IterableInterval.class, divide);
+		}
+
+		@Override
+		public void mutate1(final IterableInterval<T> input1,
+			final IterableInterval<T> input2)
+		{
+			map.mutate1(input1, input2);
+		}
+	}
+
+	private static class DivideHandleZeroOp<I extends RealType<I> & NumericType<I>, O extends RealType<O> & NumericType<O>>
+		extends AbstractBinaryInplace1Op<I, I>
+	{
+
+		@Override
+		public void mutate1(final I input, final I outin) {
+			final I tmp = outin.copy();
+
+			if (outin.getRealFloat() > 0) {
+
+				tmp.set(outin);
+				tmp.div(input);
+				outin.set(tmp);
+			}
+			else {
+				outin.setReal(0.0);
+			}
+		}
+	}
 }

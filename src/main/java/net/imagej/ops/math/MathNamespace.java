@@ -774,9 +774,7 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(ops = { net.imagej.ops.math.IIToIIOutputII.Divide.class,
-		net.imagej.ops.math.divide.DivideHandleZeroMap.class,
-		net.imagej.ops.math.divide.DivideHandleZeroMap1.class })
+	@OpMethod(op = net.imagej.ops.math.IIToIIOutputII.Divide.class)
 	public <T extends NumericType<T>> IterableInterval<T> divide(
 		final IterableInterval<T> in1, final IterableInterval<T> in2)
 	{
@@ -928,14 +926,6 @@ public class MathNamespace extends AbstractNamespace {
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
 				net.imagej.ops.Ops.Math.Divide.class, out, in, value);
-		return result;
-	}
-
-	@OpMethod(ops = { net.imagej.ops.math.divide.DivideHandleZeroOp.class,
-		net.imagej.ops.math.divide.DivideHandleZeroOp1.class })
-	public <T extends RealType<T>> T divide(final T in, final T b) {
-		@SuppressWarnings("unchecked")
-		final T result = (T) ops().run(net.imagej.ops.Ops.Math.Divide.class, in, b);
 		return result;
 	}
 
