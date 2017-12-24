@@ -29,14 +29,11 @@
 
 package net.imagej.ops.morphology.blackTopHat;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.algorithm.morphology.BlackTopHat;
 import net.imglib2.algorithm.neighborhood.DiamondShape;
@@ -71,10 +68,7 @@ public class BlackTopHatTest extends AbstractOpTest {
 		final Img<ByteType> out1 = (Img<ByteType>) ops.run(ListBlackTopHat.class,
 			Img.class, in, shapes);
 		final Img<ByteType> out2 = BlackTopHat.blackTopHat(in, shape, 1);
-		final Cursor<ByteType> c1 = out1.cursor();
-		final Cursor<ByteType> c2 = out2.cursor();
-		while (c1.hasNext())
-			assertEquals(c1.next().get(), c2.next().get());
+		assertIterationsEqual(out2, out1);
 	}
 
 	@Test
@@ -88,9 +82,6 @@ public class BlackTopHatTest extends AbstractOpTest {
 		final IterableInterval<ByteType> out1 = (IterableInterval<ByteType>) ops
 			.run(ListBlackTopHat.class, IterableInterval.class, in, shapes);
 		final Img<ByteType> out2 = BlackTopHat.blackTopHat(in, shapes, 1);
-		final Cursor<ByteType> c1 = out1.cursor();
-		final Cursor<ByteType> c2 = out2.cursor();
-		while (c1.hasNext())
-			assertEquals(c1.next().get(), c2.next().get());
+		assertIterationsEqual(out2, out1);
 	}
 }
