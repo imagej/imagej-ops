@@ -129,7 +129,7 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>> extends
 		RandomAccessibleInterval<U> out, int step)
 	{
 
-		// create denominators used for gaussians later.
+		// create denominators used for vesselness calculations later.
 		double ad = 2 * alpha * alpha;
 		double bd = 2 * beta * beta;
 
