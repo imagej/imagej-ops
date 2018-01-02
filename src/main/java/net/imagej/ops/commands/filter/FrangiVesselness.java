@@ -68,7 +68,7 @@ public class FrangiVesselness<T extends RealType<T>> implements Command {
 	private Img<T> input;
 
 	@Parameter(label = "Apply Gaussian at each scale:")
-	private boolean doGauss;
+	private boolean doGauss = true;
 
 	@Parameter(label = "Spacing",
 		description = "Relative distance between the observed data points")
