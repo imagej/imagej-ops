@@ -40,6 +40,8 @@ import org.scijava.plugin.Plugin;
 
 import Jama.EigenvalueDecomposition;
 import Jama.Matrix;
+
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.Cursor;
@@ -65,7 +67,7 @@ import net.imglib2.view.Views;
 @Plugin(type = Ops.Filter.FrangiVesselness.class)
 public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>> extends
 	AbstractUnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<U>>
-	implements Ops.Filter.FrangiVesselness
+	implements Ops.Filter.FrangiVesselness, Contingent
 {
 
 	public final static int MIN_DIMS = 2;
@@ -163,7 +165,8 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>> extends
 		Img<DoubleType> metadataImg = (Img<DoubleType>) ops().run(
 			Ops.Create.Img.class, metadataDims);
 		Cursor<DoubleType> metadataCursor = metadataImg.localizingCursor();
-		Img<DoubleType> inputNorms = (Img<DoubleType>) ops().run(Ops.Create.Img.class, in, new DoubleType());
+		Img<DoubleType> inputNorms = (Img<DoubleType>) ops().run(
+			Ops.Create.Img.class, in, new DoubleType());
 		Cursor<DoubleType> normsCursor = inputNorms.localizingCursor();
 
 		// use three RandomAccess<T> Objects to find the values needed to calculate
@@ -218,7 +221,8 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>> extends
 			double s = hessian.normF();
 			normsCursor.get().setReal(s);
 
-			// find and sort the eigenvalues/vectors of the hessian, save them in the metadataImage
+			// find and sort the eigenvalues/vectors of the hessian, save them in the
+			// metadataImage
 			EigenvalueDecomposition e = hessian.eig();
 			double[] eigenvaluesArray = e.getRealEigenvalues();
 			ArrayList<Double> eigenvaluesArrayList = new ArrayList<>();
@@ -316,6 +320,11 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>> extends
 			outputRA.get().setReal(v);
 		}
 
+	}
+
+	@Override
+	public boolean conforms() {
+		return (in().numDimensions() == 2 || in().numDimensions() == 3);
 	}
 
 }

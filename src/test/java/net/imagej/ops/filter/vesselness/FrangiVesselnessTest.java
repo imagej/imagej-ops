@@ -44,6 +44,7 @@ import net.imagej.ImgPlus;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.OpMatchingService;
 import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.img.Img;
@@ -88,8 +89,6 @@ public class FrangiVesselnessTest extends AbstractOpTest {
 		Cursor<FloatType> cursor = Views.iterable(actualOutput).localizingCursor();
 		RandomAccess<FloatType> actualRA = actualOutput.randomAccess();
 		RandomAccess<FloatType> expectedRA = expectedOutput.randomAccess();
-		
-		
 
 		while (cursor.hasNext()) {
 			cursor.fwd();
@@ -97,6 +96,46 @@ public class FrangiVesselnessTest extends AbstractOpTest {
 			expectedRA.setPosition(cursor);
 			assertEquals(expectedRA.get().get(), actualRA.get().get(), 0);
 		}
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void checkTooFewDimensions() {
+		long[] dims = { 4 };
+		Img<FloatType> input = (Img<FloatType>) ops.run(Ops.Create.Img.class, dims,
+			new FloatType());
+
+		Img<FloatType> actualOutput = ArrayImgs.floats(dims);
+
+		// scale over which the filter operates (sensitivity)
+		double scale = 1;
+
+		// physical spacing between data points (1,1 since I got it from the
+		// computer)
+		double[] spacing = { 1, 1 };
+
+		// run the op
+		ops.run(net.imagej.ops.filter.vesselness.DefaultFrangi.class, actualOutput,
+			input, spacing, scale);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void checkTooManyDimensions() {
+		long[] dims = { 4, 4, 4, 4, 4 };
+		Img<FloatType> input = (Img<FloatType>) ops.run(Ops.Create.Img.class, dims,
+			new FloatType());
+
+		Img<FloatType> actualOutput = ArrayImgs.floats(dims);
+
+		// scale over which the filter operates (sensitivity)
+		double scale = 1;
+
+		// physical spacing between data points (1,1 since I got it from the
+		// computer)
+		double[] spacing = { 1, 1 };
+
+		// run the op
+		ops.run(net.imagej.ops.filter.vesselness.DefaultFrangi.class, actualOutput,
+			input, spacing, scale);
 	}
 
 	@Override

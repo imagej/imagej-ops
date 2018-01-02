@@ -57,7 +57,9 @@ import org.scijava.plugin.Plugin;
  * @author Gabe Selzer
  */
 @Plugin(type = Command.class, menuPath = "Process>Filters>Frangi Vesselness")
-public class FrangiVesselness<T extends RealType<T>> implements Command {
+public class FrangiVesselness<T extends RealType<T>> implements Command,
+	Contingent
+{
 
 	@Parameter
 	private LogService log;
@@ -128,5 +130,10 @@ public class FrangiVesselness<T extends RealType<T>> implements Command {
 			opService.filter().frangiVesselness(scaleResult, vesselnessInput, spacing,
 				scales[s]);
 		}
+	}
+
+	@Override
+	public boolean conforms() {
+		return (input.numDimensions() == 2 || input.numDimensions() == 3);
 	}
 }
