@@ -32,6 +32,7 @@ package net.imagej.ops.commands.filter;
 
 import java.util.Arrays;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.OpService;
 import net.imglib2.Dimensions;
 import net.imglib2.RandomAccessibleInterval;

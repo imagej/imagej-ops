@@ -35,7 +35,10 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.scijava.Context;
 import org.scijava.cache.CacheService;
+import org.scijava.jython.shaded.jnr.ffi.Struct.uid_t;
 import org.scijava.script.ScriptService;
+
+import ij.ImageJ;
 
 import net.imagej.ImgPlus;
 import net.imagej.ops.AbstractOpTest;
@@ -71,7 +74,7 @@ public class FrangiVesselnessTest extends AbstractOpTest {
 		Img<FloatType> actualOutput = ArrayImgs.floats(dims);
 
 		// scale over which the filter operates (sensitivity)
-		int scale = 1;
+		double scale = 1;
 
 		// physical spacing between data points (1,1 since I got it from the
 		// computer)
@@ -85,6 +88,8 @@ public class FrangiVesselnessTest extends AbstractOpTest {
 		Cursor<FloatType> cursor = Views.iterable(actualOutput).localizingCursor();
 		RandomAccess<FloatType> actualRA = actualOutput.randomAccess();
 		RandomAccess<FloatType> expectedRA = expectedOutput.randomAccess();
+		
+		
 
 		while (cursor.hasNext()) {
 			cursor.fwd();

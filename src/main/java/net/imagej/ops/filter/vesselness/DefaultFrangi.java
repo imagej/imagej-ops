@@ -45,9 +45,12 @@ import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.histogram.Histogram1d;
+import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Intervals;
 import net.imglib2.view.Views;
 
@@ -115,6 +118,11 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>> extends
 		final RandomAccessibleInterval<U> output)
 	{
 
+		if (input.numDimensions() != 2 && input.numDimensions() != 3) {
+			throw new RuntimeException(
+				"Currently only 2 or 3 dimensional images are supported!");
+		}
+
 		// set spacing if the parameter is not passed.
 		if (spacing == null) {
 			spacing = new double[input.numDimensions()];
@@ -142,6 +150,22 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>> extends
 
 		Matrix hessian = new Matrix(in.numDimensions(), in.numDimensions());
 
+		// create img to hold all of the eigenvalue data and the frobenius norm for
+		// each pixel, long
+		// containing number of pixels for histogram later.
+		long[] metadataDims = new long[in.numDimensions() + 1];
+		long numPixels = 1;
+		for (int i = 0; i < in.numDimensions(); i++) {
+			numPixels *= in.dimension(i);
+			metadataDims[i] = in.dimension(i);
+		}
+		metadataDims[metadataDims.length - 1] = in.numDimensions();
+		Img<DoubleType> metadataImg = (Img<DoubleType>) ops().run(
+			Ops.Create.Img.class, metadataDims);
+		Cursor<DoubleType> metadataCursor = metadataImg.localizingCursor();
+		Img<DoubleType> inputNorms = (Img<DoubleType>) ops().run(Ops.Create.Img.class, in, new DoubleType());
+		Cursor<DoubleType> normsCursor = inputNorms.localizingCursor();
+
 		// use three RandomAccess<T> Objects to find the values needed to calculate
 		// the
 		// second derivatives.
@@ -154,6 +178,7 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>> extends
 		while (cursor.hasNext()) {
 
 			cursor.fwd();
+			normsCursor.fwd();
 
 			// calculate the hessian
 			for (int m = 0; m < in.numDimensions(); m++) {
@@ -164,8 +189,8 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>> extends
 					behind.setPosition(cursor);
 
 					// move one behind to take the first derivative
-					behind.move(-step, m);
-					if (m != n) behind.move(-step, n);
+					behind.move(-1, m);
+					if (m != n) behind.move(-1, n);
 
 					// take the derivative between the two points
 					double derivativeA = derive(behind.get().getRealDouble(), current
@@ -173,8 +198,8 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>> extends
 							.numDimensions()));
 
 					// move one ahead to take the other first derivative
-					ahead.move(step, m);
-					if (m != n) ahead.move(step, n);
+					ahead.move(1, m);
+					if (m != n) ahead.move(1, n);
 
 					// take the derivative between the two points
 					double derivativeB = derive(current.get().getRealDouble(), ahead.get()
@@ -189,32 +214,54 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>> extends
 				}
 			}
 
-			// find the FrobeniusNorm (used later)
+			// find the frobenius norm, store it in the norms image
 			double s = hessian.normF();
-			double cn = -(s * s);
+			normsCursor.get().setReal(s);
 
-			// find and sort the eigenvalues and eigenvectors of the Hessian
+			// find and sort the eigenvalues/vectors of the hessian, save them in the metadataImage
 			EigenvalueDecomposition e = hessian.eig();
 			double[] eigenvaluesArray = e.getRealEigenvalues();
-			ArrayList<Double> eigenvaluesArrayList = new ArrayList<Double>();
+			ArrayList<Double> eigenvaluesArrayList = new ArrayList<>();
 			for (double d : eigenvaluesArray)
 				eigenvaluesArrayList.add(d);
 			Collections.sort(eigenvaluesArrayList, Comparator.comparingDouble(
 				Math::abs));
+			for (int j = 0; j < in.numDimensions(); j++) {
+				metadataCursor.fwd();
+				metadataCursor.get().setReal(eigenvaluesArrayList.get(j));
+			}
 
-			// vesselness value
-			double v = 0;
+		}
+
+		// vesselness value
+		double v;
+
+		// create the histogram to determine the value of c
+		Histogram1d<DoubleType> histogram = ops().image().histogram(inputNorms);
+		double c = histogram.realMax() / 2;
+
+		// reset all of the cursors for the next loop
+		cursor.reset();
+		metadataCursor.reset();
+		normsCursor.reset();
+
+		while (cursor.hasNext()) {
+			v = 0;
+			cursor.fwd();
+			metadataCursor.fwd();
+			normsCursor.fwd();
+			double cd = 2 * c * c;
+
+			// lambda values
+			double l1 = metadataCursor.get().get();
+			double al1 = Math.abs(l1);
+			metadataCursor.fwd();
+			double l2 = metadataCursor.get().get();
+			double al2 = Math.abs(l2);
+			double s = normsCursor.get().get();
+			double cn = -(s * s);
 
 			if (in.numDimensions() == 2) {
-				double c = 15;
-				double cd = 2 * c * c;
-
-				// lambda values
-				double l1 = eigenvaluesArrayList.get(0);
-				double al1 = Math.abs(l1);
-				double l2 = eigenvaluesArrayList.get(1);
-				double al2 = Math.abs(l2);
-
 				// Check to see if the point is on a tubular structure.
 				if (l2 < 0) {
 
@@ -224,18 +271,13 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>> extends
 					// values for ease of final calculation
 					double bn = -(rb * rb);
 					v = Math.exp(bn / bd) * (1 - Math.exp(cn / cd));
+
 				}
 			}
-			else if (in.numDimensions() == 3) {
-				double c = 200;
-				double cd = 2 * c * c;
 
-				// lambda values
-				double l1 = eigenvaluesArrayList.get(0);
-				double al1 = Math.abs(l1);
-				double l2 = eigenvaluesArrayList.get(1);
-				double al2 = Math.abs(l2);
-				double l3 = eigenvaluesArrayList.get(2);
+			if (in.numDimensions() == 3) {
+				metadataCursor.fwd();
+				double l3 = metadataCursor.get().get();
 				double al3 = Math.abs(l3);
 
 				// Check to see if the point is on a tubular structure.
@@ -259,15 +301,12 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>> extends
 					double bn = -(rb * rb);
 
 //					System.out.println(l1 + "  " + l2 + "  " + l3);
-
 					v = (1 - Math.exp(an / ad)) * Math.exp(bn / bd) * (1 - Math.exp(cn /
 						cd));
+
 				}
 
 			}
-			else throw new RuntimeException(
-				"Currently only 2 or 3 dimensional images are supported");
-
 			if (!Double.isNaN(v)) {
 				maximumVesselness = Math.max(v, maximumVesselness);
 				minimumVesselness = Math.min(v, minimumVesselness);
