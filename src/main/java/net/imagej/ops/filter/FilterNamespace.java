@@ -592,13 +592,12 @@ public class FilterNamespace extends AbstractNamespace {
 	public <T extends RealType<T>, U extends RealType<U>>
 		RandomAccessibleInterval<U> frangiVesselness(
 			final RandomAccessibleInterval<U> out,
-			final RandomAccessibleInterval<T> in, final double[] spacing,
-			final int scale)
+			final RandomAccessibleInterval<T> in, final double[] spacing)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<U> result =
 			(RandomAccessibleInterval<U>) ops().run(Ops.Filter.FrangiVesselness.class,
-				out, in, spacing, scale);
+				out, in, spacing);
 		return result;
 	}
 

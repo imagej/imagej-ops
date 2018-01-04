@@ -85,7 +85,7 @@ public class FrangiVesselness<T extends RealType<T>> implements Command,
 	private Img<FloatType> result;
 
 	private double[] spacing;
-	private int[] scales;
+	private double[] scales;
 	private String regex = "(,|\\s)\\s*";
 
 	private double[] checkDimensions(String in, int expectedDims,
@@ -114,7 +114,7 @@ public class FrangiVesselness<T extends RealType<T>> implements Command,
 	public void run() {
 		// parse the spacing, and scales strings.
 		spacing = checkDimensions(spacingString, input.numDimensions(), "Spacings");
-		scales = Arrays.stream(scaleString.split(regex)).mapToInt(Integer::parseInt)
+		scales = Arrays.stream(scaleString.split(regex)).mapToDouble(Double::parseDouble)
 			.toArray();
 		Dimensions resultDims = Views.addDimension(input, 0, scales.length - 1);
 		// create output image, potentially-filtered input
@@ -127,8 +127,7 @@ public class FrangiVesselness<T extends RealType<T>> implements Command,
 				.gauss(input, scales[s]) : input;
 			IntervalView<FloatType> scaleResult = Views.hyperSlice(result, result
 				.numDimensions() - 1, s);
-			opService.filter().frangiVesselness(scaleResult, vesselnessInput, spacing,
-				scales[s]);
+			opService.filter().frangiVesselness(scaleResult, vesselnessInput, spacing);
 		}
 	}
 

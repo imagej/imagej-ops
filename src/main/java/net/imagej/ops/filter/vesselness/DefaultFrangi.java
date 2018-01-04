@@ -77,9 +77,6 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>> extends
 	@Parameter
 	private double[] spacing;
 
-	@Parameter
-	private int scale;
-
 	protected double alpha = 0.5;
 	protected double beta = 0.5;
 
@@ -126,11 +123,11 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>> extends
 				spacing[i] = 1;
 		}
 
-		frangi(input, output, scale);
+		frangi(input, output);
 	}
 
 	private final void frangi(RandomAccessibleInterval<T> in,
-		RandomAccessibleInterval<U> out, int step)
+		RandomAccessibleInterval<U> out)
 	{
 
 		// create denominators used for vesselness calculations later.
