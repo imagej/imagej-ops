@@ -119,12 +119,6 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>> extends
 	public void compute(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<U> output)
 	{
-
-		if (input.numDimensions() != 2 && input.numDimensions() != 3) {
-			throw new RuntimeException(
-				"Currently only 2 or 3 dimensional images are supported!");
-		}
-
 		// set spacing if the parameter is not passed.
 		if (spacing == null) {
 			spacing = new double[input.numDimensions()];
