@@ -42,6 +42,7 @@ import net.imglib2.type.BooleanType;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.IntType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
 
@@ -453,6 +454,80 @@ public class ImageNamespace extends AbstractNamespace {
 			(IterableInterval<T>) ops().run(
 				net.imagej.ops.Ops.Image.Normalize.class,
 				in, sourceMin, sourceMax, targetMin, targetMax, isLazy);
+		return result;
+	}
+
+	// -- quality --
+
+	@OpMethod(op = net.imagej.ops.image.quality.DefaultMAE.class)
+	public <T extends RealType<T>> DoubleType mae(final DoubleType out,
+		final IterableInterval<T> reference, final IterableInterval<T> test)
+	{
+		final DoubleType result = (DoubleType) ops().run(
+			net.imagej.ops.image.quality.DefaultMAE.class, out, reference, test);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.image.quality.DefaultMAE.class)
+	public <T extends RealType<T>> DoubleType mae(
+		final IterableInterval<T> reference, final IterableInterval<T> test)
+	{
+		final DoubleType result = (DoubleType) ops().run(
+			net.imagej.ops.image.quality.DefaultMAE.class, reference, test);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.image.quality.DefaultPSNR.class)
+	public <T extends RealType<T>> DoubleType psnr(final DoubleType out,
+		final IterableInterval<T> reference, final IterableInterval<T> test)
+	{
+		final DoubleType result = (DoubleType) ops().run(
+			net.imagej.ops.image.quality.DefaultPSNR.class, out, reference, test);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.image.quality.DefaultPSNR.class)
+	public <T extends RealType<T>> DoubleType psnr(
+		final IterableInterval<T> reference, final IterableInterval<T> test)
+	{
+		final DoubleType result = (DoubleType) ops().run(
+			net.imagej.ops.image.quality.DefaultPSNR.class, reference, test);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.image.quality.DefaultRMSE.class)
+	public <T extends RealType<T>> DoubleType rmse(final DoubleType out,
+		final IterableInterval<T> reference, final IterableInterval<T> test)
+	{
+		final DoubleType result = (DoubleType) ops().run(
+			net.imagej.ops.image.quality.DefaultRMSE.class, out, reference, test);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.image.quality.DefaultRMSE.class)
+	public <T extends RealType<T>> DoubleType rmse(
+		final IterableInterval<T> reference, final IterableInterval<T> test)
+	{
+		final DoubleType result = (DoubleType) ops().run(
+			net.imagej.ops.image.quality.DefaultRMSE.class, reference, test);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.image.quality.DefaultSNR.class)
+	public <T extends RealType<T>> DoubleType snr(final DoubleType out,
+		final IterableInterval<T> reference, final IterableInterval<T> test)
+	{
+		final DoubleType result = (DoubleType) ops().run(
+			net.imagej.ops.image.quality.DefaultSNR.class, out, reference, test);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.image.quality.DefaultSNR.class)
+	public <T extends RealType<T>> DoubleType snr(
+		final IterableInterval<T> reference, final IterableInterval<T> test)
+	{
+		final DoubleType result = (DoubleType) ops().run(
+			net.imagej.ops.image.quality.DefaultSNR.class, reference, test);
 		return result;
 	}
 
