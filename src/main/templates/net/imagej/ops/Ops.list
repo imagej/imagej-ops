@@ -103,6 +103,7 @@ namespaces = ```
 		[name: "createFFTOutput",                iface: "CreateFFTOutput"],
 		[name: "partialDerivative",              iface: "PartialDerivative"],
 		[name: "allPartialDerivatives",          iface: "AllPartialDerivatives"],
+		[name: "derivativeGauss",                iface: "DerivativeGauss"],
 		[name: "dog",                            iface: "DoG",                 aliases: ["differenceOfGaussian"]],
 		[name: "fft",                            iface: "FFT"],
 		[name: "fftSize",                        iface: "FFTSize"],
