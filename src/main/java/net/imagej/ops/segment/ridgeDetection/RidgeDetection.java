@@ -68,7 +68,8 @@ public class RidgeDetection<T extends RealType<T>> extends
 	double width;
 
 	/**
-	 * The threshold for which the gradient of a subsequent line point must be above.
+	 * The threshold for which the gradient of a subsequent line point must be
+	 * above.
 	 */
 	@Parameter
 	double lowerThreshold;
@@ -78,6 +79,16 @@ public class RidgeDetection<T extends RealType<T>> extends
 	 */
 	@Parameter
 	double higherThreshold;
+
+	@Parameter(min = "1")
+	int ridgeLengthMin;
+
+	/**
+	 * The threshold for angle differences between the eigenvectors of two
+	 * different ridge points. The eigenvector is fixed for angle differences
+	 * above this threshold.
+	 */
+	double angleThreshold = 100;
 
 	/**
 	 * Recursively determines the next line point and adds it to the running list
@@ -117,7 +128,7 @@ public class RidgeDetection<T extends RealType<T>> extends
 		// the octant after the given octant and rotating clockwise around the
 		// current pixel.
 		double lastAngle = RidgeDetectionUtils.getAngle(lastnx, lastny);
-		for (int i = 1; i <= 4; i++) {
+		for (int i = 1; i < 4; i++) {
 			int[] modifier = RidgeDetectionUtils.getOctantCoords(octant + i);
 			gradientRA.move(modifier[0], 0);
 			gradientRA.move(modifier[1], 1);
@@ -171,6 +182,29 @@ public class RidgeDetection<T extends RealType<T>> extends
 			points.add(RidgeDetectionUtils.get2DRealPoint(gradientRA
 				.getDoublePosition(0) + salientpx, gradientRA.getDoublePosition(1) +
 					salientpy));
+
+			// the gradient vector itself refers to the greatest change in intensity,
+			// and for a pixel on a line this vector will be perpendicular to the
+			// direction of the line. But this vector can point to either the left or
+			// the right of the line from the perspective of the detector, and there
+			// is no guarantee that the vectors at line point will point off the same
+			// side of the line. So if they point off different sides, set the current
+			// vector by 180 degrees for the purposes of this detector. We set the
+			// threshold for angle fixing just above 90 degrees since any lower would
+			// prevent ridges curving.
+			double potentialGradient = RidgeDetectionUtils.getAngle(salientnx,
+				salientny);
+			// we increase any angles too close to zero since, for example, having one
+			// angle at 5 degrees and another at 355 would not satisfy the conditional
+			// even though they are close enough to satisfy.
+			if (lastAngle < angleThreshold) lastAngle += 360;
+			if (potentialGradient < angleThreshold) potentialGradient += 360;
+
+			if (Math.abs(potentialGradient - lastAngle) > angleThreshold) {
+				salientnx = -salientnx;
+				salientny = -salientny;
+			}
+
 			// perform the operation again on the new end of the line being formed.
 			getNextPoint(gradientRA, pRA, nRA, points, RidgeDetectionUtils.getOctant(
 				salientnx, salientny), salientnx, salientny, salientpx, salientpy);
@@ -206,6 +240,7 @@ public class RidgeDetection<T extends RealType<T>> extends
 
 		// loop through the maximum values of the image
 		while (Math.abs(gradientRA.get().get()) > higherThreshold) {
+
 			// create the List of points that will be used to make the polyline
 			List<RealPoint> points = new ArrayList<>();
 
@@ -225,36 +260,36 @@ public class RidgeDetection<T extends RealType<T>> extends
 			pRA.fwd(2);
 			double py = pRA.get().getRealDouble();
 
-			// get the octant of the eigenvector at the current pixel
-			int octant = RidgeDetectionUtils.getOctant(eigenx, eigeny);
-
 			// start the list by adding the current point, which is the most line-like
 			// point on the polyline
 			points.add(RidgeDetectionUtils.get2DRealPoint(gradientRA
 				.getDoublePosition(0) + px, gradientRA.getDoublePosition(1) + py));
 
 			// go in the direction to the left of the perpendicular value
-			getNextPoint(gradientRA, pRA, nRA, points, octant, eigenx, eigeny, px,
-				py);
+			getNextPoint(gradientRA, pRA, nRA, points, RidgeDetectionUtils.getOctant(
+				eigenx, eigeny), eigenx, eigeny, px, py);
 
 			// flip the array list around so that we get one cohesive line
-			gradientRA.setPosition(new long[] { gradientRA.getLongPosition(0),
-				gradientRA.getLongPosition(1) });
+			gradientRA.setPosition(new long[] { eigenvectorPos[0],
+				eigenvectorPos[1] });
 			Collections.reverse(points);
 
 			// go in the opposite direction as before.
-			octant = octant > 4 ? octant - 4 : octant + 4;
-			getNextPoint(gradientRA, pRA, nRA, points, octant, eigenx, eigeny, px,
-				py);
+			eigenx = -eigenx;
+			eigeny = -eigeny;
+			getNextPoint(gradientRA, pRA, nRA, points, RidgeDetectionUtils.getOctant(
+				eigenx, eigeny), eigenx, eigeny, px, py);
 
 			// set the value to 0 so that it is not reused.
 			gradientRA.get().setReal(0);
 
-			// turn the list of points into a polyline, add to output list.
-			DefaultPolyline pline = new DefaultPolyline(points);
-			lines.add(pline);
-
-			// find the next max absolute value;
+			// turn the list of points into a polyline, add to output list. If the
+			// list has fewer vertices than the parameter, then we do not report it.
+			if (points.size() > ridgeLengthMin) {
+				DefaultPolyline pline = new DefaultPolyline(points);
+				lines.add(pline);
+			}
+			// find the next max absolute value
 			gradientRA.setPosition(RidgeDetectionUtils.getMaxCoords(gradients, true));
 		}
 

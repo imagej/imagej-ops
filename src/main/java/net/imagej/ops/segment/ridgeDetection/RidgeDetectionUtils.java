@@ -51,7 +51,7 @@ public class RidgeDetectionUtils {
 	 * @return double denoting the angle between the vector and the x-axis.
 	 */
 	protected static double getAngle(double x, double y) {
-		
+
 		double angle = 0;
 
 		if (y > 0 && x == 0) {
@@ -61,7 +61,13 @@ public class RidgeDetectionUtils {
 			angle = 270;
 		}
 		else {
+
+			// calculate the angle and convert it to degrees.
 			angle = Math.atan(y / x) * 180 / Math.PI;
+			// if x is negative then arctan will return the angle - 180 degrees, but
+			// we want the actual angle.
+			if (x < 0) angle += 180;
+			// we always want a positive angle
 			if (angle < 0) angle += 360;
 		}
 
@@ -90,6 +96,8 @@ public class RidgeDetectionUtils {
 			octant++;
 			angle -= 45;
 		}
+		while(octant > 8) octant -= 8;
+		while(octant < 1) octant += 8;
 
 		return octant;
 	}
@@ -174,7 +182,7 @@ public class RidgeDetectionUtils {
 
 		return new RealPoint(coords);
 	}
-	
+
 	/**
 	 * Returns a {@link RealPoint} with the coordinates (x, y).
 	 * 
@@ -183,19 +191,22 @@ public class RidgeDetectionUtils {
 	 * @return a {@link RealPoint} with coordinates (x,y)
 	 */
 	protected static RealPoint get2DRealPoint(double x, double y) {
-		return new RealPoint(new double[] {x,y});
+		return new RealPoint(new double[] { x, y });
 	}
-	
-	protected static long[] getMaxCoords(RandomAccessibleInterval<DoubleType> input, boolean useAbsoluteValue) {
+
+	protected static long[] getMaxCoords(
+		RandomAccessibleInterval<DoubleType> input, boolean useAbsoluteValue)
+	{
 		long[] dims = new long[input.numDimensions()];
 		double max = Double.MIN_VALUE;
 		Cursor<DoubleType> cursor = Views.iterable(input).localizingCursor();
-		while(cursor.hasNext()) {
+		while (cursor.hasNext()) {
 			cursor.fwd();
-			double current = useAbsoluteValue ? Math.abs(cursor.get().get()) : cursor.get().get();
-			if(current > max) {
+			double current = useAbsoluteValue ? Math.abs(cursor.get().get()) : cursor
+				.get().get();
+			if (current > max) {
 				max = current;
-				for(int d = 0; d < input.numDimensions(); d++) {
+				for (int d = 0; d < input.numDimensions(); d++) {
 					dims[d] = cursor.getLongPosition(d);
 				}
 			}
