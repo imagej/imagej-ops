@@ -164,9 +164,9 @@ public class RidgeDetection<T extends RealType<T>> extends
 					salientpy = py;
 					bestSalience = subpixelDiff + angleDiff;
 				}
-				else {
-					gradientRA.get().set(0);
-				}
+				//set the values to zero so that they are not added to another line.
+				gradientRA.get().set(0);
+
 			}
 
 			// reset our randomAccess for the next check
