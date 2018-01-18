@@ -62,7 +62,7 @@ public class RidgeDetection<T extends RealType<T>> extends
 {
 
 	/**
-	 * The distance between the ridge and the edge of a line.
+	 * The diameter of the lines to search for.
 	 */
 	@Parameter
 	double width;
@@ -128,6 +128,7 @@ public class RidgeDetection<T extends RealType<T>> extends
 		// the octant after the given octant and rotating clockwise around the
 		// current pixel.
 		double lastAngle = RidgeDetectionUtils.getAngle(lastnx, lastny);
+
 		for (int i = 1; i < 4; i++) {
 			int[] modifier = RidgeDetectionUtils.getOctantCoords(octant + i);
 			gradientRA.move(modifier[0], 0);
@@ -214,7 +215,7 @@ public class RidgeDetection<T extends RealType<T>> extends
 	@Override
 	public List<DefaultPolyline> calculate(RandomAccessibleInterval<T> input) {
 
-		double sigma = (width / Math.sqrt(3));
+		double sigma = (width / (2 * Math.sqrt(3)));
 
 		// generate the metadata images
 		ImageMetadata ridgeDetectionMetadata = new ImageMetadata(input, sigma,
