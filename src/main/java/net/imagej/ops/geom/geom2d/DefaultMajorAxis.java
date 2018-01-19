@@ -34,7 +34,7 @@ import net.imagej.ops.Ops.Geometric.SecondMoment;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
-import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.geom.real.Polygon2D;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
 
@@ -46,10 +46,10 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.MajorAxis.class, label = "Geometric (2D): Major Axis")
-public class DefaultMajorAxis extends AbstractUnaryHybridCF<Polygon, DoubleType> implements Ops.Geometric.MajorAxis {
+public class DefaultMajorAxis extends AbstractUnaryHybridCF<Polygon2D, DoubleType> implements Ops.Geometric.MajorAxis {
 
 	@SuppressWarnings("rawtypes")
-	private UnaryFunctionOp<Polygon, Pair> minorMajorAxisFunc;
+	private UnaryFunctionOp<Polygon2D, Pair> minorMajorAxisFunc;
 
 	@Override
 	public void initialize() {
@@ -58,12 +58,12 @@ public class DefaultMajorAxis extends AbstractUnaryHybridCF<Polygon, DoubleType>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void compute(final Polygon input, final DoubleType output) {
+	public void compute(final Polygon2D input, final DoubleType output) {
 		output.set(((Pair<DoubleType, DoubleType>)minorMajorAxisFunc.calculate(input)).getB());
 	}
 
 	@Override
-	public DoubleType createOutput(Polygon input) {
+	public DoubleType createOutput(Polygon2D input) {
 		return new DoubleType();
 	}
 }

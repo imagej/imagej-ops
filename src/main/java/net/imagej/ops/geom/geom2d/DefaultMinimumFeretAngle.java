@@ -33,17 +33,17 @@ import net.imagej.ops.Ops.Geometric.MinimumFeretsAngle;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
-import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.geom.real.Polygon2D;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Ops.Geometric.MinimumFeretsAngle.class)
-public class DefaultMinimumFeretAngle extends AbstractUnaryHybridCF<Polygon, DoubleType> implements MinimumFeretsAngle {
+public class DefaultMinimumFeretAngle extends AbstractUnaryHybridCF<Polygon2D, DoubleType> implements MinimumFeretsAngle {
 
 	@SuppressWarnings("rawtypes")
-	private UnaryFunctionOp<Polygon, Pair> minFeret;
+	private UnaryFunctionOp<Polygon2D, Pair> minFeret;
 	@SuppressWarnings("rawtypes")
 	private UnaryFunctionOp<Pair, DoubleType> feretAngle;
 
@@ -54,12 +54,12 @@ public class DefaultMinimumFeretAngle extends AbstractUnaryHybridCF<Polygon, Dou
 	}
 
 	@Override
-	public void compute(Polygon input, DoubleType output) {
+	public void compute(Polygon2D input, DoubleType output) {
 		output.set(feretAngle.calculate(minFeret.calculate(input)).get());
 	}
 
 	@Override
-	public DoubleType createOutput(Polygon input) {
+	public DoubleType createOutput(Polygon2D input) {
 		return new DoubleType();
 	}
 }

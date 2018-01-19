@@ -33,7 +33,7 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
-import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.geom.real.Polygon2D;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
@@ -42,24 +42,29 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Tim-Oliver Buchholz, University of Konstanz
  */
-@Plugin(type = Ops.Geometric.VerticesCountConvexHull.class, label = "Geometric (2D): Convex Hull Vertices Count", priority = Priority.VERY_HIGH)
-public class DefaultVerticesCountConvexHullPolygon extends AbstractUnaryHybridCF<Polygon, DoubleType>
-		implements Ops.Geometric.VerticesCountConvexHull {
+@Plugin(type = Ops.Geometric.VerticesCountConvexHull.class,
+	label = "Geometric (2D): Convex Hull Vertices Count",
+	priority = Priority.VERY_HIGH)
+public class DefaultVerticesCountConvexHullPolygon extends
+	AbstractUnaryHybridCF<Polygon2D, DoubleType> implements
+	Ops.Geometric.VerticesCountConvexHull
+{
 
-	private UnaryFunctionOp<Polygon, Polygon> convexHullFunc;
+	private UnaryFunctionOp<Polygon2D, Polygon2D> convexHullFunc;
 
 	@Override
 	public void initialize() {
-		convexHullFunc = Functions.unary(ops(), Ops.Geometric.ConvexHull.class, Polygon.class, in());
+		convexHullFunc = Functions.unary(ops(),
+			Ops.Geometric.ConvexHull.class, Polygon2D.class, in());
 	}
 
 	@Override
-	public void compute(Polygon input, DoubleType output) {
-		output.set(convexHullFunc.calculate(input).getVertices().size());
+	public void compute(Polygon2D input, DoubleType output) {
+		output.set(convexHullFunc.calculate(input).numVertices());
 	}
 
 	@Override
-	public DoubleType createOutput(Polygon input) {
+	public DoubleType createOutput(Polygon2D input) {
 		return new DoubleType();
 	}
 

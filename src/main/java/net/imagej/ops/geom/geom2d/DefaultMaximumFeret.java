@@ -32,11 +32,12 @@ package net.imagej.ops.geom.geom2d;
 import java.util.List;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.geom.GeomUtils;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.RealLocalizable;
-import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.geom.real.Polygon2D;
 import net.imglib2.util.Pair;
 import net.imglib2.util.ValuePair;
 
@@ -48,19 +49,23 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz
  */
 @Plugin(type = Ops.Geometric.MaximumFeret.class)
-public class DefaultMaximumFeret extends AbstractUnaryFunctionOp<Polygon, Pair<RealLocalizable, RealLocalizable>>
-		implements Ops.Geometric.MaximumFeret {
+public class DefaultMaximumFeret extends
+	AbstractUnaryFunctionOp<Polygon2D, Pair<RealLocalizable, RealLocalizable>>
+	implements Ops.Geometric.MaximumFeret
+{
 
-	private UnaryFunctionOp<Polygon, Polygon> function;
+	private UnaryFunctionOp<Polygon2D, Polygon2D> function;
 
 	@Override
 	public void initialize() {
-		function = Functions.unary(ops(), Ops.Geometric.ConvexHull.class, Polygon.class, in());
+		function = Functions.unary(ops(),
+			Ops.Geometric.ConvexHull.class, Polygon2D.class, in());
 	}
 
 	@Override
-	public Pair<RealLocalizable, RealLocalizable> calculate(Polygon input) {
-		final List<? extends RealLocalizable> points = function.calculate(input).getVertices();
+	public Pair<RealLocalizable, RealLocalizable> calculate(Polygon2D input) {
+		final List<? extends RealLocalizable> points = GeomUtils.vertices(function
+			.calculate(input));
 
 		double distance = Double.NEGATIVE_INFINITY;
 		RealLocalizable p0 = points.get(0);
@@ -70,8 +75,9 @@ public class DefaultMaximumFeret extends AbstractUnaryFunctionOp<Polygon, Pair<R
 				final RealLocalizable tmpP0 = points.get(i);
 				final RealLocalizable tmpP1 = points.get(j);
 
-				final double tmp = Math.sqrt(Math.pow(tmpP0.getDoublePosition(0) - tmpP1.getDoublePosition(0), 2)
-						+ Math.pow(tmpP0.getDoublePosition(1) - tmpP1.getDoublePosition(1), 2));
+				final double tmp = Math.sqrt(Math.pow(tmpP0.getDoublePosition(0) - tmpP1
+					.getDoublePosition(0), 2) + Math.pow(tmpP0.getDoublePosition(1) -
+						tmpP1.getDoublePosition(1), 2));
 
 				if (tmp > distance) {
 					distance = tmp;
@@ -80,7 +86,7 @@ public class DefaultMaximumFeret extends AbstractUnaryFunctionOp<Polygon, Pair<R
 				}
 			}
 		}
-		
+
 		return new ValuePair<>(p0, p1);
 	}
 

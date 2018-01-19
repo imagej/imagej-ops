@@ -33,17 +33,17 @@ import net.imagej.ops.Ops.Geometric.MaximumFeretsAngle;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
-import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.geom.real.Polygon2D;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Ops.Geometric.MaximumFeretsAngle.class)
-public class DefaultMaximumFeretAngle extends AbstractUnaryHybridCF<Polygon, DoubleType> implements MaximumFeretsAngle {
+public class DefaultMaximumFeretAngle extends AbstractUnaryHybridCF<Polygon2D, DoubleType> implements MaximumFeretsAngle {
 
 	@SuppressWarnings("rawtypes")
-	private UnaryFunctionOp<Polygon, Pair> maxFeret;
+	private UnaryFunctionOp<Polygon2D, Pair> maxFeret;
 	@SuppressWarnings("rawtypes")
 	private UnaryFunctionOp<Pair, DoubleType> feretAngle;
 
@@ -54,12 +54,12 @@ public class DefaultMaximumFeretAngle extends AbstractUnaryHybridCF<Polygon, Dou
 	}
 
 	@Override
-	public void compute(Polygon input, DoubleType output) {
+	public void compute(Polygon2D input, DoubleType output) {
 		output.set(feretAngle.calculate(maxFeret.calculate(input)).get());
 	}
 
 	@Override
-	public DoubleType createOutput(Polygon input) {
+	public DoubleType createOutput(Polygon2D input) {
 		return new DoubleType();
 	}
 }
