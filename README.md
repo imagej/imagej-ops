@@ -32,10 +32,9 @@ add_op = op("math.add", 5)
 output_image = map(input_image, add_op)
 ```
 
-For more details, see these tutorials:
-* [Using Ops](https://github.com/imagej/tutorials/tree/master/maven-projects/using-ops)
-* [Create a new Op](https://github.com/imagej/tutorials/tree/master/maven-projects/create-a-new-op)
-* [Developing external Op namespaces](http://imagej.net/Adding_new_ops)
+For more details, see the "Introduction to ImageJ Ops" tutorial notebook:
+
+  https://imagej.github.io/tutorials
 
 Working example
 ---------------
