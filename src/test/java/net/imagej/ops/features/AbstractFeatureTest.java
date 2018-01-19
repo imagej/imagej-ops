@@ -54,7 +54,8 @@ import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.roi.EllipseRegionOfInterest;
-import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.geom.real.DefaultPolygon2D;
+import net.imglib2.roi.geom.real.Polygon2D;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.roi.labeling.LabelRegions;
@@ -265,7 +266,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 		return openFloatImg(AbstractFeatureTest.class, "2d_geometric_features_testlabel.tif");
 	}
 	
-	protected static Polygon getPolygon() {
+	protected static Polygon2D<?> getPolygon() {
 		final List<RealPoint> vertices = new ArrayList<>();
 		try {
 			Files.lines(Paths.get(AbstractFeatureTest.class.getResource("2d_geometric_features_polygon.txt").toURI()))
@@ -278,7 +279,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 		} catch (IOException | URISyntaxException exc) {
 			exc.printStackTrace();
 		}
-		return new Polygon(vertices);
+		return new DefaultPolygon2D(vertices);
 	}
 
 	protected static Img<FloatType> getTestImage3D() {

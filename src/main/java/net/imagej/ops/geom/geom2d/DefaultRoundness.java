@@ -33,7 +33,7 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.special.chain.RTs;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
-import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.geom.real.Polygon2D;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
@@ -46,10 +46,10 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.Roundness.class, label = "Geometric (2D): Roundness")
-public class DefaultRoundness extends AbstractUnaryHybridCF<Polygon, DoubleType> implements Ops.Geometric.Roundness {
+public class DefaultRoundness extends AbstractUnaryHybridCF<Polygon2D<?>, DoubleType> implements Ops.Geometric.Roundness {
 
-	private UnaryFunctionOp<Polygon, DoubleType> areaFunc;
-	private UnaryFunctionOp<Polygon, DoubleType> majorAxisFunc;
+	private UnaryFunctionOp<Polygon2D<?>, DoubleType> areaFunc;
+	private UnaryFunctionOp<Polygon2D<?>, DoubleType> majorAxisFunc;
 
 	@Override
 	public void initialize() {
@@ -58,13 +58,13 @@ public class DefaultRoundness extends AbstractUnaryHybridCF<Polygon, DoubleType>
 	}
 
 	@Override
-	public void compute(final Polygon input, final DoubleType output) {
+	public void compute(final Polygon2D<?> input, final DoubleType output) {
 		output.set(4 * (areaFunc.calculate(input).getRealDouble()
 				/ (Math.PI * Math.pow(majorAxisFunc.calculate(input).getRealDouble(), 2))));
 	}
 
 	@Override
-	public DoubleType createOutput(Polygon input) {
+	public DoubleType createOutput(Polygon2D<?> input) {
 		return new DoubleType();
 	}
 

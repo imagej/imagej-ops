@@ -31,7 +31,7 @@ package net.imagej.ops.geom.geom2d;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.AbstractBoxivity;
-import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.geom.real.Polygon2D;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
@@ -42,9 +42,12 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Geometric.Boxivity.class,
 	label = "Geometric (2D): Rectangularity",
 	priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultBoxivityPolygon extends AbstractBoxivity<Polygon> {
+public class DefaultBoxivityPolygon extends
+	AbstractBoxivity<Polygon2D<?>>
+{
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public DefaultBoxivityPolygon() {
-		super(Polygon.class);
+		super((Class) Polygon2D.class);
 	}
 }

@@ -41,7 +41,7 @@ import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.IterableRegion;
-import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.geom.real.Polygon2D;
 import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.type.Type;
 import net.imglib2.type.logic.BitType;
@@ -81,7 +81,7 @@ public class GeomNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.geom.geom2d.DefaultVerticesCountConvexHullPolygon.class)
-	public DoubleType boundaryPixelCountConvexHull(final Polygon in) {
+	public DoubleType boundaryPixelCountConvexHull(final Polygon2D<?> in) {
 		final DoubleType result = (DoubleType) ops().run(
 			net.imagej.ops.Ops.Geometric.VerticesCountConvexHull.class, in);
 		return result;
@@ -96,7 +96,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultVerticesCountConvexHullPolygon.class)
-	public DoubleType boundaryPixelCountConvexHull(final DoubleType out, final Polygon in) {
+	public DoubleType boundaryPixelCountConvexHull(final DoubleType out, final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultVerticesCountConvexHullPolygon.class, out, in);
 		return result;
@@ -124,21 +124,21 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultPerimeterLength.class)
-	public DoubleType boundarySize(final Polygon in) {
+	public DoubleType boundarySize(final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultPerimeterLength.class, in);
 		return result;
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultPerimeterLength.class)
-	public DoubleType boundarySize(final DoubleType out, final Polygon in) {
+	public DoubleType boundarySize(final DoubleType out, final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultPerimeterLength.class, out, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultBoundarySizeConvexHullPolygon.class)
-	public DoubleType boundarySizeConvexHull(final Polygon in) {
+	public DoubleType boundarySizeConvexHull(final Polygon2D<?> in) {
 		final DoubleType result = (DoubleType) ops().run(
 			net.imagej.ops.Ops.Geometric.BoundarySizeConvexHull.class, in);
 		return result;
@@ -152,7 +152,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultBoundarySizeConvexHullPolygon.class)
-	public DoubleType boundarySizeConvexHull(final DoubleType out, final Polygon in) {
+	public DoubleType boundarySizeConvexHull(final DoubleType out, final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultBoundarySizeConvexHullPolygon.class, out, in);
 		return result;
@@ -166,7 +166,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultBoxivityPolygon.class)
-	public DoubleType boxivity(final Polygon in) {
+	public DoubleType boxivity(final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultBoxivityPolygon.class, in);
 		return result;
@@ -180,7 +180,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultBoxivityPolygon.class)
-	public DoubleType boxivity(final DoubleType out, final Polygon in) {
+	public DoubleType boxivity(final DoubleType out, final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultBoxivityPolygon.class, out, in);
 		return result;
@@ -215,7 +215,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.CentroidPolygon.class)
-	public RealLocalizable centroid(final Polygon in) {
+	public RealLocalizable centroid(final Polygon2D<?> in) {
 		final RealLocalizable result = (RealLocalizable) ops().run(
 			net.imagej.ops.Ops.Geometric.Centroid.class, in);
 		return result;
@@ -229,14 +229,14 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultCircularity.class)
-	public DoubleType circularity(final Polygon in) {
+	public DoubleType circularity(final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultCircularity.class, in);
 		return result;
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultCircularity.class)
-	public DoubleType circularity(final DoubleType out, final Polygon in) {
+	public DoubleType circularity(final DoubleType out, final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultCircularity.class, out, in);
 		return result;
@@ -257,17 +257,17 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultContour.class)
-	public <T extends Type<T>> Polygon contour(
+	public <T extends Type<T>> Polygon2D<?> contour(
 		final RandomAccessibleInterval<T> in, final boolean useJacobs)
 	{
-		final Polygon result = (Polygon) ops().run(
+		final Polygon2D<?> result = (Polygon2D<?>) ops().run(
 			net.imagej.ops.Ops.Geometric.Contour.class, in, useJacobs);
 		return result;
 	}
 
 	@OpMethod(op = DefaultConvexHull2D.class)
-	public Polygon convexHull(final Polygon in) {
-		final Polygon result = (Polygon) ops().run(
+	public Polygon2D<?> convexHull(final Polygon2D<?> in) {
+		final Polygon2D<?> result = (Polygon2D<?>) ops().run(
 			net.imagej.ops.Ops.Geometric.ConvexHull.class, in);
 		return result;
 	}
@@ -287,7 +287,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}	
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultConvexityPolygon.class)
-	public DoubleType convexity(final Polygon in) {
+	public DoubleType convexity(final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultConvexityPolygon.class, in);
 		return result;
@@ -301,7 +301,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultConvexityPolygon.class)
-	public DoubleType convexity(final DoubleType out, final Polygon in) {
+	public DoubleType convexity(final DoubleType out, final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultConvexityPolygon.class, out, in);
 		return result;
@@ -315,28 +315,28 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultEccentricity.class)
-	public DoubleType eccentricity(final Polygon in) {
+	public DoubleType eccentricity(final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultEccentricity.class, in);
 		return result;
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultEccentricity.class)
-	public DoubleType eccentricity(final DoubleType out, final Polygon in) {
+	public DoubleType eccentricity(final DoubleType out, final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultEccentricity.class, out, in);
 		return result;
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultFeretsDiameterForAngle.class)
-	public DoubleType feretsDiameter(final Polygon in, final double angle) {
+	public DoubleType feretsDiameter(final Polygon2D<?> in, final double angle) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultFeretsDiameterForAngle.class, in, angle);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultFeretsDiameterForAngle.class)
-	public DoubleType feretsDiameter(final DoubleType out, final Polygon in, final double angle) {
+	public DoubleType feretsDiameter(final DoubleType out, final Polygon2D<?> in, final double angle) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultFeretsDiameterForAngle.class, out, in, angle);
 		return result;
@@ -371,7 +371,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMaximumFeret.class)
-	public Pair<RealLocalizable, RealLocalizable> maximumFeret(final Polygon in) {
+	public Pair<RealLocalizable, RealLocalizable> maximumFeret(final Polygon2D<?> in) {
 		@SuppressWarnings("unchecked")
 		final Pair<RealLocalizable, RealLocalizable> result =
 			(Pair<RealLocalizable, RealLocalizable>) ops().run(net.imagej.ops.geom.geom2d.DefaultMaximumFeret.class, in);
@@ -379,35 +379,35 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMaximumFeretDiameter.class)
-	public DoubleType maximumFeretsDiameter(final Polygon in) {
+	public DoubleType maximumFeretsDiameter(final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultMaximumFeretDiameter.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMaximumFeretDiameter.class)
-	public DoubleType maximumFeretsDiameter(final DoubleType out, final Polygon in) {
+	public DoubleType maximumFeretsDiameter(final DoubleType out, final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultMaximumFeretDiameter.class, out, in);
 		return result;
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMaximumFeretAngle.class)
-	public DoubleType maximumFeretsAngle(final Polygon in) {
+	public DoubleType maximumFeretsAngle(final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultMaximumFeretAngle.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMaximumFeretAngle.class)
-	public DoubleType maximumFeretsAngle(final DoubleType out, final Polygon in) {
+	public DoubleType maximumFeretsAngle(final DoubleType out, final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultMaximumFeretAngle.class, out, in);
 		return result;
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMinimumFeret.class)
-	public Pair<RealLocalizable, RealLocalizable> minimumFeret(final Polygon in) {
+	public Pair<RealLocalizable, RealLocalizable> minimumFeret(final Polygon2D<?> in) {
 		@SuppressWarnings("unchecked")
 		final Pair<RealLocalizable, RealLocalizable> result =
 			(Pair<RealLocalizable, RealLocalizable>) ops().run(net.imagej.ops.geom.geom2d.DefaultMinimumFeret.class, in);
@@ -415,56 +415,56 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMinimumFeretAngle.class)
-	public DoubleType minimumFeretsAngle(final Polygon in) {
+	public DoubleType minimumFeretsAngle(final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultMinimumFeretAngle.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMinimumFeretAngle.class)
-	public DoubleType minimumFeretsAngle(final DoubleType out, final Polygon in) {
+	public DoubleType minimumFeretsAngle(final DoubleType out, final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultMinimumFeretAngle.class, out, in);
 		return result;
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMinimumFeretDiameter.class)
-	public DoubleType minimumFeretsDiameter(final Polygon in) {
+	public DoubleType minimumFeretsDiameter(final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultMinimumFeretDiameter.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMinimumFeretDiameter.class)
-	public DoubleType minimumFeretsDiameter(final DoubleType out, final Polygon in) {
+	public DoubleType minimumFeretsDiameter(final DoubleType out, final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultMinimumFeretDiameter.class, out, in);
 		return result;
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultElongation.class)
-	public DoubleType mainElongation(final Polygon in) {
+	public DoubleType mainElongation(final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultElongation.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultElongation.class)
-	public DoubleType mainElongation(final DoubleType out, final Polygon in) {
+	public DoubleType mainElongation(final DoubleType out, final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultElongation.class, out, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMajorAxis.class)
-	public DoubleType majorAxis(final Polygon in) {
+	public DoubleType majorAxis(final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultMajorAxis.class, in);
 		return result;
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMajorAxis.class)
-	public DoubleType majorAxis(final DoubleType out, final Polygon in) {
+	public DoubleType majorAxis(final DoubleType out, final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultMajorAxis.class, out, in);
 		return result;
@@ -514,42 +514,42 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMinorAxis.class)
-	public DoubleType minorAxis(final Polygon in) {
+	public DoubleType minorAxis(final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultMinorAxis.class, in);
 		return result;
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMinorAxis.class)
-	public DoubleType minorAxis(final DoubleType out, final Polygon in) {
+	public DoubleType minorAxis(final DoubleType out, final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultMinorAxis.class, out, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultRoundness.class)
-	public DoubleType roundness(final Polygon in) {
+	public DoubleType roundness(final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultRoundness.class, in);
 		return result;
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultRoundness.class)
-	public DoubleType roundness(final DoubleType out, final Polygon in) {
+	public DoubleType roundness(final DoubleType out, final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultRoundness.class, out, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultSizePolygon.class)
-	public DoubleType size(final Polygon in) {
+	public DoubleType size(final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultSizePolygon.class, in);
 		return result;
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultSizePolygon.class)
-	public DoubleType size(final DoubleType out, final Polygon in) {
+	public DoubleType size(final DoubleType out, final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultSizePolygon.class, out, in);
 		return result;
@@ -570,7 +570,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultSizeConvexHullPolygon.class)
-	public DoubleType sizeConvexHull(final Polygon in) {
+	public DoubleType sizeConvexHull(final Polygon2D<?> in) {
 		final DoubleType result = (DoubleType) ops().run(
 				net.imagej.ops.Ops.Geometric.SizeConvexHull.class, in);
 		return result;
@@ -584,7 +584,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultSizeConvexHullPolygon.class)
-	public DoubleType sizeConvexHull(final DoubleType out, final Polygon in) {
+	public DoubleType sizeConvexHull(final DoubleType out, final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultSizeConvexHullPolygon.class, out, in);
 		return result;
@@ -599,14 +599,14 @@ public class GeomNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.geom.geom2d.DefaultSmallestEnclosingRectangle.class)
-	public Polygon smallestEnclosingBoundingBox(final Polygon in) {
-		final Polygon result = (Polygon) ops().run(
+	public Polygon2D<?> smallestEnclosingBoundingBox(final Polygon2D<?> in) {
+		final Polygon2D<?> result = (Polygon2D<?>) ops().run(
 			net.imagej.ops.Ops.Geometric.SmallestEnclosingBoundingBox.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultSolidityPolygon.class)
-	public DoubleType solidity(final Polygon in) {
+	public DoubleType solidity(final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultSolidityPolygon.class, in);
 		return result;
@@ -620,7 +620,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultSolidityPolygon.class)
-	public DoubleType solidity(final DoubleType out, final Polygon in) {
+	public DoubleType solidity(final DoubleType out, final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultSolidityPolygon.class, out, in);
 		return result;
@@ -648,8 +648,8 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultBoundingBox.class)
-	public Polygon boundingBox(final Polygon in) {
-		final Polygon result = (Polygon) ops().run(
+	public Polygon2D<?> boundingBox(final Polygon2D<?> in) {
+		final Polygon2D<?> result = (Polygon2D<?>) ops().run(
 			net.imagej.ops.Ops.Geometric.BoundingBox.class, in);
 		return result;
 	}
@@ -700,14 +700,14 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultVerticesCountPolygon.class)
-	public DoubleType verticesCount(final Polygon in) {
+	public DoubleType verticesCount(final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultVerticesCountPolygon.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultVerticesCountPolygon.class)
-	public DoubleType verticesCount(final DoubleType out, final Polygon in) {
+	public DoubleType verticesCount(final DoubleType out, final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultVerticesCountPolygon.class, out, in);
 		return result;
@@ -728,14 +728,14 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultVerticesCountConvexHullPolygon.class)
-	public DoubleType verticesCountConvexHull(final Polygon in) {
+	public DoubleType verticesCountConvexHull(final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultVerticesCountConvexHullPolygon.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultVerticesCountConvexHullPolygon.class)
-	public DoubleType verticesCountConvexHull(final DoubleType out, final Polygon in) {
+	public DoubleType verticesCountConvexHull(final DoubleType out, final Polygon2D<?> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.geom2d.DefaultVerticesCountConvexHullPolygon.class, out, in);
 		return result;
@@ -770,7 +770,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultMinorMajorAxis.class)
-	public Pair<DoubleType, DoubleType> secondMoment(final Polygon in) {
+	public Pair<DoubleType, DoubleType> secondMoment(final Polygon2D<?> in) {
 		@SuppressWarnings("unchecked")
 		final Pair<DoubleType, DoubleType> result =
 			(Pair<DoubleType, DoubleType>) ops().run(net.imagej.ops.geom.geom2d.DefaultMinorMajorAxis.class, in);

@@ -33,7 +33,7 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.special.chain.RTs;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
-import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.geom.real.Polygon2D;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
@@ -47,11 +47,11 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz
  */
 @Plugin(type = Ops.Geometric.Eccentricity.class, label = "Geometric (2D): Eccentricity")
-public class DefaultEccentricity extends AbstractUnaryHybridCF<Polygon, DoubleType>
+public class DefaultEccentricity extends AbstractUnaryHybridCF<Polygon2D<?>, DoubleType>
 		implements Ops.Geometric.Eccentricity {
 
-	private UnaryFunctionOp<Polygon, DoubleType> minorAxisFunc;
-	private UnaryFunctionOp<Polygon, DoubleType> majorAxisFunc;
+	private UnaryFunctionOp<Polygon2D<?>, DoubleType> minorAxisFunc;
+	private UnaryFunctionOp<Polygon2D<?>, DoubleType> majorAxisFunc;
 
 	@Override
 	public void initialize() {
@@ -60,7 +60,7 @@ public class DefaultEccentricity extends AbstractUnaryHybridCF<Polygon, DoubleTy
 	}
 
 	@Override
-	public void compute(final Polygon input, final DoubleType output) {
+	public void compute(final Polygon2D<?> input, final DoubleType output) {
 
 		final double a = majorAxisFunc.calculate(input).get() / 2.0;
 		final double b = minorAxisFunc.calculate(input).get() / 2.0;
@@ -69,7 +69,7 @@ public class DefaultEccentricity extends AbstractUnaryHybridCF<Polygon, DoubleTy
 	}
 
 	@Override
-	public DoubleType createOutput(Polygon input) {
+	public DoubleType createOutput(Polygon2D<?> input) {
 		return new DoubleType();
 	}
 

@@ -39,7 +39,8 @@ import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.RealPoint;
-import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.geom.real.DefaultPolygon2D;
+import net.imglib2.roi.geom.real.Polygon2D;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.Type;
 import net.imglib2.util.Util;
@@ -61,7 +62,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Contour.class)
 public class DefaultContour<B extends BooleanType<B>> extends
-	AbstractUnaryFunctionOp<RandomAccessibleInterval<B>, Polygon> implements
+	AbstractUnaryFunctionOp<RandomAccessibleInterval<B>, Polygon2D<?>> implements
 	Contingent, Ops.Geometric.Contour
 {
 
@@ -194,7 +195,7 @@ public class DefaultContour<B extends BooleanType<B>> extends
 	}
 
 	@Override
-	public Polygon calculate(final RandomAccessibleInterval<B> input) {
+	public Polygon2D<?> calculate(final RandomAccessibleInterval<B> input) {
 		List<RealPoint> p = new ArrayList<>();
 
 		final B var = Util.getTypeFromInterval(input).createVariable();
@@ -266,7 +267,7 @@ public class DefaultContour<B extends BooleanType<B>> extends
 			}
 		}
 
-		return new Polygon(p);
+		return new DefaultPolygon2D(p);
 	}
 
 	@Override

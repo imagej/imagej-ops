@@ -61,7 +61,7 @@ import net.imagej.ops.geom.geom2d.DefaultVerticesCountPolygon;
 import net.imagej.ops.geom.geom2d.LabelRegionToPolygonConverter;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
-import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.geom.real.Polygon2D;
 import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -80,7 +80,7 @@ public class PolygonFeatureTests extends AbstractFeatureTest {
 
 	private static final double EPSILON = 10e-12;
 	private static LabelRegion<String> ROI;
-	private static Polygon contour;
+	private static Polygon2D<?> contour;
 
 	@BeforeClass
 	public static void setupBefore() {
@@ -98,8 +98,8 @@ public class PolygonFeatureTests extends AbstractFeatureTest {
 	@Test
 	public void boundingBox() {
 		// ground truth verified with matlab
-		final List<? extends RealLocalizable> received = ((Polygon) ops.run(DefaultBoundingBox.class, contour))
-				.getVertices();
+		final List<? extends RealLocalizable> received = GeomUtils.vertices(
+			((Polygon2D<?>) ops.run(DefaultBoundingBox.class, contour)));
 		final RealPoint[] expected = new RealPoint[] { new RealPoint(1, 6), new RealPoint(1, 109),
 				new RealPoint(78, 109), new RealPoint(78, 6) };
 		assertEquals("Number of polygon points differs.", expected.length, received.size());
@@ -129,11 +129,11 @@ public class PolygonFeatureTests extends AbstractFeatureTest {
 	@Test
 	public void contour() {
 		// ground truth computed with matlab
-		final Polygon test = (Polygon) ops.run(DefaultContour.class, ROI, true);
-		final List<? extends RealLocalizable> expected = contour.getVertices();
-		final List<? extends RealLocalizable> received = test.getVertices();
+		final Polygon2D<?> test = (Polygon2D<?>) ops.run(DefaultContour.class, ROI, true);
+		final List<? extends RealLocalizable> expected = GeomUtils.vertices(contour);
+		final List<? extends RealLocalizable> received = GeomUtils.vertices(test);
 		assertEquals("Number of polygon points differs.", expected.size(), received.size());
-		for (int i = 0; i < contour.getVertices().size(); i++) {
+		for (int i = 0; i < contour.numVertices(); i++) {
 			assertEquals("Polygon point " + i + " differs in x-coordinate.", expected.get(i).getDoublePosition(0),
 					received.get(i).getDoublePosition(0), EPSILON);
 			assertEquals("Polygon point " + i + " differs in y-coordinate.", expected.get(i).getDoublePosition(1),
@@ -144,8 +144,8 @@ public class PolygonFeatureTests extends AbstractFeatureTest {
 	@Test
 	public void convexHull2D() {
 		// ground truth computed with matlab
-		final Polygon test = (Polygon) ops.run(DefaultConvexHull2D.class, contour);
-		final List<? extends RealLocalizable> received = test.getVertices();
+		final Polygon2D<?> test = (Polygon2D<?>) ops.run(DefaultConvexHull2D.class, contour);
+		final List<? extends RealLocalizable> received = GeomUtils.vertices(test);
 		final RealPoint[] expected = new RealPoint[] { new RealPoint(1, 30), new RealPoint(2, 29), new RealPoint(26, 6),
 				new RealPoint(31, 6), new RealPoint(42, 9), new RealPoint(49, 22), new RealPoint(72, 65),
 				new RealPoint(78, 77), new RealPoint(48, 106), new RealPoint(42, 109), new RealPoint(34, 109),
@@ -261,8 +261,9 @@ public class PolygonFeatureTests extends AbstractFeatureTest {
 	@Test
 	public void smallesEnclosingRectangle() {
 		// ground truth verified with matlab
-		final List<? extends RealLocalizable> received = ((Polygon) ops.run(DefaultSmallestEnclosingRectangle.class,
-				contour)).getVertices();
+		final List<? extends RealLocalizable> received = GeomUtils.vertices(
+			((Polygon2D<?>) ops.run(DefaultSmallestEnclosingRectangle.class,
+				contour)));
 		final RealPoint[] expected = new RealPoint[] { new RealPoint(37.229184188393, -0.006307821699),
 				new RealPoint(-14.757779646762, 27.800672834315), new RealPoint(31.725820016821, 114.704793944491),
 				new RealPoint(83.712783851976, 86.897813288478) };
@@ -307,11 +308,11 @@ public class PolygonFeatureTests extends AbstractFeatureTest {
 		// ground truth computed with matlab
 		final LabelRegionToPolygonConverter c = new LabelRegionToPolygonConverter();
 		c.setContext(ops.context());
-		final Polygon test = c.convert(ROI, Polygon.class);
-		final List<? extends RealLocalizable> expected = contour.getVertices();
-		final List<? extends RealLocalizable> received = test.getVertices();
+		final Polygon2D<?> test = c.convert(ROI, Polygon2D.class);
+		final List<? extends RealLocalizable> expected = GeomUtils.vertices(contour);
+		final List<? extends RealLocalizable> received = GeomUtils.vertices(test);
 		assertEquals("Number of polygon points differs.", expected.size(), received.size());
-		for (int i = 0; i < contour.getVertices().size(); i++) {
+		for (int i = 0; i < contour.numVertices(); i++) {
 			assertEquals("Polygon point " + i + " differs in x-coordinate.", expected.get(i).getDoublePosition(0),
 					received.get(i).getDoublePosition(0), EPSILON);
 			assertEquals("Polygon point " + i + " differs in y-coordinate.", expected.get(i).getDoublePosition(1),

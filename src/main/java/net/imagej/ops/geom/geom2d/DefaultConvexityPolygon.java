@@ -30,7 +30,7 @@ package net.imagej.ops.geom.geom2d;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.AbstractConvexity;
-import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.geom.real.Polygon2D;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
@@ -40,6 +40,6 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Convexity.class,
 	label = "Geometric (2D): Convexity", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultConvexityPolygon extends AbstractConvexity<Polygon> {
+public class DefaultConvexityPolygon extends AbstractConvexity<Polygon2D<?>> {
 	// NB: Marker Interface
 }

@@ -35,9 +35,10 @@ import java.util.Comparator;
 import java.util.List;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.geom.GeomUtils;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.RealLocalizable;
-import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.geom.real.Polygon2D;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
 import net.imglib2.util.ValuePair;
@@ -50,18 +51,18 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.SecondMoment.class)
-public class DefaultMinorMajorAxis extends AbstractUnaryFunctionOp<Polygon, Pair<DoubleType, DoubleType>>
+public class DefaultMinorMajorAxis extends AbstractUnaryFunctionOp<Polygon2D<?>, Pair<DoubleType, DoubleType>>
 		implements Ops.Geometric.SecondMoment {
 
 	/**
 	 * Code taken from ImageJ1 (EllipseFitter -> getEllipseParam()) and adapted
-	 * to work with a {@link Polygon}
+	 * to work with a {@link Polygon2D}
 	 * 
 	 * @param points
 	 *            vertices of polygon in counter clockwise order.
 	 * @return minor and major axis
 	 */
-	private double[] getMinorMajorAxis(final Polygon input, final List<RealLocalizable> points) {
+	private double[] getMinorMajorAxis(final Polygon2D<?> input, final List<RealLocalizable> points) {
 		double[] moments = getMoments(input, points);
 
 		double m00 = moments[0];
@@ -127,14 +128,14 @@ public class DefaultMinorMajorAxis extends AbstractUnaryFunctionOp<Polygon, Pair
 	}
 
 	/**
-	 * Calculates moments for {@link Polygon}
+	 * Calculates moments for {@link Polygon2D}
 	 * 
 	 * @param points
 	 *            vertices of polygon in counter clockwise order.
 	 * @return moments m00, n20, n11 and n02
-	 * @see "On  Calculation of Arbitrary Moments of Polygons, Carsten Steger, October 1996"
+	 * @see "On  Calculation of Arbitrary Moments of Polygon2D<?>s, Carsten Steger, October 1996"
 	 */
-	private double[] getMoments(final Polygon input, final List<RealLocalizable> points) {
+	private double[] getMoments(final Polygon2D<?> input, final List<RealLocalizable> points) {
 
 		// calculate normalized moment
 		double m00 = 0;
@@ -174,25 +175,24 @@ public class DefaultMinorMajorAxis extends AbstractUnaryFunctionOp<Polygon, Pair
 		return new double[] { m00, n20, n11, n02 };
 	}
 
-	private double getY(final Polygon input, final int index) {
+	private double getY(final Polygon2D<?> input, final int index) {
 		int i = index;
-		if (i == input.getVertices().size())
+		if (i == input.numVertices())
 			i = 0;
-		return input.getVertices().get(i).getDoublePosition(1);
+		return input.vertex(i).getDoublePosition(1);
 	}
 
-	private double getX(final Polygon input, final int index) {
+	private double getX(final Polygon2D<?> input, final int index) {
 		int i = index;
-		if (i == input.getVertices().size())
+		if (i == input.numVertices())
 			i = 0;
-		return input.getVertices().get(i).getDoublePosition(0);
+		return input.vertex(i).getDoublePosition(0);
 	}
 
 	@Override
-	public Pair<DoubleType, DoubleType> calculate(final Polygon input) {
+	public Pair<DoubleType, DoubleType> calculate(final Polygon2D<?> input) {
 		
-		List<RealLocalizable> points = new ArrayList<>(input
-			.getVertices());
+		List<RealLocalizable> points = new ArrayList<>(GeomUtils.vertices(input));
 
 		// Sort RealLocalizables of P by x-coordinate (in case of a tie,
 		// sort by
