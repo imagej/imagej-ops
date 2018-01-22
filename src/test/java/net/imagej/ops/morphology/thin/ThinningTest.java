@@ -41,7 +41,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests for {@link net.imagej.ops.Ops.Morphology.Thin}
+ * Tests for {@link net.imagej.ops.Ops.Morphology} thinning ops.
  *
  * @author Kyle Harrington
  */
@@ -57,42 +57,41 @@ public class ThinningTest extends AbstractOpTest {
 
 	@Test
 	public void testThinGuoHall() {
-		final Img<BitType> out1 = (Img<BitType>) ops.run(ThinGuoHall.class,
+		@SuppressWarnings("unchecked")
+		final Img<BitType> out = (Img<BitType>) ops.run(ThinGuoHall.class,
 			Img.class, in);
-		final Img<BitType> out2 = (Img<BitType>) ops.run(ThinHilditch.class,
-			Img.class, in);
-		final Img<BitType> out3 = (Img<BitType>) ops.run(ThinMorphological.class,
-			Img.class, in);
-		final Img<BitType> out4 = (Img<BitType>) ops.run(ThinZhangSuen.class,
-			Img.class, in);
-
-		final Img<BitType> target1 = ops.convert().bit(openFloatImg(
+		final Img<BitType> target = ops.convert().bit(openFloatImg(
 			AbstractThin.class, "result_guoHall.tif"));
-		Cursor<BitType> c1 = out1.cursor();
-		Cursor<BitType> c2 = target1.cursor();
-		while (c1.hasNext())
-			assertEquals(c1.next().get(), c2.next().get());
-
-		final Img<BitType> target2 = ops.convert().bit(openFloatImg(
-			AbstractThin.class, "result_hilditch.tif"));
-		c1 = out1.cursor();
-		c2 = target1.cursor();
-		while (c1.hasNext())
-			assertEquals(c1.next().get(), c2.next().get());
-
-		final Img<BitType> target3 = ops.convert().bit(openFloatImg(
-			AbstractThin.class, "result_morphological.tif"));
-		c1 = out1.cursor();
-		c2 = target1.cursor();
-		while (c1.hasNext())
-			assertEquals(c1.next().get(), c2.next().get());
-
-		final Img<BitType> target4 = ops.convert().bit(openFloatImg(
-			AbstractThin.class, "result_zhangSuen.tif"));
-		c1 = out1.cursor();
-		c2 = target1.cursor();
-		while (c1.hasNext())
-			assertEquals(c1.next().get(), c2.next().get());
+		assertIterationsEqual(target, out);
 	}
 
+	@Test
+	public void testThinHilditch() {
+		@SuppressWarnings("unchecked")
+		final Img<BitType> out = (Img<BitType>) ops.run(ThinHilditch.class,
+			Img.class, in);
+		final Img<BitType> target = ops.convert().bit(openFloatImg(
+			AbstractThin.class, "result_hilditch.tif"));
+		assertIterationsEqual(target, out);
+	}
+
+	@Test
+	public void testMorphological() {
+		@SuppressWarnings("unchecked")
+		final Img<BitType> out = (Img<BitType>) ops.run(ThinMorphological.class,
+			Img.class, in);
+		final Img<BitType> target = ops.convert().bit(openFloatImg(
+			AbstractThin.class, "result_morphological.tif"));
+		assertIterationsEqual(target, out);
+	}
+
+	@Test
+	public void testZhangSuen() {
+		@SuppressWarnings("unchecked")
+		final Img<BitType> out = (Img<BitType>) ops.run(ThinZhangSuen.class,
+			Img.class, in);
+		final Img<BitType> target = ops.convert().bit(openFloatImg(
+			AbstractThin.class, "result_zhangSuen.tif"));
+		assertIterationsEqual(target, out);
+	}
 }
