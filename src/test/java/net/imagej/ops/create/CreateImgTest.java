@@ -35,6 +35,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Random;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.create.img.CreateImgFromArray;
 import net.imagej.ops.create.img.CreateImgFromDimsAndType;
 import net.imagej.ops.create.img.CreateImgFromImg;
 import net.imagej.ops.create.img.CreateImgFromInterval;
@@ -64,7 +65,11 @@ import org.junit.Test;
  * @author Daniel Seebacher (University of Konstanz)
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CreateImgTest extends AbstractOpTest {
 
 	private static final int TEST_SIZE = 100;
@@ -132,6 +137,42 @@ public class CreateImgTest extends AbstractOpTest {
 		// should both be ByteType. New Img shouldn't be DoubleType (default)
 		assertEquals(img.firstElement().getClass(), newImg.firstElement()
 			.getClass());
+	}
+	
+	@Test
+	public void testImgFromArray() {
+		final Random randomGenerator = new Random();
+
+		for (int i = 0; i < 1; i++) {
+
+			// between 2 and 5 dimensions
+			//final long[] dim = new long[randomGenerator.nextInt(4) + 2];
+			//final long[] dim = new long[2];
+			final long[] dim = {256, 1};
+			
+			// source array length
+			int srcLen = 1;
+			
+			// between 2 and 10 pixels per dimensions
+			for (int j = 0; j < dim.length; j++) {
+				//dim[j] = randomGenerator.nextInt(9) + 2;
+				//dim[j] = 100;
+				srcLen *= dim[j];
+			}
+			
+			byte[] arr = new byte[srcLen];
+			
+			for (int j = 0; j < srcLen; j++)
+				arr[j] = (byte) (j % 256);
+
+			// create img
+			@SuppressWarnings("unchecked")
+			final Img<UnsignedByteType> img = (Img<UnsignedByteType>) ops.run(
+				CreateImgFromArray.class, arr, dim);
+			net.imglib2.img.display.imagej.ImageJFunctions.show(img);
+//			assertArrayEquals("Image Dimensions:", dim, Intervals
+//				.dimensionsAsLongArray(img));
+		}
 	}
 
 	@Test
