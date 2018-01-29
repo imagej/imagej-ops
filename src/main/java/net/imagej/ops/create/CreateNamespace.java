@@ -107,6 +107,16 @@ public class CreateNamespace extends AbstractNamespace {
 	public Img<DoubleType> img(final long[] dims) {
 		return img(new FinalDimensions(dims), new DoubleType());
 	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromArray.class)
+	public <T extends NativeType<T>> Img<T> img(final byte[] in1,
+		final Dimensions in2)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in1, in2);
+		return result;
+	}
 
 	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromDimsAndType.class)
 	public <T extends NativeType<T>> Img<T> img(final Dimensions in1,
