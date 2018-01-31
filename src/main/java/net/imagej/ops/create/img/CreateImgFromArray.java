@@ -29,76 +29,245 @@
 
 package net.imagej.ops.create.img;
 
+import java.lang.reflect.Array;
+import java.math.BigInteger;
+import java.util.ArrayList;
+
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
-import net.imagej.ops.special.computer.Computers;
-import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.Cursor;
 import net.imglib2.Dimensions;
-import net.imglib2.IterableInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
-import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.NativeType;
-import net.imglib2.type.numeric.integer.UnsignedByteType;
+import net.imglib2.type.logic.BitType;
+import net.imglib2.type.numeric.ARGBType;
+import net.imglib2.type.numeric.integer.*;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.type.numeric.real.FloatType;
 
 /**
  * Create an {@link Img} from an array using its type
  * {@code T}.
  *
  * @author Dasong Gao
- * @param <T>
  */
-@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
-public class CreateImgFromArray<T extends NativeType<T>> extends AbstractUnaryFunctionOp<byte[], Img<T>> implements
-Ops.Create.Img {
-	
-	@Parameter(required = true)
-	private Dimensions dims;
-	
-	@Parameter(required = false)
-	private ImgFactory<T> factory;
-	
-	private Img<T> output;
-	
-	private T type;
-	
-	public static void main(String[] args) {
+
+public class CreateImgFromArray {
+	// hide constructor
+	private CreateImgFromArray() {
 		
 	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public Img<T> calculate(final byte[] input) {
-		//output = (Img<T>) ops().run(CreateImgFromDimsAndType.class, dims, new UnsignedByteType());
-		//output = (Img<T>) ops().run(Ops.Create.Img.class, dims, new UnsignedByteType());
-		
-		
-		
-		type = (T) new UnsignedByteType();
-		if (factory == null) {
-			factory = dims == null ? ops().create().imgFactory() :
-				ops().create().imgFactory(dims);
+	
+	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
+	public static class Bit extends FromArray<boolean[], BitType> {
+		@Override
+		public void convert(boolean[] in, ArrayList<BitType> out) {
+			for (boolean b : in)
+				out.add(new BitType(b));
 		}
-		output = Imgs.create((ImgFactory<T>) factory, dims, type);
-		long[] imgDims = new long[dims.numDimensions()];
-		for (int i = 0; i < imgDims.length; i++)
-			imgDims[i] = dims.dimension(i);
-		Cursor<T> cursor = output.cursor();
-		while (cursor.hasNext()) {
-			T value = cursor.next();
-			int inputIndex = 0;
+	}
+	
+	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
+	public static class UInt2 extends FromArray<long[], Unsigned2BitType> {
+		@Override
+		public void convert(long[] in, ArrayList<Unsigned2BitType> out) {
+			for (long b : in)
+				out.add(new Unsigned2BitType(b));
+		}
+	}
+	
+	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
+	public static class UInt4 extends FromArray<long[], Unsigned4BitType> {
+		@Override
+		public void convert(long[] in, ArrayList<Unsigned4BitType> out) {
+			for (long b : in)
+				out.add(new Unsigned4BitType(b));
+		}
+	}
+	
+	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
+	public static class Int8 extends FromArray<byte[], ByteType> {
+		@Override
+		public void convert(byte[] in, ArrayList<ByteType> out) {
+			for (byte b : in)
+				out.add(new ByteType(b));
+		}
+	}
+	
+	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
+	public static class UInt8 extends FromArray<byte[], UnsignedByteType> {
+		@Override
+		public void convert(byte[] in, ArrayList<UnsignedByteType> out) {
+			for (byte b : in)
+				out.add(new UnsignedByteType(b));
+		}
+	}
+	
+	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
+	public static class Int16 extends FromArray<short[], ShortType> {
+		@Override
+		public void convert(short[] in, ArrayList<ShortType> out) {
+			for (short b : in)
+				out.add(new ShortType(b));
+		}
+	}
+	
+	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
+	public static class UInt16 extends FromArray<short[], UnsignedShortType> {
+		@Override
+		public void convert(short[] in, ArrayList<UnsignedShortType> out) {
+			for (short b : in)
+				out.add(new UnsignedShortType(b));
+		}
+	}
+	
+	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
+	public static class Int32 extends FromArray<int[], IntType> {
+		@Override
+		public void convert(int[] in, ArrayList<IntType> out) {
+			for (int b : in)
+				out.add(new IntType(b));
+		}
+	}
+	
+	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
+	public static class UInt32 extends FromArray<int[], UnsignedIntType> {
+		@Override
+		public void convert(int[] in, ArrayList<UnsignedIntType> out) {
+			for (int b : in)
+				out.add(new UnsignedIntType(b));
+		}
+	}
+	
+	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
+	public static class Int64 extends FromArray<long[], LongType> {
+		@Override
+		public void convert(long[] in, ArrayList<LongType> out) {
+			for (long b : in)
+				out.add(new LongType(b));
+		}
+	}
+	
+	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
+	public static class UInt64 extends FromArray<long[], UnsignedLongType> {
+		@Override
+		public void convert(long[] in, ArrayList<UnsignedLongType> out) {
+			for (long b : in)
+				out.add(new UnsignedLongType(b));
+		}
+	}
+	
+	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
+	public static class Float extends FromArray<float[], FloatType> {
+		@Override
+		public void convert(float[] in, ArrayList<FloatType> out) {
+			for (float b : in)
+				out.add(new FloatType(b));
+		}
+	}
+	
+	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
+	public static class Double extends FromArray<double[], DoubleType> {
+		@Override
+		public void convert(double[] in, ArrayList<DoubleType> out) {
+			for (double b : in)
+				out.add(new DoubleType(b));
+		}
+	}
+	
+	// helper class
+	private static abstract class FromArray<I, O extends NativeType<O>> extends AbstractUnaryFunctionOp<I, Img<O>> implements
+	Ops.Create.Img {
+		
+		@Parameter(required = true)
+		private Dimensions dims;
+		
+		@Parameter(required = false)
+		private O outputType;
+		
+		@Parameter(required = false)
+		private ImgFactory<O> factory;
+		
+		private Img<O> output;
+		
+		public static void main(String[] args) {
+			
+		}
+
+		@Override
+		public Img<O> calculate(final I inArray) {
+			// creates default factory if not provided
+			if (factory == null) {
+				factory = dims == null ? ops().create().imgFactory() :
+					ops().create().imgFactory(dims);
+			}
+			
+			ArrayList<O> nativeTypeArr = new ArrayList<O>();
+			convert(inArray, nativeTypeArr);
+			if (nativeTypeArr.size() == 0)
+				// TODO error
+				return null;
+			outputType = nativeTypeArr.get(0);
+			
+			// create output Img
+			output = Imgs.create((ImgFactory<O>) factory, dims, outputType);
+			
+			// figure out dimensions for indexing
+			long[] imgDims = new long[dims.numDimensions()];
 			for (int i = 0; i < imgDims.length; i++)
-				inputIndex += cursor.getLongPosition(i) * (i - 1 < 0 ? 1 : imgDims[i - 1]);
-			value.set((T) new UnsignedByteType(input[inputIndex]));
+				imgDims[i] = dims.dimension(i);
+			
+			// fill
+			Cursor<O> cursor = output.cursor();
+			while (cursor.hasNext()) {
+				O value = cursor.next();
+				int inputIndex = 0;
+				// indexing based on coordinate in each dimension
+				for (int i = 0; i < imgDims.length; i++)
+					inputIndex += cursor.getLongPosition(i) * (i - 1 < 0 ? 1 : imgDims[i - 1]);
+				value.set(nativeTypeArr.get(inputIndex));
+			}
+			return output;
 		}
-		return output;
+		
+		public abstract void convert(I in, ArrayList<O> out);/*{
+			if (in.length <= 0)
+				return null;
+			final O[] outArr = (O[]) Array.newInstance(outputType.getClass(), in.length);
+			
+			Class<?> inClass = in[0].getClass();
+			Class<?> outClass = outputType.getClass();
+			
+			for (int i = 0; i < in.length; i++)
+				outArr[i] = (O) (
+						outClass == ARGBType.class ? new ARGBType((int)in[i]) :
+						//outClass == BitType.class ?  new BitType((Boolean)in[i]) :
+						outClass == ByteType.class ? new ByteType((byte)in[i]) :
+						outClass == ShortType.class ? new ShortType((short)in[i]) :
+						outClass == IntType.class ?  new IntType((int)in[i]) :
+						outClass == LongType.class ? new LongType((long)in[i]) :
+							
+						outClass == Unsigned2BitType.class ? new Unsigned2BitType((long)in[i]) :
+						outClass == Unsigned4BitType.class ? new Unsigned4BitType((long)in[i]) :
+						outClass == UnsignedByteType.class ? new UnsignedByteType((byte)in[i]) :
+						outClass == Unsigned12BitType.class ? new Unsigned12BitType((long)in[i]) :
+						outClass == UnsignedShortType.class ? new UnsignedShortType((short)in[i]) :
+						outClass == UnsignedIntType.class ?  new UnsignedIntType((int)in[i]) :
+						outClass == UnsignedLongType.class ? new UnsignedLongType((long)in[i]) :
+						//outClass == UnsignedVariableBitLengthType.class ?  new UnsignedVariableBitLengthType((int)in[i]) :
+						outClass == Unsigned128BitType.class ? new Unsigned128BitType((BigInteger)in[i]) :
+						//outClass == ComplexDoubleType.class ?  new ComplexDoubleType
+						//outClass == ComplexFloatType.class ?  new ComplexFloatType
+						outClass == FloatType.class ? new FloatType((float)in[i]) :
+						outClass == DoubleType.class ? new DoubleType((double)in[i]) : null
+						);
+					;
+			return outArr;
+		}*/
 	}
-
 }
