@@ -143,12 +143,12 @@ public class CreateImgTest extends AbstractOpTest {
 	public void testImgFromArray() {
 		final Random randomGenerator = new Random();
 
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < TEST_SIZE; i++) {
 
 			// between 2 and 5 dimensions
 			//final long[] dim = new long[randomGenerator.nextInt(4) + 2];
 			//final long[] dim = new long[2];
-			final long[] dim = {256, 1};
+			final long[] dim = {1024, 1024};
 			
 			// source array length
 			int srcLen = 1;
@@ -163,12 +163,12 @@ public class CreateImgTest extends AbstractOpTest {
 			byte[] arr = new byte[srcLen];
 			
 			for (int j = 0; j < srcLen; j++)
-				arr[j] = (byte) (j % 256);
+				arr[j] = (byte)((Math.sin(j/1024 * Math.PI) + Math.cos(j/1024 * Math.PI))*256);
 
 			// create img
 			@SuppressWarnings("unchecked")
 			final Img<UnsignedByteType> img = (Img<UnsignedByteType>) ops.run(
-				CreateImgFromArray.class, arr, dim);
+				CreateImgFromArray.Double.class, arr, dim);
 			net.imglib2.img.display.imagej.ImageJFunctions.show(img);
 //			assertArrayEquals("Image Dimensions:", dim, Intervals
 //				.dimensionsAsLongArray(img));

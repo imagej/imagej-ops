@@ -52,6 +52,7 @@ import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.IntegerType;
 import net.imglib2.type.numeric.complex.ComplexDoubleType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
+import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.type.numeric.real.FloatType;
 
@@ -108,15 +109,29 @@ public class CreateNamespace extends AbstractNamespace {
 		return img(new FinalDimensions(dims), new DoubleType());
 	}
 	
-	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromArray.class)
-	public <T extends NativeType<T>> Img<T> img(final byte[] in1,
-		final Dimensions in2)
+	// -- from array
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromArray.UInt8.class)
+	public <T extends NativeType<T>> Img<T> img(final byte[] in,
+		final Dimensions dim)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<T> result = (Img<T>) ops().run(
-			Ops.Create.Img.class, in1, in2);
+			Ops.Create.Img.class, in, dim, new ByteType());
 		return result;
 	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromArray.UInt8.class)
+	public <T extends NativeType<T>> Img<T> img(final byte[] in,
+		final Dimensions dim, final T outType)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim, outType);
+		return result;
+	}
+	
+	// -- ?
 
 	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromDimsAndType.class)
 	public <T extends NativeType<T>> Img<T> img(final Dimensions in1,
