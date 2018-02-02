@@ -42,9 +42,12 @@ import net.imagej.ops.create.img.CreateImgFromInterval;
 import net.imglib2.Dimensions;
 import net.imglib2.FinalDimensions;
 import net.imglib2.FinalInterval;
+import net.imglib2.RandomAccess;
 import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.img.cell.CellImgFactory;
+import net.imglib2.img.planar.PlanarImgFactory;
 import net.imglib2.img.planar.PlanarImgs;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -140,38 +143,54 @@ public class CreateImgTest extends AbstractOpTest {
 	}
 	
 	@Test
-	public void testImgFromArray() {
+	public void testImgFromArrayValue() {
 		final Random randomGenerator = new Random();
+		// test different types of imgs
+		ImgFactory<?>[] facs = {
+				new ArrayImgFactory<DoubleType>(), 
+				new CellImgFactory<DoubleType>(),
+				new PlanarImgFactory<DoubleType>()
+			};
 
 		for (int i = 0; i < TEST_SIZE; i++) {
 
 			// between 2 and 5 dimensions
-			//final long[] dim = new long[randomGenerator.nextInt(4) + 2];
+			final long[] dim = new long[randomGenerator.nextInt(4) + 2];
 			//final long[] dim = new long[2];
-			final long[] dim = {1024, 1024};
 			
 			// source array length
 			int srcLen = 1;
 			
 			// between 2 and 10 pixels per dimensions
 			for (int j = 0; j < dim.length; j++) {
-				//dim[j] = randomGenerator.nextInt(9) + 2;
-				//dim[j] = 100;
+				dim[j] = randomGenerator.nextInt(9) + 2;
 				srcLen *= dim[j];
 			}
 			
-			byte[] arr = new byte[srcLen];
+			double[] arr = new double[srcLen];
 			
+			// { 0.1, 0.2, 0.3, ... }
 			for (int j = 0; j < srcLen; j++)
-				arr[j] = (byte)((Math.sin(j/1024 * Math.PI) + Math.cos(j/1024 * Math.PI))*256);
+				arr[j] = 0.1 * j;
 
 			// create img
 			@SuppressWarnings("unchecked")
-			final Img<UnsignedByteType> img = (Img<UnsignedByteType>) ops.run(
-				CreateImgFromArray.Double.class, arr, dim);
-			net.imglib2.img.display.imagej.ImageJFunctions.show(img);
-//			assertArrayEquals("Image Dimensions:", dim, Intervals
-//				.dimensionsAsLongArray(img));
+			final Img<DoubleType> img = (Img<DoubleType>) ops.run(
+				CreateImgFromArray.Double.class, arr, dim, facs[i % 3]);
+			RandomAccess<DoubleType> ra = img.randomAccess();
+			
+			// generates random coordinates
+			int[] coord = new int[dim.length];
+			for (int j = 0; j < 10; j++) {
+				int inputIndex = 0;
+				for (int k = 0; k < dim.length; k++) {
+					coord[k] = randomGenerator.nextInt((int) dim[k]);
+					inputIndex += coord[k] * (k - 1 < 0 ? 1 : dim[k - 1]);
+				}
+				// check value against input
+				ra.setPosition(coord);
+				assertEquals(ra.get().getRealDouble(), arr[inputIndex], 0.05);
+			}
 		}
 	}
 

@@ -111,23 +111,23 @@ public class CreateNamespace extends AbstractNamespace {
 	
 	// -- from array
 	
-	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromArray.UInt8.class)
-	public <T extends NativeType<T>> Img<T> img(final byte[] in,
+	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromArray.Uint8.class)
+	public <T extends NativeType<T>> Img<T> uint8Img(final byte[] in,
 		final Dimensions dim)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<T> result = (Img<T>) ops().run(
-			Ops.Create.Img.class, in, dim, new ByteType());
+			Ops.Create.Img.class, in, dim);
 		return result;
 	}
 	
-	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromArray.UInt8.class)
-	public <T extends NativeType<T>> Img<T> img(final byte[] in,
-		final Dimensions dim, final T outType)
+	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromArray.Uint8.class)
+	public <T extends NativeType<T>> Img<T> uint8Img(final byte[] in,
+		final Dimensions dim, final ImgFactory<T> factory)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<T> result = (Img<T>) ops().run(
-			Ops.Create.Img.class, in, dim, outType);
+			Ops.Create.Img.class, in, dim, factory);
 		return result;
 	}
 	
