@@ -122,7 +122,7 @@ public class EdgeDetection<T extends RealType<T>> extends
 
 					if (!foundEdge) { // TODO
 						leftFailedIndices.add(p);
-						
+
 					}
 
 					derivativeRA.setPosition((Localizable) currentPoint);
