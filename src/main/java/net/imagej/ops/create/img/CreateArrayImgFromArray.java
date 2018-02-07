@@ -32,7 +32,9 @@ package net.imagej.ops.create.img;
 import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -45,6 +47,18 @@ import net.imglib2.Cursor;
 import net.imglib2.Dimensions;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
+import net.imglib2.img.NativeImgFactory;
+import net.imglib2.img.array.ArrayImg;
+import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.img.array.ArrayImgs;
+import net.imglib2.img.basictypeaccess.array.ArrayDataAccess;
+import net.imglib2.img.basictypeaccess.array.ByteArray;
+import net.imglib2.img.basictypeaccess.array.DoubleArray;
+import net.imglib2.img.basictypeaccess.array.LongArray;
+import net.imglib2.img.cell.CellImgFactory;
+import net.imglib2.img.planar.PlanarImg;
+import net.imglib2.img.planar.PlanarImgFactory;
+import net.imglib2.img.planar.PlanarImgs;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.ARGBType;
@@ -59,127 +73,150 @@ import net.imglib2.type.numeric.real.FloatType;
  * @author Dasong Gao
  */
 
-public class CreateImgFromArray {
+public class CreateArrayImgFromArray {
 	
 	// hide constructor
-	private CreateImgFromArray() {
+	private CreateArrayImgFromArray() {
 		
 	}
 	
 	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
-	public static class Bit extends FromArray<boolean[], BitType> {
+	public static class Bit extends FromArray<long[], BitType> {
+
 		@Override
-		public void convert(boolean[] in, List<BitType> out) {
-			for (boolean b : in)
-				out.add(new BitType(b));
+		protected void updateEPE() { entitiesPerElement = 1 / 64f; }
+		
+		@Override
+		public Img<BitType> asArrayImg(long[] in) {
+			return ArrayImgs.bits(new LongArray(in), this.imgDims);
 		}
 	}
-	
+
 	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
 	public static class Uint2 extends FromArray<long[], Unsigned2BitType> {
+
 		@Override
-		public void convert(long[] in, List<Unsigned2BitType> out) {
-			for (long b : in)
-				out.add(new Unsigned2BitType(b));
+		protected void updateEPE() { entitiesPerElement = 2 / 64f; }
+		
+		@Override
+		public Img<Unsigned2BitType> asArrayImg(long[] in) {
+			return ArrayImgs.unsigned2Bits(new LongArray(in), this.imgDims);
 		}
 	}
 	
 	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
 	public static class Uint4 extends FromArray<long[], Unsigned4BitType> {
+		
 		@Override
-		public void convert(long[] in, List<Unsigned4BitType> out) {
-			for (long b : in)
-				out.add(new Unsigned4BitType(b));
+		protected void updateEPE() { entitiesPerElement = 4 / 64f; }
+		
+		@Override
+		public Img<Unsigned4BitType> asArrayImg(long[] in) {
+			return ArrayImgs.unsigned4Bits(new LongArray(in), this.imgDims);
 		}
 	}
 	
 	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
 	public static class Int8 extends FromArray<byte[], ByteType> {
+		
 		@Override
-		public void convert(byte[] in, List<ByteType> out) {
-			for (byte b : in)
-				out.add(new ByteType(b));
+		public Img<ByteType> asArrayImg(byte[] in) {
+			return ArrayImgs.bytes(in, this.imgDims);
 		}
 	}
 	
 	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
 	public static class Uint8 extends FromArray<byte[], UnsignedByteType> {
+		
 		@Override
-		public void convert(byte[] in, List<UnsignedByteType> out) {
-			for (byte b : in)
-				out.add(new UnsignedByteType(b));
+		public Img<UnsignedByteType> asArrayImg(byte[] in) {
+			return ArrayImgs.unsignedBytes(in, this.imgDims);
+		}
+	}
+	
+	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
+	public static class Uint12 extends FromArray<long[], Unsigned12BitType> {
+		
+		@Override
+		protected void updateEPE() { entitiesPerElement = 12 / 64f; }
+		
+		@Override
+		public Img<Unsigned12BitType> asArrayImg(long[] in) {
+			return ArrayImgs.unsigned12Bits(new LongArray(in), this.imgDims);
 		}
 	}
 	
 	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
 	public static class Int16 extends FromArray<short[], ShortType> {
+		
 		@Override
-		public void convert(short[] in, List<ShortType> out) {
-			for (short b : in)
-				out.add(new ShortType(b));
+		public Img<ShortType> asArrayImg(short[] in) {
+			return ArrayImgs.shorts(in, imgDims);
 		}
 	}
 	
 	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
 	public static class Uint16 extends FromArray<short[], UnsignedShortType> {
+		
 		@Override
-		public void convert(short[] in, List<UnsignedShortType> out) {
-			for (short b : in)
-				out.add(new UnsignedShortType(b));
+		public Img<UnsignedShortType> asArrayImg(short[] in) {
+			return ArrayImgs.unsignedShorts(in, imgDims);
 		}
 	}
 	
 	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
 	public static class Int32 extends FromArray<int[], IntType> {
+		
 		@Override
-		public void convert(int[] in, List<IntType> out) {
-			for (int b : in)
-				out.add(new IntType(b));
+		public Img<IntType> asArrayImg(int[] in) {
+			return ArrayImgs.ints(in, imgDims);
 		}
 	}
 	
 	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
 	public static class Uint32 extends FromArray<int[], UnsignedIntType> {
+		
 		@Override
-		public void convert(int[] in, List<UnsignedIntType> out) {
-			for (int b : in)
-				out.add(new UnsignedIntType(b));
+		public Img<UnsignedIntType> asArrayImg(int[] in) {
+			return ArrayImgs.unsignedInts(in, imgDims);
 		}
 	}
 	
 	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
 	public static class ARGB32 extends FromArray<int[], ARGBType> {
+		
 		@Override
-		public void convert(int[] in, List<ARGBType> out) {
-			for (int b : in)
-				out.add(new ARGBType(b));
+		public Img<ARGBType> asArrayImg(int[] in) {
+			return ArrayImgs.argbs(in, imgDims);
 		}
 	}
 	
 	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
 	public static class Int64 extends FromArray<long[], LongType> {
+		
 		@Override
-		public void convert(long[] in, List<LongType> out) {
-			for (long b : in)
-				out.add(new LongType(b));
+		public Img<LongType> asArrayImg(long[] in) {
+			return ArrayImgs.longs(in, imgDims);
 		}
 	}
 	
 	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
 	public static class Uint64 extends FromArray<long[], UnsignedLongType> {
+		
 		@Override
-		public void convert(long[] in, List<UnsignedLongType> out) {
-			for (long b : in)
-				out.add(new UnsignedLongType(b));
+		public Img<UnsignedLongType> asArrayImg(long[] in) {
+			return ArrayImgs.unsignedLongs(in, imgDims);
 		}
 	}
 	
 	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
-	public static class Uint128 extends FromArray<BigInteger[], Unsigned128BitType> {
+	public static class Uint128 extends FromArray<long[], Unsigned128BitType> {
+		
 		@Override
-		public void convert(BigInteger[] in, List<Unsigned128BitType> out) {
-			for (BigInteger b : in)
-				out.add(new Unsigned128BitType(b));
+		protected void updateEPE() { entitiesPerElement = 128 / 64f; }
+		
+		public Img<Unsigned128BitType> asArrayImg(long[] in) {
+			return ArrayImgs.unsigned128Bits(new LongArray(in), imgDims);
 		}
 	}
 	
@@ -191,31 +228,33 @@ public class CreateImgFromArray {
 		private int nBits;
 		
 		@Override
-		public void convert(long[] in, List<UnsignedVariableBitLengthType> out) {
-			for (long b : in)
-				out.add(new UnsignedVariableBitLengthType(b, nBits));
+		protected void updateEPE() { entitiesPerElement = nBits / 64f; }
+		
+		@Override
+		public Img<UnsignedVariableBitLengthType> asArrayImg(long[] in) {
+			return ArrayImgs.unsignedVariableBitLengths(new LongArray(in), nBits, imgDims);
 		}
 	}
 	
 	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
 	public static class Float extends FromArray<float[], FloatType> {
+		
 		@Override
-		public void convert(float[] in, List<FloatType> out) {
-			for (float b : in)
-				out.add(new FloatType(b));
+		public Img<FloatType> asArrayImg(float[] in) {
+			return ArrayImgs.floats(in, this.imgDims);
 		}
 	}
 	
 	@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
 	public static class Double extends FromArray<double[], DoubleType> {
+		
 		@Override
-		public void convert(double[] in, List<DoubleType> out) {
-			for (double b : in)
-				out.add(new DoubleType(b));
+		public Img<DoubleType> asArrayImg(double[] in) {
+			return ArrayImgs.doubles(in, this.imgDims);
 		}
 	}
-	
-	// helper class
+
+	// helper class for wrapping
 	private static abstract class FromArray<I, O extends NativeType<O>>
 			extends AbstractUnaryFunctionOp<I, Img<O>>
 			implements Ops.Create.Img, Contingent {
@@ -224,95 +263,41 @@ public class CreateImgFromArray {
 		@Parameter(required = true)
 		private Dimensions dims;
 		
-		// types of img to create (array, cell, planar)
-		@Parameter(required = false)
-		private ImgFactory<O> factory;
-		
 		// image dimensions (unpacked from dims)
-		private long[] imgDims;
+		protected long[] imgDims;
 		
-		private Img<O> output;
-
+		// used to scale for Bit, 12Bit, 128Bit, varBit, etc.
+		protected float entitiesPerElement = 1.0f;
+		
 		@Override
 		public Img<O> calculate(final I inArray) {
-			// creates default factory if not provided
-			if (factory == null) {
-				factory = dims == null ? ops().create().imgFactory() :
-					ops().create().imgFactory(dims);
-			}
-			
-			List<O> nativeTypeArr = new ArrayList<O>();
-			convert(inArray, nativeTypeArr);
-			O outputType = nativeTypeArr.get(0);
-			
-			// create output Img
-			output = Imgs.create((ImgFactory<O>) factory, dims, outputType);
-			
-			// fill
-			Cursor<O> cursor = output.cursor();
-			while (cursor.hasNext()) {
-				O value = cursor.next();
-				int inputIndex = 0;
-				// indexing based on coordinate in each dimension
-				for (int i = 0; i < imgDims.length; i++)
-					inputIndex += cursor.getLongPosition(i) * (i - 1 < 0 ? 1 : imgDims[i - 1]);
-				value.set(nativeTypeArr.get(inputIndex));
-			}
-			return output;
+			return this.asArrayImg((I)inArray);
 		}
 		
 		@Override
 		public boolean conforms() {
-			// expected length for input array
-			int expInLen = 1;
+			updateEPE();
 			imgDims = new long[dims.numDimensions()];
-			// 0D image not allowed
 			if (imgDims.length == 0)
 				return false;
+			int expInLen = 1;
 			for (int i = 0; i < imgDims.length; i++)
 				expInLen *= imgDims[i] = dims.dimension(i);
 			
+			@SuppressWarnings("unchecked")
 			I in = this.in();
-			
-			// checks if input length matches dimensions
-			return in.getClass().isArray() && expInLen != 0 && Array.getLength(in) == expInLen;
+			return in.getClass().isArray() && expInLen != 0 
+					&& (int) (Array.getLength(in) * entitiesPerElement) == expInLen;
 		}
 		
-		// abstract method for converting input array (primitive or BigInteger)
-		// into a list of outputTypes
-		public abstract void convert(I in, List<O> out);/*{
-			if (in.length <= 0)
-				return null;
-			final O[] outArr = (O[]) Array.newInstance(outputType.getClass(), in.length);
-			
-			Class<?> inClass = in[0].getClass();
-			Class<?> outClass = outputType.getClass();
-			
-			for (int i = 0; i < in.length; i++)
-				outArr[i] = (O) (
-						outClass == ARGBType.class ? new ARGBType((int)in[i]) :
-						outClass == BitType.class ?  new BitType((Boolean)in[i]) :
-						outClass == ByteType.class ? new ByteType((byte)in[i]) :
-						outClass == ShortType.class ? new ShortType((short)in[i]) :
-						outClass == IntType.class ?  new IntType((int)in[i]) :
-						outClass == LongType.class ? new LongType((long)in[i]) :
-							
-						outClass == Unsigned2BitType.class ? new Unsigned2BitType((long)in[i]) :
-						outClass == Unsigned4BitType.class ? new Unsigned4BitType((long)in[i]) :
-						outClass == UnsignedByteType.class ? new UnsignedByteType((byte)in[i]) :
-						outClass == Unsigned12BitType.class ? new Unsigned12BitType((long)in[i]) :
-						outClass == UnsignedShortType.class ? new UnsignedShortType((short)in[i]) :
-						outClass == UnsignedIntType.class ?  new UnsignedIntType((int)in[i]) :
-						outClass == UnsignedLongType.class ? new UnsignedLongType((long)in[i]) :
-						//outClass == UnsignedVariableBitLengthType.class ?  new UnsignedVariableBitLengthType((int)in[i]) :
-						outClass == Unsigned128BitType.class ? new Unsigned128BitType((BigInteger)in[i]) :
-						//outClass == ComplexDoubleType.class ?  new ComplexDoubleType
-						//outClass == ComplexFloatType.class ?  new ComplexFloatType
-						outClass == FloatType.class ? new FloatType((float)in[i]) :
-						outClass == DoubleType.class ? new DoubleType((double)in[i]) : null
-						);
-					;
-			return outArr;
-		}*/
+		@Override
+		public Img<O> run(Img<O> output) {
+			return null;
+		}
+
+		protected abstract Img<O> asArrayImg(I in);
+		
+		// update entitiesPerElement before checking size
+		protected void updateEPE() {};
 	}
 }

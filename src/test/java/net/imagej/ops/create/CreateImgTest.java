@@ -35,10 +35,11 @@ import static org.junit.Assert.assertEquals;
 import java.util.Random;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.create.img.CreateImgFromArray;
+import net.imagej.ops.create.img.CreateArrayImgFromArray;
 import net.imagej.ops.create.img.CreateImgFromDimsAndType;
 import net.imagej.ops.create.img.CreateImgFromImg;
 import net.imagej.ops.create.img.CreateImgFromInterval;
+import net.imagej.ops.create.img.CreatePlanarImgFromArray;
 import net.imglib2.Dimensions;
 import net.imglib2.FinalDimensions;
 import net.imglib2.FinalInterval;
@@ -46,14 +47,17 @@ import net.imglib2.RandomAccess;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.img.basictypeaccess.array.DoubleArray;
 import net.imglib2.img.cell.CellImgFactory;
 import net.imglib2.img.planar.PlanarImgFactory;
 import net.imglib2.img.planar.PlanarImgs;
 import net.imglib2.type.logic.BitType;
+import net.imglib2.type.numeric.ARGBType;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.IntType;
 import net.imglib2.type.numeric.integer.ShortType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
+import net.imglib2.type.numeric.integer.UnsignedVariableBitLengthType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.util.Intervals;
@@ -142,21 +146,47 @@ public class CreateImgTest extends AbstractOpTest {
 			.getClass());
 	}
 	
+	// -- FromArray
+	
+	//@Test
+	public void testImgFromArrayShow() {
+		final long[] dim = {250, 250, 250};
+		
+		int srcLen = 1;
+		for (int j = 0; j < dim.length; j++) {
+			srcLen *= dim[j];
+		}
+		
+		byte[] arr = new byte[srcLen];
+		
+//		for (int j = 0; j < srcLen; j++)
+//			arr[j] = (byte) (j%256);
+		for (int i = 0; i < dim[0]; i++)
+			for (int j = 0; j < dim[1]; j++)
+				for (int k = 0; k < dim[2]; k++)
+					if (i*i+j*j+k*k<200*200)
+						arr[i+j*250+k*250*250] = (byte) 250;
+		
+		@SuppressWarnings("unchecked")
+		final Img<UnsignedByteType> img = (Img<UnsignedByteType>) ops.run(
+				CreateArrayImgFromArray.Uint8.class, arr, dim);
+		net.imglib2.img.display.imagej.ImageJFunctions.show(img);
+	}
+	
 	@Test
+	@SuppressWarnings("unchecked")
 	public void testImgFromArrayValue() {
 		final Random randomGenerator = new Random();
 		// test different types of imgs
-		ImgFactory<?>[] facs = {
+		final ImgFactory<?>[] facs = {
 				new ArrayImgFactory<DoubleType>(), 
-				new CellImgFactory<DoubleType>(),
 				new PlanarImgFactory<DoubleType>()
 			};
 
 		for (int i = 0; i < TEST_SIZE; i++) {
 
-			// between 2 and 5 dimensions
+			// between 1 and 5 dimensions
 			final long[] dim = new long[randomGenerator.nextInt(4) + 2];
-			//final long[] dim = new long[2];
 			
 			// source array length
 			int srcLen = 1;
@@ -169,29 +199,96 @@ public class CreateImgTest extends AbstractOpTest {
 			
 			double[] arr = new double[srcLen];
 			
-			// { 0.1, 0.2, 0.3, ... }
+			// arr = { 0, 0.1, 0.2, 0.3, ... }
 			for (int j = 0; j < srcLen; j++)
 				arr[j] = 0.1 * j;
-
-			// create img
-			@SuppressWarnings("unchecked")
-			final Img<DoubleType> img = (Img<DoubleType>) ops.run(
-				CreateImgFromArray.Double.class, arr, dim, facs[i % 3]);
+			
+			Img<DoubleType> img = null;
+			
+			if ((i & 1) == 0) {
+				img = (Img<DoubleType>) ops.run(
+						CreateArrayImgFromArray.Double.class, arr, dim);
+			}
+			else {
+				int sliceLen = (int) dim[0];
+				if (dim.length >= 2)
+					sliceLen *= dim[1];
+				double[][] arr2d = new double[srcLen / sliceLen][sliceLen];
+				double n = 0;
+				for (int j = 0; j < arr2d.length; j++)
+					for (int k = 0; k < arr2d[0].length; k++) {
+						arr2d[j][k] = n;
+						n += 0.1;
+					}
+				img = (Img<DoubleType>) ops.run(
+						CreatePlanarImgFromArray.Double.class, arr2d, dim);
+			}
+			
+			/*(Img<DoubleType>) ops.run(
+				CreateImgFromArray.Double.class, arr, dim, facs[i % 2]);*/
 			RandomAccess<DoubleType> ra = img.randomAccess();
 			
-			// generates random coordinates
+			// check random pixels
 			int[] coord = new int[dim.length];
 			for (int j = 0; j < 10; j++) {
 				int inputIndex = 0;
+				int sliceSize = 1;
 				for (int k = 0; k < dim.length; k++) {
 					coord[k] = randomGenerator.nextInt((int) dim[k]);
-					inputIndex += coord[k] * (k - 1 < 0 ? 1 : dim[k - 1]);
+					inputIndex += coord[k] * sliceSize;
+					sliceSize *= dim[k];
 				}
-				// check value against input
 				ra.setPosition(coord);
-				assertEquals(ra.get().getRealDouble(), arr[inputIndex], 0.05);
+				assertEquals("Pixel value: ", ra.get().getRealDouble(), arr[inputIndex], 0.05);
 			}
 		}
+	}
+	
+	@Test
+	public void testImgFromArrayFactory() {
+		final Dimensions dim = new FinalDimensions(1, 1, 1);
+		final long[] in = {1};
+		
+		@SuppressWarnings("unchecked")
+		final Img<UnsignedVariableBitLengthType> arrayImg = 
+				(Img<UnsignedVariableBitLengthType>) ops.run(
+				CreateArrayImgFromArray.UintVarLen.class, in, dim, 5);
+		final Class<?> arrayFactoryClass = arrayImg.factory().getClass();
+		assertEquals("Image Factory: ", ArrayImgFactory.class, arrayFactoryClass);
+
+		@SuppressWarnings("unchecked")
+		final Img<UnsignedVariableBitLengthType> planarImg = 
+				(Img<UnsignedVariableBitLengthType>) ops.run(
+				CreatePlanarImgFromArray.UintVarLen.class, new long[][] {in}, dim, 5);
+		final Class<?> planarFactoryClass = planarImg.factory().getClass();
+		assertEquals("Image Factory: ", CellImgFactory.class, planarFactoryClass);
+	}
+	
+	@Test
+	public void testImgFromArrayType() {
+		final Dimensions dim = new FinalDimensions(1, 1, 1);
+		final long[] in = {1};
+		
+		@SuppressWarnings("unchecked")
+		final Img<UnsignedVariableBitLengthType> uvblImg = 
+				(Img<UnsignedVariableBitLengthType>) ops.run(
+				CreateArrayImgFromArray.UintVarLen.class, in, dim, 5);
+		final Class<?> uvblImgClass = uvblImg.firstElement().getClass();
+		assertEquals("Image Type: ", UnsignedVariableBitLengthType.class, uvblImgClass);
+		
+		@SuppressWarnings("unchecked")
+		final Img<ARGBType> argbImg = 
+				(Img<ARGBType>) ops.run(
+				CreateArrayImgFromArray.ARGB32.class, in, dim);
+		final Class<?> argbImgClass = argbImg.firstElement().getClass();
+		assertEquals("Image Type: ", ARGBType.class, argbImgClass);
+		
+		@SuppressWarnings("unchecked")
+		final Img<BitType> bitImg = 
+				(Img<BitType>) ops.run(
+				CreateArrayImgFromArray.Bit.class, new boolean[] {true}, dim);
+		final Class<?> bitImgClass = bitImg.firstElement().getClass();
+		assertEquals("Image Type: ", BitType.class, bitImgClass);
 	}
 
 	@Test
