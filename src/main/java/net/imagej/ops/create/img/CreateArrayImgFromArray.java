@@ -30,12 +30,6 @@
 package net.imagej.ops.create.img;
 
 import java.lang.reflect.Array;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Supplier;
-
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -43,22 +37,11 @@ import org.scijava.plugin.Plugin;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
-import net.imglib2.Cursor;
 import net.imglib2.Dimensions;
 import net.imglib2.img.Img;
-import net.imglib2.img.ImgFactory;
-import net.imglib2.img.NativeImgFactory;
 import net.imglib2.img.array.ArrayImg;
-import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.img.array.ArrayImgs;
-import net.imglib2.img.basictypeaccess.array.ArrayDataAccess;
-import net.imglib2.img.basictypeaccess.array.ByteArray;
-import net.imglib2.img.basictypeaccess.array.DoubleArray;
 import net.imglib2.img.basictypeaccess.array.LongArray;
-import net.imglib2.img.cell.CellImgFactory;
-import net.imglib2.img.planar.PlanarImg;
-import net.imglib2.img.planar.PlanarImgFactory;
-import net.imglib2.img.planar.PlanarImgs;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.ARGBType;
@@ -67,12 +50,12 @@ import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.type.numeric.real.FloatType;
 
 /**
- * Create an {@link Img} from an array using its type
+ * Create an {@link ArrayImg} from an array using its type
  * {@code T}.
  *
  * @author Dasong Gao
  */
-
+@SuppressWarnings("deprecation")
 public class CreateArrayImgFromArray {
 	
 	// hide constructor
@@ -84,7 +67,7 @@ public class CreateArrayImgFromArray {
 	public static class Bit extends FromArray<long[], BitType> {
 
 		@Override
-		protected void updateEPE() { entitiesPerElement = 1 / 64f; }
+		protected void updateEPE() { elementsPerPixel = 1 / 64f; }
 		
 		@Override
 		public Img<BitType> asArrayImg(long[] in) {
@@ -96,7 +79,7 @@ public class CreateArrayImgFromArray {
 	public static class Uint2 extends FromArray<long[], Unsigned2BitType> {
 
 		@Override
-		protected void updateEPE() { entitiesPerElement = 2 / 64f; }
+		protected void updateEPE() { elementsPerPixel = 2 / 64f; }
 		
 		@Override
 		public Img<Unsigned2BitType> asArrayImg(long[] in) {
@@ -108,7 +91,7 @@ public class CreateArrayImgFromArray {
 	public static class Uint4 extends FromArray<long[], Unsigned4BitType> {
 		
 		@Override
-		protected void updateEPE() { entitiesPerElement = 4 / 64f; }
+		protected void updateEPE() { elementsPerPixel = 4 / 64f; }
 		
 		@Override
 		public Img<Unsigned4BitType> asArrayImg(long[] in) {
@@ -138,7 +121,7 @@ public class CreateArrayImgFromArray {
 	public static class Uint12 extends FromArray<long[], Unsigned12BitType> {
 		
 		@Override
-		protected void updateEPE() { entitiesPerElement = 12 / 64f; }
+		protected void updateEPE() { elementsPerPixel = 12 / 64f; }
 		
 		@Override
 		public Img<Unsigned12BitType> asArrayImg(long[] in) {
@@ -213,7 +196,7 @@ public class CreateArrayImgFromArray {
 	public static class Uint128 extends FromArray<long[], Unsigned128BitType> {
 		
 		@Override
-		protected void updateEPE() { entitiesPerElement = 128 / 64f; }
+		protected void updateEPE() { elementsPerPixel = 128 / 64f; }
 		
 		public Img<Unsigned128BitType> asArrayImg(long[] in) {
 			return ArrayImgs.unsigned128Bits(new LongArray(in), imgDims);
@@ -228,7 +211,7 @@ public class CreateArrayImgFromArray {
 		private int nBits;
 		
 		@Override
-		protected void updateEPE() { entitiesPerElement = nBits / 64f; }
+		protected void updateEPE() { elementsPerPixel = nBits / 64f; }
 		
 		@Override
 		public Img<UnsignedVariableBitLengthType> asArrayImg(long[] in) {
@@ -267,7 +250,7 @@ public class CreateArrayImgFromArray {
 		protected long[] imgDims;
 		
 		// used to scale for Bit, 12Bit, 128Bit, varBit, etc.
-		protected float entitiesPerElement = 1.0f;
+		protected float elementsPerPixel = 1.0f;
 		
 		@Override
 		public Img<O> calculate(final I inArray) {
@@ -280,14 +263,13 @@ public class CreateArrayImgFromArray {
 			imgDims = new long[dims.numDimensions()];
 			if (imgDims.length == 0)
 				return false;
-			int expInLen = 1;
+			int numPixel = 1;
 			for (int i = 0; i < imgDims.length; i++)
-				expInLen *= imgDims[i] = dims.dimension(i);
+				numPixel *= imgDims[i] = dims.dimension(i);
 			
-			@SuppressWarnings("unchecked")
 			I in = this.in();
-			return in.getClass().isArray() && expInLen != 0 
-					&& (int) (Array.getLength(in) * entitiesPerElement) == expInLen;
+			return in.getClass().isArray() && numPixel != 0 
+					&& (int) Math.ceil((numPixel * elementsPerPixel)) == Array.getLength(in);
 		}
 		
 		@Override
