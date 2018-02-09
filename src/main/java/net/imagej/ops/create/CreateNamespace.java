@@ -111,6 +111,66 @@ public class CreateNamespace extends AbstractNamespace {
 	
 	// -- from array
 	
+	@OpMethod(op = net.imagej.ops.create.img.CreateArrayImgFromArray.Bit.class)
+	public <T extends NativeType<T>> Img<T> bitArrayImg(final long[] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreatePlanarImgFromArray.Bit.class)
+	public <T extends NativeType<T>> Img<T> bitPlanarImg(final long[][] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreateArrayImgFromArray.Uint2.class)
+	public <T extends NativeType<T>> Img<T> uint2ArrayImg(final long[] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreatePlanarImgFromArray.Uint2.class)
+	public <T extends NativeType<T>> Img<T> uint2PlanarImg(final long[][] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreateArrayImgFromArray.Uint4.class)
+	public <T extends NativeType<T>> Img<T> uint4ArrayImg(final long[] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreatePlanarImgFromArray.Uint4.class)
+	public <T extends NativeType<T>> Img<T> uint4PlanarImg(final long[][] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
 	@OpMethod(op = net.imagej.ops.create.img.CreateArrayImgFromArray.Uint8.class)
 	public <T extends NativeType<T>> Img<T> uint8ArrayImg(final byte[] in,
 		final Dimensions dim)
@@ -123,6 +183,266 @@ public class CreateNamespace extends AbstractNamespace {
 	
 	@OpMethod(op = net.imagej.ops.create.img.CreatePlanarImgFromArray.Uint8.class)
 	public <T extends NativeType<T>> Img<T> uint8PlanarImg(final byte[][] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreateArrayImgFromArray.Int8.class)
+	public <T extends NativeType<T>> Img<T> int8ArrayImg(final byte[] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreatePlanarImgFromArray.Int8.class)
+	public <T extends NativeType<T>> Img<T> int8PlanarImg(final byte[][] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreateArrayImgFromArray.Uint16.class)
+	public <T extends NativeType<T>> Img<T> uint16ArrayImg(final short[] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreatePlanarImgFromArray.Uint16.class)
+	public <T extends NativeType<T>> Img<T> uint16PlanarImg(final short[][] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreateArrayImgFromArray.Int16.class)
+	public <T extends NativeType<T>> Img<T> int16ArrayImg(final short[] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreatePlanarImgFromArray.Int16.class)
+	public <T extends NativeType<T>> Img<T> int16PlanarImg(final short[][] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreateArrayImgFromArray.Uint32.class)
+	public <T extends NativeType<T>> Img<T> uint32ArrayImg(final int[] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreatePlanarImgFromArray.Uint32.class)
+	public <T extends NativeType<T>> Img<T> uint32PlanarImg(final int[][] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreateArrayImgFromArray.Int32.class)
+	public <T extends NativeType<T>> Img<T> int32ArrayImg(final int[] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreatePlanarImgFromArray.Int32.class)
+	public <T extends NativeType<T>> Img<T> int32PlanarImg(final int[][] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreateArrayImgFromArray.Uint64.class)
+	public <T extends NativeType<T>> Img<T> uint64ArrayImg(final long[] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreatePlanarImgFromArray.Uint64.class)
+	public <T extends NativeType<T>> Img<T> uint64PlanarImg(final long[][] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreateArrayImgFromArray.Int64.class)
+	public <T extends NativeType<T>> Img<T> int64ArrayImg(final long[] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreatePlanarImgFromArray.Int64.class)
+	public <T extends NativeType<T>> Img<T> int64PlanarImg(final long[][] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreateArrayImgFromArray.Uint128.class)
+	public <T extends NativeType<T>> Img<T> uint128ArrayImg(final long[] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreatePlanarImgFromArray.Uint128.class)
+	public <T extends NativeType<T>> Img<T> uint128PlanarImg(final long[][] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreateArrayImgFromArray.Uint12.class)
+	public <T extends NativeType<T>> Img<T> uint12ArrayImg(final long[] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreatePlanarImgFromArray.Uint12.class)
+	public <T extends NativeType<T>> Img<T> uint12PlanarImg(final long[][] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreateArrayImgFromArray.ARGB32.class)
+	public <T extends NativeType<T>> Img<T> ARGBArrayImg(final int[] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreatePlanarImgFromArray.ARGB32.class)
+	public <T extends NativeType<T>> Img<T> ARGBPlanarImg(final int[][] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreateArrayImgFromArray.UintVarLen.class)
+	public <T extends NativeType<T>> Img<T> uintVarLenArrayImg(final long[] in,
+		final Dimensions dim, final int nBits)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim, nBits);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreatePlanarImgFromArray.UintVarLen.class)
+	public <T extends NativeType<T>> Img<T> uintVarLenPlanarImg(final long[][] in,
+		final Dimensions dim, final int nBits)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim, nBits);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreateArrayImgFromArray.Float.class)
+	public <T extends NativeType<T>> Img<T> floatArrayImg(final float[] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreatePlanarImgFromArray.Float.class)
+	public <T extends NativeType<T>> Img<T> doublePlanarImg(final float[][] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreateArrayImgFromArray.Double.class)
+	public <T extends NativeType<T>> Img<T> doubleArrayImg(final double[] in,
+		final Dimensions dim)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			Ops.Create.Img.class, in, dim);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.create.img.CreatePlanarImgFromArray.Double.class)
+	public <T extends NativeType<T>> Img<T> doublePlanarImg(final double[][] in,
 		final Dimensions dim)
 	{
 		@SuppressWarnings("unchecked")
