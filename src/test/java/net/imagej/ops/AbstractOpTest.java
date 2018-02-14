@@ -56,6 +56,7 @@ import net.imglib2.img.cell.CellImgFactory;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
+import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.util.Intervals;
 import net.imglib2.view.Views;
@@ -216,6 +217,10 @@ public abstract class AbstractOpTest {
 		return openFloatImg(getClass(), resourcePath);
 	}
 
+	public Img<DoubleType> openDoubleImg(final String resourcePath) {
+		return openDoubleImg(getClass(), resourcePath);
+	}
+
 	public static Img<FloatType> openFloatImg(final Class<?> c,
 		final String resourcePath)
 	{
@@ -230,6 +235,13 @@ public abstract class AbstractOpTest {
 		return IO.openUnsignedByteImgs(url.getPath()).get(0).getImg();
 	}
 
+	public static Img<DoubleType> openDoubleImg(final Class<?> c,
+		final String resourcePath)
+	{
+		final URL url = c.getResource(resourcePath);
+		return IO.openDoubleImgs(url.getPath()).get(0).getImg();
+	}
+
 	public <T> void assertIterationsEqual(final Iterable<T> expected,
 		final Iterable<T> actual)
 	{
@@ -242,18 +254,24 @@ public abstract class AbstractOpTest {
 		assertFalse("More elements than expected", a.hasNext());
 	}
 
-	public static <T> RandomAccessible<T> deinterval(RandomAccessibleInterval<T> input){
+	public static <T> RandomAccessible<T> deinterval(
+		RandomAccessibleInterval<T> input)
+	{
 		return Views.extendBorder(input);
 	}
 
-	public <T extends RealType<T>> boolean areCongruent(final IterableInterval<T> in, final RandomAccessible<T> out, final double epsilon){
+	public <T extends RealType<T>> boolean areCongruent(
+		final IterableInterval<T> in, final RandomAccessible<T> out,
+		final double epsilon)
+	{
 		Cursor<T> cin = in.localizingCursor();
 		RandomAccess<T> raOut = out.randomAccess();
-		
-		while(cin.hasNext()){
+
+		while (cin.hasNext()) {
 			cin.fwd();
 			raOut.setPosition(cin);
-			if(Math.abs(cin.get().getRealDouble() - raOut.get().getRealDouble()) > epsilon) return false;
+			if (Math.abs(cin.get().getRealDouble() - raOut.get()
+				.getRealDouble()) > epsilon) return false;
 		}
 		return true;
 	}
