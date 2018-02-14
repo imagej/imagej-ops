@@ -64,7 +64,7 @@ import org.scijava.thread.ThreadService;
  * step for tracing neurons or blood vessels, for example. For 3D image stacks,
  * the filter uses the eigenvalues of the Hessian matrix to calculate this
  * measure of "tubeness", using one of the simpler metrics me mentioned in
- * <it>Sato et al 1997</it>: if the larger two eigenvalues (λ₂ and λ₃) are both
+ * <u>Sato et al 1997</u>: if the larger two eigenvalues (λ₂ and λ₃) are both
  * negative then value is √(λ₂λ₃), otherwise the value is 0. For 2D images, if
  * the large eigenvalue is negative, we return its absolute value and otherwise
  * return 0.
