@@ -79,8 +79,8 @@ public class ListDilate<T extends RealType<T>> extends
 
 	@Override
 	public boolean conforms() {
-		return out() == null || createOutput().iterationOrder().equals(out()
-			.iterationOrder());
+		return in1() == null || in2() == null || out() == null || //
+			createOutput().iterationOrder().equals(out().iterationOrder());
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

@@ -84,7 +84,7 @@ public class DefaultErode<T extends RealType<T>> extends
 
 	@Override
 	public boolean conforms() {
-		if (out() == null) return true;
+		if (in1() == null || in2() == null || out() == null) return true;
 		if (isFull) return createOutput(in()).iterationOrder().equals(out());
 		return Maps.compatible(in(), out());
 	}

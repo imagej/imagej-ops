@@ -73,7 +73,8 @@ public class ListOpen<T extends RealType<T>> extends
 
 	@Override
 	public boolean conforms() {
-		return out() == null || Maps.compatible(in1(), out());
+		return in1() == null || in2() == null || out() == null || //
+			Maps.compatible(in1(), out());
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
