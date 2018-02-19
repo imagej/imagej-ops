@@ -30,8 +30,13 @@ package net.imagej.ops.coloc.pearsons;
 
 import static org.junit.Assert.assertEquals;
 
+import net.imagej.ops.Ops;
 import net.imagej.ops.coloc.ColocalisationTest;
+import net.imagej.ops.coloc.pValue.PValueResult;
+import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.Img;
 import net.imglib2.type.numeric.real.FloatType;
 
 import org.junit.Test;
@@ -87,4 +92,20 @@ public class PearsonsTest extends ColocalisationTest {
 			 */
 		}
 	}
+
+	@Test
+	public void testPValue() {
+		final double mean = 0.2;
+		final double spread = 0.1;
+		final double[] sigma = new double[] { 3.0, 3.0 };
+		Img<FloatType> ch1 = ColocalisationTest.produceMeanBasedNoiseImage(new FloatType(), 24, 24,
+			mean, spread, sigma, 0x01234567);
+		Img<FloatType> ch2 = ColocalisationTest.produceMeanBasedNoiseImage(new FloatType(), 24, 24,
+			mean, spread, sigma, 0x98765432);
+		BinaryFunctionOp<RandomAccessibleInterval<FloatType>, RandomAccessibleInterval<FloatType>, Double> op =
+			Functions.binary(ops, Ops.Coloc.Pearsons.class, Double.class, ch1, ch2);
+		PValueResult value = (PValueResult) ops.run(Ops.Coloc.PValue.class, new PValueResult(), ch1, ch2, op);
+		assertEquals(0.724, value.getPValue(), 0.0);
+	}
+
 }

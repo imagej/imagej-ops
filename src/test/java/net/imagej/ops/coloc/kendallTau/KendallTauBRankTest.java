@@ -36,9 +36,17 @@ import static org.junit.Assume.assumeTrue;
 import java.util.Iterator;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.coloc.ColocalisationTest;
+import net.imagej.ops.coloc.pValue.PValue;
+import net.imagej.ops.coloc.pValue.PValueResult;
+import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.IntType;
+import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.util.IterablePair;
 import net.imglib2.util.Pair;
 
@@ -104,6 +112,21 @@ public class KendallTauBRankTest extends AbstractOpTest {
 		}
 	}
 	
+	@Test
+	public void testPValue() {
+		final double mean = 0.2;
+		final double spread = 0.1;
+		final double[] sigma = new double[] { 3.0, 3.0 };
+		Img<FloatType> ch1 = ColocalisationTest.produceMeanBasedNoiseImage(new FloatType(), 24, 24,
+			mean, spread, sigma, 0x01234567);
+		Img<FloatType> ch2 = ColocalisationTest.produceMeanBasedNoiseImage(new FloatType(), 24, 24,
+			mean, spread, sigma, 0x98765432);
+		BinaryFunctionOp<RandomAccessibleInterval<FloatType>, RandomAccessibleInterval<FloatType>, Double> op =
+			Functions.binary(ops, KendallTauBRank.class, Double.class, ch1, ch2);
+		PValueResult value = (PValueResult) ops.run(PValue.class, new PValueResult(), ch1, ch2, op);
+		assertEquals(0.813, value.getPValue(), 0.0);
+	}
+
 	private int seed;
 
 	private int pseudoRandom()
@@ -112,7 +135,7 @@ public class KendallTauBRankTest extends AbstractOpTest {
 	}
 	
 	private <T extends RealType<T>, U extends RealType<U>> void assertTau(final double expected, final Iterable<T> img1, final Iterable<U> img2) {
-		final double kendallValue = (Double) ops.run(KendallTauBRank.class, img1, img2);
+		final double kendallValue = ops.coloc().kendallTau(img1, img2);
 		assertEquals(expected, kendallValue, 1e-10);
 	}
 
