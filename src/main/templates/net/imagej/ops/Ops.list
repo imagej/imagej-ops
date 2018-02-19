@@ -199,6 +199,7 @@ namespaces = ```
 		[name: "invert",                         iface: "Invert"],
 		[name: "normalize",                      iface: "Normalize",           aliases: ["norm"]],
 		[name: "squareIntegral",                 iface: "SquareIntegral"],
+		[name: "watershed",                      iface: "Watershed"],
 	]],
 	[name: "imagemoments", iface: "ImageMoments", ops: [
 		[name: "centralMoment00",                iface: "CentralMoment00"],
