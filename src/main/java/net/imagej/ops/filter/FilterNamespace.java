@@ -51,6 +51,7 @@ import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.composite.CompositeIntervalView;
 import net.imglib2.view.composite.RealComposite;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -623,6 +624,22 @@ public class FilterNamespace extends AbstractNamespace {
 	public long[][] fftSize(final Dimensions in1, final boolean powerOfTwo) {
 		final long[][] result = (long[][]) ops().run(Ops.Filter.FFTSize.class, in1,
 			powerOfTwo);
+		return result;
+	}
+
+	// -- derivativeGauss --
+
+	@OpMethod(
+		op = net.imagej.ops.filter.derivativeGauss.DefaultDerivativeGauss.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<DoubleType>
+		derivativeGauss(final RandomAccessibleInterval<T> out,
+			final RandomAccessibleInterval<DoubleType> in, final int[] derivatives,
+			final double sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<DoubleType> result =
+			(RandomAccessibleInterval<DoubleType>) ops().run(
+				Ops.Filter.DerivativeGauss.class, out, in, derivatives, sigma);
 		return result;
 	}
 
