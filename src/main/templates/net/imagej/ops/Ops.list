@@ -339,6 +339,7 @@ namespaces = ```
 		[name: "topHat",                         iface: "TopHat"],
 	]],
 	[name: "segment", iface: "Segment", ops: [
+		[name: "detectRidges",                 iface: "DetectRidges"],
 	]],
 	[name: "stats", iface: "Stats", ops: [
 		[name: "geometricMean",                  iface: "GeometricMean"],
