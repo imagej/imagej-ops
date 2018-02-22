@@ -340,6 +340,7 @@ namespaces = ```
 	]],
 	[name: "segment", iface: "Segment", ops: [
 		[name: "detectRidges",                 iface: "DetectRidges"],
+		[name: "detectJunctions",              iface: "DetectJunctions"],
 	]],
 	[name: "stats", iface: "Stats", ops: [
 		[name: "geometricMean",                  iface: "GeometricMean"],

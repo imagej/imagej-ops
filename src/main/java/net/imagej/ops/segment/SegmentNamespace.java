@@ -69,6 +69,29 @@ public class SegmentNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	// -- detectJunctions --
+	
+	@OpMethod(op = net.imagej.ops.segment.detectJunctions.DefaultDetectJunctions.class)
+	public List<RealPoint> detectJunctions(final List<DefaultWritablePolyline> lines)
+	{
+		@SuppressWarnings("unchecked")
+		final List<RealPoint> result = (List<RealPoint>) ops().run(
+			Ops.Segment.DetectJunctions.class, lines);
+
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.segment.detectJunctions.DefaultDetectJunctions.class)
+	public List<RealPoint> detectJunctions(final List<DefaultWritablePolyline> lines,
+		final double threshold)
+	{
+		@SuppressWarnings("unchecked")
+		final List<RealPoint> result = (List<RealPoint>) ops().run(
+			Ops.Segment.DetectJunctions.class, lines, threshold);
+
+		return result;
+	}
+
 	// -- Namespace methods --
 
 	@Override
