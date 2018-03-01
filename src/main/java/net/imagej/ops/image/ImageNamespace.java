@@ -40,6 +40,7 @@ import net.imglib2.histogram.Histogram1d;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.Type;
+import net.imglib2.type.numeric.IntegerType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.IntType;
 
@@ -110,7 +111,7 @@ public class ImageNamespace extends AbstractNamespace {
 				.run(Ops.Image.DistanceTransform.class, in, out);
 		return result;
 	}
-	
+
 	/** Executes the "distancetransform" operation on the given arguments. */
 	@OpMethod(ops = { net.imagej.ops.image.distancetransform.DefaultDistanceTransform.class,
 			net.imagej.ops.image.distancetransform.DistanceTransform2D.class,
@@ -254,9 +255,54 @@ public class ImageNamespace extends AbstractNamespace {
 	// -- invert --
 
 	/** Executes the "invert" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.image.invert.InvertII.class)
+	@OpMethod(ops = {net.imagej.ops.image.invert.InvertII.class,
+									net.imagej.ops.image.invert.InvertIIInteger.class})
 	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O> invert(
 			final IterableInterval<O> out, final IterableInterval<I> in) {
+		@SuppressWarnings("unchecked")
+		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
+				net.imagej.ops.Ops.Image.Invert.class, out,
+				in);
+		return result;
+	}
+
+	/** Executes the "invert" operation on the given arguments, given a {@link RealType} minimum. */
+	@OpMethod(op = net.imagej.ops.image.invert.InvertII.class)
+	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O> invert(
+			final IterableInterval<O> out, final IterableInterval<I> in, final RealType<I> min) {
+		@SuppressWarnings("unchecked")
+		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
+				net.imagej.ops.Ops.Image.Invert.class, out,
+				in);
+		return result;
+	}
+
+	/** Executes the "invert" operation on the given arguments, given a {@link IntegerType} minimum. */
+	@OpMethod(op = net.imagej.ops.image.invert.InvertIIInteger.class)
+	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O> invert(
+			final IterableInterval<O> out, final IterableInterval<I> in, final IntegerType min) {
+		@SuppressWarnings("unchecked")
+		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
+				net.imagej.ops.Ops.Image.Invert.class, out,
+				in);
+		return result;
+	}
+
+	/** Executes the "invert" operation on the given arguments, given a {@link RealType} minimum. */
+	@OpMethod(op = net.imagej.ops.image.invert.InvertII.class)
+	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O> invert(
+			final IterableInterval<O> out, final IterableInterval<I> in, final RealType<I> min, final RealType<I> max) {
+		@SuppressWarnings("unchecked")
+		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
+				net.imagej.ops.Ops.Image.Invert.class, out,
+				in);
+		return result;
+	}
+
+	/** Executes the "invert" operation on the given arguments, given a {@link IntegerType} minimum. */
+	@OpMethod(op =	net.imagej.ops.image.invert.InvertIIInteger.class)
+	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O> invert(
+			final IterableInterval<O> out, final IterableInterval<I> in, final IntegerType min, final IntegerType max) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
 				net.imagej.ops.Ops.Image.Invert.class, out,
