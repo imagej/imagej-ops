@@ -256,57 +256,46 @@ public class ImageNamespace extends AbstractNamespace {
 
 	/** Executes the "invert" operation on the given arguments. */
 	@OpMethod(ops = {net.imagej.ops.image.invert.InvertII.class,
-									net.imagej.ops.image.invert.InvertIIInteger.class})
-	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O> invert(
-			final IterableInterval<O> out, final IterableInterval<I> in) {
+		net.imagej.ops.image.invert.InvertIIInteger.class
+	})
+	public <T extends RealType> IterableInterval<T>
+		invert(final IterableInterval<T> out, final IterableInterval<T> in)
+	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
-				net.imagej.ops.Ops.Image.Invert.class, out,
-				in);
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.Ops.Image.Invert.class, out, in);
 		return result;
 	}
 
-	/** Executes the "invert" operation on the given arguments, given a {@link RealType} minimum. */
-	@OpMethod(op = net.imagej.ops.image.invert.InvertII.class)
-	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O> invert(
-			final IterableInterval<O> out, final IterableInterval<I> in, final RealType<I> min) {
+	/**
+	 * Executes the "invert" operation on the given arguments, given a
+	 * {@link RealType} minimum.
+	 */
+	@OpMethod(ops = { net.imagej.ops.image.invert.InvertII.class,
+		net.imagej.ops.image.invert.InvertIIInteger.class })
+	public <T extends RealType<T>> IterableInterval<T> invert(
+		final IterableInterval<T> out, final IterableInterval<T> in,
+		final RealType<T> min)
+	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
-				net.imagej.ops.Ops.Image.Invert.class, out,
-				in);
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.Ops.Image.Invert.class, out, in, min);
 		return result;
 	}
 
-	/** Executes the "invert" operation on the given arguments, given a {@link IntegerType} minimum. */
-	@OpMethod(op = net.imagej.ops.image.invert.InvertIIInteger.class)
-	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O> invert(
-			final IterableInterval<O> out, final IterableInterval<I> in, final IntegerType min) {
+	/**
+	 * Executes the "invert" operation on the given arguments, given a
+	 * {@link RealType} minimum.
+	 */
+	@OpMethod(ops = { net.imagej.ops.image.invert.InvertII.class,
+		net.imagej.ops.image.invert.InvertIIInteger.class })
+	public <T extends RealType<T>> IterableInterval<T>
+		invert(final IterableInterval<T> out, final IterableInterval<T> in,
+			final RealType<T> min, final RealType<T> max)
+	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
-				net.imagej.ops.Ops.Image.Invert.class, out,
-				in);
-		return result;
-	}
-
-	/** Executes the "invert" operation on the given arguments, given a {@link RealType} minimum. */
-	@OpMethod(op = net.imagej.ops.image.invert.InvertII.class)
-	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O> invert(
-			final IterableInterval<O> out, final IterableInterval<I> in, final RealType<I> min, final RealType<I> max) {
-		@SuppressWarnings("unchecked")
-		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
-				net.imagej.ops.Ops.Image.Invert.class, out,
-				in);
-		return result;
-	}
-
-	/** Executes the "invert" operation on the given arguments, given a {@link IntegerType} minimum. */
-	@OpMethod(op =	net.imagej.ops.image.invert.InvertIIInteger.class)
-	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O> invert(
-			final IterableInterval<O> out, final IterableInterval<I> in, final IntegerType min, final IntegerType max) {
-		@SuppressWarnings("unchecked")
-		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
-				net.imagej.ops.Ops.Image.Invert.class, out,
-				in);
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.Ops.Image.Invert.class, out, in, min, max);
 		return result;
 	}
 

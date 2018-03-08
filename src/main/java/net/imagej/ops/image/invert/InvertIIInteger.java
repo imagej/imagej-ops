@@ -53,82 +53,84 @@ import org.scijava.plugin.Plugin;
  * @author Gabe Selzer
  */
 @Plugin(type = Ops.Image.Invert.class, priority = Priority.HIGH)
-public class InvertIIInteger<I extends IntegerType<I>, O extends IntegerType<O>> extends
-	AbstractUnaryComputerOp<IterableInterval<I>, IterableInterval<O>> implements
-	Ops.Image.Invert
+public class InvertIIInteger<T extends RealType<T>> extends
+	AbstractUnaryComputerOp<IterableInterval<T>, IterableInterval<T>> implements
+	Contingent, Ops.Image.Invert
 {
 
 	@Parameter(required = false)
-	private I min;
+	private T min;
 
 	@Parameter(required = false)
-	private I max;
+	private T max;
 
-	private UnaryComputerOp<IterableInterval<I>, IterableInterval<O>> mapper;
+	private UnaryComputerOp<IterableInterval<T>, IterableInterval<T>> mapper;
+
 
 	@Override
-	public void compute(final IterableInterval<I> input,
-		final IterableInterval<O> output)
+	public void compute(final IterableInterval<T> input,
+		final IterableInterval<T> output)
 	{
 		if (mapper == null) {
-			final BigInteger minValue = min == null ? minValue(input.firstElement()).getBigInteger() : min.getBigInteger();
-			final BigInteger maxValue = max == null ? maxValue(input.firstElement()).getBigInteger() : max.getBigInteger();
+			final BigInteger minValue = min == null ? ((IntegerType)(minValue(input.firstElement()))).getBigInteger() : ((IntegerType)min).getBigInteger();
+			final BigInteger maxValue = max == null ? ((IntegerType)(maxValue(input.firstElement()))).getBigInteger() : ((IntegerType)max).getBigInteger();
 			final BigInteger minMax = minValue.add(maxValue);
 			mapper = Computers.unary(ops(), Ops.Map.class, output, input,
-				new AbstractUnaryComputerOp<I, O>()
+				new AbstractUnaryComputerOp<T, T>()
 			{
 
 					@Override
-					public void compute(I in, O out) {
-						BigInteger inverted = minMax.subtract(in.getBigInteger());	
+					public void compute(T in, T out) {
+						BigInteger inverted = minMax.subtract(((IntegerType)in).getBigInteger());	
 						
-						if( inverted.compareTo(minValue(out).getBigInteger()) <= 0) out.set(minValue(out));
-						else if(inverted.compareTo(maxValue(out).getBigInteger()) >= 0) out.set(maxValue(out));
-						else out.setBigInteger(inverted);
+						if( inverted.compareTo(((IntegerType)minValue(out)).getBigInteger()) <= 0) out.set(minValue(out));
+						else if(inverted.compareTo(((IntegerType)maxValue(out)).getBigInteger()) >= 0) out.set(maxValue(out));
+						else ((IntegerType)out).setBigInteger(inverted);
 						
 						
 					}
 				});
 		}
 		mapper.compute(input, output);
+
 	}
 
 	public static <T extends RealType<T>> T minValue(T type) {
-		if (type instanceof UnboundedIntegerType){
-			UnboundedIntegerType t = new UnboundedIntegerType();
-			t.setReal(0);
-			return (T) t;
-		}
-
-		T min = type.createVariable();
-		min.setReal(min.getMinValue());
-		return (T) min;
+		// TODO: Consider making minValue an op.
+		final T min = type.createVariable();
+		if (type instanceof UnboundedIntegerType) min.setReal(0);
+		else min.setReal(min.getMinValue());
+		return min;
 
 	}
-	
+
 	public static <T extends RealType<T>> T maxValue(T type) {
-		if (type instanceof Unsigned128BitType) {
-			Unsigned128BitType t = new Unsigned128BitType();
+		// TODO: Consider making maxValue an op.
+		final T max = type.createVariable();
+		if (max instanceof Unsigned128BitType) {
+			final Unsigned128BitType t = (Unsigned128BitType) max;
 			t.set(t.getMaxBigIntegerValue());
-			return (T) t;
 		}
-		else if (type instanceof UnsignedLongType) {
-			UnsignedLongType t = new UnsignedLongType();
+		else if (max instanceof UnsignedLongType) {
+			final UnsignedLongType t = (UnsignedLongType) max;
 			t.set(t.getMaxBigIntegerValue());
-			return (T) t;
 		}
-		else if (type instanceof UnboundedIntegerType) {
-			UnboundedIntegerType t = new UnboundedIntegerType();
-			t.setReal(0);
-			return (T) t;
-
+		else if (max instanceof UnboundedIntegerType) {
+			max.setReal(0);
 		}
-						
-			T t = type.createVariable();
-			t.setReal(type.getMaxValue());
-			return (T) t;
-
+		else {
+			max.setReal(type.getMaxValue());
+		}
+		return max;
 	}
-	
-}
 
+	@Override
+	public boolean conforms() {
+		final T inType = in().firstElement();
+		return inType instanceof Unsigned128BitType ||
+			inType instanceof UnsignedLongType ||
+			inType instanceof UnboundedIntegerType ||
+			inType instanceof LongType;
+	}
+
+}

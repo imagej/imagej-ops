@@ -126,20 +126,6 @@ public class InvertTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void
-		testUnsigned12BitTypeInvertToUnsignedVariableBitLengthTypeInvert()
-	{
-		final Img<Unsigned12BitType> inUnsigned12BitType =
-			generateUnsigned12BitArrayTestImg(true, 5, 5);
-		final Img<UnsignedVariableBitLengthType> outUnsignedVariableBitLengthType =
-			generateUnsignedVariableBitLengthTypeArrayTestImg(false, 64, 5, 5);
-		assertIntegerInvert(inUnsigned12BitType, outUnsignedVariableBitLengthType);
-		assertIntegerInvertMinMaxProvided(inUnsigned12BitType,
-			outUnsignedVariableBitLengthType, new Unsigned12BitType(1),
-			new Unsigned12BitType(17));
-	}
-
-	@Test
 	public void testUnsignedByteTypeInvert() {
 		final Img<UnsignedByteType> inUnsignedByteType =
 			generateUnsignedByteArrayTestImg(true, 5, 5);
@@ -187,13 +173,6 @@ public class InvertTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testDoubleTypeToIntTypeInvert() {
-		final Img<DoubleType> inDoubleType = generateDoubleArrayTestImg(true, 5, 5);
-		final Img<IntType> outIntType = generateIntArrayTestImg(false, 5, 5);
-		assertDefaultInvert(inDoubleType, outIntType);
-	}
-
-	@Test
 	public void testFloatTypeInvert() {
 		final Img<FloatType> inFloatType = generateFloatArrayTestImg(true, 5, 5);
 		final Img<FloatType> outFloatType = inFloatType.factory().create(
@@ -213,26 +192,6 @@ public class InvertTest extends AbstractOpTest {
 			new IntType(40));
 		assertDefaultInvertMinMaxProvided(inIntType, outIntType, new IntType(
 			Integer.MIN_VALUE), new IntType(-10));
-	}
-
-	@Test
-	public void testIntTypeToDoubleTypeInvert() {
-		final Img<IntType> inIntType = generateIntArrayTestImg(true, 5, 5);
-		final Img<DoubleType> outDoubleType = generateDoubleArrayTestImg(false, 5,
-			5);
-		assertDefaultInvert(inIntType, outDoubleType);
-		assertDefaultInvertMinMaxProvided(inIntType, outDoubleType, new IntType(
-			Integer.MAX_VALUE), new IntType(Integer.MAX_VALUE));
-	}
-
-	@Test
-	public void testIntTypeToUnboundedIntegerTypeInvert() {
-		final Img<IntType> inIntType = generateIntArrayTestImg(false, 5, 5);
-		final Img<UnboundedIntegerType> outUnboundedIntegerType =
-			generateUnboundedIntegerTypeListTestImg(true, 5, 5);
-		assertIntegerInvert(inIntType, outUnboundedIntegerType);
-		assertIntegerInvertMinMaxProvided(inIntType, outUnboundedIntegerType,
-			new IntType(Integer.MAX_VALUE - 1), new IntType(Integer.MAX_VALUE));
 	}
 
 	@Test
@@ -296,18 +255,6 @@ public class InvertTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testShortTypeToUnsignedShortTypeInvert() {
-		final Img<ShortType> inShortType = generateShortArrayTestImg(true, 5, 5);
-		final Img<UnsignedShortType> outUnsignedShortType =
-			generateUnsignedShortArrayTestImg(false, 5, 5);
-		assertDefaultInvert(inShortType, outUnsignedShortType);
-		assertDefaultInvertMinMaxProvided(inShortType, outUnsignedShortType,
-			new ShortType((Short.MAX_VALUE)), new ShortType((Short.MAX_VALUE)));
-		assertDefaultInvertMinMaxProvided(inShortType, outUnsignedShortType,
-			new ShortType((short) (-5)), new ShortType((short) -3));
-	}
-
-	@Test
 	public void testUnsignedShortTypeInvert() {
 		final Img<UnsignedShortType> inUnsignedShortType =
 			generateUnsignedShortArrayTestImg(true, 5, 5);
@@ -316,17 +263,6 @@ public class InvertTest extends AbstractOpTest {
 		assertDefaultInvert(inUnsignedShortType, outUnsignedShortType);
 		assertDefaultInvertMinMaxProvided(inUnsignedShortType, outUnsignedShortType,
 			new UnsignedShortType((short) 437), new UnsignedShortType((short) 8008));
-	}
-
-	@Test
-	public void testUnsignedShortTypeToShortTypeInvert() {
-		final Img<UnsignedShortType> inUnsignedShortType =
-			generateUnsignedShortArrayTestImg(true, 5, 5);
-		final Img<ShortType> outShortType = generateShortArrayTestImg(false, 5, 5);
-		assertDefaultInvert(inUnsignedShortType, outShortType);
-		assertDefaultInvertMinMaxProvided(inUnsignedShortType, outShortType,
-			new UnsignedShortType((short) 65540), new UnsignedShortType(
-				(short) 70000));
 	}
 
 	@Test
@@ -343,17 +279,6 @@ public class InvertTest extends AbstractOpTest {
 		assertIntegerInvertMinMaxProvided(inUnboundedIntegerType,
 			outUnboundedIntegerType, new UnboundedIntegerType(0),
 			new UnboundedIntegerType(1));
-	}
-
-	@Test
-	public void testUnboundedIntegerTypeToIntTypeInvert() {
-		final Img<UnboundedIntegerType> inUnboundedIntegerType =
-			generateUnboundedIntegerTypeListTestImg(true, 5, 5);
-		final Img<IntType> outIntType = generateIntArrayTestImg(false, 5, 5);
-		assertIntegerInvert(inUnboundedIntegerType, outIntType);
-		assertIntegerInvertMinMaxProvided(inUnboundedIntegerType, outIntType,
-			new UnboundedIntegerType(Integer.MAX_VALUE), new UnboundedIntegerType(
-				Integer.MAX_VALUE + 1));
 	}
 
 	@Test
@@ -381,55 +306,43 @@ public class InvertTest extends AbstractOpTest {
 			new UnsignedVariableBitLengthType(1, 6));
 	}
 
-	@Test
-	public void testUnsignedVariableBitLengthTypeToUnsigned12BitTypeInvert() {
-		final Img<UnsignedVariableBitLengthType> inUnsignedVariableBitLengthType =
-			generateUnsignedVariableBitLengthTypeArrayTestImg(true, 64, 5, 5);
-		final Img<Unsigned12BitType> outUnsigned12BitType =
-			generateUnsigned12BitArrayTestImg(true, 5, 5);
-		assertIntegerInvert(inUnsignedVariableBitLengthType, outUnsigned12BitType);
-		assertIntegerInvertMinMaxProvided(inUnsignedVariableBitLengthType,
-			outUnsigned12BitType, new UnsignedVariableBitLengthType(4100, 13),
-			new UnsignedVariableBitLengthType(4500, 13));
-	}
-
-	private <I extends RealType<I>, O extends RealType<O>> void
-		assertDefaultInvert(final Img<I> in, final Img<O> out)
+	private <T extends RealType<T>> void
+		assertDefaultInvert(final Img<T> in, final Img<T> out)
 	{
 
-		final I type = in.firstElement();
-		final I min = type.copy();
+		final T type = in.firstElement();
+		final T min = type.copy();
 		min.setReal(type.getMinValue());
-		final I max = type.copy();
+		final T max = type.copy();
 		max.setReal(type.getMaxValue());
 		ops.run(InvertII.class, out, in);
 
 		defaultCompare(in, out, min, max);
 	}
 
-	private <I extends RealType<I>, O extends RealType<O>> void
-		assertDefaultInvertMinMaxProvided(final Img<I> in, final Img<O> out,
-			final RealType<I> min, final RealType<I> max)
+	private <T extends RealType<T>> void
+		assertDefaultInvertMinMaxProvided(final Img<T> in, final Img<T> out,
+			final T min, final T max)
 	{
 
 		ops.run(InvertII.class, out, in, (min), (max));
 
-		defaultCompare(in, out, (I) min, (I) max);
+		defaultCompare(in, out, min, max);
 	}
 
-	private <I extends RealType<I>, O extends RealType<O>> void defaultCompare(
-		final Img<I> in, final Img<O> out, final I min, final I max)
+	private <T extends RealType<T>> void defaultCompare(
+		final Img<T> in, final Img<T> out, final T min, final T max)
 	{
-		final Cursor<I> inAccess = in.localizingCursor();
-		final RandomAccess<O> outAccess = out.randomAccess();
+		final Cursor<T> inAccess = in.localizingCursor();
+		final RandomAccess<T> outAccess = out.randomAccess();
 		while (inAccess.hasNext()) {
-			final I inVal = inAccess.next();
+			final T inVal = inAccess.next();
 			outAccess.setPosition(inAccess);
-			final O outVal = outAccess.get();
+			final T outVal = outAccess.get();
 			final double bigIn = inVal.getRealDouble();
 			final double minMax = min.getRealDouble() + max.getRealDouble() - bigIn;
 			final double bigOut = outVal.getRealDouble();
-			final O minMaxType = outVal.createVariable();
+			final T minMaxType = outVal.createVariable();
 			minMaxType.setReal(minMax);
 			if (minMax <= outVal.getMinValue()) assertEquals(outVal.getMinValue(),
 				bigOut, 0.00005);
@@ -439,9 +352,9 @@ public class InvertTest extends AbstractOpTest {
 		}
 	}
 
-	private <I extends IntegerType<I>, O extends IntegerType<O>> void
-		assertIntegerInvertMinMaxProvided(final Img<I> in, final Img<O> out,
-			final I min, final I max)
+	private <T extends IntegerType<T>> void
+		assertIntegerInvertMinMaxProvided(final Img<T> in, final Img<T> out,
+			final T min, final T max)
 	{
 
 		// unsigned type test
@@ -451,18 +364,26 @@ public class InvertTest extends AbstractOpTest {
 
 	}
 
-	private <I extends IntegerType<I>, O extends IntegerType<O>> void
-		assertIntegerInvert(final Img<I> in, final Img<O> out)
+	private <T extends IntegerType<T>> void
+		assertIntegerInvert(final Img<T> in, final Img<T> out)
 	{
 
 		ops.run(Ops.Image.Invert.class, out, in);
-
+		
+		Cursor<T> inCursor = in.localizingCursor();
+		Cursor<T> outCursor = out.localizingCursor();
+		
+		while(inCursor.hasNext()) {
+			inCursor.fwd();
+			outCursor.fwd();
+		}
+		
 		integerCompare(in, out, null, null);
 	}
 
-	private <I extends IntegerType<I>, O extends IntegerType<O>> void
-		integerCompare(final Img<I> in, final Img<O> out, final IntegerType<I> min,
-			final IntegerType<I> max)
+	private <T extends IntegerType<T>> void
+		integerCompare(final Img<T> in, final Img<T> out, final IntegerType<T> min,
+			final IntegerType<T> max)
 	{
 
 		// Get min/max for the output type.
@@ -481,19 +402,22 @@ public class InvertTest extends AbstractOpTest {
 			minMax = min.getBigInteger().add(max.getBigInteger());
 		}
 
-		final Cursor<I> inAccess = in.localizingCursor();
-		final RandomAccess<O> outAccess = out.randomAccess();
+		final Cursor<T> inAccess = in.localizingCursor();
+		final RandomAccess<T> outAccess = out.randomAccess();
 		while (inAccess.hasNext()) {
-			final I inVal = inAccess.next();
+			final T inVal = inAccess.next();
 			outAccess.setPosition(inAccess);
-			final O outVal = outAccess.get();
+			final T outVal = outAccess.get();
 			final BigInteger bigIn = inVal.getBigInteger();
 			final BigInteger bigOut = outVal.getBigInteger();
 			final BigInteger calcOut = minMax.subtract(bigIn);
-			if (calcOut.compareTo(minOut) <= 0) assertEquals(minOut, bigOut);
-			else if (calcOut.compareTo(maxOut) >= 0) assertEquals(maxOut, bigOut);
+			if (calcOut.compareTo(minOut) <= 0) {
+				assertEquals(minOut, bigOut);
+			}
+			else if (calcOut.compareTo(maxOut) >= 0) {
+				assertEquals(maxOut, bigOut);
+			}
 			else {
-
 				assertEquals(calcOut, bigOut);
 
 			}

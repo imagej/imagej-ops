@@ -44,23 +44,23 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn (University of Konstanz)
  * @author Gabe Selzer
  */
-@Plugin(type = Ops.Image.Invert.class, priority = Priority.NORMAL)
-public class InvertII<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractUnaryComputerOp<IterableInterval<I>, IterableInterval<O>> implements
+@Plugin(type = Ops.Image.Invert.class)
+public class InvertII<T extends RealType<T>> extends
+	AbstractUnaryComputerOp<IterableInterval<T>, IterableInterval<T>> implements
 	Ops.Image.Invert
 {
 
 	@Parameter(required = false)
-	private I min;
+	private T min;
 
 	@Parameter(required = false)
-	private I max;
+	private T max;
 
-	private UnaryComputerOp<IterableInterval<I>, IterableInterval<O>> mapper;
+	private UnaryComputerOp<IterableInterval<T>, IterableInterval<T>> mapper;
 
 	@Override
-	public void compute(final IterableInterval<I> input,
-		final IterableInterval<O> output)
+	public void compute(final IterableInterval<T> input,
+		final IterableInterval<T> output)
 	{
 		if (mapper == null) {
 			final double minValue = min == null ? input.firstElement().getMinValue() : //
@@ -69,11 +69,11 @@ public class InvertII<I extends RealType<I>, O extends RealType<O>> extends
 				max.getRealDouble();
 			final double minMax = maxValue + minValue;
 			mapper = Computers.unary(ops(), Ops.Map.class, output, input,
-				new AbstractUnaryComputerOp<I, O>()
+				new AbstractUnaryComputerOp<T, T>()
 			{
 
 					@Override
-					public void compute(I in, O out) {
+					public void compute(T in, T out) {
 						if ((minMax - in.getRealDouble()) <= out.getMinValue()) {
 							out.setReal(out.getMinValue());
 						}
