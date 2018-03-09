@@ -33,6 +33,7 @@ import java.util.List;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.map.Maps;
 import net.imagej.ops.morphology.Morphologies;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
@@ -80,7 +81,7 @@ public class ListDilate<T extends RealType<T>> extends
 	@Override
 	public boolean conforms() {
 		return in1() == null || in2() == null || out() == null || //
-			createOutput().iterationOrder().equals(out().iterationOrder());
+			Maps.compatible(in1(), out());
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

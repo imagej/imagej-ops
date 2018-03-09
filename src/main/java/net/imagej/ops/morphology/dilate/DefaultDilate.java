@@ -85,8 +85,7 @@ public class DefaultDilate<T extends RealType<T>> extends
 	@Override
 	public boolean conforms() {
 		if (in1() == null || in2() == null || out() == null) return true;
-		if (isFull) return createOutput(in()).iterationOrder().equals(out());
-		return Maps.compatible(in(), out());
+		return isFull || Maps.compatible(in(), out());
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
