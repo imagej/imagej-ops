@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  *            type
  */
-@Plugin(type = Ops.Filter.Variance.class, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Ops.Filter.Variance.class, priority = Priority.LOW)
 public class DefaultVarianceFilter<T, V> extends AbstractNeighborhoodBasedFilter<T, V>
 		implements VarianceFilterOp<T, V> {
 

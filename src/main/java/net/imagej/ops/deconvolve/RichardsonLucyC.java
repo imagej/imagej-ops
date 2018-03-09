@@ -71,7 +71,7 @@ import org.scijava.plugin.Plugin;
  */
 
 @Plugin(type = Ops.Deconvolve.RichardsonLucy.class,
-	priority = Priority.HIGH_PRIORITY)
+	priority = Priority.HIGH)
 public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends AbstractIterativeFFTFilterC<I, O, K, C> implements
 	Ops.Deconvolve.RichardsonLucy

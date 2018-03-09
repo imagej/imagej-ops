@@ -59,7 +59,7 @@ import org.scijava.thread.ThreadService;
  * 
  * @author Simon Schmid (University of Konstanz)
  */
-@Plugin(type = Ops.Image.DistanceTransform.class, priority = Priority.LAST_PRIORITY)
+@Plugin(type = Ops.Image.DistanceTransform.class, priority = Priority.LAST)
 public class DefaultDistanceTransformCalibration<B extends BooleanType<B>, T extends RealType<T>>
 		extends AbstractUnaryHybridCF<RandomAccessibleInterval<B>, RandomAccessibleInterval<T>>
 		implements Ops.Image.DistanceTransform, Contingent {

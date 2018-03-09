@@ -57,7 +57,7 @@ import org.scijava.plugin.Plugin;
  * @param <T> TODO Documentation
  * @param <C> TODO Documentation
  */
-@Plugin(type = Ops.Filter.FFT.class, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Filter.FFT.class, priority = Priority.HIGH)
 public class FFTMethodsOpF<T extends RealType<T>, C extends ComplexType<C>>
 	extends
 	AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>>

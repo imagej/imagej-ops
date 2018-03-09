@@ -63,7 +63,7 @@ import org.scijava.plugin.Plugin;
  * @param <T> element type
  * @see net.imglib2.algorithm.morphology.Erosion
  */
-@Plugin(type = Ops.Morphology.Erode.class, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Ops.Morphology.Erode.class, priority = Priority.LOW)
 public class ListErode<T extends RealType<T>> extends
 	AbstractBinaryHybridCF<RandomAccessibleInterval<T>, List<Shape>, IterableInterval<T>>
 	implements Ops.Morphology.Erode, Contingent

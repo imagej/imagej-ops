@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.SizeConvexHull.class,
 	label = "Geometric (2D): Size ConvexHull",
-	priority = Priority.VERY_HIGH_PRIORITY)
+	priority = Priority.VERY_HIGH)
 public class DefaultSizeConvexHullPolygon extends AbstractSizeConvexHull<Polygon> {
 
 	public DefaultSizeConvexHullPolygon() {

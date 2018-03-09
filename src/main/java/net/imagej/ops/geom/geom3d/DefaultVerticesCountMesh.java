@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.VerticesCount.class,
 	label = "Geometric3D: Surface Vertices Count",
-	priority = Priority.VERY_HIGH_PRIORITY)
+	priority = Priority.VERY_HIGH)
 public class DefaultVerticesCountMesh extends
 	AbstractUnaryHybridCF<Mesh, DoubleType> implements GeometricOp<Mesh, DoubleType>,
 	Ops.Geometric.VerticesCount

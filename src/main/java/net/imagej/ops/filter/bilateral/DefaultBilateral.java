@@ -56,7 +56,7 @@ import net.imglib2.view.Views;
  * @param <O>
  */
 
-@Plugin(type = Ops.Filter.Bilateral.class, priority = Priority.NORMAL_PRIORITY)
+@Plugin(type = Ops.Filter.Bilateral.class, priority = Priority.NORMAL)
 public class DefaultBilateral<I extends RealType<I>, O extends RealType<O>>
 		extends AbstractUnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 		implements Ops.Filter.Bilateral, Contingent {

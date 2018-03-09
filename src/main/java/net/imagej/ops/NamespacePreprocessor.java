@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
  *
  * @author Mark Hiner
  */
-@Plugin(type = PreprocessorPlugin.class, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = PreprocessorPlugin.class, priority = Priority.HIGH)
 public class NamespacePreprocessor extends AbstractPreprocessorPlugin {
 
 	@Parameter(required = false)

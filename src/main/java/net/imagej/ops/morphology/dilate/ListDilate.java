@@ -63,7 +63,7 @@ import org.scijava.plugin.Plugin;
  * @param <T> element type
  * @see net.imglib2.algorithm.morphology.Dilation
  */
-@Plugin(type = Ops.Morphology.Dilate.class, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Ops.Morphology.Dilate.class, priority = Priority.LOW)
 public class ListDilate<T extends RealType<T>> extends
 	AbstractBinaryHybridCF<RandomAccessibleInterval<T>, List<Shape>, IterableInterval<T>>
 	implements Ops.Morphology.Dilate, Contingent

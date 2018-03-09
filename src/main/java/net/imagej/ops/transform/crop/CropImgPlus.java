@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn (University of Konstanz)
  * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Transform.Crop.class, priority = Priority.LOW_PRIORITY + 1)
+@Plugin(type = Ops.Transform.Crop.class, priority = Priority.LOW + 1)
 public class CropImgPlus<T extends Type<T>> extends
 	AbstractBinaryFunctionOp<ImgPlus<T>, Interval, ImgPlus<T>> implements Ops.Transform.Crop
 {

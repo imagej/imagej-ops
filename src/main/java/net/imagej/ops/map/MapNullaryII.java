@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
  * @author Leon Yang
  * @param <O> element type of outputs
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 1)
+@Plugin(type = Ops.Map.class, priority = Priority.LOW + 1)
 public class MapNullaryII<O> extends
 	AbstractMapNullaryComputer<O, IterableInterval<O>>
 {

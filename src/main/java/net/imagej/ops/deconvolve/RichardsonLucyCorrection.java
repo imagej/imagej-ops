@@ -59,7 +59,7 @@ import org.scijava.plugin.Plugin;
  * @param <C>
  */
 @Plugin(type = Ops.Deconvolve.RichardsonLucyCorrection.class,
-	priority = Priority.HIGH_PRIORITY)
+	priority = Priority.HIGH)
 public class RichardsonLucyCorrection<I extends RealType<I>, O extends RealType<O>, C extends ComplexType<C>>
 	extends
 	AbstractBinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>

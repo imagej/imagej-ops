@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
  * @param <T> Type of {@link RandomAccessibleInterval} upon which to operate.
  */
 @Plugin(type = Ops.Deconvolve.RichardsonLucyUpdate.class,
-	priority = Priority.HIGH_PRIORITY)
+	priority = Priority.HIGH)
 public class RichardsonLucyUpdate<T extends RealType<T>> extends
 	AbstractUnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Deconvolve.RichardsonLucyUpdate

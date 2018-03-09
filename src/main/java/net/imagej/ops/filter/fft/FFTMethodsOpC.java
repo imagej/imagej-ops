@@ -52,7 +52,7 @@ import org.scijava.thread.ThreadService;
  * @param <T>
  * @param <C>
  */
-@Plugin(type = Ops.Filter.FFT.class, priority = Priority.NORMAL_PRIORITY)
+@Plugin(type = Ops.Filter.FFT.class, priority = Priority.NORMAL)
 public class FFTMethodsOpC<T extends RealType<T>, C extends ComplexType<C>>
 	extends
 	AbstractUnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>>

@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Tim-Oliver Buchholz, University of Konstanz
  */
-@Plugin(type = Ops.Geometric.VerticesCountConvexHull.class, label = "Geometric (2D): Convex Hull Vertices Count", priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Ops.Geometric.VerticesCountConvexHull.class, label = "Geometric (2D): Convex Hull Vertices Count", priority = Priority.VERY_HIGH)
 public class DefaultVerticesCountConvexHullPolygon extends AbstractUnaryHybridCF<Polygon, DoubleType>
 		implements Ops.Geometric.VerticesCountConvexHull {
 

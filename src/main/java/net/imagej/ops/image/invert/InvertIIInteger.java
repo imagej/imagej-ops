@@ -57,7 +57,7 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Gabe Selzer
  */
-@Plugin(type = Ops.Image.Invert.class, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Image.Invert.class, priority = Priority.HIGH)
 public class InvertIIInteger<I extends IntegerType<I>, O extends IntegerType<O>> extends
 	AbstractUnaryComputerOp<IterableInterval<I>, IterableInterval<O>> implements
 	Ops.Image.Invert

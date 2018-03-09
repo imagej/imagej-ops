@@ -40,7 +40,7 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.Boxivity.class,
-	label = "Geometric (3D): Boxivity", priority = Priority.VERY_HIGH_PRIORITY)
+	label = "Geometric (3D): Boxivity", priority = Priority.VERY_HIGH)
 public class DefaultBoxivityMesh extends AbstractBoxivity<Mesh> {
 
 	public DefaultBoxivityMesh() {

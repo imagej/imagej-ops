@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  * @param <O> output type
  */
 @Plugin(type = Ops.ImageMoments.Moment10.class, label = "Image Moment: Moment10",
-	priority = Priority.VERY_HIGH_PRIORITY)
+	priority = Priority.VERY_HIGH)
 public class DefaultMoment10<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractImageMomentOp<I, O> implements Ops.ImageMoments.Moment10
 {

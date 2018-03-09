@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
  *
  * @author Hadrien Mary
  */
-@Plugin(type = Ops.Threshold.Rosin.class, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Threshold.Rosin.class, priority = Priority.HIGH)
 public class ComputeRosinThreshold<T extends RealType<T>> extends
 	AbstractComputeThresholdHistogram<T> implements Ops.Threshold.Rosin
 {

@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.BoundarySizeConvexHull.class,
 	label = "Geometric (3D): Surface Area Convex Hull",
-	priority = Priority.VERY_HIGH_PRIORITY)
+	priority = Priority.VERY_HIGH)
 public class DefaultSurfaceAreaConvexHullMesh extends
 	AbstractBoundarySizeConvexHull<Mesh>
 {

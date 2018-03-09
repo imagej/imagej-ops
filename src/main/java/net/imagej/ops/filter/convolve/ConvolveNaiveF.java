@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Convolves an image naively (no FFTs).
  */
-@Plugin(type = Ops.Filter.Convolve.class, priority = Priority.HIGH_PRIORITY + 1)
+@Plugin(type = Ops.Filter.Convolve.class, priority = Priority.HIGH + 1)
 public class ConvolveNaiveF<I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>>
 	extends
 	AbstractBinaryFunctionOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>>

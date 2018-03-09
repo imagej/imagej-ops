@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * @author Jonathan Hale (University of Konstanz)
  * @param <T> type
  */
-@Plugin(type = Ops.Filter.Sigma.class, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Ops.Filter.Sigma.class, priority = Priority.LOW)
 public class DefaultSigmaFilter<T extends RealType<T>, V extends RealType<V>>
 	extends AbstractCenterAwareNeighborhoodBasedFilter<T, V> implements
 	SigmaFilterOp<T, V>, Contingent

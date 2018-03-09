@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  *
  * @author Gabe Selzer
  */
-@Plugin(type = Ops.Transform.SubsampleView.class, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Transform.SubsampleView.class, priority = Priority.HIGH)
 public class SubsampleIntervalViewStepsForDims<T>
 		extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, SubsampleIntervalView<T>>
 		implements Contingent, Ops.Transform.SubsampleView {

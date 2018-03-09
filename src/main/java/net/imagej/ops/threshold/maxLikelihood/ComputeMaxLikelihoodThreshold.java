@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Barry DeZonia
  */
-@Plugin(type = Ops.Threshold.MaxLikelihood.class, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Threshold.MaxLikelihood.class, priority = Priority.HIGH)
 public class ComputeMaxLikelihoodThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> implements Ops.Threshold.MaxLikelihood
 {

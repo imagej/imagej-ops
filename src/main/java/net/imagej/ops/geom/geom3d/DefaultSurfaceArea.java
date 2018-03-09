@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.BoundarySize.class,
 	label = "Geometric (3D): Surface Area",
-	priority = Priority.VERY_HIGH_PRIORITY)
+	priority = Priority.VERY_HIGH)
 public class DefaultSurfaceArea extends AbstractUnaryHybridCF<Mesh, DoubleType>
 	implements GeometricOp<Mesh, DoubleType>, Ops.Geometric.BoundarySize
 {

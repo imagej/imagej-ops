@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * @param <I>
  * @param <O>
  */
-@Plugin(type = Ops.Filter.PadShiftFFTKernel.class, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Filter.PadShiftFFTKernel.class, priority = Priority.HIGH)
 public class DefaultPadShiftKernelFFT<T extends ComplexType<T>, I extends RandomAccessibleInterval<T>, O extends RandomAccessibleInterval<T>>
 		extends PadShiftKernel<T, I, O> {
 

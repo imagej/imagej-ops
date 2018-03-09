@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn (University of Konstanz)
  * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Transform.Crop.class, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Ops.Transform.Crop.class, priority = Priority.LOW)
 public class CropRAI<T>
 		extends AbstractBinaryFunctionOp<RandomAccessibleInterval<T>, Interval, RandomAccessibleInterval<T>>
 		implements Ops.Transform.Crop {

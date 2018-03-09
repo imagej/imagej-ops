@@ -58,7 +58,7 @@ import org.scijava.plugin.Plugin;
  * @param <T> TODO Documentation
  */
 @Plugin(type = Ops.Deconvolve.RichardsonLucyUpdate.class,
-	priority = Priority.HIGH_PRIORITY)
+	priority = Priority.HIGH)
 public class RichardsonLucyTVUpdate<T extends RealType<T> & NativeType<T>, I extends RandomAccessibleInterval<T>>
 	extends AbstractUnaryComputerOp<I, I> implements
 	Ops.Deconvolve.RichardsonLucyUpdate

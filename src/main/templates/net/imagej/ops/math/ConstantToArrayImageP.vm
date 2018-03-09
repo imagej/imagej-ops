@@ -83,7 +83,7 @@ public final class ConstantToArrayImageP {
 	 * 
 	 * @author Christian Dietz (University of Konstanz)
 	 */
-	@Plugin(type = ${iface}.class, priority = Priority.HIGH_PRIORITY + 1)
+	@Plugin(type = ${iface}.class, priority = Priority.HIGH + 1)
 	public static class ${op.name}${type.name} extends
 		AbstractUnaryInplaceOp<$imgType> implements Contingent,
 		$iface

@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
-@Plugin(type = Ops.Geometric.MainElongation.class, label = "Geometric (3D): Main Elongation", priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Ops.Geometric.MainElongation.class, label = "Geometric (3D): Main Elongation", priority = Priority.VERY_HIGH)
 public class DefaultMainElongation extends AbstractUnaryHybridCF<Mesh, DoubleType>
 		implements Ops.Geometric.MainElongation, Contingent {
 

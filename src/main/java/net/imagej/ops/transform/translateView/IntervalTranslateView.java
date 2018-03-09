@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  *
  * @author Gabe Selzer
  */
-@Plugin(type = Ops.Transform.TranslateView.class, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Transform.TranslateView.class, priority = Priority.HIGH)
 public class IntervalTranslateView<T> extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>>
 		implements Ops.Transform.TranslateView {
 

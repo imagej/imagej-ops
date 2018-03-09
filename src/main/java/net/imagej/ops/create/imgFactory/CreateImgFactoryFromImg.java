@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
  *@author Curtis Rueden
  * @param <T>
  */
-@Plugin(type = Ops.Create.ImgFactory.class, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Create.ImgFactory.class, priority = Priority.HIGH)
 public class CreateImgFactoryFromImg<T> extends
 	AbstractUnaryFunctionOp<Img<T>, ImgFactory<T>> implements
 	Ops.Create.ImgFactory

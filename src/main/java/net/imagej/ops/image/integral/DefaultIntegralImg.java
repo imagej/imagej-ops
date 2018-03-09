@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * @param <I> The type of the input image.
  * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Image.Integral.class, priority = Priority.LOW_PRIORITY + 1)
+@Plugin(type = Ops.Image.Integral.class, priority = Priority.LOW + 1)
 public class DefaultIntegralImg<I extends RealType<I>> extends
 	AbstractIntegralImg<I> implements Ops.Image.Integral
 {

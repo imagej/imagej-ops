@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.Size.class, label = "Geometric: Size",
-	priority = Priority.VERY_HIGH_PRIORITY)
+	priority = Priority.VERY_HIGH)
 public class SizeII extends
 	AbstractUnaryFunctionOp<IterableInterval<?>, DoubleType> implements
 	GeometricOp<IterableInterval<?>, DoubleType>, Ops.Geometric.Size

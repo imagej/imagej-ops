@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.Size.class, label = "Geometric3D: Volume",
-	priority = Priority.VERY_HIGH_PRIORITY-1)
+	priority = Priority.VERY_HIGH-1)
 public class DefaultVolumeMesh
 		extends
 			AbstractUnaryFunctionOp<Mesh, DoubleType>

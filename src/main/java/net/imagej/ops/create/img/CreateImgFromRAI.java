@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  * @author Curtis Rueden
  * @param <T>
  */
-@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH)
 public class CreateImgFromRAI<T extends NativeType<T>> extends
 	UFViaUFSameIO<RandomAccessibleInterval<T>, Img<T>> implements
 	Ops.Create.Img

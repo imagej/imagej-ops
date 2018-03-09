@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  *
  * @author Gabe Selzer
  */
-@Plugin(type = Ops.Transform.PermuteView.class, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Transform.PermuteView.class, priority = Priority.HIGH)
 public class IntervalPermuteView<T> extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>>
 		implements Ops.Transform.PermuteView {
 

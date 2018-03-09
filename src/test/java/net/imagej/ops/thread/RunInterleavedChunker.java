@@ -41,7 +41,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "test.chunker",
-	priority = Priority.LOW_PRIORITY)
+	priority = Priority.LOW)
 public class RunInterleavedChunker<A extends RealType<A>> extends
 	AbstractUnaryComputerOp<IterableInterval<A>, IterableInterval<A>> implements
 	Parallel

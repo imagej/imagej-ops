@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
  * @author Stefan Helfrich (University of Konstanz)
  */
 @Plugin(type = Ops.Image.SquareIntegral.class,
-	priority = Priority.LOW_PRIORITY + 1)
+	priority = Priority.LOW + 1)
 public class SquareIntegralImg<I extends RealType<I>> extends
 	AbstractIntegralImg<I> implements Ops.Image.SquareIntegral
 {

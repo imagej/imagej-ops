@@ -189,25 +189,25 @@ public class HelpCandidatesTest extends AbstractOpTest {
 	}
 
 	@Plugin(type = Yummy.class, name = "test.apple",
-		priority = Priority.VERY_HIGH_PRIORITY)
+		priority = Priority.VERY_HIGH)
 	public static class YummyApple extends NoOp implements Yummy {
 		// NB: No implementation needed.
 	}
 
 	@Plugin(type = Yucky.class, name = "test.apple",
-		priority = Priority.VERY_LOW_PRIORITY)
+		priority = Priority.VERY_LOW)
 	public static class YuckyApple extends NoOp implements Yucky {
 		// NB: No implementation needed.
 	}
 
 	@Plugin(type = Yummy.class, name = "test.orange",
-		priority = Priority.HIGH_PRIORITY)
+		priority = Priority.HIGH)
 	public static class YummyOrange extends NoOp implements Yummy {
 		// NB: No implementation needed.
 	}
 
 	@Plugin(type = Yucky.class, name = "test.orange",
-		priority = Priority.LOW_PRIORITY)
+		priority = Priority.LOW)
 	public static class YuckyOrange extends NoOp implements Yucky {
 		// NB: No implementation needed.
 	}

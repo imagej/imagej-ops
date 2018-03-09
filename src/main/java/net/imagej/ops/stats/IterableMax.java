@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  * @param <T> input type
  */
 @Plugin(type = Ops.Stats.Max.class, label = "Statistics: Max",
-	priority = Priority.VERY_HIGH_PRIORITY)
+	priority = Priority.VERY_HIGH)
 public class IterableMax<T extends RealType<T>> extends
 	AbstractStatsOp<Iterable<T>, T> implements Ops.Stats.Max
 {

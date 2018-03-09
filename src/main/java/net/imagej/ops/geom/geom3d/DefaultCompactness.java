@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
-@Plugin(type = Ops.Geometric.Compactness.class, label = "Geometric (3D): Compactness", priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Ops.Geometric.Compactness.class, label = "Geometric (3D): Compactness", priority = Priority.VERY_HIGH)
 public class DefaultCompactness extends AbstractUnaryHybridCF<Mesh, DoubleType> implements Ops.Geometric.Compactness {
 
 	private UnaryFunctionOp<Mesh, DoubleType> surfaceArea;

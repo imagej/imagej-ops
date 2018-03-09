@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher (University of Konstanz)
  */
 @SuppressWarnings("rawtypes")
-@Plugin(type = Converter.class, priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Converter.class, priority = Priority.VERY_HIGH)
 public class LabelRegionToPolygonConverter extends
 	AbstractConverter<LabelRegion, Polygon>
 {

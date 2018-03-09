@@ -72,7 +72,7 @@ import org.scijava.plugin.Plugin;
  */
 
 @Plugin(type = Ops.Deconvolve.NormalizationFactor.class,
-	priority = Priority.LOW_PRIORITY)
+	priority = Priority.LOW)
 public class NonCirculantNormalizationFactor<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends AbstractUnaryInplaceOp<RandomAccessibleInterval<O>> implements
 	Ops.Deconvolve.NormalizationFactor

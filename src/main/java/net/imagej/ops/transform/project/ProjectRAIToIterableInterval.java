@@ -44,7 +44,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Ops.Transform.Project.class, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Ops.Transform.Project.class, priority = Priority.LOW)
 public class ProjectRAIToIterableInterval<T, V> extends
 	AbstractUnaryComputerOp<RandomAccessibleInterval<T>, IterableInterval<V>>
 	implements Contingent, Ops.Transform.Project

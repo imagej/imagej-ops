@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
-@Plugin(type = Ops.Geometric.MedianElongation.class, label = "Geometric (3D): Median Elongation", priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Ops.Geometric.MedianElongation.class, label = "Geometric (3D): Median Elongation", priority = Priority.VERY_HIGH)
 public class DefaultMedianElongation extends AbstractUnaryHybridCF<Mesh, DoubleType>
 		implements Ops.Geometric.MedianElongation, Contingent {
 

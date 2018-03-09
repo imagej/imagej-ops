@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Filter.PaddingIntervalOrigin.class,
 	name = Ops.Filter.PaddingIntervalOrigin.NAME,
-	priority = Priority.HIGH_PRIORITY)
+	priority = Priority.HIGH)
 public class PaddingIntervalOrigin<T extends ComplexType<T>, I extends RandomAccessibleInterval<T>, O extends Interval>
 	extends AbstractBinaryFunctionOp<I, Interval, O> implements
 	Ops.Filter.PaddingIntervalOrigin

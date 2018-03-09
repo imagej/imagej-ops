@@ -40,7 +40,7 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.Convexity.class,
-	label = "Geometric (3D): Convexity", priority = Priority.VERY_HIGH_PRIORITY)
+	label = "Geometric (3D): Convexity", priority = Priority.VERY_HIGH)
 public class DefaultConvexityMesh extends AbstractConvexity<Mesh> {
 	// NB: Marker Interface
 }

@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = Ops.Threshold.Minimum.class, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Threshold.Minimum.class, priority = Priority.HIGH)
 public class ComputeMinimumThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> implements Ops.Threshold.Minimum {
 

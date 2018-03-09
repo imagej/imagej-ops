@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn (University of Konstanz)
  * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.Apply.class, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Threshold.Apply.class, priority = Priority.HIGH)
 public class ApplyConstantThreshold<T extends RealType<T>> extends
 	AbstractBinaryComputerOp<Iterable<T>, T, Iterable<BitType>> implements
 	Ops.Threshold.Apply

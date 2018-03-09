@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.SizeConvexHull.class,
 	label = "Geometric (3D): Convex Hull Volume",
-	priority = Priority.VERY_HIGH_PRIORITY)
+	priority = Priority.VERY_HIGH)
 public class DefaultVolumeConvexHullMesh extends AbstractSizeConvexHull<Mesh> {
 
 	public DefaultVolumeConvexHullMesh() {

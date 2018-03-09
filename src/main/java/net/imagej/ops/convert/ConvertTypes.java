@@ -87,7 +87,7 @@ public final class ConvertTypes {
 	}
 
 	@Plugin(type = Ops.Convert.Bit.class, name = Ops.Convert.Bit.NAME,
-		priority = Priority.HIGH_PRIORITY)
+		priority = Priority.HIGH)
 	public static class IntegerToBit<T extends IntegerType<T>> extends
 		AbstractUnaryHybridCF<T, BitType> implements Convert.Bit
 	{
@@ -122,7 +122,7 @@ public final class ConvertTypes {
 	}
 
 	@Plugin(type = Ops.Convert.Uint2.class, name = Ops.Convert.Uint2.NAME,
-		priority = Priority.HIGH_PRIORITY)
+		priority = Priority.HIGH)
 	public static class IntegerToUint2<T extends IntegerType<T>> extends
 		AbstractUnaryHybridCF<T, Unsigned2BitType> implements Convert.Uint2
 	{
@@ -157,7 +157,7 @@ public final class ConvertTypes {
 	}
 
 	@Plugin(type = Ops.Convert.Uint4.class, name = Ops.Convert.Uint4.NAME,
-		priority = Priority.HIGH_PRIORITY)
+		priority = Priority.HIGH)
 	public static class IntegerToUint4<T extends IntegerType<T>> extends
 		AbstractUnaryHybridCF<T, Unsigned4BitType> implements Convert.Uint4
 	{
@@ -193,7 +193,7 @@ public final class ConvertTypes {
 	}
 
 	@Plugin(type = Ops.Convert.Int8.class, name = Ops.Convert.Int8.NAME,
-		priority = Priority.HIGH_PRIORITY)
+		priority = Priority.HIGH)
 	public static class IntegerToInt8<T extends IntegerType<T>> extends
 		AbstractUnaryHybridCF<T, ByteType> implements Convert.Int8
 	{
@@ -229,7 +229,7 @@ public final class ConvertTypes {
 	}
 
 	@Plugin(type = Ops.Convert.Uint8.class, name = Ops.Convert.Uint8.NAME,
-		priority = Priority.HIGH_PRIORITY, attrs = { @Attr(name = "aliases",
+		priority = Priority.HIGH, attrs = { @Attr(name = "aliases",
 			value = Ops.Convert.Uint8.ALIASES) })
 	public static class IntegerToUint8<T extends IntegerType<T>> extends
 		AbstractUnaryHybridCF<T, UnsignedByteType> implements Convert.Uint8
@@ -265,7 +265,7 @@ public final class ConvertTypes {
 	}
 
 	@Plugin(type = Ops.Convert.Uint12.class, name = Ops.Convert.Uint12.NAME,
-		priority = Priority.HIGH_PRIORITY)
+		priority = Priority.HIGH)
 	public static class IntegerToUint12<T extends IntegerType<T>> extends
 		AbstractUnaryHybridCF<T, Unsigned12BitType> implements Convert.Uint12
 	{
@@ -301,7 +301,7 @@ public final class ConvertTypes {
 	}
 
 	@Plugin(type = Ops.Convert.Int16.class, name = Ops.Convert.Int16.NAME,
-		priority = Priority.HIGH_PRIORITY)
+		priority = Priority.HIGH)
 	public static class IntegerToInt16<T extends IntegerType<T>> extends
 		AbstractUnaryHybridCF<T, ShortType> implements Convert.Int16
 	{
@@ -337,7 +337,7 @@ public final class ConvertTypes {
 	}
 
 	@Plugin(type = Ops.Convert.Uint16.class, name = Ops.Convert.Uint16.NAME,
-		priority = Priority.HIGH_PRIORITY, attrs = { @Attr(name = "aliases",
+		priority = Priority.HIGH, attrs = { @Attr(name = "aliases",
 			value = Ops.Convert.Uint16.ALIASES) })
 	public static class IntegerToUint16<T extends IntegerType<T>> extends
 		AbstractUnaryHybridCF<T, UnsignedShortType> implements Convert.Uint16
@@ -374,7 +374,7 @@ public final class ConvertTypes {
 	}
 
 	@Plugin(type = Ops.Convert.Int32.class, name = Ops.Convert.Int32.NAME,
-		priority = Priority.HIGH_PRIORITY, attrs = { @Attr(name = "aliases",
+		priority = Priority.HIGH, attrs = { @Attr(name = "aliases",
 			value = Ops.Convert.Int32.ALIASES) })
 	public static class IntegerToInt32<T extends IntegerType<T>> extends
 		AbstractUnaryHybridCF<T, IntType> implements Convert.Int32
@@ -411,7 +411,7 @@ public final class ConvertTypes {
 	}
 
 	@Plugin(type = Ops.Convert.Uint32.class, name = Ops.Convert.Uint32.NAME,
-		priority = Priority.HIGH_PRIORITY, attrs = { @Attr(name = "aliases",
+		priority = Priority.HIGH, attrs = { @Attr(name = "aliases",
 			value = Ops.Convert.Uint32.ALIASES) })
 	public static class IntegerToUint32<T extends IntegerType<T>> extends
 		AbstractUnaryHybridCF<T, UnsignedIntType> implements Convert.Uint32
@@ -448,7 +448,7 @@ public final class ConvertTypes {
 	}
 
 	@Plugin(type = Ops.Convert.Int64.class, name = Ops.Convert.Int64.NAME,
-		priority = Priority.HIGH_PRIORITY, attrs = { @Attr(name = "aliases",
+		priority = Priority.HIGH, attrs = { @Attr(name = "aliases",
 			value = Ops.Convert.Int64.ALIASES) })
 	public static class IntegerToInt64<T extends IntegerType<T>> extends
 		AbstractUnaryHybridCF<T, LongType> implements Convert.Int64
@@ -492,7 +492,7 @@ public final class ConvertTypes {
 	}
 
 	@Plugin(type = Ops.Convert.Uint64.class, name = Ops.Convert.Uint64.NAME,
-		priority = Priority.HIGH_PRIORITY, attrs = { @Attr(name = "aliases",
+		priority = Priority.HIGH, attrs = { @Attr(name = "aliases",
 			value = Ops.Convert.Uint64.ALIASES) })
 	public static class IntegerToUint64<T extends IntegerType<T>> extends
 		AbstractUnaryHybridCF<T, UnsignedLongType> implements Convert.Uint64
@@ -535,7 +535,7 @@ public final class ConvertTypes {
 	}
 
 	@Plugin(type = Ops.Convert.Uint128.class, name = Ops.Convert.Uint128.NAME,
-		priority = Priority.HIGH_PRIORITY)
+		priority = Priority.HIGH)
 	public static class IntegerToUint128<T extends IntegerType<T>> extends
 		AbstractUnaryHybridCF<T, Unsigned128BitType> implements Convert.Uint128
 	{

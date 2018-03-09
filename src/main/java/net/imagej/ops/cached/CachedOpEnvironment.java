@@ -80,7 +80,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		super(parent, prioritizedInfos);
 
 		if (prioritizedInfos != null) for (final OpInfo info : prioritizedInfos) {
-			info.cInfo().setPriority(Priority.FIRST_PRIORITY);
+			info.cInfo().setPriority(Priority.FIRST);
 		}
 
 		this.ignoredOps = ignoredOps;

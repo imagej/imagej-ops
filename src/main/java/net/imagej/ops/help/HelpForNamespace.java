@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  *
  * @author Mark Hiner
  */
-@Plugin(type = Ops.Help.class, priority = Priority.HIGH_PRIORITY,
+@Plugin(type = Ops.Help.class, priority = Priority.HIGH,
 	description = "Gets documentation for the given namespace.")
 public class HelpForNamespace extends AbstractHelp {
 

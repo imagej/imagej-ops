@@ -62,7 +62,7 @@ public class MapBinaryInplace1s {
 	 * 
 	 * @author Leon Yang
 	 */
-	@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + $priority)
+	@Plugin(type = Ops.Map.class, priority = Priority.LOW + $priority)
 	public static class ${argType.alias}And${inType.alias}<EA, EI> extends
 		AbstractMapBinaryInplace1<EA, EI, EA, ${argType.name}<EA>, ${inType.name}<EI>>
 		implements Contingent
@@ -87,7 +87,7 @@ public class MapBinaryInplace1s {
 	 * 
 	 * @author Leon Yang
 	 */
-	@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + $paraPrio)
+	@Plugin(type = Ops.Map.class, priority = Priority.LOW + $paraPrio)
 	public static class ${argType.alias}And${inType.alias}Parallel<EA, EI> extends
 		AbstractMapBinaryInplace1<EA, EI, EA, ${argType.name}<EA>, ${inType.name}<EI>>
 		implements Contingent, Parallel

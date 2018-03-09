@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Ops.Slice.class, priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Ops.Slice.class, priority = Priority.VERY_HIGH)
 public class SliceRAI2RAI<I, O>
 		extends AbstractUnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 		implements SliceOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> {

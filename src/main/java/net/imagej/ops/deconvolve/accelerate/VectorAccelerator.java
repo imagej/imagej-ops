@@ -56,7 +56,7 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  */
 @Plugin(type = Ops.Deconvolve.Accelerate.class,
-	priority = Priority.NORMAL_PRIORITY)
+	priority = Priority.NORMAL)
 public class VectorAccelerator<T extends RealType<T> & NativeType<T>> extends
 	AbstractUnaryInplaceOp<RandomAccessibleInterval<T>> implements
 	Ops.Deconvolve.Accelerate

@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  * @param <A> element type of inplace arguments
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 5)
+@Plugin(type = Ops.Map.class, priority = Priority.LOW + 5)
 public class MapIIInplaceParallel<A> extends
 	AbstractMapIterableInplace<A, A, IterableInterval<A>> implements Parallel
 {

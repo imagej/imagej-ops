@@ -65,7 +65,7 @@ public class MapBinaryComputers {
 	 * @param <EI2> element type of second inputs
 	 * @param <EO> element type of outputs
 	 */
-	@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + $priority)
+	@Plugin(type = Ops.Map.class, priority = Priority.LOW + $priority)
 	public static class ${in1Type.alias}And${in2Type.alias}To${outType.alias}<EI1, EI2, EO> extends
 		AbstractMapBinaryComputer<EI1, EI2, EO, ${in1Type.name}<EI1>, ${in2Type.name}<EI2>, ${outType.name}<EO>>
 		implements Contingent
@@ -92,7 +92,7 @@ public class MapBinaryComputers {
 	 * @param <EI2> element type of second inputs
 	 * @param <EO> element type of outputs
 	 */
-	@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + $paraPrio)
+	@Plugin(type = Ops.Map.class, priority = Priority.LOW + $paraPrio)
 	public static class ${in1Type.alias}And${in2Type.alias}To${outType.alias}Parallel<EI1, EI2, EO> extends
 		AbstractMapBinaryComputer<EI1, EI2, EO, ${in1Type.name}<EI1>, ${in2Type.name}<EI2>, ${outType.name}<EO>>
 		implements Contingent, Parallel

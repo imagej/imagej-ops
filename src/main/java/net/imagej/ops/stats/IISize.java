@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * @param <O> output type
  */
 @Plugin(type = Ops.Stats.Size.class, label = "Statistics: Size",
-	priority = Priority.VERY_HIGH_PRIORITY)
+	priority = Priority.VERY_HIGH)
 public class IISize<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStatsOp<IterableInterval<I>, O> implements Ops.Stats.Size
 {

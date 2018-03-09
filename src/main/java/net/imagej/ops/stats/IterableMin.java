@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  * @param <T> input type
  */
 @Plugin(type = Ops.Stats.Min.class, label = "Statistics: Min",
-	priority = Priority.VERY_HIGH_PRIORITY)
+	priority = Priority.VERY_HIGH)
 public class IterableMin<T extends RealType<T>> extends
 	AbstractStatsOp<Iterable<T>, T> implements Ops.Stats.Min
 {

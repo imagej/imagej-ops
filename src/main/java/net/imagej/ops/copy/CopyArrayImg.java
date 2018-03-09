@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
-@Plugin(type = Ops.Copy.Img.class, priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Ops.Copy.Img.class, priority = Priority.VERY_HIGH)
 public class CopyArrayImg<T extends NativeType<T>, A extends ArrayDataAccess<A>>
 		extends
 		AbstractUnaryHybridCF<ArrayImg<T, A>, ArrayImg<T, A>>

@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
-@Plugin(type = Ops.Geometric.Sphericity.class, label = "Geometric (3D): Sphericity", priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Ops.Geometric.Sphericity.class, label = "Geometric (3D): Sphericity", priority = Priority.VERY_HIGH)
 public class DefaultSphericity extends AbstractUnaryHybridCF<Mesh, DoubleType> implements Ops.Geometric.Sphericity {
 
 	private UnaryFunctionOp<Mesh, DoubleType> volumeFunc;

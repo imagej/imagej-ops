@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Brian Northan
  */
-@Plugin(type = Ops.Filter.PadFFTInput.class, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Filter.PadFFTInput.class, priority = Priority.HIGH)
 public class DefaultPadInputFFT<T extends ComplexType<T>, I extends RandomAccessibleInterval<T>, O extends RandomAccessibleInterval<T>>
 		extends PadInputFFT<T, I, O> implements PadFFTInput {
 

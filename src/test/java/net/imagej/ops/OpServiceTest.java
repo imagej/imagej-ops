@@ -246,7 +246,7 @@ public class OpServiceTest extends AbstractOpTest {
 	}
 
 	@Plugin(type = Op.class, name = "test.arrr!",
-		priority = Priority.HIGH_PRIORITY)
+		priority = Priority.HIGH)
 	public static class FirstMate extends NoOp {
 
 		@Parameter(required = false)

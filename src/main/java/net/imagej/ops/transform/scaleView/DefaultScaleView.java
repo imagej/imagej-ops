@@ -55,7 +55,7 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn (University of Konstanz)
  * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Transform.ScaleView.class, priority = Priority.HIGH_PRIORITY+1)
+@Plugin(type = Ops.Transform.ScaleView.class, priority = Priority.HIGH+1)
 public class DefaultScaleView<T> extends
 	AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Transform.ScaleView, Contingent

@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * {@link AddNoiseRealType}.
  * </p>
  */
-@Plugin(type = Ops.Filter.AddNoise.class, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Filter.AddNoise.class, priority = Priority.HIGH)
 public class AddNoiseRealTypeCFI<T extends RealType<T>> extends
 	AbstractUnaryHybridCFI<T, T> implements Ops.Filter.AddNoise
 {

@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Filter.PaddingIntervalCentered.class,
 	name = Ops.Filter.PaddingIntervalCentered.NAME,
-	priority = Priority.HIGH_PRIORITY)
+	priority = Priority.HIGH)
 public class PaddingIntervalCentered<T extends ComplexType<T>, I extends RandomAccessibleInterval<T>, O extends Interval>
 	extends AbstractBinaryFunctionOp<I, Dimensions, O> implements
 	Ops.Filter.PaddingIntervalCentered

@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
  * @author Jonathan Hale (University of Konstanz)
  * @param <T> type
  */
-@Plugin(type = Ops.Filter.Median.class, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Ops.Filter.Median.class, priority = Priority.LOW)
 public class DefaultMedianFilter<T, V> extends
 	AbstractNeighborhoodBasedFilter<T, V> implements MedianFilterOp<T, V>
 {

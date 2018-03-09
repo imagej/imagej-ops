@@ -40,7 +40,7 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.Solidity.class,
-	label = "Geometric (2D): Solidity", priority = Priority.VERY_HIGH_PRIORITY)
+	label = "Geometric (2D): Solidity", priority = Priority.VERY_HIGH)
 public class DefaultSolidityPolygon extends AbstractSolidity<Polygon> {
 	// NB: Marker Interface
 }

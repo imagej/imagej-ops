@@ -60,7 +60,7 @@ import org.scijava.plugin.Plugin;
  */
 
 @Plugin(type = Ops.Deconvolve.FirstGuess.class,
-	priority = Priority.LOW_PRIORITY)
+	priority = Priority.LOW)
 public class NonCirculantFirstGuess<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends
 	AbstractUnaryFunctionOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>

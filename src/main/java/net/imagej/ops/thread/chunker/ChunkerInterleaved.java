@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Michael Zinsmaier (University of Konstanz)
  */
-@Plugin(type = Ops.Thread.Chunker.class, priority = Priority.VERY_LOW_PRIORITY)
+@Plugin(type = Ops.Thread.Chunker.class, priority = Priority.VERY_LOW)
 public class ChunkerInterleaved extends AbstractChunker {
 
 	@Parameter

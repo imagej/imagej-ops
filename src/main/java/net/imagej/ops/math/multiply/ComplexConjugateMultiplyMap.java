@@ -43,7 +43,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Ops.Math.ComplexConjugateMultiply.class,
-	priority = Priority.LOW_PRIORITY)
+	priority = Priority.LOW)
 public class ComplexConjugateMultiplyMap<T extends ComplexType<T>> extends
 	AbstractBinaryComputerOp<IterableInterval<T>, IterableInterval<T>, IterableInterval<T>>
 	implements Ops.Math.ComplexConjugateMultiply, Contingent

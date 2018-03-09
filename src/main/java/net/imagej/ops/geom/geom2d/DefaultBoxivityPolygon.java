@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Boxivity.class,
 	label = "Geometric (2D): Rectangularity",
-	priority = Priority.VERY_HIGH_PRIORITY)
+	priority = Priority.VERY_HIGH)
 public class DefaultBoxivityPolygon extends AbstractBoxivity<Polygon> {
 
 	public DefaultBoxivityPolygon() {

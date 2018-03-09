@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * @param <EI> element type of inputs
  * @param <EO> element type of outputs
  */
-@Plugin(type = Ops.Map.class, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Map.class, priority = Priority.HIGH)
 public class MapViewIIToII<EI, EO extends Type<EO>> extends
 	AbstractMapView<EI, EO, IterableInterval<EI>, IterableInterval<EO>>
 {

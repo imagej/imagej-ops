@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
  * @author Stephan Saalfeld
  * @param <T> type of input
  */
-@Plugin(type = Ops.Filter.Gauss.class, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Filter.Gauss.class, priority = Priority.HIGH)
 public class GaussRAISingleSigma<T extends NumericType<T> & NativeType<T>>
 	extends
 	AbstractUnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>

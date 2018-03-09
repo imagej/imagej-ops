@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  * @param <A> element type of inplace arguments
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Ops.Map.class, priority = Priority.LOW)
 public class MapIterableInplace<A> extends
 	AbstractMapIterableInplace<A, A, Iterable<A>>
 {

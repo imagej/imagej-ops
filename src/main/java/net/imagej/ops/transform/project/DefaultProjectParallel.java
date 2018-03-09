@@ -48,7 +48,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Ops.Transform.Project.class, //
-	priority = Priority.LOW_PRIORITY + 1)
+	priority = Priority.LOW + 1)
 public class DefaultProjectParallel<T, V> extends
 	AbstractUnaryComputerOp<RandomAccessibleInterval<T>, IterableInterval<V>>
 	implements Contingent, Parallel, Ops.Transform.Project

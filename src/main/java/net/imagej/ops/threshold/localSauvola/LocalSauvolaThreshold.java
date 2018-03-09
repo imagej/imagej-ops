@@ -63,7 +63,7 @@ import org.scijava.plugin.Plugin;
  * @author Stefan Helfrich (University of Konstanz)
  */
 @Plugin(type = Ops.Threshold.LocalSauvolaThreshold.class,
-	priority = Priority.LOW_PRIORITY)
+	priority = Priority.LOW)
 public class LocalSauvolaThreshold<T extends RealType<T>> extends LocalThreshold<T>
 	implements Ops.Threshold.LocalSauvolaThreshold
 {

@@ -38,7 +38,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "test.chunker",
-	priority = Priority.LOW_PRIORITY)
+	priority = Priority.LOW)
 public class RunDefaultChunkerArray<A> extends AbstractUnaryComputerOp<A[], A[]>
 	implements Parallel
 {

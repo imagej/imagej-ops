@@ -43,7 +43,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Ops.Filter.AddPoissonNoise.class,
-	priority = Priority.LOW_PRIORITY)
+	priority = Priority.LOW)
 public class AddPoissonNoiseMap<T extends ComplexType<T>> extends
 	AbstractUnaryComputerOp<IterableInterval<T>, IterableInterval<T>> implements
 	Ops.Filter.AddPoissonNoise, Contingent

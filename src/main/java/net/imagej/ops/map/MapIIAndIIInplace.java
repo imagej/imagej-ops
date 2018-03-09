@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
  * @author Leon Yang
  * @param <EA> element type of inputs + outputs
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Ops.Map.class, priority = Priority.LOW)
 public class MapIIAndIIInplace<EA> extends
 	AbstractMapBinaryInplace<EA, EA, IterableInterval<EA>> implements Contingent
 {

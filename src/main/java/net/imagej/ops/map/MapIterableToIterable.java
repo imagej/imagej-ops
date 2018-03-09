@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
  * @param <EI> element type of inputs
  * @param <EO> element type of outputs
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY - 1)
+@Plugin(type = Ops.Map.class, priority = Priority.LOW - 1)
 public class MapIterableToIterable<EI, EO> extends
 	AbstractMapComputer<EI, EO, Iterable<EI>, Iterable<EO>>
 {

@@ -71,7 +71,7 @@ import org.scijava.plugin.Plugin;
  * @author Stefan Helfrich (University of Konstanz)
  */
 @Plugin(type = Ops.Threshold.LocalPhansalkarThreshold.class,
-	priority = Priority.LOW_PRIORITY)
+	priority = Priority.LOW)
 public class LocalPhansalkarThreshold<T extends RealType<T>> extends
 	LocalThreshold<T> implements Ops.Threshold.LocalPhansalkarThreshold
 {
