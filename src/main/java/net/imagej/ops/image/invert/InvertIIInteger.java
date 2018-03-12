@@ -127,10 +127,13 @@ public class InvertIIInteger<T extends RealType<T>> extends
 	@Override
 	public boolean conforms() {
 		final T inType = in().firstElement();
-		return inType instanceof Unsigned128BitType ||
-			inType instanceof UnsignedLongType ||
-			inType instanceof UnboundedIntegerType ||
-			inType instanceof LongType;
+		
+		if (inType instanceof IntegerType) {
+			final IntegerType<?> copy = (IntegerType<?>) inType.createVariable();
+			copy.setInteger(Long.MAX_VALUE);
+			return copy.getIntegerLong() == Long.MAX_VALUE;
+		}
+		return false;
 	}
 
 }
