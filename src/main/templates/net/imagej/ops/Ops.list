@@ -29,6 +29,7 @@ namespaces = ```
 		[name: "kendallTau",		      iface: "KendallTau"],
 		[name: "manders",                     iface: "Manders"],
 		[name: "pearsons",                    iface: "Pearsons"],
+		[name: "pValue",                      iface: "PValue"],
 		[name: "spearman",                    iface: "Spearman"],
 	]],
 	[name: "convert", iface: "Convert", ops: [

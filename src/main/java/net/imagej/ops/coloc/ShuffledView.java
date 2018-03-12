@@ -1,0 +1,162 @@
+
+package net.imagej.ops.coloc;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
+import net.imglib2.AbstractInterval;
+import net.imglib2.Interval;
+import net.imglib2.Point;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.Sampler;
+import net.imglib2.View;
+import net.imglib2.util.IntervalIndexer;
+
+import org.scijava.util.IntArray;
+
+/**
+ * Randomly shuffles an image blockwise.
+ * 
+ * @author Curtis Rueden
+ * @author Ellen T Arena
+ *
+ * @param <T> Type of image to be shuffled.
+ */
+public class ShuffledView<T> extends AbstractInterval implements
+	RandomAccessibleInterval<T>, View
+{
+
+	private static Random rng;
+	private final RandomAccessibleInterval<T> image;
+	private List<Integer> blockIndices;
+	private int[] blockSize;
+	private int[] blockDims;
+
+	public ShuffledView(final RandomAccessibleInterval<T> image,
+		final int[] blockSize, final long seed)
+	{
+		this(image, blockSize, null, seed);
+	}
+
+	public ShuffledView(final RandomAccessibleInterval<T> image,
+		final int[] blockSize, final List<Integer> blockIndices)
+	{
+		this(image, blockSize, blockIndices, 0);
+	}
+
+	private ShuffledView(final RandomAccessibleInterval<T> image,
+		final int[] blockSize, final List<Integer> blockIndices, final long seed)
+	{
+		super(image); // uses same bounds as the input image
+		this.image = image;
+		this.blockSize = blockSize;
+
+		// compute some info about our block sizes
+		final int numDims = image.numDimensions();
+		blockDims = new int[numDims];
+		long totalBlocks = 1;
+		for (int d = 0; d < numDims; d++) {
+			final long blockDim = image.dimension(d) / blockSize[d];
+			if (blockDim * blockSize[d] != image.dimension(d)) {
+				throw new IllegalArgumentException("Image dimension #" + d +
+					" is not evenly divisible by block size:" + blockSize[d]);
+			}
+			if (blockDim > Integer.MAX_VALUE) {
+				throw new UnsupportedOperationException("Block dimension #" + d +
+					" is too large: " + blockDim);
+			}
+			blockDims[d] = (int) blockDim;
+			totalBlocks *= blockDims[d];
+		}
+		if (totalBlocks > Integer.MAX_VALUE) {
+			throw new UnsupportedOperationException("Too many blocks: " +
+				totalBlocks);
+		}
+		if (blockIndices == null) {
+			this.blockIndices = createBlocks((int) totalBlocks);
+			rng = new Random(seed);
+			shuffleBlocks();
+		} else {
+			this.blockIndices = blockIndices;
+		}
+	}
+
+	private static List<Integer> createBlocks(final int blockCount)
+	{
+		// generate the identity mapping of indices
+		final IntArray blocks = new IntArray();
+		blocks.ensureCapacity(blockCount);
+		for (int b = 0; b < blockCount; b++)
+			blocks.addValue(b);
+		return blocks;
+	}
+
+	public void shuffleBlocks() {
+		if (rng == null) {
+			throw new IllegalStateException("No seed provided. Cannot shuffle.");
+		}
+		Collections.shuffle(blockIndices, rng);
+	}
+	
+	@Override
+	public RandomAccess<T> randomAccess() {
+		return new ShuffledRandomAccess();
+	}
+
+	@Override
+	public RandomAccess<T> randomAccess(final Interval interval) {
+		return randomAccess(); // FIXME
+	}
+
+	private class ShuffledRandomAccess extends Point implements RandomAccess<T> {
+
+		public ShuffledRandomAccess() {
+			super(image.numDimensions());
+		}
+
+		@Override
+		public T get() {
+			// Convert from image coordinates to block coordinates.
+			final long[] blockPos = new long[position.length];
+			final long[] blockOffset = new long[position.length];
+			for (int d = 0; d < position.length; d++) {
+				blockPos[d] = position[d] / blockSize[d];
+				blockOffset[d] = position[d] % blockSize[d];
+			}
+
+			// Convert N-D block coordinates to 1D block index.
+			final int blockIndex = IntervalIndexer.positionToIndex(blockPos,
+				blockDims);
+
+			// Map block index to shuffled block index.
+			final int shuffledBlockIndex = blockIndices.get(blockIndex);
+
+			// Now convert our 1D shuffled block index back to N-D block
+			// coordinates.
+			final long[] shuffledBlockPos = new long[position.length];
+			IntervalIndexer.indexToPosition(shuffledBlockIndex, blockDims,
+				shuffledBlockPos);
+
+			// Finally, position the original image according to our shuffled
+			// position.
+			final RandomAccess<T> imageRA = image.randomAccess();
+			for (int d = 0; d < position.length; d++) {
+				final long pd = shuffledBlockPos[d] * blockSize[d] + blockOffset[d];
+				imageRA.setPosition(pd, d);
+			}
+			return imageRA.get();
+		}
+
+		@Override
+		public Sampler<T> copy() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public RandomAccess<T> copyRandomAccess() {
+			throw new UnsupportedOperationException();
+		}
+	}
+}
