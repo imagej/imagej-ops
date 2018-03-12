@@ -57,9 +57,6 @@ public class ConvertIIs<I extends RealType<I>, O extends RealType<O>>
 	@Override
 	public void initialize() {
 		mapper = Computers.unary(ops(), Ops.Map.class, out(), in(), pixConvert);
-		pixConvert.checkInput(in().firstElement().createVariable(), out()
-			.firstElement().createVariable());
-		pixConvert.checkInput(in());
 	}
 
 	@Override

@@ -53,28 +53,16 @@ public class NormalizeScaleRealTypes<I extends RealType<I>, O extends RealType<O
 
 	private UnaryFunctionOp<IterableInterval<I>, Pair<I, I>> minMaxFunc;
 
-	protected double outMax;
-
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
 		minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(),
 			Ops.Stats.MinMax.class, Pair.class, IterableInterval.class);
-	}
-
-	@Override
-	public void checkInput(final I inType, final O outType) {
-		outMin = outType.getMinValue();
-		outMax = outType.getMaxValue();
-	}
-
-	@Override
-	public void checkInput(final IterableInterval<I> in) {
-		final Pair<I, I> minMax = minMaxFunc.calculate(in);
-		factor = (minMax.getB().getRealDouble() - minMax.getA()
+		final Pair<I, I> minMax = minMaxFunc.calculate(in());
+		double inMin = minMax.getA().getRealDouble();
+		double outMin = out().getMinValue();
+		double outMax = out().getMaxValue();
+		double factor = (minMax.getB().getRealDouble() - minMax.getA()
 			.getRealDouble()) / (outMax - outMin);
-
-		inMin = minMax.getA().getRealDouble();
 	}
-
 }

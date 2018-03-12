@@ -30,7 +30,6 @@
 package net.imagej.ops.convert;
 
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
-import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
 /**
@@ -41,25 +40,5 @@ import net.imglib2.type.numeric.RealType;
 public abstract class RealTypeConverter<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractUnaryComputerOp<I, O>
 {
-
-	/**
-	 * Allows the convert pix operation to determine some parameters from the
-	 * concrete input and output types.
-	 */
-	@SuppressWarnings("unused")
-	public void checkInput(I inType, O outType) {
-		// NB: default implementation
-	}
-
-	/**
-	 * If the pixels to be converted stem from an {@link IterableInterval} some
-	 * additionally needed parameters (e.g. for normalization) can be calculated
-	 * here (hence, some heavier calculation might take place here). Might never
-	 * be called!
-	 */
-	@SuppressWarnings("unused")
-	public void checkInput(IterableInterval<I> in) {
-		// NB: default implementation
-	}
 
 }

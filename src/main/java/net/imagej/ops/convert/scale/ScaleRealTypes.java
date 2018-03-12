@@ -47,23 +47,15 @@ public class ScaleRealTypes<I extends RealType<I>, O extends RealType<O>>
 	extends RealTypeConverter<I, O> implements Ops.Convert.Scale
 {
 
-	protected double inMin;
-
-	protected double outMin;
-
-	protected double factor;
-
 	@Override
 	public void compute(final I input, final O output) {
-		// FIXME Throw exception if factor == 0.0
+		final double inMin = input.getMinValue();
+		final double outMin = output.getMinValue();
+		final double factor = (input.getMaxValue() - inMin) / (output.getMaxValue() - outMin);
+		if (factor == 0) {
+			throw new IllegalStateException("Strange input type: " + //
+				input.getClass().getName());
+		}
 		output.setReal((input.getRealDouble() - inMin) / factor + outMin);
 	}
-
-	@Override
-	public void checkInput(final I inType, final O outType) {
-		inMin = inType.getMinValue();
-		outMin = outType.getMinValue();
-		factor = (inType.getMaxValue() - inMin) / (outType.getMaxValue() - outMin);
-	}
-
 }

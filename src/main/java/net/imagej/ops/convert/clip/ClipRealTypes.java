@@ -46,29 +46,11 @@ public class ClipRealTypes<I extends RealType<I>, O extends RealType<O>>
 	extends RealTypeConverter<I, O> implements Ops.Convert.Clip
 {
 
-	private double outMax;
-
-	private double outMin;
-
 	@Override
 	public void compute(final I input, final O output) {
 		final double v = input.getRealDouble();
-		if (v > outMax) {
-			output.setReal(outMax);
-		}
-		else if (v < outMin) {
-			output.setReal(outMin);
-		}
-		else {
-			output.setReal(v);
-		}
+		final double outMin = output.getMinValue();
+		final double outMax = output.getMaxValue();
+		output.setReal(v > outMax ? outMax : v < outMin ? outMin : v);
 	}
-
-	@Override
-	public void checkInput(final I inType, final O outType) {
-		outMax = outType.getMaxValue();
-		outMin = outType.getMinValue();
-
-	}
-
 }

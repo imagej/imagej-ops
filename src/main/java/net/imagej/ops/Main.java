@@ -32,6 +32,8 @@ package net.imagej.ops;
 import java.io.IOException;
 
 import net.imagej.ops.eval.OpEvaluator;
+import net.imglib2.type.numeric.integer.UnsignedByteType;
+import net.imglib2.type.numeric.real.FloatType;
 
 import org.scijava.Context;
 import org.scijava.parse.eval.EvaluatorConsole;
@@ -53,7 +55,15 @@ public final class Main {
 	public static void main(final String[] args) throws IOException {
 		final Context context = new Context(OpService.class);
 		final OpService ops = context.getService(OpService.class);
-		new EvaluatorConsole(new OpEvaluator(ops)).showConsole();
+//		new EvaluatorConsole(new OpEvaluator(ops)).showConsole();
+
+		final Op clipOp = ops.op("convert.clip",new UnsignedByteType(), new FloatType());
+		System.out.println(clipOp);
+		System.out.println(new FloatType(257)); // 257.0
+		System.out.println(new UnsignedByteType(257)); // 1
+		System.out.println(ops.run(clipOp, new UnsignedByteType(), new FloatType(257))); // 0 !
+
+		context.dispose();
 	}
 
 }
