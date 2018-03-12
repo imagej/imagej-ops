@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.imagej.ops.cached.CachedOpEnvironment;
+import net.imagej.ops.coloc.ColocNamespace;
 import net.imagej.ops.convert.ConvertNamespace;
 import net.imagej.ops.copy.CopyNamespace;
 import net.imagej.ops.create.CreateNamespace;
@@ -829,6 +830,11 @@ public interface OpEnvironment extends Contextual {
 
 	// -- Operation shortcuts - other namespaces --
 
+	/** Gateway into ops of the "coloc" namespace. */
+	default ColocNamespace coloc() {
+		return namespace(ColocNamespace.class);
+	}
+	
 	/** Gateway into ops of the "copy" namespace. */
 	default CopyNamespace copy() {
 		return namespace(CopyNamespace.class);
