@@ -31,7 +31,7 @@ package net.imagej.ops.coloc.pValue;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.coloc.ShuffledView;
-import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
+import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
 import net.imagej.ops.special.function.BinaryFunctionOp;
 import net.imglib2.Dimensions;
 import net.imglib2.IterableInterval;
@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Coloc.PValue.class)
 public class PValue<T extends RealType<T>, U extends RealType<U>> extends
-	AbstractBinaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<U>, Double>
+	AbstractBinaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<U>, PValueResult>
 	implements Ops.Coloc.PValue
 {
 
@@ -69,8 +69,8 @@ public class PValue<T extends RealType<T>, U extends RealType<U>> extends
 	private long seed = 0x27372034;
 
 	@Override
-	public Double calculate(final RandomAccessibleInterval<T> image1,
-		final RandomAccessibleInterval<U> image2)
+	public void compute(final RandomAccessibleInterval<T> image1,
+		final RandomAccessibleInterval<U> image2, PValueResult output)
 	{
 		final int[] blockSize = blockSize(image1, psfSize);
 		final RandomAccessibleInterval<T> trimmedImage1 = trim(image1, blockSize);
@@ -83,13 +83,15 @@ public class PValue<T extends RealType<T>, U extends RealType<U>> extends
 
 		final IterableInterval<T> iterableImage1 = Views.iterable(trimmedImage1);
 		final IterableInterval<U> iterableImage2 = Views.iterable(trimmedImage2);
-		final double value = op.calculate(iterableImage1, iterableImage2);
+		final double value = op.calculate(iterableImage1, iterableImage2); 
 
 		for (int i = 0; i < nrRandomizations; i++) {
 			shuffled.shuffleBlocks();
 			sampleDistribution[i] = op.calculate(shuffledIterable, iterableImage2);
 		}
-		return calculatePvalue(value, sampleDistribution);
+		output.setColocValue(value);
+		output.setColocValuesArray(sampleDistribution);
+		output.setPValue(calculatePvalue(value, sampleDistribution));
 	}
 
 	private double calculatePvalue(final double input,
@@ -101,8 +103,8 @@ public class PValue<T extends RealType<T>, U extends RealType<U>> extends
 				count++;
 			}
 		}
-		final double pvalue = count / distribution.length;
-		return pvalue;
+		final double pval = count / distribution.length;
+		return pval;
 	}
 
 	private static int[] blockSize(final Dimensions image,

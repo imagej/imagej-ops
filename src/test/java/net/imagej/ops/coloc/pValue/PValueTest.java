@@ -54,17 +54,20 @@ public class PValueTest extends ColocalisationTest {
 	 */
 	@Test
 	public void testPValuePerfectColoc() {
-		assertColoc(0.0, 1, 0, 0, 0, 0, 0, 0);
+		double[] array = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+		assertColoc(0.0, 1.0, array, 1, 0, 0, 0, 0, 0, 0);
 	}
 
 	@Test
 	public void testPValueNoColoc() {
-		assertColoc(1.0, 0, 1, 2, 3, 4, 5);
+		double[] array = {1.0, 2.0, 3.0, 4.0, 5.0};
+		assertColoc(1.0, 0.0, array, 0, 1, 2, 3, 4, 5);
 	}
 
 	@Test
 	public void testPValueSomeColoc() {
-		assertColoc(0.6, 0.25, 0.25, 0.25, 0.75, 0.75, 0.75);
+		double[] array = {0.25, 0.25, 0.75, 0.75, 0.75};
+		assertColoc(0.6, 0.25, array, 0.25, 0.25, 0.25, 0.75, 0.75, 0.75);
 	}
 
 	/**
@@ -72,9 +75,10 @@ public class PValueTest extends ColocalisationTest {
 	 * a shuffled version of the first image.
 	 * 
 	 * @param expectedPValue
+	 * @param expectedColocValue
 	 * @param result
 	 */
-	private void assertColoc(double expectedPValue, double... result) {
+	private void assertColoc(double expectedPValue, double expectedColocValue, double[] expectedColocValuesArray, double... result) {
 		Img<FloatType> ch1 = ArrayImgs.floats(1); // NB: Images will be ignored.
 		Img<FloatType> ch2 = ch1;
 
@@ -82,8 +86,17 @@ public class PValueTest extends ColocalisationTest {
 		final int[] count = { 0 };
 		BinaryFunctionOp<Iterable<FloatType>, Iterable<FloatType>, Double> op = //
 			op((input1, input2) -> result[count[0]++]);
-		Double actualPValue = ops.coloc().pValue(ch1, ch2, op, result.length - 1);
+		
+		PValueResult output = new PValueResult();
+		output = ops.coloc().pValue(output, ch1, ch2, op, result.length - 1);
+		Double actualPValue = output.getPValue();
+		Double actualColocValue = output.getColocValue();
+		double[] actualColocValuesArray = output.getColocValuesArray();
 		assertEquals(expectedPValue, actualPValue, 0.0);
+		assertEquals(expectedColocValue, actualColocValue, 0.0);
+		for (int i = 0; i < expectedColocValuesArray.length; i++) {
+			assertEquals(expectedColocValuesArray[i], actualColocValuesArray[i], 0.0);
+		}
 	}
 
 	// -- Utility methods --
