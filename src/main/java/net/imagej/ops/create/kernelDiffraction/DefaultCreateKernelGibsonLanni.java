@@ -111,6 +111,8 @@ public class DefaultCreateKernelGibsonLanni<T extends ComplexType<T> & NativeTyp
 	public void initialize() {
 		createOp = (BinaryFunctionOp) Functions.binary(ops(), Ops.Create.Img.class,
 			Img.class, Dimensions.class, NativeType.class);
+
+		ni0 = ni;
 	}
 
 	@Override
@@ -231,7 +233,7 @@ public class DefaultCreateKernelGibsonLanni<T extends ComplexType<T> & NativeTyp
 			beta = k0 * this.NA * r[n] * this.resLateral;
 
 			for (int m = 0; m < this.numBasis; m++) {
-				//am = (3 * m + 1) * factor;
+				// am = (3 * m + 1) * factor;
 				am = (3 * m + 1);
 				rm = am * bj1.value(am * b) * bj0.value(beta * b) * b;
 				rm = rm - beta * b * bj0.value(am * b) * bj1.value(beta * b);
