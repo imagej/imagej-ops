@@ -29,13 +29,11 @@
 
 package net.imagej.ops.geom.geom3d;
 
+import net.imagej.mesh.Mesh;
+import net.imagej.mesh.naive.NaiveDoubleMesh;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.geom.geom3d.mesh.DefaultMesh;
 import net.imagej.ops.geom.geom3d.mesh.DefaultVertexInterpolator;
-import net.imagej.ops.geom.geom3d.mesh.Mesh;
-import net.imagej.ops.geom.geom3d.mesh.TriangularFacet;
-import net.imagej.ops.geom.geom3d.mesh.Vertex;
 import net.imagej.ops.geom.geom3d.mesh.VertexInterpolator;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.Cursor;
@@ -46,6 +44,7 @@ import net.imglib2.type.logic.BoolType;
 import net.imglib2.view.ExtendedRandomAccessibleInterval;
 import net.imglib2.view.Views;
 
+import org.apache.commons.math3.util.MathArrays;
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -73,8 +72,8 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 
 	@SuppressWarnings({ "unchecked" })
 	@Override
-	public DefaultMesh calculate(final RandomAccessibleInterval<T> input) {
-		DefaultMesh output = new DefaultMesh();
+	public Mesh calculate(final RandomAccessibleInterval<T> input) {
+		Mesh output = new NaiveDoubleMesh();
 		ExtendedRandomAccessibleInterval<T, RandomAccessibleInterval<T>> extended =
 			Views.extendValue(input, (T) new BoolType(false));
 		Cursor<T> c = Views.interval(extended, new FinalInterval(new long[] { input
@@ -172,23 +171,41 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 
 				/* Create the triangle */
 				for (i = 0; TRIANGLE_TABLE[cubeindex][i] != -1; i += 3) {
-
-					TriangularFacet face = new TriangularFacet(new Vertex(
-						vertlist[TRIANGLE_TABLE[cubeindex][i + 2]][0],
-						vertlist[TRIANGLE_TABLE[cubeindex][i + 2]][1],
-						vertlist[TRIANGLE_TABLE[cubeindex][i + 2]][2]), new Vertex(
-							vertlist[TRIANGLE_TABLE[cubeindex][i + 1]][0],
-							vertlist[TRIANGLE_TABLE[cubeindex][i + 1]][1],
-							vertlist[TRIANGLE_TABLE[cubeindex][i + 1]][2]), new Vertex(
-								vertlist[TRIANGLE_TABLE[cubeindex][i]][0],
-								vertlist[TRIANGLE_TABLE[cubeindex][i]][1],
-								vertlist[TRIANGLE_TABLE[cubeindex][i]][2]));
-					face.getArea();
-					output.addFace(face);
+					final double v0x = vertlist[TRIANGLE_TABLE[cubeindex][i + 2]][0];
+					final double v0y = vertlist[TRIANGLE_TABLE[cubeindex][i + 2]][1];
+					final double v0z = vertlist[TRIANGLE_TABLE[cubeindex][i + 2]][2];
+					final double v1x = vertlist[TRIANGLE_TABLE[cubeindex][i + 1]][0];
+					final double v1y = vertlist[TRIANGLE_TABLE[cubeindex][i + 1]][1];
+					final double v1z = vertlist[TRIANGLE_TABLE[cubeindex][i + 1]][2];
+					final double v2x = vertlist[TRIANGLE_TABLE[cubeindex][i]][0];
+					final double v2y = vertlist[TRIANGLE_TABLE[cubeindex][i]][1];
+					final double v2z = vertlist[TRIANGLE_TABLE[cubeindex][i]][2];
+					if (positiveArea(v0x, v0y, v0z, v1x, v1y, v1z, v2x, v2y, v2z)) {
+						output.triangles().add(v0x, v0y, v0z, v1x, v1y, v1z, v2x, v2y, v2z);
+					}
 				}
 			}
 		}
 		return output;
+	}
+
+	private boolean positiveArea(double v0x, double v0y, double v0z, //
+		double v1x, double v1y, double v1z, //
+		double v2x, double v2y, double v2z)
+	{
+		final double p1x = v0x - v1x;
+		final double p1y = v0y - v1y;
+		final double p1z = v0z - v1z;
+		final double p2x = v2x - v0x;
+		final double p2y = v2y - v0y;
+		final double p2z = v2z - v0z;
+
+		// cross product
+		final double cpx = MathArrays.linearCombination(p1y, p2z, -p1z, p2y);
+		final double cpy = MathArrays.linearCombination(p1z, p2x, -p1x, p2z);
+		final double cpz = MathArrays.linearCombination(p1x, p2y, -p1y, p2x);
+
+		return cpx != 0 || cpy != 0 || cpz != 0;
 	}
 
 	private double[] interpolatePoint(int[] p0, int[] p1, double v0, double v1) {

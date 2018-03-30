@@ -34,15 +34,15 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
+import net.imagej.mesh.Mesh;
+import net.imagej.mesh.naive.NaiveDoubleMesh;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.OpService;
-import net.imagej.ops.geom.geom3d.mesh.DefaultMesh;
-import net.imagej.ops.geom.geom3d.mesh.Mesh;
-import net.imagej.ops.geom.geom3d.mesh.TriangularFacet;
-import net.imagej.ops.geom.geom3d.mesh.Vertex;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
@@ -67,8 +67,10 @@ import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.view.RandomAccessibleIntervalCursor;
 
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.junit.Before;
 import org.scijava.Context;
+import org.scijava.util.LongArray;
 
 /**
  * @author Daniel Seebacher (University of Konstanz)
@@ -280,23 +282,30 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	}
 	
 	protected static Mesh getMesh() {
-		final List<Vertex> vertices = new ArrayList<>();
+		final Mesh m = new NaiveDoubleMesh();
+		// To prevent duplicates, map each (x, y, z) triple to its own index.
+		final Map<Vector3D, Long> indexMap = new HashMap<>();
+		final LongArray indices = new LongArray();
 		try {
 			Files.lines(Paths.get(AbstractFeatureTest.class.getResource("3d_geometric_features_mesh.txt").toURI()))
 										.forEach(l -> {
 											String[] coord = l.split(" ");
-											Vertex v = new Vertex(Double.parseDouble(coord[0]), 
-																  Double.parseDouble(coord[1]),
-																  Double.parseDouble(coord[2]));
-											vertices.add(v);
+											final double x = Double.parseDouble(coord[0]);
+											final double y = Double.parseDouble(coord[1]);
+											final double z = Double.parseDouble(coord[2]);
+											final Vector3D vertex = new Vector3D(x, y, z);
+											final long vIndex = indexMap.computeIfAbsent(vertex, //
+												v -> m.vertices().add(x, y, z));
+											indices.add(vIndex);
 										});
 		} catch (IOException | URISyntaxException exc) {
 			exc.printStackTrace();
 		}
-		final DefaultMesh m = new DefaultMesh();
-		for (int i = 0; i < vertices.size(); i+=3) {
-			final TriangularFacet f = new TriangularFacet(vertices.get(i), vertices.get(i+1), vertices.get(i+2));
-			m.addFace(f);
+		for (int i = 0; i < indices.size(); i += 3) {
+			final long v0 = indices.get(i);
+			final long v1 = indices.get(i + 1);
+			final long v2 = indices.get(i + 2);
+			m.triangles().add(v0, v1, v2);
 		}
 		return m;
 	}

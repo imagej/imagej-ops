@@ -29,13 +29,13 @@
 
 package net.imagej.ops.geom;
 
+import java.util.List;
+
+import net.imagej.mesh.Mesh;
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops.Geometric.Voxelization;
-import net.imagej.ops.geom.geom2d.DefaultConvexHull2D;
-import net.imagej.ops.geom.geom3d.DefaultConvexHull3D;
-import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imagej.ops.geom.geom3d.mesh.VertexInterpolator;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
@@ -265,16 +265,16 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = DefaultConvexHull2D.class)
+	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultConvexHull2D.class)
 	public Polygon2D convexHull(final Polygon2D in) {
 		final Polygon2D result = (Polygon2D) ops().run(
 			net.imagej.ops.Ops.Geometric.ConvexHull.class, in);
 		return result;
 	}
 
-	@OpMethod(op = DefaultConvexHull3D.class)
-	public Mesh convexHull(final Mesh in) {
-		final Mesh result = (Mesh) ops().run(
+	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultConvexHull3D.class)
+	public List convexHull(final Mesh in) {
+		final List<?> result = (List<?>) ops().run(
 			net.imagej.ops.Ops.Geometric.ConvexHull.class, in);
 		return result;
 	}

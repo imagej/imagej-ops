@@ -31,6 +31,7 @@ package net.imagej.ops.geom.geom3d.mesh;
 
 import java.lang.reflect.Type;
 
+import net.imagej.mesh.Mesh;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.Functions;

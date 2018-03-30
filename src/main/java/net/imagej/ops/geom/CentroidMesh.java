@@ -29,10 +29,8 @@
 
 package net.imagej.ops.geom;
 
-import net.imagej.ops.Contingent;
+import net.imagej.mesh.Mesh;
 import net.imagej.ops.Ops;
-import net.imagej.ops.geom.geom3d.mesh.Mesh;
-import net.imagej.ops.geom.geom3d.mesh.TriangularFacet;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
@@ -40,7 +38,6 @@ import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -53,8 +50,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Geometric.Centroid.class, label = "Geometric: Centroid")
 public class CentroidMesh extends AbstractUnaryFunctionOp<Mesh, RealLocalizable>
 		implements
-			Ops.Geometric.Centroid,
-			Contingent {
+			Ops.Geometric.Centroid {
 
 	private UnaryFunctionOp<Mesh, DoubleType> sizeFunc;
 
@@ -70,21 +66,31 @@ public class CentroidMesh extends AbstractUnaryFunctionOp<Mesh, RealLocalizable>
 		double c_y = 0;
 		double c_z = 0;
 
-		for (int i = 0; i < input.getFacets().size(); i++) {
-			TriangularFacet f = (TriangularFacet) input.getFacets().get(i);
-			Vector3D normal = f.getNormal();
-			Vector3D a = f.getP0();
-			Vector3D b = f.getP1();
-			Vector3D c = f.getP2();
-			c_x += (1 / 24d) * normal.getX() * (Math.pow((a.getX() + b.getX()), 2)
-					+ Math.pow((b.getX() + c.getX()), 2)
-					+ Math.pow((c.getX() + a.getX()), 2));
-			c_y += (1 / 24d) * normal.getY() * (Math.pow((a.getY() + b.getY()), 2)
-					+ Math.pow((b.getY() + c.getY()), 2)
-					+ Math.pow((c.getY() + a.getY()), 2));
-			c_z += (1 / 24d) * normal.getZ() * (Math.pow((a.getZ() + b.getZ()), 2)
-					+ Math.pow((b.getZ() + c.getZ()), 2)
-					+ Math.pow((c.getZ() + a.getZ()), 2));
+		for (int i = 0; i < input.triangles().size(); i++) {
+			final long v0 = input.triangles().vertex0(i);
+			final long v1 = input.triangles().vertex1(i);
+			final long v2 = input.triangles().vertex2(i);
+			final double nx = input.triangles().nx(i);
+			final double ny = input.triangles().ny(i);
+			final double nz = input.triangles().nz(i);
+			final double v0x = input.vertices().x(v0);
+			final double v0y = input.vertices().y(v0);
+			final double v0z = input.vertices().z(v0);
+			final double v1x = input.vertices().x(v1);
+			final double v1y = input.vertices().y(v1);
+			final double v1z = input.vertices().z(v1);
+			final double v2x = input.vertices().x(v2);
+			final double v2y = input.vertices().y(v2);
+			final double v2z = input.vertices().z(v2);
+			c_x += (1 / 24d) * nx * (Math.pow((v0x + v1x), 2)
+					+ Math.pow((v1x + v2x), 2)
+					+ Math.pow((v2x + v0x), 2));
+			c_y += (1 / 24d) * ny * (Math.pow((v0y + v1y), 2)
+					+ Math.pow((v1y + v2y), 2)
+					+ Math.pow((v2y + v0y), 2));
+			c_z += (1 / 24d) * nz * (Math.pow((v0z + v1z), 2)
+					+ Math.pow((v1z + v2z), 2)
+					+ Math.pow((v2z + v0z), 2));
 		}
 
 		double d = 1 / (2 * sizeFunc.calculate(input).get());
@@ -94,10 +100,4 @@ public class CentroidMesh extends AbstractUnaryFunctionOp<Mesh, RealLocalizable>
 
 		return new RealPoint(-c_x, -c_y, -c_z);
 	}
-
-	@Override
-	public boolean conforms() {
-		return in().triangularFacets();
-	}
-
 }

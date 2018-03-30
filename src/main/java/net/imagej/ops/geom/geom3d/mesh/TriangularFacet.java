@@ -209,15 +209,15 @@ public class TriangularFacet extends UpdateablePointSet<TriangularFacet> impleme
 		return verticesInFront.remove(0);
 	}
 
-	public Vector3D getP0() {
+	public Vertex getP0() {
 		return vertices.get(0);
 	}
 
-	public Vector3D getP1() {
+	public Vertex getP1() {
 		return vertices.get(1);
 	}
 
-	public Vector3D getP2() {
+	public Vertex getP2() {
 		return vertices.get(2);
 	}
 

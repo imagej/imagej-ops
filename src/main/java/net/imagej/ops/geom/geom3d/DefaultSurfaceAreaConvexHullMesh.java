@@ -29,9 +29,9 @@
 
 package net.imagej.ops.geom.geom3d;
 
+import net.imagej.mesh.Mesh;
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.AbstractBoundarySizeConvexHull;
-import net.imagej.ops.geom.geom3d.mesh.Mesh;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;

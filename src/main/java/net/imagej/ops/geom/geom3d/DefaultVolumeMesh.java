@@ -28,15 +28,13 @@
  */
 package net.imagej.ops.geom.geom3d;
 
-import net.imagej.ops.Contingent;
+import net.imagej.mesh.Mesh;
+import net.imagej.mesh.Triangle;
 import net.imagej.ops.Ops;
-import net.imagej.ops.geom.geom3d.mesh.Facet;
-import net.imagej.ops.geom.geom3d.mesh.Mesh;
-import net.imagej.ops.geom.geom3d.mesh.TriangularFacet;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
+import org.apache.commons.math3.util.MathArrays;
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
@@ -51,26 +49,31 @@ public class DefaultVolumeMesh
 		extends
 			AbstractUnaryFunctionOp<Mesh, DoubleType>
 		implements
-			Ops.Geometric.Size,
-			Contingent {
+			Ops.Geometric.Size {
 
 	@Override
 	public DoubleType calculate(final Mesh input) {
 		double volume = 0;
-		for (Facet f : input.getFacets()) {
-			TriangularFacet tf = (TriangularFacet) f;
-			volume += signedVolumeOfTriangle(tf.getP0(), tf.getP1(), tf.getP2());	
+		for (final Triangle triangle : input.triangles()) {
+			volume += signedVolumeOfTriangle(//
+				triangle.v0x(), triangle.v0y(), triangle.v0z(), //
+				triangle.v1x(), triangle.v1y(), triangle.v1z(), //
+				triangle.v2x(), triangle.v2y(), triangle.v2z());
 		}
 		return new DoubleType(Math.abs(volume));
 	}
 
-	private double signedVolumeOfTriangle(Vector3D p0, Vector3D p1, Vector3D p2) {
-		 return p0.dotProduct(p1.crossProduct(p2)) / 6.0f;
-	}
-	
-	@Override
-	public boolean conforms() {
-		return in().triangularFacets();
-	}
+	private double signedVolumeOfTriangle(//
+		final double p0x, final double p0y, final double p0z, //
+		final double p1x, final double p1y, final double p1z, //
+		final double p2x, final double p2y, final double p2z)
+	{
+		// cross product
+		final double cpx = MathArrays.linearCombination(p1y, p2z, -p1z, p2y);
+		final double cpy = MathArrays.linearCombination(p1z, p2x, -p1x, p2z);
+		final double cpz = MathArrays.linearCombination(p1x, p2y, -p1y, p2x);
 
+		// dot product
+		return MathArrays.linearCombination(p0x, cpx, p0y, cpy, p0z, cpz) / 6.0f;
+	}
 }

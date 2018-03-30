@@ -29,12 +29,14 @@
 
 package net.imagej.ops.geom.geom3d;
 
+import net.imagej.mesh.Mesh;
+import net.imagej.mesh.Triangle;
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.GeometricOp;
-import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
@@ -52,7 +54,17 @@ public class DefaultSurfaceArea extends AbstractUnaryHybridCF<Mesh, DoubleType>
 
 	@Override
 	public void compute(final Mesh input, final DoubleType output) {
-		output.set(input.getSurfaceArea());
+		double total = 0;
+		for (final Triangle tri : input.triangles()) {
+			final Vector3D v0 = new Vector3D(tri.v0x(), tri.v0y(), tri.v0z());
+			final Vector3D v1 = new Vector3D(tri.v1x(), tri.v1y(), tri.v1z());
+			final Vector3D v2 = new Vector3D(tri.v2x(), tri.v2y(), tri.v2z());
+
+			final Vector3D cross = v0.subtract(v1).crossProduct(v2.subtract(v0));
+			final double norm = cross.getNorm();
+			if (norm > 0) total += norm * 0.5;
+		}
+		output.set(total);
 	}
 	
 	@Override

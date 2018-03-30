@@ -28,14 +28,11 @@
  */
 package net.imagej.ops.geom.geom3d;
 
-import java.util.Set;
-
+import net.imagej.mesh.Mesh;
+import net.imagej.mesh.Triangle;
+import net.imagej.mesh.Vertices;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.geom.geom3d.mesh.DefaultMesh;
-import net.imagej.ops.geom.geom3d.mesh.Facet;
-import net.imagej.ops.geom.geom3d.mesh.Mesh;
-import net.imagej.ops.geom.geom3d.mesh.TriangularFacet;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.FinalInterval;
 import net.imglib2.RandomAccess;
@@ -83,9 +80,7 @@ public class DefaultVoxelization3D extends AbstractUnaryFunctionOp<Mesh, RandomA
 
 		Img<BitType> outImg = ops.create().img(new FinalInterval(width, height, depth), new BitType());
 
-		DefaultMesh dMesh = (DefaultMesh) input;
-
-		Set<RealLocalizable> verts = dMesh.getVertices();
+		Vertices verts = input.vertices();
 
 		RealPoint minPoint = new RealPoint(verts.iterator().next());
 		RealPoint maxPoint = new RealPoint(verts.iterator().next());
@@ -119,12 +114,10 @@ public class DefaultVoxelization3D extends AbstractUnaryFunctionOp<Mesh, RandomA
 		for (int k = 0; k < stepSizes.length; k++)
 			voxelHalfsize[k] = stepSizes[k] / 2.0;
 
-		for (Facet f : dMesh.getFacets()) {
-			TriangularFacet tri = (TriangularFacet) f;
-
-			Vector3D v1 = tri.getP0();
-			Vector3D v2 = tri.getP1();
-			Vector3D v3 = tri.getP2();
+		for (final Triangle tri : input.triangles()) {
+			final Vector3D v1 = new Vector3D(tri.v0x(), tri.v0y(), tri.v0z());
+			final Vector3D v2 = new Vector3D(tri.v1x(), tri.v1y(), tri.v1z());
+			final Vector3D v3 = new Vector3D(tri.v2x(), tri.v2y(), tri.v2z());
 
 			double[] minSubBoundary = new double[] {
 					Math.min(Math.min(v1.getX(), v2.getX()), v3.getX()) - minPoint.getDoublePosition(0),

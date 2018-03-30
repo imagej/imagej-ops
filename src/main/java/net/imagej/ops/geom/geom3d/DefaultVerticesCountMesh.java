@@ -29,9 +29,9 @@
 
 package net.imagej.ops.geom.geom3d;
 
+import net.imagej.mesh.Mesh;
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.GeometricOp;
-import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -53,7 +53,7 @@ public class DefaultVerticesCountMesh extends
 
 	@Override
 	public void compute(final Mesh input, final DoubleType output) {
-		output.set(input.getVertices().size());
+		output.set(input.vertices().size());
 	}
 	
 	@Override

@@ -28,6 +28,7 @@
  */
 package net.imagej.ops.geom.geom3d.mesh;
 
+import net.imagej.mesh.Mesh;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;

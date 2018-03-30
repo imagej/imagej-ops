@@ -29,14 +29,11 @@
 
 package net.imagej.ops.geom.geom3d;
 
-import java.util.Iterator;
-
+import net.imagej.mesh.Mesh;
+import net.imagej.mesh.Triangle;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.geom.geom3d.mesh.Facet;
-import net.imagej.ops.geom.geom3d.mesh.Mesh;
-import net.imagej.ops.geom.geom3d.mesh.TriangularFacet;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
@@ -67,52 +64,53 @@ public class DefaultInertiaTensor3DMesh extends AbstractUnaryFunctionOp<Mesh, Re
 
 	@Override
 	public RealMatrix calculate(final Mesh input) {
-		final RealLocalizable o = centroid.calculate(input);
-		BlockRealMatrix tensor = new BlockRealMatrix(3, 3);
+		final RealLocalizable cent = centroid.calculate(input);
+		final double originX = cent.getDoublePosition(0);
+		final double originY = cent.getDoublePosition(1);
+		final double originZ = cent.getDoublePosition(2);
 
-		final Iterator<Facet> c = input.getFacets().iterator();
-		while (c.hasNext()) {
-			final TriangularFacet tf = (TriangularFacet) c.next();
-			tensor = tensor.add(tetrahedronInertiaTensor(tf.getVertex(0), tf.getVertex(1), tf.getVertex(2), o));
+		BlockRealMatrix tensor = new BlockRealMatrix(3, 3);
+		for (final Triangle triangle : input.triangles()) {
+			final double x1 = triangle.v0x() - originX;
+			final double y1 = triangle.v0y() - originY;
+			final double z1 = triangle.v0z() - originZ;
+			final double x2 = triangle.v1x() - originX;
+			final double y2 = triangle.v1y() - originY;
+			final double z2 = triangle.v1z() - originZ;
+			final double x3 = triangle.v2x() - originX;
+			final double y3 = triangle.v2y() - originY;
+			final double z3 = triangle.v2z() - originZ;
+			tensor = tensor.add(//
+				tetrahedronInertiaTensor(x1, y1, z1, x2, y2, z2, x3, y3, z3));
 		}
 
 		return tensor;
 	}
 
 	/**
-	 * The computations are based on this paper:
-	 * http://docsdrive.com/pdfs/sciencepublications/jmssp/2005/8-11.pdf
-	 * 
+	 * The computations are based on <a href=
+	 * "http://docsdrive.com/pdfs/sciencepublications/jmssp/2005/8-11.pdf">this
+	 * paper</a>.
+	 * <p>
 	 * Note: In the paper b' and c' are swapped.
+	 * </p>
 	 * 
-	 * @param p1
-	 *            triangular facet point
-	 * @param p2
-	 *            triangular facet point
-	 * @param p3
-	 *            triangular facet point
-	 * @param cent
-	 *            of the mesh
+	 * @param x1 X coordinate of first triangle vertex
+	 * @param y1 Y coordinate of first triangle vertex
+	 * @param z1 Z coordinate of first triangle vertex
+	 * @param x2 X coordinate of second triangle vertex
+	 * @param y2 Y coordinate of second triangle vertex
+	 * @param z2 Z coordinate of second triangle vertex
+	 * @param x3 X coordinate of third triangle vertex
+	 * @param y3 Y coordinate of third triangle vertex
+	 * @param z3 Z coordinate of third triangle vertex
 	 * @return inertia tensor of this tetrahedron
 	 */
-	private BlockRealMatrix tetrahedronInertiaTensor(final RealLocalizable p1, final RealLocalizable p2,
-			final RealLocalizable p3, final RealLocalizable cent) {
-		final double originX = cent.getDoublePosition(0);
-		final double originY = cent.getDoublePosition(1);
-		final double originZ = cent.getDoublePosition(2);
-
-		final double x1 = p1.getDoublePosition(0) - originX;
-		final double y1 = p1.getDoublePosition(1) - originY;
-		final double z1 = p1.getDoublePosition(2) - originZ;
-
-		final double x2 = p2.getDoublePosition(0) - originX;
-		final double y2 = p2.getDoublePosition(1) - originY;
-		final double z2 = p2.getDoublePosition(2) - originZ;
-
-		final double x3 = p3.getDoublePosition(0) - originX;
-		final double y3 = p3.getDoublePosition(1) - originY;
-		final double z3 = p3.getDoublePosition(2) - originZ;
-
+	private BlockRealMatrix tetrahedronInertiaTensor(//
+		final double x1, final double y1, final double z1, //
+		final double x2, final double y2, final double z2, //
+		final double x3, final double y3, final double z3)
+	{
 		final double volume = tetrahedronVolume(new Vector3D(x1, y1, z1), new Vector3D(x2, y2, z2),
 				new Vector3D(x3, y3, z3));
 
