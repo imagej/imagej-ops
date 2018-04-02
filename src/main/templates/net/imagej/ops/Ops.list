@@ -104,6 +104,7 @@ namespaces = ```
 		[name: "createFFTOutput",                iface: "CreateFFTOutput"],
 		[name: "partialDerivative",              iface: "PartialDerivative"],
 		[name: "allPartialDerivatives",          iface: "AllPartialDerivatives"],
+		[name: "derivativeGauss",                iface: "DerivativeGauss"],
 		[name: "dog",                            iface: "DoG",                 aliases: ["differenceOfGaussian"]],
 		[name: "fft",                            iface: "FFT"],
 		[name: "fftSize",                        iface: "FFTSize"],
@@ -338,6 +339,8 @@ namespaces = ```
 		[name: "topHat",                         iface: "TopHat"],
 	]],
 	[name: "segment", iface: "Segment", ops: [
+		[name: "detectRidges",                 iface: "DetectRidges"],
+		[name: "detectJunctions",              iface: "DetectJunctions"],
 	]],
 	[name: "stats", iface: "Stats", ops: [
 		[name: "geometricMean",                  iface: "GeometricMean"],
