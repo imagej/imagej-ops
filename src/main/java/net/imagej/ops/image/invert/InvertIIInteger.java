@@ -41,7 +41,6 @@ import net.imagej.types.UnboundedIntegerType;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.IntegerType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.integer.Unsigned128BitType;
 import net.imglib2.type.numeric.integer.UnsignedLongType;
 
@@ -53,7 +52,7 @@ import org.scijava.plugin.Plugin;
  * @author Gabe Selzer
  */
 @Plugin(type = Ops.Image.Invert.class, priority = Priority.HIGH)
-public class InvertIIInteger<T extends RealType<T>> extends
+public class InvertIIInteger<T extends IntegerType<T>> extends
 	AbstractUnaryComputerOp<IterableInterval<T>, IterableInterval<T>> implements
 	Contingent, Ops.Image.Invert
 {
@@ -72,8 +71,8 @@ public class InvertIIInteger<T extends RealType<T>> extends
 		final IterableInterval<T> output)
 	{
 		if (mapper == null) {
-			final BigInteger minValue = min == null ? ((IntegerType)(minValue(input.firstElement()))).getBigInteger() : ((IntegerType)min).getBigInteger();
-			final BigInteger maxValue = max == null ? ((IntegerType)(maxValue(input.firstElement()))).getBigInteger() : ((IntegerType)max).getBigInteger();
+			final BigInteger minValue = min == null ? (minValue(input.firstElement())).getBigInteger() : min.getBigInteger();
+			final BigInteger maxValue = max == null ? (maxValue(input.firstElement())).getBigInteger() : max.getBigInteger();
 			final BigInteger minMax = minValue.add(maxValue);
 			mapper = Computers.unary(ops(), Ops.Map.class, output, input,
 				new AbstractUnaryComputerOp<T, T>()
@@ -81,13 +80,11 @@ public class InvertIIInteger<T extends RealType<T>> extends
 
 					@Override
 					public void compute(T in, T out) {
-						BigInteger inverted = minMax.subtract(((IntegerType)in).getBigInteger());	
-						
-						if( inverted.compareTo(((IntegerType)minValue(out)).getBigInteger()) <= 0) out.set(minValue(out));
-						else if(inverted.compareTo(((IntegerType)maxValue(out)).getBigInteger()) >= 0) out.set(maxValue(out));
-						else ((IntegerType)out).setBigInteger(inverted);
-						
-						
+						BigInteger inverted = minMax.subtract(in.getBigInteger());
+
+						if( inverted.compareTo(minValue(out).getBigInteger()) <= 0) out.set(minValue(out));
+						else if(inverted.compareTo(maxValue(out).getBigInteger()) >= 0) out.set(maxValue(out));
+						else out.setBigInteger(inverted);
 					}
 				});
 		}
@@ -126,14 +123,17 @@ public class InvertIIInteger<T extends RealType<T>> extends
 
 	@Override
 	public boolean conforms() {
-		final T inType = in().firstElement();
-		
-		if (inType instanceof IntegerType) {
-			final IntegerType<?> copy = (IntegerType<?>) inType.createVariable();
-			copy.setInteger(Long.MAX_VALUE);
-			return copy.getIntegerLong() == Long.MAX_VALUE;
-		}
-		return false;
+		final Object inType = in().firstElement();
+
+		// HACK: Help the matcher overcome generics limitations.
+		if (!(inType instanceof IntegerType)) return false;
+
+		// HACK: Reject types that are small.
+		// Because the InvertII is faster.
+		// TODO: Think of a better solution.
+		final T copy =  in().firstElement().createVariable();
+		copy.setInteger(Long.MAX_VALUE);
+		return copy.getIntegerLong() == Long.MAX_VALUE;
 	}
 
 }

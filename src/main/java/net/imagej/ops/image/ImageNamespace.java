@@ -254,9 +254,8 @@ public class ImageNamespace extends AbstractNamespace {
 	// -- invert --
 
 	/** Executes the "invert" operation on the given arguments. */
-	@OpMethod(ops = {net.imagej.ops.image.invert.InvertII.class,
-		net.imagej.ops.image.invert.InvertIIInteger.class
-	})
+	@OpMethod(ops = { net.imagej.ops.image.invert.InvertII.class,
+		net.imagej.ops.image.invert.InvertIIInteger.class }, skipTypeCheck = true)
 	public <T extends RealType<T>> IterableInterval<T>
 		invert(final IterableInterval<T> out, final IterableInterval<T> in)
 	{
@@ -271,7 +270,7 @@ public class ImageNamespace extends AbstractNamespace {
 	 * {@link RealType} minimum.
 	 */
 	@OpMethod(ops = { net.imagej.ops.image.invert.InvertII.class,
-		net.imagej.ops.image.invert.InvertIIInteger.class })
+		net.imagej.ops.image.invert.InvertIIInteger.class }, skipTypeCheck = true)
 	public <T extends RealType<T>> IterableInterval<T> invert(
 		final IterableInterval<T> out, final IterableInterval<T> in,
 		final T min)
@@ -287,7 +286,7 @@ public class ImageNamespace extends AbstractNamespace {
 	 * {@link RealType} minimum.
 	 */
 	@OpMethod(ops = { net.imagej.ops.image.invert.InvertII.class,
-		net.imagej.ops.image.invert.InvertIIInteger.class })
+		net.imagej.ops.image.invert.InvertIIInteger.class }, skipTypeCheck = true)
 	public <T extends RealType<T>> IterableInterval<T>
 		invert(final IterableInterval<T> out, final IterableInterval<T> in,
 			final T min, final T max)
