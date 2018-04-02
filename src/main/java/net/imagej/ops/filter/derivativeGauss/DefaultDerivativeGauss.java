@@ -208,11 +208,11 @@ public class DefaultDerivativeGauss<T extends RealType<T>> extends
 			outputRA.setPosition(cursor);
 			sum = 0;
 			// loop from the bottom of the image to the top
-			for (int i = -(mask.length / 2); i <= mask.length / 2; i++) {
-				long[] pos = { cursor.getLongPosition(0) + i, cursor.getLongPosition(
-					1) };
-				inputRA.setPosition(pos);
-				sum += inputRA.get().getRealDouble() * mask[i + (mask.length / 2)];
+			final int halfWidth = mask.length / 2;
+			for (int i = -halfWidth; i <= halfWidth; i++) {
+				inputRA.setPosition(cursor.getLongPosition(0) + i, 0);
+				inputRA.setPosition(cursor.getLongPosition(1), 1);
+				sum += inputRA.get().getRealDouble() * mask[i + halfWidth];
 			}
 			outputRA.get().setReal(sum);
 		}
@@ -243,11 +243,11 @@ public class DefaultDerivativeGauss<T extends RealType<T>> extends
 			outputRA.setPosition(cursor);
 			sum = 0;
 			// loop from the bottom of the image to the top
-			for (int i = -(mask.length / 2); i <= mask.length / 2; i++) {
-				long[] pos = { cursor.getLongPosition(0), cursor.getLongPosition(1) +
-					i };
-				inputRA.setPosition(pos);
-				sum += inputRA.get().getRealDouble() * mask[i + (mask.length / 2)];
+			final int halfWidth = mask.length / 2;
+			for (int i = -halfWidth; i <= halfWidth; i++) {
+				inputRA.setPosition(cursor.getLongPosition(0), 0);
+				inputRA.setPosition(cursor.getLongPosition(1) + i, 1);
+				sum += inputRA.get().getRealDouble() * mask[i + halfWidth];
 			}
 			outputRA.get().setReal(sum);
 		}
