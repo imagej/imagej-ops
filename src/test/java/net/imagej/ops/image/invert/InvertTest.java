@@ -30,6 +30,7 @@
 package net.imagej.ops.image.invert;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.math.BigInteger;
 
@@ -397,6 +398,9 @@ public class InvertTest extends AbstractOpTest {
 		if (min == null && max == null) {
 			minMax = InvertIIInteger.minValue(in.firstElement()).getBigInteger().add(
 				InvertIIInteger.maxValue(in.firstElement()).getBigInteger());
+		}
+		else if (min == null || max == null) {
+			fail("Internal coding error");
 		}
 		else {
 			minMax = min.getBigInteger().add(max.getBigInteger());
