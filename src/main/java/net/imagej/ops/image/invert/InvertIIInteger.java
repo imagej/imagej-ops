@@ -30,25 +30,19 @@
 
 package net.imagej.ops.image.invert;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imagej.ops.special.function.Functions;
-import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.types.UnboundedIntegerType;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.IntegerType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.integer.AbstractIntegerType;
-import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.integer.Unsigned128BitType;
 import net.imglib2.type.numeric.integer.UnsignedLongType;
-import net.imglib2.type.numeric.integer.UnsignedVariableBitLengthType;
-import net.imglib2.util.Pair;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -58,82 +52,88 @@ import org.scijava.plugin.Plugin;
  * @author Gabe Selzer
  */
 @Plugin(type = Ops.Image.Invert.class, priority = Priority.HIGH)
-public class InvertIIInteger<I extends IntegerType<I>, O extends IntegerType<O>> extends
-	AbstractUnaryComputerOp<IterableInterval<I>, IterableInterval<O>> implements
-	Ops.Image.Invert
+public class InvertIIInteger<T extends IntegerType<T>> extends
+	AbstractUnaryComputerOp<IterableInterval<T>, IterableInterval<T>> implements
+	Contingent, Ops.Image.Invert
 {
 
 	@Parameter(required = false)
-	private I min;
+	private T min;
 
 	@Parameter(required = false)
-	private I max;
+	private T max;
 
-	private UnaryComputerOp<IterableInterval<I>, IterableInterval<O>> mapper;
+	private UnaryComputerOp<IterableInterval<T>, IterableInterval<T>> mapper;
+
 
 	@Override
-	public void compute(final IterableInterval<I> input,
-		final IterableInterval<O> output)
+	public void compute(final IterableInterval<T> input,
+		final IterableInterval<T> output)
 	{
 		if (mapper == null) {
-			final BigInteger minValue = min == null ? minValue(input.firstElement()).getBigInteger() : min.getBigInteger();
-			final BigInteger maxValue = max == null ? maxValue(input.firstElement()).getBigInteger() : max.getBigInteger();
+			final BigInteger minValue = min == null ? (minValue(input.firstElement())).getBigInteger() : min.getBigInteger();
+			final BigInteger maxValue = max == null ? (maxValue(input.firstElement())).getBigInteger() : max.getBigInteger();
 			final BigInteger minMax = minValue.add(maxValue);
 			mapper = Computers.unary(ops(), Ops.Map.class, output, input,
-				new AbstractUnaryComputerOp<I, O>()
+				new AbstractUnaryComputerOp<T, T>()
 			{
 
 					@Override
-					public void compute(I in, O out) {
-						BigInteger inverted = minMax.subtract(in.getBigInteger());	
-						
+					public void compute(T in, T out) {
+						BigInteger inverted = minMax.subtract(in.getBigInteger());
+
 						if( inverted.compareTo(minValue(out).getBigInteger()) <= 0) out.set(minValue(out));
 						else if(inverted.compareTo(maxValue(out).getBigInteger()) >= 0) out.set(maxValue(out));
 						else out.setBigInteger(inverted);
-						
-						
 					}
 				});
 		}
 		mapper.compute(input, output);
+
 	}
 
 	public static <T extends RealType<T>> T minValue(T type) {
-		if (type instanceof UnboundedIntegerType){
-			UnboundedIntegerType t = new UnboundedIntegerType();
-			t.setReal(0);
-			return (T) t;
-		}
-
-		T min = type.createVariable();
-		min.setReal(min.getMinValue());
-		return (T) min;
+		// TODO: Consider making minValue an op.
+		final T min = type.createVariable();
+		if (type instanceof UnboundedIntegerType) min.setReal(0);
+		else min.setReal(min.getMinValue());
+		return min;
 
 	}
-	
+
 	public static <T extends RealType<T>> T maxValue(T type) {
-		if (type instanceof Unsigned128BitType) {
-			Unsigned128BitType t = new Unsigned128BitType();
+		// TODO: Consider making maxValue an op.
+		final T max = type.createVariable();
+		if (max instanceof Unsigned128BitType) {
+			final Unsigned128BitType t = (Unsigned128BitType) max;
 			t.set(t.getMaxBigIntegerValue());
-			return (T) t;
 		}
-		else if (type instanceof UnsignedLongType) {
-			UnsignedLongType t = new UnsignedLongType();
+		else if (max instanceof UnsignedLongType) {
+			final UnsignedLongType t = (UnsignedLongType) max;
 			t.set(t.getMaxBigIntegerValue());
-			return (T) t;
 		}
-		else if (type instanceof UnboundedIntegerType) {
-			UnboundedIntegerType t = new UnboundedIntegerType();
-			t.setReal(0);
-			return (T) t;
-
+		else if (max instanceof UnboundedIntegerType) {
+			max.setReal(0);
 		}
-						
-			T t = type.createVariable();
-			t.setReal(type.getMaxValue());
-			return (T) t;
-
+		else {
+			max.setReal(type.getMaxValue());
+		}
+		return max;
 	}
-	
-}
 
+	@Override
+	public boolean conforms() {
+		final Object inType = in().firstElement();
+
+		// HACK: Help the matcher overcome generics limitations.
+		if (!(inType instanceof IntegerType)) return false;
+
+		// HACK: Reject types that are small.
+		// Because the InvertII is faster.
+		// TODO: Think of a better solution.
+		final T copy =  in().firstElement().createVariable();
+		copy.setInteger(Long.MAX_VALUE);
+		return copy.getIntegerLong() == Long.MAX_VALUE;
+	}
+
+}
