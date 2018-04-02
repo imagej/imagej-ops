@@ -55,7 +55,7 @@ import net.imglib2.view.Views;
 public class WatershedBinarySingleSigmaTest extends AbstractOpTest {
 
 	@SuppressWarnings("unchecked")
-//	@Test
+	@Test
 	public void test() {
 		// load test image
 		Img<FloatType> watershedTestImg = openFloatImg(WatershedTest.class, "watershed_test_image.png");
