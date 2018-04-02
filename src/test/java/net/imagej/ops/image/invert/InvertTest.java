@@ -64,6 +64,8 @@ import net.imglib2.type.numeric.real.FloatType;
 import org.junit.Test;
 
 /**
+ * Tests {@link InvertII} and {@link InvertIIInteger}.
+ * 
  * @author Martin Horn (University of Konstanz)
  * @author Gabe Selzer
  */
