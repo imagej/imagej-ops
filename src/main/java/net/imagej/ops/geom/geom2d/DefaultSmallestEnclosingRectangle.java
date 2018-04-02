@@ -34,12 +34,14 @@ import java.util.List;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.geom.GeomUtils;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
-import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.geom.real.DefaultWritablePolygon2D;
+import net.imglib2.roi.geom.real.Polygon2D;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
@@ -52,39 +54,43 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Geometric.SmallestEnclosingBoundingBox.class,
 	label = "Geometric (2D): Smallest Enclosing Rectangle")
 public class DefaultSmallestEnclosingRectangle extends
-	AbstractUnaryFunctionOp<Polygon, Polygon> implements Contingent,
+	AbstractUnaryFunctionOp<Polygon2D, Polygon2D> implements Contingent,
 	Ops.Geometric.SmallestEnclosingBoundingBox
 {
 
-	private UnaryFunctionOp<Polygon, Polygon> convexHullFunc;
-	private UnaryFunctionOp<Polygon, RealLocalizable> centroidFunc;
-	private UnaryFunctionOp<Polygon, DoubleType> areaFunc;
-	private UnaryFunctionOp<Polygon, Polygon> boundingBoxFunc;
+	private UnaryFunctionOp<Polygon2D, Polygon2D> convexHullFunc;
+	private UnaryFunctionOp<Polygon2D, RealLocalizable> centroidFunc;
+	private UnaryFunctionOp<Polygon2D, DoubleType> areaFunc;
+	private UnaryFunctionOp<Polygon2D, Polygon2D> boundingBoxFunc;
 
 	@Override
 	public void initialize() {
-		convexHullFunc = Functions.unary(ops(), Ops.Geometric.ConvexHull.class, Polygon.class, in());
-		centroidFunc = Functions.unary(ops(), Ops.Geometric.Centroid.class, RealLocalizable.class, in());
-		areaFunc = Functions.unary(ops(), Ops.Geometric.Size.class, DoubleType.class, in());
-		boundingBoxFunc = Functions.unary(ops(), Ops.Geometric.BoundingBox.class, Polygon.class, in());
+		convexHullFunc = Functions.unary(ops(),
+			Ops.Geometric.ConvexHull.class, Polygon2D.class, in());
+		centroidFunc = Functions.unary(ops(), Ops.Geometric.Centroid.class,
+			RealLocalizable.class, in());
+		areaFunc = Functions.unary(ops(), Ops.Geometric.Size.class,
+			DoubleType.class, in());
+		boundingBoxFunc = Functions.unary(ops(),
+			Ops.Geometric.BoundingBox.class, Polygon2D.class, in());
 	}
 
 	/**
-	 * Rotates the given Polygon consisting of a list of RealPoints by the given
-	 * angle about the given center.
+	 * Rotates the given Polygon2D consisting of a list of RealPoints by the
+	 * given angle about the given center.
 	 *
-	 * @param inPoly A Polygon consisting of a list of RealPoint RealPoints
+	 * @param inPoly A Polygon2D consisting of a list of RealPoint RealPoints
 	 * @param angle the rotation angle
 	 * @param center the rotation center
 	 * @return a rotated polygon
 	 */
-	private Polygon rotate(final Polygon inPoly, final double angle,
+	private Polygon2D rotate(final Polygon2D inPoly, final double angle,
 		final RealLocalizable center)
 	{
 
 		List<RealLocalizable> out = new ArrayList<>();
 
-		for (RealLocalizable RealPoint : inPoly.getVertices()) {
+		for (RealLocalizable RealPoint : GeomUtils.vertices(inPoly)) {
 
 			// double angleInRadians = Math.toRadians(angleInDegrees);
 			double cosTheta = Math.cos(angle);
@@ -101,28 +107,27 @@ public class DefaultSmallestEnclosingRectangle extends
 			out.add(new RealPoint(x, y));
 		}
 
-		return new Polygon(out);
+		return new DefaultWritablePolygon2D(out);
 	}
 
 	@Override
-	public Polygon calculate(final Polygon input) {
-		Polygon ch = convexHullFunc.calculate(input);
+	public Polygon2D calculate(final Polygon2D input) {
+		Polygon2D ch = convexHullFunc.calculate(input);
 		RealLocalizable cog = centroidFunc.calculate(ch);
 
-		Polygon minBounds = input;
+		Polygon2D minBounds = input;
 		double minArea = Double.POSITIVE_INFINITY;
 		// for each edge (i.e. line from P(i-1) to P(i)
-		for (int i = 1; i < ch.getVertices().size() - 1; i++) {
-			final double angle = Math.atan2(ch.getVertices().get(i).getDoublePosition(1) -
-				ch.getVertices().get(i - 1).getDoublePosition(1), ch.getVertices().get(
-					i).getDoublePosition(0) - ch.getVertices().get(i - 1)
-						.getDoublePosition(0));
+		for (int i = 1; i < ch.numVertices() - 1; i++) {
+			final double angle = Math.atan2(ch.vertex(i).getDoublePosition(1) - ch
+				.vertex(i - 1).getDoublePosition(1), ch.vertex(i).getDoublePosition(0) -
+					ch.vertex(i - 1).getDoublePosition(0));
 
 			// rotate the polygon in such a manner that the line has an angle of 0
-			final Polygon rotatedPoly = rotate(ch, -angle, cog);
+			final Polygon2D rotatedPoly = rotate(ch, -angle, cog);
 
 			// get the bounds
-			final Polygon bounds = boundingBoxFunc.calculate(rotatedPoly);
+			final Polygon2D bounds = boundingBoxFunc.calculate(rotatedPoly);
 
 			// calculate the area of the bounds
 			final double area = areaFunc.calculate(bounds).get();
@@ -134,18 +139,18 @@ public class DefaultSmallestEnclosingRectangle extends
 				minBounds = rotate(bounds, angle, cog);
 			}
 		}
-		
+
 		// edge (n-1) to 0
-		final double angle = Math.atan2(ch.getVertices().get(0).getDoublePosition(1) -
-				ch.getVertices().get(ch.getVertices().size() - 1).getDoublePosition(1), ch.getVertices().get(
-					0).getDoublePosition(0) - ch.getVertices().get(ch.getVertices().size() - 1)
-						.getDoublePosition(0));
+		final double angle = Math.atan2(ch.vertex(0).getDoublePosition(1) - ch
+			.vertex(ch.numVertices() - 1).getDoublePosition(1), ch.vertex(0)
+				.getDoublePosition(0) - ch.vertex(ch.numVertices() - 1)
+					.getDoublePosition(0));
 
 		// rotate the polygon in such a manner that the line has an angle of 0
-		final Polygon rotatedPoly = rotate(ch, -angle, cog);
+		final Polygon2D rotatedPoly = rotate(ch, -angle, cog);
 
 		// get the bounds
-		final Polygon bounds = boundingBoxFunc.calculate(rotatedPoly);
+		final Polygon2D bounds = boundingBoxFunc.calculate(rotatedPoly);
 
 		// calculate the area of the bounds
 		final double area = areaFunc.calculate(bounds).get();

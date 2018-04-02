@@ -35,10 +35,12 @@ import java.util.Comparator;
 import java.util.List;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.geom.GeomUtils;
 import net.imagej.ops.geom.GeometricOp;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.RealLocalizable;
-import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.geom.real.DefaultWritablePolygon2D;
+import net.imglib2.roi.geom.real.Polygon2D;
 
 import org.scijava.plugin.Plugin;
 
@@ -48,14 +50,15 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Ops.Geometric.ConvexHull.class)
-public class DefaultConvexHull2D extends AbstractUnaryFunctionOp<Polygon, Polygon>
-	implements GeometricOp<Polygon, Polygon>, Ops.Geometric.ConvexHull
+public class DefaultConvexHull2D extends AbstractUnaryFunctionOp<Polygon2D, Polygon2D>
+	implements GeometricOp<Polygon2D, Polygon2D>, Ops.Geometric.ConvexHull
 {
 
 	@Override
-	public Polygon calculate(final Polygon input) {
+	public Polygon2D calculate(final Polygon2D input) {
 		// create a copy of points because se will get resorted, etc.
-		List<? extends RealLocalizable> RealPoints = new ArrayList<RealLocalizable>(input.getVertices());
+		List<? extends RealLocalizable> RealPoints = new ArrayList<>(GeomUtils
+			.vertices(input));
 
 		// Sort RealPoints of P by x-coordinate (in case of a tie, sort by
 		// y-coordinate).
@@ -117,7 +120,7 @@ public class DefaultConvexHull2D extends AbstractUnaryFunctionOp<Polygon, Polygo
 		// concatenate L and U
 		L.addAll(U);
 
-		return new Polygon(L);
+		return new DefaultWritablePolygon2D(L);
 	}
 
 	/**

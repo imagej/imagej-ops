@@ -1,4 +1,4 @@
-/*-
+/*
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
@@ -6,13 +6,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -26,41 +26,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geom.geom2d;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Geometric.MinimumFeretsDiameter;
-import net.imagej.ops.special.function.Functions;
-import net.imagej.ops.special.function.UnaryFunctionOp;
-import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+package net.imagej.ops.geom;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geom.real.Polygon2D;
-import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.util.Pair;
 
-import org.scijava.plugin.Plugin;
+/**
+ * Utility class for Ops in the GeomNamespace.
+ *
+ * @author Alison Walter
+ */
+public final class GeomUtils {
 
-@Plugin(type = Ops.Geometric.MinimumFeretsDiameter.class)
-public class DefaultMinimumFeretDiameter extends AbstractUnaryHybridCF<Polygon2D, DoubleType>
-		implements MinimumFeretsDiameter {
-
-	@SuppressWarnings("rawtypes")
-	private UnaryFunctionOp<Polygon2D, Pair> minFeret;
-	@SuppressWarnings("rawtypes")
-	private UnaryFunctionOp<Pair, DoubleType> feretDiameter;
-
-	@Override
-	public void initialize() {
-		minFeret = Functions.unary(ops(), Ops.Geometric.MinimumFeret.class, Pair.class, in());
-		feretDiameter = Functions.unary(ops(), Ops.Geometric.FeretsDiameter.class, DoubleType.class, Pair.class);
+	private GeomUtils() {
+		// NB: prevent instantiation of utility class
 	}
 
-	@Override
-	public void compute(Polygon2D input, DoubleType output) {
-		output.set(feretDiameter.calculate(minFeret.calculate(input)).get());
-	}
-
-	@Override
-	public DoubleType createOutput(Polygon2D input) {
-		return new DoubleType();
+	public static List<RealLocalizable> vertices(final Polygon2D polygon) {
+		final List<RealLocalizable> vertices = new ArrayList<>(polygon
+			.numVertices());
+		for (int i = 0; i < polygon.numVertices(); i++)
+			vertices.add(polygon.vertex(i));
+		return vertices;
 	}
 }

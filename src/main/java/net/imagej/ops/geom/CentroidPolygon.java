@@ -35,7 +35,7 @@ import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
-import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.geom.real.Polygon2D;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
@@ -47,10 +47,10 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Centroid.class, label = "Geometric: Center of Gravity")
 public class CentroidPolygon extends
-	AbstractUnaryFunctionOp<Polygon, RealLocalizable> implements Ops.Geometric.Centroid
+	AbstractUnaryFunctionOp<Polygon2D, RealLocalizable> implements Ops.Geometric.Centroid
 {
 
-	private UnaryFunctionOp<Polygon, DoubleType> sizeFunc;
+	private UnaryFunctionOp<Polygon2D, DoubleType> sizeFunc;
 
 	@Override
 	public void initialize() {
@@ -58,15 +58,14 @@ public class CentroidPolygon extends
 	}
 
 	@Override
-	public RealLocalizable calculate(final Polygon input) {
+	public RealLocalizable calculate(final Polygon2D input) {
 
 		double area = sizeFunc.calculate(input).get();
 		double cx = 0;
 		double cy = 0;
-		for (int i = 0; i < input.getVertices().size(); i++) {
-			RealLocalizable p0 = input.getVertices().get(i);
-			RealLocalizable p1 = input.getVertices().get((i + 1) % input.getVertices()
-					.size());
+		for (int i = 0; i < input.numVertices(); i++) {
+			RealLocalizable p0 = input.vertex(i);
+			RealLocalizable p1 = input.vertex((i + 1) % input.numVertices());
 
 			double p0_x = p0.getDoublePosition(0);
 			double p0_y = p0.getDoublePosition(1);

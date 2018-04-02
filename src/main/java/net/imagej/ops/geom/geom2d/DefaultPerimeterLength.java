@@ -32,9 +32,10 @@ package net.imagej.ops.geom.geom2d;
 import java.util.List;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.geom.GeomUtils;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.RealLocalizable;
-import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.geom.real.Polygon2D;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
@@ -47,13 +48,13 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Geometric.BoundarySize.class,
 	label = "Geometric (2D): Perimeter")
 public class DefaultPerimeterLength extends
-	AbstractUnaryHybridCF<Polygon, DoubleType> implements Ops.Geometric.BoundarySize
+	AbstractUnaryHybridCF<Polygon2D, DoubleType> implements Ops.Geometric.BoundarySize
 {
 
 	@Override
-	public void compute(final Polygon input, final DoubleType output) {
+	public void compute(final Polygon2D input, final DoubleType output) {
 		double perimeter = 0;
-		final List<? extends RealLocalizable> vertices = input.getVertices();
+		final List<? extends RealLocalizable> vertices = GeomUtils.vertices(input);
 		final int size = vertices.size();
 		for (int i = 0; i < size; i++) {
 			final int nexti = (i + 1) % size;
@@ -68,7 +69,7 @@ public class DefaultPerimeterLength extends
 	}
 	
 	@Override
-	public DoubleType createOutput(Polygon input) {
+	public DoubleType createOutput(Polygon2D input) {
 		return new DoubleType();
 	}
 
