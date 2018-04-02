@@ -40,7 +40,6 @@ import net.imglib2.histogram.Histogram1d;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.Type;
-import net.imglib2.type.numeric.IntegerType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.IntType;
 
@@ -258,7 +257,7 @@ public class ImageNamespace extends AbstractNamespace {
 	@OpMethod(ops = {net.imagej.ops.image.invert.InvertII.class,
 		net.imagej.ops.image.invert.InvertIIInteger.class
 	})
-	public <T extends RealType> IterableInterval<T>
+	public <T extends RealType<T>> IterableInterval<T>
 		invert(final IterableInterval<T> out, final IterableInterval<T> in)
 	{
 		@SuppressWarnings("unchecked")
@@ -275,7 +274,7 @@ public class ImageNamespace extends AbstractNamespace {
 		net.imagej.ops.image.invert.InvertIIInteger.class })
 	public <T extends RealType<T>> IterableInterval<T> invert(
 		final IterableInterval<T> out, final IterableInterval<T> in,
-		final RealType<T> min)
+		final T min)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
@@ -291,7 +290,7 @@ public class ImageNamespace extends AbstractNamespace {
 		net.imagej.ops.image.invert.InvertIIInteger.class })
 	public <T extends RealType<T>> IterableInterval<T>
 		invert(final IterableInterval<T> out, final IterableInterval<T> in,
-			final RealType<T> min, final RealType<T> max)
+			final T min, final T max)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
