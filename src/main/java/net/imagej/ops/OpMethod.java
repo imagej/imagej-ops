@@ -47,4 +47,13 @@ public @interface OpMethod {
 
 	Class<? extends Op>[] ops() default {};
 
+	/**
+	 * A HACK to allow whitelisting known-good namespace method signatures.
+	 * <p>
+	 * Methods with this attribute set to true will still count toward namespace
+	 * completeness, but their the strict type argument check will be skipped.
+	 * <em>DO NOT USE THIS UNLESS YOU ARE CONFIDENT IT IS CORRECT AND NEEDED.</em>
+	 * </p>
+	 */
+	boolean skipTypeCheck() default false;
 }
