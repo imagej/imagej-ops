@@ -198,8 +198,7 @@ public class DefaultDerivativeGauss<T extends RealType<T>> extends
 		double sum;
 		Cursor<T> cursor = Views.iterable(input).localizingCursor();
 		OutOfBoundsMirrorFactory<T, RandomAccessibleInterval<T>> osmf =
-			new OutOfBoundsMirrorFactory<T, RandomAccessibleInterval<T>>(
-				Boundary.SINGLE);
+			new OutOfBoundsMirrorFactory<>(Boundary.SINGLE);
 		RandomAccess<T> inputRA = osmf.create(input);
 		RandomAccess<T> outputRA = output.randomAccess();
 
@@ -234,8 +233,7 @@ public class DefaultDerivativeGauss<T extends RealType<T>> extends
 		double sum;
 		Cursor<T> cursor = Views.iterable(input).localizingCursor();
 		OutOfBoundsMirrorFactory<T, RandomAccessibleInterval<T>> osmf =
-			new OutOfBoundsMirrorFactory<T, RandomAccessibleInterval<T>>(
-				Boundary.SINGLE);
+			new OutOfBoundsMirrorFactory<>(Boundary.SINGLE);
 		RandomAccess<T> inputRA = osmf.create(input);
 		RandomAccess<DoubleType> outputRA = output.randomAccess();
 
