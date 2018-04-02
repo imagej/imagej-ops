@@ -30,11 +30,13 @@
 package net.imagej.ops.image.invert;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 
 import java.math.BigInteger;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.types.UnboundedIntegerType;
 import net.imglib2.Cursor;
@@ -316,7 +318,9 @@ public class InvertTest extends AbstractOpTest {
 		min.setReal(type.getMinValue());
 		final T max = type.copy();
 		max.setReal(type.getMaxValue());
-		ops.run(InvertII.class, out, in);
+		final Op op = ops.op(Ops.Image.Invert.class, out, in);
+		assertSame(InvertII.class, op.getClass());
+		op.run();
 
 		defaultCompare(in, out, min, max);
 	}
@@ -326,7 +330,9 @@ public class InvertTest extends AbstractOpTest {
 			final T min, final T max)
 	{
 
-		ops.run(InvertII.class, out, in, (min), (max));
+		final Op op = ops.op(Ops.Image.Invert.class, out, in, (min), (max));
+		assertSame(InvertII.class, op.getClass());
+		op.run();
 
 		defaultCompare(in, out, min, max);
 	}
@@ -359,7 +365,9 @@ public class InvertTest extends AbstractOpTest {
 	{
 
 		// unsigned type test
-		ops.run(Ops.Image.Invert.class, out, in, min, max);
+		final Op op = ops.op(Ops.Image.Invert.class, out, in, min, max);
+		assertSame(InvertIIInteger.class, op.getClass());
+		op.run();
 
 		integerCompare(in, out, min, max);
 
@@ -369,7 +377,9 @@ public class InvertTest extends AbstractOpTest {
 		assertIntegerInvert(final Img<T> in, final Img<T> out)
 	{
 
-		ops.run(Ops.Image.Invert.class, out, in);
+		final Op op = ops.op(Ops.Image.Invert.class, out, in);
+		assertSame(InvertIIInteger.class, op.getClass());
+		op.run();
 		
 		Cursor<T> inCursor = in.localizingCursor();
 		Cursor<T> outCursor = out.localizingCursor();
