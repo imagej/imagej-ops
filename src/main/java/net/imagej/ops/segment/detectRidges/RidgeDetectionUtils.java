@@ -156,7 +156,7 @@ public class RidgeDetectionUtils {
 	 * dimensional point (e.g. in 3D cartesian space removing the z-coordinate
 	 * from the point).
 	 * 
-	 * @param RA - the random access of the n>2 dimensional image.
+	 * @param RA - the random access of the {@code n>2} dimensional image.
 	 * @return Point in 2D space.
 	 */
 	protected static Point get2DPoint(RandomAccess<DoubleType> RA) {
@@ -172,7 +172,7 @@ public class RidgeDetectionUtils {
 	 * dimensional Realpoint (e.g. in 3D cartesian space removing the z-coordinate
 	 * from the point).
 	 * 
-	 * @param RA - the random access of the n>2 dimensional image.
+	 * @param RA - the random access of the {@code n>2} dimensional image.
 	 * @return Point in 2D space.
 	 */
 	protected static RealPoint get2DRealPoint(RandomAccess<DoubleType> RA) {
