@@ -44,6 +44,7 @@ import net.imglib2.RealPoint;
 import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.roi.geom.real.DefaultWritablePolyline;
+import net.imglib2.roi.geom.real.WritablePolyline;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -57,7 +58,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Segment.DetectRidges.class)
 public class DefaultDetectRidges<T extends RealType<T>> extends
-	AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, List<DefaultWritablePolyline>>
+	AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, List<? extends WritablePolyline>>
 	implements Ops.Segment.DetectRidges, Contingent
 {
 
@@ -213,7 +214,7 @@ public class DefaultDetectRidges<T extends RealType<T>> extends
 	}
 
 	@Override
-	public List<DefaultWritablePolyline> calculate(RandomAccessibleInterval<T> input) {
+	public List<? extends WritablePolyline> calculate(RandomAccessibleInterval<T> input) {
 
 		double sigma = (width / (2 * Math.sqrt(3)));
 

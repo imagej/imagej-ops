@@ -38,7 +38,7 @@ import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.RealPoint;
-import net.imglib2.roi.geom.real.DefaultWritablePolyline;
+import net.imglib2.roi.geom.real.WritablePolyline;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
@@ -56,13 +56,13 @@ public class SegmentNamespace extends AbstractNamespace {
 	// -- detectRidges --
 
 	@OpMethod(op = net.imagej.ops.segment.detectRidges.DefaultDetectRidges.class)
-	public <T extends RealType<T>> List<DefaultWritablePolyline> detectRidges(
+	public <T extends RealType<T>> List<? extends WritablePolyline> detectRidges(
 		final RandomAccessibleInterval<T> input, final double width,
 		final double lowerThreshold, final double higherThreshold,
 		final int ridgeLengthMin)
 	{
 		@SuppressWarnings("unchecked")
-		final List<DefaultWritablePolyline> result = (List<DefaultWritablePolyline>) ops().run(
+		final List<? extends WritablePolyline> result = (List<? extends WritablePolyline>) ops().run(
 			Ops.Segment.DetectRidges.class, input, width, lowerThreshold,
 			higherThreshold, ridgeLengthMin);
 
@@ -72,7 +72,7 @@ public class SegmentNamespace extends AbstractNamespace {
 	// -- detectJunctions --
 	
 	@OpMethod(op = net.imagej.ops.segment.detectJunctions.DefaultDetectJunctions.class)
-	public List<RealPoint> detectJunctions(final List<DefaultWritablePolyline> lines)
+	public List<RealPoint> detectJunctions(final List<? extends WritablePolyline> lines)
 	{
 		@SuppressWarnings("unchecked")
 		final List<RealPoint> result = (List<RealPoint>) ops().run(
@@ -82,7 +82,7 @@ public class SegmentNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.segment.detectJunctions.DefaultDetectJunctions.class)
-	public List<RealPoint> detectJunctions(final List<DefaultWritablePolyline> lines,
+	public List<RealPoint> detectJunctions(final List<? extends WritablePolyline> lines,
 		final double threshold)
 	{
 		@SuppressWarnings("unchecked")

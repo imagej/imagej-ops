@@ -42,7 +42,7 @@ import net.imglib2.RealInterval;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.RealPositionable;
-import net.imglib2.roi.geom.real.DefaultWritablePolyline;
+import net.imglib2.roi.geom.real.WritablePolyline;
 import net.imglib2.roi.util.RealLocalizableRealPositionable;
 import net.imglib2.util.Intervals;
 
@@ -50,16 +50,19 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Finds the junctions between a {@link ArrayList} of {@link DefaultPolyline},
+ * Finds the junctions between a {@link ArrayList} of {@link WritablePolyline},
  * intended to be used optionally after running {@link DefaultDetectRidges} but
- * applicable to all groups of polylines. TODO refactor the op to determine
- * junction points between n-d {@link DefaultPolyline}
+ * applicable to all groups of polylines.
+ * <p>
+ * TODO refactor the op to determine junction points between n-d
+ * {@link WritablePolyline}
+ * </p>
  * 
  * @author Gabe Selzer
  */
 @Plugin(type = Ops.Segment.DetectJunctions.class)
 public class DefaultDetectJunctions extends
-	AbstractUnaryFunctionOp<List<DefaultWritablePolyline>, List<RealPoint>>
+	AbstractUnaryFunctionOp<List<? extends WritablePolyline>, List<RealPoint>>
 	implements Ops.Segment.DetectJunctions, Contingent
 {
 
@@ -100,16 +103,16 @@ public class DefaultDetectJunctions extends
 	}
 
 	@Override
-	public List<RealPoint> calculate(List<DefaultWritablePolyline> input) {
+	public List<RealPoint> calculate(List<? extends WritablePolyline> input) {
 
 		// output that allows for both split polyline inputs and a
 		// realPointCollection for our junctions.
 		List<RealPoint> output = new ArrayList<>();
 
 		for (int first = 0; first < input.size() - 1; first++) {
-			DefaultWritablePolyline firstLine = input.get(first);
+			WritablePolyline firstLine = input.get(first);
 			for (int second = first + 1; second < input.size(); second++) {
-				DefaultWritablePolyline secondLine = input.get(second);
+				WritablePolyline secondLine = input.get(second);
 				// interval containing both plines
 				Interval intersect = Intervals.intersect(slightlyEnlarge(firstLine, 2),
 					slightlyEnlarge(secondLine, 2));
