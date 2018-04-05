@@ -32,6 +32,7 @@ package net.imagej.ops.coloc;
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
+import net.imagej.ops.coloc.pValue.PValueResult;
 import net.imagej.ops.coloc.pearsons.PearsonsResult;
 import net.imagej.ops.special.function.BinaryFunctionOp;
 import net.imglib2.Dimensions;
@@ -116,51 +117,52 @@ public class ColocNamespace extends AbstractNamespace {
 	// -- pValue --
 
 	@OpMethod(op = net.imagej.ops.coloc.pValue.PValue.class)
-	public <T extends RealType<T>, U extends RealType<U>> Double pValue(
-		final RandomAccessibleInterval<T> in1,
+	public <T extends RealType<T>, U extends RealType<U>> PValueResult pValue(
+		final PValueResult out, final RandomAccessibleInterval<T> in1,
 		final RandomAccessibleInterval<U> in2,
 		final BinaryFunctionOp<Iterable<T>, Iterable<U>, Double> op)
 	{
-		final Double result = (Double) ops().run(
-			net.imagej.ops.coloc.pValue.PValue.class, in1, in2, op);
+		final PValueResult result = (PValueResult) ops().run(
+			net.imagej.ops.coloc.pValue.PValue.class, out, in1, in2, op);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.coloc.pValue.PValue.class)
-	public <T extends RealType<T>, U extends RealType<U>> Double pValue(
-		final RandomAccessibleInterval<T> in1,
+	public <T extends RealType<T>, U extends RealType<U>> PValueResult pValue(
+		final PValueResult out, final RandomAccessibleInterval<T> in1,
 		final RandomAccessibleInterval<U> in2,
 		final BinaryFunctionOp<Iterable<T>, Iterable<U>, Double> op,
 		final int nrRandomizations)
 	{
-		final Double result = (Double) ops().run(
-			net.imagej.ops.coloc.pValue.PValue.class, in1, in2, op, nrRandomizations);
+		final PValueResult result = (PValueResult) ops().run(
+			net.imagej.ops.coloc.pValue.PValue.class, out, in1, in2, op,
+			nrRandomizations);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.coloc.pValue.PValue.class)
-	public <T extends RealType<T>, U extends RealType<U>> Double pValue(
-		final RandomAccessibleInterval<T> in1,
+	public <T extends RealType<T>, U extends RealType<U>> PValueResult pValue(
+		final PValueResult out, final RandomAccessibleInterval<T> in1,
 		final RandomAccessibleInterval<U> in2,
 		final BinaryFunctionOp<Iterable<T>, Iterable<U>, Double> op,
 		final int nrRandomizations, final Dimensions psfSize)
 	{
-		final Double result = (Double) ops().run(
-			net.imagej.ops.coloc.pValue.PValue.class, in1, in2, op, nrRandomizations,
-			psfSize);
+		final PValueResult result = (PValueResult) ops().run(
+			net.imagej.ops.coloc.pValue.PValue.class, out, in1, in2, op,
+			nrRandomizations, psfSize);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.coloc.pValue.PValue.class)
-	public <T extends RealType<T>, U extends RealType<U>> Double pValue(
-		final RandomAccessibleInterval<T> in1,
+	public <T extends RealType<T>, U extends RealType<U>> PValueResult pValue(
+		final PValueResult out, final RandomAccessibleInterval<T> in1,
 		final RandomAccessibleInterval<U> in2,
 		final BinaryFunctionOp<Iterable<T>, Iterable<U>, Double> op,
 		final int nrRandomizations, final Dimensions psfSize, final long seed)
 	{
-		final Double result = (Double) ops().run(
-			net.imagej.ops.coloc.pValue.PValue.class, in1, in2, op, nrRandomizations,
-			psfSize, seed);
+		final PValueResult result = (PValueResult) ops().run(
+			net.imagej.ops.coloc.pValue.PValue.class, out, in1, in2, op,
+			nrRandomizations, psfSize, seed);
 		return result;
 	}
 
