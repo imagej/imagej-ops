@@ -42,7 +42,7 @@ import net.imglib2.type.numeric.real.DoubleType;
 import org.scijava.plugin.Plugin;
 
 /**
- * The coloc namespace contains ops that facilitate colocalization analysis. b
+ * The coloc namespace contains ops that facilitate colocalization analysis.
  *
  * @author Curtis Rueden
  * @author Ellen T Arena
