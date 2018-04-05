@@ -76,7 +76,7 @@ public class ColocNamespace extends AbstractNamespace {
 	// -- kendallTau --
 
 	@OpMethod(op = net.imagej.ops.coloc.kendallTau.KendallTauBRank.class)
-	public <T extends RealType<T>, U extends RealType<U>> Double kendallTau(final Iterable<T> image1, final Iterable<T> image2) {
+	public <T extends RealType<T>, U extends RealType<U>> Double kendallTau(final Iterable<T> image1, final Iterable<U> image2) {
 		final Double result = (Double) ops().run(net.imagej.ops.coloc.kendallTau.KendallTauBRank.class, image1, image2);
 		return result;
 	}
