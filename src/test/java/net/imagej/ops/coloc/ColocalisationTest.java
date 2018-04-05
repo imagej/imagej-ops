@@ -28,22 +28,35 @@
  */
 package net.imagej.ops.coloc;
 
-import io.scif.SCIFIOService;
-import io.scif.img.ImgIOException;
-import io.scif.img.ImgOpener;
+import java.util.Arrays;
+import java.util.Random;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.OpMatchingService;
 import net.imagej.ops.OpService;
+import net.imglib2.Interval;
+import net.imglib2.Localizable;
+import net.imglib2.Point;
+import net.imglib2.RandomAccessible;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.gauss.Gauss;
 import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
+import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
+import net.imglib2.type.numeric.real.FloatType;
+import net.imglib2.view.Views;
 
 import org.junit.Before;
 import org.scijava.Context;
 import org.scijava.app.StatusService;
 import org.scijava.cache.CacheService;
+
+import io.scif.SCIFIOService;
+import io.scif.img.ImgIOException;
+import io.scif.img.ImgOpener;
 
 /** Abstract base class for coloc op unit tests. */
 public abstract class ColocalisationTest extends AbstractOpTest {
@@ -105,5 +118,67 @@ public abstract class ColocalisationTest extends AbstractOpTest {
 			throw new IllegalStateException("File " + relPath +
 				" is unexpectedly inaccessible?");
 		}
+	}
+
+	/**
+	 * This method creates a noise image that has a specified mean. Every pixel
+	 * has a value uniformly distributed around mean with the maximum spread
+	 * specified.
+	 *
+	 * @return IllegalArgumentException if specified means and spreads are not
+	 *         valid
+	 */
+	public static <T extends RealType<T> & NativeType<T>>
+		Img<T> produceMeanBasedNoiseImage(T type, int width,
+			int height, double mean, double spread, double[] smoothingSigma,
+			long seed) throws IllegalArgumentException
+	{
+		if (mean < spread || (mean + spread) > type.getMaxValue()) {
+			throw new IllegalArgumentException(
+				"Mean must be larger than spread, and mean plus spread must be smaller than max of the type");
+		}
+		// create the new image
+		ImgFactory<T> imgFactory = new ArrayImgFactory<T>();
+		Img<T> noiseImage = imgFactory.create(new int[] {
+			width, height }, type); // "Noise image");
+
+		Random r = new Random(seed);
+		for (T value : Views.iterable(noiseImage)) {
+			value.setReal(mean + ((r.nextDouble() - 0.5) * spread));
+		}
+
+		return gaussianSmooth(noiseImage, smoothingSigma); // TO DO: call Ops
+																												// filter.gaus instead
+	}
+
+	/**
+	 * Gaussian Smooth of the input image using intermediate float format.
+	 * 
+	 * @param <T>
+	 * @param img
+	 * @param sigma
+	 * @return
+	 */
+	public static <T extends RealType<T> & NativeType<T>>
+		Img<T> gaussianSmooth(RandomAccessibleInterval<T> img,
+			double[] sigma)
+	{
+		Interval interval = Views.iterable(img);
+
+		ImgFactory<T> outputFactory = new ArrayImgFactory<T>();
+		final long[] dim = new long[img.numDimensions()];
+		img.dimensions(dim);
+		Img<T> output = outputFactory.create(dim, img
+			.randomAccess().get().createVariable());
+
+		final long[] pos = new long[img.numDimensions()];
+		Arrays.fill(pos, 0);
+		Localizable origin = new Point(pos);
+
+		ImgFactory<FloatType> tempFactory = new ArrayImgFactory<FloatType>();
+		RandomAccessible<T> input = Views.extendMirrorSingle(img);
+		Gauss.inFloat(sigma, input, interval, output, origin, tempFactory);
+
+		return output;
 	}
 }
