@@ -33,7 +33,6 @@ import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.coloc.pValue.PValueResult;
-import net.imagej.ops.coloc.pearsons.PearsonsResult;
 import net.imagej.ops.special.function.BinaryFunctionOp;
 import net.imglib2.Dimensions;
 import net.imglib2.RandomAccessibleInterval;
@@ -85,32 +84,11 @@ public class ColocNamespace extends AbstractNamespace {
 	// -- pearsons --
 
 	@OpMethod(op = net.imagej.ops.coloc.pearsons.Pearsons.class)
-	public <T extends RealType<T>, U extends RealType<U>> PearsonsResult pearsons(
+	public <T extends RealType<T>, U extends RealType<U>> Double pearsons(
 		final Iterable<T> image1, final Iterable<U> image2)
 	{
-		final PearsonsResult result = (PearsonsResult) ops().run(
+		final Double result = (Double) ops().run(
 			net.imagej.ops.coloc.pearsons.Pearsons.class, image1, image2);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.coloc.pearsons.Pearsons.class)
-	public <T extends RealType<T>, U extends RealType<U>> PearsonsResult pearsons(
-		final Iterable<T> image1, final Iterable<U> image2, final T threshold1)
-	{
-		final PearsonsResult result = (PearsonsResult) ops().run(
-			net.imagej.ops.coloc.pearsons.Pearsons.class, image1, image2,
-			threshold1);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.coloc.pearsons.Pearsons.class)
-	public <T extends RealType<T>, U extends RealType<U>> PearsonsResult pearsons(
-		final Iterable<T> image1, final Iterable<U> image2, final T threshold1,
-		final U threshold2)
-	{
-		final PearsonsResult result = (PearsonsResult) ops().run(
-			net.imagej.ops.coloc.pearsons.Pearsons.class, image1, image2,
-			threshold1, threshold2);
 		return result;
 	}
 
