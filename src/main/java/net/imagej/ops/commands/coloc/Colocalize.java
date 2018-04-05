@@ -52,6 +52,9 @@ public class Colocalize<T extends RealType<T>> implements Command {
 	@Parameter(label = "MTKT")
 	private boolean mtkt;
 
+	@Parameter(label = "SACA")
+	private boolean saca;
+
 	@Parameter(type=ItemIO.OUTPUT)
 	private GenericTable table;
 
@@ -98,6 +101,9 @@ public class Colocalize<T extends RealType<T>> implements Command {
 		if(mtkt) {
 			calculateRow(Ops.Coloc.MaxTKendallTau.class, algorithmColumn, pValueColumn, colocValueColumn, colocArrayColumn, "MTKT", psfSize);
 		}
+		if(saca) {
+			// TODO: generate pixel-wise image output
+		}
 		
 		table.setRowCount(algorithmColumn.size());
 	}
@@ -125,4 +131,13 @@ public class Colocalize<T extends RealType<T>> implements Command {
 		}
 		psfSizeString = sb.toString();
 	}
+//	/* TODO PIXEL-WISE - to be implemented in second iteration of Colocalize command
+//	 * OUTPUTS:
+//	 * 1) array of z-scores
+//	 * 2) array of SigPixel (0 or 1) - binary mask overlay
+//	 */
+////	@Parameter(type=ItemIO.OUTPUT)
+////	private Img<DoubleType> heatMap; // PIXEL-WISE OUTPUT
+//
+//	// OPTION: add Parameter for neighborhood size/shape for pixel-wise measure
 }
