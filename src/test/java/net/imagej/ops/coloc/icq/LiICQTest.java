@@ -32,11 +32,17 @@ package net.imagej.ops.coloc.icq;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
-
 import net.imagej.ops.coloc.ColocalisationTest;
+import net.imagej.ops.coloc.pValue.PValue;
+import net.imagej.ops.coloc.pValue.PValueResult;
+import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.real.FloatType;
+
+import org.junit.Test;
 
 /**
  * Tests {@link net.imagej.ops.Ops.Coloc.ICQ}.
@@ -50,7 +56,7 @@ public class LiICQTest extends ColocalisationTest {
 		final Img<ByteType> img1 = generateByteArrayTestImg(true, 10, 15, 20);
 		final Img<ByteType> img2 = generateByteArrayTestImg(true, 10, 15, 20);
 
-		final Object icqValue = ops.run(LiICQ.class, img1, img2);
+		final Object icqValue = ops.coloc().icq(img1, img2);
 
 		assertTrue(icqValue instanceof Double);
 		assertEquals(0.5, (Double) icqValue, 0.0);
@@ -61,7 +67,8 @@ public class LiICQTest extends ColocalisationTest {
 	 */
 	@Test
 	public void liPositiveCorrTest() {
-		final Object icqValue = ops.run(LiICQ.class, positiveCorrelationImageCh1, positiveCorrelationImageCh2);
+		final Object icqValue = ops.run(LiICQ.class, positiveCorrelationImageCh1,
+			positiveCorrelationImageCh2);
 
 		assertTrue(icqValue instanceof Double);
 		final double icq = (Double) icqValue;
@@ -74,11 +81,30 @@ public class LiICQTest extends ColocalisationTest {
 	 */
 	@Test
 	public void liZeroCorrTest() {
-		final Object icqValue = ops.run(LiICQ.class, zeroCorrelationImageCh1, zeroCorrelationImageCh2);
+		final Object icqValue = ops.coloc().icq(zeroCorrelationImageCh1,
+			zeroCorrelationImageCh2);
 
 		assertTrue(icqValue instanceof Double);
 		final double icq = (Double) icqValue;
 		assertTrue(Math.abs(icq) < 0.01);
+	}
+
+	/**
+	 * Checks calculated pValue for Li's ICQ.
+	 */
+	@Test
+	public void testPValue() {
+		final double mean = 0.2;
+		final double spread = 0.1;
+		final double[] sigma = new double[] { 3.0, 3.0 };
+		Img<FloatType> ch1 = ColocalisationTest.produceMeanBasedNoiseImage(new FloatType(), 24, 24,
+			mean, spread, sigma, 0x01234567);
+		Img<FloatType> ch2 = ColocalisationTest.produceMeanBasedNoiseImage(new FloatType(), 24, 24,
+			mean, spread, sigma, 0x98765432);
+		BinaryFunctionOp<RandomAccessibleInterval<FloatType>, RandomAccessibleInterval<FloatType>, Double> op =
+			Functions.binary(ops, LiICQ.class, Double.class, ch1, ch2);
+		PValueResult value = (PValueResult) ops.run(PValue.class, new PValueResult(), ch1, ch2, op);
+		assertEquals(0.786, value.getPValue(), 0.0);
 	}
 
 }

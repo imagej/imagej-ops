@@ -35,7 +35,6 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.IterablePair;
 import net.imglib2.util.Pair;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -46,38 +45,15 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Coloc.Pearsons.class)
 public class Pearsons<T extends RealType<T>, U extends RealType<U>> extends
-	AbstractBinaryFunctionOp<Iterable<T>, Iterable<U>, PearsonsResult> implements
+	AbstractBinaryFunctionOp<Iterable<T>, Iterable<U>, Double> implements
 	Ops.Coloc.Pearsons
 {
 
-	public enum ThresholdMode {
-			Above, None
-	}
-
-	@Parameter(required = false)
-	private T threshold1;
-
-	@Parameter(required = false)
-	private U threshold2;
-
 	@Override
-	public PearsonsResult calculate(final Iterable<T> image1,
+	public Double calculate(final Iterable<T> image1,
 		final Iterable<U> image2)
 	{
-		// get the 2 images for the calculation of Pearson's
-		final Iterable<Pair<T, U>> samples = new IterablePair<>(image1, image2);
-
-		final PearsonsResult result = new PearsonsResult();
-
-		result.correlationValue = fastPearsons(samples, ThresholdMode.None);
-		
-		if (threshold1 != null && threshold2 != null) {
-
-			result.correlationValueAboveThr = fastPearsons(samples,
-				ThresholdMode.Above);
-		}
-
-		return result;
+		return fastPearsons(new IterablePair<>(image1, image2));
 	}
 
 	/**
@@ -87,34 +63,9 @@ public class Pearsons<T extends RealType<T>, U extends RealType<U>> extends
 	 * @return Person's R value
 	 * @throws IllegalArgumentException If input data is statistically unsound.
 	 */
-	private double fastPearsons(final Iterable<Pair<T, U>> samples,
-		final ThresholdMode tMode)
-	{
+	private double fastPearsons(final Iterable<Pair<T, U>> samples) {
 		// the actual accumulation of the image values is done in a separate object
-		Accumulator acc;
-
-		if (tMode == ThresholdMode.None) {
-			acc = new Accumulator(samples) {
-
-				@Override
-				final public boolean accept(final T type1, final U type2) {
-					return true;
-				}
-			};
-		}
-		else if (tMode == ThresholdMode.Above) {
-			acc = new Accumulator(samples) {
-
-				@Override
-				final public boolean accept(final T type1, final U type2) {
-					return type1.compareTo(threshold1) > 0 || type2.compareTo(
-						threshold2) > 0;
-				}
-			};
-		}
-		else {
-			throw new UnsupportedOperationException();
-		}
+		Accumulator acc = new Accumulator(samples);
 
 		// for faster computation, have the inverse of N available
 		final int count = acc.getCount();
@@ -172,7 +123,7 @@ public class Pearsons<T extends RealType<T>, U extends RealType<U>> extends
 	 * @author Tom Kazimiers
 	 * @author Ellen T Arena
 	 */
-	private abstract class Accumulator {
+	private class Accumulator {
 
 		private double x, y, xx, xy, yy;
 		private int count;
@@ -188,12 +139,6 @@ public class Pearsons<T extends RealType<T>, U extends RealType<U>> extends
 		protected Accumulator(final Iterable<Pair<T, U>> samples, boolean substract, double xDiff, double yDiff) {
 
 			for (Pair<T, U> sample : samples) {
-
-				T type1 = sample.getA();
-				U type2 = sample.getB();
-
-				if (!accept(type1, type2))
-					continue;
 
 				double value1 = sample.getA().getRealDouble();
 				double value2 = sample.getB().getRealDouble();
@@ -211,8 +156,6 @@ public class Pearsons<T extends RealType<T>, U extends RealType<U>> extends
 				count++;
 			}
 		}
-
-		public abstract boolean accept(T type1, U type2);
 
 		public double getX() {
 			return x;
