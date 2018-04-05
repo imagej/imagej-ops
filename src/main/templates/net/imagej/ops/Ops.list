@@ -31,6 +31,7 @@ namespaces = ```
 		[name: "pearsons",                    iface: "Pearsons"],
 		[name: "pValue",                      iface: "PValue"],
 		[name: "spearman",                    iface: "Spearman"],
+		[name: "threshold",                   iface: "Threshold"],
 	]],
 	[name: "convert", iface: "Convert", ops: [
 		[name: "bit",                            iface: "Bit"],

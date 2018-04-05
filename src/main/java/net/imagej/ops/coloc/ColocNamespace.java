@@ -33,6 +33,7 @@ import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.coloc.pValue.PValueResult;
+import net.imagej.ops.coloc.threshold.AutothresholdRegressionResults;
 import net.imagej.ops.special.function.BinaryFunctionOp;
 import net.imglib2.Dimensions;
 import net.imglib2.RandomAccessibleInterval;
@@ -141,6 +142,20 @@ public class ColocNamespace extends AbstractNamespace {
 		final PValueResult result = (PValueResult) ops().run(
 			net.imagej.ops.coloc.pValue.PValue.class, out, in1, in2, op,
 			nrRandomizations, psfSize, seed);
+		return result;
+	}
+
+	// -- threshold --
+
+	@OpMethod(op = net.imagej.ops.coloc.threshold.AutothresholdRegression.class)
+	public <T extends RealType<T>, U extends RealType<U>>
+		AutothresholdRegressionResults<T, U> threshold(final Iterable<T> image1,
+			final Iterable<U> image2)
+	{
+		final AutothresholdRegressionResults<T, U> result =
+			(AutothresholdRegressionResults<T, U>) ops().run(
+				net.imagej.ops.coloc.threshold.AutothresholdRegression.class, image1,
+				image2);
 		return result;
 	}
 
