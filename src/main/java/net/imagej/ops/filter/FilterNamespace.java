@@ -54,7 +54,6 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.composite.CompositeIntervalView;
 import net.imglib2.view.composite.RealComposite;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
 
@@ -624,6 +623,18 @@ public class FilterNamespace extends AbstractNamespace {
 	public long[][] fftSize(final Dimensions in1, final boolean powerOfTwo) {
 		final long[][] result = (long[][]) ops().run(Ops.Filter.FFTSize.class, in1,
 			powerOfTwo);
+		return result;
+	}
+	
+	// -- findEdges --
+
+	@OpMethod(op = net.imagej.ops.filter.findEdges.DefaultFindEdges.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> findEdges(
+		final RandomAccessibleInterval<T> input)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(Ops.Filter.FindEdges.class, input);
 		return result;
 	}
 
