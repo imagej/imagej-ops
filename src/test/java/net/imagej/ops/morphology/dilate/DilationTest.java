@@ -33,7 +33,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.Cursor;
@@ -50,6 +49,7 @@ import net.imglib2.type.numeric.integer.ByteType;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.scijava.util.MersenneTwisterFast;
 
 /**
  * Tests for {@link net.imagej.ops.Ops.Morphology.Dilate}
@@ -65,7 +65,7 @@ public class DilationTest extends AbstractOpTest {
 	public void initialize() {
 		in = generateByteArrayTestImg(true, 10, 10);
 		bitIn = ArrayImgs.bits(10, 10);
-		final Random rnd = new Random(0x123456789caffee1L);
+		final MersenneTwisterFast rnd = new MersenneTwisterFast(0x123456789caffee1L);
 		for (BitType px : bitIn)
 			px.set(rnd.nextBoolean());
 	}

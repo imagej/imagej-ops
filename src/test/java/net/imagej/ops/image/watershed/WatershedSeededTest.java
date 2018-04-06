@@ -31,7 +31,6 @@ package net.imagej.ops.image.watershed;
 import static org.junit.Assert.assertEquals;
 
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 import net.imagej.ops.AbstractOpTest;
@@ -50,6 +49,7 @@ import net.imglib2.type.numeric.integer.IntType;
 import net.imglib2.type.numeric.real.FloatType;
 
 import org.junit.Test;
+import org.scijava.util.MersenneTwisterFast;
 
 /**
  * Test for the seeded watershed op.
@@ -65,7 +65,7 @@ public class WatershedSeededTest extends AbstractOpTest {
 		long[] dims = { 15, 30 };
 		// create input image
 		Img<FloatType> input = ArrayImgs.floats(dims);
-		Random random = new Random(SEED);
+		MersenneTwisterFast random = new MersenneTwisterFast(SEED);
 		for (FloatType b : input) {
 			b.setReal(random.nextDouble());
 		}

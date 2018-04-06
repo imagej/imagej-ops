@@ -32,8 +32,6 @@ package net.imagej.ops.create;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-import java.util.Random;
-
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.create.imgLabeling.DefaultCreateImgLabeling;
 import net.imglib2.Dimensions;
@@ -46,6 +44,7 @@ import net.imglib2.type.numeric.integer.IntType;
 import net.imglib2.util.Intervals;
 
 import org.junit.Test;
+import org.scijava.util.MersenneTwisterFast;
 
 /**
  * Tests several ways to create an image
@@ -62,7 +61,7 @@ public class CreateLabelingTest extends AbstractOpTest {
 	@Test
 	public void testImageDimensions() {
 
-		final Random randomGenerator = new Random(SEED);
+		final MersenneTwisterFast randomGenerator = new MersenneTwisterFast(SEED);
 
 		for (int i = 0; i < TEST_SIZE; i++) {
 

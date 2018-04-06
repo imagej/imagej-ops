@@ -32,8 +32,6 @@ package net.imagej.ops.copy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.util.Random;
-
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.special.hybrid.Hybrids;
 import net.imagej.ops.special.hybrid.UnaryHybridCF;
@@ -51,6 +49,7 @@ import net.imglib2.view.Views;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.scijava.util.MersenneTwisterFast;
 
 /**
  * Test {@link CopyRAI}.
@@ -76,7 +75,7 @@ public class CopyRAITest extends AbstractOpTest {
 		input = new ArrayImgFactory<UnsignedByteType>().create(new int[] { 120,
 			100 }, new UnsignedByteType());
 
-		final Random r = new Random(System.currentTimeMillis());
+		final MersenneTwisterFast r = new MersenneTwisterFast(System.currentTimeMillis());
 
 		final Cursor<UnsignedByteType> inc = input.cursor();
 

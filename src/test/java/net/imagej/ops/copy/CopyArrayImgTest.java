@@ -31,8 +31,6 @@ package net.imagej.ops.copy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Random;
-
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
@@ -43,6 +41,7 @@ import net.imglib2.type.numeric.integer.UnsignedByteType;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.scijava.util.MersenneTwisterFast;
 
 /**
  * Test {@link CopyArrayImg}
@@ -58,7 +57,7 @@ public class CopyArrayImgTest extends AbstractOpTest {
 		input = new ArrayImgFactory<UnsignedByteType>().create(new int[] { 120,
 				100 }, new UnsignedByteType());
 
-		final Random r = new Random(System.currentTimeMillis());
+		final MersenneTwisterFast r = new MersenneTwisterFast(System.currentTimeMillis());
 
 		final Cursor<UnsignedByteType> inc = input.cursor();
 

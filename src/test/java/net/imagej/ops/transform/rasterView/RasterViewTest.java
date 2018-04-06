@@ -30,8 +30,6 @@ package net.imagej.ops.transform.rasterView;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Random;
-
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
@@ -44,6 +42,7 @@ import net.imglib2.view.RandomAccessibleOnRealRandomAccessible;
 import net.imglib2.view.Views;
 
 import org.junit.Test;
+import org.scijava.util.MersenneTwisterFast;
 
 /**
  * Tests {@link net.imagej.ops.Ops.Transform.RasterView} ops.
@@ -62,7 +61,7 @@ public class RasterViewTest extends AbstractOpTest {
 	@Test
 	public void defaultRasterTest() {
 		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{10,  10}, new DoubleType());
-		Random r = new Random(SEED);
+		MersenneTwisterFast r = new MersenneTwisterFast(SEED);
 		for (DoubleType d : img) {
 			d.set(r.nextDouble());
 		}

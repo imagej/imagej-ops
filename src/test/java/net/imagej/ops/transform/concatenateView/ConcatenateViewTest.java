@@ -30,7 +30,6 @@ package net.imagej.ops.transform.concatenateView;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.RandomAccessibleInterval;
@@ -48,6 +47,7 @@ import net.imglib2.view.Views;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.scijava.util.MersenneTwisterFast;
 
 /**
  * Tests {@link net.imagej.ops.Ops.Transform.ConcatenateView} ops.
@@ -68,7 +68,7 @@ public class ConcatenateViewTest extends AbstractOpTest {
 	private final long divider = 3;
 
 	private final int axis = 3;final long numElements = Intervals.numElements( dim );
-	final Random rng = new Random(SEED);
+	final MersenneTwisterFast rng = new MersenneTwisterFast(SEED);
 	final byte[] data = new byte[ ( int ) numElements ];
 	final ArrayImg< ByteType, ByteArray > img = ArrayImgs.bytes( data, dim );
 
