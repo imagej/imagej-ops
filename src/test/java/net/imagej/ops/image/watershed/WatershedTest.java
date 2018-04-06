@@ -33,8 +33,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Test;
-
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
@@ -49,6 +47,8 @@ import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.IntType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.view.Views;
+
+import org.junit.Test;
 
 /**
  * Test for the watershed op.

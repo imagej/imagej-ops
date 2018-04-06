@@ -31,8 +31,8 @@ package net.imagej.ops.create.kernelGabor;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.chain.BFViaBFSameIO;
-import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.complex.ComplexDoubleType;
 

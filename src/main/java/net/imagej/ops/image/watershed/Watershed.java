@@ -33,9 +33,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.create.imgLabeling.CreateImgLabelingFromInterval;
@@ -62,6 +59,9 @@ import net.imglib2.util.IntervalIndexer;
 import net.imglib2.util.Intervals;
 import net.imglib2.view.ExtendedRandomAccessibleInterval;
 import net.imglib2.view.Views;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * <p>

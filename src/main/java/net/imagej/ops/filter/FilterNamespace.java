@@ -54,7 +54,6 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.view.composite.CompositeIntervalView;
 import net.imglib2.view.composite.RealComposite;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
 

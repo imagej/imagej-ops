@@ -32,6 +32,10 @@ package net.imagej.ops.benchmark;
 import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 
+import ij.IJ;
+import ij.ImagePlus;
+import ij.process.ByteProcessor;
+
 import net.imagej.ops.map.MapIIInplaceParallel;
 import net.imagej.ops.map.MapUnaryComputers.IIToIIParallel;
 import net.imagej.ops.map.MapUnaryComputers.IIToRAIParallel;
@@ -49,10 +53,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
-
-import ij.IJ;
-import ij.ImagePlus;
-import ij.process.ByteProcessor;
 
 /**
  * Benchmarks the pixel-wise add operation.

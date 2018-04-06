@@ -28,6 +28,10 @@
  */
 package net.imagej.ops.coloc;
 
+import io.scif.SCIFIOService;
+import io.scif.img.ImgIOException;
+import io.scif.img.ImgOpener;
+
 import java.util.Arrays;
 import java.util.Random;
 
@@ -53,10 +57,6 @@ import org.junit.Before;
 import org.scijava.Context;
 import org.scijava.app.StatusService;
 import org.scijava.cache.CacheService;
-
-import io.scif.SCIFIOService;
-import io.scif.img.ImgIOException;
-import io.scif.img.ImgOpener;
 
 /** Abstract base class for coloc op unit tests. */
 public abstract class ColocalisationTest extends AbstractOpTest {

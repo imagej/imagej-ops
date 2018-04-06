@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.segment.detectJunctions.DefaultDetectJunctions;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.geom.real.DefaultWritablePolyline;
 

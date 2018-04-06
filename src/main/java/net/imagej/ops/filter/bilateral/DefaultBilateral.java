@@ -29,10 +29,6 @@
 
 package net.imagej.ops.filter.bilateral;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
@@ -47,6 +43,10 @@ import net.imglib2.algorithm.neighborhood.RectangleNeighborhoodFactory;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Intervals;
 import net.imglib2.view.Views;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * Performs a bilateral filter on an image.

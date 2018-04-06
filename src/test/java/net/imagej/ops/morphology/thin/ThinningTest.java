@@ -29,11 +29,8 @@
 
 package net.imagej.ops.morphology.thin;
 
-import static org.junit.Assert.assertEquals;
-
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.features.AbstractFeatureTest;
-import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.logic.BitType;
 

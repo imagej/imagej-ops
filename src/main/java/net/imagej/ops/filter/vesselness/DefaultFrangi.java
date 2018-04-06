@@ -32,13 +32,7 @@ package net.imagej.ops.filter.vesselness;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-import Jama.EigenvalueDecomposition;
-import Jama.Matrix;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.Cursor;
@@ -47,8 +41,13 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Intervals;
 import net.imglib2.view.Views;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
+import Jama.EigenvalueDecomposition;
+import Jama.Matrix;
 
 /**
  * Input is a 2- or 3-dimensional grayscales image. Applies the Frangi

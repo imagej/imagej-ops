@@ -37,13 +37,10 @@ import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.OpMatchingService;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.segment.detectRidges.DefaultDetectRidges;
 import net.imglib2.RandomAccess;
-import net.imglib2.RealPoint;
 import net.imglib2.img.Img;
 import net.imglib2.roi.geom.real.DefaultWritablePolyline;
 import net.imglib2.roi.util.RealLocalizableRealPositionable;
-import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.real.FloatType;
 
 import org.junit.Test;

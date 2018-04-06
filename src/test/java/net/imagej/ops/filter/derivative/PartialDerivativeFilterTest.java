@@ -30,8 +30,6 @@ package net.imagej.ops.filter.derivative;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
-
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
@@ -42,6 +40,8 @@ import net.imglib2.util.Util;
 import net.imglib2.view.composite.CompositeIntervalView;
 import net.imglib2.view.composite.CompositeView;
 import net.imglib2.view.composite.RealComposite;
+
+import org.junit.Test;
 
 /**
  * Test for partial derivative op.

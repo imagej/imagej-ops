@@ -32,10 +32,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.array.ArrayImg;
@@ -48,6 +44,10 @@ import net.imglib2.util.Pair;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.StackView.StackAccessMode;
 import net.imglib2.view.Views;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests {@link net.imagej.ops.Ops.Transform.ConcatenateView} ops.

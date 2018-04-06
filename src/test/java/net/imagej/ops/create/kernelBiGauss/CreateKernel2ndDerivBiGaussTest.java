@@ -33,9 +33,8 @@ import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Ops;
-import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.RandomAccess;
-
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.complex.ComplexDoubleType;
 import net.imglib2.type.numeric.real.DoubleType;
 

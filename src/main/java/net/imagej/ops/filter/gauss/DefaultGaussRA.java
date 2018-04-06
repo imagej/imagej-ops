@@ -29,10 +29,6 @@
 
 package net.imagej.ops.filter.gauss;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-import org.scijava.thread.ThreadService;
-
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.RandomAccessible;
@@ -42,6 +38,10 @@ import net.imglib2.algorithm.gauss3.SeparableSymmetricConvolution;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.NumericType;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+import org.scijava.thread.ThreadService;
 
 /**
  * Gaussian filter, wrapping {@link Gauss3} of imglib2-algorithms.

@@ -31,12 +31,6 @@ package net.imagej.ops.filter.vesselness;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
-import org.scijava.Context;
-import org.scijava.cache.CacheService;
-import org.scijava.script.ScriptService;
-
-import net.imagej.ImgPlus;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.OpMatchingService;
 import net.imagej.ops.OpService;
@@ -46,6 +40,11 @@ import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.view.Views;
+
+import org.junit.Test;
+import org.scijava.Context;
+import org.scijava.cache.CacheService;
+import org.scijava.script.ScriptService;
 
 /**
  * Tests the Frangi Vesselness operation.

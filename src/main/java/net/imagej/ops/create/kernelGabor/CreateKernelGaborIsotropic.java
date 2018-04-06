@@ -33,8 +33,8 @@ import java.util.Arrays;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
-import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
 

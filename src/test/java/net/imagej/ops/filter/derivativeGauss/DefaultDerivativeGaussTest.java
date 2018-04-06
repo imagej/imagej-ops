@@ -36,7 +36,6 @@ import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.view.Views;
 
 import org.junit.Test;
 

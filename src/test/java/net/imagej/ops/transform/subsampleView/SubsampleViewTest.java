@@ -43,7 +43,6 @@ import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Intervals;
-import net.imglib2.view.IntervalView;
 import net.imglib2.view.SubsampleIntervalView;
 import net.imglib2.view.SubsampleView;
 import net.imglib2.view.Views;

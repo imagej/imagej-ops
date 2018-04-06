@@ -34,8 +34,6 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.special.chain.RAIs;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
-import net.imagej.ops.special.function.BinaryFunctionOp;
-import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;

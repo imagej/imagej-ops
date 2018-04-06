@@ -34,8 +34,6 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import org.junit.Test;
-
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
@@ -50,6 +48,8 @@ import net.imglib2.roi.labeling.LabelingType;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.IntType;
 import net.imglib2.type.numeric.real.FloatType;
+
+import org.junit.Test;
 
 /**
  * Test for the seeded watershed op.
