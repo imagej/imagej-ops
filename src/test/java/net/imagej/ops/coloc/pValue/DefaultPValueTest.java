@@ -43,11 +43,11 @@ import net.imglib2.type.numeric.real.FloatType;
 import org.junit.Test;
 
 /**
- * Tests {@link PValue}.
+ * Tests {@link DefaultPValue}.
  *
  * @author Ellen T Arena
  */
-public class PValueTest extends ColocalisationTest {
+public class DefaultPValueTest extends ColocalisationTest {
 
 	/*
 	 * Tests 

@@ -33,7 +33,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import net.imagej.ops.coloc.ColocalisationTest;
-import net.imagej.ops.coloc.pValue.PValue;
+import net.imagej.ops.coloc.pValue.DefaultPValue;
 import net.imagej.ops.coloc.pValue.PValueResult;
 import net.imagej.ops.special.function.BinaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
@@ -103,7 +103,7 @@ public class LiICQTest extends ColocalisationTest {
 			mean, spread, sigma, 0x98765432);
 		BinaryFunctionOp<RandomAccessibleInterval<FloatType>, RandomAccessibleInterval<FloatType>, Double> op =
 			Functions.binary(ops, LiICQ.class, Double.class, ch1, ch2);
-		PValueResult value = (PValueResult) ops.run(PValue.class, new PValueResult(), ch1, ch2, op);
+		PValueResult value = (PValueResult) ops.run(DefaultPValue.class, new PValueResult(), ch1, ch2, op);
 		assertEquals(0.786, value.getPValue(), 0.0);
 	}
 
