@@ -142,7 +142,7 @@ public class PermuteViewTest extends AbstractOpTest {
 			c.next().set(r.nextDouble());
 		}
 		
-		IntervalView<DoubleType> out = Views.permuteCoordinateInverse(img, new int[]{0, 1}, 1);
+		IntervalView<DoubleType> out = Views.permuteCoordinatesInverse(img, new int[]{0, 1}, 1);
 		
 		Cursor<DoubleType> il2 = out.cursor();
 		RandomAccess<DoubleType> opr = ops.transform().permuteCoordinatesInverseView(img, new int[]{0, 1}, 1).randomAccess();
@@ -246,7 +246,7 @@ public class PermuteViewTest extends AbstractOpTest {
 		while (c.hasNext()) {
 			c.next().set(r.nextDouble());
 		}
-		IntervalView<DoubleType> expected = Views.permuteCoordinateInverse(img, new int[]{0, 1}, 1);
+		IntervalView<DoubleType> expected = Views.permuteCoordinatesInverse(img, new int[]{0, 1}, 1);
 		Cursor<DoubleType> e = expected.cursor();
 		RandomAccessibleInterval<DoubleType> actual = ops.transform().permuteCoordinatesInverseView(img, new int[]{0, 1}, 1);
 		RandomAccess<DoubleType> actualRA = actual.randomAccess();
