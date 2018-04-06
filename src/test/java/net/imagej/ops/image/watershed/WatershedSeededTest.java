@@ -58,12 +58,14 @@ import net.imglib2.type.numeric.real.FloatType;
  **/
 public class WatershedSeededTest extends AbstractOpTest {
 
+	private static final long SEED = 0x12345678;
+
 	@Test
 	public void test() {
 		long[] dims = { 15, 30 };
 		// create input image
 		Img<FloatType> input = ArrayImgs.floats(dims);
-		Random random = new Random();
+		Random random = new Random(SEED);
 		for (FloatType b : input) {
 			b.setReal(random.nextDouble());
 		}

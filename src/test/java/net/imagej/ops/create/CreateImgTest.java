@@ -68,11 +68,12 @@ import org.junit.Test;
 public class CreateImgTest extends AbstractOpTest {
 
 	private static final int TEST_SIZE = 100;
+	private static final long SEED = 0x12345678;
 
 	@Test
 	public void testImageMinimum() {
 
-		final Random randomGenerator = new Random();
+		final Random randomGenerator = new Random(SEED);
 
 		for (int i = 0; i < TEST_SIZE; i++) {
 
@@ -98,7 +99,7 @@ public class CreateImgTest extends AbstractOpTest {
 	@Test
 	public void testImageDimensions() {
 
-		final Random randomGenerator = new Random();
+		final Random randomGenerator = new Random(SEED);
 
 		for (int i = 0; i < TEST_SIZE; i++) {
 

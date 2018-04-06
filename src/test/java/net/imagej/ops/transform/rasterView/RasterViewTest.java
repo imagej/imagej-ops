@@ -57,10 +57,12 @@ import org.junit.Test;
  */
 public class RasterViewTest extends AbstractOpTest {
 
+	private static final long SEED = 0x12345678;
+
 	@Test
 	public void defaultRasterTest() {
 		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{10,  10}, new DoubleType());
-		Random r = new Random();
+		Random r = new Random(SEED);
 		for (DoubleType d : img) {
 			d.set(r.nextDouble());
 		}

@@ -61,12 +61,14 @@ import net.imglib2.view.Views;
  */
 public class ConcatenateViewTest extends AbstractOpTest {
 
+	private static final long SEED = 0x12345678;
+
 	private final long[] dim = { 3, 4, 5, 6 };
 
 	private final long divider = 3;
 
 	private final int axis = 3;final long numElements = Intervals.numElements( dim );
-	final Random rng = new Random();
+	final Random rng = new Random(SEED);
 	final byte[] data = new byte[ ( int ) numElements ];
 	final ArrayImg< ByteType, ByteArray > img = ArrayImgs.bytes( data, dim );
 

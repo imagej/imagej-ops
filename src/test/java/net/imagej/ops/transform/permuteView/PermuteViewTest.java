@@ -62,6 +62,8 @@ import org.junit.Test;
  */
 public class PermuteViewTest extends AbstractOpTest {
 
+	private static final long SEED = 0x12345678;
+
 	@Test
 	public void defaultPermuteTest() {
 		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{10, 10}, new DoubleType());
@@ -81,7 +83,7 @@ public class PermuteViewTest extends AbstractOpTest {
 	public void defaultPermuteCoordinatesTest() {
 		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{2, 2}, new DoubleType());
 		Cursor<DoubleType> c = img.cursor();
-		Random r = new Random();
+		Random r = new Random(SEED);
 		while (c.hasNext()) {
 			c.next().set(r.nextDouble());
 		}
@@ -100,7 +102,7 @@ public class PermuteViewTest extends AbstractOpTest {
 	public void permuteCoordinatesOfDimensionTest() {
 		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{2, 2}, new DoubleType());
 		Cursor<DoubleType> c = img.cursor();
-		Random r = new Random();
+		Random r = new Random(SEED);
 		while (c.hasNext()) {
 			c.next().set(r.nextDouble());
 		}
@@ -119,7 +121,7 @@ public class PermuteViewTest extends AbstractOpTest {
 	public void defaultPermuteCoordinatesInverseTest() {
 		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{2, 2}, new DoubleType());
 		Cursor<DoubleType> c = img.cursor();
-		Random r = new Random();
+		Random r = new Random(SEED);
 		while (c.hasNext()) {
 			c.next().set(r.nextDouble());
 		}
@@ -137,7 +139,7 @@ public class PermuteViewTest extends AbstractOpTest {
 	public void permuteCoordinatesInverseOfDimensionTest() {
 		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{2, 2}, new DoubleType());
 		Cursor<DoubleType> c = img.cursor();
-		Random r = new Random();
+		Random r = new Random(SEED);
 		while (c.hasNext()) {
 			c.next().set(r.nextDouble());
 		}
@@ -173,7 +175,7 @@ public class PermuteViewTest extends AbstractOpTest {
 	public void testIntervalPermuteCoordinates() {
 		Img<DoubleType> img = ArrayImgs.doubles(2, 2);
 		Cursor<DoubleType> c = img.cursor();
-		Random r = new Random();
+		Random r = new Random(SEED);
 		while (c.hasNext()) {
 			c.next().set(r.nextDouble());
 		}
@@ -196,7 +198,7 @@ public class PermuteViewTest extends AbstractOpTest {
 	public void testIntervalPermuteDimensionCoordinates() {
 		Img<DoubleType> img = ArrayImgs.doubles(2, 2);
 		Cursor<DoubleType> c = img.cursor();
-		Random r = new Random();
+		Random r = new Random(SEED);
 		while (c.hasNext()) {
 			c.next().set(r.nextDouble());
 		}
@@ -219,7 +221,7 @@ public class PermuteViewTest extends AbstractOpTest {
 	public void testIntervalPermuteInverseCoordinates() {
 		Img<DoubleType> img = ArrayImgs.doubles(2, 2);
 		Cursor<DoubleType> c = img.cursor();
-		Random r = new Random();
+		Random r = new Random(SEED);
 		while (c.hasNext()) {
 			c.next().set(r.nextDouble());
 		}
@@ -242,7 +244,7 @@ public class PermuteViewTest extends AbstractOpTest {
 	public void testIntervalPermuteInverseDimensionCoordinates() {
 		Img<DoubleType> img = ArrayImgs.doubles(2, 2);
 		Cursor<DoubleType> c = img.cursor();
-		Random r = new Random();
+		Random r = new Random(SEED);
 		while (c.hasNext()) {
 			c.next().set(r.nextDouble());
 		}

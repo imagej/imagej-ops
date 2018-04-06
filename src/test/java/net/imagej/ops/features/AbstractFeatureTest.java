@@ -163,13 +163,6 @@ public class AbstractFeatureTest extends AbstractOpTest {
 		}
 
 		/**
-		 * Default constructor, initialize with random seed.
-		 */
-		public ImageGenerator() {
-			this.rand = new Random();
-		}
-
-		/**
 		 * @param dim a long array with the desired dimensions of the image
 		 * @return an empty {@link Img} of {@link UnsignedByteType}.
 		 */

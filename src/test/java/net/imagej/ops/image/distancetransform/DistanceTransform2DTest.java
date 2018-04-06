@@ -47,6 +47,7 @@ import org.junit.Test;
 public class DistanceTransform2DTest extends AbstractOpTest {
 
 	private static final double EPSILON = 0.0001;
+	private static final long SEED = 0x12345678;
 
 	@SuppressWarnings("unchecked")
 	@Test
@@ -76,7 +77,7 @@ public class DistanceTransform2DTest extends AbstractOpTest {
 	 */
 	private void generate2DImg(final RandomAccessibleInterval<BitType> in) {
 		final RandomAccess<BitType> raIn = in.randomAccess();
-		final Random random = new Random();
+		final Random random = new Random(SEED);
 
 		for (int x = 0; x < in.dimension(0); x++) {
 			for (int y = 0; y < in.dimension(1); y++) {

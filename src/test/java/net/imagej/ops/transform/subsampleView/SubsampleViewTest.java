@@ -62,10 +62,12 @@ import org.junit.Test;
  */
 public class SubsampleViewTest extends AbstractOpTest {
 
+	private static final long SEED = 0x12345678;
+
 	@Test
 	public void defaultSubsampleTest() {
 		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
-		Random r = new Random();
+		Random r = new Random(SEED);
 		for (DoubleType d : img) {
 			d.set(r.nextDouble());
 		}
@@ -86,7 +88,7 @@ public class SubsampleViewTest extends AbstractOpTest {
 	@Test
 	public void defaultSubsampleStepsTest() {
 		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
-		Random r = new Random();
+		Random r = new Random(SEED);
 		for (DoubleType d : img) {
 			d.set(r.nextDouble());
 		}
@@ -107,7 +109,7 @@ public class SubsampleViewTest extends AbstractOpTest {
 	@Test
 	public void testIntervalSubsample() {
 		Img<DoubleType> img = ArrayImgs.doubles(10, 10);
-		Random r = new Random();
+		Random r = new Random(SEED);
 		for (DoubleType d : img) {
 			d.set(r.nextDouble());
 		}
@@ -130,7 +132,7 @@ public class SubsampleViewTest extends AbstractOpTest {
 	@Test
 	public void testIntervalSubsampleSteps() {
 		Img<DoubleType> img = ArrayImgs.doubles(10,10);
-		Random r = new Random();
+		Random r = new Random(SEED);
 		for (DoubleType d : img) {
 			d.set(r.nextDouble());
 		}
