@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
  * Statistical Approach".
  */
 @Plugin(type = Ops.Coloc.PValue.class)
-public class PValue<T extends RealType<T>, U extends RealType<U>> extends
+public class DefaultPValue<T extends RealType<T>, U extends RealType<U>> extends
 	AbstractBinaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<U>, PValueResult>
 	implements Ops.Coloc.PValue
 {

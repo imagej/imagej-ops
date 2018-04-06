@@ -37,7 +37,7 @@ import java.util.Iterator;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.coloc.ColocalisationTest;
-import net.imagej.ops.coloc.pValue.PValue;
+import net.imagej.ops.coloc.pValue.DefaultPValue;
 import net.imagej.ops.coloc.pValue.PValueResult;
 import net.imagej.ops.special.function.BinaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
@@ -123,7 +123,7 @@ public class KendallTauBRankTest extends AbstractOpTest {
 			mean, spread, sigma, 0x98765432);
 		BinaryFunctionOp<RandomAccessibleInterval<FloatType>, RandomAccessibleInterval<FloatType>, Double> op =
 			Functions.binary(ops, KendallTauBRank.class, Double.class, ch1, ch2);
-		PValueResult value = (PValueResult) ops.run(PValue.class, new PValueResult(), ch1, ch2, op);
+		PValueResult value = (PValueResult) ops.run(DefaultPValue.class, new PValueResult(), ch1, ch2, op);
 		assertEquals(0.813, value.getPValue(), 0.0);
 	}
 

@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
  * @author Ellen T Arena
  */
 @Plugin(type = Ops.Coloc.Pearsons.class)
-public class Pearsons<T extends RealType<T>, U extends RealType<U>> extends
+public class DefaultPearsons<T extends RealType<T>, U extends RealType<U>> extends
 	AbstractBinaryFunctionOp<Iterable<T>, Iterable<U>, Double> implements
 	Ops.Coloc.Pearsons
 {

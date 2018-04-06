@@ -83,29 +83,29 @@ public class ColocNamespace extends AbstractNamespace {
 
 	// -- pearsons --
 
-	@OpMethod(op = net.imagej.ops.coloc.pearsons.Pearsons.class)
+	@OpMethod(op = net.imagej.ops.coloc.pearsons.DefaultPearsons.class)
 	public <T extends RealType<T>, U extends RealType<U>> Double pearsons(
 		final Iterable<T> image1, final Iterable<U> image2)
 	{
 		final Double result = (Double) ops().run(
-			net.imagej.ops.coloc.pearsons.Pearsons.class, image1, image2);
+			net.imagej.ops.coloc.pearsons.DefaultPearsons.class, image1, image2);
 		return result;
 	}
 
 	// -- pValue --
 
-	@OpMethod(op = net.imagej.ops.coloc.pValue.PValue.class)
+	@OpMethod(op = net.imagej.ops.coloc.pValue.DefaultPValue.class)
 	public <T extends RealType<T>, U extends RealType<U>> PValueResult pValue(
 		final PValueResult out, final RandomAccessibleInterval<T> in1,
 		final RandomAccessibleInterval<U> in2,
 		final BinaryFunctionOp<Iterable<T>, Iterable<U>, Double> op)
 	{
 		final PValueResult result = (PValueResult) ops().run(
-			net.imagej.ops.coloc.pValue.PValue.class, out, in1, in2, op);
+			net.imagej.ops.coloc.pValue.DefaultPValue.class, out, in1, in2, op);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.coloc.pValue.PValue.class)
+	@OpMethod(op = net.imagej.ops.coloc.pValue.DefaultPValue.class)
 	public <T extends RealType<T>, U extends RealType<U>> PValueResult pValue(
 		final PValueResult out, final RandomAccessibleInterval<T> in1,
 		final RandomAccessibleInterval<U> in2,
@@ -113,12 +113,12 @@ public class ColocNamespace extends AbstractNamespace {
 		final int nrRandomizations)
 	{
 		final PValueResult result = (PValueResult) ops().run(
-			net.imagej.ops.coloc.pValue.PValue.class, out, in1, in2, op,
+			net.imagej.ops.coloc.pValue.DefaultPValue.class, out, in1, in2, op,
 			nrRandomizations);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.coloc.pValue.PValue.class)
+	@OpMethod(op = net.imagej.ops.coloc.pValue.DefaultPValue.class)
 	public <T extends RealType<T>, U extends RealType<U>> PValueResult pValue(
 		final PValueResult out, final RandomAccessibleInterval<T> in1,
 		final RandomAccessibleInterval<U> in2,
@@ -126,12 +126,12 @@ public class ColocNamespace extends AbstractNamespace {
 		final int nrRandomizations, final Dimensions psfSize)
 	{
 		final PValueResult result = (PValueResult) ops().run(
-			net.imagej.ops.coloc.pValue.PValue.class, out, in1, in2, op,
+			net.imagej.ops.coloc.pValue.DefaultPValue.class, out, in1, in2, op,
 			nrRandomizations, psfSize);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.coloc.pValue.PValue.class)
+	@OpMethod(op = net.imagej.ops.coloc.pValue.DefaultPValue.class)
 	public <T extends RealType<T>, U extends RealType<U>> PValueResult pValue(
 		final PValueResult out, final RandomAccessibleInterval<T> in1,
 		final RandomAccessibleInterval<U> in2,
@@ -139,7 +139,7 @@ public class ColocNamespace extends AbstractNamespace {
 		final int nrRandomizations, final Dimensions psfSize, final long seed)
 	{
 		final PValueResult result = (PValueResult) ops().run(
-			net.imagej.ops.coloc.pValue.PValue.class, out, in1, in2, op,
+			net.imagej.ops.coloc.pValue.DefaultPValue.class, out, in1, in2, op,
 			nrRandomizations, psfSize, seed);
 		return result;
 	}

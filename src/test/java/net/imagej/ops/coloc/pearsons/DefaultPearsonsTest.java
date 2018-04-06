@@ -42,11 +42,11 @@ import net.imglib2.type.numeric.real.FloatType;
 import org.junit.Test;
 
 /**
- * Tests {@link Pearsons}.
+ * Tests {@link DefaultPearsons}.
  *
  * @author Ellen T Arena
  */
-public class PearsonsTest extends ColocalisationTest {
+public class DefaultPearsonsTest extends ColocalisationTest {
 	
 	/**
 	 * Tests if the fast implementation of Pearson's correlation with two
@@ -54,7 +54,7 @@ public class PearsonsTest extends ColocalisationTest {
 	 */
 	@Test
 	public void fastPearsonsZeroCorrTest(){
-		double result = (Double) ops.run(Pearsons.class, zeroCorrelationImageCh1, zeroCorrelationImageCh2);
+		double result = (Double) ops.run(DefaultPearsons.class, zeroCorrelationImageCh1, zeroCorrelationImageCh2);
 		assertEquals(0.0, result, 0.05);
 	}
 	
@@ -64,7 +64,7 @@ public class PearsonsTest extends ColocalisationTest {
 	 */
 	@Test
 	public void fastPearsonsPositiveCorrTest() {
-		double result = (Double) ops.run(Pearsons.class, positiveCorrelationImageCh1, positiveCorrelationImageCh2);
+		double result = (Double) ops.run(DefaultPearsons.class, positiveCorrelationImageCh1, positiveCorrelationImageCh2);
 		assertEquals(0.75, result, 0.01);
 	}
 	
@@ -83,7 +83,7 @@ public class PearsonsTest extends ColocalisationTest {
 					512, 512, mean, spread, sigma, 0x01234567);
 			RandomAccessibleInterval<FloatType> ch2 = produceMeanBasedNoiseImage(new FloatType(),
 					512, 512, mean, spread, sigma, 0x98765432);
-			double resultFast = (Double) ops.run(Pearsons.class, ch1, ch2);
+			double resultFast = (Double) ops.run(DefaultPearsons.class, ch1, ch2);
 			assertEquals(0.0, resultFast, 0.1);
 
 			/* If the means are the same, it causes a numerical problem in the classic implementation of Pearson's
