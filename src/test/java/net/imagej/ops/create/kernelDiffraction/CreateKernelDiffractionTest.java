@@ -31,13 +31,13 @@ package net.imagej.ops.create.kernelDiffraction;
 
 import static org.junit.Assert.assertArrayEquals;
 
+import org.junit.Test;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.Dimensions;
 import net.imglib2.FinalDimensions;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.real.DoubleType;
-
-import org.junit.Test;
 
 /**
  * Tests {@link DefaultCreateKernelGibsonLanni}.
@@ -47,7 +47,7 @@ import org.junit.Test;
 public class CreateKernelDiffractionTest extends AbstractOpTest {
 
 	@Test
-	public void testKernelDiffraction() {
+	public void testKernelDiffraction2D() {
 		final Dimensions dims = new FinalDimensions(10, 10);
 		final double NA = 1.4; // numerical aperture
 		final double lambda = 610E-09; // wavelength
@@ -99,5 +99,60 @@ public class CreateKernelDiffractionTest extends AbstractOpTest {
 		};
 
 		assertArrayEquals(expected, asArray(kernel), 0.0);
+	}
+	
+	/**
+	 * Validate generation of a 3D diffraction kernel against a comparable
+	 * result from <a href="http://bigwww.epfl.ch/algorithms/psfgenerator/">
+	 * PSFGenerator</a>.<br><br>
+	 * 
+	 * It is worth noting that results are only comparable between the
+	 * two when using a particle position relative to the coverslip of 0.
+	 * This is because imagej-ops automatically crops and centers kernels
+	 * produced by the Fast Gibson-Lanni implementation in 
+	 * {@link DefaultCreateKernelGibsonLanni} while the Gibson & Lanni kernels
+	 * produced by PSFGenerator are not. See this github issue 
+	 * <a href="https://github.com/imagej/imagej-ops/issues/550">thread</a> 
+	 * for more details.<br><br>
+	 * 
+	 * It is also worth noting that when using a particle position of 0, the 
+	 * model degenerates to a standard Born & Wolf PSF model [1].<br><br>
+	 * 
+	 * References:<br>
+	 * [1] - Jizhou Li, Feng Xue, and Thierry Blu, "Fast and accurate three-
+	 * dimensional point spread function computation for fluorescence microscopy," 
+	 * J. Opt. Soc. Am. A 34, 1029-1034 (2017)
+	 */
+	@Test
+	public void testKernelDiffraction3D() {
+		final Dimensions dims = new FinalDimensions(16, 16, 8);
+		final double NA = 1.4; // numerical aperture
+		final double lambda = 610E-09; // wavelength
+		final double ns = 1.33; // specimen refractive index
+		final double ni = 1.5; // immersion refractive index, experimental
+		final double resLateral = 100E-9; // lateral pixel size
+		final double resAxial = 250E-9; // axial pixel size
+		final DoubleType type = new DoubleType(); // pixel type of created kernel
+		
+		/** It is important that this remain 0 for comparison to PSFGenerator **/
+		final double pZ = 0D; // position of particle
+
+		final Img<DoubleType> kernel = 
+			ops.create().kernelDiffraction(dims, NA, lambda, ns, ni, resLateral,
+				resAxial, pZ, type);
+		
+		/* 
+		 * The following image used for comparison was generated via PSFGenerator
+		 * with these arguments (where any not mentioned were left at default):
+		 * Optical Model: "Gibson & Lanni 3D Optical Model"
+		 * Particle position Z: 0
+		 * Wavelength: 610 (nm)
+		 * Pixelsize XY: 100 (nm)
+		 * Z-step: 250 (nm)
+		 * Size XYZ: 16, 16, 8
+		 */
+		Img<DoubleType> expected = openDoubleImg("kern3d1.tif");
+		
+		assertArrayEquals(asArray(expected), asArray(kernel), 1e-4);
 	}
 }
