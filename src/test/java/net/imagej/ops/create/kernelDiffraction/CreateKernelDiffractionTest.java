@@ -103,26 +103,29 @@ public class CreateKernelDiffractionTest extends AbstractOpTest {
 	}
 	
 	/**
-	 * Validate generation of a 3D diffraction kernel against a comparable
-	 * result from <a href="http://bigwww.epfl.ch/algorithms/psfgenerator/">
-	 * PSFGenerator</a>.<br><br>
-	 * 
-	 * It is worth noting that results are only comparable between the
-	 * two when using a particle position relative to the coverslip of 0.
-	 * This is because imagej-ops automatically crops and centers kernels
-	 * produced by the Fast Gibson-Lanni implementation in 
-	 * {@link DefaultCreateKernelGibsonLanni} while the Gibson & Lanni kernels
-	 * produced by PSFGenerator are not. See this github issue 
-	 * <a href="https://github.com/imagej/imagej-ops/issues/550">thread</a> 
-	 * for more details.<br><br>
-	 * 
-	 * It is also worth noting that when using a particle position of 0, the 
-	 * model degenerates to a standard Born & Wolf PSF model [1].<br><br>
-	 * 
-	 * References:<br>
-	 * [1] - Jizhou Li, Feng Xue, and Thierry Blu, "Fast and accurate three-
-	 * dimensional point spread function computation for fluorescence microscopy," 
-	 * J. Opt. Soc. Am. A 34, 1029-1034 (2017)
+	 * Validate generation of a 3D diffraction kernel against a comparable result
+	 * from <a href="http://bigwww.epfl.ch/algorithms/psfgenerator/">
+	 * PSFGenerator</a>.
+	 * <p>
+	 * It is worth noting that results are only comparable between the two when
+	 * using a particle position relative to the coverslip of 0. This is because
+	 * imagej-ops automatically crops and centers kernels produced by the Fast
+	 * Gibson-Lanni implementation in {@link DefaultCreateKernelGibsonLanni} while
+	 * the Gibson &amp; Lanni kernels produced by PSFGenerator are not. See this
+	 * github issue
+	 * <a href="https://github.com/imagej/imagej-ops/issues/550">thread</a> for
+	 * more details.
+	 * </p>
+	 * <p>
+	 * It is also worth noting that when using a particle position of 0, the model
+	 * degenerates to a standard Born &amp; Wolf PSF model [1].
+	 * </p>
+	 * <h3>References:</h3>
+	 * <ol>
+	 * <li>Jizhou Li, Feng Xue, and Thierry Blu, "Fast and accurate
+	 * three-dimensional point spread function computation for fluorescence
+	 * microscopy," J. Opt. Soc. Am. A 34, 1029-1034 (2017)</li>
+	 * </ol>
 	 */
 	@Test
 	public void testKernelDiffraction3D() {
