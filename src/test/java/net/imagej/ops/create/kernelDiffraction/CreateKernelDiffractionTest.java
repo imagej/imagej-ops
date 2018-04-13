@@ -138,23 +138,21 @@ public class CreateKernelDiffractionTest extends AbstractOpTest {
 		final double resAxial = 250E-9; // axial pixel size
 		final DoubleType type = new DoubleType(); // pixel type of created kernel
 		
-		/** It is important that this remain 0 for comparison to PSFGenerator **/
+		// NB: It is important that this remain 0 for comparison to PSFGenerator.
 		final double pZ = 0D; // position of particle
 
 		final Img<DoubleType> kernel = 
 			ops.create().kernelDiffraction(dims, NA, lambda, ns, ni, resLateral,
 				resAxial, pZ, type);
 		
-		/* 
-		 * The following image used for comparison was generated via PSFGenerator
-		 * with these arguments (where any not mentioned were left at default):
-		 * Optical Model: "Gibson & Lanni 3D Optical Model"
-		 * Particle position Z: 0
-		 * Wavelength: 610 (nm)
-		 * Pixelsize XY: 100 (nm)
-		 * Z-step: 250 (nm)
-		 * Size XYZ: 16, 16, 8
-		 */
+		// The following image used for comparison was generated via PSFGenerator
+		// with these arguments (where any not mentioned were left at default):
+		// Optical Model: "Gibson & Lanni 3D Optical Model"
+		// Particle position Z: 0
+		// Wavelength: 610 (nm)
+		// Pixelsize XY: 100 (nm)
+		// Z-step: 250 (nm)
+		// Size XYZ: 16, 16, 8
 		Img<DoubleType> expected = openDoubleImg("kern3d1.tif");
 		
 		assertArrayEquals(asArray(expected), asArray(kernel), 1e-4);
