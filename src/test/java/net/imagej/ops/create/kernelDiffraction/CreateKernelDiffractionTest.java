@@ -43,6 +43,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  * Tests {@link DefaultCreateKernelGibsonLanni}.
  * 
  * @author Curtis Rueden
+ * @author Eric Czech
  */
 public class CreateKernelDiffractionTest extends AbstractOpTest {
 
