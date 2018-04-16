@@ -130,6 +130,26 @@ public class FilterNamespace extends AbstractNamespace {
 			Ops.Filter.AddPoissonNoise.class, out, in);
 		return result;
 	}
+	
+	@OpMethod(op = net.imagej.ops.filter.addUniformNoise.AddUniformNoiseRealType.class)
+	public <I extends RealType<I>, O extends RealType<O>> O addUniformNoise(final O out,
+		final I in, final double rangeMin, final double rangeMax)
+	{
+		@SuppressWarnings("unchecked")
+		final O result = (O) ops().run(Ops.Filter.AddUniformNoise.class, out, in, rangeMin,
+			rangeMax);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.filter.addUniformNoise.AddUniformNoiseRealType.class)
+	public <I extends RealType<I>, O extends RealType<O>> O addUniformNoise(final O out,
+		final I in, final double rangeMin, final double rangeMax, final long seed)
+	{
+		@SuppressWarnings("unchecked")
+		final O result = (O) ops().run(Ops.Filter.AddUniformNoise.class, out, in, rangeMin,
+			rangeMax, seed);
+		return result;
+	}
 
 	// -- bilateral --
 
