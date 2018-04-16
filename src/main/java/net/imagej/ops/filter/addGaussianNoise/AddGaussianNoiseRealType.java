@@ -27,7 +27,7 @@
  * #L%
  */
 
-package net.imagej.ops.filter.addNoise;
+package net.imagej.ops.filter.addGaussianNoise;
 
 import java.util.Random;
 
@@ -42,9 +42,9 @@ import org.scijava.plugin.Plugin;
  * Sets the real component of an output real number to the addition of the real
  * component of an input real number with an amount of Gaussian noise.
  */
-@Plugin(type = Ops.Filter.AddNoise.class)
-public class AddNoiseRealType<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractUnaryComputerOp<I, O> implements Ops.Filter.AddNoise
+@Plugin(type = Ops.Filter.AddGaussianNoise.class)
+public class AddGaussianNoiseRealType<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractUnaryComputerOp<I, O> implements Ops.Filter.AddGaussianNoise
 {
 
 	@Parameter
