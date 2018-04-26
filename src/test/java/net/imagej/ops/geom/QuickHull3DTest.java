@@ -62,7 +62,7 @@ public class QuickHull3DTest extends AbstractOpTest {
 
 		final List<?> result = (List<?>) ops.run(DefaultConvexHull3D.class, df);
 		final Mesh convexHull = (Mesh) result.get(0);
-		final double epsilon = (double) result.get(1);
+		final double epsilon = (Double) result.get(1);
 		assertEquals(175, convexHull.vertices().size());
 		assertConvex(convexHull, epsilon);
 	}
@@ -77,7 +77,7 @@ public class QuickHull3DTest extends AbstractOpTest {
 
 		final List<?> result = (List<?>) ops.run(DefaultConvexHull3D.class, df);
 		final Mesh convexHull = (Mesh) result.get(0);
-		final double epsilon = (double) result.get(1);
+		final double epsilon = (Double) result.get(1);
 		assertEquals(4, convexHull.vertices().size());
 		assertConvex(convexHull, epsilon);
 	}
@@ -94,7 +94,7 @@ public class QuickHull3DTest extends AbstractOpTest {
 
 		final List<?> result = (List<?>) ops.run(DefaultConvexHull3D.class, df);
 		final Mesh convexHull = (Mesh) result.get(0);
-		final double epsilon = (double) result.get(1);
+		final double epsilon = (Double) result.get(1);
 		assertEquals(5, convexHull.vertices().size());
 		assertConvex(convexHull, epsilon);
 	}
@@ -120,7 +120,7 @@ public class QuickHull3DTest extends AbstractOpTest {
 
 		final List<?> result = (List<?>) ops.run(DefaultConvexHull3D.class, df);
 		final Mesh convexHull = (Mesh) result.get(0);
-		final double epsilon = (double) result.get(1);
+		final double epsilon = (Double) result.get(1);
 		assertEquals(12, convexHull.vertices().size());
 		assertConvex(convexHull, epsilon);
 	}
@@ -173,7 +173,7 @@ public class QuickHull3DTest extends AbstractOpTest {
 
 		final List<?> result = (List<?>) ops.run(DefaultConvexHull3D.class, df);
 		final Mesh convexHull = (Mesh) result.get(0);
-		final double epsilon = (double) result.get(1);
+		final double epsilon = (Double) result.get(1);
 		assertEquals(20, convexHull.vertices().size());
 		assertConvex(convexHull, epsilon);
 	}
