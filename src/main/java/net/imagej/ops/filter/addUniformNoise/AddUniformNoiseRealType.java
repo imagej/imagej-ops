@@ -81,8 +81,8 @@ public class AddUniformNoiseRealType<I extends RealType<I>, O extends RealType<O
 		int i = 0;
 		do {
 			final double newVal = (rangeMax - rangeMin) * rng.nextDouble(true, true) +
-				rangeMin;
-			if ((rangeMin <= newVal) && (newVal <= rangeMax)) {
+				rangeMin + input.getRealDouble();
+			if (newVal <= input.getMaxValue() && newVal >= input.getMinValue()) {
 				output.setReal(newVal);
 				return;
 			}
