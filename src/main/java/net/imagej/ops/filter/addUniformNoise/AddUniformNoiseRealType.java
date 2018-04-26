@@ -38,7 +38,7 @@ import org.scijava.plugin.Plugin;
 import org.scijava.util.MersenneTwisterFast;
 
 /**
- * Sets the real output value of a {@link Realtype} T to a randomly generated
+ * Sets the real output value of a {@link RealType} T to a randomly generated
  * value x, bounded by (and including) the {@code rangeMin} and {@code rangeMax}
  * parameters, i.e. {@code rangeMin <= x <= rangeMax}.
  * 
@@ -49,9 +49,15 @@ public class AddUniformNoiseRealType<I extends RealType<I>, O extends RealType<O
 	extends AbstractUnaryComputerOp<I, O> implements Ops.Filter.AddUniformNoise
 {
 
+	/**
+	 * The greatest that an input value can be decreased.
+	 */
 	@Parameter
 	private double rangeMin;
 
+	/**
+	 * The greatest that an input value can be <b> increased </b>
+	 */
 	@Parameter
 	private double rangeMax;
 
