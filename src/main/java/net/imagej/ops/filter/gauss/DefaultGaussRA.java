@@ -6,13 +6,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -29,6 +29,12 @@
 
 package net.imagej.ops.filter.gauss;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+import org.scijava.thread.ThreadService;
+
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.RandomAccessible;
@@ -39,10 +45,6 @@ import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.NumericType;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-import org.scijava.thread.ThreadService;
-
 /**
  * Gaussian filter, wrapping {@link Gauss3} of imglib2-algorithms.
  *
@@ -50,10 +52,10 @@ import org.scijava.thread.ThreadService;
  * @author Christian Dietz (University of Konstanz)
  * @param <T> type of input and output
  */
-@Plugin(type = Ops.Filter.Gauss.class, priority = 0.5)
+@Plugin(type = Ops.Filter.Gauss.class, priority = Priority.HIGH)
 public class DefaultGaussRA<T extends NumericType<T> & NativeType<T>> extends
 	AbstractUnaryComputerOp<RandomAccessible<T>, RandomAccessibleInterval<T>>
-	implements Ops.Filter.Gauss
+	implements Ops.Filter.Gauss, Contingent
 {
 	@Parameter
 	private ThreadService threads;
@@ -72,5 +74,11 @@ public class DefaultGaussRA<T extends NumericType<T> & NativeType<T>> extends
 		catch (final IncompatibleTypeException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	@Override
+	public boolean conforms() {
+
+		return !(in() instanceof RandomAccessibleInterval);
 	}
 }

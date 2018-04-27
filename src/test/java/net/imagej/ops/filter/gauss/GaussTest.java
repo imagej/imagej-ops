@@ -6,13 +6,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -29,20 +29,25 @@
 
 package net.imagej.ops.filter.gauss;
 
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Ops;
+import net.imagej.ops.Ops.Filter.Gauss;
 import net.imglib2.Cursor;
 import net.imglib2.algorithm.gauss3.Gauss3;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
-import org.junit.Test;
-
 /**
  * Tests Gaussian convolution.
- * 
+ *
  * @author Martin Horn (University of Konstanz)
  * @author Christian Dietz (University of Konstanz)
  */
@@ -75,5 +80,27 @@ public class GaussTest extends AbstractOpTest {
 			org.junit.Assert.assertEquals(c1.next().getRealDouble(), c2.next()
 				.getRealDouble(), 0);
 		}
+	}
+
+	/** Tests the Gaussian matching. */
+	@Test
+	public void gaussMatchingTest() {
+
+		Gauss defaultGaussRAI = ops.op(Ops.Filter.Gauss.class, ArrayImgs.bytes(1, 2), new double[] {1, 2});
+		assertTrue(defaultGaussRAI instanceof DefaultGaussRAI);
+
+		defaultGaussRAI = ops.op(
+				Ops.Filter.Gauss.class,
+				ArrayImgs.bytes(1, 2),
+				ArrayImgs.bytes(1, 2),
+				new double[] {1, 2});
+		assertTrue(defaultGaussRAI instanceof DefaultGaussRAI);
+
+		Gauss defaultGaussRA = ops.op(
+				Ops.Filter.Gauss.class,
+				ArrayImgs.bytes(1, 2),
+				Views.extendMirrorSingle(ArrayImgs.bytes(1, 2)),
+				new double[] {1, 2});
+		assertTrue(defaultGaussRA instanceof DefaultGaussRA);
 	}
 }
