@@ -61,7 +61,7 @@ public class HilditchThinningStrategy extends Abstract3x3NeighbourhoodThinning {
 	public boolean removePixel(final long[] position,
 		final RandomAccessible<BitType> accessible, final int iteration)
 	{
-		final RandomAccess<BitType> access = accessible.randomAccess();
+		final RandomAccess<BitType> access = randomAccess(accessible);
 		access.setPosition(position);
 
 		final boolean[] vals = getNeighbourhood(access);

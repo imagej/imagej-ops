@@ -29,7 +29,10 @@
 
 package net.imagej.ops.morphology.thin;
 
+import java.util.HashMap;
+
 import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessible;
 import net.imglib2.type.logic.BitType;
 
 /**
@@ -143,4 +146,13 @@ public abstract class Abstract3x3NeighbourhoodThinning implements
 		return 1;
 	}
 
+	// TODO - Solve this in a less convoluted way.
+	// We cache the RandomAccess instances for performance reasons.
+	// But it would likely be even more performant if the strategy simply
+	// accepted a RandomAccess directly in the first place, and the calling
+	// code took care of reusing them appropriately.
+	private HashMap<RandomAccessible, RandomAccess> accesses = new HashMap<>();
+	protected <T> RandomAccess<T> randomAccess(RandomAccessible<T> ra) {
+		return accesses.computeIfAbsent(ra, r -> r.randomAccess());
+	}
 }

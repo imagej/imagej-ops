@@ -63,7 +63,7 @@ public class GuoHallThinningStrategy extends Abstract3x3NeighbourhoodThinning {
 	{
 
 		// Setup
-		final RandomAccess<BitType> access = accessible.randomAccess();
+		final RandomAccess<BitType> access = randomAccess(accessible);
 		access.setPosition(position);
 
 		final boolean[] vals = getNeighbourhood(access);

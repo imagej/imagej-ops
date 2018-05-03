@@ -124,6 +124,7 @@ public abstract class AbstractThin extends
 		boolean changes = true;
 		int i = 0;
 		// Until no more changes, do:
+		final long[] coordinates = new long[currentCursor.numDimensions()];
 		while (changes) {
 			changes = false;
 			// This For-Loop makes sure, that iterations only end on full cycles (as
@@ -135,7 +136,6 @@ public abstract class AbstractThin extends
 					currentCursor.fwd();
 					nextCursor.fwd();
 					// Get the position of the current cursor.
-					final long[] coordinates = new long[currentCursor.numDimensions()];
 					currentCursor.localize(coordinates);
 
 					// Copy the value of the image currently operated upon.

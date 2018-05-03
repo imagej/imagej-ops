@@ -65,7 +65,7 @@ public class MorphologicalThinningStrategy extends
 	{
 
 		// Setup
-		final RandomAccess<BitType> access = accessible.randomAccess();
+		final RandomAccess<BitType> access = randomAccess(accessible);
 		access.setPosition(position);
 
 		final boolean[] vals = getNeighbourhood(access);
