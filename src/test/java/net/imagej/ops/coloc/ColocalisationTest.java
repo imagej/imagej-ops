@@ -51,6 +51,7 @@ import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.real.FloatType;
+import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
 import org.junit.Before;
@@ -138,17 +139,16 @@ public abstract class ColocalisationTest extends AbstractOpTest {
 				"Mean must be larger than spread, and mean plus spread must be smaller than max of the type");
 		}
 		// create the new image
-		ImgFactory<T> imgFactory = new ArrayImgFactory<T>();
-		Img<T> noiseImage = imgFactory.create(new int[] {
-			width, height }, type); // "Noise image");
+		ImgFactory<T> imgFactory = new ArrayImgFactory<>(type);
+		Img<T> noiseImage = imgFactory.create(width, height);
 
 		Random r = new Random(seed);
 		for (T value : Views.iterable(noiseImage)) {
 			value.setReal(mean + ((r.nextDouble() - 0.5) * spread));
 		}
 
-		return gaussianSmooth(noiseImage, smoothingSigma); // TO DO: call Ops
-																												// filter.gaus instead
+		// TODO: call Ops filter.gauss instead
+		return gaussianSmooth(noiseImage, smoothingSigma);
 	}
 
 	/**
@@ -165,17 +165,16 @@ public abstract class ColocalisationTest extends AbstractOpTest {
 	{
 		Interval interval = Views.iterable(img);
 
-		ImgFactory<T> outputFactory = new ArrayImgFactory<T>();
+		ImgFactory<T> outputFactory = new ArrayImgFactory<>(Util.getTypeFromInterval(img));
 		final long[] dim = new long[img.numDimensions()];
 		img.dimensions(dim);
-		Img<T> output = outputFactory.create(dim, img
-			.randomAccess().get().createVariable());
+		Img<T> output = outputFactory.create(dim);
 
 		final long[] pos = new long[img.numDimensions()];
 		Arrays.fill(pos, 0);
 		Localizable origin = new Point(pos);
 
-		ImgFactory<FloatType> tempFactory = new ArrayImgFactory<FloatType>();
+		ImgFactory<FloatType> tempFactory = new ArrayImgFactory<>(new FloatType());
 		RandomAccessible<T> input = Views.extendMirrorSingle(img);
 		Gauss.inFloat(sigma, input, interval, output, origin, tempFactory);
 
