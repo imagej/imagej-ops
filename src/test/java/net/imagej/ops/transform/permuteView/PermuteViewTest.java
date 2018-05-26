@@ -65,7 +65,7 @@ public class PermuteViewTest extends AbstractOpTest {
 
 	@Test
 	public void defaultPermuteTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{10, 10}, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 10);
 		
 		MixedTransformView<DoubleType> il2 = Views.permute((RandomAccessible<DoubleType>)img, 1, 0);
 		MixedTransformView<DoubleType> opr = ops.transform().permuteView(deinterval(img), 1, 0);
@@ -80,7 +80,7 @@ public class PermuteViewTest extends AbstractOpTest {
 	
 	@Test
 	public void defaultPermuteCoordinatesTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{2, 2}, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(2, 2);
 		Cursor<DoubleType> c = img.cursor();
 		MersenneTwisterFast r = new MersenneTwisterFast(SEED);
 		while (c.hasNext()) {
@@ -99,7 +99,7 @@ public class PermuteViewTest extends AbstractOpTest {
 	
 	@Test
 	public void permuteCoordinatesOfDimensionTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{2, 2}, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(2, 2);
 		Cursor<DoubleType> c = img.cursor();
 		MersenneTwisterFast r = new MersenneTwisterFast(SEED);
 		while (c.hasNext()) {
@@ -118,7 +118,7 @@ public class PermuteViewTest extends AbstractOpTest {
 	
 	@Test
 	public void defaultPermuteCoordinatesInverseTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{2, 2}, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(2, 2);
 		Cursor<DoubleType> c = img.cursor();
 		MersenneTwisterFast r = new MersenneTwisterFast(SEED);
 		while (c.hasNext()) {
@@ -136,7 +136,7 @@ public class PermuteViewTest extends AbstractOpTest {
 	
 	@Test
 	public void permuteCoordinatesInverseOfDimensionTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{2, 2}, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(2, 2);
 		Cursor<DoubleType> c = img.cursor();
 		MersenneTwisterFast r = new MersenneTwisterFast(SEED);
 		while (c.hasNext()) {
@@ -157,7 +157,7 @@ public class PermuteViewTest extends AbstractOpTest {
 	
 	@Test
 	public void testIntervalPermute() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{10, 10}, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 10);
 		
 		IntervalView<DoubleType> expected = Views.permute((RandomAccessibleInterval<DoubleType>)img, 1, 0);
 		IntervalView<DoubleType> actual = ops.transform().permuteView((RandomAccessibleInterval<DoubleType>)img, 1, 0);

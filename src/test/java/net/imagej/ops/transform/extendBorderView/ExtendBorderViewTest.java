@@ -53,7 +53,7 @@ public class ExtendBorderViewTest extends AbstractOpTest {
 
 	@Test
 	public void extendBorderTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 10);
 
 		OutOfBounds<DoubleType> il2 = Views.extendBorder(img).randomAccess();
 

@@ -280,8 +280,8 @@ public abstract class AbstractOpTest {
 	public CellImg<ByteType, ?> generateByteTestCellImg(final boolean fill,
 		final long... dims)
 	{
-		final CellImg<ByteType, ?> img = new CellImgFactory<ByteType>().create(dims,
-			new ByteType());
+		final CellImg<ByteType, ?> img =
+			new CellImgFactory<>(new ByteType()).create(dims);
 
 		if (fill) {
 			final Cursor<ByteType> c = img.cursor();
@@ -295,8 +295,8 @@ public abstract class AbstractOpTest {
 	public CellImg<ByteType, ?> generateByteTestCellImg(final boolean fill,
 		final int[] cellDims, final long... dims)
 	{
-		final CellImg<ByteType, ?> img = new CellImgFactory<ByteType>(cellDims)
-			.create(dims, new ByteType());
+		final CellImg<ByteType, ?> img =
+			new CellImgFactory<>(new ByteType()).create(dims);
 
 		if (fill) {
 			final Cursor<ByteType> c = img.cursor();
@@ -411,8 +411,7 @@ public abstract class AbstractOpTest {
 	{
 
 		final ListImg<UnboundedIntegerType> l =
-			new ListImgFactory<UnboundedIntegerType>().create(dims,
-				new UnboundedIntegerType());
+			new ListImgFactory<>(new UnboundedIntegerType()).create(dims);
 
 		final BigInteger[] array = new BigInteger[(int) Intervals.numElements(
 			dims)];

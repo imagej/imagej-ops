@@ -57,8 +57,7 @@ public class CollapseViewTest extends AbstractOpTest {
 
 	@Test
 	public void defaultCollapseTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 },
-				new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 10);
 
 		CompositeIntervalView<DoubleType, ? extends GenericComposite<DoubleType>> il2 = Views
 				.collapse(img);
@@ -71,7 +70,7 @@ public class CollapseViewTest extends AbstractOpTest {
 	@Test
 	public void collapseRATest() {
 
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10, 10 }, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 10, 10);
 
 		CompositeView<DoubleType, ? extends GenericComposite<DoubleType>> il2 = Views
 				.collapse((RandomAccessible<DoubleType>) img);
@@ -85,7 +84,7 @@ public class CollapseViewTest extends AbstractOpTest {
 	@Test
 	public void collapseRAITest() {
 
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10, 10 }, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 10, 10);
 
 		CompositeIntervalView<DoubleType, ? extends GenericComposite<DoubleType>> il2 = Views
 				.collapse((RandomAccessibleInterval<DoubleType>) img);

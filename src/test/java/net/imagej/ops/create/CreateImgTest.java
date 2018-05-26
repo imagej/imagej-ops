@@ -33,7 +33,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.create.img.CreateImgFromDimsAndType;
+import net.imagej.ops.create.img.CreateImgFromDims;
 import net.imagej.ops.create.img.CreateImgFromImg;
 import net.imagej.ops.create.img.CreateImgFromInterval;
 import net.imglib2.Dimensions;
@@ -113,7 +113,7 @@ public class CreateImgTest extends AbstractOpTest {
 			// create img
 			@SuppressWarnings("unchecked")
 			final Img<DoubleType> img = (Img<DoubleType>) ops.run(
-				CreateImgFromDimsAndType.class, dim, new DoubleType());
+				CreateImgFromDims.class, dim, new DoubleType());
 
 			assertArrayEquals("Image Dimensions:", dim, Intervals
 				.dimensionsAsLongArray(img));
@@ -140,15 +140,15 @@ public class CreateImgTest extends AbstractOpTest {
 
 		@SuppressWarnings("unchecked")
 		final Img<DoubleType> arrayImg = (Img<DoubleType>) ops.run(
-			CreateImgFromDimsAndType.class, dim, new DoubleType(),
-			new ArrayImgFactory<DoubleType>());
+			CreateImgFromDimsAndFactory.class, dim,
+			new ArrayImgFactory<>(new DoubleType()));
 		final Class<?> arrayFactoryClass = arrayImg.factory().getClass();
 		assertEquals("Image Factory: ", ArrayImgFactory.class, arrayFactoryClass);
 
 		@SuppressWarnings("unchecked")
 		final Img<DoubleType> cellImg = (Img<DoubleType>) ops.run(
-			CreateImgFromDimsAndType.class, dim, new DoubleType(),
-			new CellImgFactory<DoubleType>());
+			CreateImgFromDimsAndFactory.class, dim,
+			new CellImgFactory<>(new DoubleType()));
 		final Class<?> cellFactoryClass = cellImg.factory().getClass();
 		assertEquals("Image Factory: ", CellImgFactory.class, cellFactoryClass);
 	}
@@ -158,33 +158,33 @@ public class CreateImgTest extends AbstractOpTest {
 		final Dimensions dim = new FinalDimensions(10, 10, 10);
 
 		assertEquals("Image Type: ", BitType.class, ((Img<?>) ops.run(
-			CreateImgFromDimsAndType.class, dim, new BitType())).firstElement()
+			CreateImgFromDims.class, dim, new BitType())).firstElement()
 				.getClass());
 
 		assertEquals("Image Type: ", ByteType.class, ((Img<?>) ops.run(
-			CreateImgFromDimsAndType.class, dim, new ByteType())).firstElement()
+			CreateImgFromDims.class, dim, new ByteType())).firstElement()
 				.getClass());
 
 		assertEquals("Image Type: ", UnsignedByteType.class, ((Img<?>) ops.create()
 			.img(dim, new UnsignedByteType())).firstElement().getClass());
 
 		assertEquals("Image Type: ", IntType.class, ((Img<?>) ops.run(
-			CreateImgFromDimsAndType.class, dim, new IntType())).firstElement()
+			CreateImgFromDims.class, dim, new IntType())).firstElement()
 				.getClass());
 
 		assertEquals("Image Type: ", FloatType.class, ((Img<?>) ops.run(
-			CreateImgFromDimsAndType.class, dim, new FloatType())).firstElement()
+			CreateImgFromDims.class, dim, new FloatType())).firstElement()
 				.getClass());
 
 		assertEquals("Image Type: ", DoubleType.class, ((Img<?>) ops.run(
-			CreateImgFromDimsAndType.class, dim, new DoubleType())).firstElement()
+			CreateImgFromDims.class, dim, new DoubleType())).firstElement()
 				.getClass());
 	}
 
 	@Test
 	public void testCreateFromImgSameType() {
 		final Img<ByteType> input = PlanarImgs.bytes(10, 10, 10);
-		final Img<?> res = (Img<?>) ops.run(CreateImgFromDimsAndType.class, input,
+		final Img<?> res = (Img<?>) ops.run(CreateImgFromDims.class, input,
 			input.firstElement().createVariable());
 
 		assertEquals("Image Type: ", ByteType.class, res.firstElement().getClass());
@@ -197,7 +197,7 @@ public class CreateImgTest extends AbstractOpTest {
 	@Test
 	public void testCreateFromImgDifferentType() {
 		final Img<ByteType> input = PlanarImgs.bytes(10, 10, 10);
-		final Img<?> res = (Img<?>) ops.run(CreateImgFromDimsAndType.class, input,
+		final Img<?> res = (Img<?>) ops.run(CreateImgFromDims.class, input,
 			new ShortType());
 
 		assertEquals("Image Type: ", ShortType.class, res.firstElement().getClass());
@@ -213,7 +213,7 @@ public class CreateImgTest extends AbstractOpTest {
 			Views.interval(PlanarImgs.bytes(10, 10, 10), new FinalInterval(
 				new long[] { 10, 10, 1 }));
 
-		final Img<?> res = (Img<?>) ops.run(CreateImgFromDimsAndType.class, input,
+		final Img<?> res = (Img<?>) ops.run(CreateImgFromDims.class, input,
 			new ShortType());
 
 		assertEquals("Image Type: ", ShortType.class, res.firstElement().getClass());

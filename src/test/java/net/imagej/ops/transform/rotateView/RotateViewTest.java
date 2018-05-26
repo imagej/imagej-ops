@@ -58,7 +58,7 @@ public class RotateViewTest extends AbstractOpTest {
 
 	@Test
 	public void testDefaultRotate() {
-		final Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 20, 10 }, new DoubleType());
+		final Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(20, 10);
 
 		final MixedTransformView<DoubleType> il2 = Views.rotate((RandomAccessible<DoubleType>) img, 1, 0);
 		final MixedTransformView<DoubleType> opr = ops.transform().rotateView(deinterval(img), 1, 0);
@@ -92,7 +92,7 @@ public class RotateViewTest extends AbstractOpTest {
 
 	@Test
 	public void testIntervalRotateInterval() {
-		final Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 20, 10 }, new DoubleType());
+		final Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(20, 10);
 
 		final IntervalView<DoubleType> il2 = Views.rotate((RandomAccessibleInterval<DoubleType>) img, 1, 0);
 		final IntervalView<DoubleType> opr = ops.transform().rotateView((RandomAccessibleInterval<DoubleType>) img, 1, 0);

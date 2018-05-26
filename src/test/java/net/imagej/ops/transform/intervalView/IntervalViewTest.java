@@ -58,7 +58,7 @@ public class IntervalViewTest extends AbstractOpTest {
 	@Test
 	public void defaultIntervalTest() {
 		
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{10, 10}, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 10);
 		
 		MersenneTwisterFast r = new MersenneTwisterFast(SEED);
 		for (DoubleType d : img) {
@@ -80,7 +80,7 @@ public class IntervalViewTest extends AbstractOpTest {
 	@Test
 	public void intervalMinMaxTest() {
 		
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{10, 10}, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 10);
 		
 		MersenneTwisterFast r = new MersenneTwisterFast(SEED);
 		for (DoubleType d : img) {

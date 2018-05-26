@@ -78,7 +78,7 @@ public class ConvertImagesTest extends AbstractOpTest {
 
 	@BeforeClass
 	public static void setup() {
-		cellImg = new CellImgFactory<DoubleType>().create(new long[] { 10, 42 }, new DoubleType());
+		cellImg = new CellImgFactory<DoubleType>(new DoubleType()).create(10, 42);
 		final int seed = 12;
 		final MersenneTwisterFast rand = new MersenneTwisterFast(seed);
 		final Cursor<DoubleType> c = cellImg.cursor();

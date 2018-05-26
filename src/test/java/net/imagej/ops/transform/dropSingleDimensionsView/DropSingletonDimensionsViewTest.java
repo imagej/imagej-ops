@@ -54,7 +54,7 @@ public class DropSingletonDimensionsViewTest extends AbstractOpTest {
 	@Test
 	public void dropSingletonDimensionsTest() {
 
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 1, 10 }, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 1, 10);
 
 		RandomAccessibleInterval<DoubleType> il2 = Views.dropSingletonDimensions(img);
 

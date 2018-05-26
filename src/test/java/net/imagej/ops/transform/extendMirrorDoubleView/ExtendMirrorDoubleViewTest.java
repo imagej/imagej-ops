@@ -53,7 +53,7 @@ public class ExtendMirrorDoubleViewTest extends AbstractOpTest {
 
 	@Test
 	public void extendMirrorDoubleTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 10);
 
 		OutOfBounds<DoubleType> il2 = Views.extendMirrorDouble(img).randomAccess();
 

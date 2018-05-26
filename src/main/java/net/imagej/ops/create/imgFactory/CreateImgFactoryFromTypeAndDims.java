@@ -27,45 +27,31 @@
  * #L%
  */
 
-package net.imagej.ops.create.img;
+package net.imagej.ops.create.imgFactory;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
 import net.imglib2.Dimensions;
-import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
-import net.imglib2.type.NativeType;
+import net.imglib2.util.Util;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Creates an {@link Img} with the given {@link Dimensions} and
- * {@link NativeType}.
+ * Creates an {@link ImgFactory} with the given type, and appropriate for the
+ * specified {@link Dimensions}.
  *
  * @author Curtis Rueden
- * @param <T>
+ * @param <T> The type of image the {@link ImgFactory} will produce.
  */
-@Plugin(type = Ops.Create.Img.class)
-public class CreateImgFromDimsAndType<T extends NativeType<T>> extends
-	AbstractBinaryFunctionOp<Dimensions, T, Img<T>> implements
-	Ops.Create.Img
+@Plugin(type = Ops.Create.ImgFactory.class)
+public class CreateImgFactoryFromTypeAndDims<T> extends
+	AbstractBinaryFunctionOp<T, Dimensions, ImgFactory<T>> implements
+	Ops.Create.ImgFactory
 {
 
-	@Parameter(required = false)
-	private ImgFactory<T> factory;
-
 	@Override
-	public void initialize() {
-		if (factory == null) {
-			factory = in1() == null ? ops().create().imgFactory() :
-				ops().create().imgFactory(in1());
-		}
+	public ImgFactory<T> calculate(final T in1, final Dimensions in2) {
+		return Util.getSuitableImgFactory(in2, in1);
 	}
-
-	@Override
-	public Img<T> calculate(final Dimensions input1, final T input2) {
-		return Imgs.create(factory, input1, input2);
-	}
-
 }

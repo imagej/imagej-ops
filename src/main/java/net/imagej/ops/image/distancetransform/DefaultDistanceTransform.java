@@ -36,7 +36,7 @@ import java.util.concurrent.ExecutorService;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.create.img.CreateImgFromDimsAndType;
+import net.imagej.ops.create.img.CreateImgFromDims;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
@@ -83,7 +83,7 @@ public class DefaultDistanceTransform<B extends BooleanType<B>, T extends RealTy
 	@Override
 	public void initialize() {
 		es = ts.getExecutorService();
-		createOp = Functions.unary(ops(), CreateImgFromDimsAndType.class, RandomAccessibleInterval.class,
+		createOp = Functions.unary(ops(), CreateImgFromDims.class, RandomAccessibleInterval.class,
 				new FinalInterval(in()), new FloatType());
 	}
 

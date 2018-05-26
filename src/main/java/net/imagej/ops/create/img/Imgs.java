@@ -55,13 +55,12 @@ public final class Imgs {
 	 *          bounds are an {@link Interval}, the resultant {@link Img} will
 	 *          have the same min/max as that {@link Interval} as well (see
 	 *          {@link #adjustMinMax} for details).
-	 * @param type The component type of the newly created image.
 	 * @return the newly created {@link Img}
 	 */
 	public static <T extends Type<T>> Img<T> create(final ImgFactory<T> factory,
-		final Dimensions dims, final T type)
+		final Dimensions dims)
 	{
-		return Imgs.adjustMinMax(factory.create(dims, type), dims);
+		return Imgs.adjustMinMax(factory.create(dims), dims);
 	}
 
 	/**

@@ -57,13 +57,12 @@ public class DeconvolveTest extends AbstractOpTest {
 		int[] kernelSize = new int[] { 27, 39 };
 
 		// create an input with a small sphere at the center
-		Img<FloatType> in = new ArrayImgFactory<FloatType>().create(size,
-			new FloatType());
+		Img<FloatType> in = new ArrayImgFactory<>(new FloatType()).create(size);
 		placeSphereInCenter(in);
 
 		// create a kernel with a small sphere in the center
-		Img<FloatType> kernel = new ArrayImgFactory<FloatType>().create(kernelSize,
-			new FloatType());
+		Img<FloatType> kernel =
+			new ArrayImgFactory<>(new FloatType()).create(kernelSize);
 		placeSphereInCenter(kernel);
 
 		// convolve and calculate the sum of output

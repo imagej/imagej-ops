@@ -57,7 +57,7 @@ public class ShearViewTest extends AbstractOpTest {
 	/** Tests {@link DefaultShearView}. */
 	@Test
 	public void defaultShearTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 2, 2 }, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(2, 2);
 		Cursor<DoubleType> imgC = img.cursor();
 		while (imgC.hasNext()) {
 			imgC.next().set(1);
@@ -80,7 +80,7 @@ public class ShearViewTest extends AbstractOpTest {
 	/** Tests {@link ShearViewInterval}. */
 	@Test
 	public void ShearIntervalTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 2, 2 }, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(2, 2);
 		Cursor<DoubleType> imgC = img.cursor();
 		while (imgC.hasNext()) {
 			imgC.next().set(1);

@@ -54,7 +54,7 @@ public class ZeroMinViewTest extends AbstractOpTest {
 
 	@Test
 	public void defaultZeroMinTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 10);
 
 		IntervalView<DoubleType> imgTranslated = Views.interval(
 				Views.translate((RandomAccessible<DoubleType>) img, 2, 5), new long[] { 2, 5 }, new long[] { 12, 15 });

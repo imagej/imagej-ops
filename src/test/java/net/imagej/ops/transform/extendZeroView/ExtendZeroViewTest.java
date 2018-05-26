@@ -53,7 +53,7 @@ public class ExtendZeroViewTest extends AbstractOpTest {
 
 	@Test
 	public void extendZeroTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 10);
 
 		OutOfBounds<DoubleType> il2 = Views.extendZero(img).randomAccess();
 

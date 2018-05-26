@@ -108,23 +108,19 @@ public class CreateNamespace extends AbstractNamespace {
 		return img(new FinalDimensions(dims), new DoubleType());
 	}
 
-	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromDimsAndType.class)
-	public <T extends NativeType<T>> Img<T> img(final Dimensions in1,
-		final T in2)
-	{
+	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromDims.class)
+	public <T> Img<T> img(final Dimensions in1, final T in2) {
 		@SuppressWarnings("unchecked")
-		final Img<T> result = (Img<T>) ops().run(
-			Ops.Create.Img.class, in1, in2);
+		final Img<T> result = (Img<T>) ops().run(Ops.Create.Img.class, in1, in2);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromDimsAndType.class)
+	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromDims.class)
 	public <T extends NativeType<T>> Img<T> img(final Dimensions in1, final T in2,
 		final ImgFactory<T> factory)
 	{
 		@SuppressWarnings("unchecked")
-		final Img<T> result = (Img<T>) ops().run(
-			Ops.Create.Img.class, in1, in2,
+		final Img<T> result = (Img<T>) ops().run(Ops.Create.Img.class, in1, in2,
 			factory);
 		return result;
 	}
@@ -167,32 +163,17 @@ public class CreateNamespace extends AbstractNamespace {
 
 	// -- imgFactory --
 
-	@OpMethod(op = net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class)
-	public <T extends NativeType<T>> ImgFactory<T> imgFactory() {
-		// NB: The generic typing of ImgFactory is broken; see:
-		// https://github.com/imglib/imglib2/issues/91
+	@OpMethod(op = net.imagej.ops.create.imgFactory.CreateImgFactoryFromTypeAndDims.class)
+	public <T> ImgFactory<T> imgFactory(final T type, final Dimensions dims) {
 		@SuppressWarnings("unchecked")
 		final ImgFactory<T> result = (ImgFactory<T>) ops().run(
-			Ops.Create.ImgFactory.class);
-		return result;
-	}
-
-	@OpMethod(
-		ops = net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class)
-	public <T extends NativeType<T>> ImgFactory<T> imgFactory(
-		final Dimensions dims)
-	{
-		// NB: The generic typing of ImgFactory is broken; see:
-		// https://github.com/imglib/imglib2/issues/91
-		@SuppressWarnings("unchecked")
-		final ImgFactory<T> result = (ImgFactory<T>) ops().run(
-			Ops.Create.ImgFactory.class, dims);
+			Ops.Create.ImgFactory.class, type, dims);
 		return result;
 	}
 
 	@OpMethod(
 		ops = net.imagej.ops.create.imgFactory.CreateImgFactoryFromImg.class)
-	public <T extends NativeType<T>> ImgFactory<T> imgFactory(final Img<T> in) {
+	public <T> ImgFactory<T> imgFactory(final Img<T> in) {
 		@SuppressWarnings("unchecked")
 		final ImgFactory<T> result = (ImgFactory<T>) ops().run(
 			Ops.Create.ImgFactory.class, in);

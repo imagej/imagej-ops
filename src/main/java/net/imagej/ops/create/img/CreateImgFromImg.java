@@ -40,7 +40,7 @@ import org.scijava.plugin.Plugin;
 
 /**
  * Create an {@link Img} from another {@link Img} implementation using its
- * {@link Type} and {@link ImgFactory}.
+ * associated {@link ImgFactory}.
  *
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
@@ -53,7 +53,7 @@ public class CreateImgFromImg<T extends Type<T>> extends
 
 	@Override
 	public Img<T> calculate(final Img<T> input) {
-		return Imgs.create(input.factory(), input, input.firstElement());
+		return Imgs.create(input.factory(), input);
 	}
 
 }

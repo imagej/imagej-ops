@@ -55,7 +55,7 @@ import org.junit.Test;
 public class UnshearViewTest extends AbstractOpTest {
 	@Test
 	public void defaultUnshearTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 2, 2 }, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(2, 2);
 		Cursor<DoubleType> imgC = img.cursor();
 		while (imgC.hasNext()) {
 			imgC.next().set(1);
@@ -77,7 +77,7 @@ public class UnshearViewTest extends AbstractOpTest {
 
 	@Test
 	public void UnshearIntervalTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 2, 2 }, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(2, 2);
 		Cursor<DoubleType> imgC = img.cursor();
 		while (imgC.hasNext()) {
 			imgC.next().set(1);

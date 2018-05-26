@@ -35,7 +35,7 @@ import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
-import net.imglib2.type.NativeType;
+import net.imglib2.type.Type;
 import net.imglib2.util.Util;
 
 import org.scijava.Priority;
@@ -49,9 +49,8 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  */
 @Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH)
-public class CreateImgFromRAI<T extends NativeType<T>> extends
-	UFViaUFSameIO<RandomAccessibleInterval<T>, Img<T>> implements
-	Ops.Create.Img
+public class CreateImgFromRAI<T extends Type<T>> extends
+	UFViaUFSameIO<RandomAccessibleInterval<T>, Img<T>> implements Ops.Create.Img
 {
 
 	@Override

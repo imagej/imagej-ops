@@ -53,7 +53,7 @@ public class FlatIterableViewTest extends AbstractOpTest {
 
 	@Test
 	public void defaultFlatIterableTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 10);
 
 		Cursor<DoubleType> il2 = Views.flatIterable(img).cursor();
 

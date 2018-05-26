@@ -57,7 +57,7 @@ public class InvertAxisViewTest extends AbstractOpTest {
 	@Test
 	public void defaultInvertAxisTest() {
 
-		final Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
+		final Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 10);
 		
 		final MixedTransformView<DoubleType> il2 = Views.invertAxis((RandomAccessible<DoubleType>) img, 1);
 		final MixedTransformView<DoubleType> opr = ops.transform().invertAxisView(deinterval(img),
@@ -74,7 +74,7 @@ public class InvertAxisViewTest extends AbstractOpTest {
 	@Test
 	public void intervalInvertAxisTest() {
 
-		final Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
+		final Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 10);
 
 		final IntervalView<DoubleType> il2 = Views.invertAxis(img, 1);
 		final IntervalView<DoubleType> opr = ops.transform().invertAxisView(img, 1);

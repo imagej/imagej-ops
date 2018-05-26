@@ -58,8 +58,7 @@ public class CollapseRealViewTest extends AbstractOpTest {
 	@Test
 	public void defaultCollapseRealTest() {
 
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 },
-				new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 10);
 
 		CompositeIntervalView<DoubleType, RealComposite<DoubleType>> il2 = Views
 				.collapseReal((RandomAccessibleInterval<DoubleType>) img);

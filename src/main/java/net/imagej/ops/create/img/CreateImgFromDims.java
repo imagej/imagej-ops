@@ -27,39 +27,42 @@
  * #L%
  */
 
-package net.imagej.ops.create.imgFactory;
+package net.imagej.ops.create.img;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.AbstractNullaryFunctionOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.Dimensions;
+import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
-import net.imglib2.img.array.ArrayImgFactory;
-import net.imglib2.img.cell.CellImgFactory;
-import net.imglib2.type.NativeType;
-import net.imglib2.util.Intervals;
+import net.imglib2.type.Type;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Default implementation of the "create.imgFactory" op.
+ * Creates an {@link Img} with the given {@link Dimensions} and type.
  *
- * @author Daniel Seebacher (University of Konstanz)
- * @author Tim-Oliver Buchholz (University of Konstanz)
+ * @author Curtis Rueden
  * @param <T>
  */
-@Plugin(type = Ops.Create.ImgFactory.class)
-public class DefaultCreateImgFactory<T extends NativeType<T>> extends
-	AbstractNullaryFunctionOp<ImgFactory<T>> implements Ops.Create.ImgFactory
+@Plugin(type = Ops.Create.Img.class)
+public class CreateImgFromDims<T extends Type<T>> extends
+	AbstractUnaryFunctionOp<Dimensions, Img<T>> implements Ops.Create.Img
 {
 
-	@Parameter(required = false)
-	private Dimensions dims;
+	@Parameter
+	private T type;
+
+	private ImgFactory<T> factory;
 
 	@Override
-	public ImgFactory<T> calculate() {
-		return (dims == null || Intervals.numElements(dims) <= Integer.MAX_VALUE)
-			? new ArrayImgFactory<>() : new CellImgFactory<>();
+	public void initialize() {
+		factory = ops().create().imgFactory(type, in());
+	}
+
+	@Override
+	public Img<T> calculate(final T input1, Dimensions input2) {
+		return Imgs.create(factory, input2);
 	}
 
 }

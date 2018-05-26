@@ -58,7 +58,7 @@ public class TranslateViewTest extends AbstractOpTest {
 
 	@Test
 	public void defaultTranslateTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 10);
 
 		MixedTransformView<DoubleType> il2 = Views.translate( deinterval(img), 2, 5);
 		MixedTransformView<DoubleType> opr = ops.transform().translateView( deinterval(img), 2, 5);

@@ -72,8 +72,7 @@ public class CopyRAITest extends AbstractOpTest {
 
 	@Before
 	public void createData() {
-		input = new ArrayImgFactory<UnsignedByteType>().create(new int[] { 120,
-			100 }, new UnsignedByteType());
+		input = new ArrayImgFactory<>(new UnsignedByteType()).create(120, 100);
 
 		final MersenneTwisterFast r = new MersenneTwisterFast(System.currentTimeMillis());
 
@@ -93,7 +92,7 @@ public class CopyRAITest extends AbstractOpTest {
 
 		// create the same input but force it to be a planar image
 		inputPlanar = ops.create().img(new FinalDimensions(size1),
-			new UnsignedByteType(), new PlanarImgFactory<UnsignedByteType>());
+			new PlanarImgFactory<>(new UnsignedByteType()));
 
 		// get centered views
 		view = Views.interval(input2, new FinalInterval(start, end));

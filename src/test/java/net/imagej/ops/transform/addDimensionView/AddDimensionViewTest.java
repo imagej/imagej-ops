@@ -55,7 +55,7 @@ public class AddDimensionViewTest extends AbstractOpTest {
 
 	@Test
 	public void addDimensionTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 10);
 		
 		MixedTransformView<DoubleType> il2 = Views.addDimension((RandomAccessible<DoubleType>)img);
 		
@@ -73,7 +73,7 @@ public class AddDimensionViewTest extends AbstractOpTest {
 
 	@Test
 	public void addDimensionMinMaxTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 10);
 		int max = 20;
 		int min = 0;
 		

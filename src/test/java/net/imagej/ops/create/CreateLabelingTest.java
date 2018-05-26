@@ -92,12 +92,12 @@ public class CreateLabelingTest extends AbstractOpTest {
 		assertEquals("Labeling Factory: ", ArrayImgFactory.class,
 			((Img<?>) ((ImgLabeling<String, ?>) ops.run(
 				DefaultCreateImgLabeling.class, dim, null,
-				new ArrayImgFactory<IntType>())).getIndexImg()).factory().getClass());
+				new ArrayImgFactory<>(new IntType()))).getIndexImg()).factory().getClass());
 
 		assertEquals("Labeling Factory: ", CellImgFactory.class,
 			((Img<?>) ((ImgLabeling<String, ?>) ops.run(
 				DefaultCreateImgLabeling.class, dim, null,
-				new CellImgFactory<IntType>())).getIndexImg()).factory().getClass());
+				new CellImgFactory<>(new IntType()))).getIndexImg()).factory().getClass());
 
 	}
 

@@ -80,10 +80,10 @@ public class VectorAccelerator<T extends RealType<T> & NativeType<T>> extends
 	public void initialize() {
 		super.initialize();
 
-		factory = new ArrayImgFactory<>();
+		factory = new ArrayImgFactory<>(Util.getTypeFromInterval(out()));
 
 		create = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
-			Img.class, Dimensions.class, Util.getTypeFromInterval(out()), factory);
+			Img.class, Dimensions.class, factory);
 	}
 
 	@Override

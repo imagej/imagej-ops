@@ -40,7 +40,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Gets an {@link ImgFactory} for the given {@link Img}.
  *
- *@author Curtis Rueden
+ * @author Curtis Rueden
  * @param <T>
  */
 @Plugin(type = Ops.Create.ImgFactory.class, priority = Priority.HIGH)

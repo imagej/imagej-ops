@@ -58,7 +58,7 @@ public class InterpolateViewTest extends AbstractOpTest {
 	@Test
 	public void defaultInterpolateTest() {
 		
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[]{10, 10}, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 10);
 		MersenneTwisterFast r = new MersenneTwisterFast(SEED);
 		for (DoubleType d : img) {
 			d.set(r.nextDouble());

@@ -54,8 +54,7 @@ public class CopyImgTest extends AbstractOpTest {
 
 	@Before
 	public void createData() {
-		input = new ArrayImgFactory<DoubleType>().create(new int[] { 120, 100 },
-			new DoubleType());
+		input = new ArrayImgFactory<>(new DoubleType()).create(120, 100);
 
 		final MersenneTwisterFast r = new MersenneTwisterFast(System.currentTimeMillis());
 

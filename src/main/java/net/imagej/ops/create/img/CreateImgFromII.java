@@ -35,7 +35,6 @@ import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.img.Img;
-import net.imglib2.type.NativeType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
@@ -48,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  */
 @Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH + 1)
-public class CreateImgFromII<T extends NativeType<T>> extends
+public class CreateImgFromII<T> extends
 	UFViaUFSameIO<IterableInterval<T>, Img<T>> implements Ops.Create.Img
 {
 

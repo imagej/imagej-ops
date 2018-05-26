@@ -58,8 +58,7 @@ public class CollapseNumericViewTest extends AbstractOpTest {
 	@Test
 	public void defaultCollapseNumericTest() {
 
-		Img<NativeARGBDoubleType> img = new ArrayImgFactory<NativeARGBDoubleType>().create(new int[] { 10, 10 },
-				new NativeARGBDoubleType());
+		Img<NativeARGBDoubleType> img = new ArrayImgFactory<>(new NativeARGBDoubleType()).create(10, 10);
 
 		CompositeIntervalView<NativeARGBDoubleType, NumericComposite<NativeARGBDoubleType>> il2 = Views
 				.collapseNumeric((RandomAccessibleInterval<NativeARGBDoubleType>) img);

@@ -73,8 +73,7 @@ public class MathBenchmarkTest extends AbstractOpBenchmark {
 		float constant)
 	{
 		// create an input
-		ArrayImg<FloatType, ?> img = new ArrayImgFactory<FloatType>().create(dims,
-			new FloatType());
+		ArrayImg<FloatType, ?> img = new ArrayImgFactory<>(new FloatType()).create(dims);
 
 		for (final FloatType value : img) {
 			value.setReal(constant);
@@ -92,8 +91,7 @@ public class MathBenchmarkTest extends AbstractOpBenchmark {
 		img3 = createConstantImg(new long[] { x, y }, 3.0f);
 		imgzero = createConstantImg(new long[] { x, y }, 0.0f);
 
-		byteimg = new ArrayImgFactory<ByteType>().create(new long[] { 20000,
-			20000 }, new ByteType());
+		byteimg = new ArrayImgFactory<>(new ByteType()).create(20000, 20000);
 
 		float1 = new float[(int) size];
 		float2 = new float[(int) size];

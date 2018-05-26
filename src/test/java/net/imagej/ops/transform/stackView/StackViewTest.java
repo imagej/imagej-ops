@@ -57,7 +57,7 @@ public class StackViewTest extends AbstractOpTest {
 
 	@Test
 	public void defaultStackTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 10);
 
 		List<Img<DoubleType>> list = new ArrayList<>();
 		list.add(img);
@@ -71,7 +71,7 @@ public class StackViewTest extends AbstractOpTest {
 	
 	@Test
 	public void stackWithAccessModeTest() {
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 10);
 
 		List<Img<DoubleType>> list = new ArrayList<>();
 		list.add(img);

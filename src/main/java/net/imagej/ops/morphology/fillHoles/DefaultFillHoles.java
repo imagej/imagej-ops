@@ -30,7 +30,7 @@
 package net.imagej.ops.morphology.fillHoles;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.create.img.CreateImgFromDimsAndType;
+import net.imagej.ops.create.img.CreateImgFromDims;
 import net.imagej.ops.special.chain.RAIs;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
@@ -70,7 +70,7 @@ public class DefaultFillHoles<T extends BooleanType<T>> extends
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		createFunc = RAIs.function(ops(), CreateImgFromDimsAndType.class, in(), new BitType());
+		createFunc = RAIs.function(ops(), CreateImgFromDims.class, in(), new BitType());
 		floodFillComp = (BinaryComputerOp) Computers.binary(ops(),
 			Ops.Morphology.FloodFill.class, RandomAccessibleInterval.class, in(),
 			Localizable.class, structElement);

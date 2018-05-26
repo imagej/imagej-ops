@@ -66,13 +66,13 @@ public class ConvolveTest extends AbstractOpTest {
 	@Test
 	public void testConvolveMethodSelection() {
 
-		final Img<ByteType> in = new ArrayImgFactory<ByteType>().create(new int[] {
-			20, 20 }, new ByteType());
+		final Img<ByteType> in =
+			new ArrayImgFactory<>(new ByteType()).create(20, 20);
 
 		// use a small kernel
 		int[] kernelSize = new int[] { 3, 3 };
-		Img<FloatType> kernel = new ArrayImgFactory<FloatType>().create(kernelSize,
-			new FloatType());
+		Img<FloatType> kernel =
+			new ArrayImgFactory<>(new FloatType()).create(kernelSize);
 
 		Op op = ops.op(Ops.Filter.Convolve.class, in, kernel);
 
@@ -88,8 +88,7 @@ public class ConvolveTest extends AbstractOpTest {
 
 		// use a bigger kernel
 		kernelSize = new int[] { 30, 30 };
-		kernel = new ArrayImgFactory<FloatType>().create(kernelSize,
-			new FloatType());
+		kernel = new ArrayImgFactory<>(new FloatType()).create(kernelSize);
 
 		op = ops.op(Ops.Filter.Convolve.class, in, kernel);
 
@@ -117,13 +116,12 @@ public class ConvolveTest extends AbstractOpTest {
 		long[] borderSize = new long[] { 10, 10 };
 
 		// create an input with a small sphere at the center
-		Img<FloatType> in = new ArrayImgFactory<FloatType>().create(size,
-			new FloatType());
+		Img<FloatType> in = new ArrayImgFactory<>(new FloatType()).create(size);
 		placeSphereInCenter(in);
 
 		// create a kernel with a small sphere in the center
-		Img<FloatType> kernel = new ArrayImgFactory<FloatType>().create(kernelSize,
-			new FloatType());
+		Img<FloatType> kernel =
+			new ArrayImgFactory<>(new FloatType()).create(kernelSize);
 		placeSphereInCenter(kernel);
 
 		// create variables to hold the image sums
@@ -143,12 +141,10 @@ public class ConvolveTest extends AbstractOpTest {
 			kernel, borderSize);
 
 		// create an output for the next test
-		Img<FloatType> out2 = new ArrayImgFactory<FloatType>().create(size,
-			new FloatType());
+		Img<FloatType> out2 = new ArrayImgFactory<>(new FloatType()).create(size);
 
 		// create an output for the next test
-		Img<FloatType> out3 = new ArrayImgFactory<FloatType>().create(size,
-			new FloatType());
+		Img<FloatType> out3 = new ArrayImgFactory<>(new FloatType()).create(size);
 
 		// Op used to pad the input
 		final BinaryFunctionOp<RandomAccessibleInterval<FloatType>, Dimensions, RandomAccessibleInterval<FloatType>> padOp =

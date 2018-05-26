@@ -56,7 +56,7 @@ public class ExtendViewTest extends AbstractOpTest {
 	@Test
 	public void defaultExtendTest() {
 
-		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(new int[] { 10, 10 }, new DoubleType());
+		Img<DoubleType> img = new ArrayImgFactory<>(new DoubleType()).create(10, 10);
 
 		OutOfBounds<DoubleType> il2 = Views
 				.extend(img, new OutOfBoundsBorderFactory<DoubleType, RandomAccessibleInterval<DoubleType>>())
