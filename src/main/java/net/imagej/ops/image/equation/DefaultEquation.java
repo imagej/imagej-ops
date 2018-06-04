@@ -77,9 +77,7 @@ public class DefaultEquation<T extends RealType<T>> extends
 	// -- UnaryComputerOp methods --
 
 	@Override
-	public void compute(final String input,
-		final IterableInterval<T> output)
-	{
+	public void compute(final String input, final IterableInterval<T> output) {
 		final String equation = input + ";";
 
 		// evaluate the equation using Javascript!
@@ -93,22 +91,16 @@ public class DefaultEquation<T extends RealType<T>> extends
 		bindings.put("c", c);
 
 		if (engine instanceof Compilable) try {
-			final String script =
-				"importClass(Packages.java.lang.Double);\n" +
-				"while (c.hasNext()) {\n" +
-				"  c.fwd();\n" +
-				"  c.localize(p);\n" +
-				"  o = " + equation + ";\n" +
-				"  try {\n" +
-				"    c.get().setReal(o);\n" +
-				"  } catch(e) {" +
-				"    c.get().setReal(Double.NaN);\n" +
-				"  }\n" +
-				"}";
+			final String script = "importClass(Packages.java.lang.Double);\n" +
+				"while (c.hasNext()) {\n" + "  c.fwd();\n" + "  c.localize(p);\n" +
+				"  o = " + equation + ";\n" + "  try {\n" +
+				"    c.get().setReal(o);\n" + "  } catch(e) {" +
+				"    c.get().setReal(Double.NaN);\n" + "  }\n" + "}";
 			final Compilable compiler = (Compilable) engine;
 			final CompiledScript compiled = compiler.compile(script);
 			compiled.eval(bindings);
-		} catch (ScriptException e) {
+		}
+		catch (final ScriptException e) {
 			log.warn(e);
 			// fallthru
 		}
@@ -118,8 +110,8 @@ public class DefaultEquation<T extends RealType<T>> extends
 				c.fwd();
 				c.localize(pos);
 				final Object o = engine.eval(equation);
-				final double d =
-					o instanceof Number ? ((Number) o).doubleValue() : Double.NaN;
+				final double d = o instanceof Number ? ((Number) o).doubleValue()
+					: Double.NaN;
 				c.get().setReal(d);
 			}
 		}
@@ -134,8 +126,8 @@ public class DefaultEquation<T extends RealType<T>> extends
 	public IterableInterval<T> createOutput(final String input) {
 		// produce a 256x256 float64 array-backed image by default
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		final IterableInterval<T> newImage =
-			(IterableInterval) ArrayImgs.doubles(256, 256);
+		final IterableInterval<T> newImage = (IterableInterval) ArrayImgs.doubles(
+			256, 256);
 		return newImage;
 	}
 
