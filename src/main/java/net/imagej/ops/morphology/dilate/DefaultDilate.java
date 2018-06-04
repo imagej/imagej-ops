@@ -32,11 +32,6 @@ package net.imagej.ops.morphology.dilate;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.map.Maps;
-import net.imagej.ops.map.neighborhood.MapNeighborhood;
-import net.imagej.ops.special.chain.RAIs;
-import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
-import net.imagej.ops.special.computer.Computers;
-import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractBinaryHybridCF;
@@ -44,14 +39,15 @@ import net.imglib2.Dimensions;
 import net.imglib2.FinalInterval;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.morphology.Dilation;
 import net.imglib2.algorithm.morphology.MorphologyUtils;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
-import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Util;
+import net.imglib2.view.ExtendedRandomAccessibleInterval;
 import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
@@ -59,8 +55,7 @@ import org.scijava.plugin.Plugin;
 
 /**
  * Computes the dilation of a {@link RandomAccessibleInterval} using a single
- * {@link Shape}. It is the caller's responsibility to provide a
- * {@link RandomAccessibleInterval} with enough padding for the output.
+ * {@link Shape}.
  * 
  * @author Leon Yang
  * @param <T> element type
@@ -79,7 +74,6 @@ public class DefaultDilate<T extends RealType<T>> extends
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> f;
 
 	private T minVal;
-	private MapNeighborhood<T, T, RandomAccessibleInterval<T>, IterableInterval<T>, UnaryComputerOp<Iterable<T>, T>> mapper;
 	private UnaryFunctionOp<Dimensions, Img<T>> imgCreator;
 
 	@Override
@@ -95,21 +89,13 @@ public class DefaultDilate<T extends RealType<T>> extends
 		minVal.setReal(minVal.getMinValue());
 
 		if (f == null) {
-			f = new OutOfBoundsConstantValueFactory<>(
-				minVal);
+			f = new OutOfBoundsConstantValueFactory<>(minVal);
 		}
-
-		final UnaryComputerOp neighborComputer = minVal instanceof BitType
-			? new DilateBitType() : Computers.unary(ops(), Ops.Stats.Max.class, minVal
-				.createVariable(), Iterable.class);
 
 		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
 			Img.class, in(), minVal.createVariable());
 
 		if (out() == null) setOutput(createOutput(in()));
-
-		mapper = ops().op(MapNeighborhood.class, out(), in1(), in2(),
-			neighborComputer);
 	}
 
 	@Override
@@ -128,34 +114,18 @@ public class DefaultDilate<T extends RealType<T>> extends
 	public void compute(final RandomAccessibleInterval<T> in1, final Shape in2,
 		final IterableInterval<T> output)
 	{
-		final RandomAccessibleInterval<T> extended = RAIs.extend(in1, f);
 		final RandomAccessibleInterval<T> shifted;
 		if (isFull) {
 			final long[] offset = MorphologyUtils
 				.computeTargetImageDimensionsAndOffset(in1, in2)[1];
-			shifted = Views.translate(extended, offset);
+			shifted = Views.translate(in1, offset);
 		}
 		else {
-			shifted = extended;
+			shifted = in1;
 		}
-		mapper.compute(Views.interval(shifted, output), in2, output);
-	}
-
-	/**
-	 * Helper op for computing the dilation of a {@link BitType} image.
-	 */
-	private static class DilateBitType extends
-		AbstractUnaryComputerOp<Iterable<BitType>, BitType>
-	{
-
-		@Override
-		public void compute(final Iterable<BitType> input, final BitType output) {
-			for (final BitType e : input)
-				if (e.get()) {
-					output.set(true);
-					return;
-				}
-			output.set(false);
-		}
+		final ExtendedRandomAccessibleInterval<T, RandomAccessibleInterval<T>> extended =
+			Views.extend(shifted, f);
+		Dilation.dilate(extended, output, in2, minVal, Runtime.getRuntime()
+			.availableProcessors());
 	}
 }
