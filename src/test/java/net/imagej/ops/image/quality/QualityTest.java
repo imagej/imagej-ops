@@ -45,7 +45,7 @@ import org.junit.Test;
  *
  * @author Stefan Helfrich (University of Konstanz)
  */
-public class QualityTests extends AbstractOpTest {
+public class QualityTest extends AbstractOpTest {
 
 	Img<ByteType> reference;
 	Img<ByteType> test;
