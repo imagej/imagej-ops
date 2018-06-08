@@ -59,8 +59,11 @@ public class RealTransformTest extends AbstractOpTest {
 		transform.scale(0.5);
 		transform.translate(image.dimension(0) / 2, image.dimension(0) / 2);
 
-		final RandomAccessibleInterval<UnsignedByteType> actualOutput = ops
-			.transform().realTransform(image, transform);
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<UnsignedByteType> actualOutput =
+			(RandomAccessibleInterval<UnsignedByteType>) ops.run(
+				net.imagej.ops.transform.realTransform.DefaultTransformView.class,
+				image, transform);
 
 		// compare the output image data to that stored in the file.
 		final Cursor<UnsignedByteType> cursor = Views.iterable(actualOutput)
