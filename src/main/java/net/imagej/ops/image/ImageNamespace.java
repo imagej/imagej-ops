@@ -198,7 +198,7 @@ public class ImageNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.image.equation.DefaultCoordinatesEquation.class, out, in);
+			net.imagej.ops.Ops.Image.Equation.class, out, in);
 		return result;
 	}
 
@@ -209,7 +209,7 @@ public class ImageNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.image.equation.DefaultXYEquation.class, out, in);
+			net.imagej.ops.Ops.Image.Equation.class, out, in);
 		return result;
 	}
 
