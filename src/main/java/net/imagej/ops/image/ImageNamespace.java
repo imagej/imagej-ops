@@ -191,6 +191,28 @@ public class ImageNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	/** Executes the "equation" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.image.equation.DefaultCoordinatesEquation.class)
+	public <T extends RealType<T>> IterableInterval<T> equation(
+		final IterableInterval<T> out, final UnaryFunctionOp<long[], Double> in)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.image.equation.DefaultCoordinatesEquation.class, out, in);
+		return result;
+	}
+
+	/** Executes the "equation" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.image.equation.DefaultXYEquation.class)
+	public <T extends RealType<T>> IterableInterval<T> equation(
+		final IterableInterval<T> out, final DoubleBinaryOperator in)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.image.equation.DefaultXYEquation.class, out, in);
+		return result;
+	}
+
 	// -- fill --
 
 	/** Executes the "fill" operation on the given arguments. */
@@ -441,27 +463,6 @@ public class ImageNamespace extends AbstractNamespace {
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
 			net.imagej.ops.Ops.Image.Normalize.class, in, sourceMin, sourceMax,
 			targetMin, targetMax, isLazy);
-		return result;
-	}
-
-	// -- coordinate equation --
-	@OpMethod(op = net.imagej.ops.image.equation.DefaultCoordinatesEquation.class)
-	public <T extends RealType<T>> IterableInterval<T> equation(
-		final IterableInterval<T> out, final UnaryFunctionOp<long[], Double> in)
-	{
-		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.image.equation.DefaultCoordinatesEquation.class, out, in);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.image.equation.DefaultXYEquation.class)
-	public <T extends RealType<T>> IterableInterval<T> equation(
-		final IterableInterval<T> out, final DoubleBinaryOperator in)
-	{
-		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.image.equation.DefaultXYEquation.class, out, in);
 		return result;
 	}
 
