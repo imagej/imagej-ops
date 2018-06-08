@@ -31,6 +31,8 @@ package net.imagej.ops.image.equation;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.function.DoubleBinaryOperator;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.UnaryFunctionOp;
@@ -98,8 +100,11 @@ public class CoordinateEquationTest extends AbstractOpTest {
 			new FloatType());
 
 		// implement x^2+y^2 taking into account the calibration (start and spacing)
-		ops.image().equation(image3, (x, y) -> Math.pow(start[0] + spacing[0] * x,
-			2) + Math.pow(start[1] + spacing[1] * y, 2));
+		DoubleBinaryOperator equation = (x, y) -> Math.pow(start[0] + spacing[0] *
+			x, 2) + Math.pow(start[1] + spacing[1] * y, 2);
+
+		ops.run(net.imagej.ops.image.equation.DefaultXYEquation.class, image3,
+			equation);
 
 		assertEquals(6801.346801346799, ops.stats().sum(image3).getRealDouble(),
 			0.00001);
@@ -117,7 +122,7 @@ public class CoordinateEquationTest extends AbstractOpTest {
 		// implement x^2+y^2 taking into account the calibration
 		final UnaryFunctionOp<long[], Double> op =
 			new AbstractUnaryFunctionOp<long[], Double>()
-		{
+			{
 
 				@Override
 				public Double calculate(final long[] coords) {
@@ -128,7 +133,7 @@ public class CoordinateEquationTest extends AbstractOpTest {
 				}
 			};
 
-		ops.image().equation(image, op);
+		ops.run(DefaultCoordinatesEquation.class, image, op);
 
 		assertEquals(6801.346801346799, ops.stats().sum(image).getRealDouble(),
 			0.00001);
@@ -151,7 +156,7 @@ public class CoordinateEquationTest extends AbstractOpTest {
 		// implement c[0]+10*c[1]+100*c[3]+1000*c[4]
 		final UnaryFunctionOp<long[], Double> op =
 			new AbstractUnaryFunctionOp<long[], Double>()
-		{
+			{
 
 				@Override
 				public Double calculate(final long[] coords) {
@@ -162,7 +167,7 @@ public class CoordinateEquationTest extends AbstractOpTest {
 				}
 			};
 
-		ops.image().equation(image, op);
+		ops.run(DefaultCoordinatesEquation.class, image, op);
 
 		final RandomAccess<ShortType> ra = image.randomAccess();
 
