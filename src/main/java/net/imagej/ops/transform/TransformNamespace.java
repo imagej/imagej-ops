@@ -1247,19 +1247,6 @@ public class TransformNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(
-		op = net.imagej.ops.transform.realTransform.DefaultTransformView.class)
-	public <T extends RealType<T>> RandomAccessibleInterval<T> realTransform(
-		final RandomAccessibleInterval<T> in,
-		final InvertibleRealTransform transform, final Interval outputInterval,
-		final InterpolatorFactory<T, RandomAccessible<T>> interpolator,
-		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBoundsFactory)
-	{
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				Ops.Transform.RealTransform.class, in,
-				transform, outputInterval, interpolator, outOfBoundsFactory);
-		return result;
-	}
+	
 
 }

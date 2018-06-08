@@ -71,14 +71,10 @@ public class DefaultTransformView<T extends NumericType<T> & RealType<T>>
 	InvertibleRealTransform transform;
 
 	@Parameter(required = false)
-	private Interval outputInterval = null;
+	private Interval outputInterval;
 
 	@Parameter(required = false)
-	private InterpolatorFactory<T, RandomAccessible<T>> interpolator = null;
-
-	@Parameter(required = false)
-	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBoundsFactory =
-		new OutOfBoundsMirrorFactory<>(OutOfBoundsMirrorFactory.Boundary.SINGLE);
+	private InterpolatorFactory<T, RandomAccessible<T>> interpolator;
 
 	@Override
 	public RandomAccessibleInterval<T> calculate(
