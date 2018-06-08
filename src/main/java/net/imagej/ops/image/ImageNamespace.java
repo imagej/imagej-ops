@@ -464,7 +464,7 @@ public class ImageNamespace extends AbstractNamespace {
 		final IterableInterval<T> reference, final IterableInterval<T> test)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.image.quality.DefaultMAE.class, out, reference, test);
+			net.imagej.ops.Ops.Image.MAE.class, out, reference, test);
 		return result;
 	}
 
@@ -473,7 +473,7 @@ public class ImageNamespace extends AbstractNamespace {
 		final IterableInterval<T> reference, final IterableInterval<T> test)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.image.quality.DefaultMAE.class, reference, test);
+			net.imagej.ops.Ops.Image.MAE.class, reference, test);
 		return result;
 	}
 
@@ -482,7 +482,7 @@ public class ImageNamespace extends AbstractNamespace {
 		final IterableInterval<T> reference, final IterableInterval<T> test)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.image.quality.DefaultPSNR.class, out, reference, test);
+			net.imagej.ops.Ops.Image.PSNR.class, out, reference, test);
 		return result;
 	}
 
@@ -491,7 +491,7 @@ public class ImageNamespace extends AbstractNamespace {
 		final IterableInterval<T> reference, final IterableInterval<T> test)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.image.quality.DefaultPSNR.class, reference, test);
+				net.imagej.ops.Ops.Image.PSNR.class, reference, test);
 		return result;
 	}
 
@@ -500,7 +500,7 @@ public class ImageNamespace extends AbstractNamespace {
 		final IterableInterval<T> reference, final IterableInterval<T> test)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.image.quality.DefaultRMSE.class, out, reference, test);
+			net.imagej.ops.Ops.Image.RMSE.class, out, reference, test);
 		return result;
 	}
 
@@ -509,7 +509,7 @@ public class ImageNamespace extends AbstractNamespace {
 		final IterableInterval<T> reference, final IterableInterval<T> test)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.image.quality.DefaultRMSE.class, reference, test);
+				net.imagej.ops.Ops.Image.RMSE.class, reference, test);
 		return result;
 	}
 
@@ -518,7 +518,7 @@ public class ImageNamespace extends AbstractNamespace {
 		final IterableInterval<T> reference, final IterableInterval<T> test)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.image.quality.DefaultSNR.class, out, reference, test);
+			net.imagej.ops.Ops.Image.SNR.class, out, reference, test);
 		return result;
 	}
 
@@ -527,7 +527,7 @@ public class ImageNamespace extends AbstractNamespace {
 		final IterableInterval<T> reference, final IterableInterval<T> test)
 	{
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.image.quality.DefaultSNR.class, reference, test);
+				net.imagej.ops.Ops.Image.SNR.class, reference, test);
 		return result;
 	}
 
