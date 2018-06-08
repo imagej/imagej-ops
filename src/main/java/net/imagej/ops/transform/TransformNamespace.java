@@ -1215,7 +1215,7 @@ public class TransformNamespace extends AbstractNamespace {
 	{
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.transform.realTransform.DefaultTransformView.class, in,
+				Ops.Transform.RealTransform.class, in,
 				transform);
 		return result;
 	}
@@ -1228,7 +1228,7 @@ public class TransformNamespace extends AbstractNamespace {
 	{
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.transform.realTransform.DefaultTransformView.class, in,
+				Ops.Transform.RealTransform.class, in,
 				transform, outputInterval);
 		return result;
 	}
@@ -1242,7 +1242,7 @@ public class TransformNamespace extends AbstractNamespace {
 	{
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.transform.realTransform.DefaultTransformView.class, in,
+				Ops.Transform.RealTransform.class, in,
 				transform, outputInterval, interpolator);
 		return result;
 	}
@@ -1257,7 +1257,7 @@ public class TransformNamespace extends AbstractNamespace {
 	{
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.transform.realTransform.DefaultTransformView.class, in,
+				Ops.Transform.RealTransform.class, in,
 				transform, outputInterval, interpolator, outOfBoundsFactory);
 		return result;
 	}
