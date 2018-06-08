@@ -61,7 +61,7 @@ public class QualityTest extends AbstractOpTest {
 	@Test
 	public void testSNR() {
 		final DoubleType snr = new DoubleType();
-		ops.image().snr(snr, reference, test);
+		ops.run(net.imagej.ops.image.quality.DefaultSNR.class, snr, reference, test);
 
 		assertEquals(7.0937, snr.getRealDouble(), 0.0001);
 	}
@@ -69,7 +69,7 @@ public class QualityTest extends AbstractOpTest {
 	@Test
 	public void testPSNR() {
 		final DoubleType psnr = new DoubleType();
-		ops.image().psnr(psnr, reference, test);
+		ops.run(net.imagej.ops.image.quality.DefaultPSNR.class, psnr, reference, test);
 
 		assertEquals(10.4319, psnr.getRealDouble(), 0.0001);
 	}
@@ -77,7 +77,7 @@ public class QualityTest extends AbstractOpTest {
 	@Test
 	public void testRMSE() {
 		final DoubleType rmse = new DoubleType();
-		ops.image().rmse(rmse, reference, test);
+		ops.run(net.imagej.ops.image.quality.DefaultRMSE.class, rmse, reference, test);
 
 		assertEquals(2.7080, rmse.getRealDouble(), 0.0001);
 	}
@@ -85,7 +85,7 @@ public class QualityTest extends AbstractOpTest {
 	@Test
 	public void testMAE() {
 		final DoubleType mae = new DoubleType();
-		ops.image().mae(mae, reference, test);
+		ops.run(net.imagej.ops.image.quality.DefaultMAE.class, mae, reference, test);
 
 		assertEquals(1.7777, mae.getRealDouble(), 0.0001);
 	}
