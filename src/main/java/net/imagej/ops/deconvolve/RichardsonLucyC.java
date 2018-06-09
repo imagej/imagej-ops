@@ -60,8 +60,8 @@ import org.scijava.plugin.Plugin;
 
 /**
  * Richardson Lucy algorithm for (@link RandomAccessibleInterval) (Lucy, L. B.
- * (1974).
- * "An iterative technique for the rectification of observed distributions".)
+ * (1974). "An iterative technique for the rectification of observed
+ * distributions".)
  * 
  * @author Brian Northan
  * @param <I>
@@ -70,8 +70,7 @@ import org.scijava.plugin.Plugin;
  * @param <C>
  */
 
-@Plugin(type = Ops.Deconvolve.RichardsonLucy.class,
-	priority = Priority.HIGH)
+@Plugin(type = Ops.Deconvolve.RichardsonLucy.class, priority = Priority.HIGH)
 public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends AbstractIterativeFFTFilterC<I, O, K, C> implements
 	Ops.Deconvolve.RichardsonLucy
@@ -159,13 +158,13 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 		// estimate Img and use the input as the starting point
 		if (raiExtendedEstimate == null) {
 
-			raiExtendedEstimate = createOp.calculate(getImgConvolutionInterval());
+			raiExtendedEstimate = createOp.calculate(in);
 
 			copyOp.compute(in, raiExtendedEstimate);
 		}
 
 		// create image for the reblurred
-		raiExtendedReblurred = createOp.calculate(getImgConvolutionInterval());
+		raiExtendedReblurred = createOp.calculate(in);
 
 		// perform fft of psf
 		fftKernelOp.compute(kernel, getFFTKernel());
