@@ -36,8 +36,10 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import net.imagej.ops.OpCandidate.StatusCode;
+import net.imagej.ops.Ops.Math;
 
 import org.scijava.Context;
 import org.scijava.InstantiableException;
@@ -51,8 +53,10 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
+import org.scijava.types.TypeService;
 import org.scijava.util.ConversionUtils;
 import org.scijava.util.GenericUtils;
+import org.scijava.util.Types;
 
 /**
  * Default service for finding {@link Op}s which match a request.
@@ -69,6 +73,9 @@ public class DefaultOpMatchingService extends AbstractService implements
 
 	@Parameter
 	private ModuleService moduleService;
+
+	@Parameter
+	private TypeService typeService;
 
 	@Parameter
 	private ConvertService convertService;
@@ -324,6 +331,8 @@ public class DefaultOpMatchingService extends AbstractService implements
 	private boolean typesPerfectMatch(final OpCandidate candidate) {
 		int i = 0;
 		final Object[] args = candidate.getArgs();
+		// TODO: Review if/how to use Types.satisfies here, or something else?
+		// NOT ENOUGH to compare raw types. Unless the inputs were raw/nongeneric to begin with.
 		for (final ModuleItem<?> item : candidate.inputs()) {
 			if (args[i] != null) {
 				final Class<?> typeClass = OpMatchingUtil.getClass(item.getType());
@@ -530,11 +539,21 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * argument.
 	 */
 	private int typesMatch(final OpCandidate candidate, final Object[] args) {
-		int i = 0;
-		for (final ModuleItem<?> item : candidate.inputs()) {
-			if (!canAssign(candidate, args[i], item)) return i;
-			i++;
+		// First cut: don't worry about convertibility via ConvertService.
+		// Second cut: worry about convertibility, but only raw types. (The ConvertService is not fully generified yet.)
+		// Third cut: generify the ConvertService and fully analyze everything. Might be infeasible.
+
+		final Type[] argTypes = new Type[args.length];
+		for (int i = 0; i < args.length; i++) {
+			argTypes[i] = typeService.reify(args[i]);
 		}
+
+		final Type[] params = candidate.inputs().stream()//
+			.map(item -> item.getGenericType())//
+			.toArray(Type[]::new);
+
+		boolean satisfies = Types.satisfies(argTypes, params);
+		if (!satisfies) return 0; // TODO: Make satisfies return non-matching index.
 		return -1;
 	}
 
@@ -571,37 +590,6 @@ public class DefaultOpMatchingService extends AbstractService implements
 		return assignInputs(module, args);
 	}
 
-	/** Helper method of {@link #match(OpCandidate, Object[])}. */
-	private boolean canAssign(final OpCandidate candidate, final Object arg,
-		final ModuleItem<?> item)
-	{
-		if (arg == null) {
-			if (item.isRequired()) {
-				candidate.setStatus(StatusCode.REQUIRED_ARG_IS_NULL, null, item);
-				return false;
-			}
-			return true;
-		}
-
-		final Type type = item.getGenericType();
-		if (!canConvert(arg, type)) {
-			candidate.setStatus(StatusCode.CANNOT_CONVERT, arg.getClass().getName() +
-				" => " + type, item);
-			return false;
-		}
-
-		return true;
-	}
-
-	/** Helper method of {@link #canAssign}. */
-	private boolean canConvert(final Object arg, final Type type) {
-		if (isMatchingClass(arg, type)) {
-			// NB: Class argument for matching, to help differentiate op signatures.
-			return true;
-		}
-		return convertService.supports(arg, type);
-	}
-
 	/** Helper method of {@link #assignInputs}. */
 	private void assign(final Module module, final Object arg,
 		final ModuleItem<?> item)
@@ -625,6 +613,9 @@ public class DefaultOpMatchingService extends AbstractService implements
 
 	/** Determines whether the argument is a matching class instance. */
 	private boolean isMatchingClass(final Object arg, final Type type) {
+		// Why "arg instanceof Class"?
+		// For the "typed null" placeholder using Class.
+		// We want to generalize this to use Nil in addition.
 		return arg instanceof Class && convertService.supports((Class<?>) arg,
 			type);
 	}
