@@ -6,13 +6,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -31,15 +31,14 @@ package net.imagej.ops;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import net.imagej.ops.OpCandidate.StatusCode;
-import net.imagej.ops.Ops.Math;
 
 import org.scijava.Context;
 import org.scijava.InstantiableException;
@@ -60,7 +59,7 @@ import org.scijava.util.Types;
 
 /**
  * Default service for finding {@link Op}s which match a request.
- * 
+ *
  * @author Curtis Rueden
  */
 @Plugin(type = Service.class)
@@ -248,7 +247,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * <p>
 	 * Helper method of {@link #filterMatches}.
 	 * </p>
-	 * 
+	 *
 	 * @param candidates list of candidates
 	 * @return a list of valid candidates with arguments injected
 	 */
@@ -332,7 +331,8 @@ public class DefaultOpMatchingService extends AbstractService implements
 		int i = 0;
 		final Object[] args = candidate.getArgs();
 		// TODO: Review if/how to use Types.satisfies here, or something else?
-		// NOT ENOUGH to compare raw types. Unless the inputs were raw/nongeneric to begin with.
+		// NOT ENOUGH to compare raw types. Unless the inputs were raw/nongeneric to
+		// begin with.
 		for (final ModuleItem<?> item : candidate.inputs()) {
 			if (args[i] != null) {
 				final Class<?> typeClass = OpMatchingUtil.getClass(item.getType());
@@ -410,7 +410,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * <p>
 	 * Helper method of {@link #findMatch}.
 	 * </p>
-	 * 
+	 *
 	 * @param candidates The original unfiltered list of candidates, used during
 	 *          the analysis if there was a problem finding exactly one match.
 	 * @param matches The list of matching candidates.
@@ -540,21 +540,25 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 */
 	private int typesMatch(final OpCandidate candidate, final Object[] args) {
 		// First cut: don't worry about convertibility via ConvertService.
-		// Second cut: worry about convertibility, but only raw types. (The ConvertService is not fully generified yet.)
-		// Third cut: generify the ConvertService and fully analyze everything. Might be infeasible.
+		// Second cut: worry about convertibility, but only raw types. (The
+		// ConvertService is not fully generified yet.)
+		// Third cut: generify the ConvertService and fully analyze everything.
+		// Might be infeasible.
 
 		final Type[] argTypes = new Type[args.length];
 		for (int i = 0; i < args.length; i++) {
 			argTypes[i] = typeService.reify(args[i]);
+			System.out.println(Types.containsTypeVars(argTypes[i]));
 		}
 
-		final Type[] params = candidate.inputs().stream()//
-			.map(item -> item.getGenericType())//
-			.toArray(Type[]::new);
+		System.out.println("args: " + Arrays.toString(argTypes));
 
-		boolean satisfies = Types.satisfies(argTypes, params);
-		if (!satisfies) return 0; // TODO: Make satisfies return non-matching index.
-		return -1;
+		final Type[] params = candidate.inputs().stream().map(item -> item
+			.getGenericType()).toArray(Type[]::new);//
+
+//		System.out.println("params: " + Arrays.toString(params));
+
+		return Types.satisfies(argTypes, params);
 	}
 
 	/** Helper method of {@link #match(OpCandidate, Object[])}. */
