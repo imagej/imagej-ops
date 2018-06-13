@@ -154,6 +154,16 @@ public class RichardsonLucyC<I extends RealType<I>, O extends RealType<O>, K ext
 	public void compute(RandomAccessibleInterval<I> in,
 		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
+		// create FFT input memory if needed
+		if (getFFTInput() == null) {
+			setFFTInput(getCreateOp().calculate(in));
+		}
+
+		// create FFT kernel memory if needed
+		if (getFFTKernel() == null) {
+			setFFTKernel(getCreateOp().calculate(in));
+		}
+
 		// if a starting point for the estimate was not passed in then create
 		// estimate Img and use the input as the starting point
 		if (raiExtendedEstimate == null) {

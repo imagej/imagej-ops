@@ -56,7 +56,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Filter.Convolve.class, priority = Priority.LOW)
 public class ConvolveFFTC<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends
-	AbstractFFTFilterC<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<C>>
+	AbstractFFTFilterC<I, O, K, C>
 	implements Ops.Filter.Convolve
 {
 

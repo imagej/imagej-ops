@@ -47,8 +47,7 @@ import org.scijava.plugin.Parameter;
  * @param <C>
  */
 public abstract class AbstractIterativeFFTFilterC<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends
-	AbstractFFTFilterC<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<C>>
+	extends AbstractFFTFilterC<I, O, K, C>
 {
 
 	@Parameter(required = false)
