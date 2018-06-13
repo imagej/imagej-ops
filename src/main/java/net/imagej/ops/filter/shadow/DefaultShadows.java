@@ -29,10 +29,15 @@ public class DefaultShadows<T extends RealType<T>> extends
 	implements Ops.Filter.Shadows
 {
 
-	static final double sqrt2 = Math.sqrt(2);
-	final double[] r = { sqrt2, 1, sqrt2, 1, 0, 1, sqrt2, 1, sqrt2 };
-	static final double[] phi = { 0.75 * Math.PI, 0.5 * Math.PI, 0.25 * Math.PI,
-		Math.PI, 0, 0, 1.25 * Math.PI, 1.5 * Math.PI, 1.75 * Math.PI };
+	// cos(theta) and sin(theta) LUTs used for 3x3 neighborhood calculations where
+	// index 4 is the center of the neighborhood and theta increases around the
+	// edges of the neighborhood (note that theta does not increase as the index
+	// increase but instead increases as if this array was mapped to a 3x3
+	// square, then theta increases counterclockwise).
+	static final double[] cos = { -0.7071067811865475, 0, 0.7071067811865476,
+		-1.0, 0, 1.0, -0.7071067811865477, 0, 0.7071067811865474 };
+	static final double[] sin = { 0.7071067811865476, 1.0, 0.7071067811865475, 0,
+		0.0, 0.0, -0.7071067811865475, -1.0, -0.7071067811865477 };
 	static final double[] kernel = new double[9];
 	double scale;
 
@@ -71,20 +76,6 @@ public class DefaultShadows<T extends RealType<T>> extends
 		final RandomAccessibleInterval<T> output)
 	{
 
-		// CONSTRUCT KERNEL
-
-		// build x vector arrays
-		final double[] x1 = new double[9];
-		for (int i = 0; i < x1.length; i++) {
-			x1[i] = Math.cos(phi[i]);
-		}
-		System.out.println("Cos: " + Arrays.toString(x1));
-		final double[] x2 = new double[9];
-		for (int i = 0; i < x2.length; i++) {
-			x2[i] = Math.sin(phi[i]);
-		}
-		System.out.println("Sin: " + Arrays.toString(x2));
-
 		// angle vector
 		final double cosTheta = Math.cos(theta);
 		final double sinTheta = Math.sin(theta);
@@ -93,7 +84,7 @@ public class DefaultShadows<T extends RealType<T>> extends
 
 		// kernel equal to unit vector of (x dot angle)
 		for (int i = 0; i < kernel.length; i++) {
-			kernel[i] = 2 * (x1[i] * cosTheta + x2[i] * sinTheta);
+			kernel[i] = 2 * (cos[i] * cosTheta + sin[i] * sinTheta);
 		}
 		// N.B. the rules of the surrounding pixels do not apply to the center pixel
 		kernel[4] = 1;
