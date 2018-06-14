@@ -1,8 +1,6 @@
 
 package net.imagej.ops.filter.shadow;
 
-import java.util.Arrays;
-
 import net.imagej.Extents;
 import net.imagej.Position;
 import net.imagej.ops.Ops;
@@ -65,7 +63,6 @@ public class DefaultShadows<T extends RealType<T>> extends
 			}
 
 		}
-		System.out.println("done");
 
 		return output;
 
@@ -80,16 +77,12 @@ public class DefaultShadows<T extends RealType<T>> extends
 		final double cosTheta = Math.cos(theta);
 		final double sinTheta = Math.sin(theta);
 
-		System.out.println("Theta = (" + cosTheta + ", " + sinTheta + ")");
-
 		// kernel equal to unit vector of (x dot angle)
 		for (int i = 0; i < kernel.length; i++) {
 			kernel[i] = 2 * (cos[i] * cosTheta + sin[i] * sinTheta);
 		}
 		// N.B. the rules of the surrounding pixels do not apply to the center pixel
 		kernel[4] = 1;
-
-		System.out.println(Arrays.toString(kernel));
 
 		scale = 0;
 		for (final double d : kernel)
