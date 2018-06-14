@@ -34,6 +34,7 @@ import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.basictypeaccess.array.FloatArray;
+import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.type.numeric.real.FloatType;
@@ -148,13 +149,21 @@ public class StatisticsTest extends AbstractOpTest {
 
 	@Test
 	public void testMax() {
-		Assert.assertEquals("Max", 254d, ((DoubleType) ops.run(IterableMax.class,
-			randomlyFilledImg)).getRealDouble(), 0.00001d);
+		Assert.assertEquals("Max", 254d, ((UnsignedByteType) ops.run(
+			IterableMax.class, randomlyFilledImg)).getRealDouble(), 0.00001d);
 
 		// NB: should work with negative numbers
-		Assert.assertEquals("Max", -1.0, ((DoubleType) ops.run(IterableMax.class,
+		Assert.assertEquals("Max", -1.0, ((ByteType) ops.run(IterableMax.class,
 			ArrayImgs.bytes(new byte[] { -1, -2, -4, -3 }, 2, 2))).getRealDouble(),
 			0.0);
+	}
+
+	@Test
+	public void testMaxType() {
+		Object max = ops.run(IterableMax.class, ArrayImgs.floats(new float[] { -1.f,
+			-2.f, -4.f, -3.f }, 2, 2));
+
+		Assert.assertEquals(new FloatType().getClass(), max.getClass());
 	}
 
 	@Test
@@ -171,7 +180,7 @@ public class StatisticsTest extends AbstractOpTest {
 
 	@Test
 	public void testMin() {
-		Assert.assertEquals("Min", 0, ((DoubleType) ops.run(IterableMin.class,
+		Assert.assertEquals("Min", 0, ((UnsignedByteType) ops.run(IterableMin.class,
 			randomlyFilledImg)).getRealDouble(), 0.00001d);
 	}
 
