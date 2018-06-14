@@ -34,7 +34,6 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractFFTFilterF;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
-import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
@@ -55,8 +54,7 @@ import org.scijava.plugin.Plugin;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Ops.Filter.Correlate.class,
-	priority = Priority.VERY_HIGH)
+@Plugin(type = Ops.Filter.Correlate.class, priority = Priority.VERY_HIGH)
 public class CorrelateFFTF<I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
 	extends AbstractFFTFilterF<I, O, K, C> implements Contingent,
 	Ops.Filter.Correlate
@@ -84,7 +82,7 @@ public class CorrelateFFTF<I extends RealType<I> & NativeType<I>, O extends Real
 		createFilterComputer(RandomAccessibleInterval<I> raiExtendedInput,
 			RandomAccessibleInterval<K> raiExtendedKernel,
 			RandomAccessibleInterval<C> fftImg, RandomAccessibleInterval<C> fftKernel,
-			RandomAccessibleInterval<O> output, Interval imgConvolutionInterval)
+			RandomAccessibleInterval<O> output)
 	{
 		return Computers.binary(ops(), CorrelateFFTC.class, output,
 			raiExtendedInput, raiExtendedKernel, fftImg, fftKernel);

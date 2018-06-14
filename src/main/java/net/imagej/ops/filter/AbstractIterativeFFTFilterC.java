@@ -30,7 +30,6 @@
 package net.imagej.ops.filter;
 
 import net.imagej.ops.special.inplace.UnaryInplaceOp;
-import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
@@ -48,8 +47,7 @@ import org.scijava.plugin.Parameter;
  * @param <C>
  */
 public abstract class AbstractIterativeFFTFilterC<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends
-	AbstractFFTFilterC<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<C>>
+	extends AbstractFFTFilterC<I, O, K, C>
 {
 
 	@Parameter(required = false)
@@ -62,21 +60,11 @@ public abstract class AbstractIterativeFFTFilterC<I extends RealType<I>, O exten
 	private int maxIterations;
 
 	/**
-	 * The interval to process TODO: this is probably redundant - remove
-	 */
-	@Parameter
-	private Interval imgConvolutionInterval;
-
-	/**
 	 * An op which implements an acceleration strategy (takes a larger step at
 	 * each iteration).
 	 */
 	@Parameter(required = false)
 	private UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> accelerator;
-
-	public Interval getImgConvolutionInterval() {
-		return imgConvolutionInterval;
-	}
 
 	public
 		UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>

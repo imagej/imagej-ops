@@ -35,6 +35,7 @@ import net.imagej.ops.filter.ifft.IFFTMethodsOpC;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imglib2.FinalDimensions;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
@@ -54,9 +55,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Filter.LinearFilter.class, priority = Priority.LOW)
 public class FFTMethodsLinearFFTFilterC<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends
-	AbstractFFTFilterC<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<C>>
-	implements Ops.Filter.LinearFilter
+	extends AbstractFFTFilterC<I, O, K, C> implements Ops.Filter.LinearFilter
 {
 
 	// TODO: should this be a parameter? figure out best way to override
@@ -93,6 +92,16 @@ public class FFTMethodsLinearFFTFilterC<I extends RealType<I>, O extends RealTyp
 	public void compute(RandomAccessibleInterval<I> in,
 		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
+		// create FFT input memory if needed
+		if (getFFTInput() == null) {
+			setFFTInput(getCreateOp().calculate(in));
+		}
+
+		// create FFT kernel memory if needed
+		if (getFFTKernel() == null) {
+			setFFTKernel(getCreateOp().calculate(in));
+		}
+		
 		// perform input FFT if needed
 		if (getPerformInputFFT()) {
 			fftIn.compute(in, getFFTInput());

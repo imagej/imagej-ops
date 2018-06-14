@@ -33,7 +33,6 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractFFTFilterF;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
-import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.type.NativeType;
@@ -81,7 +80,7 @@ public class ConvolveFFTF<I extends RealType<I> & NativeType<I>, O extends RealT
 		createFilterComputer(RandomAccessibleInterval<I> raiExtendedInput,
 			RandomAccessibleInterval<K> raiExtendedKernel,
 			RandomAccessibleInterval<C> fftImg, RandomAccessibleInterval<C> fftKernel,
-			RandomAccessibleInterval<O> output, Interval imgConvolutionInterval)
+			RandomAccessibleInterval<O> output)
 	{
 		return Computers.binary(ops(), ConvolveFFTC.class, output, raiExtendedInput,
 			raiExtendedKernel, fftImg, fftKernel);

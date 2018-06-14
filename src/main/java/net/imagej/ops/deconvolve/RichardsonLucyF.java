@@ -42,7 +42,6 @@ import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.inplace.Inplaces;
 import net.imagej.ops.special.inplace.UnaryInplaceOp;
-import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
@@ -58,8 +57,8 @@ import org.scijava.plugin.Plugin;
 
 /**
  * Richardson Lucy function op that operates on (@link RandomAccessibleInterval)
- * (Lucy, L. B. (1974).
- * "An iterative technique for the rectification of observed distributions".)
+ * (Lucy, L. B. (1974). "An iterative technique for the rectification of
+ * observed distributions".)
  * 
  * @author Brian Northan
  * @param <I>
@@ -67,8 +66,7 @@ import org.scijava.plugin.Plugin;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Ops.Deconvolve.RichardsonLucy.class,
-	priority = Priority.HIGH)
+@Plugin(type = Ops.Deconvolve.RichardsonLucy.class, priority = Priority.HIGH)
 public class RichardsonLucyF<I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
 	extends AbstractFFTFilterF<I, O, K, C> implements
 	Ops.Deconvolve.RichardsonLucy
@@ -131,7 +129,7 @@ public class RichardsonLucyF<I extends RealType<I> & NativeType<I>, O extends Re
 		createFilterComputer(RandomAccessibleInterval<I> raiExtendedInput,
 			RandomAccessibleInterval<K> raiExtendedKernel,
 			RandomAccessibleInterval<C> fftImg, RandomAccessibleInterval<C> fftKernel,
-			RandomAccessibleInterval<O> output, Interval imgConvolutionInterval)
+			RandomAccessibleInterval<O> output)
 	{
 		UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> accelerator =
 			null;
@@ -148,7 +146,7 @@ public class RichardsonLucyF<I extends RealType<I> & NativeType<I>, O extends Re
 			normalizer =
 				(UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>) Inplaces
 					.unary(ops(), NonCirculantNormalizationFactor.class, output, in(),
-						in2(), fftImg, fftKernel, imgConvolutionInterval);
+						in2(), fftImg, fftKernel);
 
 			ArrayList<UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>> list =
 				new ArrayList<>();
@@ -159,19 +157,19 @@ public class RichardsonLucyF<I extends RealType<I> & NativeType<I>, O extends Re
 			// normalized by image area)
 			UnaryFunctionOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> fg =
 				(UnaryFunctionOp) Functions.unary(ops(), NonCirculantFirstGuess.class,
-					RandomAccessibleInterval.class, RandomAccessibleInterval.class,
-					imgConvolutionInterval, Util.getTypeFromInterval(output), in());
+					RandomAccessibleInterval.class, RandomAccessibleInterval.class, Util
+						.getTypeFromInterval(output), in());
 
 			return Computers.binary(ops(), RichardsonLucyC.class, output,
 				raiExtendedInput, raiExtendedKernel, fftImg, fftKernel, true, true,
-				maxIterations, imgConvolutionInterval, accelerator, computeEstimateOp,
-				fg.calculate(raiExtendedInput), list);
+				maxIterations, accelerator, computeEstimateOp, fg.calculate(
+					raiExtendedInput), list);
 		}
 
 		// return a richardson lucy computer
 		return Computers.binary(ops(), RichardsonLucyC.class, output,
 			raiExtendedInput, raiExtendedKernel, fftImg, fftKernel, true, true,
-			maxIterations, imgConvolutionInterval, accelerator, computeEstimateOp);
+			maxIterations, accelerator, computeEstimateOp);
 	}
 
 	/**

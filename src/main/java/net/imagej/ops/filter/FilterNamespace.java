@@ -287,9 +287,39 @@ public class FilterNamespace extends AbstractNamespace {
 				in, kernel);
 		return result;
 	}
+	
+	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTC.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		RandomAccessibleInterval<O> convolve(
+			final RandomAccessibleInterval<O> output,
+			final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, output,
+				raiExtendedInput, raiExtendedKernel);
+		return result;
+	}
 
 	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTC.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		RandomAccessibleInterval<O> convolve(
+			final RandomAccessibleInterval<O> output,
+			final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final RandomAccessibleInterval<C> fftInput)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, output,
+				raiExtendedInput, raiExtendedKernel, fftInput);
+		return result;
+	}
 
+	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTC.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 		RandomAccessibleInterval<O> convolve(
@@ -438,6 +468,37 @@ public class FilterNamespace extends AbstractNamespace {
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class, in,
 				kernel, borderSize, obfInput, obfKernel, outType, fftType);
+		return result;
+	}
+	
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTC.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		RandomAccessibleInterval<O> correlate(
+			final RandomAccessibleInterval<O> output,
+			final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class,
+				output, raiExtendedInput, raiExtendedKernel);
+		return result;
+	}
+	
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTC.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		RandomAccessibleInterval<O> correlate(
+			final RandomAccessibleInterval<O> output,
+			final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final RandomAccessibleInterval<C> fftInput)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class,
+				output, raiExtendedInput, raiExtendedKernel, fftInput);
 		return result;
 	}
 
@@ -911,6 +972,39 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	// -- linear filter --
+	
+	/** Executes the "linearFilter" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.FFTMethodsLinearFFTFilterC.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		RandomAccessibleInterval<O> linearFilter(
+			final RandomAccessibleInterval<O> out,
+			final RandomAccessibleInterval<I> in1,
+			final RandomAccessibleInterval<K> in2,
+			final BinaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> frequencyOp)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.LinearFilter.class,
+				out, in1, in2, frequencyOp);
+		return result;
+	}
+	
+	/** Executes the "linearFilter" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.FFTMethodsLinearFFTFilterC.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		RandomAccessibleInterval<O> linearFilter(
+			final RandomAccessibleInterval<O> out,
+			final RandomAccessibleInterval<I> in1,
+			final RandomAccessibleInterval<K> in2,
+			final RandomAccessibleInterval<C> fftInput,
+			final BinaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> frequencyOp)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.LinearFilter.class,
+				out, in1, in2, fftInput, frequencyOp);
+		return result;
+	}
 
 	/** Executes the "linearFilter" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.FFTMethodsLinearFFTFilterC.class)
