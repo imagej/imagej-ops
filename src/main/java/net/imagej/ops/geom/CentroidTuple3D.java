@@ -17,7 +17,7 @@ import java.util.Collection;
 public class CentroidTuple3D extends AbstractUnaryFunctionOp<Collection<? extends Tuple3d>, Vector3d>
         implements Ops.Geometric.Centroid {
     @Override
-    public Vector3d compute1(final Collection<? extends Tuple3d> input) {
+    public Vector3d calculate(final Collection<? extends Tuple3d> input) {
         final int vectors = input.size();
         if (vectors == 0) {
             return new Vector3d(Double.NaN, Double.NaN, Double.NaN);
