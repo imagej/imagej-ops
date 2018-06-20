@@ -270,6 +270,10 @@
 			<groupId>org.joml</groupId>
 			<artifactId>joml</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>gov.nist.math</groupId>
+			<artifactId>jama</artifactId>
+		</dependency>
 
 		<!-- Test scope dependencies -->
 		<dependency>
