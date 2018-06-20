@@ -260,15 +260,15 @@
 			<groupId>org.scijava</groupId>
 			<artifactId>scripting-javascript</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.scijava</groupId>
-			<artifactId>vecmath</artifactId>
-		</dependency>
 
 		<!-- Third party dependencies -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math3</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.joml</groupId>
+			<artifactId>joml</artifactId>
 		</dependency>
 
 		<!-- Test scope dependencies -->
