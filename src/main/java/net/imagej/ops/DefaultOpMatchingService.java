@@ -547,17 +547,23 @@ public class DefaultOpMatchingService extends AbstractService implements
 
 		final Type[] argTypes = new Type[args.length];
 		for (int i = 0; i < args.length; i++) {
-			argTypes[i] = typeService.reify(args[i]);
-			System.out.println(Types.containsTypeVars(argTypes[i]));
+			if (args[i] instanceof Class) {
+				// this is a "typed null" placeholder
+				argTypes[i] = (Class<?>) args[i]; // EXCEPT: this is a raw type :-(
+			}
+			else {
+				argTypes[i] = typeService.reify(args[i]);
+			}
+//			System.out.println(Types.containsTypeVars(argTypes[i]));
 		}
 
-		System.out.println("args: " + Arrays.toString(argTypes));
-
 		final Type[] params = candidate.inputs().stream().map(item -> item
-			.getGenericType()).toArray(Type[]::new);//
+			.getGenericType()).toArray(Type[]::new);
 
-//		System.out.println("params: " + Arrays.toString(params));
-
+		if (Arrays.toString(argTypes).indexOf("?") != -1) {
+			System.out.println("args: " + Arrays.toString(argTypes));
+//			System.out.println("params: " + Arrays.toString(params));
+		}
 		return Types.satisfies(argTypes, params);
 	}
 
