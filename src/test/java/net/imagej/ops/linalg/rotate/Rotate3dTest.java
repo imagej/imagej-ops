@@ -16,7 +16,7 @@ import org.junit.Test;
 /**
  * Tests for {@link Rotate3d}.
  *
- * @author Richard Domander
+ * @author Richard Domander (Royal Veterinary College, London)
  */
 public class Rotate3dTest extends AbstractOpTest {
 

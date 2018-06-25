@@ -11,7 +11,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Rotates the vector by the quaternion.
  *
- * @author Richard Domander
+ * @author Richard Domander (Royal Veterinary College, London)
  */
 @Plugin(type = Ops.LinAlg.Rotate.class)
 public class Rotate3d extends

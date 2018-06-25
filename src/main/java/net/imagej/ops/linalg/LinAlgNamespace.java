@@ -15,7 +15,7 @@ import org.scijava.plugin.Plugin;
 /**
  * The linear algebra namespace has ops for vectors and matrices.
  *
- * @author Richard Domander
+ * @author Richard Domander (Royal Veterinary College, London)
  */
 @Plugin(type = Namespace.class)
 public class LinAlgNamespace extends AbstractNamespace {
