@@ -23,6 +23,18 @@ public class Rotate3dTest extends AbstractOpTest {
 	private static final Quaterniondc IDENTITY = new Quaterniond(1, 0, 0, 0);
 
 	@Test
+	public void testAxisAngle() {
+		final Vector3d xAxis = new Vector3d(1, 0, 0);
+		final Vector3d in = new Vector3d(xAxis);
+		final AxisAngle4d axisAngle = new AxisAngle4d(Math.PI / 2.0, 0, 0, 1);
+		final Vector3d expected = xAxis.rotate(new Quaterniond(axisAngle));
+
+		final Vector3d result = ops.linalg().rotate(in, axisAngle);
+
+		assertEquals("Rotation is incorrect", expected, result);
+	}
+
+	@Test
 	public void testCalculate() {
 		final Vector3d xAxis = new Vector3d(1, 0, 0);
 		final Vector3d in = new Vector3d(xAxis);
