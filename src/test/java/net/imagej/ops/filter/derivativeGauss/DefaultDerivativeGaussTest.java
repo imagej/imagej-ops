@@ -47,19 +47,7 @@ import org.junit.Test;
 public class DefaultDerivativeGaussTest extends AbstractOpTest {
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testTooFewDimensions() {
-		final Img<DoubleType> input = ops.convert().float64(
-			generateFloatArrayTestImg(false, 30));
-
-		final Img<DoubleType> output = ops.create().img(input);
-
-		final int[] derivatives = new int[] { 1, 0 };
-		final double[] sigmas = new double[] { 1, 1 };
-		ops.filter().derivativeGauss(output, input, derivatives, sigmas);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testTooManyDimensions() {
+	public void testImgParamDimensionsMismatch() {
 		final Img<DoubleType> input = ops.convert().float64(
 			generateFloatArrayTestImg(false, 30, 30, 30));
 
