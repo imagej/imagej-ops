@@ -6,13 +6,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -50,7 +50,7 @@ import Jama.Matrix;
 
 /**
  * Helper Method to generate the meta image used for {@link DefaultDetectRidges}
- * 
+ *
  * @author Gabe Selzer
  */
 public class RidgeDetectionMetadata {
@@ -67,64 +67,64 @@ public class RidgeDetectionMetadata {
 
 	/**
 	 * Generates the metadata images from the input image
-	 * 
+	 *
 	 * @param input - the image to be detected
 	 * @param sigma - the sigma for the gaussian derivative convolutions
 	 */
 	public <T extends RealType<T>> RidgeDetectionMetadata(
-		RandomAccessibleInterval<T> input, double sigma, double smallMax,
-		double bigMax)
+		final RandomAccessibleInterval<T> input, final double sigma,
+		final double smallMax, final double bigMax)
 	{
 		// create op service for metadata generation
 		final Context context = new Context();
-		OpService opService = context.getService(OpService.class);
+		final OpService opService = context.getService(OpService.class);
 
 		// convert input to doubleType
-		RandomAccessibleInterval<DoubleType> converted =
+		final RandomAccessibleInterval<DoubleType> converted =
 			(RandomAccessibleInterval<DoubleType>) opService.run(
 				Ops.Convert.Float64.class, input);
 
-		RandomAccessibleInterval<DoubleType> temp = opService.create().img(
+		final RandomAccessibleInterval<DoubleType> temp = opService.create().img(
 			converted);
 
 		// create copyOp instance for faster calculations
-		UnaryFunctionOp<RandomAccessibleInterval<DoubleType>, RandomAccessibleInterval<DoubleType>> copyOp =
+		final UnaryFunctionOp<RandomAccessibleInterval<DoubleType>, RandomAccessibleInterval<DoubleType>> copyOp =
 			RAIs.function(opService, Ops.Copy.RAI.class, converted);
 
 		// create partial derivative gaussian op for faster calculations
-		BinaryComputerOp<RandomAccessibleInterval<DoubleType>, int[], RandomAccessibleInterval<DoubleType>> partialDerivativeOp =
+		final BinaryComputerOp<RandomAccessibleInterval<DoubleType>, int[], RandomAccessibleInterval<DoubleType>> partialDerivativeOp =
 			Computers.binary(opService, Ops.Filter.DerivativeGauss.class, converted,
-				temp, new int[] { 0, 0 }, sigma);
+				temp, new int[] { 0, 0 }, new double[] { sigma, sigma });
 
 		// create dimensions array for p and n values images, later used for setting
 		// positions for their randomAccesses
-		long[] valuesArr = new long[input.numDimensions() + 1];
+		final long[] valuesArr = new long[input.numDimensions() + 1];
 		for (int d = 0; d < input.numDimensions(); d++)
 			valuesArr[d] = input.dimension(d);
 		valuesArr[valuesArr.length - 1] = 2;
 
 		// create metadata images and randomAccesses
 		pValues = opService.create().img(valuesArr);
-		RandomAccess<DoubleType> pRA = pValues.randomAccess();
+		final RandomAccess<DoubleType> pRA = pValues.randomAccess();
 		nValues = opService.create().img(valuesArr);
-		RandomAccess<DoubleType> nRA = nValues.randomAccess();
+		final RandomAccess<DoubleType> nRA = nValues.randomAccess();
 		gradients = opService.create().img(input, new DoubleType());
-		RandomAccess<DoubleType> gradientsRA = gradients.randomAccess();
+		final RandomAccess<DoubleType> gradientsRA = gradients.randomAccess();
 
 		// create a cursor of the input to direct all of the randomAccesses.
-		Cursor<T> cursor = Views.iterable(input).localizingCursor();
+		final Cursor<T> cursor = Views.iterable(input).localizingCursor();
 
 		// create partial derivative images, randomAccesses
 		x = copyOp.calculate(converted);
-		RandomAccess<DoubleType> xRA = x.randomAccess();
+		final RandomAccess<DoubleType> xRA = x.randomAccess();
 		y = copyOp.calculate(converted);
-		RandomAccess<DoubleType> yRA = y.randomAccess();
+		final RandomAccess<DoubleType> yRA = y.randomAccess();
 		xx = copyOp.calculate(converted);
-		RandomAccess<DoubleType> xxRA = xx.randomAccess();
+		final RandomAccess<DoubleType> xxRA = xx.randomAccess();
 		xy = copyOp.calculate(converted);
-		RandomAccess<DoubleType> xyRA = xy.randomAccess();
+		final RandomAccess<DoubleType> xyRA = xy.randomAccess();
 		yy = copyOp.calculate(converted);
-		RandomAccess<DoubleType> yyRA = yy.randomAccess();
+		final RandomAccess<DoubleType> yyRA = yy.randomAccess();
 
 		// fill partial derivative images with gaussian derivative convolutions
 		partialDerivativeOp.compute(converted, new int[] { 1, 0 }, x);
@@ -132,7 +132,7 @@ public class RidgeDetectionMetadata {
 		partialDerivativeOp.compute(converted, new int[] { 1, 1 }, xy);
 		partialDerivativeOp.compute(converted, new int[] { 0, 1 }, y);
 		partialDerivativeOp.compute(converted, new int[] { 0, 2 }, yy);
-		
+
 		// loop through the points, fill in potentialPoints with second directional
 		// derivative across the line, eigenx with the x component of the normal
 		// vector to the line, and eigeny with the y component of that vector.
@@ -145,41 +145,42 @@ public class RidgeDetectionMetadata {
 			yyRA.setPosition(cursor);
 
 			// Get all of the values needed for the point.
-			double rx = xRA.get().getRealDouble();
-			double ry = yRA.get().getRealDouble();
-			double rxx = xxRA.get().getRealDouble();
-			double rxy = xyRA.get().getRealDouble();
-			double ryy = yyRA.get().getRealDouble();
+			final double rx = xRA.get().getRealDouble();
+			final double ry = yRA.get().getRealDouble();
+			final double rxx = xxRA.get().getRealDouble();
+			final double rxy = xyRA.get().getRealDouble();
+			final double ryy = yyRA.get().getRealDouble();
 
 			// convolve image with 2D partial kernel,
 			// make a Hessian using the kernels
-			Matrix hessian = new Matrix(input.numDimensions(), input.numDimensions());
+			final Matrix hessian = new Matrix(input.numDimensions(), input
+				.numDimensions());
 			hessian.set(0, 0, xxRA.get().getRealDouble());
 			hessian.set(0, 1, xyRA.get().getRealDouble());
 			hessian.set(1, 0, xyRA.get().getRealDouble());
 			hessian.set(1, 1, yyRA.get().getRealDouble());
 
 			// Jacobian rotation to eliminate rxy
-			EigenvalueDecomposition e = hessian.eig();
-			Matrix eigenvalues = e.getD();
-			Matrix eigenvectors = e.getV();
+			final EigenvalueDecomposition e = hessian.eig();
+			final Matrix eigenvalues = e.getD();
+			final Matrix eigenvectors = e.getV();
 
 			// since the eigenvalues matrix is diagonal, find the index of the largest
 			// eigenvalue
-			int index = (Math.abs(eigenvalues.get(0, 0)) > Math.abs(eigenvalues.get(1,
-				1))) ? 0 : 1;
+			final int index = Math.abs(eigenvalues.get(0, 0)) > Math.abs(eigenvalues
+				.get(1, 1)) ? 0 : 1;
 
 			// get (nx, ny), i.e. the components of a vector perpendicular to our
 			// line, with length of one.
-			double nx = eigenvectors.get(0, index);
-			double ny = eigenvectors.get(1, index);
+			final double nx = eigenvectors.get(0, index);
+			final double ny = eigenvectors.get(1, index);
 
 			// obtain (px, py), the point in subpixel space where the first
 			// directional derivative vanishes.
-			double t = -1 * ((rx * nx) + (ry * ny)) / ((rxx * nx * nx) + (2 * rxy *
-				nx * ny) + (ryy * ny * ny));
-			double px = t * nx;
-			double py = t * ny;
+			final double t = -1 * (rx * nx + ry * ny) / (rxx * nx * nx + 2 * rxy *
+				nx * ny + ryy * ny * ny);
+			final double px = t * nx;
+			final double py = t * ny;
 
 			// so long as the absolute values of px and py are below 0.5, this point
 			// is a line point.
@@ -208,8 +209,8 @@ public class RidgeDetectionMetadata {
 
 				// the eigenvalue is equal to the gradient at that pixel. If a large
 				// negative, we are on a line. Otherwise 0.
-				double gradient = eigenvalues.get(index, index) < -smallMax ? Math.abs(
-					eigenvalues.get(index, index)) : 0;
+				final double gradient = eigenvalues.get(index, index) < -smallMax ? Math
+					.abs(eigenvalues.get(index, index)) : 0;
 
 				// set the gradient
 				gradientsRA.setPosition(cursor);
@@ -221,7 +222,7 @@ public class RidgeDetectionMetadata {
 
 	/**
 	 * returns the pValue image
-	 * 
+	 *
 	 * @return the image containing the pValues
 	 */
 	protected Img<DoubleType> getPValues() {
@@ -230,7 +231,7 @@ public class RidgeDetectionMetadata {
 
 	/**
 	 * returns the pValue image's RandomAccess
-	 * 
+	 *
 	 * @return the RandomAccess containing the pValues
 	 */
 	protected RandomAccess<DoubleType> getPValuesRandomAccess() {
@@ -239,7 +240,7 @@ public class RidgeDetectionMetadata {
 
 	/**
 	 * returns the nValue image
-	 * 
+	 *
 	 * @return the image containing the nValues
 	 */
 	protected Img<DoubleType> getNValues() {
@@ -248,7 +249,7 @@ public class RidgeDetectionMetadata {
 
 	/**
 	 * returns the nValue image's RandomAccess
-	 * 
+	 *
 	 * @return the RandomAccess containing the nValues
 	 */
 	protected RandomAccess<DoubleType> getNValuesRandomAccess() {
@@ -257,7 +258,7 @@ public class RidgeDetectionMetadata {
 
 	/**
 	 * returns the gradient image
-	 * 
+	 *
 	 * @return the image containing the gradients
 	 */
 	protected Img<DoubleType> getGradients() {
@@ -266,7 +267,7 @@ public class RidgeDetectionMetadata {
 
 	/**
 	 * returns the gradient image's RandomAccess
-	 * 
+	 *
 	 * @return the RandomAccess containing the gradients
 	 */
 	protected RandomAccess<DoubleType> getGradientsRandomAccess() {

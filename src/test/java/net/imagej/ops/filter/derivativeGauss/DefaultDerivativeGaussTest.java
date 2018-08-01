@@ -6,13 +6,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -41,41 +41,33 @@ import org.junit.Test;
 
 /**
  * Contains tests for {@link DefaultDerivativeGauss}.
- * 
+ *
  * @author Gabe Selzer
  */
 public class DefaultDerivativeGaussTest extends AbstractOpTest {
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testTooFewDimensions() {
-		Img<DoubleType> input = ops.convert().float64(generateFloatArrayTestImg(
-			false, 30));
+	public void testImgParamDimensionsMismatch() {
+		final Img<DoubleType> input = ops.convert().float64(
+			generateFloatArrayTestImg(false, 30, 30, 30));
 
-		Img<DoubleType> output = ops.create().img(input);
+		final Img<DoubleType> output = ops.create().img(input);
 
-		ops.filter().derivativeGauss(output, input, new int[] { 1, 0 }, 1d);
+		final int[] derivatives = new int[] { 1, 0 };
+		final double[] sigmas = new double[] { 1, 1 };
+		ops.filter().derivativeGauss(output, input, derivatives, sigmas);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testTooManyDimensions() {
-		Img<DoubleType> input = ops.convert().float64(generateFloatArrayTestImg(
-			false, 30, 30, 30));
-
-		Img<DoubleType> output = ops.create().img(input);
-
-		ops.filter().derivativeGauss(output, input, new int[] { 1, 0 }, 1d);
-	}
-	
 	@Test
 	public void regressionTest() {
-		int width = 10;
-		Img<DoubleType> input = ops.convert().float64(generateFloatArrayTestImg(
-			false, width, width));
+		final int width = 10;
+		final Img<DoubleType> input = ops.convert().float64(
+			generateFloatArrayTestImg(false, width, width));
 
-		Img<DoubleType> output = ops.create().img(input);
+		final Img<DoubleType> output = ops.create().img(input);
 
 		// Draw a line on the image
-		RandomAccess<DoubleType> inputRA = input.randomAccess();
+		final RandomAccess<DoubleType> inputRA = input.randomAccess();
 		inputRA.setPosition(5, 0);
 		for (int i = 0; i < 10; i++) {
 			inputRA.setPosition(i, 1);
@@ -83,13 +75,16 @@ public class DefaultDerivativeGaussTest extends AbstractOpTest {
 		}
 
 		// filter the image
-		ops.filter().derivativeGauss(output, input, new int[] { 1, 0 }, 0.5);
+		final int[] derivatives = new int[] { 1, 0 };
+		final double[] sigmas = new double[] { 0.5, 0.5 };
+		ops.filter().derivativeGauss(output, input, derivatives, sigmas);
 
-		Cursor<DoubleType> cursor = output.localizingCursor();
+		final Cursor<DoubleType> cursor = output.localizingCursor();
 		int currentPixel = 0;
 		while (cursor.hasNext()) {
 			cursor.fwd();
-			assertEquals(cursor.get().getRealDouble(), regressionRowValues[currentPixel % width], 0);
+			assertEquals(cursor.get().getRealDouble(),
+				regressionRowValues[currentPixel % width], 0);
 			currentPixel++;
 		}
 	}
