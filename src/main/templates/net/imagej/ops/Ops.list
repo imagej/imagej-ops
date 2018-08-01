@@ -240,6 +240,9 @@ namespaces = ```
 	[name: "lbp", iface: "LBP", ops: [
 		[name: "lbp2D", 				iface: "LBP2D"]
 	]],
+	[name: "linalg", iface: "LinAlg", ops: [
+	    [name: "rotate", 				         iface: "Rotate"]
+	]],
 	[name: "logic", iface: "Logic", ops: [
 		[name: "and",                            iface: "And"],
 		[name: "bool",                           iface: "Bool"],
