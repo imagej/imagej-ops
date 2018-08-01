@@ -58,4 +58,9 @@ public class IterableMin<T extends RealType<T>> extends
 			if (output.compareTo(in) > 0)
 				output.set(in);
 	}
+	
+	@Override
+	public T createOutput(Iterable<T> input) {
+		return input.iterator().next().createVariable();
+	}
 }
