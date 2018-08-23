@@ -34,13 +34,16 @@ import java.util.List;
 import java.util.Random;
 
 import net.imglib2.AbstractInterval;
+import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
+import net.imglib2.Localizable;
 import net.imglib2.Point;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.Sampler;
 import net.imglib2.View;
 import net.imglib2.util.IntervalIndexer;
+import net.imglib2.view.Views;
 
 import org.scijava.util.IntArray;
 
@@ -186,5 +189,45 @@ public class ShuffledView<T> extends AbstractInterval implements
 		public RandomAccess<T> copyRandomAccess() {
 			throw new UnsupportedOperationException();
 		}
+	}
+
+	public static <T> RandomAccessibleInterval<T> cropAtMin(
+		final RandomAccessibleInterval<T> image, final int[] blockSize)
+	{
+		return cropAt(image, blockSize, new Point(image.numDimensions()));
+	}
+
+	public static <T> RandomAccessibleInterval<T> cropAtMax(
+		final RandomAccessibleInterval<T> image, final int[] blockSize)
+	{
+		final long[] pos = new long[image.numDimensions()];
+		for (int d = 0; d < pos.length; d++) {
+			pos[d] = image.dimension(d) % blockSize[d];
+		}
+		return cropAt(image, blockSize, new Point(pos));
+	}
+
+	public static <T> RandomAccessibleInterval<T> cropAtCenter(
+		final RandomAccessibleInterval<T> image, final int[] blockSize)
+	{
+		final long[] pos = new long[image.numDimensions()];
+		for (int d = 0; d < pos.length; d++) {
+			pos[d] = (image.dimension(d) % blockSize[d]) / 2;
+		}
+		return cropAt(image, blockSize, new Point(pos));
+	}
+
+	private static <T> RandomAccessibleInterval<T> cropAt(
+		final RandomAccessibleInterval<T> image, final int[] blockSize,
+		final Localizable offset)
+	{
+		final int numDims = image.numDimensions();
+		final long[] minsize = new long[numDims * 2];
+		for (int d = 0; d < numDims; d++) {
+			minsize[d] = offset.getLongPosition(d);
+			final long shaveSize = image.dimension(d) % blockSize[d];
+			minsize[numDims + d] = image.dimension(d) - shaveSize;
+		}
+		return Views.interval(image, FinalInterval.createMinSize(minsize));
 	}
 }
