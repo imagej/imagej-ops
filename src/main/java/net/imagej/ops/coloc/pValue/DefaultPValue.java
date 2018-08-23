@@ -29,19 +29,29 @@
 
 package net.imagej.ops.coloc.pValue;
 
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
 import net.imagej.ops.Ops;
 import net.imagej.ops.coloc.ShuffledView;
 import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
 import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imglib2.Cursor;
 import net.imglib2.Dimensions;
 import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Intervals;
+import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+import org.scijava.thread.ThreadService;
 
 /**
  * This algorithm repeatedly executes a colocalization algorithm, computing a
@@ -57,10 +67,13 @@ public class DefaultPValue<T extends RealType<T>, U extends RealType<U>> extends
 {
 
 	@Parameter
+	private ThreadService ts;
+	
+	@Parameter
 	private BinaryFunctionOp<Iterable<T>, Iterable<U>, Double> op;
 
 	@Parameter(required = false)
-	private int nrRandomizations = 1000;
+	private int nrRandomizations = 100;
 
 	@Parameter(required = false)
 	private Dimensions psfSize;
@@ -75,23 +88,63 @@ public class DefaultPValue<T extends RealType<T>, U extends RealType<U>> extends
 		final int[] blockSize = blockSize(image1, psfSize);
 		final RandomAccessibleInterval<T> trimmedImage1 = trim(image1, blockSize);
 		final RandomAccessibleInterval<U> trimmedImage2 = trim(image2, blockSize);
+		final T type1 = Util.getTypeFromInterval(image1);
 
-		final ShuffledView<T> shuffled = new ShuffledView<>(image1, blockSize,
-			seed);
-		final IterableInterval<T> shuffledIterable = Views.iterable(shuffled);
 		final double[] sampleDistribution = new double[nrRandomizations];
-
 		final IterableInterval<T> iterableImage1 = Views.iterable(trimmedImage1);
 		final IterableInterval<U> iterableImage2 = Views.iterable(trimmedImage2);
-		final double value = op.calculate(iterableImage1, iterableImage2); 
-
-		for (int i = 0; i < nrRandomizations; i++) {
-			shuffled.shuffleBlocks();
-			sampleDistribution[i] = op.calculate(shuffledIterable, iterableImage2);
+		
+		// compute actual coloc value
+		final double value = op.calculate(iterableImage1, iterableImage2);
+		
+		// compute shuffled coloc values in parallel
+		int threadCount = Runtime.getRuntime().availableProcessors(); // FIXME: conform to Ops threading strategy...
+		Random r = new Random(seed);
+		ArrayList<Future<?>> future = new ArrayList<>(threadCount);
+		for (int t = 0; t < threadCount; t++) {
+			long tSeed = r.nextLong();
+			int offset = t * nrRandomizations / threadCount;
+			int count = (t+1) * nrRandomizations / threadCount - offset;
+			future.add(ts.run(() -> {
+				final ShuffledView<T> shuffled = new ShuffledView<>(trimmedImage1,
+					blockSize, tSeed); // a new one per thread and each needs its own seed
+				Img<T> buffer = Util.getSuitableImgFactory(shuffled, type1).create(
+					shuffled);
+				for (int i = 0; i < count; i++) {
+					int index = offset + i;
+					if (index >= nrRandomizations) break;
+					shuffled.shuffleBlocks();
+					copy(shuffled, buffer);
+					sampleDistribution[index] = op.calculate(buffer, iterableImage2);
+				}
+			}));
 		}
+
+		// wait for threads to finish
+		try {
+			for (int t = 0; t < threadCount; t++) {
+				future.get(t).get();
+			}
+		}
+		catch (final InterruptedException | ExecutionException exc) {
+			final Throwable cause = exc.getCause();
+			if (cause instanceof RuntimeException) throw (RuntimeException) cause;
+			throw new RuntimeException(exc);
+		}
+
 		output.setColocValue(value);
 		output.setColocValuesArray(sampleDistribution);
 		output.setPValue(calculatePvalue(value, sampleDistribution));
+	}
+
+	private void copy(ShuffledView<T> shuffled, Img<T> buffer) {
+		Cursor<T> cursor = buffer.localizingCursor();
+		RandomAccess<T> ra = shuffled.randomAccess();
+		while (cursor.hasNext()) {
+			T v = cursor.next();
+			ra.setPosition(cursor);
+			v.set(ra.get());
+		}
 	}
 
 	private double calculatePvalue(final double input,

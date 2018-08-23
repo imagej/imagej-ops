@@ -31,6 +31,7 @@ package net.imagej.ops.coloc.pValue;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Arrays;
 import java.util.function.BiFunction;
 
 import net.imagej.ops.coloc.ColocalisationTest;
@@ -85,7 +86,13 @@ public class DefaultPValueTest extends ColocalisationTest {
 		// Mock the underlying op.
 		final int[] count = { 0 };
 		BinaryFunctionOp<Iterable<FloatType>, Iterable<FloatType>, Double> op = //
-			op((input1, input2) -> result[count[0]++]);
+			op((input1, input2) -> {
+				Double r;
+				synchronized(this) {
+				r = result[count[0]++];
+				}
+				return r;
+			});
 		
 		PValueResult output = new PValueResult();
 		output = ops.coloc().pValue(output, ch1, ch2, op, result.length - 1);
@@ -94,6 +101,7 @@ public class DefaultPValueTest extends ColocalisationTest {
 		double[] actualColocValuesArray = output.getColocValuesArray();
 		assertEquals(expectedPValue, actualPValue, 0.0);
 		assertEquals(expectedColocValue, actualColocValue, 0.0);
+		Arrays.sort(actualColocValuesArray);
 		for (int i = 0; i < expectedColocValuesArray.length; i++) {
 			assertEquals(expectedColocValuesArray[i], actualColocValuesArray[i], 0.0);
 		}

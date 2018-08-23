@@ -124,7 +124,7 @@ public class KendallTauBRankTest extends AbstractOpTest {
 		BinaryFunctionOp<RandomAccessibleInterval<FloatType>, RandomAccessibleInterval<FloatType>, Double> op =
 			Functions.binary(ops, KendallTauBRank.class, Double.class, ch1, ch2);
 		PValueResult value = (PValueResult) ops.run(DefaultPValue.class, new PValueResult(), ch1, ch2, op);
-		assertEquals(0.813, value.getPValue(), 0.0);
+		assertEquals(0.87, value.getPValue(), 0.0);
 	}
 
 	private int seed;

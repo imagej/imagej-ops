@@ -104,7 +104,7 @@ public class LiICQTest extends ColocalisationTest {
 		BinaryFunctionOp<RandomAccessibleInterval<FloatType>, RandomAccessibleInterval<FloatType>, Double> op =
 			Functions.binary(ops, LiICQ.class, Double.class, ch1, ch2);
 		PValueResult value = (PValueResult) ops.run(DefaultPValue.class, new PValueResult(), ch1, ch2, op);
-		assertEquals(0.786, value.getPValue(), 0.0);
+		assertEquals(0.82, value.getPValue(), 0.0);
 	}
 
 }

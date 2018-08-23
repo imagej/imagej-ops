@@ -56,7 +56,7 @@ public class ShuffledView<T> extends AbstractInterval implements
 	RandomAccessibleInterval<T>, View
 {
 
-	private static Random rng;
+	private Random rng;
 	private final RandomAccessibleInterval<T> image;
 	private List<Integer> blockIndices;
 	private int[] blockSize;

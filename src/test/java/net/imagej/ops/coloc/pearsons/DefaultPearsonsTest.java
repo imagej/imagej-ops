@@ -105,7 +105,7 @@ public class DefaultPearsonsTest extends ColocalisationTest {
 		BinaryFunctionOp<RandomAccessibleInterval<FloatType>, RandomAccessibleInterval<FloatType>, Double> op =
 			Functions.binary(ops, Ops.Coloc.Pearsons.class, Double.class, ch1, ch2);
 		PValueResult value = (PValueResult) ops.run(Ops.Coloc.PValue.class, new PValueResult(), ch1, ch2, op);
-		assertEquals(0.724, value.getPValue(), 0.0);
+		assertEquals(0.8, value.getPValue(), 0.0);
 	}
 
 }
