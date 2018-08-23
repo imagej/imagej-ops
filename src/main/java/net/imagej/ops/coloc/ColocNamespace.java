@@ -6,13 +6,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -53,31 +53,64 @@ public class ColocNamespace extends AbstractNamespace {
 	// -- icq --
 
 	@OpMethod(op = net.imagej.ops.coloc.icq.LiICQ.class)
-	public <T extends RealType<T>, U extends RealType<U>> Double icq(final Iterable<T> image1, final Iterable<T> image2,
-			final DoubleType mean1, final DoubleType mean2) {
-		final Double result = (Double) ops().run(net.imagej.ops.coloc.icq.LiICQ.class, image1, image2, mean1, mean2);
+	public <T extends RealType<T>, U extends RealType<U>> Double icq(
+		final Iterable<T> image1, final Iterable<T> image2, final DoubleType mean1,
+		final DoubleType mean2)
+	{
+		final Double result = (Double) ops().run(
+			net.imagej.ops.coloc.icq.LiICQ.class, image1, image2, mean1, mean2);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.coloc.icq.LiICQ.class)
-	public <T extends RealType<T>, U extends RealType<U>> Double icq(final Iterable<T> image1, final Iterable<T> image2,
-			final DoubleType mean1) {
-		final Double result = (Double) ops().run(net.imagej.ops.coloc.icq.LiICQ.class, image1, image2, mean1);
+	public <T extends RealType<T>, U extends RealType<U>> Double icq(
+		final Iterable<T> image1, final Iterable<T> image2, final DoubleType mean1)
+	{
+		final Double result = (Double) ops().run(
+			net.imagej.ops.coloc.icq.LiICQ.class, image1, image2, mean1);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.coloc.icq.LiICQ.class)
-	public <T extends RealType<T>, U extends RealType<U>> Double icq(final Iterable<T> image1,
-			final Iterable<T> image2) {
-		final Double result = (Double) ops().run(net.imagej.ops.coloc.icq.LiICQ.class, image1, image2);
+	public <T extends RealType<T>, U extends RealType<U>> Double icq(
+		final Iterable<T> image1, final Iterable<T> image2)
+	{
+		final Double result = (Double) ops().run(
+			net.imagej.ops.coloc.icq.LiICQ.class, image1, image2);
 		return result;
 	}
 
 	// -- kendallTau --
 
 	@OpMethod(op = net.imagej.ops.coloc.kendallTau.KendallTauBRank.class)
-	public <T extends RealType<T>, U extends RealType<U>> Double kendallTau(final Iterable<T> image1, final Iterable<U> image2) {
-		final Double result = (Double) ops().run(net.imagej.ops.coloc.kendallTau.KendallTauBRank.class, image1, image2);
+	public <T extends RealType<T>, U extends RealType<U>> Double kendallTau(
+		final Iterable<T> image1, final Iterable<U> image2)
+	{
+		final Double result = (Double) ops().run(
+			net.imagej.ops.coloc.kendallTau.KendallTauBRank.class, image1, image2);
+		return result;
+	}
+
+	// -- maxTKendallTau --
+
+	@OpMethod(op = net.imagej.ops.coloc.maxTKendallTau.MTKT.class)
+	public <T extends RealType<T>, U extends RealType<U>> Double maxTKendallTau(
+		final RandomAccessibleInterval<T> in1,
+		final RandomAccessibleInterval<U> in2)
+	{
+		final Double result = (Double) ops().run(
+			net.imagej.ops.coloc.maxTKendallTau.MTKT.class, in1, in2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.coloc.maxTKendallTau.MTKT.class)
+	public <T extends RealType<T>, U extends RealType<U>> Double maxTKendallTau(
+		final RandomAccessibleInterval<T> in1,
+		final RandomAccessibleInterval<U> in2,
+		final long seed)
+	{
+		final Double result = (Double) ops().run(
+			net.imagej.ops.coloc.maxTKendallTau.MTKT.class, in1, in2, seed);
 		return result;
 	}
 
