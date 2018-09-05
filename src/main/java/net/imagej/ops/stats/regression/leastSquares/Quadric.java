@@ -27,7 +27,7 @@
  * #L%
  */
 
-package net.imagej.ops.stats.regression.leastSq;
+package net.imagej.ops.stats.regression.leastSquares;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -58,10 +58,10 @@ import org.scijava.plugin.Plugin;
  *
  * @author Richard Domander (Royal Veterinary College, London)
  */
-@Plugin(type = Ops.Stats.LeastSq.class)
+@Plugin(type = Ops.Stats.LeastSquares.class)
 public class Quadric extends
 	AbstractUnaryFunctionOp<Collection<Vector3d>, Matrix4d> implements
-	Ops.Stats.LeastSq, Contingent
+	Ops.Stats.LeastSquares, Contingent
 {
 
 	/**

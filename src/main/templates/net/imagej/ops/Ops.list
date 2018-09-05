@@ -353,7 +353,7 @@ namespaces = ```
 		[name: "integralSum",                    iface: "IntegralSum"],
 		[name: "integralVariance",               iface: "IntegralVariance"],
 		[name: "kurtosis",                       iface: "Kurtosis"],
-		[name: "leastSq",                        iface: "LeastSq"],
+		[name: "leastSquares",                   iface: "LeastSquares"],
 		[name: "max",                            iface: "Max"],
 		[name: "mean",                           iface: "Mean",                aliases: ["avg"]],
 		[name: "median",                         iface: "Median"],

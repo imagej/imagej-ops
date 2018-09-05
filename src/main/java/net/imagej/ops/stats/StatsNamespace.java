@@ -151,10 +151,10 @@ public class StatsNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.stats.regression.leastSq.Quadric.class)
-	public Matrix4d leastSq(final Collection<Vector3dc> points) {
+	@OpMethod(op = net.imagej.ops.stats.regression.leastSquares.Quadric.class)
+	public Matrix4d leastSquares(final Collection<Vector3dc> points) {
 		return (Matrix4d) ops().run(
-			net.imagej.ops.stats.regression.leastSq.Quadric.class, points);
+			net.imagej.ops.stats.regression.leastSquares.Quadric.class, points);
 	}
 
 	@OpMethod(op = net.imagej.ops.stats.IterableMax.class)

@@ -27,7 +27,7 @@
  * #L%
  */
 
-package net.imagej.ops.stats.regression.leastSq;
+package net.imagej.ops.stats.regression.leastSquares;
 
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
