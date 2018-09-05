@@ -29,6 +29,8 @@
 
 package net.imagej.ops.stats;
 
+import java.util.Collection;
+
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
@@ -38,6 +40,8 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
 
+import org.joml.Matrix4d;
+import org.joml.Vector3dc;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -145,6 +149,12 @@ public class StatsNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops().run(net.imagej.ops.Ops.Stats.Kurtosis.class, out, in);
 		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.stats.regression.leastSq.Quadric.class)
+	public Matrix4d leastSq(final Collection<Vector3dc> points) {
+		return (Matrix4d) ops().run(
+			net.imagej.ops.stats.regression.leastSq.Quadric.class, points);
 	}
 
 	@OpMethod(op = net.imagej.ops.stats.IterableMax.class)
