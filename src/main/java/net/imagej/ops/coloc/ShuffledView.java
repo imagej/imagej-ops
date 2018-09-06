@@ -96,7 +96,8 @@ public class ShuffledView<T> extends AbstractInterval implements
 				totalBlocks);
 		}
 		if (blockIndices == null) {
-			this.blockIndices = createBlocks((int) totalBlocks);
+			this.blockIndices = new int[(int) totalBlocks];
+			initializeBlocks();
 			rng = new Random(seed);
 			shuffleBlocks();
 		}
@@ -105,12 +106,10 @@ public class ShuffledView<T> extends AbstractInterval implements
 		}
 	}
 
-	private static int[] createBlocks(final int blockCount) {
+	private void initializeBlocks() {
 		// generate the identity mapping of indices
-		final int[] blocks = new int[blockCount];
-		for (int b = 0; b < blockCount; b++)
-			blocks[b] = b;
-		return blocks;
+		for (int b = 0; b < blockIndices.length; b++)
+			blockIndices[b] = b;
 	}
 
 	public void shuffleBlocks() {
@@ -118,6 +117,12 @@ public class ShuffledView<T> extends AbstractInterval implements
 			throw new IllegalStateException("No seed provided. Cannot shuffle.");
 		}
 		ColocUtil.shuffle(blockIndices, rng);
+	}
+
+	public void shuffleBlocks(long seed) {
+		rng.setSeed(seed);
+		initializeBlocks();
+		shuffleBlocks();
 	}
 
 	@Override

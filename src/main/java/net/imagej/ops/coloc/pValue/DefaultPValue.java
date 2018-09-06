@@ -100,20 +100,23 @@ public class DefaultPValue<T extends RealType<T>, U extends RealType<U>> extends
 		// compute shuffled coloc values in parallel
 		int threadCount = Runtime.getRuntime().availableProcessors(); // FIXME: conform to Ops threading strategy...
 		Random r = new Random(seed);
+		long[] seeds = new long[nrRandomizations];
+		for (int s = 0; s < nrRandomizations; s++ ) {
+			seeds[s] = r.nextLong();
+		}
 		ArrayList<Future<?>> future = new ArrayList<>(threadCount);
 		for (int t = 0; t < threadCount; t++) {
-			long tSeed = r.nextLong();
 			int offset = t * nrRandomizations / threadCount;
 			int count = (t+1) * nrRandomizations / threadCount - offset;
 			future.add(ts.run(() -> {
 				final ShuffledView<T> shuffled = new ShuffledView<>(trimmedImage1,
-					blockSize, tSeed); // a new one per thread and each needs its own seed
+					blockSize, seeds[offset]); // a new one per thread and each needs its own seed
 				Img<T> buffer = Util.getSuitableImgFactory(shuffled, type1).create(
 					shuffled);
 				for (int i = 0; i < count; i++) {
 					int index = offset + i;
 					if (index >= nrRandomizations) break;
-					shuffled.shuffleBlocks();
+					if (i > 0) shuffled.shuffleBlocks(seeds[index]);
 					copy(shuffled, buffer);
 					sampleDistribution[index] = op.calculate(buffer, iterableImage2);
 				}
