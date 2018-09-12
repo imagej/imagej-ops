@@ -1,5 +1,7 @@
 [![](https://travis-ci.org/imagej/imagej-ops.svg?branch=master)](https://travis-ci.org/imagej/imagej-ops)
 [![Join the chat at https://gitter.im/imagej/imagej-ops](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/imagej/imagej-ops?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Code Quality: Java](https://img.shields.io/lgtm/grade/java/g/imagej/imagej-ops.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/imagej/imagej-ops/context:java)
+[![Total Alerts](https://img.shields.io/lgtm/alerts/g/imagej/imagej-ops.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/imagej/imagej-ops/alerts)
 
 ImageJ Ops
 ==========
