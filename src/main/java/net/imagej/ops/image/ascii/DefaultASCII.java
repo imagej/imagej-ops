@@ -117,13 +117,17 @@ public class DefaultASCII<T extends RealType<T>> extends
 			// normalized = (value - min) / (max - min)
 			tmp.set(cursor.get());
 			tmp.sub(min);
-			// NB: if a value is below min we set tmp to zero.
-			if (tmp.compareTo(zero) < 0) tmp.setZero();
 			final double normalized = tmp.getRealDouble() / span.getRealDouble();
 
 			final int charLen = CHARS.length();
-			final int charIndex = (int) (charLen * normalized);
-			c[index] = CHARS.charAt(charIndex < charLen ? charIndex : charLen - 1);
+			int charIndex = (int) (charLen * normalized);
+
+			// NB: clamp charIndex to [0, charLen) to prevent
+			// StringIndexOutOfBoundsExceptions
+			if (charIndex < 0) charIndex = 0;
+			if (charIndex >= charLen) charIndex = charLen - 1;
+
+			c[index] = CHARS.charAt(charIndex);
 		}
 
 		return new String(c);
