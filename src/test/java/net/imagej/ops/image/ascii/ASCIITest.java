@@ -29,7 +29,7 @@
 
 package net.imagej.ops.image.ascii;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.img.Img;
@@ -64,9 +64,9 @@ public class ASCIITest extends AbstractOpTest {
 		final String ascii = (String) ops.run(DefaultASCII.class, img);
 		for (int i = 0; i < len; i++) {
 			for (int j = 0; j < width; j++) {
-				assertTrue(ascii.charAt(i * (width + 1) + j) == CHARS.charAt(i));
+				assertEquals(ascii.charAt(i * (width + 1) + j), CHARS.charAt(i));
 			}
-			assertTrue(ascii.charAt(i * (width + 1) + width) == '\n');
+			assertEquals(ascii.charAt(i * (width + 1) + width), '\n');
 		}
 	}
 
@@ -89,16 +89,16 @@ public class ASCIITest extends AbstractOpTest {
 		final String ascii = (String) ops.run(DefaultASCII.class, img, min, max);
 		for (int i = 0; i < len; i++) {
 			for (int j = 0; j < width; j++) {
-				assertTrue(ascii.charAt(i * (width + 1) + j) == CHARS.charAt(i));
+				assertEquals(ascii.charAt(i * (width + 1) + j), CHARS.charAt(i));
 			}
-			assertTrue(ascii.charAt(i * (width + 1) + width) == '\n');
+			assertEquals(ascii.charAt(i * (width + 1) + width), '\n');
 		}
 
-		// make sure that the clamped ASCII string is not equivalent to the
-		// unclamped String
+		// make sure that the values of the min/max ascii are the same as the
+		// unclamped version (which will set the minimum and maximum to those of the
+		// data, which are the same as the ones that we set).
 		final String asciiUnclamped = (String) ops.run(DefaultASCII.class, img);
-
-		assertTrue(asciiUnclamped != ascii);
+		assertEquals(asciiUnclamped, ascii);
 
 	}
 }
