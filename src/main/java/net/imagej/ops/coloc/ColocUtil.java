@@ -29,6 +29,8 @@
 
 package net.imagej.ops.coloc;
 
+import java.util.Random;
+
 import net.imglib2.IterableInterval;
 import net.imglib2.util.Intervals;
 import net.imglib2.util.Util;
@@ -51,4 +53,15 @@ public final class ColocUtil
 			IterableInterval<?> ii2 = (IterableInterval<?>) i2;
 			return Intervals.equalDimensions(ii1, ii2) && Util.equalIterationOrder(ii1, ii2);
 		}
+
+	/** Fisher-Yates shuffle. */
+	public static void shuffle(int[] array, Random rnd) {
+		final int size = array.length;
+		for (int i = size - 1; i > 0; i--) {
+			final int j = rnd.nextInt(i + 1);
+			final int v = array[i];
+			array[i] = array[j];
+			array[j] = v;
+		}
+	}
 }
