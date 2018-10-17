@@ -110,7 +110,7 @@ public class WatershedBinary<T extends BooleanType<T>, B extends BooleanType<B>>
 
 	@Override
 	public boolean conforms() {
-		boolean conformed = sigma.length != in().numDimensions();
+		boolean conformed = sigma.length >= in().numDimensions();
 		for (int i = 0; i < sigma.length; i++) {
 			conformed &= sigma[i] >= 0;
 		}
