@@ -102,7 +102,7 @@ public class MeshFeatureTests extends AbstractFeatureTest {
 	@Test
 	public void mainElongation() {
 		// formula verified and ground truth computed with matlab
-		assertEquals(Ops.Geometric.Convexity.NAME, 0.251596105039,
+		assertEquals(Ops.Geometric.Convexity.NAME, 0.2079585956045953,
 				((DoubleType) ops.run(DefaultMainElongation.class, mesh)).get(), EPSILON);
 	}
 
@@ -131,7 +131,7 @@ public class MeshFeatureTests extends AbstractFeatureTest {
 	@Test
 	public void medianElongation() {
 		// formula verified and ground truth computed with matlab
-		assertEquals(Ops.Geometric.Convexity.NAME, 0.128824753606,
+		assertEquals(Ops.Geometric.Convexity.NAME, 0.30059118825775455,
 				((DoubleType) ops.run(DefaultMedianElongation.class, mesh)).get(), EPSILON);
 	}
 
@@ -159,7 +159,7 @@ public class MeshFeatureTests extends AbstractFeatureTest {
 	@Test
 	public void spareness() {
 		// formula verified
-		assertEquals(Ops.Geometric.Spareness.NAME, 0.983875774303,
+		assertEquals(Ops.Geometric.Spareness.NAME, 0.7884710437076516,
 				((DoubleType) ops.run(DefaultSparenessMesh.class, mesh)).get(), EPSILON);
 	}
 

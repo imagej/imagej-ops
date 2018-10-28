@@ -199,7 +199,7 @@
 		<!-- NB: Deploy releases to the ImageJ Maven repository. -->
 		<releaseProfiles>deploy-to-imagej</releaseProfiles>
 
-		<imagej-mesh.version>0.4.0</imagej-mesh.version>
+		<imagej-mesh.version>0.7.1</imagej-mesh.version>
 	</properties>
 
 	<repositories>
