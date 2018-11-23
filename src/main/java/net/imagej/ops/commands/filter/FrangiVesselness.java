@@ -54,7 +54,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Gabe Selzer
  */
-@Plugin(type = Command.class, menuPath = "Process>Filters>Frangi Vesselness")
+@Plugin(type = Command.class, headless = true, menuPath = "Process>Filters>Frangi Vesselness")
 public class FrangiVesselness<T extends RealType<T>> implements Command {
 
 	@Parameter
