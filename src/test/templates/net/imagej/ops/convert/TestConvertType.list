@@ -66,13 +66,11 @@ types = ```
 		[v: "1049L",                            r: "1049L",                            i: "0L"],
 		[v: "0L",                               r: "0L",                               i: "0L"],
 		[v: "p64",                              r: "p64",                              i: "0L", s:""],
-		[v: "n64",                              r: "n64",                              i: "0L", s:""]
 	]],
 	[op: "Uint128",  built: "uint128",  imglibT: "Unsigned128Bit", outMethod: "uint128",  values: [
 		[v: "beef",                             r: "beef",                             i: "biZero"],
 		[v: "biZero",                           r: "biZero",                           i: "biZero"],
 		[v: "p128",                             r: "p128",                             i: "biZero"],
-		[v: "n128",                             r: "n128",                             i: "biZero"]
 	]],
 	[op: "Float32",  built: "float32",  imglibT: "Float",          outMethod: "float32",   values: [
 		[v: "123453.125f",                      r: "123453.125f",                      i: "0f"],
