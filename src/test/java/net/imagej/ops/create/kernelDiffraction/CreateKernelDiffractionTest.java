@@ -99,7 +99,7 @@ public class CreateKernelDiffractionTest extends AbstractOpTest {
 
 		};
 
-		assertArrayEquals(expected, asArray(kernel), 0.0);
+		assertArrayEquals(expected, asArray(kernel), 1e-4);
 	}
 	
 	/**
