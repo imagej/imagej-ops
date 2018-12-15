@@ -99,12 +99,6 @@ public class NonCirculantNormalizationFactor<I extends RealType<I>, O extends Re
 	@Parameter
 	RandomAccessibleInterval<C> fftKernel;
 
-	/**
-	 * The interval to process TODO: this is probably redundant - remove
-	 */
-	@Parameter
-	private Interval imgConvolutionInterval;
-
 	// Normalization factor for edge handling (see
 	// http://bigwww.epfl.ch/deconvolution/challenge2013/index.html?p=doc_math_rl)
 	private Img<O> normalization = null;
@@ -138,15 +132,14 @@ public class NonCirculantNormalizationFactor<I extends RealType<I>, O extends Re
 	public void mutate(RandomAccessibleInterval<O> arg) {
 		// if the normalization image hasn't been computed yet, then compute it
 		if (normalization == null) {
-			normalization = create.calculate(imgConvolutionInterval);
-			this.createNormalizationImageSemiNonCirculant();
+			this.createNormalizationImageSemiNonCirculant(arg);
 		}
 
 		// normalize for non-circulant deconvolution
 		divide.mutate1(normalization, Views.iterable(arg));
 	}
 
-	protected void createNormalizationImageSemiNonCirculant() {
+	protected void createNormalizationImageSemiNonCirculant(Interval fastFFTInterval) {
 
 		// k is the window size (valid image region)
 		final int length = k.numDimensions();
@@ -160,8 +153,10 @@ public class NonCirculantNormalizationFactor<I extends RealType<I>, O extends Re
 			n[d] = k.dimension(d) + l.dimension(d) - 1;
 		}
 
+		// nFFT is the size of n after (potentially) extending further
+		// to a fast FFT size
 		for (int d = 0; d < length; d++) {
-			nFFT[d] = imgConvolutionInterval.dimension(d);
+			nFFT[d] = fastFFTInterval.dimension(d);
 		}
 
 		FinalDimensions fd = new FinalDimensions(nFFT);

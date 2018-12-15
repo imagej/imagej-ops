@@ -36,7 +36,6 @@ import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.Hybrids;
 import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imglib2.Dimensions;
-import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.type.Type;
@@ -59,16 +58,12 @@ import org.scijava.plugin.Plugin;
  * @param <C>
  */
 
-@Plugin(type = Ops.Deconvolve.FirstGuess.class,
-	priority = Priority.LOW)
+@Plugin(type = Ops.Deconvolve.FirstGuess.class, priority = Priority.LOW)
 public class NonCirculantFirstGuess<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends
 	AbstractUnaryFunctionOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 	implements Ops.Deconvolve.FirstGuess
 {
-
-	@Parameter
-	private Interval imgConvolutionInterval;
 
 	@Parameter
 	Type<O> outType;
@@ -99,7 +94,7 @@ public class NonCirculantFirstGuess<I extends RealType<I>, O extends RealType<O>
 	@Override
 	public RandomAccessibleInterval<O> calculate(RandomAccessibleInterval<I> in) {
 
-		final Img<O> firstGuess = create.calculate(imgConvolutionInterval);
+		final Img<O> firstGuess = create.calculate(in);
 
 		// set first guess to be a constant = to the average value
 

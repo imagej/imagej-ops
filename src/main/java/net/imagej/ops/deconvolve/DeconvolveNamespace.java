@@ -37,7 +37,6 @@ import net.imagej.ops.OpMethod;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.inplace.UnaryInplaceOp;
 import net.imglib2.Dimensions;
-import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
@@ -590,14 +589,14 @@ public class DeconvolveNamespace extends AbstractNamespace {
 		normalizationFactor(final RandomAccessibleInterval<O> arg,
 			final Dimensions k, final Dimensions l,
 			final RandomAccessibleInterval<O> fftInput,
-			final RandomAccessibleInterval<O> fftKernel,
-			final Interval imgConvolutionInterval)
+			final RandomAccessibleInterval<O> fftKernel)
+
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
 				net.imagej.ops.deconvolve.NonCirculantNormalizationFactor.class, arg, k,
-				l, fftInput, fftKernel, imgConvolutionInterval);
+				l, fftInput, fftKernel);
 		return result;
 	}
 
@@ -605,14 +604,12 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.deconvolve.NonCirculantFirstGuess.class)
 	public <I extends RealType<I>, O extends RealType<O>>
 		RandomAccessibleInterval<O> firstGuess(final RandomAccessibleInterval<I> in,
-			final Interval imgConvolutionInterval, final Type<O> outType,
-			final Dimensions k)
+			final Type<O> outType, final Dimensions k)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.deconvolve.NonCirculantFirstGuess.class, in,
-				imgConvolutionInterval, outType, k);
+				net.imagej.ops.deconvolve.NonCirculantFirstGuess.class, in, outType, k);
 		return result;
 	}
 
