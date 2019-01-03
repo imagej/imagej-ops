@@ -54,6 +54,6 @@ public interface Chunk {
 	 * @param stepSize the step-size between two consecutive elements
 	 * @param numSteps how many steps shall be taken
 	 */
-	void execute(int startIndex, int stepSize, int numSteps);
+	void execute(long startIndex, long stepSize, long numSteps);
 
 }

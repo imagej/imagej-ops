@@ -32,7 +32,7 @@ import net.imglib2.Cursor;
 
 public abstract class CursorBasedChunk implements Chunk {
 	
-	public static void setToStart(final Cursor<?> c, int startIndex) {
+	public static void setToStart(final Cursor<?> c, long startIndex) {
 		c.reset();
 		c.jumpFwd(startIndex + 1);
 	}

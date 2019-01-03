@@ -56,6 +56,7 @@ import net.imglib2.type.numeric.real.FloatType;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+import org.scijava.util.ArrayUtils;
 
 /**
  * Wrapper class for multi-threaded version of binary math operations between 
@@ -98,15 +99,19 @@ public final class ConstantToArrayImageP {
 			ops().run(ChunkerOp.class, new Chunk() {
 
 				@Override
-				public void execute(final int startIndex, final int stepSize,
-						final int numSteps) {
-					if (stepSize != 1) {
-						for (int i = startIndex, j = 0; j < numSteps; i = i
-								+ stepSize, j++) {
+				public void execute(final long startIndex, final long stepSize,
+						final long numSteps) {
+					
+					final int startIndexSafe32 = (startIndex==0) ? 0 : ArrayUtils.safeMultiply32(startIndex);
+					final int stepSizeSafe32 = (stepSize==0) ? 0 : ArrayUtils.safeMultiply32(stepSize);
+					
+					if (stepSizeSafe32 != 1) {					
+						for (int i = startIndexSafe32, j = 0; j < numSteps; i = i
+								+ stepSizeSafe32, j++) {
 							data[i] ${op.operator}= value;
 						}
 					} else {
-						for (int i = startIndex; i < startIndex + numSteps; i++) {
+						for (int i = startIndexSafe32; i < startIndex + numSteps; i++) {
 							data[i] ${op.operator}= value;
 						}
 					}

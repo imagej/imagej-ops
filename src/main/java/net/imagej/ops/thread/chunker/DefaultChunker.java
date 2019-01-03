@@ -60,15 +60,15 @@ public class DefaultChunker extends AbstractChunker {
 
 		// TODO: is there a better way to determine the optimal chunk size?
 		
-		final int numSteps = Math.max(1, 
-			(int) (numberOfElements / Runtime.getRuntime().availableProcessors())) ;
+		final long numSteps = Math.max(1, 
+			(long) (numberOfElements / Runtime.getRuntime().availableProcessors())) ;
 		
 		final int numChunks = (int) (numberOfElements / numSteps);
 
 		final ArrayList<Future<?>> futures = new ArrayList<>(numChunks);
 
 		for (int i = 0; i < numChunks - 1; i++) {
-			final int j = i;
+			final long j = i;
 
 			futures.add(threadService.run(new Runnable() {
 

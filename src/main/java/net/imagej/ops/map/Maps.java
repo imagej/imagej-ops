@@ -131,13 +131,13 @@ public class Maps {
 	}
 
 	public static <O> void map(final IterableInterval<O> a,
-		final NullaryComputerOp<O> op, final int startIndex, final int stepSize,
-		final int numSteps)
+		final NullaryComputerOp<O> op, final long startIndex, final long stepSize,
+		final long numSteps)
 	{
 		if (numSteps <= 0) return;
 		final Cursor<O> aCursor = a.cursor();
 
-		for (int ctr = 0; ctr < numSteps; ctr++) {
+		for (long ctr = 0; ctr < numSteps; ctr++) {
 			aCursor.jumpFwd(ctr == 0 ? startIndex + 1 : stepSize);
 			op.compute(aCursor.get());
 		}
@@ -284,14 +284,14 @@ public class Maps {
 
 	public static <I, O> void map(final IterableInterval<I> a,
 		final IterableInterval<O> b, final UnaryComputerOp<I, O> op,
-		final int startIndex, final int stepSize, final int numSteps)
+		final long startIndex, final long stepSize, final long numSteps)
 	{
 		if (numSteps <= 0) return;
 		final Cursor<I> aCursor = a.cursor();
 		final Cursor<O> bCursor = b.cursor();
 
-		for (int ctr = 0; ctr < numSteps; ctr++) {
-			final int m = ctr == 0 ? startIndex + 1 : stepSize;
+		for (long ctr = 0; ctr < numSteps; ctr++) {
+			final long m = ctr == 0 ? startIndex + 1 : stepSize;
 			aCursor.jumpFwd(m);
 			bCursor.jumpFwd(m);
 			op.compute(aCursor.get(), bCursor.get());
@@ -300,13 +300,13 @@ public class Maps {
 
 	public static <I, O> void map(final IterableInterval<I> a,
 		final RandomAccessibleInterval<O> b, final UnaryComputerOp<I, O> op,
-		final int startIndex, final int stepSize, final int numSteps)
+		final long startIndex, final long stepSize, final long numSteps)
 	{
 		if (numSteps <= 0) return;
 		final Cursor<I> aCursor = a.localizingCursor();
 		final RandomAccess<O> bAccess = b.randomAccess();
 
-		for (int ctr = 0; ctr < numSteps; ctr++) {
+		for (long ctr = 0; ctr < numSteps; ctr++) {
 			aCursor.jumpFwd(ctr == 0 ? startIndex + 1 : stepSize);
 			bAccess.setPosition(aCursor);
 			op.compute(aCursor.get(), bAccess.get());
@@ -315,13 +315,13 @@ public class Maps {
 
 	public static <I, O> void map(final RandomAccessibleInterval<I> a,
 		final IterableInterval<O> b, final UnaryComputerOp<I, O> op,
-		final int startIndex, final int stepSize, final int numSteps)
+		final long startIndex, final long stepSize, final long numSteps)
 	{
 		if (numSteps <= 0) return;
 		final RandomAccess<I> aAccess = a.randomAccess();
 		final Cursor<O> bCursor = b.localizingCursor();
 
-		for (int ctr = 0; ctr < numSteps; ctr++) {
+		for (long ctr = 0; ctr < numSteps; ctr++) {
 			bCursor.jumpFwd(ctr == 0 ? startIndex + 1 : stepSize);
 			aAccess.setPosition(bCursor);
 			op.compute(aAccess.get(), bCursor.get());
@@ -332,16 +332,16 @@ public class Maps {
 
 	public static <I1, I2, O> void map(final IterableInterval<I1> a,
 		final IterableInterval<I2> b, final IterableInterval<O> c,
-		final BinaryComputerOp<I1, I2, O> op, final int startIndex,
-		final int stepSize, final int numSteps)
+		final BinaryComputerOp<I1, I2, O> op, final long startIndex,
+		final long stepSize, final long numSteps)
 	{
 		if (numSteps <= 0) return;
 		final Cursor<I1> aCursor = a.cursor();
 		final Cursor<I2> bCursor = b.cursor();
 		final Cursor<O> cCursor = c.cursor();
 
-		for (int ctr = 0; ctr < numSteps; ctr++) {
-			final int m = ctr == 0 ? startIndex + 1 : stepSize;
+		for (long ctr = 0; ctr < numSteps; ctr++) {
+			final long m = ctr == 0 ? startIndex + 1 : stepSize;
 			aCursor.jumpFwd(m);
 			bCursor.jumpFwd(m);
 			cCursor.jumpFwd(m);
@@ -351,16 +351,16 @@ public class Maps {
 
 	public static <I1, I2, O> void map(final IterableInterval<I1> a,
 		final IterableInterval<I2> b, final RandomAccessibleInterval<O> c,
-		final BinaryComputerOp<I1, I2, O> op, final int startIndex,
-		final int stepSize, final int numSteps)
+		final BinaryComputerOp<I1, I2, O> op, final long startIndex,
+		final long stepSize, final long numSteps)
 	{
 		if (numSteps <= 0) return;
 		final Cursor<I1> aCursor = a.localizingCursor();
 		final Cursor<I2> bCursor = b.cursor();
 		final RandomAccess<O> cAccess = c.randomAccess();
 
-		for (int ctr = 0; ctr < numSteps; ctr++) {
-			final int m = ctr == 0 ? startIndex + 1 : stepSize;
+		for (long ctr = 0; ctr < numSteps; ctr++) {
+			final long m = ctr == 0 ? startIndex + 1 : stepSize;
 			aCursor.jumpFwd(m);
 			bCursor.jumpFwd(m);
 			cAccess.setPosition(aCursor);
@@ -370,16 +370,16 @@ public class Maps {
 
 	public static <I1, I2, O> void map(final IterableInterval<I1> a,
 		final RandomAccessibleInterval<I2> b, final IterableInterval<O> c,
-		final BinaryComputerOp<I1, I2, O> op, final int startIndex,
-		final int stepSize, final int numSteps)
+		final BinaryComputerOp<I1, I2, O> op, final long startIndex,
+		final long stepSize, final long numSteps)
 	{
 		if (numSteps <= 0) return;
 		final Cursor<I1> aCursor = a.localizingCursor();
 		final RandomAccess<I2> bAccess = b.randomAccess();
 		final Cursor<O> cCursor = c.cursor();
 
-		for (int ctr = 0; ctr < numSteps; ctr++) {
-			final int m = ctr == 0 ? startIndex + 1 : stepSize;
+		for (long ctr = 0; ctr < numSteps; ctr++) {
+			final long m = ctr == 0 ? startIndex + 1 : stepSize;
 			aCursor.jumpFwd(m);
 			cCursor.jumpFwd(m);
 			bAccess.setPosition(aCursor);
@@ -389,16 +389,16 @@ public class Maps {
 
 	public static <I1, I2, O> void map(final RandomAccessibleInterval<I1> a,
 		final IterableInterval<I2> b, final IterableInterval<O> c,
-		final BinaryComputerOp<I1, I2, O> op, final int startIndex,
-		final int stepSize, final int numSteps)
+		final BinaryComputerOp<I1, I2, O> op, final long startIndex,
+		final long stepSize, final long numSteps)
 	{
 		if (numSteps <= 0) return;
 		final RandomAccess<I1> aAccess = a.randomAccess();
 		final Cursor<I2> bCursor = b.localizingCursor();
 		final Cursor<O> cCursor = c.cursor();
 
-		for (int ctr = 0; ctr < numSteps; ctr++) {
-			final int m = ctr == 0 ? startIndex + 1 : stepSize;
+		for (long ctr = 0; ctr < numSteps; ctr++) {
+			final long m = ctr == 0 ? startIndex + 1 : stepSize;
 			bCursor.jumpFwd(m);
 			cCursor.jumpFwd(m);
 			aAccess.setPosition(bCursor);
@@ -408,15 +408,15 @@ public class Maps {
 
 	public static <I1, I2, O> void map(final IterableInterval<I1> a,
 		final RandomAccessibleInterval<I2> b, final RandomAccessibleInterval<O> c,
-		final BinaryComputerOp<I1, I2, O> op, final int startIndex,
-		final int stepSize, final int numSteps)
+		final BinaryComputerOp<I1, I2, O> op, final long startIndex,
+		final long stepSize, final long numSteps)
 	{
 		if (numSteps <= 0) return;
 		final Cursor<I1> aCursor = a.localizingCursor();
 		final RandomAccess<I2> bAccess = b.randomAccess();
 		final RandomAccess<O> cAccess = c.randomAccess();
 
-		for (int ctr = 0; ctr < numSteps; ctr++) {
+		for (long ctr = 0; ctr < numSteps; ctr++) {
 			aCursor.jumpFwd(ctr == 0 ? startIndex + 1 : stepSize);
 			bAccess.setPosition(aCursor);
 			cAccess.setPosition(aCursor);
@@ -426,15 +426,15 @@ public class Maps {
 
 	public static <I1, I2, O> void map(final RandomAccessibleInterval<I1> a,
 		final IterableInterval<I2> b, final RandomAccessibleInterval<O> c,
-		final BinaryComputerOp<I1, I2, O> op, final int startIndex,
-		final int stepSize, final int numSteps)
+		final BinaryComputerOp<I1, I2, O> op, final long startIndex,
+		final long stepSize, final long numSteps)
 	{
 		if (numSteps <= 0) return;
 		final RandomAccess<I1> aAccess = a.randomAccess();
 		final Cursor<I2> bCursor = b.localizingCursor();
 		final RandomAccess<O> cAccess = c.randomAccess();
 
-		for (int ctr = 0; ctr < numSteps; ctr++) {
+		for (long ctr = 0; ctr < numSteps; ctr++) {
 			bCursor.jumpFwd(ctr == 0 ? startIndex + 1 : stepSize);
 			aAccess.setPosition(bCursor);
 			cAccess.setPosition(bCursor);
@@ -444,15 +444,15 @@ public class Maps {
 
 	public static <I1, I2, O> void map(final RandomAccessibleInterval<I1> a,
 		final RandomAccessibleInterval<I2> b, final IterableInterval<O> c,
-		final BinaryComputerOp<I1, I2, O> op, final int startIndex,
-		final int stepSize, final int numSteps)
+		final BinaryComputerOp<I1, I2, O> op, final long startIndex,
+		final long stepSize, final long numSteps)
 	{
 		if (numSteps <= 0) return;
 		final RandomAccess<I1> aAccess = a.randomAccess();
 		final RandomAccess<I2> bAccess = b.randomAccess();
 		final Cursor<O> cCursor = c.localizingCursor();
 
-		for (int ctr = 0; ctr < numSteps; ctr++) {
+		for (long ctr = 0; ctr < numSteps; ctr++) {
 			cCursor.jumpFwd(ctr == 0 ? startIndex + 1 : stepSize);
 			aAccess.setPosition(cCursor);
 			bAccess.setPosition(cCursor);
@@ -470,13 +470,13 @@ public class Maps {
 	}
 
 	public static <I, O extends I> void inplace(final IterableInterval<O> arg,
-		final UnaryInplaceOp<I, O> op, final int startIndex, final int stepSize,
-		final int numSteps)
+		final UnaryInplaceOp<I, O> op, final long startIndex, final long stepSize,
+		final long numSteps)
 	{
 		if (numSteps <= 0) return;
 		final Cursor<O> argCursor = arg.cursor();
 
-		for (int ctr = 0; ctr < numSteps; ctr++) {
+		for (long ctr = 0; ctr < numSteps; ctr++) {
 			argCursor.jumpFwd(ctr == 0 ? startIndex + 1 : stepSize);
 			op.mutate(argCursor.get());
 		}
@@ -522,14 +522,14 @@ public class Maps {
 
 	public static <A, I> void inplace(final IterableInterval<A> arg,
 		final IterableInterval<I> in, final BinaryInplace1Op<A, I, A> op,
-		final int startIndex, final int stepSize, final int numSteps)
+		final long startIndex, final long stepSize, final long numSteps)
 	{
 		if (numSteps <= 0) return;
 		final Cursor<A> argCursor = arg.cursor();
 		final Cursor<I> inCursor = in.cursor();
 
-		for (int ctr = 0; ctr < numSteps; ctr++) {
-			final int m = ctr == 0 ? startIndex + 1 : stepSize;
+		for (long ctr = 0; ctr < numSteps; ctr++) {
+			final long m = ctr == 0 ? startIndex + 1 : stepSize;
 			argCursor.jumpFwd(m);
 			inCursor.jumpFwd(m);
 			op.mutate1(argCursor.get(), inCursor.get());
@@ -538,13 +538,13 @@ public class Maps {
 
 	public static <A, I> void inplace(final IterableInterval<A> arg,
 		final RandomAccessibleInterval<I> in, final BinaryInplace1Op<A, I, A> op,
-		final int startIndex, final int stepSize, final int numSteps)
+		final long startIndex, final long stepSize, final long numSteps)
 	{
 		if (numSteps <= 0) return;
 		final Cursor<A> argCursor = arg.localizingCursor();
 		final RandomAccess<I> inAccess = in.randomAccess();
 
-		for (int ctr = 0; ctr < numSteps; ctr++) {
+		for (long ctr = 0; ctr < numSteps; ctr++) {
 			argCursor.jumpFwd(ctr == 0 ? startIndex + 1 : stepSize);
 			inAccess.setPosition(argCursor);
 			op.mutate1(argCursor.get(), inAccess.get());
@@ -553,13 +553,13 @@ public class Maps {
 
 	public static <A, I> void inplace(final RandomAccessibleInterval<A> arg,
 		final IterableInterval<I> in, final BinaryInplace1Op<A, I, A> op,
-		final int startIndex, final int stepSize, final int numSteps)
+		final long startIndex, final long stepSize, final long numSteps)
 	{
 		if (numSteps <= 0) return;
 		final RandomAccess<A> argAccess = arg.randomAccess();
 		final Cursor<I> inCursor = in.localizingCursor();
 
-		for (int ctr = 0; ctr < numSteps; ctr++) {
+		for (long ctr = 0; ctr < numSteps; ctr++) {
 			inCursor.jumpFwd(ctr == 0 ? startIndex + 1 : stepSize);
 			argAccess.setPosition(inCursor);
 			op.mutate1(argAccess.get(), inCursor.get());
@@ -578,14 +578,14 @@ public class Maps {
 
 	public static <A> void inplace(final IterableInterval<A> arg,
 		final IterableInterval<A> in, final BinaryInplaceOp<A, A> op,
-		final int startIndex, final int stepSize, final int numSteps)
+		final long startIndex, final long stepSize, final long numSteps)
 	{
 		if (numSteps <= 0) return;
 		final Cursor<A> argCursor = arg.cursor();
 		final Cursor<A> inCursor = in.cursor();
 
-		for (int ctr = 0; ctr < numSteps; ctr++) {
-			final int m = ctr == 0 ? startIndex + 1 : stepSize;
+		for (long ctr = 0; ctr < numSteps; ctr++) {
+			final long m = ctr == 0 ? startIndex + 1 : stepSize;
 			argCursor.jumpFwd(m);
 			inCursor.jumpFwd(m);
 			op.mutate2(argCursor.get(), inCursor.get());

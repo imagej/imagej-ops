@@ -56,7 +56,7 @@ public class RunDefaultChunker<A extends RealType<A>> extends
 
 			@Override
 			public void
-				execute(int startIndex, final int stepSize, final int numSteps)
+				execute(long startIndex, final long stepSize, final long numSteps)
 			{
 				final Cursor<A> cursor = input.localizingCursor();
 				final Cursor<A> cursorOut = output.localizingCursor();
