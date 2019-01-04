@@ -191,7 +191,7 @@ public class HistogramOfOrientedGradients2D<T extends RealType<T>>
 		final CursorBasedChunk chunkable = new CursorBasedChunk() {
 
 			@Override
-			public void execute(int startIndex, int stepSize, int numSteps) {
+			public void execute(long startIndex, long stepSize, long numSteps) {
 				final Cursor<FloatType> cursorAngles = Views.flatIterable(angles).localizingCursor();
 				final Cursor<FloatType> cursorMagnitudes = Views.flatIterable(magnitudes).localizingCursor();
 				final Cursor<FloatType> cursorDerivative0 = Views.flatIterable(finalderivative0).localizingCursor();
@@ -202,7 +202,7 @@ public class HistogramOfOrientedGradients2D<T extends RealType<T>>
 				setToStart(cursorDerivative0, startIndex);
 				setToStart(cursorDerivative1, startIndex);
 
-				for (int i = 0; i < numSteps; i++) {
+				for (long i = 0; i < numSteps; i++) {
 					final float x = cursorDerivative0.get().getRealFloat();
 					final float y = cursorDerivative1.get().getRealFloat();
 					cursorAngles.get().setReal(getAngle(x, y));

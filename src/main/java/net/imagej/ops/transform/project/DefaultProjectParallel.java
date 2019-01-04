@@ -69,14 +69,14 @@ public class DefaultProjectParallel<T, V> extends
 
 			@Override
 			public void
-				execute(int startIndex, final int stepSize, final int numSteps)
+				execute(long startIndex, final long stepSize, final long numSteps)
 			{
 				final RandomAccess<T> access = input.randomAccess();
 				final Cursor<V> cursor = output.localizingCursor();
 
 				setToStart(cursor, startIndex);
 
-				int ctr = 0;
+				long ctr = 0;
 				while (ctr < numSteps) {
 					for (int d = 0; d < input.numDimensions(); d++) {
 						if (d != dim) {

@@ -54,8 +54,8 @@ public class MapIIInplaceParallel<A> extends
 		ops().run(ChunkerOp.class, new CursorBasedChunk() {
 
 			@Override
-			public void execute(final int startIndex, final int stepSize,
-				final int numSteps)
+			public void execute(final long startIndex, final long stepSize,
+				final long numSteps)
 			{
 				Maps.inplace(arg, getOp(), startIndex, stepSize, numSteps);
 			}

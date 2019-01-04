@@ -64,8 +64,8 @@ public class MapIIAndIIInplaceParallel<EA> extends
 		ops().run(ChunkerOp.class, new CursorBasedChunk() {
 
 			@Override
-			public void execute(final int startIndex, final int stepSize,
-				final int numSteps)
+			public void execute(final long startIndex, final long stepSize,
+				final long numSteps)
 			{
 				Maps.inplace(arg, in, (BinaryInplace1Op<EA, EA, EA>) getOp(),
 					startIndex, stepSize, numSteps);
@@ -80,8 +80,8 @@ public class MapIIAndIIInplaceParallel<EA> extends
 		ops().run(ChunkerOp.class, new CursorBasedChunk() {
 
 			@Override
-			public void execute(final int startIndex, final int stepSize,
-				final int numSteps)
+			public void execute(final long startIndex, final long stepSize,
+				final long numSteps)
 			{
 				Maps.inplace(in, arg, getOp(), startIndex, stepSize, numSteps);
 			}

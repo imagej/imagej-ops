@@ -36,6 +36,7 @@ import net.imagej.ops.thread.chunker.ChunkerInterleaved;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
+import org.scijava.util.ArrayUtils;
 
 @Plugin(type = Op.class, name = "test.chunker",
 	priority = Priority.LOW)
@@ -49,14 +50,15 @@ public class RunInterleavedChunkerArray<A> extends
 
 			@Override
 			public void
-				execute(int startIndex, final int stepSize, final int numSteps)
+				execute(long startIndex, final long stepSize, final long numSteps)
 			{
-				int i = startIndex;
-
+				int i = startIndex==0 ? 0 : ArrayUtils.safeMultiply32(startIndex);
+				int stepSizeSafe32 = stepSize == 0 ? 0 : ArrayUtils.safeMultiply32(stepSize);
+				
 				int ctr = 0;
 				while (ctr < numSteps) {
 					output[i] = input[i];
-					i += stepSize;
+					i += stepSizeSafe32;
 					ctr++;
 				}
 			}
