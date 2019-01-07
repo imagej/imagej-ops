@@ -1365,6 +1365,20 @@ public class FilterNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	// -- Shadows
+
+	/** Executes the "shadows" filter operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.shadow.DefaultShadows.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> shadows(
+		final RandomAccessibleInterval<T> in, final double angle)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(Ops.Filter.Shadows.class, in,
+				angle);
+		return result;
+	}
+
 	// -- Sobel
 
 	@OpMethod(op = net.imagej.ops.filter.sobel.SobelRAI.class)
