@@ -42,6 +42,7 @@ import net.imglib2.algorithm.neighborhood.Neighborhood;
 import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
 import net.imglib2.algorithm.neighborhood.RectangleNeighborhoodFactory;
 import net.imglib2.algorithm.neighborhood.RectangleShape.NeighborhoodsAccessible;
+import net.imglib2.type.numeric.IntegerType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Util;
 import net.imglib2.view.Views;
@@ -151,7 +152,14 @@ public class DefaultSmooth<T extends RealType<T>> extends
 				sum += kernel[i] * n[i];
 			}
 
-			double value = sum / scale;
+			//find the value for the output
+			double value;
+			if(type instanceof IntegerType) {
+				value = (sum + scale / 2) / scale;
+			}
+			else {
+				value = sum / scale;
+			}
 
 			outputRA.setPosition(cursor.getLongPosition(0), 0);
 			outputRA.setPosition(cursor.getLongPosition(1), 1);
