@@ -36,6 +36,7 @@ import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Parameter;
@@ -79,23 +80,27 @@ public class DefaultASCII<T extends RealType<T>> extends
 			if (min == null) min = minMax.getA();
 			if (max == null) max = minMax.getB();
 		}
-		return ascii(input, min, max);
+
+		DoubleType minSource = new DoubleType(min.getRealDouble());
+		DoubleType maxSource = new DoubleType(max.getRealDouble());
+		DoubleType minTarget = new DoubleType(0);
+		DoubleType maxTarget = new DoubleType(CHARS.length());
+
+		IterableInterval<DoubleType> converted = ops().convert().float64(input);
+		IterableInterval<DoubleType> normalized = ops().image().normalize(converted,
+			minSource, maxSource, minTarget, maxTarget);
+
+		return ascii(normalized);
 	}
 
 	// -- Utility methods --
 
-	public static <T extends RealType<T>> String ascii(
-		final IterableInterval<T> image, final T min, final T max)
-	{
+	public static String ascii(final IterableInterval<DoubleType> image) {
 		final long dim0 = image.dimension(0);
 		final long dim1 = image.dimension(1);
-		// TODO: Check bounds.
+
 		final int w = (int) (dim0 + 1);
 		final int h = (int) dim1;
-
-		// span = max - min
-		final T span = max.copy();
-		span.sub(min);
 
 		// allocate ASCII character array
 		final char[] c = new char[w * h];
@@ -104,30 +109,21 @@ public class DefaultASCII<T extends RealType<T>> extends
 		}
 
 		// loop over all available positions
-		final Cursor<T> cursor = image.localizingCursor();
+		final Cursor<DoubleType> cursor = image.localizingCursor();
 		final int[] pos = new int[image.numDimensions()];
-		final T tmp = image.firstElement().copy();
-		final T zero = tmp.copy();
-		zero.setZero();
 		while (cursor.hasNext()) {
 			cursor.fwd();
 			cursor.localize(pos);
 			final int index = w * pos[1] + pos[0];
 
-			// normalized = (value - min) / (max - min)
-			tmp.set(cursor.get());
-			tmp.sub(min);
-			final double normalized = tmp.getRealDouble() / span.getRealDouble();
-
-			final int charLen = CHARS.length();
-			int charIndex = (int) (charLen * normalized);
-
-			// NB: clamp charIndex to [0, charLen) to prevent
-			// StringIndexOutOfBoundsExceptions
-			if (charIndex < 0) charIndex = 0;
-			if (charIndex >= charLen) charIndex = charLen - 1;
-
-			c[index] = CHARS.charAt(charIndex);
+			// grab the value from the normalized image, convert it to an ASCII char.
+			// N.B. if the original value was at the max for the type range it will be
+			// equal to the length of the char array after normalization. Thus to
+			// prevent an exception when converting to ASCII we subtract one when the
+			// normalized image value is equal to the length.
+			int val = (int) cursor.get().getRealDouble();
+			if (val == CHARS.length()) val--;
+			c[index] = CHARS.charAt(val);
 		}
 
 		return new String(c);
