@@ -15,11 +15,11 @@
 
 	<name>ImageJ Ops</name>
 	<description>ImageJ Operations: a framework for reusable algorithms.</description>
-	<url>http://imagej.net/ImageJ_Ops</url>
+	<url>https://imagej.net/ImageJ_Ops</url>
 	<inceptionYear>2014</inceptionYear>
 	<organization>
 		<name>ImageJ</name>
-		<url>http://imagej.net/</url>
+		<url>https://imagej.net/</url>
 	</organization>
 	<licenses>
 		<license>
@@ -32,7 +32,7 @@
 		<developer>
 			<id>ctrueden</id>
 			<name>Curtis Rueden</name>
-			<url>http://imagej.net/User:Rueden</url>
+			<url>https://imagej.net/User:Rueden</url>
 			<roles>
 				<role>founder</role>
 				<role>lead</role>
@@ -46,7 +46,7 @@
 		<developer>
 			<id>dietzc</id>
 			<name>Christian Dietz</name>
-			<url>http://imagej.net/User:Dietzc</url>
+			<url>https://imagej.net/User:Dietzc</url>
 			<roles>
 				<role>founder</role>
 				<role>lead</role>
@@ -60,7 +60,7 @@
 		<developer>
 			<id>bnorthan</id>
 			<name>Brian Northan</name>
-			<url>http://imagej.net/User:Bnorthan</url>
+			<url>https://imagej.net/User:Bnorthan</url>
 			<roles>
 				<role>developer</role>
 				<role>debugger</role>
@@ -71,7 +71,7 @@
 		<developer>
 			<id>gab1one</id>
 			<name>Gabriel Einsdorf</name>
-			<url>http://imagej.net/User:Gab1one</url>
+			<url>https://imagej.net/User:Gab1one</url>
 			<roles>
 				<role>developer</role>
 			</roles>
@@ -93,7 +93,7 @@
 		</contributor>
 		<contributor>
 			<name>Johannes Schindelin</name>
-			<url>http://imagej.net/User:Schindelin</url>
+			<url>https://imagej.net/User:Schindelin</url>
 			<roles><role>founder</role></roles>
 			<properties><id>dscho</id></properties>
 		</contributor>
@@ -103,12 +103,12 @@
 		</contributor>
 		<contributor>
 			<name>Richard Domander</name>
-			<url>http://imagej.net/User:Rdom</url>
+			<url>https://imagej.net/User:Rdom</url>
 			<properties><id>rimadoma</id></properties>
 		</contributor>
 		<contributor>
 			<name>Jan Eglinger</name>
-			<url>http://imagej.net/User:Eglinger</url>
+			<url>https://imagej.net/User:Eglinger</url>
 			<properties><id>imagejan</id></properties>
 		</contributor>
 		<contributor>
@@ -121,7 +121,7 @@
 		</contributor>
 		<contributor>
 			<name>Kyle Harrington</name>
-			<url>http://imagej.net/User:Kharrington</url>
+			<url>https://imagej.net/User:Kharrington</url>
 			<properties><id>kephale</id></properties>
 		</contributor>
 		<contributor>
@@ -130,17 +130,17 @@
 		</contributor>
 		<contributor>
 			<name>Stefan Helfrich</name>
-			<url>http://imagej.net/User:Stelfrich</url>
+			<url>https://imagej.net/User:Stelfrich</url>
 			<properties><id>stelfrich</id></properties>
 		</contributor>
 		<contributor>
 			<name>Mark Hiner</name>
-			<url>http://imagej.net/User:Hinerm</url>
+			<url>https://imagej.net/User:Hinerm</url>
 			<properties><id>hinerm</id></properties>
 		</contributor>
 		<contributor>
 			<name>Aparna Pal</name>
-			<url>http://imagej.net/User:Apal4</url>
+			<url>https://imagej.net/User:Apal4</url>
 			<properties><id>apal4</id></properties>
 		</contributor>
 		<contributor>
@@ -153,12 +153,12 @@
 		</contributor>
 		<contributor>
 			<name>Alison Walter</name>
-			<url>http://imagej.net/User:Awalter2</url>
+			<url>https://imagej.net/User:Awalter2</url>
 			<properties><id>awalter17</id></properties>
 		</contributor>
 		<contributor>
 			<name>Leon Yang</name>
-			<url>http://imagej.net/User:Leon</url>
+			<url>https://imagej.net/User:Leon</url>
 			<properties><id>lnyng</id></properties>
 		</contributor>
 		<contributor>
