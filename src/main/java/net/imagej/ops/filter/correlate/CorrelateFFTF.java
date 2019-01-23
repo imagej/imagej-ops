@@ -79,13 +79,13 @@ public class CorrelateFFTF<I extends RealType<I> & NativeType<I>, O extends Real
 	@Override
 	public
 		BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>>
-		createFilterComputer(RandomAccessibleInterval<I> raiExtendedInput,
-			RandomAccessibleInterval<K> raiExtendedKernel,
+		createFilterComputer(RandomAccessibleInterval<I> paddedInput,
+			RandomAccessibleInterval<K> paddedKernel,
 			RandomAccessibleInterval<C> fftImg, RandomAccessibleInterval<C> fftKernel,
 			RandomAccessibleInterval<O> output)
 	{
 		return Computers.binary(ops(), CorrelateFFTC.class, output,
-			raiExtendedInput, raiExtendedKernel, fftImg, fftKernel);
+			paddedInput, paddedKernel, fftImg, fftKernel);
 	}
 
 	@Override

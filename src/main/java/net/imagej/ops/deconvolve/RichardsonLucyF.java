@@ -126,8 +126,8 @@ public class RichardsonLucyF<I extends RealType<I> & NativeType<I>, O extends Re
 	@SuppressWarnings("unchecked")
 	public
 		BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>>
-		createFilterComputer(RandomAccessibleInterval<I> raiExtendedInput,
-			RandomAccessibleInterval<K> raiExtendedKernel,
+		createFilterComputer(RandomAccessibleInterval<I> paddedInput,
+			RandomAccessibleInterval<K> paddedKernel,
 			RandomAccessibleInterval<C> fftImg, RandomAccessibleInterval<C> fftKernel,
 			RandomAccessibleInterval<O> output)
 	{
@@ -161,14 +161,14 @@ public class RichardsonLucyF<I extends RealType<I> & NativeType<I>, O extends Re
 						.getTypeFromInterval(output), in());
 
 			return Computers.binary(ops(), RichardsonLucyC.class, output,
-				raiExtendedInput, raiExtendedKernel, fftImg, fftKernel, true, true,
+				paddedInput, paddedKernel, fftImg, fftKernel, true, true,
 				maxIterations, accelerator, computeEstimateOp, fg.calculate(
-					raiExtendedInput), list);
+					paddedInput), list);
 		}
 
 		// return a richardson lucy computer
 		return Computers.binary(ops(), RichardsonLucyC.class, output,
-			raiExtendedInput, raiExtendedKernel, fftImg, fftKernel, true, true,
+			paddedInput, paddedKernel, fftImg, fftKernel, true, true,
 			maxIterations, accelerator, computeEstimateOp);
 	}
 
