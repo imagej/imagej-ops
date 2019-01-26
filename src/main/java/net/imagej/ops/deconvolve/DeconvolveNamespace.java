@@ -58,7 +58,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 
 	// -- DeconvolveOps.RichardsonLucy
 
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyF.class)
+	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucy.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> richardsonLucy(
 			final RandomAccessibleInterval<I> in,
@@ -67,12 +67,12 @@ public class DeconvolveNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.deconvolve.RichardsonLucyF.class, in, kernel,
+				net.imagej.ops.deconvolve.PadAndRichardsonLucy.class, in, kernel,
 				maxIterations);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyF.class)
+	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucy.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> richardsonLucy(
 
@@ -83,12 +83,12 @@ public class DeconvolveNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.deconvolve.RichardsonLucyF.class, in, kernel, borderSize,
+				net.imagej.ops.deconvolve.PadAndRichardsonLucy.class, in, kernel, borderSize,
 				maxIterations);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyF.class)
+	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucy.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> richardsonLucy(
 
@@ -100,12 +100,12 @@ public class DeconvolveNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.deconvolve.RichardsonLucyF.class, in, kernel, borderSize,
+				net.imagej.ops.deconvolve.PadAndRichardsonLucy.class, in, kernel, borderSize,
 				obfInput, maxIterations);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyF.class)
+	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucy.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> richardsonLucy(
 			final RandomAccessibleInterval<I> in,
@@ -117,12 +117,12 @@ public class DeconvolveNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.deconvolve.RichardsonLucyF.class, in, kernel, borderSize,
+				net.imagej.ops.deconvolve.PadAndRichardsonLucy.class, in, kernel, borderSize,
 				obfInput, obfKernel, maxIterations);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyF.class)
+	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucy.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> richardsonLucy(
 			final RandomAccessibleInterval<I> in,
@@ -134,12 +134,12 @@ public class DeconvolveNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.deconvolve.RichardsonLucyF.class, in, kernel, borderSize,
+				net.imagej.ops.deconvolve.PadAndRichardsonLucy.class, in, kernel, borderSize,
 				obfInput, obfKernel, outType, maxIterations);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyF.class)
+	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucy.class)
 	public <I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>, C extends ComplexType<C>>
 		RandomAccessibleInterval<O> richardsonLucy(
 			final RandomAccessibleInterval<I> in,
@@ -151,12 +151,12 @@ public class DeconvolveNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.deconvolve.RichardsonLucyF.class, in, kernel, borderSize,
+				net.imagej.ops.deconvolve.PadAndRichardsonLucy.class, in, kernel, borderSize,
 				obfInput, obfKernel, outType, fftType, maxIterations);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyF.class)
+	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucy.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 		RandomAccessibleInterval<O> richardsonLucy(
 			final RandomAccessibleInterval<I> in,
@@ -169,12 +169,12 @@ public class DeconvolveNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.deconvolve.RichardsonLucyF.class, in, kernel, borderSize,
+				net.imagej.ops.deconvolve.PadAndRichardsonLucy.class, in, kernel, borderSize,
 				obfInput, obfKernel, outType, fftType, maxIterations, nonCirculant);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyF.class)
+	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucy.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 		RandomAccessibleInterval<O> richardsonLucy(
 			final RandomAccessibleInterval<I> in,
@@ -187,7 +187,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.deconvolve.RichardsonLucyF.class, in, kernel, borderSize,
+				net.imagej.ops.deconvolve.PadAndRichardsonLucy.class, in, kernel, borderSize,
 				obfInput, obfKernel, outType, fftType, maxIterations, nonCirculant,
 				accelerate);
 		return result;
@@ -367,7 +367,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 
 //-- DeconvolveOps.RichardsonLucyTV
 
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyTVF.class)
+	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucyTV.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> richardsonLucyTV(
 			final RandomAccessibleInterval<I> in,
@@ -377,12 +377,12 @@ public class DeconvolveNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.deconvolve.RichardsonLucyTVF.class, in, kernel,
+				net.imagej.ops.deconvolve.PadAndRichardsonLucyTV.class, in, kernel,
 				maxIterations, regularizationFactor);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyTVF.class)
+	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucyTV.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> richardsonLucyTV(
 			final RandomAccessibleInterval<I> in,
@@ -392,12 +392,12 @@ public class DeconvolveNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.deconvolve.RichardsonLucyTVF.class, in, kernel,
+				net.imagej.ops.deconvolve.PadAndRichardsonLucyTV.class, in, kernel,
 				borderSize, maxIterations, regularizationFactor);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyTVF.class)
+	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucyTV.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> richardsonLucyTV(
 			final RandomAccessibleInterval<I> in,
@@ -408,12 +408,12 @@ public class DeconvolveNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.deconvolve.RichardsonLucyTVF.class, in, kernel,
+				net.imagej.ops.deconvolve.PadAndRichardsonLucyTV.class, in, kernel,
 				borderSize, obfInput, maxIterations, regularizationFactor);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyTVF.class)
+	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucyTV.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> richardsonLucyTV(
 			final RandomAccessibleInterval<I> in,
@@ -425,12 +425,12 @@ public class DeconvolveNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.deconvolve.RichardsonLucyTVF.class, in, kernel,
+				net.imagej.ops.deconvolve.PadAndRichardsonLucyTV.class, in, kernel,
 				borderSize, obfInput, obfKernel, maxIterations, regularizationFactor);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyTVF.class)
+	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucyTV.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> richardsonLucyTV(
 			final RandomAccessibleInterval<I> in,
@@ -443,13 +443,13 @@ public class DeconvolveNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.deconvolve.RichardsonLucyTVF.class, in, kernel,
+				net.imagej.ops.deconvolve.PadAndRichardsonLucyTV.class, in, kernel,
 				borderSize, obfInput, obfKernel, outType, maxIterations,
 				regularizationFactor);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyTVF.class)
+	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucyTV.class)
 	public <I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>, C extends ComplexType<C>>
 		RandomAccessibleInterval<O> richardsonLucyTV(
 			final RandomAccessibleInterval<I> in,
@@ -462,13 +462,13 @@ public class DeconvolveNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.deconvolve.RichardsonLucyTVF.class, in, kernel,
+				net.imagej.ops.deconvolve.PadAndRichardsonLucyTV.class, in, kernel,
 				borderSize, obfInput, obfKernel, outType, fftType, maxIterations,
 				regularizationFactor);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyTVF.class)
+	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucyTV.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 		RandomAccessibleInterval<O> richardsonLucyTV(
 			final RandomAccessibleInterval<I> in,
@@ -481,13 +481,13 @@ public class DeconvolveNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.deconvolve.RichardsonLucyTVF.class, in, kernel,
+				net.imagej.ops.deconvolve.PadAndRichardsonLucyTV.class, in, kernel,
 				borderSize, obfInput, obfKernel, outType, fftType, maxIterations,
 				nonCirculant, regularizationFactor);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyTVF.class)
+	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucyTV.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 		RandomAccessibleInterval<O> richardsonLucyTV(
 			final RandomAccessibleInterval<I> in,
@@ -501,7 +501,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.deconvolve.RichardsonLucyTVF.class, in, kernel,
+				net.imagej.ops.deconvolve.PadAndRichardsonLucyTV.class, in, kernel,
 				borderSize, obfInput, obfKernel, outType, fftType, maxIterations,
 				nonCirculant, accelerate, regularizationFactor);
 		return result;

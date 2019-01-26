@@ -94,11 +94,11 @@ public class ConvolveTest extends AbstractOpTest {
 		op = ops.op(Ops.Filter.Convolve.class, in, kernel);
 
 		// this time we should get ConvolveFFT
-		assertSame(ConvolveFFTF.class, op.getClass());
+		assertSame(PadAndConvolveFFT.class, op.getClass());
 
 		// make sure it runs
 		@SuppressWarnings("unchecked")
-		final Img<FloatType> out2 = (Img<FloatType>) ops.run(ConvolveFFTF.class, in,
+		final Img<FloatType> out2 = (Img<FloatType>) ops.run(PadAndConvolveFFT.class, in,
 			kernel);
 
 		assertEquals(out2.dimension(0), 20);
@@ -139,7 +139,7 @@ public class ConvolveTest extends AbstractOpTest {
 
 		// convolve and calculate the sum of output
 		@SuppressWarnings("unchecked")
-		final Img<FloatType> out = (Img<FloatType>) ops.run(ConvolveFFTF.class, in,
+		final Img<FloatType> out = (Img<FloatType>) ops.run(PadAndConvolveFFT.class, in,
 			kernel, borderSize);
 
 		// create an output for the next test

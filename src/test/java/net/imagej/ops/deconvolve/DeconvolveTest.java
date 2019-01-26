@@ -32,7 +32,7 @@ package net.imagej.ops.deconvolve;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.filter.convolve.ConvolveFFTF;
+import net.imagej.ops.filter.convolve.PadAndConvolveFFT;
 import net.imglib2.Cursor;
 import net.imglib2.Point;
 import net.imglib2.RandomAccessibleInterval;
@@ -74,19 +74,19 @@ public class DeconvolveTest extends AbstractOpTest {
 		// convolve 
 		@SuppressWarnings("unchecked")
 		final Img<FloatType> convolved = (Img<FloatType>) ops.run(
-			ConvolveFFTF.class, incropped, kernel);
+			PadAndConvolveFFT.class, incropped, kernel);
 
 		// deconvolve with standard Richardson Lucy
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<FloatType> deconvolved =
-			(RandomAccessibleInterval<FloatType>) ops.run(RichardsonLucyF.class,
+			(RandomAccessibleInterval<FloatType>) ops.run(PadAndRichardsonLucy.class,
 				convolved, kernel, null, new OutOfBoundsConstantValueFactory<>(Util
 					.getTypeFromInterval(in).createVariable()), 10);
 
 		// deconvolve with accelerated non-circulant Richardson Lucy
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<FloatType> deconvolved2 =
-			(RandomAccessibleInterval<FloatType>) ops.run(RichardsonLucyF.class,
+			(RandomAccessibleInterval<FloatType>) ops.run(PadAndRichardsonLucy.class,
 				convolved, kernel, null, new OutOfBoundsConstantValueFactory<>(Util
 					.getTypeFromInterval(in).createVariable()), null, null, null, 10,
 				true, true);

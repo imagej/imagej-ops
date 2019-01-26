@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.deconvolve.accelerate.VectorAccelerator;
-import net.imagej.ops.filter.AbstractFFTFilterF;
+import net.imagej.ops.filter.AbstractPadAndFFTFilter;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
@@ -67,8 +67,8 @@ import org.scijava.plugin.Plugin;
  * @param <C>
  */
 @Plugin(type = Ops.Deconvolve.RichardsonLucy.class, priority = Priority.HIGH)
-public class RichardsonLucyF<I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
-	extends AbstractFFTFilterF<I, O, K, C> implements
+public class PadAndRichardsonLucy<I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
+	extends AbstractPadAndFFTFilter<I, O, K, C> implements
 	Ops.Deconvolve.RichardsonLucy
 {
 

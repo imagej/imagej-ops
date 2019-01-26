@@ -27,52 +27,63 @@
  * #L%
  */
 
-package net.imagej.ops.deconvolve;
+package net.imagej.ops.filter.convolve;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.filter.AbstractPadAndFFTFilter;
+import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
-import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Util;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Richardson Lucy with total variation function op that operates on (@link
- * RandomAccessibleInterval) (Richardson-Lucy algorithm with total variation
- * regularization for 3D confocal microscope deconvolution Microsc Res Rech 2006
- * Apr; 69(4)- 260-6)
+ * Convolve op for (@link Img)
  * 
- * @author bnorthan
+ * @author Brian Northan
  * @param <I>
  * @param <O>
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Ops.Deconvolve.RichardsonLucyTV.class,
-	priority = Priority.HIGH)
-public class RichardsonLucyTVF<I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
-	extends RichardsonLucyF<I, O, K, C> implements
-	Ops.Deconvolve.RichardsonLucyTV
+@Plugin(type = Ops.Filter.Convolve.class, priority = Priority.HIGH)
+public class PadAndConvolveFFT<I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
+	extends AbstractPadAndFFTFilter<I, O, K, C> implements Ops.Filter.Convolve
 {
 
-	@Parameter
-	private float regularizationFactor = 0.01f;
-
 	@Override
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	protected
-		UnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>
-		getComputeEstimateOp()
-	{
-		// create Richardson Lucy TV update op, this will override the base RL
-		// Update.
-		return ((UnaryComputerOp) Computers.unary(ops(),
-			RichardsonLucyTVUpdate.class, RandomAccessibleInterval.class,
-			RandomAccessibleInterval.class, regularizationFactor));
+	public void initialize() {
+
+		// if no OBF was passed in set default OBF for convolve to be constant value
+		// of zero (zero-pad)
+		if (this.getOBFInput() == null) {
+			setOBFInput(new OutOfBoundsConstantValueFactory<>(Util
+				.getTypeFromInterval(in()).createVariable()));
+		}
+
+		super.initialize();
+
 	}
+
+	/**
+	 * create a convolve filter computer
+	 */
+	@Override
+	public
+		BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>>
+		createFilterComputer(RandomAccessibleInterval<I> paddedInput,
+			RandomAccessibleInterval<K> paddedKernel,
+			RandomAccessibleInterval<C> fftImg, RandomAccessibleInterval<C> fftKernel,
+			RandomAccessibleInterval<O> output)
+	{
+		return Computers.binary(ops(), ConvolveFFTC.class, output, paddedInput,
+			paddedKernel, fftImg, fftKernel);
+	}
+
 }
