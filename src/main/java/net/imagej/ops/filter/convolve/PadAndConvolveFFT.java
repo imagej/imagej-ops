@@ -29,6 +29,7 @@
 
 package net.imagej.ops.filter.convolve;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractPadAndFFTFilter;
 import net.imagej.ops.special.computer.BinaryComputerOp;
@@ -38,9 +39,9 @@ import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Intervals;
 import net.imglib2.util.Util;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -52,9 +53,9 @@ import org.scijava.plugin.Plugin;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Ops.Filter.Convolve.class, priority = Priority.HIGH)
+@Plugin(type = Ops.Filter.Convolve.class)
 public class PadAndConvolveFFT<I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
-	extends AbstractPadAndFFTFilter<I, O, K, C> implements Ops.Filter.Convolve
+	extends AbstractPadAndFFTFilter<I, O, K, C> implements Ops.Filter.Convolve, Contingent
 {
 
 	@Override
@@ -84,6 +85,12 @@ public class PadAndConvolveFFT<I extends RealType<I> & NativeType<I>, O extends 
 	{
 		return Computers.binary(ops(), ConvolveFFTC.class, output, paddedInput,
 			paddedKernel, fftImg, fftKernel);
+	}
+
+	@Override
+	public boolean conforms() {
+		// conforms only if the kernel is sufficiently small
+		return Intervals.numElements(in2()) > 9;
 	}
 
 }

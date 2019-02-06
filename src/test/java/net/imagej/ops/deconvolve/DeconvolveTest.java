@@ -52,6 +52,7 @@ import org.junit.Test;
  */
 public class DeconvolveTest extends AbstractOpTest {
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testDeconvolve() {
 		int[] size = new int[] { 225, 167 };
@@ -71,25 +72,28 @@ public class DeconvolveTest extends AbstractOpTest {
 		RandomAccessibleInterval<FloatType> kernel = ops.create().kernelGauss(
 			new double[] { 4.0, 4.0 }, new FloatType());
 
-		// convolve 
-		@SuppressWarnings("unchecked")
-		final Img<FloatType> convolved = (Img<FloatType>) ops.run(
-			PadAndConvolveFFT.class, incropped, kernel);
+		RandomAccessibleInterval<FloatType> convolved = ops.create().img(incropped,
+			new FloatType());
+		RandomAccessibleInterval<FloatType> deconvolved = ops.create().img(
+			incropped, new FloatType());
+		RandomAccessibleInterval<FloatType> deconvolved2 = ops.create().img(
+			incropped, new FloatType());
+
+		// convolve
+		convolved = (Img<FloatType>) ops.run(PadAndConvolveFFT.class, convolved,
+			incropped, kernel);
 
 		// deconvolve with standard Richardson Lucy
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<FloatType> deconvolved =
-			(RandomAccessibleInterval<FloatType>) ops.run(PadAndRichardsonLucy.class,
-				convolved, kernel, null, new OutOfBoundsConstantValueFactory<>(Util
-					.getTypeFromInterval(in).createVariable()), 10);
+		deconvolved = (RandomAccessibleInterval<FloatType>) ops.run(
+			PadAndRichardsonLucy.class, deconvolved, convolved, kernel, null,
+			new OutOfBoundsConstantValueFactory<>(Util.getTypeFromInterval(in)
+				.createVariable()), 10);
 
 		// deconvolve with accelerated non-circulant Richardson Lucy
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<FloatType> deconvolved2 =
-			(RandomAccessibleInterval<FloatType>) ops.run(PadAndRichardsonLucy.class,
-				convolved, kernel, null, new OutOfBoundsConstantValueFactory<>(Util
-					.getTypeFromInterval(in).createVariable()), null, null, null, 10,
-				true, true);
+		deconvolved2 = (RandomAccessibleInterval<FloatType>) ops.run(
+			PadAndRichardsonLucy.class, deconvolved2, convolved, kernel, null,
+			new OutOfBoundsConstantValueFactory<>(Util.getTypeFromInterval(in)
+				.createVariable()), null, null, null, 10, true, true);
 
 		assertEquals(incropped.dimension(0), deconvolved.dimension(0));
 		assertEquals(incropped.dimension(1), deconvolved.dimension(1));
@@ -110,11 +114,12 @@ public class DeconvolveTest extends AbstractOpTest {
 
 		float[] deconvolvedValues2 = { 0.2630328f, 0.3163978f, 0.37502986f,
 			0.436034f, 0.4950426f, 0.5468085f, 0.58636993f, 0.6105018f, 0.6186566f,
-			0.61295974f, 0.59725416f, 0.575831f, 0.5524411f, 0.5307535f,  0.5109127f };
+			0.61295974f, 0.59725416f, 0.575831f, 0.5524411f, 0.5307535f, 0.5109127f };
 
 		for (int i = 0; i < deconvolvedValues.length; i++) {
 			assertEquals(deconvolvedValues[i], deconvolvedCursor.next().get(), 0.0f);
-			assertEquals(deconvolvedValues2[i], deconvolvedCursor2.next().get(), 0.0f);
+			assertEquals(deconvolvedValues2[i], deconvolvedCursor2.next().get(),
+				0.0f);
 		}
 	}
 

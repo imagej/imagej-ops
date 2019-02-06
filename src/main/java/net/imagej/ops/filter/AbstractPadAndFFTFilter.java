@@ -32,8 +32,8 @@ package net.imagej.ops.filter;
 import net.imagej.ops.filter.fft.CreateOutputFFTMethods;
 import net.imagej.ops.filter.pad.PadInputFFTMethods;
 import net.imagej.ops.filter.pad.PadShiftKernelFFTMethods;
+import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
 import net.imagej.ops.special.computer.BinaryComputerOp;
-import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
 import net.imagej.ops.special.function.BinaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
@@ -63,7 +63,7 @@ import org.scijava.plugin.Parameter;
  */
 public abstract class AbstractPadAndFFTFilter<I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>, C extends ComplexType<C> & NativeType<C>>
 	extends
-	AbstractBinaryFunctionOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>>
+	AbstractBinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>>
 {
 
 	/**
@@ -182,12 +182,13 @@ public abstract class AbstractPadAndFFTFilter<I extends RealType<I>, O extends R
 	 * create FFT memory, create FFT filter and run it
 	 */
 	@Override
-	public RandomAccessibleInterval<O> calculate(
+	public void compute(
 		final RandomAccessibleInterval<I> input,
-		final RandomAccessibleInterval<K> kernel)
+		final RandomAccessibleInterval<K> kernel,
+		final RandomAccessibleInterval<O> output)
 	{
 
-		RandomAccessibleInterval<O> output = createOutput(input, kernel);
+		//RandomAccessibleInterval<O> output = createOutput(input, kernel);
 
 		final int numDimensions = input.numDimensions();
 
@@ -232,8 +233,6 @@ public abstract class AbstractPadAndFFTFilter<I extends RealType<I>, O extends R
 			fftKernel, output);
 
 		filter.compute(paddedInput, paddedKernel, output);
-
-		return output;
 	}
 
 	/**
