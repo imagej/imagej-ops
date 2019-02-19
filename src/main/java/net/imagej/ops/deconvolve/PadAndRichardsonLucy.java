@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.deconvolve.accelerate.VectorAccelerator;
-import net.imagej.ops.filter.AbstractFFTFilterF;
+import net.imagej.ops.filter.AbstractPadAndFFTFilter;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
@@ -67,8 +67,8 @@ import org.scijava.plugin.Plugin;
  * @param <C>
  */
 @Plugin(type = Ops.Deconvolve.RichardsonLucy.class, priority = Priority.HIGH)
-public class RichardsonLucyF<I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
-	extends AbstractFFTFilterF<I, O, K, C> implements
+public class PadAndRichardsonLucy<I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
+	extends AbstractPadAndFFTFilter<I, O, K, C> implements
 	Ops.Deconvolve.RichardsonLucy
 {
 
@@ -126,8 +126,8 @@ public class RichardsonLucyF<I extends RealType<I> & NativeType<I>, O extends Re
 	@SuppressWarnings("unchecked")
 	public
 		BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>>
-		createFilterComputer(RandomAccessibleInterval<I> raiExtendedInput,
-			RandomAccessibleInterval<K> raiExtendedKernel,
+		createFilterComputer(RandomAccessibleInterval<I> paddedInput,
+			RandomAccessibleInterval<K> paddedKernel,
 			RandomAccessibleInterval<C> fftImg, RandomAccessibleInterval<C> fftKernel,
 			RandomAccessibleInterval<O> output)
 	{
@@ -161,14 +161,14 @@ public class RichardsonLucyF<I extends RealType<I> & NativeType<I>, O extends Re
 						.getTypeFromInterval(output), in());
 
 			return Computers.binary(ops(), RichardsonLucyC.class, output,
-				raiExtendedInput, raiExtendedKernel, fftImg, fftKernel, true, true,
+				paddedInput, paddedKernel, fftImg, fftKernel, true, true,
 				maxIterations, accelerator, computeEstimateOp, fg.calculate(
-					raiExtendedInput), list);
+					paddedInput), list);
 		}
 
 		// return a richardson lucy computer
 		return Computers.binary(ops(), RichardsonLucyC.class, output,
-			raiExtendedInput, raiExtendedKernel, fftImg, fftKernel, true, true,
+			paddedInput, paddedKernel, fftImg, fftKernel, true, true,
 			maxIterations, accelerator, computeEstimateOp);
 	}
 

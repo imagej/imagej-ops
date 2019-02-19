@@ -31,7 +31,7 @@ package net.imagej.ops.filter.correlate;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractFFTFilterF;
+import net.imagej.ops.filter.AbstractPadAndFFTFilter;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imglib2.RandomAccessibleInterval;
@@ -55,8 +55,8 @@ import org.scijava.plugin.Plugin;
  * @param <C>
  */
 @Plugin(type = Ops.Filter.Correlate.class, priority = Priority.VERY_HIGH)
-public class CorrelateFFTF<I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
-	extends AbstractFFTFilterF<I, O, K, C> implements Contingent,
+public class PadAndCorrelateFFT<I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
+	extends AbstractPadAndFFTFilter<I, O, K, C> implements Contingent,
 	Ops.Filter.Correlate
 {
 
@@ -79,13 +79,13 @@ public class CorrelateFFTF<I extends RealType<I> & NativeType<I>, O extends Real
 	@Override
 	public
 		BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>>
-		createFilterComputer(RandomAccessibleInterval<I> raiExtendedInput,
-			RandomAccessibleInterval<K> raiExtendedKernel,
+		createFilterComputer(RandomAccessibleInterval<I> paddedInput,
+			RandomAccessibleInterval<K> paddedKernel,
 			RandomAccessibleInterval<C> fftImg, RandomAccessibleInterval<C> fftKernel,
 			RandomAccessibleInterval<O> output)
 	{
 		return Computers.binary(ops(), CorrelateFFTC.class, output,
-			raiExtendedInput, raiExtendedKernel, fftImg, fftKernel);
+			paddedInput, paddedKernel, fftImg, fftKernel);
 	}
 
 	@Override

@@ -156,19 +156,36 @@ public class FilterNamespace extends AbstractNamespace {
 				in, sigmaR, sigmaS, radius);
 		return result;
 	}
-
+	
+	
 	// -- convolve --
-	/** Executes the "convolve" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTF.class,
-		net.imagej.ops.filter.convolve.ConvolveNaiveF.class })
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
-		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
+	
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveNaiveF.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		RandomAccessibleInterval<O> convolve(
+			final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, in,
-				kernel);
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class,
+				in, kernel);
+		return result;
+	}
+	
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(ops = {net.imagej.ops.filter.convolve.ConvolveFFTC.class, net.imagej.ops.filter.convolve.PadAndConvolveFFT.class})
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		RandomAccessibleInterval<O> convolve(
+			final RandomAccessibleInterval<O> output,
+			final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class, output,
+				raiExtendedInput, raiExtendedKernel);
 		return result;
 	}
 
@@ -202,51 +219,51 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	/** Executes the "convolve" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTF.class)
+	@OpMethod(op = net.imagej.ops.filter.convolve.PadAndConvolveFFT.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
-		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
+		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<O> out,final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel, final long... borderSize)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, in,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class,out, in,
 				kernel, borderSize);
 		return result;
 	}
 
 	/** Executes the "convolve" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTF.class)
+	@OpMethod(op = net.imagej.ops.filter.convolve.PadAndConvolveFFT.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
-		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
+		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<O> out,final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, in,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, out, in,
 				kernel, borderSize, obfInput);
 		return result;
 	}
 
 	/** Executes the "convolve" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTF.class)
+	@OpMethod(op = net.imagej.ops.filter.convolve.PadAndConvolveFFT.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
-		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
+		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<O> out,final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, in,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, out, in,
 				kernel, borderSize, obfInput, obfKernel);
 		return result;
 	}
 
 	/** Executes the "convolve" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTF.class)
+	@OpMethod(op = net.imagej.ops.filter.convolve.PadAndConvolveFFT.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
-		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
+		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<O> out,final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
@@ -254,15 +271,15 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, in,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, out, in,
 				kernel, borderSize, obfInput, obfKernel, outType);
 		return result;
 	}
 
 	/** Executes the "convolve" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTF.class)
+	@OpMethod(op = net.imagej.ops.filter.convolve.PadAndConvolveFFT.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
+		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<O> out,final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
@@ -270,7 +287,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, in,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, out, in,
 				kernel, borderSize, obfInput, obfKernel, outType, fftType);
 		return result;
 	}
@@ -285,21 +302,6 @@ public class FilterNamespace extends AbstractNamespace {
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, out,
 				in, kernel);
-		return result;
-	}
-
-	/** Executes the "convolve" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTC.class)
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		RandomAccessibleInterval<O> convolve(
-			final RandomAccessibleInterval<O> output,
-			final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, output,
-				raiExtendedInput, raiExtendedKernel);
 		return result;
 	}
 
@@ -373,74 +375,65 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	// -- correlate --
-
-	/** Executes the "correlate" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTF.class)
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		RandomAccessibleInterval<O> correlate(final RandomAccessibleInterval<I> in,
+	/** Executes the "Correlate" operation on the given arguments. */
+	@OpMethod(ops = {net.imagej.ops.filter.correlate.CorrelateFFTC.class,net.imagej.ops.filter.correlate.PadAndCorrelateFFT.class})
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
+		RandomAccessibleInterval<O> correlate(final RandomAccessibleInterval<O> out,final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class, in,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class,out, in,
 				kernel);
 		return result;
 	}
 
-	/** Executes the "correlate" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTF.class)
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		RandomAccessibleInterval<O> correlate(
-
-			final RandomAccessibleInterval<I> in,
+	/** Executes the "Correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.correlate.PadAndCorrelateFFT.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
+		RandomAccessibleInterval<O> correlate(final RandomAccessibleInterval<O> out,final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel, final long... borderSize)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class, in,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class,out, in,
 				kernel, borderSize);
 		return result;
 	}
 
-	/** Executes the "correlate" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTF.class)
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		RandomAccessibleInterval<O> correlate(
-
-			final RandomAccessibleInterval<I> in,
+	/** Executes the "Correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.correlate.PadAndCorrelateFFT.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
+		RandomAccessibleInterval<O> correlate(final RandomAccessibleInterval<O> out,final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class, in,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class, out, in,
 				kernel, borderSize, obfInput);
 		return result;
 	}
 
 	/** Executes the "correlate" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTF.class)
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		RandomAccessibleInterval<O> correlate(
-
-			final RandomAccessibleInterval<I> in,
+	@OpMethod(op = net.imagej.ops.filter.correlate.PadAndCorrelateFFT.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
+		RandomAccessibleInterval<O> correlate(final RandomAccessibleInterval<O> out,final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class, in,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class, out, in,
 				kernel, borderSize, obfInput, obfKernel);
 		return result;
 	}
 
 	/** Executes the "correlate" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTF.class)
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		RandomAccessibleInterval<O> correlate(
-
-			final RandomAccessibleInterval<I> in,
+	@OpMethod(op = net.imagej.ops.filter.correlate.PadAndCorrelateFFT.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
+		RandomAccessibleInterval<O> correlate(final RandomAccessibleInterval<O> out,final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
@@ -448,17 +441,15 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class, in,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class, out, in,
 				kernel, borderSize, obfInput, obfKernel, outType);
 		return result;
 	}
 
 	/** Executes the "correlate" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTF.class)
+	@OpMethod(op = net.imagej.ops.filter.correlate.PadAndCorrelateFFT.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		RandomAccessibleInterval<O> correlate(
-
-			final RandomAccessibleInterval<I> in,
+		RandomAccessibleInterval<O> correlate(final RandomAccessibleInterval<O> out,final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
@@ -466,25 +457,12 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class, in,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class, out, in,
 				kernel, borderSize, obfInput, obfKernel, outType, fftType);
 		return result;
 	}
 
-	/** Executes the "correlate" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTC.class)
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		RandomAccessibleInterval<O> correlate(
-			final RandomAccessibleInterval<O> output,
-			final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class,
-				output, raiExtendedInput, raiExtendedKernel);
-		return result;
-	}
+
 
 	/** Executes the "correlate" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTC.class)

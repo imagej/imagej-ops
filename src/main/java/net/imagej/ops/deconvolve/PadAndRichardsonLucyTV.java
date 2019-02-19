@@ -55,8 +55,8 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Deconvolve.RichardsonLucyTV.class,
 	priority = Priority.HIGH)
-public class RichardsonLucyTVF<I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
-	extends RichardsonLucyF<I, O, K, C> implements
+public class PadAndRichardsonLucyTV<I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
+	extends PadAndRichardsonLucy<I, O, K, C> implements
 	Ops.Deconvolve.RichardsonLucyTV
 {
 

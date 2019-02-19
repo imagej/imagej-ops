@@ -60,6 +60,7 @@ import org.junit.Test;
 /**
  * Tests involving convolvers.
  */
+@SuppressWarnings("unchecked")
 public class ConvolveTest extends AbstractOpTest {
 
 	/** Tests that the correct convolver is selected when using a small kernel. */
@@ -86,22 +87,24 @@ public class ConvolveTest extends AbstractOpTest {
 
 		assertEquals(out1.dimension(0), 20);
 
+		RandomAccessibleInterval<FloatType> convolved = ops.create().img(in,
+			new FloatType());
+
 		// use a bigger kernel
 		kernelSize = new int[] { 30, 30 };
 		kernel = new ArrayImgFactory<FloatType>().create(kernelSize,
 			new FloatType());
 
-		op = ops.op(Ops.Filter.Convolve.class, in, kernel);
+		op = ops.op(Ops.Filter.Convolve.class, convolved, in, kernel);
 
 		// this time we should get ConvolveFFT
-		assertSame(ConvolveFFTF.class, op.getClass());
+		assertSame(PadAndConvolveFFT.class, op.getClass());
 
 		// make sure it runs
-		@SuppressWarnings("unchecked")
-		final Img<FloatType> out2 = (Img<FloatType>) ops.run(ConvolveFFTF.class, in,
+		convolved = (Img<FloatType>) ops.run(PadAndConvolveFFT.class, convolved, in,
 			kernel);
 
-		assertEquals(out2.dimension(0), 20);
+		assertEquals(convolved.dimension(0), 20);
 
 	}
 
@@ -137,10 +140,12 @@ public class ConvolveTest extends AbstractOpTest {
 		ops.stats().sum(inSum, in);
 		ops.stats().sum(kernelSum, kernel);
 
+		RandomAccessibleInterval<FloatType> out = ops.create().img(in,
+			new FloatType());
+
 		// convolve and calculate the sum of output
-		@SuppressWarnings("unchecked")
-		final Img<FloatType> out = (Img<FloatType>) ops.run(ConvolveFFTF.class, in,
-			kernel, borderSize);
+		out = (Img<FloatType>) ops.run(PadAndConvolveFFT.class, out, in, kernel,
+			borderSize);
 
 		// create an output for the next test
 		Img<FloatType> out2 = new ArrayImgFactory<FloatType>().create(size,
@@ -264,9 +269,10 @@ public class ConvolveTest extends AbstractOpTest {
 		RandomAccessibleInterval<DoubleType> psf = ops.create().kernelGauss(
 			new double[] { 5, 5, 5 }, new DoubleType());
 
+		RandomAccessibleInterval<DoubleType> convolved = ops.create().img(size);
+
 		// convolve psf with phantom
-		RandomAccessibleInterval<DoubleType> convolved = ops.filter().convolve(
-			phantom, psf);
+		convolved = ops.filter().convolve(convolved, phantom, psf);
 
 		DoubleType sum = new DoubleType();
 		DoubleType max = new DoubleType();
