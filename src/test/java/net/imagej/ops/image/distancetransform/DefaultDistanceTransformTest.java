@@ -70,6 +70,32 @@ public class DefaultDistanceTransformTest extends AbstractOpTest {
 				calibration);
 		compareResults(out, in, calibration);
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testComputer() {
+		// create 4D image
+		final RandomAccessibleInterval<BitType> in = ops.create().img(new FinalInterval(20, 20, 5, 3), new BitType());
+		generate4DImg(in);
+		
+		// create output
+		final RandomAccessibleInterval<FloatType> out = ops.create().img(in, new FloatType());
+
+		/*
+		 * test normal DT
+		 */
+		ops.run(DefaultDistanceTransform.class, out, in);
+		compareResults(out, in, new double[] { 1, 1, 1, 1 });
+
+		/*
+		 * test calibrated DT
+		 */
+		final double[] calibration = new double[] { 3.74, 5.19, 1.21, 2.21 };
+		ops.run(DefaultDistanceTransformCalibration.class, out, in,
+				calibration);
+		compareResults(out, in, calibration);
+		
+	}
 
 	/*
 	 * generate a random BitType image

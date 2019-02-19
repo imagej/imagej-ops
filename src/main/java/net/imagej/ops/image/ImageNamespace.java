@@ -104,19 +104,14 @@ public class ImageNamespace extends AbstractNamespace {
 	// -- distance transform --
 
 	/** Executes the "distancetransform" operation on the given arguments. */
-	@OpMethod(ops = {
-		net.imagej.ops.image.distancetransform.DefaultDistanceTransform.class,
-		net.imagej.ops.image.distancetransform.DistanceTransform2D.class,
-		net.imagej.ops.image.distancetransform.DistanceTransform3D.class })
-	public <B extends BooleanType<B>, T extends RealType<T>>
-		RandomAccessibleInterval<T> distancetransform(
-			final RandomAccessibleInterval<B> in,
-			final RandomAccessibleInterval<T> out)
-	{
+	@OpMethod(ops = { net.imagej.ops.image.distancetransform.DefaultDistanceTransform.class,
+			net.imagej.ops.image.distancetransform.DistanceTransform2D.class,
+			net.imagej.ops.image.distancetransform.DistanceTransform3D.class })
+	public <B extends BooleanType<B>, T extends RealType<T>> RandomAccessibleInterval<T> distancetransform(
+			final RandomAccessibleInterval<T> out, final RandomAccessibleInterval<B> in) {
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(Ops.Image.DistanceTransform.class,
-				in, out);
+		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
+				.run(Ops.Image.DistanceTransform.class, out, in);
 		return result;
 	}
 
