@@ -85,6 +85,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.scijava.Context;
 import org.scijava.cache.CacheService;
+import org.scijava.io.location.FileLocation;
 import org.scijava.plugin.Parameter;
 import org.scijava.util.MersenneTwisterFast;
 
@@ -474,22 +475,22 @@ public abstract class AbstractOpTest {
 	public static Img<FloatType> openFloatImg(final Class<?> c,
 		final String resourcePath)
 	{
-		final URL url = c.getResource(resourcePath);
-		return IO.openFloatImgs(url.getPath()).get(0).getImg();
+		final FileLocation url = new FileLocation(c.getResource(resourcePath).getFile());
+		return IO.openFloat(url).get(0).getImg();
 	}
 
 	public static Img<UnsignedByteType> openUnsignedByteType(final Class<?> c,
 		final String resourcePath)
 	{
-		final URL url = c.getResource(resourcePath);
-		return IO.openUnsignedByteImgs(url.getPath()).get(0).getImg();
+		final FileLocation url = new FileLocation(c.getResource(resourcePath).getFile());
+		return IO.openUnsignedByte(url).get(0).getImg();
 	}
 
 	public static Img<DoubleType> openDoubleImg(final Class<?> c,
 		final String resourcePath)
 	{
-		final URL url = c.getResource(resourcePath);
-		return IO.openDoubleImgs(url.getPath()).get(0).getImg();
+		final FileLocation url = new FileLocation(c.getResource(resourcePath).getFile());
+		return IO.openDouble(url).get(0).getImg();
 	}
 
 	public <T> void assertIterationsEqual(final Iterable<T> expected,

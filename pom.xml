@@ -198,6 +198,8 @@
 
 		<!-- NB: Deploy releases to the ImageJ Maven repository. -->
 		<releaseProfiles>deploy-to-imagej</releaseProfiles>
+
+		<scifio.version>0.38.0</scifio.version>
 	</properties>
 
 	<repositories>
