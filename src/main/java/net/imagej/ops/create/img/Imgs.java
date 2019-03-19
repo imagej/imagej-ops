@@ -61,7 +61,7 @@ public final class Imgs {
 	public static <T extends Type<T>> Img<T> create(final ImgFactory<T> factory,
 		final Dimensions dims, final T type)
 	{
-		return Imgs.adjustMinMax(factory.create(dims, type), dims);
+		return Imgs.adjustMinMax(factory.imgFactory(type).create(dims), dims);
 	}
 
 	/**
