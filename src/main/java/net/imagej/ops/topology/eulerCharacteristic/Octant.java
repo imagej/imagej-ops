@@ -90,7 +90,6 @@ public class Octant<B extends BooleanType<B>> {
      * NB: All voxels outside the image bounds are considered 0
      */
     public void setNeighborhood(final long x, final long y, final long z) {
-        Arrays.fill(neighborhood, false);
         
         final long x1 = x - 1;
         final long y1 = y - 1;
