@@ -28,8 +28,6 @@
  */
 package net.imagej.ops.topology.eulerCharacteristic;
 
-import java.util.Arrays;
-
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.BooleanType;
