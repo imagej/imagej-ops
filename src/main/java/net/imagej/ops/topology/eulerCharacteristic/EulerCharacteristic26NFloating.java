@@ -224,9 +224,13 @@ public class EulerCharacteristic26NFloating
         final Octant<B> octant = new Octant<>(interval);
         int sumDeltaEuler = 0;
 
-        for (int z = 0; z <= interval.dimension(2); z++) {
-            for (int y = 0; y <= interval.dimension(1); y++) {
-                for (int x = 0; x <= interval.dimension(0); x++) {
+        final int w = (int) interval.dimension(0);
+        final int h = (int) interval.dimension(1);
+        final int d = (int) interval.dimension(2);
+        
+        for (int z = 0; z <= d; z++) {
+            for (int y = 0; y <= h; y++) {
+                for (int x = 0; x <= w; x++) {
                     octant.setNeighborhood(x, y, z);
                     sumDeltaEuler += getDeltaEuler(octant);
                 }
