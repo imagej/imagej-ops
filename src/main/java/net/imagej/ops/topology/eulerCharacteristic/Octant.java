@@ -73,10 +73,10 @@ public class Octant<B extends BooleanType<B>> {
     /**
      * Check if the nth neighbor in the 8-neighborhood is foreground
      *
-     * @param n number of neighbor, {@literal 1 <= n <= 8}
+     * @param n number of neighbor, {@literal 0 <= n <= 7}
      */
     public boolean isNeighborForeground(final int n) {
-        return neighborhood[n - 1];
+        return neighborhood[n];
     }
 
     /** True if none of the elements in the neighborhood are foreground */
@@ -92,13 +92,17 @@ public class Octant<B extends BooleanType<B>> {
     public void setNeighborhood(final long x, final long y, final long z) {
         Arrays.fill(neighborhood, false);
         
-        neighborhood[0] = getAtLocation(access, x - 1, y - 1, z - 1);
-        neighborhood[1] = getAtLocation(access, x - 1, y, z - 1);
-        neighborhood[2] = getAtLocation(access, x, y - 1, z - 1);
-        neighborhood[3] = getAtLocation(access, x, y, z - 1);
-        neighborhood[4] = getAtLocation(access, x - 1, y - 1, z);
-        neighborhood[5] = getAtLocation(access, x - 1, y, z);
-        neighborhood[6] = getAtLocation(access, x, y - 1, z);
+        final long x1 = x - 1;
+        final long y1 = y - 1;
+        final long z1 = z - 1;
+        
+        neighborhood[0] = getAtLocation(access, x1, y1, z1);
+        neighborhood[1] = getAtLocation(access, x1, y, z1);
+        neighborhood[2] = getAtLocation(access, x, y1, z1);
+        neighborhood[3] = getAtLocation(access, x, y, z1);
+        neighborhood[4] = getAtLocation(access, x1, y1, z);
+        neighborhood[5] = getAtLocation(access, x1, y, z);
+        neighborhood[6] = getAtLocation(access, x, y1, z);
         neighborhood[7] = getAtLocation(access, x, y, z);
 
         hasForegroundNeighbors();

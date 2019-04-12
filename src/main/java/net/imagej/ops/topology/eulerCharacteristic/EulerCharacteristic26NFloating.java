@@ -246,41 +246,41 @@ public class EulerCharacteristic26NFloating
         }
 
         int index = 1;
-        if (octant.isNeighborForeground(8)) {
-            if (octant.isNeighborForeground(1)) { index |= 128; }
-            if (octant.isNeighborForeground(2)) { index |= 64; }
-            if (octant.isNeighborForeground(3)) { index |= 32; }
-            if (octant.isNeighborForeground(4)) { index |= 16; }
-            if (octant.isNeighborForeground(5)) { index |= 8; }
-            if (octant.isNeighborForeground(6)) { index |= 4; }
-            if (octant.isNeighborForeground(7)) { index |= 2; }
-        } else if (octant.isNeighborForeground(7)) {
-            if (octant.isNeighborForeground(2)) { index |= 128; }
-            if (octant.isNeighborForeground(4)) { index |= 64; }
-            if (octant.isNeighborForeground(1)) { index |= 32; }
-            if (octant.isNeighborForeground(3)) { index |= 16; }
-            if (octant.isNeighborForeground(6)) { index |= 8; }
-            if (octant.isNeighborForeground(5)) { index |= 2; }
-        } else if (octant.isNeighborForeground(6)) {
-            if (octant.isNeighborForeground(3)) { index |= 128; }
+        if (octant.isNeighborForeground(7)) {
+            if (octant.isNeighborForeground(0)) { index |= 128; }
             if (octant.isNeighborForeground(1)) { index |= 64; }
-            if (octant.isNeighborForeground(4)) { index |= 32; }
-            if (octant.isNeighborForeground(2)) { index |= 16; }
-            if (octant.isNeighborForeground(5)) { index |= 4; }
-        } else if (octant.isNeighborForeground(5)) {
-            if (octant.isNeighborForeground(4)) { index |= 128; }
-            if (octant.isNeighborForeground(3)) { index |= 64; }
             if (octant.isNeighborForeground(2)) { index |= 32; }
+            if (octant.isNeighborForeground(3)) { index |= 16; }
+            if (octant.isNeighborForeground(4)) { index |= 8; }
+            if (octant.isNeighborForeground(5)) { index |= 4; }
+            if (octant.isNeighborForeground(6)) { index |= 2; }
+        } else if (octant.isNeighborForeground(6)) {
+            if (octant.isNeighborForeground(1)) { index |= 128; }
+            if (octant.isNeighborForeground(3)) { index |= 64; }
+            if (octant.isNeighborForeground(0)) { index |= 32; }
+            if (octant.isNeighborForeground(2)) { index |= 16; }
+            if (octant.isNeighborForeground(5)) { index |= 8; }
+            if (octant.isNeighborForeground(4)) { index |= 2; }
+        } else if (octant.isNeighborForeground(5)) {
+            if (octant.isNeighborForeground(2)) { index |= 128; }
+            if (octant.isNeighborForeground(0)) { index |= 64; }
+            if (octant.isNeighborForeground(3)) { index |= 32; }
             if (octant.isNeighborForeground(1)) { index |= 16; }
+            if (octant.isNeighborForeground(4)) { index |= 4; }
         } else if (octant.isNeighborForeground(4)) {
-            if (octant.isNeighborForeground(1)) { index |= 8; }
-            if (octant.isNeighborForeground(3)) { index |= 4; }
-            if (octant.isNeighborForeground(2)) { index |= 2; }
+            if (octant.isNeighborForeground(3)) { index |= 128; }
+            if (octant.isNeighborForeground(2)) { index |= 64; }
+            if (octant.isNeighborForeground(1)) { index |= 32; }
+            if (octant.isNeighborForeground(0)) { index |= 16; }
         } else if (octant.isNeighborForeground(3)) {
-            if (octant.isNeighborForeground(2)) { index |= 8; }
-            if (octant.isNeighborForeground(1)) { index |= 4; }
-        } else if (octant.isNeighborForeground(2)) {
+            if (octant.isNeighborForeground(0)) { index |= 8; }
+            if (octant.isNeighborForeground(2)) { index |= 4; }
             if (octant.isNeighborForeground(1)) { index |= 2; }
+        } else if (octant.isNeighborForeground(2)) {
+            if (octant.isNeighborForeground(1)) { index |= 8; }
+            if (octant.isNeighborForeground(0)) { index |= 4; }
+        } else if (octant.isNeighborForeground(1)) {
+            if (octant.isNeighborForeground(0)) { index |= 2; }
         }
 
         return EULER_LUT[index];
