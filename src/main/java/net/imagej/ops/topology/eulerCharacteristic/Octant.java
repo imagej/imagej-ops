@@ -44,7 +44,7 @@ import net.imglib2.view.Views;
 public class Octant<B extends BooleanType<B>> {
     private final boolean[] neighborhood = new boolean[8];
     private final RandomAccess<B> access;
-    private int foregroundNeighbors;
+		private boolean hasForegroundNeighbor;
 
     /**
      * Constructs a new 2x2x2 neighborhood
@@ -61,7 +61,13 @@ public class Octant<B extends BooleanType<B>> {
 
     /** Returns the number of foreground voxels in the neighborhood */
     public int getNeighborCount() {
-        return foregroundNeighbors;
+      int foregroundNeighbors = 0;
+      for (boolean neighbor : neighborhood) {
+          if (neighbor) {
+              foregroundNeighbors++;
+          }
+      }
+      return foregroundNeighbors;
     }
 
     /**
@@ -73,9 +79,9 @@ public class Octant<B extends BooleanType<B>> {
         return neighborhood[n - 1];
     }
 
-    /** True if none of the elements in the neighborhood are foreground (true) */
+    /** True if none of the elements in the neighborhood are foreground */
     public boolean isNeighborhoodEmpty() {
-        return foregroundNeighbors == 0;
+        return hasForegroundNeighbor == false;
     }
 
     /**
@@ -85,7 +91,7 @@ public class Octant<B extends BooleanType<B>> {
      */
     public void setNeighborhood(final long x, final long y, final long z) {
         Arrays.fill(neighborhood, false);
-
+        
         neighborhood[0] = getAtLocation(access, x - 1, y - 1, z - 1);
         neighborhood[1] = getAtLocation(access, x - 1, y, z - 1);
         neighborhood[2] = getAtLocation(access, x, y - 1, z - 1);
@@ -95,18 +101,19 @@ public class Octant<B extends BooleanType<B>> {
         neighborhood[6] = getAtLocation(access, x, y - 1, z);
         neighborhood[7] = getAtLocation(access, x, y, z);
 
-        countForegroundNeighbors();
+        hasForegroundNeighbors();
     }
 
-    private void countForegroundNeighbors() {
-        foregroundNeighbors = 0;
+    private void hasForegroundNeighbors() {
+        hasForegroundNeighbor = false;
         for (boolean neighbor : neighborhood) {
             if (neighbor) {
-                foregroundNeighbors++;
+                hasForegroundNeighbor = true;
+                return;
             }
         }
     }
-
+    
     private boolean getAtLocation(final RandomAccess<B> access, final long x, final long y, final long z) {
         access.setPosition(x, 0);
         access.setPosition(y, 1);
