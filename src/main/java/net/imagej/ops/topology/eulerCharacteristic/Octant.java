@@ -38,6 +38,7 @@ import net.imglib2.view.Views;
  *
  * @author Richard Domander (Royal Veterinary College, London)
  * @author Mark Hiner
+ * @author Michael Doube (City University of Hong Kong)
  */
 public class Octant<B extends BooleanType<B>> {
     private final boolean[] neighborhood = new boolean[8];

@@ -67,7 +67,7 @@ import org.scijava.plugin.Plugin;
  * </p>
  *
  * @author Richard Domander (Royal Veterinary College, London)
- * @author Michael Doube (Royal Veterinary College, London)
+ * @author Michael Doube (Imperial College London)
  */
 @Plugin(type = Ops.Topology.EulerCharacteristic26NFloating.class)
 public class EulerCharacteristic26NFloating
