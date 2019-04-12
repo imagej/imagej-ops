@@ -33,6 +33,7 @@ import java.util.stream.LongStream;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.BooleanType;
@@ -167,27 +168,39 @@ public class EulerCorrection<B extends BooleanType<B>>
         final int[] foregroundVoxels = {0};
 
         LongStream.of(traverser.z0, traverser.z1).forEach(z -> {
-            for (int y = 1; y < traverser.y1; y++) {
-                for (int x = 1; x < traverser.x1; x++) {
-                    foregroundVoxels[0] += getAtLocation(traverser, x, y, z);
-                }
-            }
+        		Cursor<B> cursor = Views.hyperSlice(traverser.rai, 2, z).localizingCursor();
+        		while (cursor.hasNext()) {
+        			cursor.fwd();
+        			final long x = cursor.getLongPosition(0);
+        			final long y = cursor.getLongPosition(1);
+        			if ( x == 0 || y == 0 || x == traverser.x1 || y == traverser.y1 )
+        				continue;
+        			foregroundVoxels[0] += cursor.get().getRealDouble();
+        		}
         });
 
         LongStream.of(traverser.y0, traverser.y1).forEach(y -> {
-            for (int z = 1; z < traverser.z1; z++) {
-                for (int x = 1; x < traverser.x1; x++) {
-                    foregroundVoxels[0] += getAtLocation(traverser, x, y, z);
-                }
-            }
+      		Cursor<B> cursor = Views.hyperSlice(traverser.rai, 1, y).localizingCursor();
+      		while (cursor.hasNext()) {
+      			cursor.fwd();
+      			final long x = cursor.getLongPosition(0);
+      			final long z = cursor.getLongPosition(1);
+      			if ( x == 0 || z == 0 || x == traverser.x1 || z == traverser.z1 )
+      				continue;
+      			foregroundVoxels[0] += cursor.get().getRealDouble();
+      		}
         });
 
         LongStream.of(traverser.x0, traverser.x1).forEach(x -> {
-            for (int y = 1; y < traverser.y1; y++) {
-                for (int z = 1; z < traverser.z1; z++) {
-                    foregroundVoxels[0] += getAtLocation(traverser, x, y, z);
-                }
-            }
+      		Cursor<B> cursor = Views.hyperSlice(traverser.rai, 0, x).localizingCursor();
+      		while (cursor.hasNext()) {
+      			cursor.fwd();
+      			final long y = cursor.getLongPosition(0);
+      			final long z = cursor.getLongPosition(1);
+      			if ( y == 0 || z == 0 || y == traverser.y1 || z == traverser.z1 )
+      				continue;
+      			foregroundVoxels[0] += cursor.get().getRealDouble();
+      		}
         });
 
         return foregroundVoxels[0];
@@ -253,69 +266,122 @@ public class EulerCorrection<B extends BooleanType<B>>
 
         // Front and back faces (all 4 edges). Check 2 edges per voxel
         LongStream.of(traverser.z0, traverser.z1).forEach(z -> {
-            for (int y = 0; y <= traverser.ySize; y++) {
-                for (int x = 0; x <= traverser.xSize; x++) {
-                    final int voxel = getAtLocation(traverser, x, y, z);
-                    if (voxel > 0) {
-                        iterations[0]++;
-                        voxelEdges[0] += 2;
-                        continue;
-                    }
-
-                    voxelEdges[0] += getAtLocation(traverser, x, y - 1, z);
-                    voxelEdges[0] += getAtLocation(traverser, x - 1, y, z);
-                }
-            }
+        	  RandomAccessibleInterval<B> sliceRai = Views.hyperSlice(traverser.rai, 2, z);
+        	  sliceRai = Views.expandZero(sliceRai, 1, 1);
+        	  final long w = sliceRai.dimension(0);
+        	  
+        	  Cursor<B> cursorA = Views.flatIterable(sliceRai).cursor();
+        	  Cursor<B> cursorB = Views.flatIterable(sliceRai).cursor();
+        	  Cursor<B> cursorC = Views.flatIterable(sliceRai).cursor();
+        	  
+        	  cursorA.jumpFwd(w + 1);
+        	  cursorB.jumpFwd(1);
+        	  cursorC.jumpFwd(w);
+        	  
+        	  while (cursorA.hasNext()) {
+        	  	cursorA.next();
+        	  	cursorB.next();
+        	  	cursorC.next();
+        	  	
+        	  	final boolean voxel = cursorA.get().get();
+        	  	if (voxel) {
+        	  		 iterations[0]++;
+                 voxelEdges[0] += 2;
+                 continue;
+        	  	}
+        	  	
+        	  	voxelEdges[0] += cursorB.get().getRealDouble();
+        	  	voxelEdges[0] += cursorC.get().getRealDouble();
+        	  	
+        	  }
         });
-
+        
         // Top and bottom faces (horizontal edges)
         LongStream.of(traverser.y0, traverser.y1).forEach(y -> {
-            for (int x = 0; x < traverser.xSize; x++) {
-                for (int z = 1; z < traverser.zSize; z++) {
-                    final int voxelA = getAtLocation(traverser, x, y, z);
-                    final int voxelB = getAtLocation(traverser, x, y, z - 1);
-                    voxelEdges[0] += voxelA | voxelB;
-                }
-            }
+        	RandomAccessibleInterval<B> sliceRai = Views.hyperSlice(traverser.rai, 1, y);
+      	  final long w = sliceRai.dimension(0);
+      	  
+      	  Cursor<B> cursorA = Views.flatIterable(sliceRai).cursor();
+      	  Cursor<B> cursorB = Views.flatIterable(sliceRai).cursor();
+        	
+      	  cursorA.jumpFwd(w);
+      	  cursorB.jumpFwd(0);
+      	  
+      	  while (cursorA.hasNext()) {
+      	  	cursorA.next();
+      	  	cursorB.next();
+      	  	
+      	  	if (cursorA.get().get() || cursorB.get().get())
+      	  	  voxelEdges[0]++;
+      	  }
         });
-
+        
         // Top and bottom faces (vertical edges)
         LongStream.of(traverser.y0, traverser.y1).forEach(y -> {
-            traverser.access.setPosition(y, 1);
-            for (int z = 0; z < traverser.zSize; z++) {
-                traverser.access.setPosition(z, 2);
-                for (int x = 0; x <= traverser.xSize; x++) {
-                    final int voxelA = getAtLocation(traverser, x, y, z);
-                    final int voxelB = getAtLocation(traverser, x - 1, y, z);
-                    voxelEdges[0] += voxelA | voxelB;
-                }
-            }
+        	  RandomAccessibleInterval<B> sliceRai = Views.hyperSlice(traverser.rai, 1, y);
+        	  sliceRai = Views.expandZero(sliceRai, 1, 1);
+      	    final long w = sliceRai.dimension(0);
+        	
+      	    Cursor<B> cursorA = Views.flatIterable(sliceRai).cursor();
+        	  Cursor<B> cursorB = Views.flatIterable(sliceRai).cursor();
+          	
+        	  cursorA.jumpFwd(w + 1);
+        	  cursorB.jumpFwd(w);
+      	    
+        	  while (cursorA.hasNext()) {
+        	  	cursorA.next();
+        	  	cursorB.next();
+        	  	
+        	  	if (cursorA.get().get() || cursorB.get().get())
+        	  	  voxelEdges[0]++;        	  	
+        	  }
         });
-
+        
         // Left and right faces (horizontal edges)
         LongStream.of(traverser.x0, traverser.x1).forEach(x -> {
-            traverser.access.setPosition(x, 0);
-            for (int y = 0; y < traverser.ySize; y++) {
-                traverser.access.setPosition(y, 1);
-                for (int z = 1; z < traverser.zSize; z++) {
-                    final int voxelA = getAtLocation(traverser, x, y, z);
-                    final int voxelB = getAtLocation(traverser, x, y, z - 1);
-                    voxelEdges[0] += voxelA | voxelB;
-                }
-            }
+          RandomAccessibleInterval<B> sliceRai = Views.hyperSlice(traverser.rai, 0, x);
+      	  final long w = sliceRai.dimension(0);
+      	  
+      	  Cursor<B> cursorA = Views.flatIterable(sliceRai).cursor();
+      	  Cursor<B> cursorB = Views.flatIterable(sliceRai).cursor();
+        	
+      	  cursorA.jumpFwd(w);
+      	  cursorB.jumpFwd(0);
+      	  
+      	  while (cursorA.hasNext()) {
+      	  	cursorA.next();
+      	  	cursorB.next();
+      	  	
+      	  	if (cursorA.get().get() || cursorB.get().get())
+      	  	  voxelEdges[0]++;
+      	  }
         });
-
+        
         // Left and right faces (vertical edges)
         LongStream.of(traverser.x0, traverser.x1).forEach(x -> {
-            traverser.access.setPosition(x, 0);
-            for (int z = 0; z < traverser.zSize; z++) {
-                traverser.access.setPosition(z, 2);
-                for (int y = 1; y < traverser.ySize; y++) {
-                    final int voxelA = getAtLocation(traverser, x, y, z);
-                    final int voxelB = getAtLocation(traverser, x, y - 1, z);
-                    voxelEdges[0] += voxelA | voxelB;
-                }
-            }
+        	RandomAccessibleInterval<B> sliceRai = Views.hyperSlice(traverser.rai, 0, x);
+        	sliceRai = Views.expandZero(sliceRai, 1, 1);
+      	  final long w = sliceRai.dimension(0);
+
+      	  Cursor<B> cursorA = Views.flatIterable(sliceRai).localizingCursor();
+      	  Cursor<B> cursorB = Views.flatIterable(sliceRai).cursor();
+        	
+      	  cursorA.jumpFwd(w + 1);
+      	  cursorB.jumpFwd(w);
+      	  
+      	  while (cursorA.hasNext()) {
+      	  	cursorA.next();
+      	  	cursorB.next();
+      	  	
+      	  	final long y = cursorA.getLongPosition(0);
+      	  	final long z = cursorA.getLongPosition(1);
+      	  	
+      	  	if (y == 0 || y > traverser.y1 || z > traverser.z1)
+      	  		continue;
+      	  	
+      	  	if (cursorA.get().get() || cursorB.get().get())
+      	  	  voxelEdges[0]++;
+      	  }
         });
 
         return voxelEdges[0];
@@ -328,47 +394,81 @@ public class EulerCorrection<B extends BooleanType<B>>
      * </p>
      */
     public static <B extends BooleanType<B>> long voxelFaceIntersections(final Traverser<B> traverser) {
-        final long[] voxelFaces = {0};
+        final long[] pixelFaces = {0};
 
         LongStream.of(traverser.z0, traverser.z1).forEach(z -> {
-            traverser.access.setPosition(z, 2);
-            for (int y = 0; y <= traverser.ySize; y++) {
-                for (int x = 0; x <= traverser.xSize; x++) {
-                    final int voxelA = getAtLocation(traverser, x, y, z);
-                    final int voxelB = getAtLocation(traverser, x - 1, y, z);
-                    final int voxelC = getAtLocation(traverser, x, y - 1, z);
-                    final int voxelD = getAtLocation(traverser, x - 1, y - 1, z);
-                    voxelFaces[0] += voxelA | voxelB | voxelC | voxelD;
-                }
-            }
+        	  RandomAccessibleInterval<B> sliceRai =  Views.hyperSlice(traverser.rai, 2, z);
+        	  sliceRai = Views.expandZero(sliceRai, 1, 1);
+        	  final long w = sliceRai.dimension(0);
+        	          	  
+        	  Cursor<B> cursorA = Views.flatIterable(sliceRai).cursor();
+        	  Cursor<B> cursorB = Views.flatIterable(sliceRai).cursor();
+        	  Cursor<B> cursorC = Views.flatIterable(sliceRai).cursor();
+        	  Cursor<B> cursorD = Views.flatIterable(sliceRai).cursor();
+            
+        	  cursorA.jumpFwd(w + 1);
+        	  cursorB.jumpFwd(w);
+        	  cursorC.jumpFwd(1);
+        	  cursorD.jumpFwd(0);
+        	  
+        	  while (cursorA.hasNext()) {
+        	  	final int pixelA = (int) cursorA.next().getRealDouble();
+        	  	final int pixelB = (int) cursorB.next().getRealDouble();
+        	  	final int pixelC = (int) cursorC.next().getRealDouble();
+        	  	final int pixelD = (int) cursorD.next().getRealDouble();
+        	  	pixelFaces[0] += pixelA | pixelB | pixelC | pixelD;
+        	  }
         });
 
         LongStream.of(traverser.x0, traverser.x1).forEach(x -> {
-            traverser.access.setPosition(x, 0);
-            for (int y = 0; y <= traverser.ySize; y++) {
-                for (int z = 1; z < traverser.zSize; z++) {
-                    final int voxelA = getAtLocation(traverser, x, y, z);
-                    final int voxelB = getAtLocation(traverser, x, y - 1, z);
-                    final int voxelC = getAtLocation(traverser, x, y, z - 1);
-                    final int voxelD = getAtLocation(traverser, x, y - 1, z - 1);
-                    voxelFaces[0] += voxelA | voxelB | voxelC | voxelD;
-                }
-            }
+      	  RandomAccessibleInterval<B> sliceRai =  Views.hyperSlice(traverser.rai, 0, x);
+      	  sliceRai = Views.expandZero(sliceRai, 1, 0);
+      	  final long w = sliceRai.dimension(0);
+      	          	  
+      	  Cursor<B> cursorA = Views.flatIterable(sliceRai).cursor();
+      	  Cursor<B> cursorB = Views.flatIterable(sliceRai).cursor();
+      	  Cursor<B> cursorC = Views.flatIterable(sliceRai).cursor();
+      	  Cursor<B> cursorD = Views.flatIterable(sliceRai).cursor();
+          
+      	  cursorA.jumpFwd(w + 1);
+      	  cursorB.jumpFwd(w);
+      	  cursorC.jumpFwd(1);
+      	  cursorD.jumpFwd(0);
+      	  
+      	  while (cursorA.hasNext()) {
+      	  	final int pixelA = (int) cursorA.next().getRealDouble();
+      	  	final int pixelB = (int) cursorB.next().getRealDouble();
+      	  	final int pixelC = (int) cursorC.next().getRealDouble();
+      	  	final int pixelD = (int) cursorD.next().getRealDouble();
+      	  	pixelFaces[0] += pixelA | pixelB | pixelC | pixelD;
+      	  }
         });
-
+        
         LongStream.of(traverser.y0, traverser.y1).forEach(y -> {
-            for (int x = 1; x < traverser.xSize; x++) {
-                for (int z = 1; z < traverser.zSize; z++) {
-                    final int voxelA = getAtLocation(traverser, x, y, z);
-                    final int voxelB = getAtLocation(traverser, x, y, z - 1);
-                    final int voxelC = getAtLocation(traverser, x - 1, y, z);
-                    final int voxelD = getAtLocation(traverser, x - 1, y, z - 1);
-                    voxelFaces[0] += voxelA | voxelB | voxelC | voxelD;
-                }
-            }
+      	  RandomAccessibleInterval<B> sliceRai =  Views.hyperSlice(traverser.rai, 1, y);
+      	  final long w = sliceRai.dimension(0);
+      	          	  
+      	  Cursor<B> cursorA = Views.flatIterable(sliceRai).localizingCursor();
+      	  Cursor<B> cursorB = Views.flatIterable(sliceRai).cursor();
+      	  Cursor<B> cursorC = Views.flatIterable(sliceRai).cursor();
+      	  Cursor<B> cursorD = Views.flatIterable(sliceRai).cursor();
+          
+      	  cursorA.jumpFwd(w + 1);
+      	  cursorB.jumpFwd(w);
+      	  cursorC.jumpFwd(1);
+      	  cursorD.jumpFwd(0);
+      	  
+      	  while (cursorA.hasNext()) {
+      	  	final int pixelA = (int) cursorA.next().getRealDouble();
+      	  	final int pixelB = (int) cursorB.next().getRealDouble();
+      	  	final int pixelC = (int) cursorC.next().getRealDouble();
+      	  	final int pixelD = (int) cursorD.next().getRealDouble();
+      	  	if (cursorA.getLongPosition(0) == 0)
+      	  		continue;
+      	  	pixelFaces[0] += pixelA | pixelB | pixelC | pixelD;
+      	  }
         });
-
-        return voxelFaces[0];
+        return pixelFaces[0];
     }
 
     //region -- Helper methods --
@@ -395,6 +495,7 @@ public class EulerCorrection<B extends BooleanType<B>>
         public final long ySize;
         public final long zSize;
         public final RandomAccess<B> access;
+        public final RandomAccessibleInterval<B> rai;
 
         public Traverser(RandomAccessibleInterval<B> interval) {
             xSize = interval.dimension(0);
@@ -404,6 +505,7 @@ public class EulerCorrection<B extends BooleanType<B>>
             y1 = ySize - 1;
             z1 = zSize - 1;
             access = Views.extendZero(interval).randomAccess();
+            rai = interval;
         }
     }
 }

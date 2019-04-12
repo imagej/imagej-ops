@@ -28,12 +28,17 @@
  */
 package net.imagej.ops.topology.eulerCharacteristic;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.view.Views;
 
 import org.scijava.plugin.Plugin;
 
@@ -67,7 +72,7 @@ import org.scijava.plugin.Plugin;
  * </p>
  *
  * @author Richard Domander (Royal Veterinary College, London)
- * @author Michael Doube (Royal Veterinary College, London)
+ * @author Michael Doube (Imperial College London)
  */
 @Plugin(type = Ops.Topology.EulerCharacteristic26NFloating.class)
 public class EulerCharacteristic26NFloating
@@ -220,69 +225,134 @@ public class EulerCharacteristic26NFloating
     }
 
     @Override
-    public void compute(RandomAccessibleInterval<B> interval, DoubleType output) {
-        final Octant<B> octant = new Octant<>(interval);
-        int sumDeltaEuler = 0;
+    public void compute(RandomAccessibleInterval<B> rai, DoubleType output) {
 
-        for (int z = 0; z <= interval.dimension(2); z++) {
-            for (int y = 0; y <= interval.dimension(1); y++) {
-                for (int x = 0; x <= interval.dimension(0); x++) {
-                    octant.setNeighborhood(x, y, z);
-                    sumDeltaEuler += getDeltaEuler(octant);
-                }
-            }
-        }
+    	//pad the image data by 1 pixel depth of false on all faces
+    	final RandomAccessibleInterval<B> ival = Views.expandZero(rai, 1, 1, 1);
 
-        output.set(sumDeltaEuler / 8.0);
+    	//offsets to calculate start positions of the cursors
+    	final long w = ival.dimension(0);
+    	final long h = ival.dimension(1);
+    	final long d = ival.dimension(2);
+
+    	//set up threads
+    	final int nThreads = Runtime.getRuntime().availableProcessors();
+    	final long nPixels = w * h * d;
+    	final long taskSize =  Math.max(nPixels / Math.max((nThreads - 1), 1), 100000);
+
+    	int sumDeltaEuler = 0;
+    	final int[] threadSumDeltaEuler = new int[nThreads];
+    	int thread  = 0;
+
+    	ArrayList<Thread> taskList = new ArrayList<>();
+
+    	for (long s = 0; s < nPixels; s += taskSize) {
+    		final int n = thread;
+    		thread++;
+    		final long start = s;
+    		final long stop = Math.min(start + taskSize, nPixels);
+    		final int steps = (int) (stop - start);
+
+    		Runnable task = new Runnable() {
+    			@Override
+					public void run() {
+    				final RandomAccessibleInterval<B> interval = ival;
+    				//set up cursors to iterate in the octant locations 
+    				final Cursor<B> octantCursor1 = Views.flatIterable(interval).cursor();
+    				final Cursor<B> octantCursor2 = Views.flatIterable(interval).cursor();
+    				final Cursor<B> octantCursor3 = Views.flatIterable(interval).cursor();
+    				final Cursor<B> octantCursor4 = Views.flatIterable(interval).cursor();
+    				final Cursor<B> octantCursor5 = Views.flatIterable(interval).cursor();
+    				final Cursor<B> octantCursor6 = Views.flatIterable(interval).cursor();
+    				final Cursor<B> octantCursor7 = Views.flatIterable(interval).cursor();
+    				final Cursor<B> octantCursor8 = Views.flatIterable(interval).cursor();
+
+    				octantCursor1.jumpFwd(start);
+    				octantCursor2.jumpFwd(start + w);
+    				octantCursor3.jumpFwd(start + 1);
+    				octantCursor4.jumpFwd(start + w + 1);
+    				octantCursor5.jumpFwd(start + w * h);
+    				octantCursor6.jumpFwd(start + w * h + w);
+    				octantCursor7.jumpFwd(start + w * h + 1);
+    				octantCursor8.jumpFwd(start + w * h + w + 1);
+
+    				for (int i = 0; i < steps; i++) {
+    					boolean o1 = octantCursor1.next().get();
+    					boolean o2 = octantCursor2.next().get();
+    					boolean o3 = octantCursor3.next().get();
+    					boolean o4 = octantCursor4.next().get();
+    					boolean o5 = octantCursor5.next().get();
+    					boolean o6 = octantCursor6.next().get();
+    					boolean o7 = octantCursor7.next().get();
+    					boolean o8 = octantCursor8.next().get();
+    					
+    					if (o1 || o2 || o3 || o4 || o5 || o6 || o7 || o8)
+    					  threadSumDeltaEuler[n] += getDeltaEuler(o1, o2, o3, o4, o5, o6, o7, o8);
+    				}
+    			}
+    		};
+    		taskList.add(new Thread(task));
+    	}
+    	for (Thread t : taskList) {
+    		t.setPriority(Thread.NORM_PRIORITY);
+    		t.start();
+    	}
+    	try {
+    		for (Thread t : taskList)
+    			t.join();
+    	} catch (final InterruptedException ie) {
+    		throw new RuntimeException(ie);
+    	}
+
+    	sumDeltaEuler = Arrays.stream(threadSumDeltaEuler).sum();
+    	output.set(sumDeltaEuler / 8.0);
     }
-
-    @Override
-    public DoubleType createOutput(RandomAccessibleInterval<B> input) { return new DoubleType(0.0); }
 
     /** Determines the Δχ from Toriwaki & Yonekura value for this 2x2x2 neighborhood */
-    private static int getDeltaEuler(final Octant octant) {
-        if (octant.isNeighborhoodEmpty()) {
-            return 0;
-        }
-
+    private static int getDeltaEuler(boolean o1, boolean o2,
+    	boolean o3, boolean o4, boolean o5, boolean o6, boolean o7, boolean o8)
+    {
         int index = 1;
-        if (octant.isNeighborForeground(8)) {
-            if (octant.isNeighborForeground(1)) { index |= 128; }
-            if (octant.isNeighborForeground(2)) { index |= 64; }
-            if (octant.isNeighborForeground(3)) { index |= 32; }
-            if (octant.isNeighborForeground(4)) { index |= 16; }
-            if (octant.isNeighborForeground(5)) { index |= 8; }
-            if (octant.isNeighborForeground(6)) { index |= 4; }
-            if (octant.isNeighborForeground(7)) { index |= 2; }
-        } else if (octant.isNeighborForeground(7)) {
-            if (octant.isNeighborForeground(2)) { index |= 128; }
-            if (octant.isNeighborForeground(4)) { index |= 64; }
-            if (octant.isNeighborForeground(1)) { index |= 32; }
-            if (octant.isNeighborForeground(3)) { index |= 16; }
-            if (octant.isNeighborForeground(6)) { index |= 8; }
-            if (octant.isNeighborForeground(5)) { index |= 2; }
-        } else if (octant.isNeighborForeground(6)) {
-            if (octant.isNeighborForeground(3)) { index |= 128; }
-            if (octant.isNeighborForeground(1)) { index |= 64; }
-            if (octant.isNeighborForeground(4)) { index |= 32; }
-            if (octant.isNeighborForeground(2)) { index |= 16; }
-            if (octant.isNeighborForeground(5)) { index |= 4; }
-        } else if (octant.isNeighborForeground(5)) {
-            if (octant.isNeighborForeground(4)) { index |= 128; }
-            if (octant.isNeighborForeground(3)) { index |= 64; }
-            if (octant.isNeighborForeground(2)) { index |= 32; }
-            if (octant.isNeighborForeground(1)) { index |= 16; }
-        } else if (octant.isNeighborForeground(4)) {
-            if (octant.isNeighborForeground(1)) { index |= 8; }
-            if (octant.isNeighborForeground(3)) { index |= 4; }
-            if (octant.isNeighborForeground(2)) { index |= 2; }
-        } else if (octant.isNeighborForeground(3)) {
-            if (octant.isNeighborForeground(2)) { index |= 8; }
-            if (octant.isNeighborForeground(1)) { index |= 4; }
-        } else if (octant.isNeighborForeground(2)) {
-            if (octant.isNeighborForeground(1)) { index |= 2; }
-        }
+    	if (o8) {
+    		if (o1) { index |= 128; }
+    		if (o2) { index |= 64; }
+    		if (o3) { index |= 32; }
+    		if (o4) { index |= 16; }
+    		if (o5) { index |= 8; }
+    		if (o6) { index |= 4; }
+    		if (o7) { index |= 2; }
+    	} else if (o7) {
+    		if (o2) { index |= 128; }
+    		if (o4) { index |= 64; }
+    		if (o1) { index |= 32; }
+    		if (o3) { index |= 16; }
+    		if (o6) { index |= 8; }
+    		if (o5) { index |= 2; }
+    	} else if (o6) {
+    		if (o3) { index |= 128; }
+    		if (o1) { index |= 64; }
+    		if (o4) { index |= 32; }
+    		if (o2) { index |= 16; }
+    		if (o5) { index |= 4; }
+    	} else if (o5) {
+    		if (o4) { index |= 128; }
+    		if (o3) { index |= 64; }
+    		if (o2) { index |= 32; }
+    		if (o1) { index |= 16; }
+    	} else if (o4) {
+    		if (o1) { index |= 8; }
+    		if (o3) { index |= 4; }
+    		if (o2) { index |= 2; }
+    	} else if (o3) {
+    		if (o2) { index |= 8; }
+    		if (o1) { index |= 4; }
+    	} else if (o2) {
+    		if (o1) { index |= 2; }
+    	} else return 1;
 
-        return EULER_LUT[index];
+    	return EULER_LUT[index];
     }
+
+		@Override
+    public DoubleType createOutput(RandomAccessibleInterval<B> input) { return new DoubleType(0.0); }
 }
