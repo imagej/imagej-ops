@@ -30,13 +30,16 @@ package net.imagej.ops.topology.eulerCharacteristic;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.Parallel;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imagej.ops.thread.chunker.CursorBasedChunk;
+import net.imagej.ops.thread.chunker.DefaultChunker;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
-
+import net.imglib2.view.ExtendedRandomAccessibleInterval;
 import net.imglib2.view.Views;
 import org.scijava.plugin.Plugin;
 
@@ -76,7 +79,7 @@ import java.util.stream.IntStream;
 public class EulerCharacteristic26NFloating
         <B extends BooleanType<B>>
         extends AbstractUnaryHybridCF<RandomAccessibleInterval<B>, DoubleType>
-        implements Ops.Topology.EulerCharacteristic26NFloating, Contingent {
+        implements Ops.Topology.EulerCharacteristic26NFloating, Contingent, Parallel {
     /**
      * Δχ(v) for all configurations of a 2x2x2 voxel neighborhood
      */
@@ -223,23 +226,22 @@ public class EulerCharacteristic26NFloating
     }
 
     @Override
-    public void compute(RandomAccessibleInterval<B> interval, DoubleType output) {
-        long[] position = new long[3];
-        int[] neighborhood = new int[8];
-
-        int sumDeltaEuler = 0;
-        RandomAccess<B> access = Views.extendZero(interval).randomAccess();
-        final Cursor<B> cursor = createFloatingCursor(interval);
-
-        while (cursor.hasNext()) {
-            cursor.fwd();
-            cursor.localize(position);
-            fillNeighborhood(access, neighborhood, position);
-            sumDeltaEuler += deltaEuler(neighborhood);
-        }
-
-        output.set(sumDeltaEuler / 8.0);
+    public void compute(final RandomAccessibleInterval<B> interval, final DoubleType output) {
+        final ExtendedRandomAccessibleInterval<B, RandomAccessibleInterval<B>> extendedInterval =
+                Views.extendZero(interval);
+        final long x = interval.dimension(0) + 1;
+        final long y = interval.dimension(1) + 1;
+        final long z = interval.dimension(2) + 1;
+        final long extendedSize = x * y * z;
+        ops().run(DefaultChunker.class, new EulerChunk<>(extendedInterval, output), extendedSize);
+        output.set(output.get() / 8.0);
     }
+
+    @Override
+    public DoubleType createOutput(final RandomAccessibleInterval<B> input) {
+        return new DoubleType(0.0);
+    }
+
 
     /**
      * Creates a cursor that traverses an interval one pixel per dimension bigger than the input.
@@ -250,19 +252,16 @@ public class EulerCharacteristic26NFloating
      * </p>
      *
      * @param interval the input interval.
-     * @return a larger "floating" interval.
+     * @return a cursor of a  larger "floating" interval.
      * @see #fillNeighborhood(RandomAccess, int[], long[])
      */
-    private Cursor<B> createFloatingCursor(RandomAccessibleInterval<B> interval) {
+    private static <B extends BooleanType<B>> Cursor<B> createFloatingCursor(
+            final RandomAccessibleInterval<B> interval) {
         final long x = interval.dimension(0) + 1;
         final long y = interval.dimension(1) + 1;
         final long z = interval.dimension(2) + 1;
-        return Views.offsetInterval(interval, new long[]{0, 0, 0}, new long[]{x, y, z}).cursor();
-    }
-
-    @Override
-    public DoubleType createOutput(RandomAccessibleInterval<B> input) {
-        return new DoubleType(0.0);
+        return Views.offsetInterval(interval, new long[]{0, 0, 0}, new long[]{x, y, z})
+                .cursor();
     }
 
     private static int deltaEuler(final int[] mask) {
@@ -280,7 +279,7 @@ public class EulerCharacteristic26NFloating
         return EULER_LUT[index];
     }
 
-    private static int findMostSignificantNeighbor(int[] neighborhood) {
+    private static int findMostSignificantNeighbor(final int[] neighborhood) {
         return IntStream.range(0, neighborhood.length).map(i -> neighborhood.length - 1 - i)
                 .filter(i -> neighborhood[i] == 1).findFirst().orElse(-1);
     }
@@ -310,8 +309,9 @@ public class EulerCharacteristic26NFloating
         neighborhood[7] = getAtLocation(access, position, 0, 0, 0);
     }
 
-    private static <B extends BooleanType<B>> int getAtLocation(RandomAccess<B> access,
-                                                                long[] position, long... offsets) {
+    private static <B extends BooleanType<B>> int getAtLocation(final RandomAccess<B> access,
+                                                                final long[] position,
+                                                                final long... offsets) {
         long x = position[0] + offsets[0];
         long y = position[1] + offsets[1];
         long z = position[2] + offsets[2];
@@ -319,5 +319,42 @@ public class EulerCharacteristic26NFloating
         access.setPosition(y, 1);
         access.setPosition(z, 2);
         return (int) access.get().getRealDouble();
+    }
+
+
+    private static class EulerChunk<B extends BooleanType<B>> extends CursorBasedChunk {
+
+        private final ExtendedRandomAccessibleInterval<B, RandomAccessibleInterval<B>> input;
+
+        private final DoubleType output;
+
+        private EulerChunk(ExtendedRandomAccessibleInterval<B, RandomAccessibleInterval<B>> in,
+                           DoubleType out) {
+            input = in;
+            output = out;
+        }
+
+        @Override
+        public void execute(int startIndex, int stepSize, int numSteps) {
+            final long[] position = new long[3];
+            final int[] neighborhood = new int[8];
+            final RandomAccess<B> access = input.randomAccess();
+            final Cursor<B> cursor = createFloatingCursor(input.getSource());
+            int steps = 0;
+            double sumDeltaEuler = 0;
+
+            setToStart(cursor, startIndex);
+            while (steps < numSteps) {
+                cursor.localize(position);
+                fillNeighborhood(access, neighborhood, position);
+                sumDeltaEuler += deltaEuler(neighborhood);
+                cursor.jumpFwd(stepSize);
+                steps++;
+            }
+
+            synchronized (this) {
+                output.set(output.get() + sumDeltaEuler);
+            }
+        }
     }
 }
