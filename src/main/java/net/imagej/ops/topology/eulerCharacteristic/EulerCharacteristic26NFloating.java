@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2018 ImageJ developers.
+ * Copyright (C) 2014 - 2019 ImageJ developers.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -57,9 +57,8 @@ import java.util.stream.IntStream;
  * </ul>
  * <p>
  * The Op calculates χ by using the triangulation algorithm described by Toriwaki {@literal &}
- * Yonekura (see below).<br> There it's calculated X = ∑Δχ(V), where V is a 2x2x2 neighborhood
- * around each point in the 3D space.<br> We are using the 26-neighborhood version of the algorithm.
- * The Δχ(V) values here are predetermined.
+ * Yonekura (see below). There it's calculated X = ∑Δχ(V), where V is a 2x2x2 neighborhood around
+ * each point in the 3D space. The Δχ(V) values are predetermined.
  * </p><p>
  * For the algorithm see<br> Toriwaki J, Yonekura T (2002)<br> Euler Number and Connectivity Indexes
  * of a Three Dimensional Digital Picture<br> Forma 17: 183-209<br>
@@ -74,6 +73,7 @@ import java.util.stream.IntStream;
  *
  * @author Richard Domander (Royal Veterinary College, London)
  * @author Michael Doube (Royal Veterinary College, London)
+ * @author Richard Domander
  */
 @Plugin(type = Ops.Topology.EulerCharacteristic26NFloating.class)
 public class EulerCharacteristic26NFloating
@@ -81,7 +81,7 @@ public class EulerCharacteristic26NFloating
         extends AbstractUnaryHybridCF<RandomAccessibleInterval<B>, DoubleType>
         implements Ops.Topology.EulerCharacteristic26NFloating, Contingent, Parallel {
     /**
-     * Δχ(v) for all configurations of a 2x2x2 voxel neighborhood
+     * Δχ(V) for all configurations of a 2x2x2 voxel neighborhood V.
      */
     private static final int[] EULER_LUT = new int[256];
 
@@ -227,6 +227,8 @@ public class EulerCharacteristic26NFloating
 
     @Override
     public void compute(final RandomAccessibleInterval<B> interval, final DoubleType output) {
+        // To make the space "floating" it's zero extended (in negative direction),
+        // and traversed one voxel bigger in positive direction.
         final ExtendedRandomAccessibleInterval<B, RandomAccessibleInterval<B>> extendedInterval =
                 Views.extendZero(interval);
         final long x = interval.dimension(0) + 1;
@@ -273,19 +275,26 @@ public class EulerCharacteristic26NFloating
         final int[] indexValues = NEIGHBOUR_VALUES[mSN];
         int index = 1;
         for (int i = 0; i < indexValues.length; i++) {
-            index |= (mask[i] & 1) * indexValues[i];
+            index |= mask[i] * indexValues[i];
         }
 
         return EULER_LUT[index];
     }
 
+
+    /**
+     * Finds the last index where a voxel is foreground
+     *
+     * @param neighborhood a 2 x 2 x 2 neighbourhood of a voxel.
+     * @return an index, or -1 if all voxels are background.
+     */
     private static int findMostSignificantNeighbor(final int[] neighborhood) {
         return IntStream.range(0, neighborhood.length).map(i -> neighborhood.length - 1 - i)
                 .filter(i -> neighborhood[i] == 1).findFirst().orElse(-1);
     }
 
     /**
-     * Fills the eight voxel neighborhood around the given location.
+     * Fills the eight voxel neighborhood V around the given location.
      * <p>
      * Neighborhood is filled in the negative dimensions from the given position. If there's a voxel
      * at certain coordinates, then the neighbor is '1', '0'  if not.
@@ -322,6 +331,17 @@ public class EulerCharacteristic26NFloating
     }
 
 
+    /**
+     * A chunk i.e. a subspace of the input interval that's calculated in parallel.
+     * <p>
+     * The algorithm doesn't care what size the subspace is.
+     * </p>
+     * <p>
+     * NB the whole interval has to be zero extended, but NOT the subspaces!
+     * </p>
+     *
+     * @param <B> type of the elements in the subspace.
+     */
     private static class EulerChunk<B extends BooleanType<B>> extends CursorBasedChunk {
 
         private final ExtendedRandomAccessibleInterval<B, RandomAccessibleInterval<B>> input;
@@ -353,6 +373,7 @@ public class EulerCharacteristic26NFloating
             }
 
             synchronized (this) {
+                // Tbe final answer is the sum of Δχ of all the subspaces
                 output.set(output.get() + sumDeltaEuler);
             }
         }
