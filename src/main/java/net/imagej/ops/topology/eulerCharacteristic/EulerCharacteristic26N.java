@@ -31,11 +31,16 @@ package net.imagej.ops.topology.eulerCharacteristic;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imagej.ops.thread.chunker.CursorBasedChunk;
+import net.imagej.ops.thread.chunker.DefaultChunker;
+import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import net.imglib2.view.ExtendedRandomAccessibleInterval;
+import net.imglib2.view.Views;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -97,54 +102,74 @@ public class EulerCharacteristic26N<B extends BooleanType<B>>
 
     @Override
     public void compute(RandomAccessibleInterval<B> interval, DoubleType output) {
-        final RandomAccess<B> access = interval.randomAccess();
-        long sumDeltaEuler = 0;
+        long size = (interval.dimension(0) - 1) * (interval.dimension(1) - 1) * (interval.dimension(2) - 1);
+        size = Math.max(1, size);
+        ops().run(DefaultChunker.class, new EulerCharacteristic26N.EulerChunk<>(interval, output), size);
+        output.set(output.get() / 8.0);
+    }
 
-        for (long z = 0; z < interval.dimension(2) - 1; z++) {
-            for (long y = 0; y < interval.dimension(1) - 1; y++) {
-                for (long x = 0; x < interval.dimension(0) - 1; x++) {
-                    int index = neighborhoodEulerIndex(access, x, y, z);
-                    sumDeltaEuler += EULER_LUT[index];
-                }
-            }
-        }
+    static  <B extends BooleanType<B>> int neighborhoodEulerIndex(RandomAccess<B> access, long[] position) {
+        int index = 0;
+        index += getAtLocation(access, position, 0, 0, 0);
+        index += getAtLocation(access, position, 1, 0, 0) << 1;
+        index += getAtLocation(access, position, 0, 1, 0) << 2;
+        index += getAtLocation(access, position, 1, 1, 0) << 3;
+        index += getAtLocation(access, position, 0, 0, 1) << 4;
+        index += getAtLocation(access, position, 1, 0, 1) << 5;
+        index += getAtLocation(access, position, 0, 1, 1) << 6;
+        index += getAtLocation(access, position, 1, 1, 1) << 7;
+        return index;
+    }
 
-        output.set(sumDeltaEuler / 8.0);
+    private static <B extends BooleanType<B>> int getAtLocation(final RandomAccess<B> access,
+                                                                final long[] position,
+                                                                final long... offsets) {
+        long x = position[0] + offsets[0];
+        long y = position[1] + offsets[1];
+        long z = position[2] + offsets[2];
+        access.setPosition(x, 0);
+        access.setPosition(y, 1);
+        access.setPosition(z, 2);
+        return (int) access.get().getRealDouble();
     }
 
     @Override
     public DoubleType createOutput(RandomAccessibleInterval<B> input) { return new DoubleType(0.0); }
 
-    /**
-     * Determines the LUT index for this 2x2x2 neighborhood
-     *
-     * @param access    The space where the neighborhood is
-     * @param x         Location of the neighborhood in the 1st spatial dimension (x)
-     * @param y         Location of the neighborhood in the 2nd spatial dimension (y)
-     * @param z         Location of the neighborhood in the 3rd spatial dimension (z)
-     * @return the index of the Δχ value for this configuration of voxels
-     */
-    public static <B extends BooleanType<B>> int neighborhoodEulerIndex(final RandomAccess<B> access, final long x,
-                                                                        final long y, final long z) {
-        int index = 0;
+    private static class EulerChunk<B extends BooleanType<B>> extends CursorBasedChunk {
 
-        index += getAtLocation(access, x, y, z);
-        index += getAtLocation(access, x + 1, y, z) << 1;
-        index += getAtLocation(access, x, y + 1, z) << 2;
-        index += getAtLocation(access, x + 1, y + 1, z) << 3;
-        index += getAtLocation(access, x, y, z + 1) << 4;
-        index += getAtLocation(access, x + 1, y, z + 1) << 5;
-        index += getAtLocation(access, x, y + 1, z + 1) << 6;
-        index += getAtLocation(access, x + 1, y + 1, z + 1) << 7;
+        private final RandomAccessibleInterval<B> input;
 
-        return index;
-    }
+        private final DoubleType output;
 
-    private static <B extends BooleanType<B>> long getAtLocation(final RandomAccess<B> access, final long x,
-                                                                 final long y, final long z) {
-        access.setPosition(x, 0);
-        access.setPosition(y, 1);
-        access.setPosition(z, 2);
-        return (long) access.get().getRealDouble();
+        private EulerChunk(RandomAccessibleInterval<B> in,
+                           DoubleType out) {
+            input = in;
+            output = out;
+        }
+
+        @Override
+        public void execute(int startIndex, int stepSize, int numSteps) {
+            final long[] position = new long[3];
+            final RandomAccess<B> access = input.randomAccess();
+            final Cursor<B> cursor = Views.interval(input, new long[]{0, 0, 0},
+                    new long[]{input.max(0) - 1, input.max(1) - 1, input.max(2) - 1}).cursor();
+            int steps = 0;
+            double sumDeltaEuler = 0;
+
+            setToStart(cursor, startIndex);
+            while (steps < numSteps) {
+                cursor.localize(position);
+                final int index = neighborhoodEulerIndex(access, position);
+                sumDeltaEuler += EULER_LUT[index];
+                cursor.jumpFwd(stepSize);
+                steps++;
+            }
+
+            synchronized (this) {
+                // Tbe final answer is the sum of Δχ of all the subspaces
+                output.set(output.get() + sumDeltaEuler);
+            }
+        }
     }
 }

@@ -68,7 +68,7 @@ public class EulerCharacteristic26NTest extends AbstractOpTest {
             setNeighbor(neighborhood, 0, 1, 1, n & 0b01000000);
             setNeighbor(neighborhood, 1, 1, 1, n & 0b10000000);
 
-            final int result = EulerCharacteristic26N.neighborhoodEulerIndex(neighborhood, 0, 0, 0);
+            final int result = EulerCharacteristic26N.neighborhoodEulerIndex(neighborhood, new long[] {0, 0, 0});
 
             assertEquals("LUT index is incorrect", n, result);
         }
