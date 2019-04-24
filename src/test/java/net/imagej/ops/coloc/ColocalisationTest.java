@@ -58,6 +58,7 @@ import org.junit.Before;
 import org.scijava.Context;
 import org.scijava.app.StatusService;
 import org.scijava.cache.CacheService;
+import org.scijava.io.location.FileLocation;
 
 /** Abstract base class for coloc op unit tests. */
 public abstract class ColocalisationTest extends AbstractOpTest {
@@ -111,7 +112,7 @@ public abstract class ColocalisationTest extends AbstractOpTest {
 
 		// HACK: Read data from file system for now.
 		// Until this is fixed, the test will not pass when run from a JAR file.
-		String source = "src/test/resources/net/imagej/ops/coloc/" + relPath;
+		FileLocation source = new FileLocation("src/test/resources/net/imagej/ops/coloc/" + relPath);
 		try {
 			return (Img) opener.openImgs(source).get(0);
 		}
