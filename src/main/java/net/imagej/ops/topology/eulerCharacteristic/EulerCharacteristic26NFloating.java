@@ -225,15 +225,15 @@ public class EulerCharacteristic26NFloating
     }
 
     @Override
-    public void compute(RandomAccessibleInterval<B> rai, DoubleType output) {
+    public void compute(RandomAccessibleInterval<B> interval, DoubleType output) {
 
-    	//pad the image data by 1 pixel depth of false on all faces
-    	final RandomAccessibleInterval<B> ival = Views.expandZero(rai, 1, 1, 1);
+			//pad with zeros to float the data in space
+    	final RandomAccessibleInterval<B> rai = Views.expandZero(interval, 1, 1, 1);
 
     	//offsets to calculate start positions of the cursors
-    	final long w = ival.dimension(0);
-    	final long h = ival.dimension(1);
-    	final long d = ival.dimension(2);
+    	final long w = rai.dimension(0);
+    	final long h = rai.dimension(1);
+    	final long d = rai.dimension(2);
 
     	//set up threads
     	final int nThreads = Runtime.getRuntime().availableProcessors();
@@ -257,25 +257,16 @@ public class EulerCharacteristic26NFloating
     			@Override
 					public void run() {
     				System.out.println("Starting thread number "+n);
-    				final RandomAccessibleInterval<B> interval = ival;
-    				//set up cursors to iterate in the octant locations 
-    				final Cursor<B> octantCursor1 = Views.flatIterable(interval).cursor();
-    				final Cursor<B> octantCursor2 = Views.flatIterable(interval).cursor();
-    				final Cursor<B> octantCursor3 = Views.flatIterable(interval).cursor();
-    				final Cursor<B> octantCursor4 = Views.flatIterable(interval).cursor();
-    				final Cursor<B> octantCursor5 = Views.flatIterable(interval).cursor();
-    				final Cursor<B> octantCursor6 = Views.flatIterable(interval).cursor();
-    				final Cursor<B> octantCursor7 = Views.flatIterable(interval).cursor();
-    				final Cursor<B> octantCursor8 = Views.flatIterable(interval).cursor();
 
-    				octantCursor1.jumpFwd(start);
-    				octantCursor2.jumpFwd(start + w);
-    				octantCursor3.jumpFwd(start + 1);
-    				octantCursor4.jumpFwd(start + w + 1);
-    				octantCursor5.jumpFwd(start + w * h);
-    				octantCursor6.jumpFwd(start + w * h + w);
-    				octantCursor7.jumpFwd(start + w * h + 1);
-    				octantCursor8.jumpFwd(start + w * h + w + 1);
+    	      //set up cursors to iterate in the octant locations 
+    	      final Cursor<B> octantCursor1 = Views.flatIterable(Views.interval(Views.extendZero(Views.translate(rai, -1, -1, -1)), rai)).cursor();
+    	      final Cursor<B> octantCursor2 = Views.flatIterable(Views.interval(Views.extendZero(Views.translate(rai, -1, 0, -1)), rai)).cursor();
+    	      final Cursor<B> octantCursor3 = Views.flatIterable(Views.interval(Views.extendZero(Views.translate(rai, 0, -1, -1)), rai)).cursor();
+    	      final Cursor<B> octantCursor4 = Views.flatIterable(Views.interval(Views.extendZero(Views.translate(rai, 0, 0, -1)), rai)).cursor();
+    	      final Cursor<B> octantCursor5 = Views.flatIterable(Views.interval(Views.extendZero(Views.translate(rai, -1, -1, 0)), rai)).cursor();
+    	      final Cursor<B> octantCursor6 = Views.flatIterable(Views.interval(Views.extendZero(Views.translate(rai, -1, 0, 0)), rai)).cursor();
+    	      final Cursor<B> octantCursor7 = Views.flatIterable(Views.interval(Views.extendZero(Views.translate(rai, 0, -1, 0)), rai)).cursor();
+    	      final Cursor<B> octantCursor8 = Views.flatIterable(rai).cursor();
 
     				for (int i = 0; i < steps; i++) {
     					boolean isEmptyOctant = true;
