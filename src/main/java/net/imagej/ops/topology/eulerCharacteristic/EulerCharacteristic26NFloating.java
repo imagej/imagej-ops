@@ -28,6 +28,9 @@
  */
 package net.imagej.ops.topology.eulerCharacteristic;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
@@ -222,53 +225,92 @@ public class EulerCharacteristic26NFloating
     }
 
     @Override
-    public void compute(RandomAccessibleInterval<B> interval, DoubleType output) {
+    public void compute(RandomAccessibleInterval<B> rai, DoubleType output) {
 
-      //pad the image data by 1 pixel depth of false on all faces
-      interval = Views.expandZero(interval, 1, 1, 1);
- 
-      //offsets to calculate start positions of the cursors
-      final long w = interval.dimension(0);
-      final long h = interval.dimension(1);
-      
-      //set up cursors to iterate in the octant locations 
-      Cursor<B> octantCursor1 = Views.flatIterable(interval).cursor();
-      Cursor<B> octantCursor2 = Views.flatIterable(interval).cursor();
-      Cursor<B> octantCursor3 = Views.flatIterable(interval).cursor();
-      Cursor<B> octantCursor4 = Views.flatIterable(interval).cursor();
-      Cursor<B> octantCursor5 = Views.flatIterable(interval).cursor();
-      Cursor<B> octantCursor6 = Views.flatIterable(interval).cursor();
-      Cursor<B> octantCursor7 = Views.flatIterable(interval).cursor();
-      Cursor<B> octantCursor8 = Views.flatIterable(interval).cursor();
-      
-      octantCursor2.jumpFwd(w);
-      octantCursor3.jumpFwd(1);
-      octantCursor4.jumpFwd(w + 1);
-      octantCursor5.jumpFwd(w * h);
-      octantCursor6.jumpFwd(w * h + w);
-      octantCursor7.jumpFwd(w * h + 1);
-      octantCursor8.jumpFwd(w * h + w + 1);
+    	//pad the image data by 1 pixel depth of false on all faces
+    	final RandomAccessibleInterval<B> ival = Views.expandZero(rai, 1, 1, 1);
 
-      int sumDeltaEuler = 0;
-      
-      while (octantCursor8.hasNext()) {
-      		boolean isEmptyOctant = true;
-      		boolean o1 = octantCursor1.next().get();
-      		boolean o2 = octantCursor2.next().get();
-      		boolean o3 = octantCursor3.next().get();
-      		boolean o4 = octantCursor4.next().get();
-      		boolean o5 = octantCursor5.next().get();
-      		boolean o6 = octantCursor6.next().get();
-      		boolean o7 = octantCursor7.next().get();
-      		boolean o8 = octantCursor8.next().get();
-      		
-      		if (o1 || o2 || o3 || o4 || o5 || o6 || o7 || o8)
-            isEmptyOctant = false;
-            
-          sumDeltaEuler += getDeltaEuler(isEmptyOctant, o1, o2, o3, o4, o5, o6, o7, o8);
-      }
-      
-      output.set(sumDeltaEuler / 8.0);
+    	//offsets to calculate start positions of the cursors
+    	final long w = ival.dimension(0);
+    	final long h = ival.dimension(1);
+    	final long d = ival.dimension(2);
+
+    	//set up threads
+    	final int nThreads = Runtime.getRuntime().availableProcessors();
+    	final long nPixels = w * h * d;
+    	final long taskSize =  Math.max(nPixels / nThreads, 5000000);
+
+    	int sumDeltaEuler = 0;
+    	final int[] threadSumDeltaEuler = new int[nThreads];
+    	int thread  = 0;
+
+    	ArrayList<Thread> taskList = new ArrayList<>();
+
+    	for (long s = 0; s < nPixels; s += taskSize) {
+    		final int n = thread;
+    		thread++;
+    		final long start = s;
+    		final long stop = Math.min(start + taskSize, nPixels);
+    		final int steps = (int) (stop - start);
+
+    		Runnable task = new Runnable() {
+    			@Override
+					public void run() {
+    				System.out.println("Starting thread number "+n);
+    				final RandomAccessibleInterval<B> interval = ival;
+    				//set up cursors to iterate in the octant locations 
+    				final Cursor<B> octantCursor1 = Views.flatIterable(interval).cursor();
+    				final Cursor<B> octantCursor2 = Views.flatIterable(interval).cursor();
+    				final Cursor<B> octantCursor3 = Views.flatIterable(interval).cursor();
+    				final Cursor<B> octantCursor4 = Views.flatIterable(interval).cursor();
+    				final Cursor<B> octantCursor5 = Views.flatIterable(interval).cursor();
+    				final Cursor<B> octantCursor6 = Views.flatIterable(interval).cursor();
+    				final Cursor<B> octantCursor7 = Views.flatIterable(interval).cursor();
+    				final Cursor<B> octantCursor8 = Views.flatIterable(interval).cursor();
+
+    				octantCursor1.jumpFwd(start);
+    				octantCursor2.jumpFwd(start + w);
+    				octantCursor3.jumpFwd(start + 1);
+    				octantCursor4.jumpFwd(start + w + 1);
+    				octantCursor5.jumpFwd(start + w * h);
+    				octantCursor6.jumpFwd(start + w * h + w);
+    				octantCursor7.jumpFwd(start + w * h + 1);
+    				octantCursor8.jumpFwd(start + w * h + w + 1);
+
+    				for (int i = 0; i < steps; i++) {
+    					boolean isEmptyOctant = true;
+    					boolean o1 = octantCursor1.next().get();
+    					boolean o2 = octantCursor2.next().get();
+    					boolean o3 = octantCursor3.next().get();
+    					boolean o4 = octantCursor4.next().get();
+    					boolean o5 = octantCursor5.next().get();
+    					boolean o6 = octantCursor6.next().get();
+    					boolean o7 = octantCursor7.next().get();
+    					boolean o8 = octantCursor8.next().get();
+
+    					if (o1 || o2 || o3 || o4 || o5 || o6 || o7 || o8)
+    						isEmptyOctant = false;
+
+    					threadSumDeltaEuler[n] += getDeltaEuler(isEmptyOctant, o1, o2, o3, o4, o5, o6, o7, o8);
+    				}
+    				System.out.println("Finished thread number "+n);
+    			}
+    		};
+    		taskList.add(new Thread(task));
+    	}
+    	for (Thread t : taskList) {
+    		t.setPriority(Thread.NORM_PRIORITY);
+    		t.start();
+    	}
+    	try {
+    		for (Thread t : taskList)
+    			t.join();
+    	} catch (final InterruptedException ie) {
+    		throw new RuntimeException(ie);
+    	}
+
+    	sumDeltaEuler = Arrays.stream(threadSumDeltaEuler).sum();
+    	output.set(sumDeltaEuler / 8.0);
     }
 
     /** Determines the Δχ from Toriwaki & Yonekura value for this 2x2x2 neighborhood */
