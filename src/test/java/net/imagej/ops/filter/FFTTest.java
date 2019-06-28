@@ -32,7 +32,6 @@ import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.filter.fft.FFTMethodsOpF;
-import net.imagej.ops.filter.fftSize.ComputeFFTSize;
 import net.imagej.ops.filter.ifft.IFFTMethodsOpC;
 import net.imagej.ops.filter.pad.PadShiftKernel;
 import net.imagej.ops.filter.pad.PadShiftKernelFFTMethods;
@@ -104,13 +103,14 @@ public class FFTTest extends AbstractOpTest {
 			final long[] originalDimensions = new long[] { i, size, size };
 
 			// arrays for the fast dimensions
-			final long[] fastDimensions = new long[3];
-			final long[] fftDimensions = new long[3];
+			long[] fastDimensions = new long[3];
+			long[] fftDimensions;
 
 			// compute the dimensions that will result in the fastest FFT time
-			ops.run(ComputeFFTSize.class, originalDimensions, fastDimensions,
-				fftDimensions, true, true);
-
+		
+			long[][] temp=ops.filter().fftSize(new FinalDimensions(originalDimensions), true);
+			fastDimensions=temp[0];
+		
 			// create an input with a small sphere at the center
 			final Img<FloatType> inOriginal = generateFloatArrayTestImg(false,
 				originalDimensions);

@@ -636,19 +636,6 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	// -- fftSize --
-
-	/** Executes the "fftSize" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.fftSize.ComputeFFTSize.class)
-	public List<long[]> fftSize(final Dimensions inputSize,
-		final long[] paddedSize, final long[] fftSize, final boolean forward,
-		final boolean fast)
-	{
-		@SuppressWarnings("unchecked")
-		final List<long[]> result = (List<long[]>) ops().run(
-			Ops.Filter.FFTSize.class, inputSize, paddedSize, fftSize, forward, fast);
-		return result;
-	}
-
 	@OpMethod(op = net.imagej.ops.filter.fftSize.ComputeFFTMethodsSize.class)
 	public long[][] fftSize(final Dimensions in1, final boolean forward,
 		final boolean fast)
