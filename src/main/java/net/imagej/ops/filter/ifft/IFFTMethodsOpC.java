@@ -45,9 +45,7 @@ import org.scijava.thread.ThreadService;
 
 /**
  * Inverse FFT computer that operates on an RAI and wraps FFTMethods. The input
- * and output size must conform to supported FFT size. Use
- * {@link net.imagej.ops.filter.fftSize.ComputeFFTSize} to calculate the
- * supported FFT size.
+ * and output size must conform to supported FFT size.
  * 
  * @author Brian Northan
  * @param <C>

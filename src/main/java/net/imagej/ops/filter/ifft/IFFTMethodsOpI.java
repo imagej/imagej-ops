@@ -42,9 +42,7 @@ import org.scijava.thread.ThreadService;
 
 /**
  * Inverse FFT inplace operator -- complex to complex only, output size must
- * conform to supported FFT size. Use
- * {@link net.imagej.ops.filter.fftSize.ComputeFFTSize} to calculate the
- * supported FFT size.
+ * conform to supported FFT size.
  * 
  * @author Brian Northan
  */

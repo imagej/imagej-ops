@@ -44,9 +44,7 @@ import org.scijava.thread.ThreadService;
 
 /**
  * Forward FFT computer that operates on an RAI and wraps FFTMethods. The input
- * and output size must conform to a supported FFT size. Use
- * {@link net.imagej.ops.filter.fftSize.ComputeFFTSize} to calculate the
- * supported FFT size.
+ * and output size must conform to a supported FFT size.
  * 
  * @author Brian Northan
  * @param <T>
