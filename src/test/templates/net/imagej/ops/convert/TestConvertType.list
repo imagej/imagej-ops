@@ -3,7 +3,7 @@
 [TestConvertType.java]
 biv = ```
 [
-	[name: "p64",     v: 'new BigInteger("17EF234567ABCD123", 16)'],
+	[name: "p64",     v: 'new BigInteger("AEF234567ABCD123", 16)'],
 	[name: "n64",     v: 'new BigInteger("-1399890AB", 16)'],
 	[name: "beef",    v: "BigInteger.valueOf(0xbeef)"],
 	[name: "biZero",  v: "BigInteger.ZERO"],
