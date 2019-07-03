@@ -282,10 +282,9 @@ public class ConvolveTest extends AbstractOpTest {
 		ops.stats().max(max, Views.iterable(convolved));
 		ops.stats().min(min, Views.iterable(convolved));
 
-		assertEquals(sum.getRealDouble(), 8750.00, 0.001);
-		assertEquals(max.getRealDouble(), 3.155, 0.001);
-		assertEquals(min.getRealDouble(), 2.978E-7, 0.001);
-
+		assertEquals(sum.getRealDouble(), 8750.000184601617, 0.0);
+		assertEquals(max.getRealDouble(), 3.154534101486206, 0.0);
+		assertEquals(min.getRealDouble(), -2.9776862220387557E-7, 0.0);
 	}
 
 }

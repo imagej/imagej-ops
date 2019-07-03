@@ -29,8 +29,6 @@
 
 package net.imagej.ops.filter;
 
-import java.util.List;
-
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
@@ -169,7 +167,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class,
 				in, kernel);
 		return result;
 	}
@@ -184,7 +182,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class, output,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, output,
 				raiExtendedInput, raiExtendedKernel);
 		return result;
 	}
