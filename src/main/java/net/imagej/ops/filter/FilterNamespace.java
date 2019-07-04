@@ -160,7 +160,7 @@ public class FilterNamespace extends AbstractNamespace {
 	
 	// -- convolve --
 	
-	/** Executes the "correlate" operation on the given arguments. */
+	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveNaiveF.class)
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 		RandomAccessibleInterval<O> convolve(
@@ -169,12 +169,12 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class,
 				in, kernel);
 		return result;
 	}
 	
-	/** Executes the "correlate" operation on the given arguments. */
+	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(ops = {net.imagej.ops.filter.convolve.ConvolveFFTC.class, net.imagej.ops.filter.convolve.PadAndConvolveFFT.class})
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 		RandomAccessibleInterval<O> convolve(
@@ -184,7 +184,7 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Correlate.class, output,
+			(RandomAccessibleInterval<O>) ops().run(Ops.Filter.Convolve.class, output,
 				raiExtendedInput, raiExtendedKernel);
 		return result;
 	}
