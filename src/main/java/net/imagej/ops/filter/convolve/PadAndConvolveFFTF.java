@@ -38,7 +38,6 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
-import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.util.Intervals;
@@ -70,7 +69,7 @@ public class PadAndConvolveFFTF<I extends RealType<I>, O extends RealType<O> & N
 	 * The output type. If null a default output type will be used.
 	 */
 	@Parameter(required = false)
-	private Type<O> outType;
+	private O outType;
 
 	private BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>> convolver;
 
@@ -100,13 +99,13 @@ public class PadAndConvolveFFTF<I extends RealType<I>, O extends RealType<O> & N
 				.getTypeFromInterval(kernel).getClass())
 			{
 				Object temp = Util.getTypeFromInterval(input).createVariable();
-				outType = (Type<O>) temp;
+				outType = (O) temp;
 
 			}
 			// otherwise default to float
 			else {
 				Object temp = new FloatType();
-				outType = (Type<O>) temp;
+				outType = (O) temp;
 			}
 		}
 

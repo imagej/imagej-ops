@@ -41,7 +41,6 @@ import net.imglib2.Dimensions;
 import net.imglib2.FinalDimensions;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
-import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
@@ -90,7 +89,7 @@ public class FFTMethodsOpF<T extends RealType<T>, C extends ComplexType<C>>
 	 * The complex type of the output
 	 */
 	@Parameter(required = false)
-	private Type<C> fftType;
+	private C fftType;
 
 	private BinaryFunctionOp<RandomAccessibleInterval<T>, Dimensions, RandomAccessibleInterval<T>> padOp;
 

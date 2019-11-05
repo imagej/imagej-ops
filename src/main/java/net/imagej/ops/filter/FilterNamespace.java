@@ -45,7 +45,6 @@ import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
-import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.RealType;
@@ -211,7 +210,7 @@ public class FilterNamespace extends AbstractNamespace {
 		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obf,
-			final Type<O> outType)
+			final O outType)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
@@ -269,7 +268,7 @@ public class FilterNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType)
+			final O outType)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
@@ -285,7 +284,7 @@ public class FilterNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final C fftType)
+			final O outType, final C fftType)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
@@ -439,7 +438,7 @@ public class FilterNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType)
+			final O outType)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
@@ -455,7 +454,7 @@ public class FilterNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
 			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final C fftType)
+			final O outType, final C fftType)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
@@ -616,7 +615,7 @@ public class FilterNamespace extends AbstractNamespace {
 		RandomAccessibleInterval<C> fft(final RandomAccessibleInterval<T> in,
 			final long[] borderSize, final boolean fast,
 			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf,
-			final Type<C> fftType)
+			final C fftType)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<C> result =
