@@ -497,11 +497,12 @@ public abstract class AbstractOpTest {
 	{
 		final Iterator<T> e = expected.iterator();
 		final Iterator<T> a = actual.iterator();
+		int index = 0;
 		while (e.hasNext()) {
-			assertTrue("Fewer elements than expected", a.hasNext());
-			assertEquals(e.next(), a.next());
+			assertTrue("Fewer elements than expected at index " + index, a.hasNext());
+			assertEquals("Mismatch at index " + index, e.next(), a.next());
 		}
-		assertFalse("More elements than expected", a.hasNext());
+		assertFalse("More elements than expected at index " + index, a.hasNext());
 	}
 
 	public static <T> RandomAccessible<T> deinterval(
