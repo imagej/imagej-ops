@@ -1,5 +1,7 @@
 package net.imagej.ops.coloc.saca;
 
+import java.util.Random;
+
 import net.imagej.ops.coloc.WeightedMergeSort;
 
 /**
@@ -12,11 +14,16 @@ public class WtKendallTau {
 	public double[] X;
 	public double[] Y;
 	public double[] W;
+	private final Random rng;
 	
 	public WtKendallTau(double[]InputX, double[]InputY, double[]InputW) {
+		this(InputX, InputY, InputW, 0xdeadbeef);
+	}
+	public WtKendallTau(double[]InputX, double[]InputY, double[]InputW, long seed) {
 		X = InputX;
 		Y = InputY;
 		W = InputW;
+		rng = new Random(seed);
 	}
 	
 	public double calculate() {
@@ -120,7 +127,7 @@ public class WtKendallTau {
 					break;
 			}
 			for (int i = start; i < end; i++){
-				combinedData[i][0]=rank+Math.random();
+				combinedData[i][0]=rank+rng.nextDouble();
 			}
 			rank++;
 			start=end;
@@ -158,7 +165,7 @@ public class WtKendallTau {
 			}
 				
 			for (int i = start; i < end; i++){
-				combinedData[i][1]=rank+Math.random();
+				combinedData[i][1]=rank+rng.nextDouble();
 			}
 			rank++;
 			start=end;
