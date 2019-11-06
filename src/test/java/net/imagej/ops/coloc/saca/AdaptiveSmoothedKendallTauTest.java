@@ -32,7 +32,6 @@
 package net.imagej.ops.coloc.saca;
 
 import net.imagej.ops.coloc.ColocalisationTest;
-import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.img.Img;
@@ -57,14 +56,12 @@ public final class AdaptiveSmoothedKendallTauTest extends ColocalisationTest {
 		final Img<UnsignedByteType> img = generateUnsignedByteArrayTestImg(true, 22, 13);
 		IntervalView<UnsignedByteType> img1 = Views.interval(img, new long[] {0,  0}, new long [] {10, 12});
 		IntervalView<UnsignedByteType> img2 = Views.zeroMin(Views.interval(img, new long[] {11,  0}, new long [] {21, 12}));
-		double[][] data1 = extractDoubles(img1);
-		double[][] data2 = extractDoubles(img2);
 		Histogram1d<UnsignedByteType> hist1 = ops.image().histogram(img1);
 		Histogram1d<UnsignedByteType> hist2 = ops.image().histogram(img2);
 		UnsignedByteType thres1 = ops.threshold().otsu(hist1);
 		UnsignedByteType thres2 = ops.threshold().otsu(hist2);
-		AdaptiveSmoothedKendallTau algorithm = new AdaptiveSmoothedKendallTau(data1, data2, thres1.getRealDouble(), thres2.getRealDouble());
-		double[][] result = algorithm.execute();
+		AdaptiveSmoothedKendallTau<UnsignedByteType, ?, DoubleType> algorithm = new AdaptiveSmoothedKendallTau<>(img1, img2, thres1, thres2);
+		RandomAccessibleInterval<DoubleType> result = algorithm.execute();
 		double[] array = { -1.7250008445155562, -1.73135711204857,
 			-1.7692567054330914, -1.7010656337613557, -1.619312112383386,
 			-1.4525558673002097, -1.1861120398880622, -0.783101347503297,
@@ -114,32 +111,6 @@ public final class AdaptiveSmoothedKendallTauTest extends ColocalisationTest {
 			0.23006029380366322, 0.2604897953870584, -0.09199067449406838,
 			-0.4006581411282655, -0.36328473240543674, -0.22480815873910512 };
 		Img<DoubleType> expected = ArrayImgs.doubles(array, 11, 13);
-		assertIterationsEqual(expected, img(result));
-	}
-
-	private static Img<DoubleType> img(double[][] values) {
-		int h = values.length;
-		int w = values[0].length;
-		Img<DoubleType> img = ArrayImgs.doubles(w, h);
-		Cursor<DoubleType> c = Views.flatIterable(img).cursor();
-		for (int y = 0; y < h; y++) {
-			for (int x = 0; x < w; x++) {
-				c.next().setReal(values[y][x]);
-			}
-		}
-		return img;
-	}
-
-	private static double[][] extractDoubles(RandomAccessibleInterval<UnsignedByteType> typedImg) {
-		int w = (int) typedImg.dimension(0);
-		int h = (int) typedImg.dimension(1);
-		double[][] data = new double[h][w];
-		Cursor<UnsignedByteType> c = Views.flatIterable(typedImg).cursor();
-		for (int y = 0; y < h; y++) {
-			for (int x = 0; x < w; x++) {
-				data[y][x] = c.next().getRealDouble();
-			}
-		}
-		return data;
+		assertIterationsEqual(expected, Views.flatIterable(result));
 	}
 }
