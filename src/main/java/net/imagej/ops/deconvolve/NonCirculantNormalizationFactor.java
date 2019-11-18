@@ -261,7 +261,7 @@ public class NonCirculantNormalizationFactor<I extends RealType<I>, O extends Re
 		}
 	}
 
-	private static class DivideHandleZeroOp<I extends RealType<I> & NumericType<I>, O extends RealType<O> & NumericType<O>>
+	private static class DivideHandleZeroOp<I extends RealType<I> & NumericType<I>>
 		extends AbstractBinaryInplace1Op<I, I>
 	{
 
