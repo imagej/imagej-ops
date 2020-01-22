@@ -9,26 +9,17 @@ import net.imagej.ops.coloc.WeightedMergeSort;
  * 
  * @author Shulei Wang
  */
-public class WtKendallTau {
+public final class WtKendallTau {
 	
-	public double[] X;
-	public double[] Y;
-	public double[] W;
-	private final Random rng;
 	
-	public WtKendallTau(double[]InputX, double[]InputY, double[]InputW) {
-		this(InputX, InputY, InputW, 0xdeadbeef);
+	public static double calculate(double[]X, double[]Y, double[]W) {
+		return calculate(X, Y, W, 0xdeadbeef);
 	}
-	public WtKendallTau(double[]InputX, double[]InputY, double[]InputW, long seed) {
-		X = InputX;
-		Y = InputY;
-		W = InputW;
-		rng = new Random(seed);
-	}
+	public static double calculate(double[]X, double[]Y, double[]W, long seed) {
+
+		Random rng = new Random(seed);
 	
-	public double calculate() {
-		
-		double[][] rankedData = rank(X, Y, W);
+		double[][] rankedData = rank(X, Y, W, rng);
 		int[] rankedindex = new int[X.length];
 		double[] rankedw = new double[X.length];
 		
@@ -48,41 +39,7 @@ public class WtKendallTau {
 		return tau;	
 	}
 	
-    public double brutalcalculate() {
-		
-		double[][] rankedData = rank(X, Y, W);
-//		int[] rankedindex = new int[X.length];
-//		double[] rankedw = new double[X.length];
-		double sumw = 0;
-		double sumnum = 0;
-		double tempw;
-		double temp;
-		
-		for(int i = 0; i < X.length; i++)
-		{
-			for (int j = i+1; j < X.length; j++)
-			{
-				tempw = rankedData[i][2] * rankedData[j][2];
-				temp = (rankedData[i][0] - rankedData[j][0]) * (rankedData[i][1] - rankedData[j][1]);
-				if (temp > 0)
-				{
-					sumnum = sumnum + tempw;
-				}
-				else
-				{
-					sumnum = sumnum - tempw;
-				}
-				sumw = sumw + tempw;
-			}
-		}
-		
-		
-		double tau = sumnum / sumw;
-		
-		return tau;	
-	}
-	
-	private double totw(double[] w) {
+	private static double totw(double[] w) {
 		double sumw = 0;
 		double sumsquarew = 0;
 		
@@ -97,7 +54,7 @@ public class WtKendallTau {
 		return result;
 	}
 	
-	private double[][] rank(double[] IX, double[] IY, double[] IW) {
+	private static double[][] rank(double[] IX, double[] IY, double[] IW, Random rng) {
 		double[][] combinedData = new double[IX.length][3];
 		
 		for(int i = 0; i < IX.length; i++)

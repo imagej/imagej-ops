@@ -8,13 +8,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -45,7 +45,7 @@ import org.junit.Test;
 
 /**
  * Tests {@link AdaptiveSmoothedKendallTau}.
- * 
+ *
  * @author Curtis Rueden
  * @author Ellen T Arena
  */
@@ -53,16 +53,20 @@ public final class AdaptiveSmoothedKendallTauTest extends ColocalisationTest {
 
 	@Test
 	public void testExecute() {
-		final Img<UnsignedByteType> img = generateUnsignedByteArrayTestImg(true, 22, 13);
-		IntervalView<UnsignedByteType> img1 = Views.interval(img, new long[] {0,  0}, new long [] {10, 12});
-		IntervalView<UnsignedByteType> img2 = Views.zeroMin(Views.interval(img, new long[] {11,  0}, new long [] {21, 12}));
-		Histogram1d<UnsignedByteType> hist1 = ops.image().histogram(img1);
-		Histogram1d<UnsignedByteType> hist2 = ops.image().histogram(img2);
-		UnsignedByteType thres1 = ops.threshold().otsu(hist1);
-		UnsignedByteType thres2 = ops.threshold().otsu(hist2);
-		AdaptiveSmoothedKendallTau<UnsignedByteType, ?, DoubleType> algorithm = new AdaptiveSmoothedKendallTau<>(img1, img2, thres1, thres2);
-		RandomAccessibleInterval<DoubleType> result = algorithm.execute();
-		double[] array = { -1.7250008445155562, -1.73135711204857,
+		final Img<UnsignedByteType> img = generateUnsignedByteArrayTestImg(true, 22,
+			13);
+		final IntervalView<UnsignedByteType> img1 = Views.interval(img, new long[] {
+			0, 0 }, new long[] { 10, 12 });
+		final IntervalView<UnsignedByteType> img2 = Views.zeroMin(Views.interval(
+			img, new long[] { 11, 0 }, new long[] { 21, 12 }));
+		final Histogram1d<UnsignedByteType> hist1 = ops.image().histogram(img1);
+		final Histogram1d<UnsignedByteType> hist2 = ops.image().histogram(img2);
+		final UnsignedByteType thres1 = ops.threshold().otsu(hist1);
+		final UnsignedByteType thres2 = ops.threshold().otsu(hist2);
+		final RandomAccessibleInterval<DoubleType> result =
+			AdaptiveSmoothedKendallTau.execute(img1, img2, thres1, thres2,
+				new DoubleType());
+		final double[] array = { -1.7250008445155562, -1.73135711204857,
 			-1.7692567054330914, -1.7010656337613557, -1.619312112383386,
 			-1.4525558673002097, -1.1861120398880622, -0.783101347503297,
 			-0.37954116613571465, -0.09517055420041515, -0.09203049578306335,
@@ -110,7 +114,7 @@ public final class AdaptiveSmoothedKendallTauTest extends ColocalisationTest {
 			0.3034899644676543, 0.38835599292227196, 0.15808489018939986,
 			0.23006029380366322, 0.2604897953870584, -0.09199067449406838,
 			-0.4006581411282655, -0.36328473240543674, -0.22480815873910512 };
-		Img<DoubleType> expected = ArrayImgs.doubles(array, 11, 13);
+		final Img<DoubleType> expected = ArrayImgs.doubles(array, 11, 13);
 		assertIterationsEqual(expected, Views.flatIterable(result));
 	}
 }
