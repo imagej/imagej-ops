@@ -28,11 +28,11 @@ public final class AdaptiveSmoothedKendallTau {
 
 	private AdaptiveSmoothedKendallTau() {}
 
-	public static <I extends RealType<I>, T extends RealType<T>>
-		void execute(
-			final RandomAccessibleInterval<I> image1,
-			final RandomAccessibleInterval<I> image2, final I thres1, final I thres2,
-			final T intermediate, RandomAccessibleInterval<DoubleType> result, final long seed)
+	public static <I extends RealType<I>, T extends RealType<T>> void execute(
+		final RandomAccessibleInterval<I> image1,
+		final RandomAccessibleInterval<I> image2, final I thres1, final I thres2,
+		final T intermediate, final RandomAccessibleInterval<DoubleType> result,
+		final long seed)
 	{
 		final Function<RandomAccessibleInterval<I>, RandomAccessibleInterval<T>> factory =
 			img -> Util.getSuitableImgFactory(img, intermediate).create(img);
@@ -59,8 +59,8 @@ public final class AdaptiveSmoothedKendallTau {
 		int intSize;
 		boolean IsCheck = false;
 
-		Random rng = new Random(seed);
-		
+		final Random rng = new Random(seed);
+
 		for (int s = 0; s < TU; s++) {
 			intSize = (int) Math.floor(size);
 			singleiteration(image1, image2, thres1, thres2, stop, oldtau, oldsqrtN,
@@ -86,7 +86,7 @@ public final class AdaptiveSmoothedKendallTau {
 			final RandomAccessibleInterval<T> newtau,
 			final RandomAccessibleInterval<T> newsqrtN,
 			final RandomAccessibleInterval<DoubleType> result, final double Lambda,
-			final double Dn, final int Bsize, final boolean isCheck, Random rng)
+			final double Dn, final int Bsize, final boolean isCheck, final Random rng)
 	{
 		final double[][] kernel = kernelGenerate(Bsize);
 
@@ -96,6 +96,14 @@ public final class AdaptiveSmoothedKendallTau {
 		final double[] LocX = new double[totnum];
 		final double[] LocY = new double[totnum];
 		final double[] LocW = new double[totnum];
+		final double[][] combinedData = new double[totnum][3];
+		final int[] rankedindex = new int[totnum];
+		final double[] rankedw = new double[totnum];
+		final int[] index1 = new int[totnum];
+		final int[] index2 = new int[totnum];
+		final double[] w1 = new double[totnum];
+		final double[] w2 = new double[totnum];
+		final double[] cumw = new double[totnum];
 		double tau;
 		double taudiff;
 
@@ -143,7 +151,8 @@ public final class AdaptiveSmoothedKendallTau {
 				cursor.get().setZero();
 			}
 			else {
-				tau = WtKendallTau.calculate(LocX, LocY, LocW, rng);
+				tau = WtKendallTau.calculate(LocX, LocY, LocW, combinedData,
+					rankedindex, rankedw, index1, index2, w1, w2, cumw, rng);
 				raNewTau.get().setReal(tau);
 				cursor.get().setReal(tau * raNewSqrtN.get().getRealDouble() * 1.5);
 			}
