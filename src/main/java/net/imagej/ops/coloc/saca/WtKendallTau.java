@@ -1,6 +1,7 @@
 
 package net.imagej.ops.coloc.saca;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
 
@@ -68,59 +69,44 @@ final class WtKendallTau {
 		}
 
 		// sort X
-		java.util.Arrays.sort(combinedData, SORT_X);
+		Arrays.sort(combinedData, SORT_X);
 
-		int start = 0;
-		int end = 0;
-		int rank = 0;
-		while (end < IX.length - 1) {
-			while (Double.compare(combinedData[start][0],
-				combinedData[end][0]) == 0)
-			{
-				end++;
-				if (end >= IX.length) break;
-			}
-			for (int i = start; i < end; i++) {
-				combinedData[i][0] = rank + rng.nextDouble();
-			}
-			rank++;
-			start = end;
-		}
-
-		java.util.Arrays.sort(combinedData, SORT_X);
-
-		for (int i = 0; i < IX.length; i++) {
-			combinedData[i][0] = i + 1;
-		}
-
+		rank1D(combinedData, 0, rng);
+		
 		// sort Y
-		java.util.Arrays.sort(combinedData, SORT_Y);
+		Arrays.sort(combinedData, SORT_Y);
 
-		start = 0;
-		end = 0;
-		rank = 0;
-		while (end < IX.length - 1) {
-			while (Double.compare(combinedData[start][1],
-				combinedData[end][1]) == 0)
-			{
-				end++;
-				if (end >= IX.length) break;
-			}
-
-			for (int i = start; i < end; i++) {
-				combinedData[i][1] = rank + rng.nextDouble();
-			}
-			rank++;
-			start = end;
-		}
-
-		java.util.Arrays.sort(combinedData, SORT_Y);
-
-		for (int i = 0; i < IX.length; i++) {
-			combinedData[i][1] = i + 1;
-		}
-
+		rank1D(combinedData, 1, rng);
+		
 		return combinedData;
+	}
+
+	private static void rank1D(final double[][] combinedData, final int dim, final Random rng) {
+		int start = 0;
+		int end = 1;
+		int rank = 1;
+		while (start < combinedData.length) {
+			if(end < combinedData.length && combinedData[start][dim] == combinedData[end][dim]) {
+				// tied value; count how many tied values there are in a row
+				do {
+					end++;
+				}
+				while(end < combinedData.length && combinedData[start][dim] == combinedData[end][dim]);
+				// now assign unique rank randomly over these indices -- Fisher-Yates shuffle!
+				for (int i = start; i < end - 1; i++) {
+					final int newIndex = start + rng.nextInt(end - start);
+					final double[] tmp = combinedData[i];
+					combinedData[i] = combinedData[newIndex];
+					combinedData[newIndex] = tmp;
+				}
+				rank += end - start;
+			}
+			for (int i = start; i < end; i++) {
+				combinedData[i][dim] = rank++;
+			}
+			start = end;
+			end++;
+		}
 	}
 
 	private static double sort(final int[] data, final double[] weight,
