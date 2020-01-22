@@ -11,13 +11,7 @@ import net.imagej.ops.coloc.WeightedMergeSort;
  */
 public final class WtKendallTau {
 	
-	
-	public static double calculate(double[]X, double[]Y, double[]W) {
-		return calculate(X, Y, W, 0xdeadbeef);
-	}
-	public static double calculate(double[]X, double[]Y, double[]W, long seed) {
-
-		Random rng = new Random(seed);
+	public static double calculate(double[]X, double[]Y, double[]W, Random rng) {
 	
 		double[][] rankedData = rank(X, Y, W, rng);
 		int[] rankedindex = new int[X.length];

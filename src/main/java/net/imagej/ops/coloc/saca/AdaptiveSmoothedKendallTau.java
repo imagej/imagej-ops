@@ -3,6 +3,7 @@ package net.imagej.ops.coloc.saca;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.function.Function;
 
 import net.imglib2.Cursor;
@@ -31,7 +32,7 @@ public final class AdaptiveSmoothedKendallTau {
 		RandomAccessibleInterval<DoubleType> execute(
 			final RandomAccessibleInterval<I> image1,
 			final RandomAccessibleInterval<I> image2, final I thres1, final I thres2,
-			final T intermediate)
+			final T intermediate, final long seed)
 	{
 		final Function<RandomAccessibleInterval<I>, RandomAccessibleInterval<T>> factory =
 			img -> Util.getSuitableImgFactory(img, intermediate).create(img);
@@ -60,10 +61,12 @@ public final class AdaptiveSmoothedKendallTau {
 		int intSize;
 		boolean IsCheck = false;
 
+		Random rng = new Random(seed);
+		
 		for (int s = 0; s < TU; s++) {
 			intSize = (int) Math.floor(size);
 			singleiteration(image1, image2, thres1, thres2, stop, oldtau, oldsqrtN,
-				newtau, newsqrtN, result, Lambda, Dn, intSize, IsCheck);
+				newtau, newsqrtN, result, Lambda, Dn, intSize, IsCheck, rng);
 			size *= stepsize;
 			if (s == TL) {
 				IsCheck = true;
@@ -87,7 +90,7 @@ public final class AdaptiveSmoothedKendallTau {
 			final RandomAccessibleInterval<T> newtau,
 			final RandomAccessibleInterval<T> newsqrtN,
 			final RandomAccessibleInterval<DoubleType> result, final double Lambda,
-			final double Dn, final int Bsize, final boolean isCheck)
+			final double Dn, final int Bsize, final boolean isCheck, Random rng)
 	{
 		final double[][] kernel = kernelGenerate(Bsize);
 
@@ -144,7 +147,7 @@ public final class AdaptiveSmoothedKendallTau {
 				cursor.get().setZero();
 			}
 			else {
-				tau = WtKendallTau.calculate(LocX, LocY, LocW);
+				tau = WtKendallTau.calculate(LocX, LocY, LocW, rng);
 				raNewTau.get().setReal(tau);
 				cursor.get().setReal(tau * raNewSqrtN.get().getRealDouble() * 1.5);
 			}
