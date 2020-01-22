@@ -38,6 +38,7 @@ import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.util.Util;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
@@ -63,9 +64,10 @@ public final class AdaptiveSmoothedKendallTauTest extends ColocalisationTest {
 		final Histogram1d<UnsignedByteType> hist2 = ops.image().histogram(img2);
 		final UnsignedByteType thres1 = ops.threshold().otsu(hist1);
 		final UnsignedByteType thres2 = ops.threshold().otsu(hist2);
-		final RandomAccessibleInterval<DoubleType> result =
-			AdaptiveSmoothedKendallTau.execute(img1, img2, thres1, thres2,
-				new DoubleType(), 0xdeadbeef);
+		final RandomAccessibleInterval<DoubleType> result = Util
+			.getSuitableImgFactory(img1, new DoubleType()).create(img1);
+		AdaptiveSmoothedKendallTau.execute(img1, img2, thres1, thres2,
+			new DoubleType(), result, 0xdeadbeef);
 		final double[] array = { -1.619689767150208, -1.7472329253837062,
 			-1.8080478424389705, -1.6083096549693638, -1.4681345430398647,
 			-1.2236411280603958, -1.1667094195269883, -0.7537378712246905,

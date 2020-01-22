@@ -28,19 +28,17 @@ public final class AdaptiveSmoothedKendallTau {
 
 	private AdaptiveSmoothedKendallTau() {}
 
-	public static <I extends RealType<I>, T extends RealType<T>, O extends RealType<O>>
-		RandomAccessibleInterval<DoubleType> execute(
+	public static <I extends RealType<I>, T extends RealType<T>>
+		void execute(
 			final RandomAccessibleInterval<I> image1,
 			final RandomAccessibleInterval<I> image2, final I thres1, final I thres2,
-			final T intermediate, final long seed)
+			final T intermediate, RandomAccessibleInterval<DoubleType> result, final long seed)
 	{
 		final Function<RandomAccessibleInterval<I>, RandomAccessibleInterval<T>> factory =
 			img -> Util.getSuitableImgFactory(img, intermediate).create(img);
 
 		final long nr = image1.dimension(1);
 		final long nc = image1.dimension(0);
-		final RandomAccessibleInterval<DoubleType> result = Util
-			.getSuitableImgFactory(image1, new DoubleType()).create(image1);
 		final RandomAccessibleInterval<T> oldtau = factory.apply(image1);
 		final RandomAccessibleInterval<T> newtau = factory.apply(image1);
 		final RandomAccessibleInterval<T> oldsqrtN = factory.apply(image1);
@@ -77,8 +75,6 @@ public final class AdaptiveSmoothedKendallTau {
 					});
 			}
 		}
-
-		return result; // z score, used to produce heat map
 	}
 
 	private static <I extends RealType<I>, T extends RealType<T>, O extends RealType<O>>
