@@ -30,7 +30,6 @@
 package net.imagej.ops.topology;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.stream.IntStream;
@@ -152,11 +151,9 @@ public class BoxCount<B extends BooleanType<B>> extends
 		final long[] sizes, final long sectionSize)
 	{
 		final int lastDimension = sizes.length - 1;
-		final LongType foreground = new LongType();
-		final long[] sectionPosition = new long[sizes.length];
-		return translations.mapToLong(gridOffset -> {
-			foreground.setZero();
-			Arrays.fill(sectionPosition, 0);
+		return translations.parallel().mapToLong(gridOffset -> {
+			final LongType foreground = new LongType();
+			final long[] sectionPosition = new long[sizes.length];
 			countGrid(input, lastDimension, sizes, gridOffset, sectionPosition,
 				sectionSize, foreground);
 			return foreground.get();
