@@ -42,6 +42,7 @@ import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Util;
 
 import org.scijava.plugin.Plugin;
 
@@ -616,6 +617,331 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	@Override
 	public String getName() {
 		return "deconvolve";
+	}
+
+	// -- Deprecated methods --
+
+	@Deprecated
+	public <I extends RealType<I> & NativeType<I>, K extends RealType<K>>
+		RandomAccessibleInterval<I> richardsonLucy(
+			final RandomAccessibleInterval<I> in,
+			final RandomAccessibleInterval<K> kernel, final int maxIterations)
+	{
+		return richardsonLucy(create(in), in, kernel, maxIterations);
+	}
+
+	@Deprecated
+	public <I extends RealType<I> & NativeType<I>, K extends RealType<K>>
+		RandomAccessibleInterval<I> richardsonLucy(
+			final RandomAccessibleInterval<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final int maxIterations)
+	{
+		return richardsonLucy(create(in), in, kernel, borderSize, maxIterations);
+	}
+
+	@Deprecated
+	public <I extends RealType<I> & NativeType<I>, K extends RealType<K>>
+		RandomAccessibleInterval<I> richardsonLucy(
+			final RandomAccessibleInterval<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final int maxIterations)
+	{
+		return richardsonLucy(create(in), in, kernel, borderSize, obfInput,
+			maxIterations);
+	}
+
+	@Deprecated
+	public <I extends RealType<I> & NativeType<I>, K extends RealType<K>>
+		RandomAccessibleInterval<I> richardsonLucy(
+			final RandomAccessibleInterval<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final int maxIterations)
+	{
+		return richardsonLucy(create(in), in, kernel, borderSize, obfInput,
+			obfKernel, maxIterations);
+	}
+
+	@Deprecated
+	public <I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>>
+		RandomAccessibleInterval<O> richardsonLucy(
+			final RandomAccessibleInterval<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final O outType, final int maxIterations)
+	{
+		return richardsonLucy(create(in, outType), in, kernel, borderSize, obfInput,
+			obfKernel, outType, maxIterations);
+	}
+
+	@Deprecated
+	public <I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		RandomAccessibleInterval<O> richardsonLucy(
+			final RandomAccessibleInterval<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final O outType, final C fftType, final int maxIterations)
+	{
+		RandomAccessibleInterval<O> out = create(in, outType);
+		return richardsonLucy(out, in, kernel, borderSize, obfInput, obfKernel,
+			outType, fftType, maxIterations);
+	}
+
+	@Deprecated
+	public <I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		RandomAccessibleInterval<O> richardsonLucy(
+			final RandomAccessibleInterval<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final O outType, final C fftType, final int maxIterations,
+			final boolean nonCirculant)
+	{
+		return richardsonLucy(create(in, outType), in, kernel, borderSize, obfInput,
+			obfKernel, outType, fftType, maxIterations, nonCirculant);
+	}
+
+	@Deprecated
+	public <I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		RandomAccessibleInterval<O> richardsonLucy(
+			final RandomAccessibleInterval<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final O outType, final C fftType, final int maxIterations,
+			final boolean nonCirculant, final boolean accelerate)
+	{
+		return richardsonLucy(create(in, outType), in, kernel, borderSize, obfInput,
+			obfKernel, outType, fftType, maxIterations, nonCirculant, accelerate);
+	}
+
+	@Deprecated
+	public <I extends RealType<I> & NativeType<I>, K extends RealType<K>, C extends ComplexType<C>>
+		RandomAccessibleInterval<I> richardsonLucy(
+			final RandomAccessibleInterval<I> in1,
+			final RandomAccessibleInterval<K> in2,
+			final RandomAccessibleInterval<C> fftInput,
+			final RandomAccessibleInterval<C> fftKernel,
+			final boolean performInputFFT, final int maxIterations)
+	{
+		return richardsonLucy(create(in1), in1, in2, fftInput, fftKernel,
+			performInputFFT, maxIterations);
+	}
+
+	@Deprecated
+	public <I extends RealType<I> & NativeType<I>, K extends RealType<K>, C extends ComplexType<C>>
+		RandomAccessibleInterval<I> richardsonLucy(
+			final RandomAccessibleInterval<I> in1,
+			final RandomAccessibleInterval<K> in2,
+			final RandomAccessibleInterval<C> fftInput,
+			final RandomAccessibleInterval<C> fftKernel,
+			final boolean performInputFFT, final boolean performKernelFFT,
+			final int maxIterations)
+	{
+		return richardsonLucy(create(in1), in1, in2, fftInput, fftKernel,
+			performInputFFT, performKernelFFT, maxIterations);
+	}
+
+	@Deprecated
+	public <I extends RealType<I> & NativeType<I>, K extends RealType<K>, C extends ComplexType<C>>
+		RandomAccessibleInterval<I> richardsonLucy(
+			final RandomAccessibleInterval<I> in1,
+			final RandomAccessibleInterval<K> in2,
+			final RandomAccessibleInterval<C> fftInput,
+			final RandomAccessibleInterval<C> fftKernel,
+			final boolean performInputFFT, final boolean performKernelFFT,
+			final int maxIterations, final UnaryInplaceOp<I, I> accelerator)
+	{
+		return richardsonLucy(create(in1), in1, in2, fftInput, fftKernel,
+			performInputFFT, performKernelFFT, maxIterations, accelerator);
+	}
+
+	@Deprecated
+	public <I extends RealType<I> & NativeType<I>, K extends RealType<K>, C extends ComplexType<C>>
+		RandomAccessibleInterval<I> richardsonLucy(
+			final RandomAccessibleInterval<I> in1,
+			final RandomAccessibleInterval<K> in2,
+			final RandomAccessibleInterval<C> fftInput,
+			final RandomAccessibleInterval<C> fftKernel,
+			final boolean performInputFFT, final boolean performKernelFFT,
+			final int maxIterations, final UnaryInplaceOp<I, I> accelerator,
+			final UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<I>> update)
+	{
+		return richardsonLucy(create(in1), in1, in2, fftInput, fftKernel,
+			performInputFFT, performKernelFFT, maxIterations, accelerator, update);
+	}
+
+	@Deprecated
+	public <I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		RandomAccessibleInterval<O> richardsonLucy(
+			final RandomAccessibleInterval<I> in1,
+			final RandomAccessibleInterval<K> in2,
+			final RandomAccessibleInterval<C> fftInput,
+			final RandomAccessibleInterval<C> fftKernel,
+			final boolean performInputFFT, final boolean performKernelFFT,
+			final int maxIterations, final UnaryInplaceOp<O, O> accelerator,
+			final UnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> update,
+			RandomAccessibleInterval<O> raiExtendedEstimate)
+	{
+		final RandomAccessibleInterval<O> out = create(in1, raiExtendedEstimate);
+		return richardsonLucy(out, in1, in2, fftInput, fftKernel, performInputFFT,
+			performKernelFFT, maxIterations, accelerator, update,
+			raiExtendedEstimate);
+	}
+
+	@Deprecated
+	public <I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		RandomAccessibleInterval<O> richardsonLucy(
+			final RandomAccessibleInterval<I> in1,
+			final RandomAccessibleInterval<K> in2,
+			final RandomAccessibleInterval<C> fftInput,
+			final RandomAccessibleInterval<C> fftKernel,
+			final boolean performInputFFT, final boolean performKernelFFT,
+			final int maxIterations, final UnaryInplaceOp<O, O> accelerator,
+			final UnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> update,
+			RandomAccessibleInterval<O> raiExtendedEstimate,
+			final ArrayList<UnaryInplaceOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>> iterativePostProcessing)
+	{
+		final RandomAccessibleInterval<O> out = create(in1, raiExtendedEstimate);
+		return richardsonLucy(out, in1, in2, fftInput, fftKernel, performInputFFT,
+			performKernelFFT, maxIterations, accelerator, update, raiExtendedEstimate,
+			iterativePostProcessing);
+	}
+
+	@Deprecated
+	public <I extends RealType<I> & NativeType<I>, K extends RealType<K>>
+		RandomAccessibleInterval<I> richardsonLucyTV(
+			final RandomAccessibleInterval<I> in,
+			final RandomAccessibleInterval<K> kernel, final int maxIterations,
+			final float regularizationFactor)
+	{
+		return richardsonLucyTV(create(in), in, kernel, maxIterations,
+			regularizationFactor);
+	}
+
+	@Deprecated
+	public <I extends RealType<I> & NativeType<I>, K extends RealType<K>>
+		RandomAccessibleInterval<I> richardsonLucyTV(
+			final RandomAccessibleInterval<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final int maxIterations, final float regularizationFactor)
+	{
+		return richardsonLucyTV(create(in), in, kernel, borderSize, maxIterations,
+			regularizationFactor);
+	}
+
+	@Deprecated
+	public <I extends RealType<I> & NativeType<I>, K extends RealType<K>>
+		RandomAccessibleInterval<I> richardsonLucyTV(
+			final RandomAccessibleInterval<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final int maxIterations, final float regularizationFactor)
+	{
+		return richardsonLucyTV(create(in), in, kernel, borderSize, obfInput,
+			maxIterations, regularizationFactor);
+	}
+
+	@Deprecated
+	public <I extends RealType<I> & NativeType<I>, K extends RealType<K>>
+		RandomAccessibleInterval<I> richardsonLucyTV(
+			final RandomAccessibleInterval<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final int maxIterations, final float regularizationFactor)
+	{
+		return richardsonLucyTV(create(in), in, kernel, borderSize, obfInput,
+			obfKernel, maxIterations, regularizationFactor);
+	}
+
+	@Deprecated
+	public <I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>>
+		RandomAccessibleInterval<O> richardsonLucyTV(
+			final RandomAccessibleInterval<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final O outType, final int maxIterations,
+			final float regularizationFactor)
+	{
+		return richardsonLucyTV(create(in, outType), in, kernel, borderSize,
+			obfInput, obfKernel, outType, maxIterations, regularizationFactor);
+	}
+
+	@Deprecated
+	public <I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		RandomAccessibleInterval<O> richardsonLucyTV(
+			final RandomAccessibleInterval<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final O outType, final C fftType, final int maxIterations,
+			final float regularizationFactor)
+	{
+		return richardsonLucyTV(create(in, outType), in, kernel, borderSize,
+			obfInput, obfKernel, outType, fftType, maxIterations,
+			regularizationFactor);
+	}
+
+	@Deprecated
+	public <I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		RandomAccessibleInterval<O> richardsonLucyTV(
+			final RandomAccessibleInterval<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final O outType, final C fftType, final int maxIterations,
+			final boolean nonCirculant, final float regularizationFactor)
+	{
+		return richardsonLucyTV(create(in, outType), in, kernel, borderSize,
+			obfInput, obfKernel, outType, fftType, maxIterations, nonCirculant,
+			regularizationFactor);
+	}
+
+	@Deprecated
+	public <I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		RandomAccessibleInterval<O> richardsonLucyTV(
+			final RandomAccessibleInterval<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final O outType, final C fftType, final int maxIterations,
+			final boolean nonCirculant, final boolean accelerate,
+			final float regularizationFactor)
+	{
+		return richardsonLucyTV(create(in, outType), in, kernel, borderSize,
+			obfInput, obfKernel, outType, fftType, maxIterations, nonCirculant,
+			accelerate, regularizationFactor);
+	}
+
+	// -- Helper methods --
+
+	private <T extends NativeType<T>> RandomAccessibleInterval<T> create(
+		final RandomAccessibleInterval<T> in)
+	{
+		return ops().create().img(in);
+	}
+
+	private <T extends RealType<T> & NativeType<T>> RandomAccessibleInterval<T>
+		create(Dimensions in, T outType)
+	{
+		return ops().create().img(in, outType);
+	}
+
+	private <O extends RealType<O> & NativeType<O>, I extends RealType<I>>
+		RandomAccessibleInterval<O> create(final RandomAccessibleInterval<I> in,
+			RandomAccessibleInterval<O> imageOfCorrectType)
+	{
+		if (imageOfCorrectType == null) {
+			throw new IllegalArgumentException("No way to discern output type");
+		}
+		return create(in, Util.getTypeFromInterval(imageOfCorrectType));
 	}
 
 }
