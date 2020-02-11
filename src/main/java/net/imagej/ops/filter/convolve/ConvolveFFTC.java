@@ -64,24 +64,6 @@ public class ConvolveFFTC<I extends RealType<I>, O extends RealType<O>, K extend
 
 	private BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>> linearFilter;
 
-	@Override
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void initialize() {
-		super.initialize();
-
-		mul = Hybrids.binaryCF(ops(), IIToIIOutputII.Multiply.class, getFFTInput(),
-			getFFTKernel(), getFFTInput());
-
-		// create a convolver by creating a linear filter and passing the multiplier as
-		// the frequency operation
-		linearFilter = (BinaryComputerOp) Computers.binary(ops(),
-			FFTMethodsLinearFFTFilterC.class, RandomAccessibleInterval.class,
-			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
-			getFFTInput(), getFFTKernel(), getPerformInputFFT(),
-			getPerformKernelFFT(), mul);
-
-	}
-
 	/**
 	 * Call the linear filter that is set up to perform convolution
 	 */
@@ -89,6 +71,20 @@ public class ConvolveFFTC<I extends RealType<I>, O extends RealType<O>, K extend
 	public void compute(RandomAccessibleInterval<I> in,
 		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
+		if (linearFilter == null) {
+			System.out.println("ConvolveFFTC: fftInput = " + getFFTInput() + ", fftKernel = " + getFFTKernel());
+			mul = Hybrids.binaryCF(ops(), IIToIIOutputII.Multiply.class, getFFTInput(),
+				getFFTKernel(), getFFTInput());
+
+			// create a convolver by creating a linear filter and passing the multiplier as
+			// the frequency operation
+			linearFilter = (BinaryComputerOp) Computers.binary(ops(),
+				FFTMethodsLinearFFTFilterC.class, RandomAccessibleInterval.class,
+				RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+				getFFTInput(), getFFTKernel(), getPerformInputFFT(),
+				getPerformKernelFFT(), mul);
+		}
+
 		linearFilter.compute(in, kernel, out);
 	}
 }
