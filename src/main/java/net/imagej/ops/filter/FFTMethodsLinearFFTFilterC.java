@@ -63,24 +63,22 @@ public class FFTMethodsLinearFFTFilterC<I extends RealType<I>, O extends RealTyp
 	@Parameter
 	private BinaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> frequencyOp;
 
-	private UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<C>> fftIn;
-
-	private UnaryComputerOp<RandomAccessibleInterval<K>, RandomAccessibleInterval<C>> fftKernel;
-
-	private UnaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<O>> ifft;
+	private UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<C>> fftInOp;
+	private UnaryComputerOp<RandomAccessibleInterval<K>, RandomAccessibleInterval<C>> fftKernelOp;
+	private UnaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<O>> ifftOp;
 
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initialize() {
 		super.initialize();
 
-		fftIn = (UnaryComputerOp) Computers.unary(ops(), FFTMethodsOpC.class,
+		fftInOp = (UnaryComputerOp) Computers.unary(ops(), FFTMethodsOpC.class,
 			getFFTInput(), RandomAccessibleInterval.class);
 
-		fftKernel = (UnaryComputerOp) Computers.unary(ops(), FFTMethodsOpC.class,
+		fftKernelOp = (UnaryComputerOp) Computers.unary(ops(), FFTMethodsOpC.class,
 			getFFTKernel(), RandomAccessibleInterval.class);
 
-		ifft = (UnaryComputerOp) Computers.unary(ops(), IFFTMethodsOpC.class,
+		ifftOp = (UnaryComputerOp) Computers.unary(ops(), IFFTMethodsOpC.class,
 			RandomAccessibleInterval.class, getFFTKernel());
 
 	}
@@ -104,12 +102,12 @@ public class FFTMethodsLinearFFTFilterC<I extends RealType<I>, O extends RealTyp
 		
 		// perform input FFT if needed
 		if (getPerformInputFFT()) {
-			fftIn.compute(in, getFFTInput());
+			fftInOp.compute(in, getFFTInput());
 		}
 
 		// perform kernel FFT if needed
 		if (getPerformKernelFFT()) {
-			fftKernel.compute(kernel, getFFTKernel());
+			fftKernelOp.compute(kernel, getFFTKernel());
 		}
 
 		// perform the operation in frequency domain (ie multiplication for
@@ -118,7 +116,7 @@ public class FFTMethodsLinearFFTFilterC<I extends RealType<I>, O extends RealTyp
 		frequencyOp.compute(getFFTInput(), getFFTKernel(), getFFTInput());
 
 		// perform inverse fft
-		ifft.compute(getFFTInput(), out);
+		ifftOp.compute(getFFTInput(), out);
 		// linearFilter.compute(in, kernel, out);
 	}
 }
