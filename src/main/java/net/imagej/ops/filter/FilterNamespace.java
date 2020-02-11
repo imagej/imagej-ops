@@ -131,16 +131,9 @@ public class FilterNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	/**
-	 * Executes a bilateral filter on the given arguments.
-	 *
-	 * @param in
-	 * @param out
-	 * @param sigmaR
-	 * @param sigmaS
-	 * @param radius
-	 * @return
-	 */
+	// -- bilateral --
+
+	/** Executes the "bilateral" filter on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.bilateral.DefaultBilateral.class)
 	public <I extends RealType<I>, O extends RealType<O>>
 		RandomAccessibleInterval<O> bilateral(final RandomAccessibleInterval<O> out,
