@@ -31,8 +31,8 @@ package net.imagej.ops.filter.convolve;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
-import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
@@ -50,10 +50,10 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Function adapter for {@link ConvolveFFTC}.
+ * Function adapter for {@link PadAndConvolveFFT}.
  */
 @Plugin(type = Ops.Filter.Convolve.class, priority = Priority.HIGH + 1)
-public class ConvolveNaiveF<I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>>
+public class PadAndConvolveFFTF<I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>>
 	extends
 	AbstractBinaryFunctionOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>>
 	implements Ops.Filter.Convolve, Contingent
@@ -72,15 +72,15 @@ public class ConvolveNaiveF<I extends RealType<I>, O extends RealType<O> & Nativ
 	@Parameter(required = false)
 	private Type<O> outType;
 
-	private UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> convolver;
+	private BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>> convolver;
 
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initialize() {
 		super.initialize();
 
-		convolver = (UnaryComputerOp) Computers.unary(ops(), ConvolveNaiveC.class,
-			RandomAccessibleInterval.class, RandomAccessibleInterval.class, in2());
+		convolver = (BinaryComputerOp) Computers.binary(ops(),
+			PadAndConvolveFFT.class, RandomAccessibleInterval.class, in1(), in2());
 
 	}
 
@@ -146,8 +146,8 @@ public class ConvolveNaiveF<I extends RealType<I>, O extends RealType<O> & Nativ
 
 	@Override
 	public boolean conforms() {
-		// conforms only if the kernel is sufficiently small
-		return Intervals.numElements(in2()) <= 9;
+		// conforms only if the kernel is sufficiently large
+		return Intervals.numElements(in2()) > 9;
 	}
 
 }

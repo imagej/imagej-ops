@@ -159,7 +159,8 @@ public class FilterNamespace extends AbstractNamespace {
 	// -- convolve --
 	
 	/** Executes the "correlate" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveNaiveF.class)
+	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveNaiveF.class,
+		net.imagej.ops.filter.convolve.PadAndConvolveFFTF.class })
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 		RandomAccessibleInterval<O> convolve(
 			final RandomAccessibleInterval<I> in,
@@ -173,7 +174,8 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 	
 	/** Executes the "correlate" operation on the given arguments. */
-	@OpMethod(ops = {net.imagej.ops.filter.convolve.ConvolveFFTC.class, net.imagej.ops.filter.convolve.PadAndConvolveFFT.class})
+	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTC.class,
+		net.imagej.ops.filter.convolve.PadAndConvolveFFT.class })
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 		RandomAccessibleInterval<O> convolve(
 			final RandomAccessibleInterval<O> output,
@@ -188,7 +190,8 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	/** Executes the "convolve" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveNaiveF.class)
+	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveNaiveF.class,
+		net.imagej.ops.filter.convolve.PadAndConvolveFFTF.class })
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel,
@@ -202,7 +205,8 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	/** Executes the "convolve" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveNaiveF.class)
+	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveNaiveF.class,
+		net.imagej.ops.filter.convolve.PadAndConvolveFFTF.class })
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel,
