@@ -106,8 +106,7 @@ public class ColocNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.coloc.maxTKendallTau.MTKT.class)
 	public <T extends RealType<T>, U extends RealType<U>> Double maxTKendallTau(
 		final RandomAccessibleInterval<T> in1,
-		final RandomAccessibleInterval<U> in2,
-		final long seed)
+		final RandomAccessibleInterval<U> in2, final long seed)
 	{
 		final Double result = (Double) ops().run(
 			net.imagej.ops.coloc.maxTKendallTau.MTKT.class, in1, in2, seed);
@@ -174,6 +173,62 @@ public class ColocNamespace extends AbstractNamespace {
 		final PValueResult result = (PValueResult) ops().run(
 			net.imagej.ops.coloc.pValue.DefaultPValue.class, out, in1, in2, op,
 			nrRandomizations, psfSize, seed);
+		return result;
+	}
+
+	//-- saca --
+
+	@OpMethod(op = net.imagej.ops.coloc.saca.SACA.class)
+	public <I extends RealType<I>, O extends RealType<O>>
+		RandomAccessibleInterval<O> saca(final RandomAccessibleInterval<O> out,
+			final RandomAccessibleInterval<I> in1,
+			final RandomAccessibleInterval<I> in2)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(
+				net.imagej.ops.coloc.saca.SACA.class, out, in1, in2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.coloc.saca.SACA.class)
+	public <I extends RealType<I>, O extends RealType<O>>
+		RandomAccessibleInterval<O> saca(final RandomAccessibleInterval<O> out,
+			final RandomAccessibleInterval<I> in1,
+			final RandomAccessibleInterval<I> in2, final I thres1)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(
+				net.imagej.ops.coloc.saca.SACA.class, out, in1, in2, thres1);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.coloc.saca.SACA.class)
+	public <I extends RealType<I>, O extends RealType<O>>
+		RandomAccessibleInterval<O> saca(final RandomAccessibleInterval<O> out,
+			final RandomAccessibleInterval<I> in1,
+			final RandomAccessibleInterval<I> in2, final I thres1, final I thres2)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(
+				net.imagej.ops.coloc.saca.SACA.class, out, in1, in2, thres1, thres2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.coloc.saca.SACA.class)
+	public <I extends RealType<I>, O extends RealType<O>>
+		RandomAccessibleInterval<O> saca(final RandomAccessibleInterval<O> out,
+			final RandomAccessibleInterval<I> in1,
+			final RandomAccessibleInterval<I> in2, final I thres1, final I thres2,
+			final long seed)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(
+				net.imagej.ops.coloc.saca.SACA.class, out, in1, in2, thres1, thres2,
+				seed);
 		return result;
 	}
 

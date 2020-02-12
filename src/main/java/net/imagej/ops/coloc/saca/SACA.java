@@ -72,18 +72,12 @@ public class SACA<I extends RealType<I>, O extends RealType<O>> extends
 		if (!(Intervals.equalDimensions(image1, image2))) {
 			throw new IllegalArgumentException("Image dimensions do not match");
 		}
-		final long n1 = Intervals.numElements(image1);
-		if (n1 > Integer.MAX_VALUE) {
-			throw new IllegalArgumentException("Image dimensions too large: " + n1);
-		}
-		final int n = (int) n1;
 
 		// compute thresholds if necessary
 		if (thres1 == null) thres1 = threshold(image1);
 		if (thres2 == null) thres2 = threshold(image2);
 
-		AdaptiveSmoothedKendallTau.execute(image1, image2, thres1, thres2, result,
-			n);
+		AdaptiveSmoothedKendallTau.execute(image1, image2, thres1, thres2, result, seed);
 	}
 
 	<V extends RealType<V>> V threshold(final RandomAccessibleInterval<V> image) {
