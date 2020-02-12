@@ -28,15 +28,31 @@ public final class AdaptiveSmoothedKendallTau {
 
 	private AdaptiveSmoothedKendallTau() {}
 
-	public static <I extends RealType<I>, T extends RealType<T>> void execute(
+	public static <I extends RealType<I>, O extends RealType<O>> void execute(
 		final RandomAccessibleInterval<I> image1,
 		final RandomAccessibleInterval<I> image2, final I thres1, final I thres2,
-		final T intermediate, final RandomAccessibleInterval<DoubleType> result,
+		final RandomAccessibleInterval<O> result, final long seed)
+	{
+		execute(image1, image2, thres1, thres2, new DoubleType(), result, seed);
+	}
+
+	public static <I extends RealType<I>, T extends RealType<T>, O extends RealType<O>> void execute(
+		final RandomAccessibleInterval<I> image1,
+		final RandomAccessibleInterval<I> image2, final I thres1, final I thres2,
+		final T intermediate, final RandomAccessibleInterval<O> result,
 		final long seed)
 	{
 		final Function<RandomAccessibleInterval<I>, RandomAccessibleInterval<T>> factory =
 			img -> Util.getSuitableImgFactory(img, intermediate).create(img);
+		execute(image1, image2, thres1, thres2, factory, result, seed);
+	}
 
+	public static <I extends RealType<I>, T extends RealType<T>, O extends RealType<O>> void execute(
+		final RandomAccessibleInterval<I> image1,
+		final RandomAccessibleInterval<I> image2, final I thres1, final I thres2,
+		Function<RandomAccessibleInterval<I>, RandomAccessibleInterval<T>> factory,
+		final RandomAccessibleInterval<O> result, final long seed)
+	{
 		final long nr = image1.dimension(1);
 		final long nc = image1.dimension(0);
 		final RandomAccessibleInterval<T> oldtau = factory.apply(image1);
@@ -85,7 +101,7 @@ public final class AdaptiveSmoothedKendallTau {
 			final RandomAccessibleInterval<T> oldsqrtN,
 			final RandomAccessibleInterval<T> newtau,
 			final RandomAccessibleInterval<T> newsqrtN,
-			final RandomAccessibleInterval<DoubleType> result, final double Lambda,
+			final RandomAccessibleInterval<O> result, final double Lambda,
 			final double Dn, final int Bsize, final boolean isCheck, final Random rng)
 	{
 		final double[][] kernel = kernelGenerate(Bsize);
@@ -107,7 +123,7 @@ public final class AdaptiveSmoothedKendallTau {
 		double tau;
 		double taudiff;
 
-		final Cursor<DoubleType> cursor = Views.iterable(result).localizingCursor();
+		final Cursor<O> cursor = Views.iterable(result).localizingCursor();
 		final RandomAccess<T> raOldTau = oldtau.randomAccess();
 		final RandomAccess<T> raOldSqrtN = oldsqrtN.randomAccess();
 		final RandomAccess<T> raNewTau = newtau.randomAccess();
