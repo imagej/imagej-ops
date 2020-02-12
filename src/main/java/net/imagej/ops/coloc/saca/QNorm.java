@@ -3,7 +3,7 @@ package net.imagej.ops.coloc.saca;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 
-final class QNorm {
+public final class QNorm {
 
 	private QNorm() {}
 
