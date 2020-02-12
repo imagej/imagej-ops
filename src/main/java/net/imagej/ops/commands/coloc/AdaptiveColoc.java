@@ -23,8 +23,8 @@ import net.imglib2.FinalDimensions;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 
-@Plugin(type=Command.class, menuPath="Analyze>Colocalization>Colocalize...")
-public class Colocalize<T extends RealType<T>> implements Command {
+@Plugin(type=Command.class, menuPath="Analyze>Colocalization>AdaptiveColoc...")
+public class AdaptiveColoc<T extends RealType<T>> implements Command {
 
 	@Parameter
 	private OpService ops;
