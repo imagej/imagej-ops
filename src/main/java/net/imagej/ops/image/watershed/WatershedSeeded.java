@@ -209,9 +209,9 @@ public class WatershedSeeded<T extends RealType<T>, B extends BooleanType<B>>
 				raSeeds.setPosition(neighborhood);
 				raMask.setPosition(neighborhood);
 				raOut.setPosition(neighborhood);
+				if(raOut.isOutOfBounds() || !raMask.get().get() || !raSeeds.get().isEmpty()) continue;
 				final Integer labelNeigh = raOut.get().iterator().next();
-				if (labelNeigh != INQUEUE && labelNeigh != OUTSIDE && !raOut.isOutOfBounds() && raMask.get().get() 
-						&& raSeeds.get().isEmpty()) {
+				if (labelNeigh != INQUEUE && labelNeigh != OUTSIDE) {
 					raOut.setPosition(neighborhood);
 					pq.add(new WatershedVoxel(IntervalIndexer.positionToIndex(neighborhood, in), neighborhood.get().getRealDouble()));
 					raOut.get().clear();
