@@ -91,25 +91,11 @@ public abstract class AbstractFFTFilterC<I extends RealType<I>, O extends RealTy
 	 */
 	private UnaryFunctionOp<Dimensions, RandomAccessibleInterval<C>> createOp;
 
-	@Override
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void initialize() {
-		super.initialize();
-
+	protected RandomAccessibleInterval<C> getFFTInput() {
 		if (fftType == null) {
 			fftType = (ComplexType<C>) ops().create().nativeType(
 				ComplexFloatType.class);
 		}
-
-		/**
-		 * Op used to create the complex FFTs
-		 */
-		createOp = (UnaryFunctionOp) Functions.unary(ops(),
-			CreateOutputFFTMethods.class, RandomAccessibleInterval.class,
-			Dimensions.class, fftType, true);
-	}
-
-	protected RandomAccessibleInterval<C> getFFTInput() {
 		return fftInput;
 	}
 
@@ -136,6 +122,11 @@ public abstract class AbstractFFTFilterC<I extends RealType<I>, O extends RealTy
 	public UnaryFunctionOp<Dimensions, RandomAccessibleInterval<C>>
 		getCreateOp()
 	{
+		if (createOp == null) {
+			createOp = (UnaryFunctionOp) Functions.unary(ops(),
+				CreateOutputFFTMethods.class, RandomAccessibleInterval.class,
+				Dimensions.class, fftType, true);
+		}
 		return createOp;
 	}
 

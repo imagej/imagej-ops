@@ -38,7 +38,6 @@ import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imglib2.Dimensions;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
-import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
@@ -66,7 +65,7 @@ public class NonCirculantFirstGuess<I extends RealType<I>, O extends RealType<O>
 {
 
 	@Parameter
-	Type<O> outType;
+	private O outType;
 
 	/**
 	 * k is the size of the measurement window. That is the size of the acquired

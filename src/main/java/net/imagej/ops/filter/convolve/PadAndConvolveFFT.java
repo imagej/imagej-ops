@@ -89,7 +89,7 @@ public class PadAndConvolveFFT<I extends RealType<I> & NativeType<I>, O extends 
 
 	@Override
 	public boolean conforms() {
-		// conforms only if the kernel is sufficiently small
+		// conforms only if the kernel is sufficiently large
 		return Intervals.numElements(in2()) > 9;
 	}
 

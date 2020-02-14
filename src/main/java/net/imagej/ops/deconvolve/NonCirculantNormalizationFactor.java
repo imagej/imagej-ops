@@ -261,7 +261,7 @@ public class NonCirculantNormalizationFactor<I extends RealType<I>, O extends Re
 		}
 	}
 
-	private static class DivideHandleZeroOp<I extends RealType<I> & NumericType<I>, O extends RealType<O> & NumericType<O>>
+	private static class DivideHandleZeroOp<I extends RealType<I> & NumericType<I>>
 		extends AbstractBinaryInplace1Op<I, I>
 	{
 
@@ -269,7 +269,7 @@ public class NonCirculantNormalizationFactor<I extends RealType<I>, O extends Re
 		public void mutate1(final I input, final I outin) {
 			final I tmp = outin.copy();
 
-			if (outin.getRealFloat() > 0) {
+			if (input.getRealFloat() > 0) {
 
 				tmp.set(outin);
 				tmp.div(input);

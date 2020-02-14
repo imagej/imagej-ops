@@ -112,9 +112,9 @@ public class DeconvolveTest extends AbstractOpTest {
 			0.025289025f, 0.02266813f, 0.020409783f, 0.018752098f, 0.017683199f,
 			0.016951872f, 0.016685976f };
 
-		float[] deconvolvedValues2 = { 0.2630328f, 0.3163978f, 0.37502986f,
-			0.436034f, 0.4950426f, 0.5468085f, 0.58636993f, 0.6105018f, 0.6186566f,
-			0.61295974f, 0.59725416f, 0.575831f, 0.5524411f, 0.5307535f, 0.5109127f };
+		float[] deconvolvedValues2 = { 0.2630342f, 0.3163991f, 0.37503138f,
+			0.43603566f, 0.49504462f, 0.54681045f, 0.5863713f, 0.6105026f, 0.6186579f,
+			0.6129602f, 0.5972553f, 0.57583135f, 0.55244136f, 0.53075385f, 0.5109135f };
 
 		for (int i = 0; i < deconvolvedValues.length; i++) {
 			assertEquals(deconvolvedValues[i], deconvolvedCursor.next().get(), 0.0f);
