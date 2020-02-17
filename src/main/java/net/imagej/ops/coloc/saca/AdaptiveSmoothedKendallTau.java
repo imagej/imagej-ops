@@ -7,13 +7,19 @@ import java.util.Random;
 import java.util.function.Function;
 
 import net.imglib2.Cursor;
+import net.imglib2.Localizable;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.loops.LoopBuilder;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.util.Intervals;
+import net.imglib2.util.Localizables;
 import net.imglib2.util.Util;
+import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
+import net.imglib2.view.composite.CompositeIntervalView;
+import net.imglib2.view.composite.GenericComposite;
 
 /**
  * Adapted from Shulei's original Java code for AdaptiveSmoothedKendallTau from
@@ -120,70 +126,61 @@ public final class AdaptiveSmoothedKendallTau {
 		final double[] w1 = new double[totnum];
 		final double[] w2 = new double[totnum];
 		final double[] cumw = new double[totnum];
-		double tau;
-		double taudiff;
 
-		final Cursor<O> cursor = Views.iterable(result).localizingCursor();
-		final RandomAccess<T> raOldTau = oldtau.randomAccess();
-		final RandomAccess<T> raOldSqrtN = oldsqrtN.randomAccess();
-		final RandomAccess<T> raNewTau = newtau.randomAccess();
-		final RandomAccess<T> raNewSqrtN = newsqrtN.randomAccess();
-		final RandomAccess<T> rastop0 = stop.get(0).randomAccess();
-		final RandomAccess<T> rastop1 = stop.get(1).randomAccess();
-		final RandomAccess<T> rastop2 = stop.get(2).randomAccess();
+		RandomAccessibleInterval<T> workingImageStack = Views.stack(oldtau, newtau, oldsqrtN, newsqrtN, stop.get(0), stop.get(1), stop.get(2));
+		CompositeIntervalView<T, ? extends GenericComposite<T>> workingImage =
+			Views.collapse(workingImageStack);
 
+		IntervalView<Localizable> positions = Views.interval( Localizables.randomAccessible(result.numDimensions() ), result );
+		final long nr = result.dimension(1);
+		final long nc = result.dimension(0);
 		final RandomAccess<I> gdImage1 = image1.randomAccess();
 		final RandomAccess<I> gdImage2 = image2.randomAccess();
 		final RandomAccess<T> gdTau = oldtau.randomAccess();
 		final RandomAccess<T> gdSqrtN = oldsqrtN.randomAccess();
-
-		final long nr = result.dimension(1);
-		final long nc = result.dimension(0);
-		while (cursor.hasNext()) {
-			cursor.next();
-			raOldTau.setPosition(cursor);
-			raOldSqrtN.setPosition(cursor);
-			raNewTau.setPosition(cursor);
-			raNewSqrtN.setPosition(cursor);
-			rastop0.setPosition(cursor);
-			rastop1.setPosition(cursor);
-			rastop2.setPosition(cursor);
-
-			final long row = cursor.getLongPosition(1);
+		LoopBuilder.setImages(positions, result, workingImage).forEachPixel((pos, resPixel, workingPixel) -> {
+			T oldtauPix = workingPixel.get(0);
+			T newtauPix = workingPixel.get(1);
+			T oldsqrtNPix = workingPixel.get(2);
+			T newsqrtNPix = workingPixel.get(3);
+			T stop0Pix = workingPixel.get(4);
+			T stop1Pix = workingPixel.get(5);
+			T stop2Pix = workingPixel.get(6);
+			final long row = pos.getLongPosition(1);
 			updateRange(row, Bsize, nr, rowrange);
 			if (isCheck) {
-				if (rastop0.get().getRealDouble() != 0) {
-					continue;
+				if (stop0Pix.getRealDouble() != 0) {
+					return;
 				}
 			}
-			final long col = cursor.getLongPosition(0);
+			final long col = pos.getLongPosition(0);
 			updateRange(col, Bsize, nc, colrange);
 			getData(Dn, kernel, gdImage1, gdImage2, gdTau, gdSqrtN, LocX, LocY, LocW,
 				rowrange, colrange, totnum);
-			raNewSqrtN.get().setReal(Math.sqrt(NTau(thres1, thres2, LocW, LocX,
+			newsqrtNPix.setReal(Math.sqrt(NTau(thres1, thres2, LocW, LocX,
 				LocY)));
-			if (raNewSqrtN.get().getRealDouble() <= 0) {
-				raNewTau.get().setZero();
-				cursor.get().setZero();
+			if (newsqrtNPix.getRealDouble() <= 0) {
+				newtauPix.setZero();
+				resPixel.setZero();
 			}
 			else {
-				tau = WtKendallTau.calculate(LocX, LocY, LocW, combinedData,
+				final double tau = WtKendallTau.calculate(LocX, LocY, LocW, combinedData,
 					rankedindex, rankedw, index1, index2, w1, w2, cumw, rng);
-				raNewTau.get().setReal(tau);
-				cursor.get().setReal(tau * raNewSqrtN.get().getRealDouble() * 1.5);
+				newtauPix.setReal(tau);
+				resPixel.setReal(tau * newsqrtNPix.getRealDouble() * 1.5);
 			}
 
 			if (isCheck) {
-				taudiff = Math.abs(rastop1.get().getRealDouble() - raNewTau.get()
-					.getRealDouble()) * rastop2.get().getRealDouble();
+				final double taudiff = Math.abs(stop1Pix.getRealDouble() - newtauPix
+					.getRealDouble()) * stop2Pix.getRealDouble();
 				if (taudiff > Lambda) {
-					rastop0.get().setOne();
-					raNewTau.get().set(raOldTau.get());
-					raNewSqrtN.get().set(raOldSqrtN.get());
+					stop0Pix.setOne();
+					newtauPix.set(oldtauPix);
+					newsqrtNPix.set(oldsqrtNPix);
 				}
 			}
-		}
-
+		});		
+		
 		// TODO: instead of copying pixels here, swap oldTau and newTau every time.
 		// :-)
 		LoopBuilder.setImages(oldtau, newtau, oldsqrtN, newsqrtN).forEachPixel((
