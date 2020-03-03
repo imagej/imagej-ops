@@ -177,4 +177,21 @@ public class BoxCountTest extends AbstractOpTest {
 			assertEquals(p.b.get(), counts.next(), 1e-12);
 		});
 	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testLimitTranslationsThrowsIAEIfSizeNonPositive() {
+		BoxCount.limitTranslations(0L, 5L);
+	}
+
+	@Test
+	public void testLimitTranslationsNonPositiveTranslations() {
+		assertEquals(1L, BoxCount.limitTranslations(10L, 0L));
+		assertEquals(1L, BoxCount.limitTranslations(100L, -1L));
+	}
+
+	@Test
+	public void testLimitTranslations() {
+		assertEquals(9L, BoxCount.limitTranslations(10L, 9L));
+		assertEquals(10L, BoxCount.limitTranslations(10L, 11L));
+	}
 }
