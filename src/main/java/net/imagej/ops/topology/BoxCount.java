@@ -114,6 +114,10 @@ public class BoxCount<B extends BooleanType<B>> extends
 	public List<ValuePair<DoubleType, DoubleType>> calculate(
 		final RandomAccessibleInterval<B> input)
 	{
+		if (scaling <= 1.0) {
+			throw new IllegalArgumentException("Scaling must be > 1.0 or algorithm won't stop.");
+		}
+
 		final List<ValuePair<DoubleType, DoubleType>> points = new ArrayList<>();
 		final int dimensions = input.numDimensions();
 		final long[] sizes = new long[dimensions];
