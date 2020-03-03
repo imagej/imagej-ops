@@ -30,7 +30,6 @@
 package net.imagej.ops.topology;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.stream.IntStream;
@@ -115,15 +114,19 @@ public class BoxCount<B extends BooleanType<B>> extends
 	public List<ValuePair<DoubleType, DoubleType>> calculate(
 		final RandomAccessibleInterval<B> input)
 	{
+		if (scaling <= 1.0) {
+			throw new IllegalArgumentException("Scaling must be > 1.0 or algorithm won't stop.");
+		}
+
 		final List<ValuePair<DoubleType, DoubleType>> points = new ArrayList<>();
 		final int dimensions = input.numDimensions();
 		final long[] sizes = new long[dimensions];
-		final long numTranslations = 1 + gridMoves;
 		input.dimensions(sizes);
 		for (long sectionSize = maxSize; sectionSize >= minSize; sectionSize /=
 			scaling)
 		{
-			final long translationAmount = Math.max(1, sectionSize / numTranslations);
+			final long numTranslations = limitTranslations(sectionSize, 1 + gridMoves);
+			final long translationAmount = sectionSize / numTranslations;
 			final Stream<long[]> translations = translationStream(numTranslations,
 				translationAmount, dimensions - 1, new long[dimensions]);
 			final LongStream foregroundCounts = countTranslatedGrids(input,
@@ -136,6 +139,35 @@ public class BoxCount<B extends BooleanType<B>> extends
 			points.add(point);
 		}
 		return points;
+	}
+
+	/**
+	 * A helper method that culls unnecessary translations for finding the best fit.
+	 * <p>
+	 * For example, if size = 2 and there's a 2 x 2 x 2 object in a 3D image, then at worst
+	 * it's in 8 different boxes. The best fit in this case is one box. However the boxes can
+	 * only be adjusted by 1 pixel in each direction, so more than 2 translations is unnecessary.
+	 * </p>
+	 * <p>
+	 * NB the minimum number of translations is 1, which means the boxes are counted once,
+	 * and there are no attempts at adjusting their coordinates for a better fit.
+	 * </p>
+	 * @param size Size n of a box in the algorithm. E.g. in the 3D case it's n * n * n.
+	 * @param translations Number of times the box counting grid is moved in each dimension to find the best fit.
+	 * @return The original or maximum number of meaningful translations if the original was too many.
+	 * @throws IllegalArgumentException if size is non-positive.
+	 */
+	static long limitTranslations(final long size, final long translations)
+			throws IllegalArgumentException {
+		if (size < 1L) {
+			throw new IllegalArgumentException("Size must be positive");
+		}
+
+		if (translations < 1L) {
+			return 1L;
+		}
+
+		return Math.min(size, translations);
 	}
 
 	/**
@@ -152,11 +184,9 @@ public class BoxCount<B extends BooleanType<B>> extends
 		final long[] sizes, final long sectionSize)
 	{
 		final int lastDimension = sizes.length - 1;
-		final LongType foreground = new LongType();
-		final long[] sectionPosition = new long[sizes.length];
-		return translations.mapToLong(gridOffset -> {
-			foreground.setZero();
-			Arrays.fill(sectionPosition, 0);
+		return translations.parallel().mapToLong(gridOffset -> {
+			final LongType foreground = new LongType();
+			final long[] sectionPosition = new long[sizes.length];
 			countGrid(input, lastDimension, sizes, gridOffset, sectionPosition,
 				sectionSize, foreground);
 			return foreground.get();
