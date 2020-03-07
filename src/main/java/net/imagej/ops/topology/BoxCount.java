@@ -185,8 +185,10 @@ public class BoxCount<B extends BooleanType<B>> extends
 		return translations.parallel().mapToLong(gridOffset -> {
 			final LongType foreground = new LongType();
 			final long[] boxPosition = new long[sizes.length];
-			countForegroundBoxes(input, lastDimension, sizes, gridOffset,
-					boxPosition, boxSize, foreground);
+			final long[] position = new long[input.numDimensions()];
+			final RandomAccess<B> access = input.randomAccess();
+			countForegroundBoxes(lastDimension, access, sizes, gridOffset,
+					boxPosition, boxSize, position, foreground);
 			return foreground.get();
 		});
 	}
@@ -194,34 +196,33 @@ public class BoxCount<B extends BooleanType<B>> extends
 	/**
 	 * Recursively counts the number of foreground boxes in a grid in the given interval
 	 *
-	 * @param interval An n-dimensional interval with binary elements
 	 * @param dimension Current dimension processed, start from the last
+	 * @param access An access into the input image
 	 * @param sizes Sizes of the interval's dimensions in pixels
 	 * @param translation Translation of the box grid in each dimension
 	 * @param boxPosition The position of the current box before translation
 	 *          (start with [0, 0, ... 0])
 	 * @param boxSize Size of a box (n * n * ... n)
+	 * @param position Holds the current position in the box
 	 * @param foreground Number of foreground boxes found so far (start from 0)
 	 */
 	private static <B extends BooleanType<B>> void countForegroundBoxes(
-		final RandomAccessibleInterval<B> interval, final int dimension,
-		final long[] sizes, final long[] translation, final long[] boxPosition,
-		final long boxSize, final LongType foreground)
+			final int dimension, final RandomAccess<B> access, final long[] sizes,
+			final long[] translation, final long[] boxPosition, final long boxSize,
+			final long[] position, final LongType foreground)
 	{
 		for (int p = 0; p < sizes[dimension]; p += boxSize) {
 			boxPosition[dimension] = translation[dimension] + p;
 			if (dimension == 0) {
-				final int d = interval.numDimensions() - 1;
-				long[] position = new long[interval.numDimensions()];
-				final RandomAccess<B> access = interval.randomAccess();
+				final int d = access.numDimensions() - 1;
 				if (hasBoxForeground(d, access, boxPosition, boxSize, sizes,
 						position)) {
 					foreground.inc();
 				}
 			}
 			else {
-				countForegroundBoxes(interval, dimension - 1, sizes,
-						translation, boxPosition, boxSize, foreground);
+				countForegroundBoxes(dimension - 1, access, sizes,
+						translation, boxPosition, boxSize, position, foreground);
 			}
 		}
 	}
