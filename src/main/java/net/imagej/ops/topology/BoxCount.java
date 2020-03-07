@@ -31,22 +31,17 @@ package net.imagej.ops.topology;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Spliterator;
-import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.roi.labeling.BoundingBox;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.ValuePair;
-import net.imglib2.view.IntervalView;
-import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -194,49 +189,6 @@ public class BoxCount<B extends BooleanType<B>> extends
 	}
 
 	/**
-	 * Creates a {@link net.imglib2.View} of the given grid section in the
-	 * interval
-	 * <p>
-	 * Fits the view inside the bounds of the interval.
-	 * </p>
-	 *
-	 * @param interval An n-dimensional interval with binary elements
-	 * @param sizes Sizes of the interval's dimensions
-	 * @param coordinates Starting coordinates of the section
-	 * @param sectionSize Size of the section (n * n * ... n)
-	 * @return A view of the interval spanning n pixels in each dimension from the
-	 *         coordinates. Null if view couldn't be set inside the interval
-	 */
-	private static <B extends BooleanType<B>> IntervalView<B> sectionView(
-		final RandomAccessibleInterval<B> interval, final long[] sizes,
-		final long[] coordinates, final long sectionSize)
-	{
-		final int n = sizes.length;
-		final long[] startPosition = IntStream.range(0, n).mapToLong(i -> Math.max(
-			0, coordinates[i])).toArray();
-		final long[] endPosition = IntStream.range(0, n).mapToLong(i -> Math.min(
-			(sizes[i] - 1), (coordinates[i] + sectionSize - 1))).toArray();
-		final boolean badBox = IntStream.range(0, n).anyMatch(
-			d -> (startPosition[d] >= sizes[d]) || (endPosition[d] < 0) ||
-				(endPosition[d] < startPosition[d]));
-		if (badBox) {
-			return null;
-		}
-		final BoundingBox box = new BoundingBox(n);
-		box.update(startPosition);
-		box.update(endPosition);
-		return Views.offsetInterval(interval, box);
-	}
-
-	/** Checks if the view has any foreground elements */
-	private static <B extends BooleanType<B>> boolean hasForeground(
-		IntervalView<B> view)
-	{
-		final Spliterator<B> spliterator = view.spliterator();
-		return StreamSupport.stream(spliterator, false).anyMatch(BooleanType::get);
-	}
-
-	/**
 	 * Recursively counts the number of foreground sections in the grid over the
 	 * given interval
 	 *
@@ -257,9 +209,10 @@ public class BoxCount<B extends BooleanType<B>> extends
 		for (int p = 0; p < sizes[dimension]; p += sectionSize) {
 			sectionPosition[dimension] = translation[dimension] + p;
 			if (dimension == 0) {
-				final IntervalView<B> box = sectionView(interval, sizes,
-					sectionPosition, sectionSize);
-				if (box != null && hasForeground(box)) {
+				final int d = interval.numDimensions() - 1;
+				long[] position = new long[interval.numDimensions()];
+				final RandomAccess<B> access = interval.randomAccess();
+				if (hasBoxForeground(d, access, sectionPosition, sectionSize, sizes, position)) {
 					foreground.inc();
 				}
 			}
@@ -268,6 +221,42 @@ public class BoxCount<B extends BooleanType<B>> extends
 					sectionSize, foreground);
 			}
 		}
+	}
+
+	/**
+	 * Recursively checks whether an N-dimensional box has any foreground pixels.
+	 * <p>
+	 * Checks that box doesn't go out of bounds.
+	 * </p>
+	 * @param dimension Current dimension. Start from the last, numDimensions - 1.
+	 * @param access A random access to the input image.
+	 * @param boxStart Starting coordinates of the box.
+	 * @param boxSize Size of the box in each dimension.
+	 * @param sizes Dimensions of the input image.
+	 * @param position Current coordinates in the image.
+	 * @param <B> Type of pixels in the image.
+	 * @return true if any of the pixels is true.
+	 */
+	private static <B extends BooleanType<B>> boolean hasBoxForeground(
+			final int dimension, final RandomAccess<B> access, final long[] boxStart,
+			final long boxSize, final long[] sizes, final long[] position) {
+		long min = Math.max(boxStart[dimension], 0);
+		long max = Math.min(boxStart[dimension] + boxSize, sizes[dimension]);
+		for (long p = min; p < max; p++) {
+			position[dimension] = p;
+			if (dimension > 0) {
+				if (hasBoxForeground(dimension - 1, access, boxStart, boxSize,
+						sizes, position)) {
+					return true;
+				}
+			} else {
+				access.setPosition(position);
+				if (access.get().get()) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	/**
