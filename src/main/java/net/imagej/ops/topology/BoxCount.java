@@ -30,7 +30,13 @@
 package net.imagej.ops.topology;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
@@ -39,7 +45,6 @@ import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.BooleanType;
-import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.ValuePair;
 
@@ -123,10 +128,12 @@ public class BoxCount<B extends BooleanType<B>> extends
 		for (long boxSize = maxSize; boxSize >= minSize; boxSize /=
 			scaling)
 		{
-			final long numTranslations = limitTranslations(boxSize, 1 + gridMoves);
+			final long numTranslations = limitTranslations(boxSize,
+					1 + gridMoves);
 			final long translationAmount = boxSize / numTranslations;
-			final Stream<long[]> translations = translationStream(numTranslations,
-				translationAmount, dimensions - 1, new long[dimensions]);
+			final Stream<long[]> translations = translationStream(
+					numTranslations, translationAmount, dimensions - 1,
+					new long[dimensions]);
 			final LongStream foregroundCounts = countTranslatedGrids(input,
 				translations, sizes, boxSize);
 			final long foreground = foregroundCounts.min().orElse(0);
@@ -177,54 +184,100 @@ public class BoxCount<B extends BooleanType<B>> extends
 	 * @param boxSize Size of a box in the grids
 	 * @return Foreground boxes counted with each translation
 	 */
-	private static <B extends BooleanType<B>> LongStream countTranslatedGrids(
-		final RandomAccessibleInterval<B> input, final Stream<long[]> translations,
-		final long[] sizes, final long boxSize)
-	{
-		final int lastDimension = sizes.length - 1;
-		return translations.parallel().mapToLong(gridOffset -> {
-			final LongType foreground = new LongType();
-			final long[] boxPosition = new long[sizes.length];
-			final long[] position = new long[input.numDimensions()];
-			final RandomAccess<B> access = input.randomAccess();
-			countForegroundBoxes(lastDimension, access, sizes, gridOffset,
-					boxPosition, boxSize, position, foreground);
-			return foreground.get();
-		});
+	private LongStream countTranslatedGrids(
+			final RandomAccessibleInterval<B> input,
+			final Stream<long[]> translations, final long[] sizes,
+			final long boxSize) {
+		return translations
+				.mapToLong(t -> countForegroundBoxes(input, boxSize, sizes, t));
+	}
+
+	private static int countNThreads(final long boxCount, final long boxSize) {
+		final int processors = Runtime.getRuntime().availableProcessors();
+		// I tested the op runs faster with a single thread
+		// when box size is very small
+		return boxSize >= 2 ? (int) Math.min(processors, boxCount) : 1;
 	}
 
 	/**
-	 * Recursively counts the number of foreground boxes in a grid in the given interval
+	 * Counts the number of foreground boxes in a grid over the given interval
 	 *
-	 * @param dimension Current dimension processed, start from the last
-	 * @param access An access into the input image
 	 * @param sizes Sizes of the interval's dimensions in pixels
 	 * @param translation Translation of the box grid in each dimension
-	 * @param boxPosition The position of the current box before translation
-	 *          (start with [0, 0, ... 0])
 	 * @param boxSize Size of a box (n * n * ... n)
-	 * @param position Holds the current position in the box
-	 * @param foreground Number of foreground boxes found so far (start from 0)
 	 */
-	private static <B extends BooleanType<B>> void countForegroundBoxes(
-			final int dimension, final RandomAccess<B> access, final long[] sizes,
-			final long[] translation, final long[] boxPosition, final long boxSize,
-			final long[] position, final LongType foreground)
-	{
-		for (int p = 0; p < sizes[dimension]; p += boxSize) {
-			boxPosition[dimension] = translation[dimension] + p;
-			if (dimension == 0) {
-				final int d = access.numDimensions() - 1;
-				if (hasBoxForeground(d, access, boxPosition, boxSize, sizes,
-						position)) {
-					foreground.inc();
-				}
-			}
-			else {
-				countForegroundBoxes(dimension - 1, access, sizes,
-						translation, boxPosition, boxSize, position, foreground);
+	private long countForegroundBoxes(final RandomAccessibleInterval<B> input,
+			final long boxSize, final long[] sizes, final long[] translation) {
+		final long[] dimensions = new long[input.numDimensions()];
+		input.dimensions(dimensions);
+		long boxCount = 1;
+		for (int i = 0; i < sizes.length; i++) {
+			boxCount *= Math.ceil((1.0 * sizes[i] - translation[i]) / boxSize);
+		}
+		int nThreads = countNThreads(boxCount, boxSize);
+		final long boxesPerThread = Math.max(1, boxCount / nThreads);
+		final long remainder = boxCount % nThreads;
+
+		final ExecutorService pool = Executors.newFixedThreadPool(nThreads);
+		final List<Future<Long>> futures = new ArrayList<>(nThreads);
+		for (int i = 0; i < nThreads; i++) {
+			final long first = i * boxesPerThread;
+			final long boxes = i < nThreads - 1 ? boxesPerThread :
+					boxesPerThread + remainder;
+			final Callable<Long> task = createCalculationTask(dimensions,
+					boxSize, translation, first, input, boxes);
+			futures.add(pool.submit(task));
+		}
+
+		long foregroundBoxes = 0;
+		for (Future<Long> future : futures) {
+			try {
+				foregroundBoxes += future.get();
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
 			}
 		}
+		return foregroundBoxes;
+	}
+
+	/**
+	 * Creates a task for parallel calculation of foreground boxes.
+	 *
+	 * @param dimensions Size of input image in each dimension
+	 * @param boxSize Size of a box (n * n * ... n)
+	 * @param translation Starting position of the box grid
+	 * @param first Number of the first box for this thread
+	 * @param input The input interval.
+	 * @param boxes Number of boxes this thread counts
+	 * @param <B> type of the elements in the input interval
+	 * @return a task that counts which boxes have foreground in them.
+	 */
+	private static <B extends BooleanType<B>> Callable<Long> createCalculationTask(
+			long[] dimensions, long boxSize, long[] translation, long first,
+			RandomAccessibleInterval<B> input, long boxes) {
+		return () -> {
+			// I tried sharing a single generator between the threads,
+			// but having to call next() and hasNext() in a synchronized block
+			// created a bottle neck.
+			final CoordinateGenerator boxer = new CoordinateGenerator(
+					dimensions, boxSize, translation);
+			boxer.skip(first);
+			final RandomAccess<B> access = input.randomAccess();
+			final long[] boxPosition = new long[access.numDimensions()];
+			final long[] position = new long[access.numDimensions()];
+			long foreground = 0;
+			long generated = 0;
+			while (generated < boxes) {
+				boxer.next(boxPosition);
+				final int d = access.numDimensions() - 1;
+				if (hasBoxForeground(d, access, boxPosition, boxSize,
+						dimensions, position)) {
+					foreground++;
+				}
+				generated++;
+			}
+			return foreground;
+		};
 	}
 
 	/**
@@ -242,8 +295,9 @@ public class BoxCount<B extends BooleanType<B>> extends
 	 * @return true if any of the pixels is true
 	 */
 	private static <B extends BooleanType<B>> boolean hasBoxForeground(
-			final int dimension, final RandomAccess<B> access, final long[] boxStart,
-			final long boxSize, final long[] sizes, final long[] position) {
+			final int dimension, final RandomAccess<B> access,
+			final long[] boxStart, final long boxSize, final long[] sizes,
+			final long[] position) {
 		long min = Math.max(boxStart[dimension], 0);
 		long max = Math.min(boxStart[dimension] + boxSize, sizes[dimension]);
 		for (long p = min; p < max; p++) {
@@ -307,10 +361,72 @@ public class BoxCount<B extends BooleanType<B>> extends
 			translation[dimension] = -t * amount;
 			if (dimension == 0) {
 				builder.add(translation.clone());
-			}
-			else {
+			} else {
 				generateTranslations(numTranslations, amount, dimension - 1,
-					translation, builder);
+						translation, builder);
+			}
+		}
+	}
+
+	// Pre-calculating the coordinates of all the boxes would take a lot of
+	// memory, when the input image is big and box size small. Thus the
+	// generator that can be create the next coordinates as needed.
+	/**
+	 * Generates coordinates in an interval like an N-dimensional for-loop would
+	 */
+	private static class CoordinateGenerator {
+		private final long[] dimensions;
+		private final long[] position;
+		private final long[] start;
+		private final long increment;
+		private boolean hasNext;
+
+		/**
+		 * Creates and initialises a generator.
+		 *
+		 * @param dimensions size of the interval in each dimension.
+		 * @param increment increment between coordinates in each dimension.
+		 * @param start starting coordinates of the interval.
+		 */
+		private CoordinateGenerator(final long[] dimensions,
+				final long increment, long[] start) {
+			this.start = new long[dimensions.length];
+			System.arraycopy(start, 0, this.start, 0, start.length);
+			position = new long[dimensions.length];
+			System.arraycopy(this.start, 0, position, 0, this.start.length);
+			this.increment = increment;
+			this.dimensions = dimensions;
+			hasNext = dimensions.length > 0 && Arrays.stream(dimensions)
+					.allMatch(d -> d > 0);
+		}
+
+		/**
+		 * Advances the coordinate position n steps
+		 *
+		 * @param n steps to skip
+		 */
+		private void skip(final long n) {
+			int skipped = 0;
+			while (skipped < n && hasNext) {
+				incrementPosition(0);
+				skipped++;
+			}
+		}
+
+		private void next(final long[] position) {
+			System.arraycopy(this.position, 0, position, 0, position.length);
+			incrementPosition(0);
+		}
+
+		private void incrementPosition(int dimension) {
+			if (dimension >= dimensions.length) {
+				hasNext = false;
+				return;
+			}
+			position[dimension] += increment;
+			if (position[dimension] >= dimensions[dimension] ) {
+				position[dimension] = start[dimension];
+				incrementPosition(dimension + 1);
 			}
 		}
 	}
