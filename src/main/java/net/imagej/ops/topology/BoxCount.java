@@ -117,7 +117,7 @@ public class BoxCount<B extends BooleanType<B>> extends
 	public List<ValuePair<DoubleType, DoubleType>> calculate(
 		final RandomAccessibleInterval<B> input)
 	{
-		if (scaling <= 1.0) {
+		if (scaling < 1.0 || (scaling == 1.0 && maxSize > minSize)) {
 			throw new IllegalArgumentException("Scaling must be > 1.0 or algorithm won't stop.");
 		}
 

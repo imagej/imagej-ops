@@ -179,10 +179,17 @@ public class BoxCountTest extends AbstractOpTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testThrowsIAEIfScalingEqualsOne() {
+	public void testThrowsIAEIfScalingLTOne() {
 		final Img<BitType> img = ArrayImgs.bits(9, 9, 9);
 
-		ops.topology().boxCount(img, 8L, 2L, 1.0);
+		ops.topology().boxCount(img, 2L, 2L, 0.99);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testThrowsIAEIfScalingOneAndMaxGTMin() {
+		final Img<BitType> img = ArrayImgs.bits(9, 9, 9);
+
+		ops.topology().boxCount(img, 2L, 1L, 1.0);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
