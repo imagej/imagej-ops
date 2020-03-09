@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2018 ImageJ developers.
+ * Copyright (C) 2014 - 2020 ImageJ developers.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -176,6 +176,29 @@ public class BoxCountTest extends AbstractOpTest {
 			assertEquals(p.a.get(), sizes.next(), 1e-12);
 			assertEquals(p.b.get(), counts.next(), 1e-12);
 		});
+	}
+
+	// Covers a bug I had during development that other tests didn't detect.
+	// When interval size wasn't an even multiple of box size, the op didn't
+	// check the whole image, and missed foreground pixels at the edges
+	@Test
+	public void testUnevenBoxes() {
+		// SETUP
+		final int size = 10;
+		final int max = size - 1;
+		final long boxSize = size - 1;
+		final Img<BitType> img = ArrayImgs.bits(size, size, size);
+		final IntervalView<BitType> lastXYSlice = Views.interval(img,
+				new long[] { 0, 0, max}, new long[] { max, max, max});
+		lastXYSlice.forEach(BitType::setOne);
+
+		// EXECUTE
+		final List<ValuePair<DoubleType, DoubleType>> points = ops.topology()
+				.boxCount(img, boxSize, boxSize, 3.0);
+
+		// VERIFY
+		final ValuePair<DoubleType, DoubleType> point = points.get(0);
+		assertEquals(point.b.get(), Math.log(4), 1e-12);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
