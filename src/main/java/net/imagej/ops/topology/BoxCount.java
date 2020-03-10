@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2018 ImageJ developers.
+ * Copyright (C) 2014 - 2020 ImageJ developers.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,40 +30,40 @@
 package net.imagej.ops.topology;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Spliterator;
-import java.util.stream.IntStream;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.roi.labeling.BoundingBox;
 import net.imglib2.type.BooleanType;
-import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.ValuePair;
-import net.imglib2.view.IntervalView;
-import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * An N-dimensional box counting that can be used to estimate the fractal
- * dimension of an interval
+ * An N-dimensional version of fixed-grid box counting algorithm that can be
+ * used to estimate the fractal dimension of an interval
  * <p>
  * The algorithm repeatedly lays a fixed grid on the interval, and counts the
- * number of sections that contain foreground. After each step the grid is made
+ * number of boxes that contain foreground. After each step the grid is made
  * finer by a factor of {@link #scaling}. If the objects in the interval are
- * fractal, the proportion of foreground sections should increase as the grid
- * gets finer.
+ * fractal, the proportion of foreground boxes should increase as the boxes
+ * get smaller.
  * </p>
  * <p>
- * Produces a set of points (log(foreground count), -log(section size)) for
- * curve fitting. The slope of the function gives the fractal dimension of the
+ * Produces a set of points (log(foreground count), -log(box size)) for curve
+ * fitting. The slope of the function gives the fractal dimension of the
  * interval.
  * </p>
  *
@@ -77,23 +77,26 @@ public class BoxCount<B extends BooleanType<B>> extends
 	implements Ops.Topology.BoxCount
 {
 
-	/** Starting size of the grid sections in pixels */
+	/** Starting size of the boxes in pixels */
 	@Parameter(required = false, persist = false)
 	private Long maxSize = 48L;
 
-	/** Minimum size of the grid sections in pixels */
+	/** Minimum size of the boxes in pixels */
 	@Parameter(required = false, persist = false)
 	private Long minSize = 6L;
 
-	/** Grid downscaling factor */
+	/** Box size downscaling factor */
 	@Parameter(required = false, persist = false)
 	private Double scaling = 1.2;
 
 	/**
-	 * Number of times the grid is moved in each dimension to find the best fit
+	 * Number of times the box grid is moved in each dimension to find the best fit
 	 * <p>
 	 * The best fitting grid covers the objects in the interval with the least
-	 * amount of sections.
+	 * amount of boxes. The default grid starts from [0, 0, ... 0].
+	 * </p>
+	 * <p>
+	 * NB This is not a sliding box scan. The grid is moved a fix amount of times.
 	 * </p>
 	 * <p>
 	 * NB Additional moves multiply algorithm's time complexity by n^d!
@@ -103,18 +106,18 @@ public class BoxCount<B extends BooleanType<B>> extends
 	private Long gridMoves = 0L;
 
 	/**
-	 * Counts the number of foreground sections in the interval repeatedly with
-	 * different size sections
+	 * Counts the number of boxes that have foreground in the interval repeatedly with
+	 * different size boxes
 	 *
-	 * @param input an n-dimensional binary interval
-	 * @return A list of (log(foreground count), -log(section size))
+	 * @param input An n-dimensional binary interval.
+	 * @return A list of (log(foreground count), -log(box size))
 	 *         {@link ValuePair} objects for curve fitting
 	 */
 	@Override
 	public List<ValuePair<DoubleType, DoubleType>> calculate(
 		final RandomAccessibleInterval<B> input)
 	{
-		if (scaling <= 1.0) {
+		if (scaling < 1.0 || (scaling == 1.0 && maxSize > minSize)) {
 			throw new IllegalArgumentException("Scaling must be > 1.0 or algorithm won't stop.");
 		}
 
@@ -122,17 +125,19 @@ public class BoxCount<B extends BooleanType<B>> extends
 		final int dimensions = input.numDimensions();
 		final long[] sizes = new long[dimensions];
 		input.dimensions(sizes);
-		for (long sectionSize = maxSize; sectionSize >= minSize; sectionSize /=
+		for (long boxSize = maxSize; boxSize >= minSize; boxSize /=
 			scaling)
 		{
-			final long numTranslations = limitTranslations(sectionSize, 1 + gridMoves);
-			final long translationAmount = sectionSize / numTranslations;
-			final Stream<long[]> translations = translationStream(numTranslations,
-				translationAmount, dimensions - 1, new long[dimensions]);
+			final long numTranslations = limitTranslations(boxSize,
+					1 + gridMoves);
+			final long translationAmount = boxSize / numTranslations;
+			final Stream<long[]> translations = translationStream(
+					numTranslations, translationAmount, dimensions - 1,
+					new long[dimensions]);
 			final LongStream foregroundCounts = countTranslatedGrids(input,
-				translations, sizes, sectionSize);
+				translations, sizes, boxSize);
 			final long foreground = foregroundCounts.min().orElse(0);
-			final double logSize = -Math.log(sectionSize);
+			final double logSize = -Math.log(boxSize);
 			final double logCount = Math.log(foreground);
 			final ValuePair<DoubleType, DoubleType> point = new ValuePair<>(
 					new DoubleType(logSize), new DoubleType(logCount));
@@ -171,103 +176,145 @@ public class BoxCount<B extends BooleanType<B>> extends
 	}
 
 	/**
-	 * Count foreground sections in all grids created from the translations
+	 * Counts the number of foreground boxes in a grid with each translation
 	 *
 	 * @param input N-dimensional binary interval
-	 * @param translations Stream of translation coordinates in n-dimensions
+	 * @param translations Stream of grid translation coordinates in n-dimensions
 	 * @param sizes Sizes of the interval's dimensions in pixels
-	 * @param sectionSize Size of a section in the grids
-	 * @return Foreground sections counted in each grid
+	 * @param boxSize Size of a box in the grids
+	 * @return Foreground boxes counted with each translation
 	 */
-	private static <B extends BooleanType<B>> LongStream countTranslatedGrids(
-		final RandomAccessibleInterval<B> input, final Stream<long[]> translations,
-		final long[] sizes, final long sectionSize)
-	{
-		final int lastDimension = sizes.length - 1;
-		return translations.parallel().mapToLong(gridOffset -> {
-			final LongType foreground = new LongType();
-			final long[] sectionPosition = new long[sizes.length];
-			countGrid(input, lastDimension, sizes, gridOffset, sectionPosition,
-				sectionSize, foreground);
-			return foreground.get();
-		});
+	private LongStream countTranslatedGrids(
+			final RandomAccessibleInterval<B> input,
+			final Stream<long[]> translations, final long[] sizes,
+			final long boxSize) {
+		return translations
+				.mapToLong(t -> countForegroundBoxes(input, boxSize, sizes, t));
+	}
+
+	private static int countNThreads(final long boxCount, final long boxSize) {
+		final int processors = Runtime.getRuntime().availableProcessors();
+		// I tested the op runs faster with a single thread
+		// when box size is very small
+		return boxSize >= 2 ? (int) Math.min(processors, boxCount) : 1;
 	}
 
 	/**
-	 * Creates a {@link net.imglib2.View} of the given grid section in the
-	 * interval
-	 * <p>
-	 * Fits the view inside the bounds of the interval.
-	 * </p>
+	 * Counts the number of foreground boxes in a grid over the given interval
 	 *
-	 * @param interval An n-dimensional interval with binary elements
-	 * @param sizes Sizes of the interval's dimensions
-	 * @param coordinates Starting coordinates of the section
-	 * @param sectionSize Size of the section (n * n * ... n)
-	 * @return A view of the interval spanning n pixels in each dimension from the
-	 *         coordinates. Null if view couldn't be set inside the interval
+	 * @param sizes Sizes of the interval's dimensions in pixels
+	 * @param translation Translation of the box grid in each dimension
+	 * @param boxSize Size of a box (n * n * ... n)
 	 */
-	private static <B extends BooleanType<B>> IntervalView<B> sectionView(
-		final RandomAccessibleInterval<B> interval, final long[] sizes,
-		final long[] coordinates, final long sectionSize)
-	{
-		final int n = sizes.length;
-		final long[] startPosition = IntStream.range(0, n).mapToLong(i -> Math.max(
-			0, coordinates[i])).toArray();
-		final long[] endPosition = IntStream.range(0, n).mapToLong(i -> Math.min(
-			(sizes[i] - 1), (coordinates[i] + sectionSize - 1))).toArray();
-		final boolean badBox = IntStream.range(0, n).anyMatch(
-			d -> (startPosition[d] >= sizes[d]) || (endPosition[d] < 0) ||
-				(endPosition[d] < startPosition[d]));
-		if (badBox) {
-			return null;
+	private long countForegroundBoxes(final RandomAccessibleInterval<B> input,
+			final long boxSize, final long[] sizes, final long[] translation) {
+		final long[] dimensions = new long[input.numDimensions()];
+		input.dimensions(dimensions);
+		long boxCount = 1;
+		for (int i = 0; i < sizes.length; i++) {
+			boxCount *= Math.ceil((1.0 * sizes[i] - translation[i]) / boxSize);
 		}
-		final BoundingBox box = new BoundingBox(n);
-		box.update(startPosition);
-		box.update(endPosition);
-		return Views.offsetInterval(interval, box);
-	}
+		int nThreads = countNThreads(boxCount, boxSize);
+		final long boxesPerThread = Math.max(1, boxCount / nThreads);
+		final long remainder = boxCount % nThreads;
 
-	/** Checks if the view has any foreground elements */
-	private static <B extends BooleanType<B>> boolean hasForeground(
-		IntervalView<B> view)
-	{
-		final Spliterator<B> spliterator = view.spliterator();
-		return StreamSupport.stream(spliterator, false).anyMatch(BooleanType::get);
+		final ExecutorService pool = Executors.newFixedThreadPool(nThreads);
+		final List<Future<Long>> futures = new ArrayList<>(nThreads);
+		for (int i = 0; i < nThreads; i++) {
+			final long first = i * boxesPerThread;
+			final long boxes = i < nThreads - 1 ? boxesPerThread :
+					boxesPerThread + remainder;
+			final Callable<Long> task = createCalculationTask(dimensions,
+					boxSize, translation, first, input, boxes);
+			futures.add(pool.submit(task));
+		}
+
+		long foregroundBoxes = 0;
+		for (Future<Long> future : futures) {
+			try {
+				foregroundBoxes += future.get();
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
+		return foregroundBoxes;
 	}
 
 	/**
-	 * Recursively counts the number of foreground sections in the grid over the
-	 * given interval
+	 * Creates a task for parallel calculation of foreground boxes.
 	 *
-	 * @param interval An n-dimensional interval with binary elements
-	 * @param dimension Current dimension processed, start from the last
-	 * @param sizes Sizes of the interval's dimensions in pixels
-	 * @param translation Translation of grid start in each dimension
-	 * @param sectionPosition The accumulated position of the current grid section
-	 *          (start from [0, 0, ... 0])
-	 * @param sectionSize Size of a grid section (n * n * ... n)
-	 * @param foreground Number of foreground sections found so far (start from 0)
+	 * @param dimensions Size of input image in each dimension
+	 * @param boxSize Size of a box (n * n * ... n)
+	 * @param translation Starting position of the box grid
+	 * @param first Number of the first box for this thread
+	 * @param input The input interval.
+	 * @param boxes Number of boxes this thread counts
+	 * @param <B> type of the elements in the input interval
+	 * @return a task that counts which boxes have foreground in them.
 	 */
-	private static <B extends BooleanType<B>> void countGrid(
-		final RandomAccessibleInterval<B> interval, final int dimension,
-		final long[] sizes, final long[] translation, final long[] sectionPosition,
-		final long sectionSize, final LongType foreground)
-	{
-		for (int p = 0; p < sizes[dimension]; p += sectionSize) {
-			sectionPosition[dimension] = translation[dimension] + p;
-			if (dimension == 0) {
-				final IntervalView<B> box = sectionView(interval, sizes,
-					sectionPosition, sectionSize);
-				if (box != null && hasForeground(box)) {
-					foreground.inc();
+	private static <B extends BooleanType<B>> Callable<Long> createCalculationTask(
+			long[] dimensions, long boxSize, long[] translation, long first,
+			RandomAccessibleInterval<B> input, long boxes) {
+		return () -> {
+			// I tried sharing a single generator between the threads,
+			// but having to call next() and hasNext() in a synchronized block
+			// created a bottle neck.
+			final CoordinateGenerator boxer = new CoordinateGenerator(
+					dimensions, boxSize, translation);
+			boxer.skip(first);
+			final RandomAccess<B> access = input.randomAccess();
+			final long[] boxPosition = new long[access.numDimensions()];
+			final long[] position = new long[access.numDimensions()];
+			long foreground = 0;
+			long generated = 0;
+			while (generated < boxes) {
+				boxer.next(boxPosition);
+				final int d = access.numDimensions() - 1;
+				if (hasBoxForeground(d, access, boxPosition, boxSize,
+						dimensions, position)) {
+					foreground++;
+				}
+				generated++;
+			}
+			return foreground;
+		};
+	}
+
+	/**
+	 * Recursively checks whether an N-dimensional box has any foreground pixels
+	 * <p>
+	 * Checks that box doesn't go out of bounds.
+	 * </p>
+	 * @param dimension Current dimension. Start from the last, numDimensions - 1
+	 * @param access A random access to the input image
+	 * @param boxStart Starting coordinates of the box
+	 * @param boxSize Size of the box in each dimension
+	 * @param sizes Dimensions of the input image
+	 * @param position Current coordinates in the image
+	 * @param <B> Type of pixels in the image
+	 * @return true if any of the pixels is true
+	 */
+	private static <B extends BooleanType<B>> boolean hasBoxForeground(
+			final int dimension, final RandomAccess<B> access,
+			final long[] boxStart, final long boxSize, final long[] sizes,
+			final long[] position) {
+		long min = Math.max(boxStart[dimension], 0);
+		long max = Math.min(boxStart[dimension] + boxSize, sizes[dimension]);
+		for (long p = min; p < max; p++) {
+			position[dimension] = p;
+			if (dimension > 0) {
+				if (hasBoxForeground(dimension - 1, access, boxStart, boxSize,
+						sizes, position)) {
+					return true;
+				}
+			} else {
+				access.setPosition(position);
+				if (access.get().get()) {
+					return true;
 				}
 			}
-			else {
-				countGrid(interval, dimension - 1, sizes, translation, sectionPosition,
-					sectionSize, foreground);
-			}
 		}
+		return false;
 	}
 
 	/**
@@ -314,10 +361,72 @@ public class BoxCount<B extends BooleanType<B>> extends
 			translation[dimension] = -t * amount;
 			if (dimension == 0) {
 				builder.add(translation.clone());
-			}
-			else {
+			} else {
 				generateTranslations(numTranslations, amount, dimension - 1,
-					translation, builder);
+						translation, builder);
+			}
+		}
+	}
+
+	// Pre-calculating the coordinates of all the boxes would take a lot of
+	// memory, when the input image is big and box size small. Thus the
+	// generator that can be create the next coordinates as needed.
+	/**
+	 * Generates coordinates in an interval like an N-dimensional for-loop would
+	 */
+	private static class CoordinateGenerator {
+		private final long[] dimensions;
+		private final long[] position;
+		private final long[] start;
+		private final long increment;
+		private boolean hasNext;
+
+		/**
+		 * Creates and initialises a generator.
+		 *
+		 * @param dimensions size of the interval in each dimension.
+		 * @param increment increment between coordinates in each dimension.
+		 * @param start starting coordinates of the interval.
+		 */
+		private CoordinateGenerator(final long[] dimensions,
+				final long increment, long[] start) {
+			this.start = new long[dimensions.length];
+			System.arraycopy(start, 0, this.start, 0, start.length);
+			position = new long[dimensions.length];
+			System.arraycopy(this.start, 0, position, 0, this.start.length);
+			this.increment = increment;
+			this.dimensions = dimensions;
+			hasNext = dimensions.length > 0 && Arrays.stream(dimensions)
+					.allMatch(d -> d > 0);
+		}
+
+		/**
+		 * Advances the coordinate position n steps
+		 *
+		 * @param n steps to skip
+		 */
+		private void skip(final long n) {
+			int skipped = 0;
+			while (skipped < n && hasNext) {
+				incrementPosition(0);
+				skipped++;
+			}
+		}
+
+		private void next(final long[] position) {
+			System.arraycopy(this.position, 0, position, 0, position.length);
+			incrementPosition(0);
+		}
+
+		private void incrementPosition(int dimension) {
+			if (dimension >= dimensions.length) {
+				hasNext = false;
+				return;
+			}
+			position[dimension] += increment;
+			if (position[dimension] >= dimensions[dimension] ) {
+				position[dimension] = start[dimension];
+				incrementPosition(dimension + 1);
 			}
 		}
 	}

@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2018 ImageJ developers.
+ * Copyright (C) 2014 - 2020 ImageJ developers.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,24 +29,32 @@
 
 package net.imagej.ops.morphology.outline;
 
-import java.util.Arrays;
-
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.hybrid.AbstractBinaryHybridCF;
 import net.imglib2.Cursor;
 import net.imglib2.FinalDimensions;
+import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBounds;
-import net.imglib2.roi.labeling.BoundingBox;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.util.Util;
 import net.imglib2.view.ExtendedRandomAccessibleInterval;
-import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
+import org.scijava.log.LogService;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+import static java.util.Arrays.stream;
 
 /**
  * The Op creates an output interval where the objects are hollow versions from
@@ -59,6 +67,9 @@ public class Outline<B extends BooleanType<B>> extends
 	AbstractBinaryHybridCF<RandomAccessibleInterval<B>, Boolean, RandomAccessibleInterval<BitType>>
 	implements Ops.Morphology.Outline
 {
+
+	@Parameter
+	private LogService logService;
 
 	@Override
 	public RandomAccessibleInterval<BitType> createOutput(
@@ -73,7 +84,7 @@ public class Outline<B extends BooleanType<B>> extends
 	/**
 	 * Copies the outlines of the objects in the input interval into the output
 	 *
-	 * @param input a binary interval
+	 * @param input an N-dimensional binary interval
 	 * @param excludeEdges are elements on stack edges outline or not
 	 *          <p>
 	 *          For example, a 2D square:<br>
@@ -91,22 +102,70 @@ public class Outline<B extends BooleanType<B>> extends
 		final Boolean excludeEdges,
 		final RandomAccessibleInterval<BitType> output)
 	{
-		final Cursor<B> inputCursor = Views.iterable(input).localizingCursor();
-		final long[] coordinates = new long[input.numDimensions()];
 		final ExtendedRandomAccessibleInterval<B, RandomAccessibleInterval<B>> extendedInput =
-			extendInterval(input);
-		final RandomAccess<BitType> outputAccess = output.randomAccess();
-		while (inputCursor.hasNext()) {
-			inputCursor.fwd();
-			inputCursor.localize(coordinates);
-			if (isOutline(extendedInput, coordinates)) {
-				outputAccess.setPosition(coordinates);
-				outputAccess.get().set(inputCursor.get().get());
+				extendInterval(input);
+		final int nThreads = Runtime.getRuntime().availableProcessors();
+		final ExecutorService pool = Executors.newFixedThreadPool(nThreads);
+		final List<Future<?>> futures = new ArrayList<>();
+		final long[] dimensions = new long[input.numDimensions()];
+		input.dimensions(dimensions);
+		final long size = stream(dimensions).reduce((a, b) -> a * b).orElse(0);
+		final long perThread = size / nThreads;
+		final long remainder = size % perThread;
+		final IterableInterval<B> iterable = Views.iterable(input);
+
+		for (int i = 0; i < nThreads; i++) {
+			// Advancing a Cursor once sets it at [0, 0... 0]
+			final long start = i * perThread + 1;
+			final long share = i == 0 ? perThread + remainder : perThread;
+			final Cursor<B> cursor = iterable.cursor();
+			final OutOfBounds<B> inputAccess = extendedInput.randomAccess();
+			final RandomAccess<BitType> outputAccess = output.randomAccess();
+			final Runnable runnable = createTask(cursor, inputAccess,
+					outputAccess, start, share);
+			futures.add(pool.submit(runnable));
+		}
+
+		for (Future<?> future : futures) {
+			try {
+				future.get();
+			} catch (InterruptedException | ExecutionException e) {
+				logService.error(e);
 			}
 		}
 	}
 
+	/**
+	 * Creates a task that finds and copies outline pixels to the output.
+	 *
+	 * @param inputCursor Cursor to the input image
+	 * @param inputAccess Random access to the extended input image
+	 * @param output Access to the output image
+	 * @param start Which pixel thread should start from
+	 * @param elements Number of pixels thread processes
+	 * @param <B> Type of elements in the input image
+	 * @return a task for parallel processing.
+	 */
 	// region -- Helper methods --
+	private static <B extends BooleanType<B>> Runnable createTask(
+			final Cursor<B> inputCursor, final OutOfBounds<B> inputAccess,
+			final RandomAccess<BitType> output, final long start,
+			final long elements) {
+		return () -> {
+			final long[] coordinates = new long[inputAccess.numDimensions()];
+			inputCursor.jumpFwd(start);
+			for (long j = 0; j < elements; j++) {
+				inputCursor.localize(coordinates);
+				inputAccess.setPosition(coordinates);
+				if (isOutline(inputAccess, coordinates)) {
+					output.setPosition(coordinates);
+					output.get().set(inputCursor.get().get());
+				}
+				inputCursor.fwd();
+			}
+		};
+	}
+
 	private ExtendedRandomAccessibleInterval<B, RandomAccessibleInterval<B>>
 		extendInterval(RandomAccessibleInterval<B> interval)
 	{
@@ -115,36 +174,20 @@ public class Outline<B extends BooleanType<B>> extends
 		return Views.extendValue(interval, type);
 	}
 
-	/**
-	 * Creates a view that spans from (x-1, y-1, ... i-1) to (x+1, y+1, ... i+1)
-	 * around the given coordinates
-	 *
-	 * @param interval the space of the coordinates
-	 * @param coordinates coordinates (x, y, ... i)
-	 * @return a view of a neighbourhood in the space
-	 */
-	private IntervalView<B> neighbourhoodInterval(
-		final ExtendedRandomAccessibleInterval<B, RandomAccessibleInterval<B>> interval,
-		final long[] coordinates)
-	{
-		final int dimensions = interval.numDimensions();
-		final BoundingBox box = new BoundingBox(dimensions);
-		final long[] minBounds = Arrays.stream(coordinates).map(c -> c - 1)
-			.toArray();
-		final long[] maxBounds = Arrays.stream(coordinates).map(c -> c + 1)
-			.toArray();
-		box.update(minBounds);
-		box.update(maxBounds);
-		return Views.offsetInterval(interval, box);
-	}
-
-	/** Checks if any element in the neighbourhood is background */
-	private boolean isAnyBackground(final IntervalView<B> neighbourhood) {
-		final Cursor<B> cursor = neighbourhood.cursor();
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			if (!cursor.get().get()) {
-				return true;
+	/** Checks if any element in the N-dimensional neighbourhood is background */
+	private static <B extends BooleanType<B>> boolean isAnyNeighborBackground(
+			final int dimension, final OutOfBounds<B> access,
+			final long[] position) {
+		for (long p = -1; p <= 1; p++) {
+			access.setPosition(position[dimension] + p, dimension);
+			if (dimension == 0) {
+				if (!access.get().get()) {
+					return true;
+				}
+			} else {
+				if (isAnyNeighborBackground(dimension - 1, access, position)) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -153,24 +196,17 @@ public class Outline<B extends BooleanType<B>> extends
 	/**
 	 * Checks if an element is part of the outline of an object
 	 *
-	 * @param source the location of the element
-	 * @param coordinates coordinates of the element
+	 * @param access an access to an extended view of the input interval
+	 * @param position current position in the input image
 	 * @return true if element is foreground and has at least one background
 	 *         neighbour
 	 */
-	private boolean isOutline(
-		final ExtendedRandomAccessibleInterval<B, RandomAccessibleInterval<B>> source,
-		final long[] coordinates)
+	private static <B extends BooleanType<B>> boolean isOutline(
+			final OutOfBounds<B> access, final long[] position)
 	{
-		final OutOfBounds<B> access = source.randomAccess();
-		access.setPosition(coordinates);
-		if (!access.get().get()) {
-			return false;
-		}
-
-		final IntervalView<B> neighbourhood = neighbourhoodInterval(source,
-			coordinates);
-		return isAnyBackground(neighbourhood);
+		final int dimension = access.numDimensions() - 1;
+		return access.get().get() && isAnyNeighborBackground(dimension, access,
+				position);
 	}
 	// endregion
 }

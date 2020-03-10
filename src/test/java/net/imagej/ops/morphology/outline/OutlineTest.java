@@ -56,7 +56,7 @@ public class OutlineTest extends AbstractOpTest {
 
 	/** Test basic properties of the op's output */
 	@Test
-	public void testOutput() throws Exception {
+	public void testOutput() {
 		// SETUP
 		final long[] inputDims = { 3, 3, 3 };
 		final Img<BitType> img = ArrayImgs.bits(inputDims);
@@ -74,7 +74,7 @@ public class OutlineTest extends AbstractOpTest {
 
 	/** Test the op with an interval that's full of background elements */
 	@Test
-	public void testAllBackground() throws Exception {
+	public void testAllBackground() {
 		// SETUP
 		final Img<BitType> img = ArrayImgs.bits(3, 3, 3);
 
@@ -89,7 +89,7 @@ public class OutlineTest extends AbstractOpTest {
 
 	/** Test the op with an interval that's full of foreground elements */
 	@Test
-	public void testAllForeground() throws Exception {
+	public void testAllForeground() {
 		// SETUP
 		final Img<BitType> img = ArrayImgs.bits(3, 3, 3);
 		img.forEach(BitType::setOne);
@@ -105,7 +105,7 @@ public class OutlineTest extends AbstractOpTest {
 
 	/** Test the op with a 2x2 square. The square is in the middle of a 4x4 img */
 	@Test
-	public void testSquare() throws Exception {
+	public void testSquare() {
 		// SETUP
 		final Img<BitType> img = ArrayImgs.bits(4, 4);
 		final IntervalView<BitType> square = Views.offsetInterval(img, new long[] {
@@ -130,7 +130,7 @@ public class OutlineTest extends AbstractOpTest {
 	 * the middle of a 5x5 img
 	 */
 	@Test
-	public void testOutlineSquare() throws Exception {
+	public void testOutlineSquare() {
 		// SETUP
 		final Img<BitType> img = ArrayImgs.bits(5, 5);
 		final IntervalView<BitType> square = Views.offsetInterval(img, new long[] {
@@ -162,7 +162,7 @@ public class OutlineTest extends AbstractOpTest {
 	 * @see #testEdgeSquare()
 	 */
 	@Test
-	public void testEdgeSquare() throws Exception {
+	public void testEdgeSquare() {
 		// SETUP
 		final Img<BitType> img = ArrayImgs.bits(5, 5);
 		final IntervalView<BitType> square = Views.offsetInterval(img, new long[] {
@@ -193,7 +193,7 @@ public class OutlineTest extends AbstractOpTest {
 	 * @see #testEdgeSquare()
 	 */
 	@Test
-	public void testEdgeSquareExcludeEdgesFalse() throws Exception {
+	public void testEdgeSquareExcludeEdgesFalse() {
 		// SETUP
 		final Img<BitType> img = ArrayImgs.bits(5, 5);
 		final IntervalView<BitType> square = Views.offsetInterval(img, new long[] {
@@ -217,7 +217,7 @@ public class OutlineTest extends AbstractOpTest {
 	 * 5x5x5x5 img
 	 */
 	@Test
-	public void testHyperCube() throws Exception {
+	public void testHyperCube() {
 		// SETUP
 		final Img<BitType> img = ArrayImgs.bits(5, 5, 5, 5);
 		final IntervalView<BitType> hyperCube = Views.offsetInterval(img,
