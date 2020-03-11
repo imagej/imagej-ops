@@ -50,9 +50,8 @@ import org.scijava.plugin.Plugin;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import org.scijava.thread.ThreadService;
 
 import static java.util.Arrays.stream;
 
@@ -67,6 +66,9 @@ public class Outline<B extends BooleanType<B>> extends
 	AbstractBinaryHybridCF<RandomAccessibleInterval<B>, Boolean, RandomAccessibleInterval<BitType>>
 	implements Ops.Morphology.Outline
 {
+
+	@Parameter
+	private ThreadService threadService;
 
 	@Parameter
 	private LogService logService;
@@ -105,7 +107,6 @@ public class Outline<B extends BooleanType<B>> extends
 		final ExtendedRandomAccessibleInterval<B, RandomAccessibleInterval<B>> extendedInput =
 				extendInterval(input);
 		final int nThreads = Runtime.getRuntime().availableProcessors();
-		final ExecutorService pool = Executors.newFixedThreadPool(nThreads);
 		final List<Future<?>> futures = new ArrayList<>();
 		final long[] dimensions = new long[input.numDimensions()];
 		input.dimensions(dimensions);
@@ -123,7 +124,7 @@ public class Outline<B extends BooleanType<B>> extends
 			final RandomAccess<BitType> outputAccess = output.randomAccess();
 			final Runnable runnable = createTask(cursor, inputAccess,
 					outputAccess, start, share);
-			futures.add(pool.submit(runnable));
+			futures.add(threadService.run(runnable));
 		}
 
 		for (Future<?> future : futures) {
