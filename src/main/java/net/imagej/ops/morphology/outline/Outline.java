@@ -116,8 +116,7 @@ public class Outline<B extends BooleanType<B>> extends
 		final IterableInterval<B> iterable = Views.iterable(input);
 
 		for (int i = 0; i < nThreads; i++) {
-			// Advancing a Cursor once sets it at [0, 0... 0]
-			final long start = i * perThread + 1;
+			final long start = i * perThread;
 			final long share = i == 0 ? perThread + remainder : perThread;
 			final Cursor<B> cursor = iterable.cursor();
 			final OutOfBounds<B> inputAccess = extendedInput.randomAccess();
@@ -156,13 +155,16 @@ public class Outline<B extends BooleanType<B>> extends
 			final long[] coordinates = new long[inputAccess.numDimensions()];
 			inputCursor.jumpFwd(start);
 			for (long j = 0; j < elements; j++) {
-				inputCursor.localize(coordinates);
-				inputAccess.setPosition(coordinates);
-				if (isOutline(inputAccess, coordinates)) {
-					output.setPosition(coordinates);
-					output.get().set(inputCursor.get().get());
-				}
 				inputCursor.fwd();
+				if (!inputCursor.get().get()) {
+					continue;
+				}
+				inputCursor.localize(coordinates);
+				if (isAnyNeighborBackground(inputAccess.numDimensions() - 1,
+						inputAccess, coordinates)) {
+					output.setPosition(coordinates);
+					output.get().setOne();
+				}
 			}
 		};
 	}
@@ -192,22 +194,6 @@ public class Outline<B extends BooleanType<B>> extends
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * Checks if an element is part of the outline of an object
-	 *
-	 * @param access an access to an extended view of the input interval
-	 * @param position current position in the input image
-	 * @return true if element is foreground and has at least one background
-	 *         neighbour
-	 */
-	private static <B extends BooleanType<B>> boolean isOutline(
-			final OutOfBounds<B> access, final long[] position)
-	{
-		final int dimension = access.numDimensions() - 1;
-		return access.get().get() && isAnyNeighborBackground(dimension, access,
-				position);
 	}
 	// endregion
 }
