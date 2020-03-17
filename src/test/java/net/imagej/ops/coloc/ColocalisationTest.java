@@ -31,7 +31,12 @@ package net.imagej.ops.coloc;
 import io.scif.SCIFIOService;
 import io.scif.img.ImgIOException;
 import io.scif.img.ImgOpener;
+import io.scif.io.StreamHandle;
+import io.scif.services.LocationService;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -104,16 +109,27 @@ public abstract class ColocalisationTest extends AbstractOpTest {
 	private <T extends RealType<T> & NativeType<T>> Img<T> loadTiffFromJar(
 		final String relPath)
 	{
-//		InputStream is = TestImageAccessor.class.getResourceAsStream(relPath);
-//		BufferedInputStream bis = new BufferedInputStream(is);
+		InputStream is = ColocalisationTest.class.getResourceAsStream(relPath);
+		DataInputStream dis = new DataInputStream(is);
+		StreamHandle handle = new StreamHandle(context) {
+
+			@Override
+			public boolean isConstructable(String id) throws IOException {
+				return true;
+			}
+
+			@Override
+			public void resetStream() throws IOException {
+				throw new IllegalStateException("Unimplemented");
+			}};
+		handle.setStream(dis);
 
 		final ImgOpener opener = new ImgOpener(context);
+		final String mappedId = ColocalisationTest.class.getName() + "-" + "tiffFromJar";
+		context.service(LocationService.class).mapFile(mappedId, handle);
 
-		// HACK: Read data from file system for now.
-		// Until this is fixed, the test will not pass when run from a JAR file.
-		String source = "src/test/resources/net/imagej/ops/coloc/" + relPath;
 		try {
-			return (Img) opener.openImgs(source).get(0);
+			return (Img) opener.openImgs(mappedId).get(0);
 		}
 		catch (final ImgIOException exc) {
 			throw new IllegalStateException("File " + relPath +
