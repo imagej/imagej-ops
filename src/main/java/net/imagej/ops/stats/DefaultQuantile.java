@@ -73,6 +73,9 @@ public class DefaultQuantile<I extends RealType<I>, O extends RealType<O>>
 	/**
 	 * Returns the value of the kth lowest element. Do note that for nth lowest
 	 * element, k = n - 1.
+	 * <p>
+	 * This an all-in-one method version of your basic quick select algorithm.
+	 * </p>
 	 */
 	static double select(final ArrayList<Double> array, final int inLeft,
 		final int inRight, final int k)
