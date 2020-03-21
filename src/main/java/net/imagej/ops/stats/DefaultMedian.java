@@ -29,10 +29,9 @@
 
 package net.imagej.ops.stats;
 
+import java.util.ArrayList;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.computer.Computers;
-import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
@@ -43,6 +42,7 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher (University of Konstanz)
  * @author Christian Dietz (University of Konstanz)
  * @author Jan Eglinger
+ * @author Richard Domander
  * @param <I>
  *            input type
  * @param <O>
@@ -52,18 +52,19 @@ import org.scijava.plugin.Plugin;
 public class DefaultMedian<I extends RealType<I>, O extends RealType<O>> extends AbstractStatsOp<Iterable<I>, O>
 		implements Ops.Stats.Median {
 
-	private UnaryComputerOp<Iterable<I>, O> op;
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public void initialize() {
-		op = (UnaryComputerOp) Computers.unary(ops(), Ops.Stats.Quantile.class, out(),
-				in() == null ? Iterable.class : in(), 0.5d);
-	}
-
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
-		op.compute(input, output);
-	}
+		final ArrayList<Double> statistics = new ArrayList<>();
 
+		input.forEach(i -> statistics.add(i.getRealDouble()));
+
+		final int k = statistics.size() / 2;
+		double result = DefaultQuantile.select(statistics, 0, statistics.size() - 1, k);
+		if (statistics.size() % 2 == 0) {
+			result += DefaultQuantile.select(statistics, 0, statistics.size() - 1, k - 1);
+			result *= 0.5;
+		}
+
+		output.setReal(result);
+	}
 }

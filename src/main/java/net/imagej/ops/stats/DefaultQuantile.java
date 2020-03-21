@@ -74,7 +74,7 @@ public class DefaultQuantile<I extends RealType<I>, O extends RealType<O>>
 	 * Returns the value of the kth lowest element. Do note that for nth lowest
 	 * element, k = n - 1.
 	 */
-	private double select(final ArrayList<Double> array, final int inLeft,
+	static double select(final ArrayList<Double> array, final int inLeft,
 		final int inRight, final int k)
 	{
 
@@ -140,7 +140,7 @@ public class DefaultQuantile<I extends RealType<I>, O extends RealType<O>>
 	}
 
 	/** Helper method for swapping array entries */
-	private void swap(final List<Double> array, final int a, final int b) {
+	private static void swap(final List<Double> array, final int a, final int b) {
 		final double temp = array.get(a);
 		array.set(a, array.get(b));
 		array.set(b, temp);
