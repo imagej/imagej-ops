@@ -59,9 +59,9 @@ public class DefaultMedian<I extends RealType<I>, O extends RealType<O>> extends
 		input.forEach(i -> statistics.add(i.getRealDouble()));
 
 		final int k = statistics.size() / 2;
-		double result = DefaultQuantile.select(statistics, 0, statistics.size() - 1, k);
+		double result = DefaultQuantile.select(statistics, k);
 		if (statistics.size() % 2 == 0) {
-			result += DefaultQuantile.select(statistics, 0, statistics.size() - 1, k - 1);
+			result += DefaultQuantile.select(statistics, k - 1);
 			result *= 0.5;
 		}
 

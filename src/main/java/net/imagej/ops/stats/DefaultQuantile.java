@@ -31,7 +31,6 @@ package net.imagej.ops.stats;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
@@ -39,6 +38,8 @@ import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+
+import static java.util.Collections.swap;
 
 /**
  * {@link Op} to calculate the n-th {@code stats.percentile}.
@@ -66,7 +67,7 @@ public class DefaultQuantile<I extends RealType<I>, O extends RealType<O>>
 			statistics.add(it.next().getRealDouble());
 		}
 
-		output.setReal(select(statistics, 0, statistics.size() - 1, (int) (statistics
+		output.setReal(select(statistics, (int) (statistics
 			.size() * quantile)));
 	}
 
@@ -77,12 +78,11 @@ public class DefaultQuantile<I extends RealType<I>, O extends RealType<O>>
 	 * This an all-in-one method version of your basic quick select algorithm.
 	 * </p>
 	 */
-	static double select(final ArrayList<Double> array, final int inLeft,
-		final int inRight, final int k)
+	static double select(final ArrayList<Double> array, final int k)
 	{
 
-		int left = inLeft;
-		int right = inRight;
+		int left = 0;
+		int right = array.size() - 1;
 
 		while (true) {
 
@@ -140,12 +140,5 @@ public class DefaultQuantile<I extends RealType<I>, O extends RealType<O>>
 				left = i;
 			}
 		}
-	}
-
-	/** Helper method for swapping array entries */
-	private static void swap(final List<Double> array, final int a, final int b) {
-		final double temp = array.get(a);
-		array.set(a, array.get(b));
-		array.set(b, temp);
 	}
 }
