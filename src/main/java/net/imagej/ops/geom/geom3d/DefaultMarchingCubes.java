@@ -38,12 +38,13 @@ import net.imagej.ops.geom.geom3d.mesh.VertexInterpolator;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
+import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.logic.BoolType;
 import net.imglib2.view.ExtendedRandomAccessibleInterval;
+import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
-
 import org.apache.commons.math3.util.MathArrays;
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -76,22 +77,46 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 		Mesh output = new NaiveDoubleMesh();
 		ExtendedRandomAccessibleInterval<T, RandomAccessibleInterval<T>> extended =
 			Views.extendValue(input, (T) new BoolType(false));
-		Cursor<T> c = Views.interval(extended, new FinalInterval(new long[] { input
-			.min(0) - 1, input.min(1) - 1, input.min(2) - 1 }, new long[] { input.max(
-				0) + 1, input.max(1) + 1, input.max(2) + 1 })).localizingCursor();
+		IntervalView<T> interval = Views.interval(extended, new FinalInterval(new long[]{input
+				.min(0) - 1, input.min(1) - 1, input.min(2) - 1}, new long[]{input.max(
+				0) + 1, input.max(1) + 1, input.max(2) + 1}));
+		Cursor<T> c = interval.localizingCursor();
 
+		RandomAccess<T> ra = interval.randomAccess();
+
+		double[] vertex_values = new double[8];
 		while (c.hasNext()) {
 			c.next();
 
 			int cursorX = c.getIntPosition(0);
 			int cursorY = c.getIntPosition(1);
 			int cursorZ = c.getIntPosition(2);
-			Cursor<T> cu = getCube(extended, cursorX, cursorY, cursorZ);
-			int i = 0;
-			double[] vertex_values = new double[8];
-			while (cu.hasNext()) {
-				vertex_values[i++] = (cu.next().get()) ? 1 : 0;
-			}
+			int[] p0 = new int[] { 0 + cursorX, 0 + cursorY, 1 + cursorZ };
+			int[] p1 = new int[] { 1 + cursorX, 0 + cursorY, 1 + cursorZ };
+			int[] p2 = new int[] { 1 + cursorX, 0 + cursorY, 0 + cursorZ };
+			int[] p3 = new int[] { 0 + cursorX, 0 + cursorY, 0 + cursorZ };
+			int[] p4 = new int[] { 0 + cursorX, 1 + cursorY, 1 + cursorZ };
+			int[] p5 = new int[] { 1 + cursorX, 1 + cursorY, 1 + cursorZ };
+			int[] p6 = new int[] { 1 + cursorX, 1 + cursorY, 0 + cursorZ };
+			int[] p7 = new int[] { 0 + cursorX, 1 + cursorY, 0 + cursorZ };
+
+			ra.setPosition(p3);
+			vertex_values[0] = ra.get().get() ? 1 : 0;
+			ra.setPosition(p2);
+			vertex_values[1] = ra.get().get() ? 1 : 0;
+			ra.setPosition(p7);
+			vertex_values[2] = ra.get().get() ? 1 : 0;
+			ra.setPosition(p6);
+			vertex_values[3] = ra.get().get() ? 1 : 0;
+			ra.setPosition(p0);
+			vertex_values[4] = ra.get().get() ? 1 : 0;
+			ra.setPosition(p1);
+			vertex_values[5] = ra.get().get() ? 1 : 0;
+			ra.setPosition(p4);
+			vertex_values[6] = ra.get().get() ? 1 : 0;
+			ra.setPosition(p5);
+			vertex_values[7] = ra.get().get() ? 1 : 0;
+
 			// 6------7
 			// /| /|
 			// 2-----3 |
@@ -108,14 +133,6 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 			int cubeindex = getCubeIndex(vertex_values);
 
 			if (EDGE_TABLE[cubeindex] != 0) {
-				int[] p0 = new int[] { 0 + cursorX, 0 + cursorY, 1 + cursorZ };
-				int[] p1 = new int[] { 1 + cursorX, 0 + cursorY, 1 + cursorZ };
-				int[] p2 = new int[] { 1 + cursorX, 0 + cursorY, 0 + cursorZ };
-				int[] p3 = new int[] { 0 + cursorX, 0 + cursorY, 0 + cursorZ };
-				int[] p4 = new int[] { 0 + cursorX, 1 + cursorY, 1 + cursorZ };
-				int[] p5 = new int[] { 1 + cursorX, 1 + cursorY, 1 + cursorZ };
-				int[] p6 = new int[] { 1 + cursorX, 1 + cursorY, 0 + cursorZ };
-				int[] p7 = new int[] { 0 + cursorX, 1 + cursorY, 0 + cursorZ };
 
 				double[][] vertlist = new double[12][];
 
@@ -170,7 +187,7 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 				}
 
 				/* Create the triangle */
-				for (i = 0; TRIANGLE_TABLE[cubeindex][i] != -1; i += 3) {
+				for (int i = 0; TRIANGLE_TABLE[cubeindex][i] != -1; i += 3) {
 					final double v0x = vertlist[TRIANGLE_TABLE[cubeindex][i + 2]][0];
 					final double v0y = vertlist[TRIANGLE_TABLE[cubeindex][i + 2]][1];
 					final double v0z = vertlist[TRIANGLE_TABLE[cubeindex][i + 2]][2];
@@ -241,15 +258,6 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 		vv[7] = vertex_values[2];
 		
 		return vv;
-	}
-
-	private Cursor<T> getCube(
-		final ExtendedRandomAccessibleInterval<T, RandomAccessibleInterval<T>> extended,
-		final int cursorX, final int cursorY, final int cursorZ)
-	{
-		return Views.flatIterable(Views.interval(extended, new FinalInterval(
-			new long[] { cursorX, cursorY, cursorZ }, new long[] { cursorX + 1,
-				cursorY + 1, cursorZ + 1 }))).cursor();
 	}
 
 	// For any edge, if one vertex is inside of the surface and the other is
