@@ -273,7 +273,7 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 		int cubeindex = 0;
 		for (int i = 0; i < 8; i++) {
 			if (vertex_values[i] < isolevel) {
-				cubeindex |= (int) Math.pow(2, i);
+				cubeindex += 1 << i;
 			}
 		}
 		return cubeindex;
