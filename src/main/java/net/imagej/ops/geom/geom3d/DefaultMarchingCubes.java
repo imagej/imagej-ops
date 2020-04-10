@@ -85,6 +85,7 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 		RandomAccess<T> ra = interval.randomAccess();
 
 		double[] vertex_values = new double[8];
+		double[] vv = new double[8];
 		while (c.hasNext()) {
 			c.next();
 
@@ -123,7 +124,7 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 			// | 4---|-5
 			// |/ |/
 			// 0-----1
-			vertex_values = mapFlatIterableToLookUpCube(vertex_values);
+			mapFlatIterableToLookUpCube(vv, vertex_values);
 			// 4------5
 			// /| /|
 			// 7-----6 |
@@ -246,8 +247,7 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 		return cubeindex;
 	}
 
-	private double[] mapFlatIterableToLookUpCube(final double[] vertex_values) {
-		double[] vv = new double[8];
+	private void mapFlatIterableToLookUpCube(final double[] vv, final double[] vertex_values) {
 		vv[0] = vertex_values[4];
 		vv[1] = vertex_values[5];
 		vv[2] = vertex_values[1];
@@ -256,8 +256,9 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 		vv[5] = vertex_values[7];
 		vv[6] = vertex_values[3];
 		vv[7] = vertex_values[2];
-		
-		return vv;
+		for (int i = 0; i < vv.length; i++) {
+			vertex_values[i] = vv[i];
+		}
 	}
 
 	// For any edge, if one vertex is inside of the surface and the other is
