@@ -150,18 +150,18 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 			ra.setPosition(p5);
 			vertex_values[7] = ra.get().getRealDouble();
 
-			// 6------7
-			// /| /|
+			//   6------7
+			//  /|    /|
 			// 2-----3 |
 			// | 4---|-5
-			// |/ |/
+			// |/    |/
 			// 0-----1
 			mapFlatIterableToLookUpCube(vv, vertex_values);
-			// 4------5
-			// /| /|
+			//   4------5
+			//  /|    /|
 			// 7-----6 |
 			// | 0---|-1
-			// |/ |/
+			// |/    |/
 			// 3-----2
 			int cubeindex = getCubeIndex(vertex_values);
 
