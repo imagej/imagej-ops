@@ -85,6 +85,7 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 		RandomAccess<T> ra = interval.randomAccess();
 
 		final double[] vertex_values = new double[8];
+		final double[][] vertlist = new double[12][];
 		int[] p0 = new int[3];
 		int[] p1 = new int[3];
 		int[] p2 = new int[3];
@@ -152,71 +153,71 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 
 			final int cubeindex = getCubeIndex(vertex_values);
 
-			if (EDGE_TABLE[cubeindex] != 0) {
-
-				double[][] vertlist = new double[12][];
+			final int EDGE = EDGE_TABLE[ cubeindex ];
+			if ( EDGE != 0) {
 
 				/* Find the vertices where the surface intersects the cube */
-				if (0 != (EDGE_TABLE[cubeindex] & 1)) {
+				if (0 != ( EDGE & 1)) {
 					vertlist[0] = interpolatePoint(p0, p1, vertex_values[0],
 						vertex_values[1]);
 				}
-				if (0 != (EDGE_TABLE[cubeindex] & 2)) {
+				if (0 != ( EDGE & 2)) {
 					vertlist[1] = interpolatePoint(p1, p2, vertex_values[1],
 						vertex_values[2]);
 				}
-				if (0 != (EDGE_TABLE[cubeindex] & 4)) {
+				if (0 != ( EDGE & 4)) {
 					vertlist[2] = interpolatePoint(p2, p3, vertex_values[2],
 						vertex_values[3]);
 				}
-				if (0 != (EDGE_TABLE[cubeindex] & 8)) {
+				if (0 != ( EDGE & 8)) {
 					vertlist[3] = interpolatePoint(p3, p0, vertex_values[3],
 						vertex_values[0]);
 				}
-				if (0 != (EDGE_TABLE[cubeindex] & 16)) {
+				if (0 != ( EDGE & 16)) {
 					vertlist[4] = interpolatePoint(p4, p5, vertex_values[4],
 						vertex_values[5]);
 				}
-				if (0 != (EDGE_TABLE[cubeindex] & 32)) {
+				if (0 != ( EDGE & 32)) {
 					vertlist[5] = interpolatePoint(p5, p6, vertex_values[5],
 						vertex_values[6]);
 				}
-				if (0 != (EDGE_TABLE[cubeindex] & 64)) {
+				if (0 != ( EDGE & 64)) {
 					vertlist[6] = interpolatePoint(p6, p7, vertex_values[6],
 						vertex_values[7]);
 				}
-				if (0 != (EDGE_TABLE[cubeindex] & 128)) {
+				if (0 != ( EDGE & 128)) {
 					vertlist[7] = interpolatePoint(p7, p4, vertex_values[7],
 						vertex_values[4]);
 				}
-				if (0 != (EDGE_TABLE[cubeindex] & 256)) {
+				if (0 != ( EDGE & 256)) {
 					vertlist[8] = interpolatePoint(p0, p4, vertex_values[0],
 						vertex_values[4]);
 				}
-				if (0 != (EDGE_TABLE[cubeindex] & 512)) {
+				if (0 != ( EDGE & 512)) {
 					vertlist[9] = interpolatePoint(p1, p5, vertex_values[1],
 						vertex_values[5]);
 				}
-				if (0 != (EDGE_TABLE[cubeindex] & 1024)) {
+				if (0 != ( EDGE & 1024)) {
 					vertlist[10] = interpolatePoint(p2, p6, vertex_values[2],
 						vertex_values[6]);
 				}
-				if (0 != (EDGE_TABLE[cubeindex] & 2048)) {
+				if (0 != ( EDGE & 2048)) {
 					vertlist[11] = interpolatePoint(p3, p7, vertex_values[3],
 						vertex_values[7]);
 				}
 
 				/* Create the triangle */
-				for (int i = 0; TRIANGLE_TABLE[cubeindex][i] != -1; i += 3) {
-					final double v0x = vertlist[TRIANGLE_TABLE[cubeindex][i + 2]][0];
-					final double v0y = vertlist[TRIANGLE_TABLE[cubeindex][i + 2]][1];
-					final double v0z = vertlist[TRIANGLE_TABLE[cubeindex][i + 2]][2];
-					final double v1x = vertlist[TRIANGLE_TABLE[cubeindex][i + 1]][0];
-					final double v1y = vertlist[TRIANGLE_TABLE[cubeindex][i + 1]][1];
-					final double v1z = vertlist[TRIANGLE_TABLE[cubeindex][i + 1]][2];
-					final double v2x = vertlist[TRIANGLE_TABLE[cubeindex][i]][0];
-					final double v2y = vertlist[TRIANGLE_TABLE[cubeindex][i]][1];
-					final double v2z = vertlist[TRIANGLE_TABLE[cubeindex][i]][2];
+				final int[] TRIANGLE = TRIANGLE_TABLE[ cubeindex ];
+				for ( int i = 0; TRIANGLE[i] != -1; i += 3) {
+					final double v0x = vertlist[ TRIANGLE[i + 2]][0];
+					final double v0y = vertlist[ TRIANGLE[i + 2]][1];
+					final double v0z = vertlist[ TRIANGLE[i + 2]][2];
+					final double v1x = vertlist[ TRIANGLE[i + 1]][0];
+					final double v1y = vertlist[ TRIANGLE[i + 1]][1];
+					final double v1z = vertlist[ TRIANGLE[i + 1]][2];
+					final double v2x = vertlist[ TRIANGLE[i]][0];
+					final double v2y = vertlist[ TRIANGLE[i]][1];
+					final double v2z = vertlist[ TRIANGLE[i]][2];
 					if (positiveArea(v0x, v0y, v0z, v1x, v1y, v1z, v2x, v2y, v2z)) {
 						output.triangles().add(v0x, v0y, v0z, v1x, v1y, v1z, v2x, v2y, v2z);
 					}
