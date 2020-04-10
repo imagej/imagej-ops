@@ -42,6 +42,7 @@ import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.logic.BoolType;
+import net.imglib2.util.Intervals;
 import net.imglib2.view.ExtendedRandomAccessibleInterval;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
@@ -63,163 +64,135 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 	AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, Mesh> implements
 	Ops.Geometric.MarchingCubes, Contingent
 {
-
-	@Parameter(type = ItemIO.INPUT, required = false)
-	private double isolevel = 1;
-
-	@Parameter(type = ItemIO.INPUT, required = false)
-	private VertexInterpolator interpolatorClass =
-		new DefaultVertexInterpolator();
-
 	@SuppressWarnings({ "unchecked" })
 	@Override
-	public Mesh calculate(final RandomAccessibleInterval<T> input) {
+	public Mesh calculate(final RandomAccessibleInterval<T> input)
+	{
 		Mesh output = new NaiveDoubleMesh();
-		ExtendedRandomAccessibleInterval<T, RandomAccessibleInterval<T>> extended =
-			Views.extendValue(input, (T) new BoolType(false));
-		IntervalView<T> interval = Views.interval(extended, new FinalInterval(new long[]{input
-				.min(0) - 1, input.min(1) - 1, input.min(2) - 1}, new long[]{input.max(
-				0) + 1, input.max(1) + 1, input.max(2) + 1}));
-		Cursor<T> c = interval.localizingCursor();
+		final RandomAccess< T > ra = Views.extendZero( input ).randomAccess( Intervals.expand( input, 1 ) );
+		final double[][] vertlist = new double[ 12 ][];
+		final double[] p0 = { 0, 0, 1 };
+		final double[] p1 = { 1, 0, 1 };
+		final double[] p2 = { 1, 0, 0 };
+		final double[] p3 = { 0, 0, 0 };
+		final double[] p4 = { 0, 1, 1 };
+		final double[] p5 = { 1, 1, 1 };
+		final double[] p6 = { 1, 1, 0 };
+		final double[] p7 = { 0, 1, 0 };
 
-		RandomAccess<T> ra = interval.randomAccess();
+		final int minX = ( int ) input.min( 0 ) - 1;
+		final int minY = ( int ) input.min( 1 ) - 1;
+		final int minZ = ( int ) input.min( 2 ) - 1;
+		final int maxX = ( int ) input.max( 0 ) + 1;
+		final int maxY = ( int ) input.max( 1 ) + 1;
+		final int maxZ = ( int ) input.max( 2 ) + 1;
 
-		final double[] vertex_values = new double[8];
-		final double[][] vertlist = new double[12][];
-		int[] p0 = new int[3];
-		int[] p1 = new int[3];
-		int[] p2 = new int[3];
-		int[] p3 = new int[3];
-		int[] p4 = new int[3];
-		int[] p5 = new int[3];
-		int[] p6 = new int[3];
-		int[] p7 = new int[3];
-		while (c.hasNext()) {
-			c.next();
+		for ( int z = minZ; z < maxZ; ++z )
+		{
+			ra.setPosition( z, 2 );
+			for ( int y = minY; y < maxY; ++y )
+			{
+				ra.setPosition( y, 1 );
+				ra.setPosition( minX, 0 );
+				for ( int x = minX; x < maxX; ++x )
+				{
+					int cubeindex = 0;
+					if ( !ra.get().get() )
+						cubeindex += 1 << 3;
+					ra.fwd( 0 );
+					if ( !ra.get().get() )
+						cubeindex += 1 << 2;
+					ra.fwd( 1 );
+					if ( !ra.get().get() )
+						cubeindex += 1 << 6;
+					ra.bck( 0 );
+					if ( !ra.get().get() )
+						cubeindex += 1 << 7;
+					ra.bck( 1 );
+					ra.fwd( 2 );
+					if ( !ra.get().get() )
+						cubeindex += 1 << 0;
+					ra.fwd( 0 );
+					if ( !ra.get().get() )
+						cubeindex += 1 << 1;
+					ra.fwd( 1 );
+					if ( !ra.get().get() )
+						cubeindex += 1 << 5;
+					ra.bck( 0 );
+					if ( !ra.get().get() )
+						cubeindex += 1 << 4;
+					ra.bck( 2 );
+					ra.bck( 1 );
+					ra.fwd( 0 );
 
-			int cursorX = c.getIntPosition(0);
-			int cursorY = c.getIntPosition(1);
-			int cursorZ = c.getIntPosition(2);
+					final int EDGE = EDGE_TABLE[ cubeindex ];
+					if ( EDGE != 0) {
+						/* Find the vertices where the surface intersects the cube */
+						if (0 != ( EDGE & 1)) {
+							vertlist[0] = interpolatePoint(p0, p1,
+									( cubeindex & 1 << 1 ) == 0);
+						}
+						if (0 != ( EDGE & 2)) {
+							vertlist[1] = interpolatePoint(p1, p2,
+								( cubeindex & 1 << 2 ) == 0);
+						}
+						if (0 != ( EDGE & 4)) {
+							vertlist[2] = interpolatePoint(p2, p3,
+								( cubeindex & 1 << 3 ) == 0);
+						}
+						if (0 != ( EDGE & 8)) {
+							vertlist[3] = interpolatePoint(p3, p0,
+								( cubeindex & 1 << 0 ) == 0);
+						}
+						if (0 != ( EDGE & 16)) {
+							vertlist[4] = interpolatePoint(p4, p5,
+								( cubeindex & 1 << 5 ) == 0);
+						}
+						if (0 != ( EDGE & 32)) {
+							vertlist[5] = interpolatePoint(p5, p6,
+								( cubeindex & 1 << 6 ) == 0);
+						}
+						if (0 != ( EDGE & 64)) {
+							vertlist[6] = interpolatePoint(p6, p7,
+								( cubeindex & 1 << 7 ) == 0);
+						}
+						if (0 != ( EDGE & 128)) {
+							vertlist[7] = interpolatePoint(p7, p4,
+								( cubeindex & 1 << 4 ) == 0);
+						}
+						if (0 != ( EDGE & 256)) {
+							vertlist[8] = interpolatePoint(p0, p4,
+								( cubeindex & 1 << 4 ) == 0);
+						}
+						if (0 != ( EDGE & 512)) {
+							vertlist[9] = interpolatePoint(p1, p5,
+								( cubeindex & 1 << 5 ) == 0);
+						}
+						if (0 != ( EDGE & 1024)) {
+							vertlist[10] = interpolatePoint(p2, p6,
+								( cubeindex & 1 << 6 ) == 0);
+						}
+						if (0 != ( EDGE & 2048)) {
+							vertlist[11] = interpolatePoint(p3, p7,
+								( cubeindex & 1 << 7 ) == 0);
+						}
 
-			p0[0] = 0 + cursorX;
-			p0[1] = 0 + cursorY;
-			p0[2] = 1 + cursorZ;
-
-			p1[0] = 1 + cursorX;
-			p1[1] = 0 + cursorY;
-			p1[2] = 1 + cursorZ;
-
-			p2[0] = 1 + cursorX;
-			p2[1] = 0 + cursorY;
-			p2[2] = 0 + cursorZ;
-
-			p3[0] = 0 + cursorX;
-			p3[1] = 0 + cursorY;
-			p3[2] = 0 + cursorZ;
-
-			p4[0] = 0 + cursorX;
-			p4[1] = 1 + cursorY;
-			p4[2] = 1 + cursorZ;
-
-			p5[0] = 1 + cursorX;
-			p5[1] = 1 + cursorY;
-			p5[2] = 1 + cursorZ;
-
-			p6[0] = 1 + cursorX;
-			p6[1] = 1 + cursorY;
-			p6[2] = 0 + cursorZ;
-
-			p7[0] = 0 + cursorX;
-			p7[1] = 1 + cursorY;
-			p7[2] = 0 + cursorZ;
-
-			ra.setPosition(c);
-			vertex_values[3] = ra.get().getRealDouble();
-			ra.fwd( 0 );
-			vertex_values[2] = ra.get().getRealDouble();
-			ra.fwd( 1 );
-			vertex_values[6] = ra.get().getRealDouble();
-			ra.bck( 0 );
-			vertex_values[7] = ra.get().getRealDouble();
-			ra.bck( 1 );
-			ra.fwd( 2 );
-			vertex_values[0] = ra.get().getRealDouble();
-			ra.fwd( 0 );
-			vertex_values[1] = ra.get().getRealDouble();
-			ra.fwd( 1 );
-			vertex_values[5] = ra.get().getRealDouble();
-			ra.bck( 0 );
-			vertex_values[4] = ra.get().getRealDouble();
-
-			final int cubeindex = getCubeIndex(vertex_values);
-
-			final int EDGE = EDGE_TABLE[ cubeindex ];
-			if ( EDGE != 0) {
-
-				/* Find the vertices where the surface intersects the cube */
-				if (0 != ( EDGE & 1)) {
-					vertlist[0] = interpolatePoint(p0, p1, vertex_values[0],
-						vertex_values[1]);
-				}
-				if (0 != ( EDGE & 2)) {
-					vertlist[1] = interpolatePoint(p1, p2, vertex_values[1],
-						vertex_values[2]);
-				}
-				if (0 != ( EDGE & 4)) {
-					vertlist[2] = interpolatePoint(p2, p3, vertex_values[2],
-						vertex_values[3]);
-				}
-				if (0 != ( EDGE & 8)) {
-					vertlist[3] = interpolatePoint(p3, p0, vertex_values[3],
-						vertex_values[0]);
-				}
-				if (0 != ( EDGE & 16)) {
-					vertlist[4] = interpolatePoint(p4, p5, vertex_values[4],
-						vertex_values[5]);
-				}
-				if (0 != ( EDGE & 32)) {
-					vertlist[5] = interpolatePoint(p5, p6, vertex_values[5],
-						vertex_values[6]);
-				}
-				if (0 != ( EDGE & 64)) {
-					vertlist[6] = interpolatePoint(p6, p7, vertex_values[6],
-						vertex_values[7]);
-				}
-				if (0 != ( EDGE & 128)) {
-					vertlist[7] = interpolatePoint(p7, p4, vertex_values[7],
-						vertex_values[4]);
-				}
-				if (0 != ( EDGE & 256)) {
-					vertlist[8] = interpolatePoint(p0, p4, vertex_values[0],
-						vertex_values[4]);
-				}
-				if (0 != ( EDGE & 512)) {
-					vertlist[9] = interpolatePoint(p1, p5, vertex_values[1],
-						vertex_values[5]);
-				}
-				if (0 != ( EDGE & 1024)) {
-					vertlist[10] = interpolatePoint(p2, p6, vertex_values[2],
-						vertex_values[6]);
-				}
-				if (0 != ( EDGE & 2048)) {
-					vertlist[11] = interpolatePoint(p3, p7, vertex_values[3],
-						vertex_values[7]);
-				}
-
-				/* Create the triangle */
-				final int[] TRIANGLE = TRIANGLE_TABLE[ cubeindex ];
-				for ( int i = 0; TRIANGLE[i] != -1; i += 3) {
-					final double v0x = vertlist[ TRIANGLE[i + 2]][0];
-					final double v0y = vertlist[ TRIANGLE[i + 2]][1];
-					final double v0z = vertlist[ TRIANGLE[i + 2]][2];
-					final double v1x = vertlist[ TRIANGLE[i + 1]][0];
-					final double v1y = vertlist[ TRIANGLE[i + 1]][1];
-					final double v1z = vertlist[ TRIANGLE[i + 1]][2];
-					final double v2x = vertlist[ TRIANGLE[i]][0];
-					final double v2y = vertlist[ TRIANGLE[i]][1];
-					final double v2z = vertlist[ TRIANGLE[i]][2];
-					if (positiveArea(v0x, v0y, v0z, v1x, v1y, v1z, v2x, v2y, v2z)) {
-						output.triangles().add(v0x, v0y, v0z, v1x, v1y, v1z, v2x, v2y, v2z);
+						/* Create the triangle */
+						final int[] TRIANGLE = TRIANGLE_TABLE[ cubeindex ];
+						for ( int i = 0; TRIANGLE[i] != -1; i += 3) {
+							final double v0x = vertlist[ TRIANGLE[i + 2]][0];
+							final double v0y = vertlist[ TRIANGLE[i + 2]][1];
+							final double v0z = vertlist[ TRIANGLE[i + 2]][2];
+							final double v1x = vertlist[ TRIANGLE[i + 1]][0];
+							final double v1y = vertlist[ TRIANGLE[i + 1]][1];
+							final double v1z = vertlist[ TRIANGLE[i + 1]][2];
+							final double v2x = vertlist[ TRIANGLE[i]][0];
+							final double v2y = vertlist[ TRIANGLE[i]][1];
+							final double v2z = vertlist[ TRIANGLE[i]][2];
+							if (positiveArea(v0x, v0y, v0z, v1x, v1y, v1z, v2x, v2y, v2z)) {
+								output.triangles().add(x + v0x, y + v0y, z + v0z, x + v1x, y + v1y, z + v1z, x + v2x, y + v2y, z + v2z);
+							}
+						}
 					}
 				}
 			}
@@ -246,25 +219,9 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 		return cpx != 0 || cpy != 0 || cpz != 0;
 	}
 
-	private double[] interpolatePoint(int[] p0, int[] p1, double v0, double v1) {
-		interpolatorClass.setPoint1(p0);
-		interpolatorClass.setPoint2(p1);
-		interpolatorClass.setValue1(v0);
-		interpolatorClass.setValue2(v1);
-		interpolatorClass.setIsoLevel(isolevel);
-		interpolatorClass.run();
-
-		return interpolatorClass.getOutput();
-	}
-
-	private int getCubeIndex(final double[] vertex_values) {
-		int cubeindex = 0;
-		for (int i = 0; i < 8; i++) {
-			if (vertex_values[i] < isolevel) {
-				cubeindex += 1 << i;
-			}
-		}
-		return cubeindex;
+	private double[] interpolatePoint( double[] p0, double[] p1, boolean v1 )
+	{
+		return v1 ? p1 : p0;
 	}
 
 	// For any edge, if one vertex is inside of the surface and the other is
