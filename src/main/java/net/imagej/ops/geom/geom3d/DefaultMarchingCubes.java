@@ -136,22 +136,19 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 			vertex_values[3] = ra.get().getRealDouble();
 			ra.fwd( 0 );
 			vertex_values[2] = ra.get().getRealDouble();
-			ra.bck( 0 );
 			ra.fwd( 1 );
-			vertex_values[7] = ra.get().getRealDouble();
-			ra.fwd( 0 );
 			vertex_values[6] = ra.get().getRealDouble();
 			ra.bck( 0 );
+			vertex_values[7] = ra.get().getRealDouble();
 			ra.bck( 1 );
 			ra.fwd( 2 );
 			vertex_values[0] = ra.get().getRealDouble();
 			ra.fwd( 0 );
 			vertex_values[1] = ra.get().getRealDouble();
-			ra.bck( 0 );
 			ra.fwd( 1 );
-			vertex_values[4] = ra.get().getRealDouble();
-			ra.fwd( 0 );
 			vertex_values[5] = ra.get().getRealDouble();
+			ra.bck( 0 );
+			vertex_values[4] = ra.get().getRealDouble();
 
 			final int cubeindex = getCubeIndex(vertex_values);
 
