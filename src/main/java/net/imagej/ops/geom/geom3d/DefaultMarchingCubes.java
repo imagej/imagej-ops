@@ -86,20 +86,52 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 
 		double[] vertex_values = new double[8];
 		double[] vv = new double[8];
+		int[] p0 = new int[3];
+		int[] p1 = new int[3];
+		int[] p2 = new int[3];
+		int[] p3 = new int[3];
+		int[] p4 = new int[3];
+		int[] p5 = new int[3];
+		int[] p6 = new int[3];
+		int[] p7 = new int[3];
 		while (c.hasNext()) {
 			c.next();
 
 			int cursorX = c.getIntPosition(0);
 			int cursorY = c.getIntPosition(1);
 			int cursorZ = c.getIntPosition(2);
-			int[] p0 = new int[] { 0 + cursorX, 0 + cursorY, 1 + cursorZ };
-			int[] p1 = new int[] { 1 + cursorX, 0 + cursorY, 1 + cursorZ };
-			int[] p2 = new int[] { 1 + cursorX, 0 + cursorY, 0 + cursorZ };
-			int[] p3 = new int[] { 0 + cursorX, 0 + cursorY, 0 + cursorZ };
-			int[] p4 = new int[] { 0 + cursorX, 1 + cursorY, 1 + cursorZ };
-			int[] p5 = new int[] { 1 + cursorX, 1 + cursorY, 1 + cursorZ };
-			int[] p6 = new int[] { 1 + cursorX, 1 + cursorY, 0 + cursorZ };
-			int[] p7 = new int[] { 0 + cursorX, 1 + cursorY, 0 + cursorZ };
+
+			p0[0] = 0 + cursorX;
+			p0[1] = 0 + cursorY;
+			p0[2] = 1 + cursorZ;
+
+			p1[0] = 1 + cursorX;
+			p1[1] = 0 + cursorY;
+			p1[2] = 1 + cursorZ;
+
+			p2[0] = 1 + cursorX;
+			p2[1] = 0 + cursorY;
+			p2[2] = 0 + cursorZ;
+
+			p3[0] = 0 + cursorX;
+			p3[1] = 0 + cursorY;
+			p3[2] = 0 + cursorZ;
+
+			p4[0] = 0 + cursorX;
+			p4[1] = 1 + cursorY;
+			p4[2] = 1 + cursorZ;
+
+			p5[0] = 1 + cursorX;
+			p5[1] = 1 + cursorY;
+			p5[2] = 1 + cursorZ;
+
+			p6[0] = 1 + cursorX;
+			p6[1] = 1 + cursorY;
+			p6[2] = 0 + cursorZ;
+
+			p7[0] = 0 + cursorX;
+			p7[1] = 1 + cursorY;
+			p7[2] = 0 + cursorZ;
 
 			ra.setPosition(p3);
 			vertex_values[0] = ra.get().get() ? 1 : 0;
