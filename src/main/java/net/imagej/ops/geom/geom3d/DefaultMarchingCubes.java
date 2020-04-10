@@ -84,8 +84,7 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 
 		RandomAccess<T> ra = interval.randomAccess();
 
-		double[] vertex_values = new double[8];
-		double[] vv = new double[8];
+		final double[] vertex_values = new double[8];
 		int[] p0 = new int[3];
 		int[] p1 = new int[3];
 		int[] p2 = new int[3];
@@ -134,40 +133,27 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 			p7[2] = 0 + cursorZ;
 
 			ra.setPosition(c);
+			vertex_values[3] = ra.get().getRealDouble();
+			ra.fwd( 0 );
+			vertex_values[2] = ra.get().getRealDouble();
+			ra.bck( 0 );
+			ra.fwd( 1 );
+			vertex_values[7] = ra.get().getRealDouble();
+			ra.fwd( 0 );
+			vertex_values[6] = ra.get().getRealDouble();
+			ra.bck( 0 );
+			ra.bck( 1 );
+			ra.fwd( 2 );
 			vertex_values[0] = ra.get().getRealDouble();
 			ra.fwd( 0 );
 			vertex_values[1] = ra.get().getRealDouble();
 			ra.bck( 0 );
 			ra.fwd( 1 );
-			vertex_values[2] = ra.get().getRealDouble();
-			ra.fwd( 0 );
-			vertex_values[3] = ra.get().getRealDouble();
-			ra.bck( 0 );
-			ra.bck( 1 );
-			ra.fwd( 2 );
 			vertex_values[4] = ra.get().getRealDouble();
 			ra.fwd( 0 );
 			vertex_values[5] = ra.get().getRealDouble();
-			ra.bck( 0 );
-			ra.fwd( 1 );
-			vertex_values[6] = ra.get().getRealDouble();
-			ra.fwd( 0 );
-			vertex_values[7] = ra.get().getRealDouble();
 
-			//   6------7
-			//  /|    /|
-			// 2-----3 |
-			// | 4---|-5
-			// |/    |/
-			// 0-----1
-			mapFlatIterableToLookUpCube(vv, vertex_values);
-			//   4------5
-			//  /|    /|
-			// 7-----6 |
-			// | 0---|-1
-			// |/    |/
-			// 3-----2
-			int cubeindex = getCubeIndex(vertex_values);
+			final int cubeindex = getCubeIndex(vertex_values);
 
 			if (EDGE_TABLE[cubeindex] != 0) {
 
@@ -281,20 +267,6 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 			}
 		}
 		return cubeindex;
-	}
-
-	private void mapFlatIterableToLookUpCube(final double[] vv, final double[] vertex_values) {
-		vv[0] = vertex_values[4];
-		vv[1] = vertex_values[5];
-		vv[2] = vertex_values[1];
-		vv[3] = vertex_values[0];
-		vv[4] = vertex_values[6];
-		vv[5] = vertex_values[7];
-		vv[6] = vertex_values[3];
-		vv[7] = vertex_values[2];
-		for (int i = 0; i < vv.length; i++) {
-			vertex_values[i] = vv[i];
-		}
 	}
 
 	// For any edge, if one vertex is inside of the surface and the other is
