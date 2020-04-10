@@ -6,13 +6,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -54,7 +54,7 @@ import org.scijava.plugin.Plugin;
  * This is a marching cubes implementation. It is inspired by Paul Bourke's
  * (http://paulbourke.net/geometry/polygonise/) implementation. Especially the
  * lookup tables are from his implementation.
- * 
+ *
  * @author Tim-Oliver Buchholz (University of Konstanz)
  * @param <T> BooleanType
  */
@@ -133,22 +133,22 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 			p7[1] = 1 + cursorY;
 			p7[2] = 0 + cursorZ;
 
-			ra.setPosition(p3);
-			vertex_values[0] = ra.get().get() ? 1 : 0;
+			ra.setPosition(c);
+			vertex_values[0] = ra.get().getRealDouble();
 			ra.setPosition(p2);
-			vertex_values[1] = ra.get().get() ? 1 : 0;
+			vertex_values[1] = ra.get().getRealDouble();
 			ra.setPosition(p7);
-			vertex_values[2] = ra.get().get() ? 1 : 0;
+			vertex_values[2] = ra.get().getRealDouble();
 			ra.setPosition(p6);
-			vertex_values[3] = ra.get().get() ? 1 : 0;
+			vertex_values[3] = ra.get().getRealDouble();
 			ra.setPosition(p0);
-			vertex_values[4] = ra.get().get() ? 1 : 0;
+			vertex_values[4] = ra.get().getRealDouble();
 			ra.setPosition(p1);
-			vertex_values[5] = ra.get().get() ? 1 : 0;
+			vertex_values[5] = ra.get().getRealDouble();
 			ra.setPosition(p4);
-			vertex_values[6] = ra.get().get() ? 1 : 0;
+			vertex_values[6] = ra.get().getRealDouble();
 			ra.setPosition(p5);
-			vertex_values[7] = ra.get().get() ? 1 : 0;
+			vertex_values[7] = ra.get().getRealDouble();
 
 			// 6------7
 			// /| /|
