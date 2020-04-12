@@ -52,6 +52,7 @@ import net.imagej.ops.geom.geom3d.DefaultVerticesCountConvexHullMesh;
 import net.imagej.ops.geom.geom3d.DefaultVerticesCountMesh;
 import net.imagej.ops.geom.geom3d.DefaultVolumeConvexHullMesh;
 import net.imagej.ops.geom.geom3d.DefaultVolumeMesh;
+import net.imagej.ops.geom.geom3d.RegionMarchingCubes;
 import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -109,6 +110,29 @@ public class MeshFeatureTests extends AbstractFeatureTest {
 	@Test
 	public void marchingCubes() {
 		final Mesh result = (Mesh) ops.run(DefaultMarchingCubes.class, ROI);
+		assertEquals(mesh.triangles().size(), result.triangles().size());
+		final Iterator<Triangle> expectedFacets = mesh.triangles().iterator();
+		final Iterator<Triangle> actualFacets = result.triangles().iterator();
+		while (expectedFacets.hasNext() && actualFacets.hasNext()) {
+			final Triangle expected = expectedFacets.next();
+			final Triangle actual = actualFacets.next();
+			assertEquals(expected.v0x(), actual.v0x(), EPSILON);
+			assertEquals(expected.v0y(), actual.v0y(), EPSILON);
+			assertEquals(expected.v0z(), actual.v0z(), EPSILON);
+			assertEquals(expected.v1x(), actual.v1x(), EPSILON);
+			assertEquals(expected.v1y(), actual.v1y(), EPSILON);
+			assertEquals(expected.v1z(), actual.v1z(), EPSILON);
+			assertEquals(expected.v2x(), actual.v2x(), EPSILON);
+			assertEquals(expected.v2y(), actual.v2y(), EPSILON);
+			assertEquals(expected.v2z(), actual.v2z(), EPSILON);
+		}
+		assertTrue(!expectedFacets.hasNext() && !actualFacets.hasNext());
+	}
+
+
+	@Test
+	public void marchingCubesRegion() {
+		final Mesh result = new RegionMarchingCubes().calculate(ROI);
 		assertEquals(mesh.triangles().size(), result.triangles().size());
 		final Iterator<Triangle> expectedFacets = mesh.triangles().iterator();
 		final Iterator<Triangle> actualFacets = result.triangles().iterator();
