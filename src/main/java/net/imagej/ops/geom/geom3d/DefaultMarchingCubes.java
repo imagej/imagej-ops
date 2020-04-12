@@ -64,6 +64,15 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 	AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, Mesh> implements
 	Ops.Geometric.MarchingCubes, Contingent
 {
+
+	@Deprecated
+	@Parameter(type = ItemIO.INPUT, required = false)
+	private double isolevel = 1;
+
+	@Deprecated
+	@Parameter(type = ItemIO.INPUT, required = false)
+	private VertexInterpolator interpolatorClass =
+			new DefaultVertexInterpolator();
 	@SuppressWarnings({ "unchecked" })
 	@Override
 	public Mesh calculate(final RandomAccessibleInterval<T> input)
