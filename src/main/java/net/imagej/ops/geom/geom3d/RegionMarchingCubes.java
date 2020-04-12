@@ -86,10 +86,10 @@ public class RegionMarchingCubes
 	public Mesh calculate(final IterableRegion<BoolType> input)
 	{
 		Mesh output = new NaiveDoubleMesh();
-		final RandomAccess< BoolType > ra = Views.extendZero( input ).randomAccess();
+		final RandomAccess< BoolType > inputRa = Views.extendZero( input ).randomAccess();
 		RandomAccessibleInterval<BitType> done = new ArrayImgFactory<>(new BitType()).create(Intervals.expand( input, 1 ));
 		done = Views.translate(done, input.min(0)-1, input.min(1)-1, input.min(2)-1);
-		final RandomAccess<BitType> doneRA = done.randomAccess();
+		final RandomAccess<BitType> doneRa = done.randomAccess();
 		final double[][] vertlist = new double[ 12 ][];
 
 		Cursor<Void> cursor = input.localizingCursor();
@@ -104,7 +104,7 @@ public class RegionMarchingCubes
 			for (int i = -1; i < 2; i++) {
 				for (int j = -1; j < 2; j++) {
 					for (int k = -1; k < 2; k++) {
-						calculateTrianglesForPoint(output, ra, doneRA, vertlist, x+i, y+j, z+k);
+						calculateTrianglesForPoint(output, inputRa, doneRa, vertlist, x+i, y+j, z+k);
 					}
 				}
 			}
@@ -112,42 +112,42 @@ public class RegionMarchingCubes
 		return output;
 	}
 
-	private void calculateTrianglesForPoint(Mesh output, RandomAccess<BoolType> ra, RandomAccess<BitType> doneRA, double[][] vertlist, int x, int y, int z) {
+	private void calculateTrianglesForPoint(Mesh output, RandomAccess<BoolType> inputRa, RandomAccess<BitType> doneRa, double[][] vertlist, int x, int y, int z) {
 
-		doneRA.setPosition(new long[]{x, y, z});
-		if(doneRA.get().get()) return;
-		else doneRA.get().setOne();
+		doneRa.setPosition(new long[]{x, y, z});
+		if(doneRa.get().get()) return;
+		else doneRa.get().setOne();
 
-		ra.setPosition(doneRA);
+		inputRa.setPosition(doneRa);
 
 		int cubeindex = 0;
-		if ( !ra.get().get() )
+		if ( !inputRa.get().get() )
 			cubeindex += 1 << 3;
-		ra.fwd( 0 );
-		if ( !ra.get().get() )
+		inputRa.fwd( 0 );
+		if ( !inputRa.get().get() )
 			cubeindex += 1 << 2;
-		ra.fwd( 1 );
-		if ( !ra.get().get() )
+		inputRa.fwd( 1 );
+		if ( !inputRa.get().get() )
 			cubeindex += 1 << 6;
-		ra.bck( 0 );
-		if ( !ra.get().get() )
+		inputRa.bck( 0 );
+		if ( !inputRa.get().get() )
 			cubeindex += 1 << 7;
-		ra.bck( 1 );
-		ra.fwd( 2 );
-		if ( !ra.get().get() )
+		inputRa.bck( 1 );
+		inputRa.fwd( 2 );
+		if ( !inputRa.get().get() )
 			cubeindex += 1 << 0;
-		ra.fwd( 0 );
-		if ( !ra.get().get() )
+		inputRa.fwd( 0 );
+		if ( !inputRa.get().get() )
 			cubeindex += 1 << 1;
-		ra.fwd( 1 );
-		if ( !ra.get().get() )
+		inputRa.fwd( 1 );
+		if ( !inputRa.get().get() )
 			cubeindex += 1 << 5;
-		ra.bck( 0 );
-		if ( !ra.get().get() )
+		inputRa.bck( 0 );
+		if ( !inputRa.get().get() )
 			cubeindex += 1 << 4;
-		ra.bck( 2 );
-		ra.bck( 1 );
-		ra.fwd( 0 );
+		inputRa.bck( 2 );
+		inputRa.bck( 1 );
+		inputRa.fwd( 0 );
 
 		final int EDGE = EDGE_TABLE[ cubeindex ];
 		if ( EDGE != 0) {
