@@ -198,7 +198,7 @@
 
 		<!-- NB: Deploy releases to the SciJava Maven repository. -->
 		<releaseProfiles>deploy-to-scijava</releaseProfiles>
-		<imglib2.version>5.8.0</imglib2.version>
+		<imglib2.version>5.9.0</imglib2.version>
 	</properties>
 
 	<repositories>
