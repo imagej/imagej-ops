@@ -66,12 +66,8 @@ import org.scijava.plugin.Plugin;
  *
  * @author Tim-Oliver Buchholz (University of Konstanz)
  */
-@Plugin(type = Ops.Geometric.MarchingCubes.class)
 public class RegionMarchingCubes
 {
-
-	@Parameter
-	IterableRegion<BoolType> input;
 
 	private final double[] p0 = { 0, 0, 1 };
 	private final double[] p1 = { 1, 0, 1 };

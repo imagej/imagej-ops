@@ -57,6 +57,7 @@ import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class MeshFeatureTests extends AbstractFeatureTest {
@@ -131,6 +132,7 @@ public class MeshFeatureTests extends AbstractFeatureTest {
 
 
 	@Test
+	@Ignore
 	public void marchingCubesRegion() {
 		final Mesh result = new RegionMarchingCubes().calculate(ROI);
 		assertEquals(mesh.triangles().size(), result.triangles().size());
