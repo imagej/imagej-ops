@@ -37,8 +37,10 @@ import net.imagej.ops.geom.geom3d.mesh.DefaultVertexInterpolator;
 import net.imagej.ops.geom.geom3d.mesh.VertexInterpolator;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.Cursor;
+import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.BooleanType;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Intervals;
 import net.imglib2.view.Views;
 import org.apache.commons.math3.util.MathArrays;
 import org.scijava.ItemIO;
@@ -54,11 +56,10 @@ import org.scijava.plugin.Plugin;
  * @param <T> BooleanType
  */
 @Plugin(type = Ops.Geometric.MarchingCubes.class)
-public class DefaultMarchingCubes<T extends BooleanType<T>> extends
+public class DefaultMarchingCubes<T extends RealType<T> > extends
 		AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, Mesh> implements
 		Ops.Geometric.MarchingCubes, Contingent
 {
-	@Deprecated
 	@Parameter( type = ItemIO.INPUT, required = false )
 	private double isolevel = 1;
 
@@ -67,7 +68,9 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 	private VertexInterpolator interpolatorClass =
 			new DefaultVertexInterpolator();
 
-	private final double[][] vertlist = new double[ 12 ][];
+	private final double[][] vertlist = new double[ 12 ][ 3 ];
+	private final double[] vertex_values = new double[ 8 ];
+
 	private static final double[] p0 = { 0, 0, 1 };
 	private static final double[] p1 = { 1, 0, 1 };
 	private static final double[] p2 = { 1, 0, 0 };
@@ -97,7 +100,7 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 			{
 				for ( int x = 0; x < msx; ++x )
 				{
-					if ( c.next().get() )
+					if ( c.next().getRealDouble() >= isolevel )
 						indices[ j ] = 1;
 					++j;
 				}
@@ -129,17 +132,13 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 	{
 		final int msx = ( int ) input.dimension( 0 );
 		final int msy = ( int ) input.dimension( 1 );
-		final int msz = ( int ) input.dimension( 2 );
 		final int isx = msx + 2;
 		final int isy = msy + 2;
-		final int isz = msz + 2;
 		final byte[] mask = mask( input );
 
-//		if ( Arrays.equals( mask, mask_working( input ) ) )
-//			System.out.println( "EXCELLENT!" );
-
 		Mesh output = new NaiveDoubleMesh();
-//		final RandomAccess< T > ra = Views.extendZero( input ).randomAccess( Intervals.expand( input, 1 ) );
+		final RandomAccess< T > ra = Views.extendZero( input ).randomAccess( Intervals.expand( input, 1 ) );
+		final int[] pos = new int[ 3 ];
 
 		final int minX = ( int ) input.min( 0 ) - 1;
 		final int minY = ( int ) input.min( 1 ) - 1;
@@ -161,54 +160,76 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 
 					final int EDGE = EDGE_TABLE[ mindex ];
 					if ( EDGE != 0) {
+						pos[ 0 ] = x;
+						pos[ 1 ] = y;
+						pos[ 2 ] = z;
+						ra.setPosition( pos );
+						vertex_values[3] = ra.get().getRealDouble();
+						ra.fwd( 0 );
+						vertex_values[2] = ra.get().getRealDouble();
+						ra.fwd( 1 );
+						vertex_values[6] = ra.get().getRealDouble();
+						ra.bck( 0 );
+						vertex_values[7] = ra.get().getRealDouble();
+						ra.bck( 1 );
+						ra.fwd( 2 );
+						vertex_values[0] = ra.get().getRealDouble();
+						ra.fwd( 0 );
+						vertex_values[1] = ra.get().getRealDouble();
+						ra.fwd( 1 );
+						vertex_values[5] = ra.get().getRealDouble();
+						ra.bck( 0 );
+						vertex_values[4] = ra.get().getRealDouble();
+
+
 						/* Find the vertices where the surface intersects the cube */
 						if (0 != ( EDGE & 1)) {
-							vertlist[0] = interpolatePoint(p0, p1,
-									( mindex & 1 << 5 ) != 0);
+							interpolatePoint(vertlist[0], p0, p1, vertex_values[0],
+									vertex_values[1]);
 						}
 						if (0 != ( EDGE & 2)) {
-							vertlist[1] = interpolatePoint(p1, p2,
-									( mindex & 1 << 1 ) != 0);
+							interpolatePoint(vertlist[1], p1, p2, vertex_values[1],
+									vertex_values[2]);
 						}
 						if (0 != ( EDGE & 4)) {
-							vertlist[2] = interpolatePoint(p2, p3,
-									( mindex & 1 << 0 ) != 0);
+							interpolatePoint(vertlist[2], p2, p3, vertex_values[2],
+									vertex_values[3]);
 						}
 						if (0 != ( EDGE & 8)) {
-							vertlist[3] = interpolatePoint(p3, p0,
-									( mindex & 1 << 4 ) != 0);
+							interpolatePoint(vertlist[3], p3, p0, vertex_values[3],
+									vertex_values[0]);
 						}
 						if (0 != ( EDGE & 16)) {
-							vertlist[4] = interpolatePoint(p4, p5,
-									( mindex & 1 << 7 ) != 0);
+							interpolatePoint(vertlist[4], p4, p5, vertex_values[4],
+									vertex_values[5]);
 						}
 						if (0 != ( EDGE & 32)) {
-							vertlist[5] = interpolatePoint(p5, p6,
-									( mindex & 1 << 3 ) != 0);
+							interpolatePoint(vertlist[5], p5, p6, vertex_values[5],
+									vertex_values[6]);
 						}
 						if (0 != ( EDGE & 64)) {
-							vertlist[6] = interpolatePoint(p6, p7,
-									( mindex & 1 << 2 ) != 0);
+							interpolatePoint(vertlist[6], p6, p7, vertex_values[6],
+									vertex_values[7]);
 						}
 						if (0 != ( EDGE & 128)) {
-							vertlist[7] = interpolatePoint(p7, p4,
-									( mindex & 1 << 6 ) != 0);
+							interpolatePoint(vertlist[7], p7, p4, vertex_values[7],
+									vertex_values[4]);
 						}
 						if (0 != ( EDGE & 256)) {
-							vertlist[8] = interpolatePoint(p0, p4,
-									( mindex & 1 << 6 ) != 0);
+							interpolatePoint(vertlist[8], p0, p4, vertex_values[0],
+									vertex_values[4]);
 						}
 						if (0 != ( EDGE & 512)) {
-							vertlist[9] = interpolatePoint(p1, p5,
-									( mindex & 1 << 7 ) != 0);
+							interpolatePoint(vertlist[9], p1, p5, vertex_values[1],
+									vertex_values[5]);
 						}
 						if (0 != ( EDGE & 1024)) {
-							vertlist[10] = interpolatePoint(p2, p6,
-									( mindex & 1 << 3 ) != 0);
+							interpolatePoint(vertlist[10], p2, p6, vertex_values[2],
+									vertex_values[6]);
 						}
 						if (0 != ( EDGE & 2048)) {
-							vertlist[11] = interpolatePoint(p3, p7,
-									( mindex & 1 << 2 ) != 0);
+							interpolatePoint(vertlist[11], p3, p7, vertex_values[3],
+									vertex_values[7]);
 						}
 
 						/* Create the triangle */
@@ -256,6 +277,28 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 	private double[] interpolatePoint( double[] p0, double[] p1, boolean v1 )
 	{
 		return v1 ? p1 : p0;
+	}
+
+	private void interpolatePoint(double[] output, double[] p0, double[] p1, double v0, double v1) {
+		if (Math.abs(isolevel - v0) < 0.00001) {
+			for (int i = 0; i < 3; i++) {
+				output[i] = p0[i];
+			}
+		} else if (Math.abs(isolevel - v1) < 0.00001) {
+			for (int i = 0; i < 3; i++) {
+				output[i] = p1[i];
+			}
+		} else if (Math.abs(v0 - v1) < 0.00001) {
+			for (int i = 0; i < 3; i++) {
+				output[i] = p0[i];
+			}
+		} else {
+			double mu = (isolevel - v0) / (v1 - v0);
+
+			output[0] = p0[0] + mu * (p1[0] - p0[0]);
+			output[1] = p0[1] + mu * (p1[1] - p0[1]);
+			output[2] = p0[2] + mu * (p1[2] - p0[2]);
+		}
 	}
 
 	// For any edge, if one vertex is inside of the surface and the other is
