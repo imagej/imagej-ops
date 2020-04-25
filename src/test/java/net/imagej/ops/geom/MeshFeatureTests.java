@@ -97,12 +97,11 @@ public class MeshFeatureTests extends AbstractFeatureTest {
 				((DoubleType) ops.run(DefaultCompactness.class, mesh)).get(), EPSILON);
 	}
 
+	/**
+	 * ConvexHull3D is tested in {@link QuickHull3DTest}.
+	 */
 	@Test
-	public void convexHull3D() {
-		/**
-		 * convexHull3D is tested in {@link QuickHull3DTest}.
-		 */
-	}
+	public void convexHull3D() {}
 
 	@Test
 	public void convexityMesh() {
