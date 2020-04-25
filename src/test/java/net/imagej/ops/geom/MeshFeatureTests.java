@@ -61,6 +61,7 @@ import net.imagej.ops.geom.geom3d.mesh.DefaultVertexInterpolator;
 import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -79,6 +80,12 @@ public class MeshFeatureTests extends AbstractFeatureTest {
 	public static void setupBefore() {
 		ROI = createLabelRegion(getTestImage3D(), 1, 255);
 		mesh = getMesh();
+	}
+
+	@AfterClass
+	public static void oneTimeTearDown() {
+		mesh = null;
+		ROI = null;
 	}
 
 	@Test
