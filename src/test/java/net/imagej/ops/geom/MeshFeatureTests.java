@@ -64,6 +64,12 @@ import net.imglib2.type.numeric.real.DoubleType;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+/**
+ * Tests for mesh related ops
+ *
+ * @author Tim-Oliver Buchholz (University of Konstanz)
+ * @author Richard Domander
+ */
 public class MeshFeatureTests extends AbstractFeatureTest {
 	private static final double EPSILON = 10e-12;
 	private static LabelRegion<String> ROI;
