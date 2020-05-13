@@ -46,12 +46,12 @@ import net.imglib2.view.Views;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+import org.scijava.thread.ThreadService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import org.scijava.thread.ThreadService;
 
 /**
  * The Op creates an output interval where the objects are hollow versions from
