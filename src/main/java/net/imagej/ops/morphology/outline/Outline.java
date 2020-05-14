@@ -39,7 +39,6 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBounds;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.logic.BitType;
-import net.imglib2.util.Util;
 import net.imglib2.view.ExtendedRandomAccessibleInterval;
 import net.imglib2.view.Views;
 
@@ -103,7 +102,7 @@ public class Outline<B extends BooleanType<B>> extends
 		final RandomAccessibleInterval<BitType> output)
 	{
 		final ExtendedRandomAccessibleInterval<B, RandomAccessibleInterval<B>> extendedInput =
-				extendInterval(input);
+				Views.extendValue(input, excludeEdges);
 		final List<Future<?>> futures = new ArrayList<>();
 		final IterableInterval<B> iterable = Views.iterable(input);
 		final int cores = Runtime.getRuntime().availableProcessors();
@@ -157,14 +156,6 @@ public class Outline<B extends BooleanType<B>> extends
 				inputCursor.jumpFwd(jump);
 			}
 		};
-	}
-
-	private ExtendedRandomAccessibleInterval<B, RandomAccessibleInterval<B>>
-		extendInterval(RandomAccessibleInterval<B> interval)
-	{
-		final B type = Util.getTypeFromInterval(interval).createVariable();
-		type.set(in2());
-		return Views.extendValue(interval, type);
 	}
 
 	/** Checks if any element in the N-dimensional neighbourhood is background */
