@@ -38,9 +38,9 @@ import org.scijava.plugin.Plugin;
 import org.scijava.util.MersenneTwisterFast;
 
 /**
- * Sets the real output value of a {@link RealType} T to a randomly generated
- * value x, bounded by (and including) the {@code rangeMin} and {@code rangeMax}
- * parameters, i.e. {@code rangeMin <= x <= rangeMax}.
+ * Adds a pseudorandomly generated value {@code x} to a {@link RealType}
+ * {@code I}, such that {@code x} is (inclusively) bounded by {@code rangeMin}
+ * and {@code rangeMax} parameters, i.e. {@code rangeMin <= x <= rangeMax}.
  * 
  * @author Gabe Selzer
  */
