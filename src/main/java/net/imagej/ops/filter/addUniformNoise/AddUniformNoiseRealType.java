@@ -45,8 +45,8 @@ import org.scijava.util.MersenneTwisterFast;
  * @author Gabe Selzer
  */
 @Plugin(type = Ops.Filter.AddUniformNoise.class)
-public class AddUniformNoiseRealType<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractUnaryComputerOp<I, O> implements Ops.Filter.AddUniformNoise
+public class AddUniformNoiseRealType<I extends RealType<I>>
+	extends AbstractUnaryComputerOp<I, I> implements Ops.Filter.AddUniformNoise
 {
 
 	/**
@@ -83,21 +83,15 @@ public class AddUniformNoiseRealType<I extends RealType<I>, O extends RealType<O
 	}
 
 	@Override
-	public void compute(I input, O output) {
-		int i = 0;
-		do {
-			final double newVal = (rangeMax - rangeMin) * rng.nextDouble(true, true) +
-				rangeMin + input.getRealDouble();
-			if (newVal <= input.getMaxValue() && newVal >= input.getMinValue()) {
-				output.setReal(newVal);
-				return;
-			}
-			if (i++ > 100) {
-				throw new IllegalArgumentException(
-					"noise function failing to terminate. probably misconfigured.");
-			}
-		}
-		while (true);
+	public void compute(I input, I output) {
+		final double newVal = (rangeMax - rangeMin) * rng.nextDouble(true, true) +
+			rangeMin + input.getRealDouble();
+		if (newVal > input.getMaxValue())
+			output.setReal(input.getMaxValue());
+		else if (newVal < input.getMinValue())
+			output.setReal(input.getMinValue());
+		else
+			output.setReal(newVal);
 	}
 
 }
