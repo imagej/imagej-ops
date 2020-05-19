@@ -25,7 +25,7 @@ public class AddUniformNoiseTest extends AbstractOpTest {
 	public void realTypeRegressionTest() {
 		UnaryComputerOp<DoubleType, DoubleType> noiseFunc = Computers.unary(ops,
 			Ops.Filter.AddUniformNoise.class, DoubleType.class, DoubleType.class, 0d,
-			2d);
+			2d, 0xabcdef1234567890L);
 
 		double[] actual = new double[9];
 		DoubleType temp = new DoubleType();
@@ -49,7 +49,7 @@ public class AddUniformNoiseTest extends AbstractOpTest {
 	public void wrappingUpperEndRegressionTest() {
 		UnaryComputerOp<UnsignedByteType, UnsignedByteType> noiseFunc = Computers
 			.unary(ops, Ops.Filter.AddUniformNoise.class, UnsignedByteType.class,
-				UnsignedByteType.class, 0l, 3l, false);
+				UnsignedByteType.class, 0l, 3l, false, 0xabcdef1234567890L);
 
 		int[] actual = new int[9];
 		UnsignedByteType temp = new UnsignedByteType();
@@ -70,7 +70,7 @@ public class AddUniformNoiseTest extends AbstractOpTest {
 	public void wrappingLowerEndRegressionTest() {
 		UnaryComputerOp<UnsignedByteType, UnsignedByteType> noiseFunc = Computers
 			.unary(ops, Ops.Filter.AddUniformNoise.class, UnsignedByteType.class,
-				UnsignedByteType.class, -3l, 0l, false);
+				UnsignedByteType.class, -3l, 0l, false, 0xabcdef1234567890L);
 
 		int[] actual = new int[9];
 		UnsignedByteType temp = new UnsignedByteType();
@@ -91,7 +91,7 @@ public class AddUniformNoiseTest extends AbstractOpTest {
 	public void clampingLowerEndRegressionTest() {
 		UnaryComputerOp<UnsignedByteType, UnsignedByteType> noiseFunc = Computers
 			.unary(ops, Ops.Filter.AddUniformNoise.class, UnsignedByteType.class,
-				UnsignedByteType.class, -3l, 0l);
+				UnsignedByteType.class, -3l, 0l, 0xabcdef1234567890L);
 
 		int[] actual = new int[9];
 		UnsignedByteType temp = new UnsignedByteType();

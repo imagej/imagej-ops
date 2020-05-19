@@ -72,14 +72,16 @@ public class AddUniformNoiseIntegerType<I extends IntegerType<I>> extends
 	private boolean clampOutput = true;
 
 	@Parameter(required = false)
-	private long seed = 0xabcdef1234567890L;
+	private Long seed;
 	private long range;
 
 	private MersenneTwisterFast rng;
 
 	@Override
 	public void initialize() {
-		if (rng == null) rng = new MersenneTwisterFast(seed);
+		// setup rng with seed only if one was provided.
+		if (rng == null) rng = seed == null ? new MersenneTwisterFast()
+			: new MersenneTwisterFast(seed);
 		if (rangeMax < rangeMin) {
 			long temp = rangeMax;
 			rangeMax = rangeMin;

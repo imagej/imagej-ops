@@ -146,7 +146,7 @@ public class FilterNamespace extends AbstractNamespace {
 	
 	@OpMethod(op = net.imagej.ops.filter.addUniformNoise.AddUniformNoiseRealType.class)
 	public <I extends RealType<I>> I addUniformNoise(final I out,
-		final I in, final double rangeMin, final double rangeMax, final long seed)
+		final I in, final double rangeMin, final double rangeMax, final Long seed)
 	{
 		@SuppressWarnings("unchecked")
 		final I result = (I) ops().run(Ops.Filter.AddUniformNoise.class, out, in, rangeMin,
@@ -176,7 +176,7 @@ public class FilterNamespace extends AbstractNamespace {
 	
 	@OpMethod(op = net.imagej.ops.filter.addUniformNoise.AddUniformNoiseIntegerType.class)
 	public <I extends IntegerType<I>> I addUniformNoise(final I out,
-		final I in, final long rangeMin, final long rangeMax, final boolean clampOutput, final long seed)
+		final I in, final long rangeMin, final long rangeMax, final boolean clampOutput, final Long seed)
 	{
 		@SuppressWarnings("unchecked")
 		final I result = (I) ops().run(Ops.Filter.AddUniformNoise.class, out, in, rangeMin,

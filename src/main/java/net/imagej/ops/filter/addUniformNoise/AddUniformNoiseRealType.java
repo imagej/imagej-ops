@@ -62,13 +62,15 @@ public class AddUniformNoiseRealType<I extends RealType<I>>
 	private double rangeMax;
 
 	@Parameter(required = false)
-	private long seed = 0xabcdef1234567890L;
+	private Long seed;
 
 	private MersenneTwisterFast rng;
 
 	@Override
 	public void initialize() {
-		if (rng == null) rng = new MersenneTwisterFast(seed);
+		// setup rng with seed only if one was provided.
+		if (rng == null) rng = seed == null ? new MersenneTwisterFast()
+			: new MersenneTwisterFast(seed);
 		if (rangeMax < rangeMin) {
 			double temp = rangeMax;
 			rangeMax = rangeMin;
