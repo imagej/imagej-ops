@@ -46,6 +46,7 @@ import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
+import net.imglib2.type.numeric.IntegerType;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -131,23 +132,55 @@ public class FilterNamespace extends AbstractNamespace {
 		return result;
 	}
 	
+	// -- Uniform Noise --
+	
 	@OpMethod(op = net.imagej.ops.filter.addUniformNoise.AddUniformNoiseRealType.class)
-	public <I extends RealType<I>, O extends RealType<O>> O addUniformNoise(final O out,
+	public <I extends RealType<I>> I addUniformNoise(final I out,
 		final I in, final double rangeMin, final double rangeMax)
 	{
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(Ops.Filter.AddUniformNoise.class, out, in, rangeMin,
+		final I result = (I) ops().run(Ops.Filter.AddUniformNoise.class, out, in, rangeMin,
 			rangeMax);
 		return result;
 	}
 	
 	@OpMethod(op = net.imagej.ops.filter.addUniformNoise.AddUniformNoiseRealType.class)
-	public <I extends RealType<I>, O extends RealType<O>> O addUniformNoise(final O out,
+	public <I extends RealType<I>> I addUniformNoise(final I out,
 		final I in, final double rangeMin, final double rangeMax, final long seed)
 	{
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(Ops.Filter.AddUniformNoise.class, out, in, rangeMin,
+		final I result = (I) ops().run(Ops.Filter.AddUniformNoise.class, out, in, rangeMin,
 			rangeMax, seed);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.filter.addUniformNoise.AddUniformNoiseIntegerType.class)
+	public <I extends IntegerType<I>> I addUniformNoise(final I out,
+		final I in, final long rangeMin, final long rangeMax)
+	{
+		@SuppressWarnings("unchecked")
+		final I result = (I) ops().run(Ops.Filter.AddUniformNoise.class, out, in, rangeMin,
+			rangeMax);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.filter.addUniformNoise.AddUniformNoiseIntegerType.class)
+	public <I extends IntegerType<I>> I addUniformNoise(final I out,
+		final I in, final long rangeMin, final long rangeMax, final boolean clampOutput)
+	{
+		@SuppressWarnings("unchecked")
+		final I result = (I) ops().run(Ops.Filter.AddUniformNoise.class, out, in, rangeMin,
+			rangeMax, clampOutput);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.filter.addUniformNoise.AddUniformNoiseIntegerType.class)
+	public <I extends IntegerType<I>> I addUniformNoise(final I out,
+		final I in, final long rangeMin, final long rangeMax, final boolean clampOutput, final long seed)
+	{
+		@SuppressWarnings("unchecked")
+		final I result = (I) ops().run(Ops.Filter.AddUniformNoise.class, out, in, rangeMin,
+			rangeMax, clampOutput, seed);
 		return result;
 	}
 

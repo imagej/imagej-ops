@@ -29,40 +29,51 @@
 
 package net.imagej.ops.filter.addUniformNoise;
 
+import java.math.BigInteger;
+
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
-import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.IntegerType;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.util.MersenneTwisterFast;
 
 /**
- * Adds a pseudorandomly generated value {@code x} to a {@link RealType}
+ * Adds a pseudorandomly generated value {@code x} to a {@link IntegerType}
  * {@code I}, such that {@code x} is (inclusively) bounded by {@code rangeMin}
  * and {@code rangeMax} parameters, i.e. {@code rangeMin <= x <= rangeMax}.
  * 
  * @author Gabe Selzer
  */
-@Plugin(type = Ops.Filter.AddUniformNoise.class)
-public class AddUniformNoiseRealType<I extends RealType<I>>
-	extends AbstractUnaryComputerOp<I, I> implements Ops.Filter.AddUniformNoise
+@Plugin(type = Ops.Filter.AddUniformNoise.class, priority = Priority.HIGH)
+public class AddUniformNoiseIntegerType<I extends IntegerType<I>> extends
+	AbstractUnaryComputerOp<I, I> implements Ops.Filter.AddUniformNoise
 {
 
 	/**
 	 * The greatest that an input value can be decreased.
 	 */
 	@Parameter
-	private double rangeMin;
+	private long rangeMin;
 
 	/**
 	 * The greatest that an input value can be <b> increased </b>
 	 */
 	@Parameter
-	private double rangeMax;
+	private long rangeMax;
+
+	/**
+	 * If false, the Op will wrap outputs that are outside of the type bounds,
+	 * instead of clamping them
+	 */
+	@Parameter(required = false)
+	private boolean clampOutput = true;
 
 	@Parameter(required = false)
 	private long seed = 0xabcdef1234567890L;
+	private long range;
 
 	private MersenneTwisterFast rng;
 
@@ -70,50 +81,20 @@ public class AddUniformNoiseRealType<I extends RealType<I>>
 	public void initialize() {
 		if (rng == null) rng = new MersenneTwisterFast(seed);
 		if (rangeMax < rangeMin) {
-			double temp = rangeMax;
+			long temp = rangeMax;
 			rangeMax = rangeMin;
 			rangeMin = temp;
 		}
-
-		// if an unacceptable value is passed for either range param (i.e. a NaN
-		// value or a Double so large that the maths will become infected by
-		// INFINITY, do not proceed.
-		if (!Double.isFinite(rangeMax - rangeMin))
-			throw new IllegalArgumentException("range not allowed by op.");
+		// MersenneTwister can only generate numbers that can fit into a long.
+		range = Math.subtractExact(rangeMax + 1, rangeMin);
 	}
-	
+
 	@Override
 	public void compute(I input, I output) {
-		final double newVal = (rangeMax - rangeMin) * rng.nextDouble(true, true) +
-			rangeMin + input.getRealDouble();
-		
-		setOutput(newVal, true, output);
-	}
-	
-	protected static <I extends RealType<I>> void setOutput(double newVal, boolean clampOutput, I output) {
-		// clamp output
-		if (clampOutput) {
-			output.setReal(Math.max(output.getMinValue(), Math.min(output.getMaxValue(),
-				newVal)));
-		}
+		final double newVal = rng.nextLong(range) + rangeMin + input
+			.getRealDouble();
 
-		// wrap output
-		else {
-			double outVal = newVal;
-			// when output larger than max value, add difference of output and max
-			// value to the min value
-			while (outVal > output.getMaxValue()) {
-				outVal = output.getMinValue() + (outVal - output.getMaxValue() - 1);
-			}
-			// when output smaller than min value, subtract difference of output and
-			// min value from the max value
-			while (outVal < output.getMinValue()) {
-				outVal = output.getMaxValue() - (output.getMinValue() - outVal - 1);
-			}
-
-			output.setReal(outVal);
-		}
-		
+		AddUniformNoiseRealType.setOutput(newVal, clampOutput, output);
 	}
 
 }
