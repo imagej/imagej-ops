@@ -112,7 +112,7 @@ public class DefaultSharpen<T extends RealType<T>> extends
 		// output image
 		final RandomAccessibleInterval<T> output = (RandomAccessibleInterval<T>) ops().create().img(in());
 
-		if(input.numDimensions() > 2) {
+		if(input.numDimensions() < 2) {
 			throw new IllegalArgumentException("Input has too few dimensions! Only 2+ dimensional images allowed!");
 		}
 
