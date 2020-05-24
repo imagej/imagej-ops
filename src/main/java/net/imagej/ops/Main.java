@@ -34,7 +34,7 @@ import java.io.IOException;
 import net.imagej.ops.eval.OpEvaluator;
 
 import org.scijava.Context;
-import org.scijava.parse.eval.EvaluatorConsole;
+import org.scijava.parsington.eval.EvaluatorConsole;
 
 /**
  * Launches a console-based, Ops-driven expression evaluator.

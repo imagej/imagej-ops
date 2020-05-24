@@ -200,6 +200,8 @@
 		<releaseProfiles>deploy-to-scijava</releaseProfiles>
 		<imglib2.version>5.9.0</imglib2.version>
 		<imglib2-cache.version>1.0.0-beta-13</imglib2-cache.version>
+		<scijava-common.version>2.83.1</scijava-common.version>
+		<parsington.version>2.0.0</parsington.version>
 	</properties>
 
 	<repositories>
