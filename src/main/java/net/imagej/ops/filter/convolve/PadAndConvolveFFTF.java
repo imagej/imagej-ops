@@ -78,6 +78,13 @@ public class PadAndConvolveFFTF<I extends RealType<I>, O extends RealType<O> & N
 	public void initialize() {
 		super.initialize();
 
+		// N.B. The null value in this op call is passed to the long[] borderSize
+		// parameter. Unfortunately in order to provide an OutOfBoundsFactory to
+		// this Op we also have to provide a long[] borderSize. This is not provided
+		// to us, however, so we just want to use the reasonable default as defined
+		// in PadAndConvolveFFT. This is why we pass a null before obf.
+		// Also note that if obf is null then it will be set to a reasonable default
+		// within PadAndConvolveFFT.
 		convolver = (BinaryComputerOp) Computers.binary(ops(),
 			PadAndConvolveFFT.class, RandomAccessibleInterval.class, in1(), in2(), null, obf);
 
