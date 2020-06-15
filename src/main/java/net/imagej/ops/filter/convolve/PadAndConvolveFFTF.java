@@ -79,7 +79,7 @@ public class PadAndConvolveFFTF<I extends RealType<I>, O extends RealType<O> & N
 		super.initialize();
 
 		convolver = (BinaryComputerOp) Computers.binary(ops(),
-			PadAndConvolveFFT.class, RandomAccessibleInterval.class, in1(), in2());
+			PadAndConvolveFFT.class, RandomAccessibleInterval.class, in1(), in2(), null, obf);
 
 	}
 
