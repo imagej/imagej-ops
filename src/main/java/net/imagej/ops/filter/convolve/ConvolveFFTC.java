@@ -72,7 +72,6 @@ public class ConvolveFFTC<I extends RealType<I>, O extends RealType<O>, K extend
 		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
 		if (linearFilter == null) {
-			System.out.println("ConvolveFFTC: fftInput = " + getFFTInput() + ", fftKernel = " + getFFTKernel());
 			mul = Hybrids.binaryCF(ops(), IIToIIOutputII.Multiply.class, getFFTInput(),
 				getFFTKernel(), getFFTInput());
 
