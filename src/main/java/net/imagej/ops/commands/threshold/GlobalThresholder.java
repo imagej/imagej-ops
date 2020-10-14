@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Command.class, menuPath = "Image > Threshold > Apply Threshold")
+@Plugin(type = Command.class)
 public class GlobalThresholder<T extends RealType<T>> extends AbstractOp {
 
     @Parameter

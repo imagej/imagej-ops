@@ -40,7 +40,7 @@ import org.scijava.command.Command;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Command.class, menuPath = "Image > Threshold > Project")
+@Plugin(type = Command.class)
 public class ProjectCommand<T extends RealType<T>> implements Command {
 
 	@Parameter(type = ItemIO.BOTH)
