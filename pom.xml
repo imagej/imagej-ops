@@ -11,7 +11,7 @@
 
 	<groupId>net.imagej</groupId>
 	<artifactId>imagej-ops</artifactId>
-	<version>0.45.7-SNAPSHOT</version>
+	<version>0.45.7</version>
 
 	<name>ImageJ Ops</name>
 	<description>ImageJ Operations: a framework for reusable algorithms.</description>
@@ -177,7 +177,7 @@
 	<scm>
 		<connection>scm:git:git://github.com/imagej/imagej-ops</connection>
 		<developerConnection>scm:git:git@github.com:imagej/imagej-ops</developerConnection>
-		<tag>HEAD</tag>
+		<tag>imagej-ops-0.45.7</tag>
 		<url>https://github.com/imagej/imagej-ops</url>
 	</scm>
 	<issueManagement>
