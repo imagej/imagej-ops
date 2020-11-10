@@ -39,22 +39,18 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBounds;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.logic.BitType;
-import net.imglib2.util.Util;
 import net.imglib2.view.ExtendedRandomAccessibleInterval;
 import net.imglib2.view.Views;
 
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+import org.scijava.thread.ThreadService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
-import static java.util.Arrays.stream;
 
 /**
  * The Op creates an output interval where the objects are hollow versions from
@@ -67,6 +63,9 @@ public class Outline<B extends BooleanType<B>> extends
 	AbstractBinaryHybridCF<RandomAccessibleInterval<B>, Boolean, RandomAccessibleInterval<BitType>>
 	implements Ops.Morphology.Outline
 {
+
+	@Parameter
+	private ThreadService threadService;
 
 	@Parameter
 	private LogService logService;
@@ -103,27 +102,18 @@ public class Outline<B extends BooleanType<B>> extends
 		final RandomAccessibleInterval<BitType> output)
 	{
 		final ExtendedRandomAccessibleInterval<B, RandomAccessibleInterval<B>> extendedInput =
-				extendInterval(input);
-		final int nThreads = Runtime.getRuntime().availableProcessors();
-		final ExecutorService pool = Executors.newFixedThreadPool(nThreads);
+				Views.extendValue(input, excludeEdges);
 		final List<Future<?>> futures = new ArrayList<>();
-		final long[] dimensions = new long[input.numDimensions()];
-		input.dimensions(dimensions);
-		final long size = stream(dimensions).reduce((a, b) -> a * b).orElse(0);
-		final long perThread = size / nThreads;
-		final long remainder = size % perThread;
 		final IterableInterval<B> iterable = Views.iterable(input);
-
-		for (int i = 0; i < nThreads; i++) {
-			// Advancing a Cursor once sets it at [0, 0... 0]
-			final long start = i * perThread + 1;
-			final long share = i == 0 ? perThread + remainder : perThread;
+		final int cores = Runtime.getRuntime().availableProcessors();
+		final int nThreads = (int) Math.min(cores, iterable.size());
+		for (int thread = 0; thread < nThreads; thread++) {
 			final Cursor<B> cursor = iterable.cursor();
 			final OutOfBounds<B> inputAccess = extendedInput.randomAccess();
 			final RandomAccess<BitType> outputAccess = output.randomAccess();
 			final Runnable runnable = createTask(cursor, inputAccess,
-					outputAccess, start, share);
-			futures.add(pool.submit(runnable));
+					outputAccess, thread, nThreads);
+			futures.add(threadService.run(runnable));
 		}
 
 		for (Future<?> future : futures) {
@@ -142,7 +132,7 @@ public class Outline<B extends BooleanType<B>> extends
 	 * @param inputAccess Random access to the extended input image
 	 * @param output Access to the output image
 	 * @param start Which pixel thread should start from
-	 * @param elements Number of pixels thread processes
+	 * @param jump Number of pixels the thread jumps after each access
 	 * @param <B> Type of elements in the input image
 	 * @return a task for parallel processing.
 	 */
@@ -150,31 +140,32 @@ public class Outline<B extends BooleanType<B>> extends
 	private static <B extends BooleanType<B>> Runnable createTask(
 			final Cursor<B> inputCursor, final OutOfBounds<B> inputAccess,
 			final RandomAccess<BitType> output, final long start,
-			final long elements) {
+			final int jump) {
 		return () -> {
 			final long[] coordinates = new long[inputAccess.numDimensions()];
-			inputCursor.jumpFwd(start);
-			for (long j = 0; j < elements; j++) {
-				inputCursor.localize(coordinates);
-				inputAccess.setPosition(coordinates);
-				if (isOutline(inputAccess, coordinates)) {
-					output.setPosition(coordinates);
-					output.get().set(inputCursor.get().get());
+			inputCursor.jumpFwd(start + 1);
+			while (inputCursor.hasNext()) {
+				if (inputCursor.get().get()) {
+					inputCursor.localize(coordinates);
+					inputAccess.setPosition(coordinates);
+					if (isAnyNeighborBackground(inputAccess, coordinates)) {
+						output.setPosition(coordinates);
+						output.get().set(inputCursor.get().get());
+					}
 				}
-				inputCursor.fwd();
+				inputCursor.jumpFwd(jump);
 			}
 		};
 	}
 
-	private ExtendedRandomAccessibleInterval<B, RandomAccessibleInterval<B>>
-		extendInterval(RandomAccessibleInterval<B> interval)
+	/** Checks if any element in the N-dimensional neighbourhood is background */
+	private static <B extends BooleanType<B>> boolean isAnyNeighborBackground(
+			final OutOfBounds<B> access, final long[] position)
 	{
-		final B type = Util.getTypeFromInterval(interval).createVariable();
-		type.set(in2());
-		return Views.extendValue(interval, type);
+		final int dimension = access.numDimensions() - 1;
+		return isAnyNeighborBackground(dimension, access, position);
 	}
 
-	/** Checks if any element in the N-dimensional neighbourhood is background */
 	private static <B extends BooleanType<B>> boolean isAnyNeighborBackground(
 			final int dimension, final OutOfBounds<B> access,
 			final long[] position) {
@@ -191,22 +182,6 @@ public class Outline<B extends BooleanType<B>> extends
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * Checks if an element is part of the outline of an object
-	 *
-	 * @param access an access to an extended view of the input interval
-	 * @param position current position in the input image
-	 * @return true if element is foreground and has at least one background
-	 *         neighbour
-	 */
-	private static <B extends BooleanType<B>> boolean isOutline(
-			final OutOfBounds<B> access, final long[] position)
-	{
-		final int dimension = access.numDimensions() - 1;
-		return access.get().get() && isAnyNeighborBackground(dimension, access,
-				position);
 	}
 	// endregion
 }
