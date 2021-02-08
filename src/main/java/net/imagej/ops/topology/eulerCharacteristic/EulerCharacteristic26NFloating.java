@@ -246,7 +246,7 @@ public class EulerCharacteristic26NFloating
 
     	ArrayList<Thread> taskList = new ArrayList<>();
 
-    	for (long s = 0; s < nPixels; s += taskSize) {
+    	for (long s = -1; s < nPixels; s += taskSize) {
     		final int n = thread;
     		thread++;
     		final long start = s;
@@ -257,34 +257,31 @@ public class EulerCharacteristic26NFloating
     			@Override
 					public void run() {
     				final RandomAccessibleInterval<B> interval = ival;
-    				//set up cursors to iterate in the octant locations 
-    				final Cursor<B> octantCursor1 = Views.flatIterable(interval).cursor();
-    				final Cursor<B> octantCursor2 = Views.flatIterable(interval).cursor();
+    				//set up cursors to iterate in the octant locations
+    				//only look-up the leading face pixels of the octant,
+    				//the rest can be recycled later
     				final Cursor<B> octantCursor3 = Views.flatIterable(interval).cursor();
     				final Cursor<B> octantCursor4 = Views.flatIterable(interval).cursor();
-    				final Cursor<B> octantCursor5 = Views.flatIterable(interval).cursor();
-    				final Cursor<B> octantCursor6 = Views.flatIterable(interval).cursor();
     				final Cursor<B> octantCursor7 = Views.flatIterable(interval).cursor();
     				final Cursor<B> octantCursor8 = Views.flatIterable(interval).cursor();
 
-    				octantCursor1.jumpFwd(start);
-    				octantCursor2.jumpFwd(start + w);
     				octantCursor3.jumpFwd(start + 1);
     				octantCursor4.jumpFwd(start + w + 1);
-    				octantCursor5.jumpFwd(start + w * h);
-    				octantCursor6.jumpFwd(start + w * h + w);
     				octantCursor7.jumpFwd(start + w * h + 1);
     				octantCursor8.jumpFwd(start + w * h + w + 1);
 
+    				boolean o1 = false, o2 = false, o3 = false, o4 = false,
+    						o5 = false, o6 = false, o7 = false, o8 = false;
+    				
     				for (int i = 0; i < steps; i++) {
-    					boolean o1 = octantCursor1.next().get();
-    					boolean o2 = octantCursor2.next().get();
-    					boolean o3 = octantCursor3.next().get();
-    					boolean o4 = octantCursor4.next().get();
-    					boolean o5 = octantCursor5.next().get();
-    					boolean o6 = octantCursor6.next().get();
-    					boolean o7 = octantCursor7.next().get();
-    					boolean o8 = octantCursor8.next().get();
+    					o1 = o3;
+    					o2 = o4;
+    					o3 = octantCursor3.next().get();
+    					o4 = octantCursor4.next().get();
+    					o5 = o7;
+    					o6 = o8;
+    					o7 = octantCursor7.next().get();
+    					o8 = octantCursor8.next().get();
     					
     					if (o1 || o2 || o3 || o4 || o5 || o6 || o7 || o8)
     					  threadSumDeltaEuler[n] += getDeltaEuler(o1, o2, o3, o4, o5, o6, o7, o8);
