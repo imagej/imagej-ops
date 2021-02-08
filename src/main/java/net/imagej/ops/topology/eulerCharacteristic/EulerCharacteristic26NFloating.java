@@ -246,7 +246,7 @@ public class EulerCharacteristic26NFloating
 
     	ArrayList<Thread> taskList = new ArrayList<>();
 
-    	for (long s = -1; s < nPixels; s += taskSize) {
+    	for (long s = 0; s < nPixels; s += taskSize) {
     		final int n = thread;
     		thread++;
     		final long start = s;
