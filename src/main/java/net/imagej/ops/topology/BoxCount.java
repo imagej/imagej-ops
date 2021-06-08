@@ -37,6 +37,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
@@ -48,6 +49,7 @@ import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.ValuePair;
 
+import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -77,6 +79,9 @@ public class BoxCount<B extends BooleanType<B>> extends
 	implements Ops.Topology.BoxCount
 {
 
+	@Parameter
+	private LogService logService;
+	
 	/** Starting size of the boxes in pixels */
 	@Parameter(required = false, persist = false)
 	private Long maxSize = 48L;
@@ -237,7 +242,30 @@ public class BoxCount<B extends BooleanType<B>> extends
 				e.printStackTrace();
 			}
 		}
+		shutdownAndAwaitTermination(pool);
 		return foregroundBoxes;
+	}
+	
+	// Shuts down an ExecutorService as per recommended by Oracle
+	private void shutdownAndAwaitTermination(final ExecutorService executor) {
+		executor.shutdown(); // Disable new tasks from being submitted
+		try {
+			// Wait a while for existing tasks to terminate
+			if (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
+				executor.shutdownNow(); // Cancel currently executing tasks
+				// Wait a while for tasks to respond to being cancelled
+				if (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
+					logService.trace("Pool did not terminate");
+				}
+			}
+		}
+		catch (final InterruptedException ie) {
+			// (Re-)Cancel if current thread also interrupted
+			executor.shutdownNow();
+			// Preserve interrupt status
+			Thread.currentThread().interrupt();
+			logService.trace(ie);
+		}
 	}
 
 	/**
