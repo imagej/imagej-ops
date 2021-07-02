@@ -1,4 +1,4 @@
-[![](https://travis-ci.org/imagej/imagej-ops.svg?branch=master)](https://travis-ci.org/imagej/imagej-ops)
+[![](https://github.com/imagej/imagej-ops/actions/workflows/build-main.yml/badge.svg)](https://github.com/imagej/imagej-ops/actions/workflows/build-main.yml)
 [![Join the chat at https://gitter.im/imagej/imagej-ops](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/imagej/imagej-ops?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ImageJ Ops
