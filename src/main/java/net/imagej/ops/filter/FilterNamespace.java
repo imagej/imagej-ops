@@ -646,6 +646,18 @@ public class FilterNamespace extends AbstractNamespace {
 			powerOfTwo);
 		return result;
 	}
+	
+	// -- findEdges --
+
+	@OpMethod(op = net.imagej.ops.filter.findEdges.DefaultFindEdges.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> findEdges(
+		final RandomAccessibleInterval<T> input)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(Ops.Filter.FindEdges.class, input);
+		return result;
+	}
 
 	// -- derivativeGauss --
 
