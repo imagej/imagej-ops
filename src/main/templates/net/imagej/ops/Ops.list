@@ -97,8 +97,9 @@ namespaces = ```
 		
 	]],
 	[name: "filter", iface: "Filter", ops: [
-		[name: "addNoise",                       iface: "AddNoise"],
+		[name: "addGaussianNoise",               iface: "AddGaussianNoise"],
 		[name: "addPoissonNoise",                iface: "AddPoissonNoise"],
+		[name: "addUniformNoise",                iface: "AddUniformNoise"],
 		[name: "bilateral",                      iface: "Bilateral"],
 		[name: "convolve",                       iface: "Convolve"],
 		[name: "correlate",                      iface: "Correlate"],

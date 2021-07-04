@@ -27,7 +27,7 @@
  * #L%
  */
 
-package net.imagej.ops.filter.addNoise;
+package net.imagej.ops.filter.addGaussianNoise;
 
 import java.util.Random;
 
@@ -44,12 +44,12 @@ import org.scijava.plugin.Plugin;
  * <p>
  * This op is a hybrid computer/function/inplace, since input and output types
  * are the same. For input and output of different types, see
- * {@link AddNoiseRealType}.
+ * {@link AddGaussianNoiseRealType}.
  * </p>
  */
-@Plugin(type = Ops.Filter.AddNoise.class, priority = Priority.HIGH)
-public class AddNoiseRealTypeCFI<T extends RealType<T>> extends
-	AbstractUnaryHybridCFI<T, T> implements Ops.Filter.AddNoise
+@Plugin(type = Ops.Filter.AddGaussianNoise.class, priority = Priority.HIGH)
+public class AddGaussianNoiseRealTypeCFI<T extends RealType<T>> extends
+	AbstractUnaryHybridCFI<T, T> implements Ops.Filter.AddGaussianNoise
 {
 
 	@Parameter
@@ -71,7 +71,7 @@ public class AddNoiseRealTypeCFI<T extends RealType<T>> extends
 	@Override
 	public void compute(final T input, final T output) {
 		if (rng == null) rng = new Random(seed);
-		AddNoiseRealType.addNoise(input, output, rangeMin, rangeMax, rangeStdDev,
+		AddGaussianNoiseRealType.addNoise(input, output, rangeMin, rangeMax, rangeStdDev,
 			rng);
 	}
 
@@ -80,7 +80,7 @@ public class AddNoiseRealTypeCFI<T extends RealType<T>> extends
 	@Override
 	public void mutate(final T arg) {
 		if (rng == null) rng = new Random(seed);
-		AddNoiseRealType.addNoise(arg, arg, rangeMin, rangeMax, rangeStdDev, rng);
+		AddGaussianNoiseRealType.addNoise(arg, arg, rangeMin, rangeMax, rangeStdDev, rng);
 	}
 
 	// -- UnaryOutputFactory methods --

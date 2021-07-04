@@ -46,6 +46,7 @@ import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
+import net.imglib2.type.numeric.IntegerType;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -64,36 +65,36 @@ public class FilterNamespace extends AbstractNamespace {
 
 	// -- addNoise --
 
-	@OpMethod(ops = { net.imagej.ops.filter.addNoise.AddNoiseRealType.class,
-		net.imagej.ops.filter.addNoise.AddNoiseRealTypeCFI.class })
-	public <I extends RealType<I>, O extends RealType<O>> O addNoise(final O out,
+	@OpMethod(ops = { net.imagej.ops.filter.addGaussianNoise.AddGaussianNoiseRealType.class,
+		net.imagej.ops.filter.addGaussianNoise.AddGaussianNoiseRealTypeCFI.class })
+	public <I extends RealType<I>, O extends RealType<O>> O addGaussianNoise(final O out,
 		final I in, final double rangeMin, final double rangeMax,
 		final double rangeStdDev)
 	{
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(Ops.Filter.AddNoise.class, out, in, rangeMin,
+		final O result = (O) ops().run(Ops.Filter.AddGaussianNoise.class, out, in, rangeMin,
 			rangeMax, rangeStdDev);
 		return result;
 	}
 
-	@OpMethod(ops = { net.imagej.ops.filter.addNoise.AddNoiseRealType.class,
-		net.imagej.ops.filter.addNoise.AddNoiseRealTypeCFI.class })
-	public <I extends RealType<I>, O extends RealType<O>> O addNoise(final O out,
+	@OpMethod(ops = { net.imagej.ops.filter.addGaussianNoise.AddGaussianNoiseRealType.class,
+		net.imagej.ops.filter.addGaussianNoise.AddGaussianNoiseRealTypeCFI.class })
+	public <I extends RealType<I>, O extends RealType<O>> O addGaussianNoise(final O out,
 		final I in, final double rangeMin, final double rangeMax,
 		final double rangeStdDev, final long seed)
 	{
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(Ops.Filter.AddNoise.class, out, in, rangeMin,
+		final O result = (O) ops().run(Ops.Filter.AddGaussianNoise.class, out, in, rangeMin,
 			rangeMax, rangeStdDev, seed);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.filter.addNoise.AddNoiseRealTypeCFI.class)
-	public <T extends RealType<T>> T addNoise(final T in, final double rangeMin,
+	@OpMethod(op = net.imagej.ops.filter.addGaussianNoise.AddGaussianNoiseRealTypeCFI.class)
+	public <T extends RealType<T>> T addGaussianNoise(final T in, final double rangeMin,
 		final double rangeMax, final double rangeStdDev)
 	{
 		@SuppressWarnings("unchecked")
-		final T result = (T) ops().run(Ops.Filter.AddNoise.class, in, rangeMin,
+		final T result = (T) ops().run(Ops.Filter.AddGaussianNoise.class, in, rangeMin,
 			rangeMax, rangeStdDev);
 		return result;
 	}
@@ -128,6 +129,58 @@ public class FilterNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
 			Ops.Filter.AddPoissonNoise.class, out, in);
+		return result;
+	}
+	
+	// -- Uniform Noise --
+	
+	@OpMethod(op = net.imagej.ops.filter.addUniformNoise.AddUniformNoiseRealType.class)
+	public <I extends RealType<I>> I addUniformNoise(final I out,
+		final I in, final double rangeMin, final double rangeMax)
+	{
+		@SuppressWarnings("unchecked")
+		final I result = (I) ops().run(Ops.Filter.AddUniformNoise.class, out, in, rangeMin,
+			rangeMax);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.filter.addUniformNoise.AddUniformNoiseRealType.class)
+	public <I extends RealType<I>> I addUniformNoise(final I out,
+		final I in, final double rangeMin, final double rangeMax, final Long seed)
+	{
+		@SuppressWarnings("unchecked")
+		final I result = (I) ops().run(Ops.Filter.AddUniformNoise.class, out, in, rangeMin,
+			rangeMax, seed);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.filter.addUniformNoise.AddUniformNoiseIntegerType.class)
+	public <I extends IntegerType<I>> I addUniformNoise(final I out,
+		final I in, final long rangeMin, final long rangeMax)
+	{
+		@SuppressWarnings("unchecked")
+		final I result = (I) ops().run(Ops.Filter.AddUniformNoise.class, out, in, rangeMin,
+			rangeMax);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.filter.addUniformNoise.AddUniformNoiseIntegerType.class)
+	public <I extends IntegerType<I>> I addUniformNoise(final I out,
+		final I in, final long rangeMin, final long rangeMax, final boolean clampOutput)
+	{
+		@SuppressWarnings("unchecked")
+		final I result = (I) ops().run(Ops.Filter.AddUniformNoise.class, out, in, rangeMin,
+			rangeMax, clampOutput);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.filter.addUniformNoise.AddUniformNoiseIntegerType.class)
+	public <I extends IntegerType<I>> I addUniformNoise(final I out,
+		final I in, final long rangeMin, final long rangeMax, final boolean clampOutput, final Long seed)
+	{
+		@SuppressWarnings("unchecked")
+		final I result = (I) ops().run(Ops.Filter.AddUniformNoise.class, out, in, rangeMin,
+			rangeMax, clampOutput, seed);
 		return result;
 	}
 
