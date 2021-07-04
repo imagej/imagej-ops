@@ -65,13 +65,7 @@ public class DefaultCoordinatesEquation<T extends RealType<T>, N extends Number>
 			c.fwd();
 			c.localize(pos);
 
-			for (int i = 0; i < output.numDimensions(); i++) {
-
-				op.calculate(pos);
-
-				c.get().setReal(op.calculate(pos).floatValue());
-
-			}
+			c.get().setReal(op.calculate(pos).floatValue());
 
 		}
 	}
