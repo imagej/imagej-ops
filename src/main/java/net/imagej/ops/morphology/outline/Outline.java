@@ -53,6 +53,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import static java.util.Arrays.stream;
 
@@ -132,6 +133,29 @@ public class Outline<B extends BooleanType<B>> extends
 			} catch (InterruptedException | ExecutionException e) {
 				logService.error(e);
 			}
+		}
+		shutdownAndAwaitTermination(pool);
+	}
+	
+	// Shuts down an ExecutorService as per recommended by Oracle
+	private void shutdownAndAwaitTermination(final ExecutorService executor) {
+		executor.shutdown(); // Disable new tasks from being submitted
+		try {
+			// Wait a while for existing tasks to terminate
+			if (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
+				executor.shutdownNow(); // Cancel currently executing tasks
+				// Wait a while for tasks to respond to being cancelled
+				if (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
+					logService.trace("Pool did not terminate");
+				}
+			}
+		}
+		catch (final InterruptedException ie) {
+			// (Re-)Cancel if current thread also interrupted
+			executor.shutdownNow();
+			// Preserve interrupt status
+			Thread.currentThread().interrupt();
+			logService.trace(ie);
 		}
 	}
 
