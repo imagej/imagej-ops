@@ -105,7 +105,7 @@ public class Outline<B extends BooleanType<B>> extends
 	{
 		final ExtendedRandomAccessibleInterval<B, RandomAccessibleInterval<B>> extendedInput =
 				extendInterval(input);
-		final int nThreads = Runtime.getRuntime().availableProcessors();
+		final int nThreads = 1;
 		final ExecutorService pool = Executors.newFixedThreadPool(nThreads);
 		final List<Future<?>> futures = new ArrayList<>();
 		final long[] dimensions = new long[input.numDimensions()];
