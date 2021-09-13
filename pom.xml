@@ -193,8 +193,8 @@
 		<package-name>net.imagej.ops</package-name>
 		<main-class>net.imagej.ops.Main</main-class>
 		<license.licenseName>bsd_2</license.licenseName>
-		<license.copyrightOwners>ImageJ developers.</license.copyrightOwners>
-		<license.projectName>ImageJ software for multidimensional image processing and analysis.</license.projectName>
+		<license.copyrightOwners>ImageJ2 developers.</license.copyrightOwners>
+		<license.projectName>ImageJ2 software for multidimensional image processing and analysis.</license.projectName>
 
 		<!-- NB: Deploy releases to the SciJava Maven repository. -->
 		<releaseProfiles>sign,deploy-to-scijava</releaseProfiles>
