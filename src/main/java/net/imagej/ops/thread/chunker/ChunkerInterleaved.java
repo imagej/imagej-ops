@@ -58,7 +58,7 @@ public class ChunkerInterleaved extends AbstractChunker {
 	@Override
 	public void run() {
 
-		final int numThreads = Runtime.getRuntime().availableProcessors();
+		final int numThreads = ops().getMaxThreads();
 		final int numStepsFloor = (int) (numberOfElements / numThreads);
 		final int remainder = (int) numberOfElements - (numStepsFloor * numThreads);
 

@@ -319,6 +319,16 @@ public interface OpEnvironment extends Contextual {
 	/** Gets the namespace of the given class. */
 	<NS extends Namespace> NS namespace(final Class<NS> nsClass);
 
+	/** Gets the maximum number of threads any single op is allowed to use. */
+	default int getMaxThreads() {
+		return Runtime.getRuntime().availableProcessors();
+	}
+
+	/** Sets the maximum number of threads any single op is allowed to use. */
+	default void setMaxThreads(final int maxThreads) {
+		throw new UnsupportedOperationException();
+	}
+
 	// -- Operation shortcuts - global namespace --
 
 	/** Executes the "eval" operation on the given arguments. */

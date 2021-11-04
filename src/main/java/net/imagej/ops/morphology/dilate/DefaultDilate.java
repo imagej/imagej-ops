@@ -125,7 +125,6 @@ public class DefaultDilate<T extends RealType<T>> extends
 		}
 		final ExtendedRandomAccessibleInterval<T, RandomAccessibleInterval<T>> extended =
 			Views.extend(shifted, f);
-		Dilation.dilate(extended, output, in2, minVal, Runtime.getRuntime()
-			.availableProcessors());
+		Dilation.dilate(extended, output, in2, minVal, ops().getMaxThreads());
 	}
 }

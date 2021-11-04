@@ -167,7 +167,7 @@ public class DefaultTubeness<T extends RealType<T>> extends
 		final Img<DoubleType> gaussian = factory.create(input, new DoubleType());
 
 		// Handle multithreading.
-		final int nThreads = Runtime.getRuntime().availableProcessors();
+		final int nThreads = ops().getMaxThreads();
 		final ExecutorService es = threadService.getExecutorService();
 
 		try {

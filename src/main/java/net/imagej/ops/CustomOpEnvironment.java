@@ -116,6 +116,16 @@ public class CustomOpEnvironment extends AbstractContextual implements
 		return parent().namespace(nsClass);
 	}
 
+	@Override
+	public void setMaxThreads(final int maxThreads) {
+		parent.setMaxThreads(maxThreads);
+	}
+
+	@Override
+	public int getMaxThreads() {
+		return parent.getMaxThreads();
+	}
+
 	// -- Helper classes --
 
 	/** A table mapping available ops from class name to {@link OpInfo}. */

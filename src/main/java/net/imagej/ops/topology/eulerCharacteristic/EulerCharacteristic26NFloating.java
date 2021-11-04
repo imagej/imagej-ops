@@ -236,7 +236,7 @@ public class EulerCharacteristic26NFloating
     	final long d = ival.dimension(2);
 
     	//set up threads
-    	final int nThreads = Runtime.getRuntime().availableProcessors();
+    	final int nThreads = ops().getMaxThreads();
     	final long nPixels = w * h * d;
     	final long taskSize =  Math.max(nPixels / Math.max((nThreads - 1), 1), 100000);
 
