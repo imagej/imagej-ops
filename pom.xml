@@ -15,7 +15,7 @@
 
 	<name>ImageJ Ops</name>
 	<description>ImageJ Operations: a framework for reusable algorithms.</description>
-	<url>https://imagej.net/ImageJ_Ops</url>
+	<url>https://imagej.net/libs/imagej-ops</url>
 	<inceptionYear>2014</inceptionYear>
 	<organization>
 		<name>ImageJ</name>
@@ -163,6 +163,7 @@
 		</contributor>
 		<contributor>
 			<name>Michael Zinsmaier</name>
+			<url>https://imagej.net/people/MichaelZinsmaier</url>
 			<properties><id>MichaelZinsmaier</id></properties>
 		</contributor>
 	</contributors>
