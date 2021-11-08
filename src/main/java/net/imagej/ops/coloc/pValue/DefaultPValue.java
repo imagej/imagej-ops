@@ -98,7 +98,7 @@ public class DefaultPValue<T extends RealType<T>, U extends RealType<U>> extends
 		final double value = op.calculate(iterableImage1, iterableImage2);
 		
 		// compute shuffled coloc values in parallel
-		int threadCount = Runtime.getRuntime().availableProcessors(); // FIXME: conform to Ops threading strategy...
+		int threadCount = ops().getMaxThreads();
 		Random r = new Random(seed);
 		long[] seeds = new long[nrRandomizations];
 		for (int s = 0; s < nrRandomizations; s++ ) {

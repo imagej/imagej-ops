@@ -58,6 +58,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Parameter
 	private NamespaceService namespaceService;
 
+	private int maxThreads;
+
 	// -- OpEnvironment methods --
 
 	@Override
@@ -87,6 +89,19 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public <NS extends Namespace> NS namespace(Class<NS> nsClass) {
 		return namespaceService.create(nsClass, this);
+	}
+
+	@Override
+	public void setMaxThreads(final int maxThreads) {
+		if (this.maxThreads < 1) {
+			throw new IllegalArgumentException("Max threads must be at least 1");
+		}
+		this.maxThreads = maxThreads;
+	}
+
+	@Override
+	public int getMaxThreads() {
+		return maxThreads > 0 ? maxThreads : OpService.super.getMaxThreads();
 	}
 
 	// -- SingletonService methods --

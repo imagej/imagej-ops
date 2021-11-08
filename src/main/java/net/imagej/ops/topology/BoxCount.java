@@ -197,8 +197,8 @@ public class BoxCount<B extends BooleanType<B>> extends
 				.mapToLong(t -> countForegroundBoxes(input, boxSize, sizes, t));
 	}
 
-	private static int countNThreads(final long boxCount, final long boxSize) {
-		final int processors = Runtime.getRuntime().availableProcessors();
+	private int countNThreads(final long boxCount, final long boxSize) {
+		final int processors = ops().getMaxThreads();
 		// I tested the op runs faster with a single thread
 		// when box size is very small
 		return boxSize >= 2 ? (int) Math.min(processors, boxCount) : 1;

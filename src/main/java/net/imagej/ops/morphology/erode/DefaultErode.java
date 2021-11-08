@@ -125,7 +125,6 @@ public class DefaultErode<T extends RealType<T>> extends
 		}
 		final ExtendedRandomAccessibleInterval<T, RandomAccessibleInterval<T>> extended =
 			Views.extend(shifted, f);
-		Erosion.erode(extended, output, in2, maxVal, Runtime.getRuntime()
-			.availableProcessors());
+		Erosion.erode(extended, output, in2, maxVal, ops().getMaxThreads());
 	}
 }
