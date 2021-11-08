@@ -176,7 +176,7 @@
 	</mailingLists>
 
 	<scm>
-		<connection>scm:git:git://github.com/imagej/imagej-ops</connection>
+		<connection>scm:git:https://github.com/imagej/imagej-ops</connection>
 		<developerConnection>scm:git:git@github.com:imagej/imagej-ops</developerConnection>
 		<tag>HEAD</tag>
 		<url>https://github.com/imagej/imagej-ops</url>
