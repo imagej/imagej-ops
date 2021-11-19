@@ -11,7 +11,7 @@
 
 	<groupId>net.imagej</groupId>
 	<artifactId>imagej-ops</artifactId>
-	<version>0.46.1-SNAPSHOT</version>
+	<version>0.46.2-SNAPSHOT</version>
 
 	<name>ImageJ Ops</name>
 	<description>ImageJ Operations: a framework for reusable algorithms.</description>
