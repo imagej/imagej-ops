@@ -93,7 +93,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public void setMaxThreads(final int maxThreads) {
-		if (this.maxThreads < 1) {
+		if (maxThreads < 1) {
 			throw new IllegalArgumentException("Max threads must be at least 1");
 		}
 		this.maxThreads = maxThreads;
