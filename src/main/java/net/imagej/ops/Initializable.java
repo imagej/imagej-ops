@@ -33,12 +33,15 @@ package net.imagej.ops;
  * Interface for objects which can be initialized.
  * 
  * @author Curtis Rueden
+ * @deprecated Use {@link org.scijava.Initializable} instead.
  */
-public interface Initializable {
+public interface Initializable extends org.scijava.Initializable {
+	// HACK: The Initializable interface moved to SciJava Common long ago,
+	// but the old interface still lingers here in this project as well,
+	// for backwards compatibility. We support both, since they are congruent.
 
-	/** Initializes the object. */
+	@Override
 	default void initialize() {
 		// NB: Do nothing by default.
 	}
-
 }

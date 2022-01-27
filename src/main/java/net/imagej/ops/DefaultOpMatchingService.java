@@ -421,8 +421,8 @@ public class DefaultOpMatchingService extends AbstractService implements
 			}
 
 			// initialize the op, if appropriate
-			if (m.getDelegateObject() instanceof Initializable) {
-				((Initializable) m.getDelegateObject()).initialize();
+			if (m.getDelegateObject() instanceof org.scijava.Initializable) {
+				((org.scijava.Initializable) m.getDelegateObject()).initialize();
 			}
 
 			return matches.get(0);
