@@ -61,12 +61,15 @@ import net.imagej.ops.geom.geom2d.DefaultVerticesCountPolygon;
 import net.imagej.ops.geom.geom2d.LabelRegionToPolygonConverter;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
+import net.imglib2.roi.geom.real.ClosedWritableBox;
+import net.imglib2.roi.geom.real.DefaultWritablePolygon2D;
 import net.imglib2.roi.geom.real.Polygon2D;
 import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.scijava.convert.ConvertService;
 
 /**
  * Tests for polygon features.
@@ -280,6 +283,14 @@ public class PolygonFeatureTests extends AbstractFeatureTest {
 	public void sizeConvexHullPolygon() {
 		assertEquals(Ops.Geometric.SizeConvexHull.NAME, 4731,
 				((DoubleType) ops.run(DefaultSizeConvexHullPolygon.class, contour)).get(), EPSILON);
+	}
+
+	@Test
+	public void labelRegionToPolygonSizeEquality() {
+		Polygon2D polygon = context.getService( ConvertService.class ).convert( ROI, Polygon2D.class );
+		double size2 = ((DoubleType) ops.run("geom.sizeConvexHull", polygon)).get();
+		double size3 = ((DoubleType) ops.run("geom.size", polygon)).get();
+		assertEquals(size2, size3, EPSILON);
 	}
 
 	@Test
