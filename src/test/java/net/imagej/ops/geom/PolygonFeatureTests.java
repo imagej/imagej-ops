@@ -287,10 +287,22 @@ public class PolygonFeatureTests extends AbstractFeatureTest {
 
 	@Test
 	public void labelRegionToPolygonSizeEquality() {
+		// polygon from LabelRegion
 		Polygon2D polygon = context.getService( ConvertService.class ).convert( ROI, Polygon2D.class );
-		double size2 = ((DoubleType) ops.run("geom.sizeConvexHull", polygon)).get();
-		double size3 = ((DoubleType) ops.run("geom.size", polygon)).get();
-		assertEquals(size2, size3, EPSILON);
+		double size = ((DoubleType) ops.run("geom.size", polygon)).get();
+		// should be an identical to polygon
+		Polygon2D polygon2 = new DefaultWritablePolygon2D( new double[] {1, 78, 78, 1}, new double[] {6, 6, 109, 109} );
+		double size2 = ((DoubleType) ops.run("geom.size", polygon2)).get();
+		assertEquals(size, size2, EPSILON);
+	}
+
+	@Test
+	public void sizeAndSizeConvexHullEquality() {
+		Polygon2D polygon = context.getService( ConvertService.class ).convert( ROI, Polygon2D.class );
+		// since polygon is a convex shape, these two Ops should have identical returns.
+		double size2Standard = ((DoubleType) ops.run("geom.size", polygon)).get();
+		double size2ConvexHull = ((DoubleType) ops.run("geom.sizeConvexHull", polygon)).get();
+		assertEquals(size2Standard, size2ConvexHull, EPSILON);
 	}
 
 	@Test
