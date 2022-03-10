@@ -59,12 +59,20 @@ import net.imagej.ops.geom.geom2d.DefaultSolidityPolygon;
 import net.imagej.ops.geom.geom2d.DefaultVerticesCountConvexHullPolygon;
 import net.imagej.ops.geom.geom2d.DefaultVerticesCountPolygon;
 import net.imagej.ops.geom.geom2d.LabelRegionToPolygonConverter;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
-import net.imglib2.roi.geom.real.ClosedWritableBox;
+import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImg;
+import net.imglib2.img.array.ArrayImgs;
+import net.imglib2.img.basictypeaccess.array.ByteArray;
+import net.imglib2.roi.EllipseRegionOfInterest;
 import net.imglib2.roi.geom.real.DefaultWritablePolygon2D;
 import net.imglib2.roi.geom.real.Polygon2D;
 import net.imglib2.roi.labeling.LabelRegion;
+import net.imglib2.type.logic.BitType;
+import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.BeforeClass;
@@ -285,24 +293,78 @@ public class PolygonFeatureTests extends AbstractFeatureTest {
 				((DoubleType) ops.run(DefaultSizeConvexHullPolygon.class, contour)).get(), EPSILON);
 	}
 
-	@Test
-	public void labelRegionToPolygonSizeEquality() {
-		// polygon from LabelRegion
-		Polygon2D polygon = context.getService( ConvertService.class ).convert( ROI, Polygon2D.class );
-		double size = ((DoubleType) ops.run("geom.size", polygon)).get();
-		// should be an identical to polygon
-		Polygon2D polygon2 = new DefaultWritablePolygon2D( new double[] {1, 78, 78, 1}, new double[] {6, 6, 109, 109} );
-		double size2 = ((DoubleType) ops.run("geom.size", polygon2)).get();
-		assertEquals(size, size2, EPSILON);
+	/**
+	 * @param dim dimensions of the image
+	 * @param radii of the ellipse
+	 * @param offset of the ellipse
+	 * @return an {@link Img} of {@link BitType} filled with a ellipse
+	 */
+	@SuppressWarnings({ "deprecation" })
+	public Img<UnsignedByteType> getEllipsedBitImage(final long[] dim,
+			final double[] radii, final double[] offset)
+	{
+
+		// create empty bittype image with desired dimensions
+		final ArrayImg<UnsignedByteType, ByteArray> img = ArrayImgs.unsignedBytes(
+				dim);
+
+		// create ellipse
+		final EllipseRegionOfInterest ellipse = new EllipseRegionOfInterest();
+		ellipse.setRadii(radii);
+
+		// set origin in the center of image
+		final double[] origin = new double[dim.length];
+		for (int i = 0; i < dim.length; i++)
+			origin[i] = dim[i] / 2;
+		ellipse.setOrigin(origin);
+
+		// get iterable intervall and cursor of ellipse
+		final IterableInterval<UnsignedByteType> ii = ellipse
+				.getIterableIntervalOverROI(img);
+		final Cursor<UnsignedByteType> cursor = ii.cursor();
+
+		// fill image with ellipse
+		while (cursor.hasNext()) {
+			cursor.next();
+			cursor.get().set(255);
+		}
+
+		return img;
 	}
 
 	@Test
-	public void sizeAndSizeConvexHullEquality() {
-		Polygon2D polygon = context.getService( ConvertService.class ).convert( ROI, Polygon2D.class );
-		// since polygon is a convex shape, these two Ops should have identical returns.
-		double size2Standard = ((DoubleType) ops.run("geom.size", polygon)).get();
-		double size2ConvexHull = ((DoubleType) ops.run("geom.sizeConvexHull", polygon)).get();
-		assertEquals(size2Standard, size2ConvexHull, EPSILON);
+	public void labelRegionToPolygonSizeEquality() {
+		// get an image with a box in the middle of it
+		Img<UnsignedByteType> boxImg = ArrayImgs.unsignedBytes( 100, 100 );
+		Cursor<UnsignedByteType> cursor = boxImg.cursor();
+		long[] pos = new long[2];
+		while ( cursor.hasNext() )
+		{
+			cursor.next();
+			cursor.localize( pos );
+			if ( pos[ 0 ] >= 40 && pos[ 0 ] <= 60 && pos[ 1 ] >= 40 && pos[ 1 ] <= 60 )
+			{
+				cursor.get().set( 255 );
+			}
+			else
+			{
+				cursor.get().set( 0 );
+			}
+		}
+		// get a LabelRegion
+		LabelRegion<String> box = createLabelRegion( boxImg, 1, 255 );
+		// get the Polygon from the LabelRegion
+		Polygon2D polygon = context.getService( ConvertService.class ).convert( box, Polygon2D.class );
+		// There are 21*21=441 pixels in our LabelRegion
+		assertEquals(box.size(), 441, 0.);
+
+		// Our polygon has area (60-40)*(60-40)=400
+		double area = ((DoubleType) ops.run("geom.size", polygon)).get();
+		assertEquals(area, 400, EPSILON);
+
+		// For kicks, here's the convex hull size
+		double areaConvexHull = ((DoubleType) ops.run("geom.sizeConvexHull", polygon)).get();
+		assertEquals(area, areaConvexHull, EPSILON);
 	}
 
 	@Test
