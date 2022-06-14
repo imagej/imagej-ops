@@ -160,6 +160,10 @@ public class OpInfo implements Comparable<OpInfo> {
 		return opType;
 	}
 
+	public OpListing listing() {
+		return new OpListing(this);
+	}
+
 	// -- Object methods --
 
 	@Override

@@ -30,6 +30,7 @@
 package net.imagej.ops.search;
 
 import org.scijava.Priority;
+import org.scijava.module.ModuleInfo;
 import org.scijava.module.ModuleService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -56,7 +57,10 @@ public class RunOpSearchActionFactory implements SearchActionFactory {
 
 	@Override
 	public SearchAction create(final SearchResult result) {
-		return new DefaultSearchAction("Run", true, //
-			() -> moduleService.run(((OpSearchResult) result).info().cInfo(), true));
+		// Write a runnable to run the info using the ModuleService
+		ModuleInfo info = ((OpSearchResult) result).info();
+		Runnable r = () -> moduleService.run(info, true);
+		// Create a SearchAction to call the Runnable
+		return new DefaultSearchAction("Run", r);
 	}
 }
