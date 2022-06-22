@@ -87,8 +87,7 @@ public class OpListingInfo extends AbstractModuleInfo {
 	public boolean equals(final Object that) {
 		if (!(that instanceof OpListingInfo)) return false;
 		final OpListingInfo thatInfo = (OpListingInfo) that;
-		return opService.equals(thatInfo.opService) && listing.equals(
-			thatInfo.listing);
+		return opService == thatInfo.opService && listing.equals(thatInfo.listing);
 	}
 
 	@Override
