@@ -40,19 +40,19 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import net.imagej.ops.OpInfo;
+import net.imagej.ops.OpService;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RealRandomAccessible;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
+
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.search.SearchResult;
 import org.scijava.search.Searcher;
-
-import net.imagej.ops.OpInfo;
-import net.imagej.ops.OpService;
 import org.scijava.util.Types;
 
 /**
@@ -64,12 +64,11 @@ import org.scijava.util.Types;
 public class OpSearcher implements Searcher {
 
 	private Function<Type, Type> paramReducer = (type) -> {
-		Class<?> raw = Types.raw(type);
-		Optional<Type> simpleName = SIG_SIMPLIFICATIONS.entrySet() //
-				.parallelStream() //
-				.filter(e -> Types.isAssignable(type, e.getKey())) //
-				.map(Map.Entry::getValue) //
-				.findFirst();
+		final Optional<Type> simpleName = SIG_SIMPLIFICATIONS.entrySet() //
+			.parallelStream() //
+			.filter(e -> Types.isAssignable(type, e.getKey())) //
+			.map(Map.Entry::getValue) //
+			.findFirst();
 
 		return simpleName.orElseGet(() -> type);
 	};
@@ -95,7 +94,7 @@ public class OpSearcher implements Searcher {
 		updateNameSets();
 
 		// Find all names matching text
-		String filterText = filterString(text);
+		final String filterText = filterString(text);
 
 		return opsOfName.keySet().parallelStream() //
 			// Find all names that "match" the search text
@@ -114,39 +113,41 @@ public class OpSearcher implements Searcher {
 			.collect(Collectors.toList());
 	}
 
-	public void setParameterReducer(Function<Type, Type> func) {
+	public void setParameterReducer(final Function<Type, Type> func) {
 		this.paramReducer = func;
 	}
 
 	// -- Helper methods --
 
-	private int sortByName(String name1, String name2, String filterText) {
-		String filterName1 = filterString(name1);
-		String filterName2 = filterString(name2);
+	private int sortByName(final String name1, final String name2,
+		final String filterText)
+	{
+		final String filterName1 = filterString(name1);
+		final String filterName2 = filterString(name2);
 		// first, sort by name priority
-		int priorityDiff = namePriority(filterName2, filterText) - namePriority(filterName1, filterText);
-		if(priorityDiff != 0) return priorityDiff;
+		final int priorityDiff = namePriority(filterName2, filterText) -
+			namePriority(filterName1, filterText);
+		if (priorityDiff != 0) return priorityDiff;
 		// if they are the same priority, sort in increasing name length
 		return name1.length() - name2.length();
 	}
 
 	private static final Map<Type, Type> SIG_SIMPLIFICATIONS =
-			new HashMap<Type, Type>()
+		new HashMap<Type, Type>()
+		{
+
 			{
-
-				{
-					put(RandomAccessible.class, Img.class);
-					put(RealRandomAccessible.class, Img.class);
-					put(IterableInterval.class, Img.class);
-					put(Number.class, Number.class);
-					put(RealType.class, Number.class);
-				}
-			};
-
+				put(RandomAccessible.class, Img.class);
+				put(RealRandomAccessible.class, Img.class);
+				put(IterableInterval.class, Img.class);
+				put(Number.class, Number.class);
+				put(RealType.class, Number.class);
+			}
+		};
 
 	private void updateNameSets() {
-		for (OpInfo info : opService.infos()) {
-			String name = filterString(info.getName());
+		for (final OpInfo info : opService.infos()) {
+			final String name = filterString(info.getName());
 
 			opsOfName.computeIfAbsent(name, (str) -> new HashSet<>());
 			opsOfName.get(name).add(info);
@@ -156,7 +157,7 @@ public class OpSearcher implements Searcher {
 	/**
 	 * Filters {@code text} for searching. This allows better matching by ignoring
 	 * non-alphanumeric characters.
-	 * 
+	 *
 	 * @param text the {@link String} whose characters should be filterd
 	 * @return {@code} text, but filtered!
 	 */
@@ -165,7 +166,7 @@ public class OpSearcher implements Searcher {
 		return text.toLowerCase().replaceAll("[^a-zA-Z0-9]", "");
 	}
 
-	private int namePriority(String opName, String searchText) {
+	private int namePriority(final String opName, final String searchText) {
 		if (opName.equals(searchText)) return 3;
 		if (startsWith(opName, searchText)) return 2;
 		if (hasSubstring(opName, searchText)) return 1;
