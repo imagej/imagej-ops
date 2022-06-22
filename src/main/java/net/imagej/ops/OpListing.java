@@ -223,30 +223,16 @@ public class OpListing {
 	}
 
 	@Override
-	public boolean equals(final Object that) {
-		// ensure that is a OpListing
-		if (!(that instanceof OpListing)) return false;
-		final OpListing thatSig = (OpListing) that;
-		// check name
+	public boolean equals(final Object obj) {
+		if (!(obj instanceof OpListing)) return false;
+		final OpListing that = (OpListing) obj;
 
-		// check functional type
-
-		// check inputs
-		if (!getName().equals(thatSig.getName()) || //
-			!getFunctionalType().equals(thatSig.getFunctionalType()) || //
-			!getInputTypes().equals(thatSig.getInputTypes()) || //
-			!getInputNames().equals(thatSig.getInputNames()))
-		{
-			return false;
-		}
-		// check outputs
-		if (!getReturnType().equals(thatSig.getReturnType()) || //
-			!getReturnName().equals(thatSig.getReturnName()))
-		{
-			return false;
-		}
-
-		return true;
+		return Objects.equals(getName(), that.getName()) && //
+			Objects.equals(getFunctionalType(), that.getFunctionalType()) && //
+			Objects.equals(getInputTypes(), that.getInputTypes()) && //
+			Objects.equals(getInputNames(), that.getInputNames()) && //
+			Objects.equals(getReturnType(), that.getReturnType()) && //
+			Objects.equals(getReturnName(), that.getReturnName());
 	}
 
 	@Override
