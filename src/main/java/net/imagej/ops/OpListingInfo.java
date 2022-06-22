@@ -31,7 +31,6 @@ package net.imagej.ops;
 
 import java.util.Objects;
 
-import org.scijava.Context;
 import org.scijava.module.AbstractModuleInfo;
 import org.scijava.module.Module;
 import org.scijava.module.ModuleInfo;
@@ -76,8 +75,7 @@ public class OpListingInfo extends AbstractModuleInfo {
 
 	@Override
 	public Class<?> loadDelegateClass() throws ClassNotFoundException {
-		final String delegateClass = listing.getFunctionalType().getName();
-		return Context.getClassLoader().loadClass(delegateClass);
+		return listing.getFunctionalType();
 	}
 
 	@Override
