@@ -64,8 +64,7 @@ import org.scijava.util.Types;
 public class OpSearcher implements Searcher {
 
 	private Function<Type, Type> paramReducer = (type) -> {
-		final Optional<Type> simpleName = SIG_SIMPLIFICATIONS.entrySet() //
-			.parallelStream() //
+		final Optional<Type> simpleName = SIG_SIMPLIFICATIONS.entrySet().stream() //
 			.filter(e -> Types.isAssignable(type, e.getKey())) //
 			.map(Map.Entry::getValue) //
 			.findFirst();
@@ -96,7 +95,7 @@ public class OpSearcher implements Searcher {
 		// Find all names matching text
 		final String filterText = filterString(text);
 
-		return opsOfName.keySet().parallelStream() //
+		return opsOfName.keySet().stream() //
 			// Find all names that "match" the search text
 			.filter(name -> namePriority(name, filterText) > 0) //
 			// grab all OpInfos of each "matched" name
