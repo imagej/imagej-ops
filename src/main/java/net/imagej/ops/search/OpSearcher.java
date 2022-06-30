@@ -64,12 +64,13 @@ import org.scijava.util.Types;
 public class OpSearcher implements Searcher {
 
 	private Function<Type, Type> paramReducer = (type) -> {
+		Class<?> raw = Types.raw(type);
 		final Optional<Type> simpleName = SIG_SIMPLIFICATIONS.entrySet().stream() //
-			.filter(e -> Types.isAssignable(type, e.getKey())) //
+			.filter(e -> Types.isAssignable(raw, e.getKey())) //
 			.map(Map.Entry::getValue) //
 			.findFirst();
 
-		return simpleName.orElseGet(() -> type);
+		return simpleName.orElse(type);
 	};
 
 	@Parameter
