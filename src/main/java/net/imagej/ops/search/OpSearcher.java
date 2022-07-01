@@ -142,6 +142,12 @@ public class OpSearcher implements Searcher {
 				put(IterableInterval.class, Img.class);
 				put(Number.class, Number.class);
 				put(RealType.class, Number.class);
+				put(byte.class, Number.class);
+				put(short.class, Number.class);
+				put(int.class, Number.class);
+				put(long.class, Number.class);
+				put(float.class, Number.class);
+				put(double.class, Number.class);
 			}
 		};
 
