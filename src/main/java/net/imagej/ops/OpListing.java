@@ -31,10 +31,8 @@ package net.imagej.ops;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -69,8 +67,8 @@ public class OpListing {
 	private final List<String> inputNames;
 	private final List<Type> inputTypes;
 	/** The outputs given by the Op */
-	private final Optional<String> returnName;
-	private final Optional<Type> returnType;
+	private final List<String> returnNames;
+	private final List<Type> returnTypes;
 
 	/**
 	 * Convenience constructor, mainly used by {@link OpInfo}s.
@@ -86,10 +84,15 @@ public class OpListing {
 			inputNames.add(input.getName());
 			inputTypes.add(input.getGenericType());
 		}
-		final Optional<ModuleItem<?>> first = info.outputs().stream().filter(
-			item -> !item.isInput()).findFirst();
-		this.returnName = first.map(ModuleItem::getName);
-		this.returnType = first.map(ModuleItem::getGenericType);
+		returnNames = new ArrayList<>();
+		returnTypes = new ArrayList<>();
+		// The return names and types depend on the number of PURE outputs
+		final List<ModuleItem<?>> outputs = info.outputs().stream() //
+				.filter(item -> !item.isInput()).collect(Collectors.toList());
+		for (ModuleItem<?> output : outputs) {
+			returnNames.add(output.getName());
+			returnTypes.add(output.getType());
+		}
 	}
 
 	/**
@@ -118,23 +121,23 @@ public class OpListing {
 	 *          {@link net.imagej.ops.special.function.UnaryFunctionOp})
 	 * @param inputNames the input names of the Op
 	 * @param inputTypes the input types of the Op
-	 * @param returnName the return name of the Op
-	 * @param returnType the return type of the Op
+	 * @param returnNames the return names of the Op
+	 * @param returnTypes the return types of the Op
 	 */
 	public OpListing( //
 		final String name, //
 		final Class<?> functionalType, //
 		final List<String> inputNames, //
 		final List<Type> inputTypes, //
-		final String returnName, //
-		final Type returnType)
+		final List<String> returnNames, //
+		final List<Type> returnTypes)
 	{
 		this.name = name;
 		this.functionalType = functionalType;
 		this.inputNames = inputNames;
 		this.inputTypes = inputTypes;
-		this.returnName = Optional.ofNullable(returnName);
-		this.returnType = Optional.ofNullable(returnType);
+		this.returnNames = returnNames;
+		this.returnTypes = returnTypes;
 	}
 
 	/**
@@ -196,30 +199,31 @@ public class OpListing {
 	 *         {@link OpListing}
 	 */
 	public List<ModuleItem<?>> outputsFor(final ModuleInfo info) {
-		if (returnName.isPresent() && returnType.isPresent()) {
-			final String name = returnName.get();
-			final Class<?> type = Types.raw(returnType.get());
+		List<ModuleItem<?>> outItems = new ArrayList<>();
+		for (int i = 0; i < returnNames.size(); i++) {
+			final String name = returnNames.get(i);
+			final Class<?> type = Types.raw(returnTypes.get(i));
 			final MutableModuleItem<?> outItem = //
 				new DefaultMutableModuleItem<>(info, name, type);
 			outItem.setIOType(ItemIO.OUTPUT);
-			return Collections.singletonList(outItem);
+			outItems.add(outItem);
 		}
-		return Collections.emptyList();
+		return outItems;
 	}
 
 	/**
 	 * @return the {@link Type}s of each output, in order, required by the
 	 *         listing.
 	 */
-	public Optional<Type> getReturnType() {
-		return returnType;
+	public List<Type> getReturnTypes() {
+		return returnTypes;
 	}
 
 	/**
 	 * @return the names of each output, in order, required by the listing.
 	 */
-	public Optional<String> getReturnName() {
-		return returnName;
+	public List<String> getReturnNames() {
+		return returnNames;
 	}
 
 	@Override
@@ -231,8 +235,8 @@ public class OpListing {
 			Objects.equals(getFunctionalType(), that.getFunctionalType()) && //
 			Objects.equals(getInputTypes(), that.getInputTypes()) && //
 			Objects.equals(getInputNames(), that.getInputNames()) && //
-			Objects.equals(getReturnType(), that.getReturnType()) && //
-			Objects.equals(getReturnName(), that.getReturnName());
+			Objects.equals(getReturnTypes(), that.getReturnTypes()) && //
+			Objects.equals(getReturnNames(), that.getReturnNames());
 	}
 
 	@Override
@@ -242,8 +246,8 @@ public class OpListing {
 			getFunctionalType(), //
 			getInputTypes(), //
 			getInputNames(), //
-			getReturnType(), //
-			getReturnName() //
+			getReturnTypes(), //
+			getReturnNames() //
 		);
 	}
 
@@ -255,10 +259,8 @@ public class OpListing {
 		// inputs
 		sb.append("(").append(paramList(inputNames, inputTypes)).append(")");
 		// (pure) output
-		if (returnName.isPresent() && returnType.isPresent()) {
-			final String returnString = shortParam(returnName.get(), returnType
-				.get());
-			sb.append(" -> ").append(returnString);
+		if (returnNames.size() > 0) {
+			sb.append(" -> ").append(paramList(returnNames, returnTypes));
 		}
 		return sb.toString();
 	}
@@ -266,12 +268,10 @@ public class OpListing {
 	public OpListing reduce(final Function<Type, Type> typeReducer) {
 		final List<Type> newInputTypes = inputTypes.stream().map(typeReducer)
 			.collect(Collectors.toList());
-		if (returnName.isPresent() && returnType.isPresent()) {
-			final Type newReturnType = typeReducer.apply(returnType.get());
-			return new OpListing(name, functionalType, inputNames, newInputTypes,
-				returnName.get(), newReturnType);
-		}
-		return new OpListing(name, functionalType, inputNames, newInputTypes);
+		final List<Type> newOutputTypes = returnTypes.stream().map(typeReducer)
+			.collect(Collectors.toList());
+		return new OpListing(name, functionalType, inputNames, newInputTypes,
+			returnNames, newOutputTypes);
 	}
 
 	// -- Helper methods --

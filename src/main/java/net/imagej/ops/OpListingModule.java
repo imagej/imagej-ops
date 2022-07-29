@@ -62,12 +62,29 @@ class OpListingModule extends AbstractModule {
 
 	@Override
 	public void run() {
+		// Massage Module inputs into a single Object[]
 		final Object[] args = opArgs();
+		// Run the Op, get the output(s)
 		final Object out = this.opService.run(info.getName(), args);
-		for (final ModuleItem<?> item : info.outputs()) {
-			// TODO: What if there are multiple pure outputs?
-			if (item.isInput()) continue;
-			setOutput(item.getName(), out);
+		// Massage Op output(s) into the Module outputItems
+		resolveOutput(out);
+	}
+
+	private void resolveOutput(Object out){
+		List<ModuleItem<?>> outputs = OpUtils.outputs(getInfo());
+		if (outputs.size() == 1) {
+			setOutput(outputs.get(0).getName(), out);
+		}
+		else if (outputs.size() > 1) {
+			if (!(out instanceof List)) throw new IllegalArgumentException(
+				"Op with multiple declared outputs only returns one!");
+			List<?> outs = (List<?>) out;
+			if (outs.size() != outputs.size()) throw new IllegalArgumentException(
+				"Op declared " + outputs.size() + " outputs but only returned " + outs
+					.size() + " outputs!");
+			for (int i = 0; i < outs.size(); i++) {
+				setOutput(outputs.get(i).getName(), outs.get(i));
+			}
 		}
 	}
 
