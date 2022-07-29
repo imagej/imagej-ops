@@ -96,24 +96,6 @@ public class OpListing {
 	}
 
 	/**
-	 * Convenience {@link OpListing} constructor for Ops without returns.
-	 *
-	 * @param name the name of the Op.
-	 * @param functionalType the basic type of the Op (e.g.
-	 *          {@link net.imagej.ops.special.function.UnaryFunctionOp})
-	 * @param inputNames the input names of the Op
-	 * @param inputTypes the input types of the Op
-	 */
-	public OpListing( //
-		final String name, //
-		final Class<?> functionalType, //
-		final List<String> inputNames, //
-		final List<Type> inputTypes)
-	{
-		this(name, functionalType, inputNames, inputTypes, null, null);
-	}
-
-	/**
 	 * Standard {@link OpListing} constructor.
 	 *
 	 * @param name the name of the Op.
