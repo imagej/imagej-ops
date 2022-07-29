@@ -106,7 +106,7 @@ public class OpListing {
 	 * @param returnNames the return names of the Op
 	 * @param returnTypes the return types of the Op
 	 */
-	public OpListing( //
+	private OpListing( //
 		final String name, //
 		final Class<?> functionalType, //
 		final List<String> inputNames, //
