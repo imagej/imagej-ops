@@ -256,8 +256,6 @@ public class DefaultFrangi<T extends RealType<T>, U extends RealType<U>> extends
 					double an = -(ra * ra);
 					double bn = -(rb * rb);
 
-//					System.out.println(l1 + "  " + l2 + "  " + l3);
-
 					v = (1 - Math.exp(an / ad)) * Math.exp(bn / bd) * (1 - Math.exp(cn /
 						cd));
 				}
