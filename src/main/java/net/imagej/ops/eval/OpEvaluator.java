@@ -29,7 +29,6 @@
 
 package net.imagej.ops.eval;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
@@ -43,7 +42,7 @@ import net.imagej.ops.Ops;
 import org.scijava.parsington.Operator;
 import org.scijava.parsington.Operators;
 import org.scijava.parsington.Variable;
-import org.scijava.parsington.eval.AbstractStandardStackEvaluator;
+import org.scijava.parsington.eval.DefaultStackEvaluator;
 import org.scijava.parsington.eval.Evaluator;
 
 /**
@@ -51,7 +50,7 @@ import org.scijava.parsington.eval.Evaluator;
  * 
  * @author Curtis Rueden
  */
-public class OpEvaluator extends AbstractStandardStackEvaluator {
+public class OpEvaluator extends DefaultStackEvaluator {
 
 	private final OpEnvironment ops;
 
@@ -127,14 +126,6 @@ public class OpEvaluator extends AbstractStandardStackEvaluator {
 
 	// -- OpEvaluator methods --
 
-	/**
-	 * Executes the given {@link Operator operation} with the specified argument
-	 * list.
-	 */
-	public Object execute(final Operator op, final Object... args) {
-		return execute(getOpName(op), args);
-	}
-
 	/** Executes the given op with the specified argument list. */
 	public Object execute(final String opName, final Object... args) {
 		// Unwrap the arguments.
@@ -164,6 +155,15 @@ public class OpEvaluator extends AbstractStandardStackEvaluator {
 
 	// -- StandardEvaluator methods --
 
+	/**
+	 * Executes the given {@link Operator operation} with the specified argument
+	 * list.
+	 */
+	@Override
+	public Object execute(final Operator op, final Object... args) {
+		return execute(getOpName(op), args);
+	}
+
 	// -- function --
 
 	@Override
@@ -186,24 +186,6 @@ public class OpEvaluator extends AbstractStandardStackEvaluator {
 			return new Variable(namespace + "." + opName);
 		}
 		return execute(Operators.DOT, a, b);
-	}
-
-	// -- groups --
-
-	@Override
-	public Object parens(final Object[] args) {
-		if (args.length == 1) return args[0];
-		return Arrays.asList(args);
-	}
-
-	@Override
-	public Object brackets(final Object[] args) {
-		return Arrays.asList(args);
-	}
-
-	@Override
-	public Object braces(final Object[] args) {
-		return Arrays.asList(args);
 	}
 
 	// -- transpose, power --
