@@ -33,9 +33,9 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Function;
 
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.RandomAccessibleInterval;
@@ -138,7 +138,7 @@ public class OpListingTest extends AbstractOpTest{
 		final OpInfo info = new OpInfo(FooOp.class);
 		final OpListing sig = info.listing();
 		final String expected =
-			"test.opListing(img, unsignedByteType \"unnecessary\") -> string";
+			"test.opListing(img \"in\", unsignedByteType \"unnecessary\") -> (string \"out\")";
 		assertEquals(expected, sig.toString());
 	}
 
@@ -164,7 +164,7 @@ public class OpListingTest extends AbstractOpTest{
 		assertEquals(expectedOut, sig.getReturnTypes());
 		// test string
 		final String expected =
-			"test.opListing(randomAccessibleInterval, number \"unnecessary\") -> list";
+			"test.opListing(randomAccessibleInterval \"in\", number \"unnecessary\") -> (list \"out\")";
 		assertEquals(expected, sig.toString());
 	}
 
@@ -200,6 +200,39 @@ public class OpListingTest extends AbstractOpTest{
 		module.run();
 		assertEquals(0.5, module.getOutput("out"));
 		assertEquals(2.0, module.getOutput("bDividedByA"));
+	}
+	
+	/**
+	 * A test Computer
+	 * 
+	 * @author Gabriel Selzer
+	 */
+	@Plugin(type = Op.class, name = "test.opListingComputer")
+	public static class ComputerOp extends
+		AbstractUnaryComputerOp<Img<UnsignedByteType>, Img<UnsignedByteType>>
+	{
+
+		@Override
+		public void compute(final Img<UnsignedByteType> in,
+			final Img<UnsignedByteType> out)
+		{}
+	}
+
+	@Test
+	public void testComputerReduction() {
+		final OpInfo info = new OpInfo(ComputerOp.class);
+		final OpListing sig = info.listing().reduce(exampleReducer);
+		// test input types
+		final List<Type> expectedIns = Arrays.asList(RandomAccessibleInterval.class,
+				RandomAccessibleInterval.class);
+		assertEquals(expectedIns, sig.getInputTypes());
+		final List<Type> expectedOut = Collections.singletonList(RandomAccessibleInterval.class);
+		assertEquals(expectedOut, sig.getReturnTypes());
+		// test string
+		final String expected =
+				"test.opListingComputer(randomAccessibleInterval \"out\", randomAccessibleInterval \"in\") -> (randomAccessibleInterval \"out\")";
+		assertEquals(expected, sig.toString());
+		
 	}
 
 

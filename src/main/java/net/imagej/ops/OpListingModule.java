@@ -97,9 +97,6 @@ class OpListingModule extends AbstractModule {
 	 */
 	private Object[] opArgs() {
 		final List<Object> args = new ArrayList<>();
-		// Add preallocated outputs
-		for (final ModuleItem<?> item : info.outputs())
-			if (item.isInput()) args.add(getOutput(item.getName()));
 		for (final ModuleItem<?> item : info.inputs())
 			args.add(getInput(item.getName()));
 		return args.toArray();

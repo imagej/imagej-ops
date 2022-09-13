@@ -31,17 +31,16 @@ package net.imagej.ops;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import org.scijava.ItemIO;
 import org.scijava.module.DefaultMutableModuleItem;
 import org.scijava.module.ModuleInfo;
 import org.scijava.module.ModuleItem;
-import org.scijava.module.MutableModuleItem;
 import org.scijava.util.Types;
 
 /**
@@ -63,63 +62,30 @@ public class OpListing {
 	private final String name;
 	/** The fundamental type of the Op */
 	private final Class<?> functionalType;
-	/** The inputs expected by the Op */
-	private final List<String> inputNames;
-	private final List<Type> inputTypes;
-	/** The outputs given by the Op */
-	private final List<String> returnNames;
-	private final List<Type> returnTypes;
+	/** The parameters expected by the Op */
+	private final List<Parameter> params;
 
 	/**
-	 * Convenience constructor, mainly used by {@link OpInfo}s.
+	 * Constructor used to generate an {@link OpListing} from an {@link OpInfo}s.
 	 *
 	 * @param info the {@link OpInfo} to scrape for the listing data.
 	 */
 	public OpListing(final OpInfo info) {
 		this.name = info.getName();
 		this.functionalType = info.getType();
-		this.inputNames = new ArrayList<>();
-		this.inputTypes = new ArrayList<>();
-		for (final ModuleItem<?> input : info.inputs()) {
-			inputNames.add(input.getName());
-			inputTypes.add(input.getGenericType());
-		}
-		returnNames = new ArrayList<>();
-		returnTypes = new ArrayList<>();
-		// The return names and types depend on the number of PURE outputs
-		final List<ModuleItem<?>> outputs = info.outputs().stream() //
-				.filter(item -> !item.isInput()).collect(Collectors.toList());
-		for (ModuleItem<?> output : outputs) {
-			returnNames.add(output.getName());
-			returnTypes.add(output.getType());
-		}
+		this.params = new ArrayList<>();
+		// Add all input parameters
+		info.inputs().forEach(item -> params.add(new Parameter(item)));
+		info.outputs().stream().filter(item -> !item.isInput()).forEach(
+			item -> params.add(new Parameter(item)));
 	}
 
-	/**
-	 * Standard {@link OpListing} constructor.
-	 *
-	 * @param name the name of the Op.
-	 * @param functionalType the basic type of the Op (e.g.
-	 *          {@link net.imagej.ops.special.function.UnaryFunctionOp})
-	 * @param inputNames the input names of the Op
-	 * @param inputTypes the input types of the Op
-	 * @param returnNames the return names of the Op
-	 * @param returnTypes the return types of the Op
-	 */
-	private OpListing( //
-		final String name, //
-		final Class<?> functionalType, //
-		final List<String> inputNames, //
-		final List<Type> inputTypes, //
-		final List<String> returnNames, //
-		final List<Type> returnTypes)
+	private OpListing(final String name, final Class<?> functionalType,
+		final List<Parameter> params)
 	{
 		this.name = name;
 		this.functionalType = functionalType;
-		this.inputNames = inputNames;
-		this.inputTypes = inputTypes;
-		this.returnNames = returnNames;
-		this.returnTypes = returnTypes;
+		this.params = params;
 	}
 
 	/**
@@ -149,11 +115,8 @@ public class OpListing {
 	 * @return {@link ModuleItem}s describing the inputs of this {@link OpListing}
 	 */
 	public List<ModuleItem<?>> inputsFor(final ModuleInfo info) {
-		return IntStream.range(0, inputNames.size()) //
-			.mapToObj(i -> new DefaultMutableModuleItem<>( //
-				info, //
-				inputNames.get(i), //
-				Types.raw(inputTypes.get(i)))) //
+		return params.stream().filter(Parameter::isInput)//
+			.map(param -> param.toModuleItem(info)) //
 			.collect(Collectors.toList());
 	}
 
@@ -161,14 +124,16 @@ public class OpListing {
 	 * @return the {@link Type}s of each input, in order, required by the listing.
 	 */
 	public List<Type> getInputTypes() {
-		return inputTypes;
+		return params.stream().filter(Parameter::isInput) //
+			.map(p -> p.type).collect(Collectors.toList());
 	}
 
 	/**
 	 * @return the names of each input, in order, required by the listing.
 	 */
 	public List<String> getInputNames() {
-		return inputNames;
+		return params.stream().filter(Parameter::isInput) //
+			.map(p -> p.name).collect(Collectors.toList());
 	}
 
 	/**
@@ -181,16 +146,8 @@ public class OpListing {
 	 *         {@link OpListing}
 	 */
 	public List<ModuleItem<?>> outputsFor(final ModuleInfo info) {
-		List<ModuleItem<?>> outItems = new ArrayList<>();
-		for (int i = 0; i < returnNames.size(); i++) {
-			final String name = returnNames.get(i);
-			final Class<?> type = Types.raw(returnTypes.get(i));
-			final MutableModuleItem<?> outItem = //
-				new DefaultMutableModuleItem<>(info, name, type);
-			outItem.setIOType(ItemIO.OUTPUT);
-			outItems.add(outItem);
-		}
-		return outItems;
+		return params.stream().filter(Parameter::isOutput) //
+			.map(p -> p.toModuleItem(info)).collect(Collectors.toList());
 	}
 
 	/**
@@ -198,14 +155,16 @@ public class OpListing {
 	 *         listing.
 	 */
 	public List<Type> getReturnTypes() {
-		return returnTypes;
+		return params.stream().filter(Parameter::isOutput).map(Parameter::type)
+			.collect(Collectors.toList());
 	}
 
 	/**
 	 * @return the names of each output, in order, required by the listing.
 	 */
 	public List<String> getReturnNames() {
-		return returnNames;
+		return params.stream().filter(Parameter::isOutput).map(Parameter::name)
+			.collect(Collectors.toList());
 	}
 
 	@Override
@@ -215,10 +174,7 @@ public class OpListing {
 
 		return Objects.equals(getName(), that.getName()) && //
 			Objects.equals(getFunctionalType(), that.getFunctionalType()) && //
-			Objects.equals(getInputTypes(), that.getInputTypes()) && //
-			Objects.equals(getInputNames(), that.getInputNames()) && //
-			Objects.equals(getReturnTypes(), that.getReturnTypes()) && //
-			Objects.equals(getReturnNames(), that.getReturnNames());
+			params.equals(that.params);
 	}
 
 	@Override
@@ -226,34 +182,32 @@ public class OpListing {
 		return Objects.hash( //
 			getName(), //
 			getFunctionalType(), //
-			getInputTypes(), //
-			getInputNames(), //
-			getReturnTypes(), //
-			getReturnNames() //
+			params //
 		);
 	}
 
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
+		final List<Parameter> inputs = params.stream().filter(Parameter::isInput)
+			.collect(Collectors.toList());
+		final List<Parameter> outputs = params.stream().filter(Parameter::isOutput)
+			.collect(Collectors.toList());
 		// name
 		sb.append(getName());
 		// inputs
-		sb.append("(").append(paramList(inputNames, inputTypes)).append(")");
-		// (pure) output
-		if (returnNames.size() > 0) {
-			sb.append(" -> ").append(paramList(returnNames, returnTypes));
+		sb.append(paramList(inputs));
+		// outputs
+		if (outputs.size() > 0) {
+			sb.append(" -> ").append(paramList(outputs));
 		}
 		return sb.toString();
 	}
 
 	public OpListing reduce(final Function<Type, Type> typeReducer) {
-		final List<Type> newInputTypes = inputTypes.stream().map(typeReducer)
-			.collect(Collectors.toList());
-		final List<Type> newOutputTypes = returnTypes.stream().map(typeReducer)
-			.collect(Collectors.toList());
-		return new OpListing(name, functionalType, inputNames, newInputTypes,
-			returnNames, newOutputTypes);
+		List<Parameter> reducedParams = params.stream().map(p -> p.reduce(
+			typeReducer)).collect(Collectors.toList());
+		return new OpListing(name, functionalType, reducedParams);
 	}
 
 	// -- Helper methods --
@@ -263,68 +217,128 @@ public class OpListing {
 	 * {@code items}, along with the introductory {@link String}
 	 * {@code beforeFirst} prepended.
 	 *
-	 * @param names The parameter names to join
-	 * @param types The parameter types to join
+	 * @param params The {@link Parameter}s to join
 	 * @return the joining of {@code items}, with {@code beforeFirst} prepended.
 	 */
-	private String paramList(final List<String> names, final List<Type> types) {
+	private String paramList(final List<Parameter> params) {
 		boolean first = true;
 		final StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < names.size(); i++) {
+		sb.append("(");
+		for (Parameter param : params) {
 			if (first) {
 				first = false;
 			}
 			else sb.append(", ");
-			sb.append(shortParam(names.get(i), types.get(i)));
+			sb.append(param);
 		}
+		sb.append(")");
 		return sb.toString();
 	}
 
-	/**
-	 * @param name the name of the parameter
-	 * @param type the {@link Type} of the parameter
-	 * @return a description (type + name) of that {@link ModuleInfo}
-	 */
-	private String shortParam(final String name, final Type type) {
-		final String typeString = varFromType(type);
-		// We ignore these names because they are uninformative
-		return name.matches("(in|out)\\d*") ? //
-			typeString : typeString + " \"" + name + "\"";
-	}
+	private static class Parameter {
 
-	/**
-	 * Creates a type {@link String} describing the {@link Type} of a passed
-	 * {@link ModuleItem}
-	 *
-	 * @param type the {@link Type} to describe
-	 * @return a {@link String} describing {@code item}'s {@link Type}
-	 */
-	private String varFromType(final Type type) {
-		final Class<?> raw = Types.raw(type);
-		return lowerCamelCase(raw.getSimpleName());
-	}
+		private final String name;
+		private final Type type;
+		private final ItemIO ioType;
+		private final boolean isRequired;
 
-	/**
-	 * Converts a {@link String} from upper- to lower-camel-case.
-	 *
-	 * @param s the upper-camel-case {@link String}
-	 * @return a lower-camel-case version of {@code s}
-	 */
-	private String lowerCamelCase(final String s) {
-		if (s == null || s.isEmpty() || !isUpperCase(s.charAt(0))) return s;
-		if (s.length() > 1 && isUpperCase(s.charAt(1))) {
-			// RGBColor -> rgbColor
-			int index = 1;
-			while (index < s.length() && isUpperCase(s.charAt(index)))
-				index++;
-			return s.substring(0, index - 1).toLowerCase() + s.substring(index - 1);
+		public Parameter(final ModuleItem<?> item) {
+			name = item.getName();
+			type = item.getGenericType();
+			ioType = item.getIOType();
+			isRequired = item.isRequired();
 		}
-		// FooBar -> fooBar
-		return s.substring(0, 1).toLowerCase() + s.substring(1);
-	}
 
-	private boolean isUpperCase(final char c) {
-		return c >= 'A' && c <= 'Z';
+		public Parameter(final String name, final Type type, final ItemIO ioType,
+			final boolean isRequired)
+		{
+			this.name = name;
+			this.type = type;
+			this.ioType = ioType;
+			this.isRequired = isRequired;
+		}
+
+		public String name() {
+			return name;
+		}
+
+		public Type type() {
+			return type;
+		}
+
+		public boolean isRequired() {
+			return isRequired;
+		}
+
+		public boolean isInput() {
+			return ioType == ItemIO.INPUT || ioType == ItemIO.BOTH;
+		}
+
+		public boolean isOutput() {
+			return ioType == ItemIO.OUTPUT || ioType == ItemIO.BOTH;
+		}
+
+		public ModuleItem<?> toModuleItem(ModuleInfo info) {
+			DefaultMutableModuleItem<?> item = //
+				new DefaultMutableModuleItem<>(info, name, Types.raw(type));
+			item.setIOType(ioType);
+			item.setRequired(isRequired);
+			return item;
+		}
+
+		@Override
+		public boolean equals(Object that) {
+			if (!(that instanceof Parameter)) return false;
+			Parameter thatParam = (Parameter) that;
+			return name.equals(thatParam.name) && //
+				type.equals(thatParam.type) && //
+				ioType.equals(thatParam.ioType) && //
+				isRequired == thatParam.isRequired;
+		}
+
+		@Override
+		public int hashCode() {
+			return Arrays.hashCode(new Object[] { name, type, ioType, isRequired });
+		}
+
+		public Parameter reduce(Function<Type, Type> typeReducer) {
+			Type reduced = typeReducer.apply(type);
+			// reuse this Parameter unless the types are different
+			return (type == reduced) ? //
+				this : //
+				new Parameter(name, typeReducer.apply(type), ioType, isRequired);
+		}
+
+		@Override
+		public String toString() {
+			final Class<?> raw = Types.raw(type);
+			final String typeString = lowerCamelCase(raw.getSimpleName());
+			final String optionalString = isRequired ? "" : "?";
+			return typeString + " \"" + name + "\"" + optionalString;
+		}
+
+		/**
+		 * Converts a {@link String} from upper- to lower-camel-case.
+		 *
+		 * @param s the upper-camel-case {@link String}
+		 * @return a lower-camel-case version of {@code s}
+		 */
+		private String lowerCamelCase(final String s) {
+			if (s == null || s.isEmpty() || !isUpperCase(s.charAt(0))) return s;
+			if (s.length() > 1 && isUpperCase(s.charAt(1))) {
+				// RGBColor -> rgbColor
+				int index = 1;
+				while (index < s.length() && isUpperCase(s.charAt(index)))
+					index++;
+				return s.substring(0, index - 1).toLowerCase() + s.substring(index - 1);
+			}
+			// FooBar -> fooBar
+			return s.substring(0, 1).toLowerCase() + s.substring(1);
+		}
+
+		private boolean isUpperCase(final char c) {
+			return c >= 'A' && c <= 'Z';
+		}
 	}
 
 }
