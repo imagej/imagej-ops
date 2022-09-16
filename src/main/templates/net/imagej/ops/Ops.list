@@ -109,6 +109,7 @@ namespaces = ```
 		[name: "dog",                            iface: "DoG",                 aliases: ["differenceOfGaussian"]],
 		[name: "fft",                            iface: "FFT"],
 		[name: "fftSize",                        iface: "FFTSize"],
+		[name: "findEdges",                      iface: "FindEdges"],
 		[name: "gauss",                          iface: "Gauss",               aliases: ["smooth"]],
 		[name: "hessian",                        iface: "Hessian"],
 		[name: "ifft",                           iface: "IFFT"],
