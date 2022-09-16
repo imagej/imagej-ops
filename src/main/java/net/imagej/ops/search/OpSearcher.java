@@ -169,7 +169,7 @@ public class OpSearcher implements Searcher {
 	 */
 	private String filterString(String text) {
 		if (text == null) text = "";
-		return text.toLowerCase().replaceAll("[^a-zA-Z0-9]", "");
+		return text.toLowerCase();
 	}
 
 	private int namePriority(final String opName, final String searchText) {
@@ -181,10 +181,10 @@ public class OpSearcher implements Searcher {
 
 	private boolean startsWith(final String name, final String desiredLower) {
 		return name != null && //
-			name.toLowerCase().matches("(^|.*\\.)" + desiredLower + ".*");
+			name.toLowerCase().startsWith(desiredLower.toLowerCase());
 	}
 
 	private boolean hasSubstring(final String name, final String desiredLower) {
-		return name != null && name.matches(".*" + desiredLower + ".*");
+		return name != null && name.contains(desiredLower);
 	}
 }

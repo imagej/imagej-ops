@@ -104,7 +104,7 @@ public class OpSearcherTest extends AbstractOpTest {
 
 		final String sig = results.get(0).name();
 
-		Assert.assertEquals("test.opSearcher(img, number \"value\") -> string",
+		Assert.assertEquals("test.opSearcher(img \"in\", number \"value\") -> (string \"out\")",
 			sig);
 		final ModuleInfo info = ((OpSearchResult) results.get(0)).info();
 		final Module module = info.createModule();
