@@ -6,13 +6,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -30,7 +30,7 @@
 package net.imagej.ops.morphology.floodFill;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.create.img.CreateImgFromInterval;
+import net.imagej.ops.create.img.CreateImgFromRAI;
 import net.imagej.ops.special.chain.RAIs;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractBinaryHybridCF;
@@ -65,7 +65,7 @@ public class DefaultFloodFill<T extends Type<T> & Comparable<T>> extends
 
 	@Override
 	public void initialize() {
-		createFunc = RAIs.function(ops(), CreateImgFromInterval.class, in());
+		createFunc = RAIs.function(ops(), CreateImgFromRAI.class, in());
 	}
 
 	@Override
@@ -75,13 +75,10 @@ public class DefaultFloodFill<T extends Type<T> & Comparable<T>> extends
 		final RandomAccess<T> op0c = op0.randomAccess();
 		op0c.setPosition(loc);
 		final T fillValue = op0c.get().copy();
-		FloodFill.fill(Views.extendValue(op0, fillValue), Views.extendValue(r, fillValue), loc, fillValue, structElement, new Filter<Pair<T,T >, Pair<T,T>>() {
-
-			@Override
-			public boolean accept(Pair<T, T> t, Pair<T, T> u) {
-				return !t.getB().valueEquals(u.getB()) && t.getA().valueEquals(u.getA());
-			}
-		});
+		FloodFill.fill(Views.extendValue(op0, fillValue), Views.extendValue(r,
+			fillValue), loc, fillValue, structElement,
+			(Filter<Pair<T, T>, Pair<T, T>>) (t, u) -> !t.getB().valueEquals(u
+				.getB()) && t.getA().valueEquals(u.getA()));
 	}
 
 	@Override
