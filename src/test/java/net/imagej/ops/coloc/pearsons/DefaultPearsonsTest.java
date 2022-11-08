@@ -31,7 +31,7 @@ package net.imagej.ops.coloc.pearsons;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.coloc.ColocalisationTest;
+import net.imagej.ops.coloc.AbstractColocalisationTest;
 import net.imagej.ops.coloc.pValue.PValueResult;
 import net.imagej.ops.special.function.BinaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
@@ -46,7 +46,7 @@ import org.junit.Test;
  *
  * @author Ellen T Arena
  */
-public class DefaultPearsonsTest extends ColocalisationTest {
+public class DefaultPearsonsTest extends AbstractColocalisationTest {
 	
 	/**
 	 * Tests if the fast implementation of Pearson's correlation with two
@@ -98,9 +98,9 @@ public class DefaultPearsonsTest extends ColocalisationTest {
 		final double mean = 0.2;
 		final double spread = 0.1;
 		final double[] sigma = new double[] { 3.0, 3.0 };
-		Img<FloatType> ch1 = ColocalisationTest.produceMeanBasedNoiseImage(new FloatType(), 24, 24,
+		Img<FloatType> ch1 = AbstractColocalisationTest.produceMeanBasedNoiseImage(new FloatType(), 24, 24,
 			mean, spread, sigma, 0x01234567);
-		Img<FloatType> ch2 = ColocalisationTest.produceMeanBasedNoiseImage(new FloatType(), 24, 24,
+		Img<FloatType> ch2 = AbstractColocalisationTest.produceMeanBasedNoiseImage(new FloatType(), 24, 24,
 			mean, spread, sigma, 0x98765432);
 		BinaryFunctionOp<RandomAccessibleInterval<FloatType>, RandomAccessibleInterval<FloatType>, Double> op =
 			Functions.binary(ops, Ops.Coloc.Pearsons.class, Double.class, ch1, ch2);

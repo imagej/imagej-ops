@@ -36,7 +36,7 @@ import static org.junit.Assume.assumeTrue;
 import java.util.Iterator;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.coloc.ColocalisationTest;
+import net.imagej.ops.coloc.AbstractColocalisationTest;
 import net.imagej.ops.coloc.pValue.DefaultPValue;
 import net.imagej.ops.coloc.pValue.PValueResult;
 import net.imagej.ops.special.function.BinaryFunctionOp;
@@ -117,9 +117,9 @@ public class KendallTauBRankTest extends AbstractOpTest {
 		final double mean = 0.2;
 		final double spread = 0.1;
 		final double[] sigma = new double[] { 3.0, 3.0 };
-		Img<FloatType> ch1 = ColocalisationTest.produceMeanBasedNoiseImage(new FloatType(), 24, 24,
+		Img<FloatType> ch1 = AbstractColocalisationTest.produceMeanBasedNoiseImage(new FloatType(), 24, 24,
 			mean, spread, sigma, 0x01234567);
-		Img<FloatType> ch2 = ColocalisationTest.produceMeanBasedNoiseImage(new FloatType(), 24, 24,
+		Img<FloatType> ch2 = AbstractColocalisationTest.produceMeanBasedNoiseImage(new FloatType(), 24, 24,
 			mean, spread, sigma, 0x98765432);
 		BinaryFunctionOp<RandomAccessibleInterval<FloatType>, RandomAccessibleInterval<FloatType>, Double> op =
 			Functions.binary(ops, KendallTauBRank.class, Double.class, ch1, ch2);

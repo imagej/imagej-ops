@@ -38,7 +38,7 @@ import net.imglib2.view.Views;
 
 import org.junit.Test;
 
-public class ShuffledViewTest extends ColocalisationTest {
+public class ShuffledViewTest extends AbstractColocalisationTest {
 
 	// for(UnsignedByteType t:Views.iterable(shuffled)) System.out.print(t + ",
 	// "); //for printing off shuffled values

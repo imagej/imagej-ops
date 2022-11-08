@@ -32,7 +32,7 @@ package net.imagej.ops.coloc.maxTKendallTau;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.coloc.ColocalisationTest;
+import net.imagej.ops.coloc.AbstractColocalisationTest;
 import net.imagej.ops.coloc.ShuffledView;
 import net.imagej.ops.coloc.pValue.PValueResult;
 import net.imagej.ops.special.function.BinaryFunctionOp;
@@ -54,7 +54,7 @@ import org.junit.Test;
  * @author Curtis Rueden
  * @author Shulei Wang
  */
-public class MTKTTest extends ColocalisationTest {
+public class MTKTTest extends AbstractColocalisationTest {
 
 	// Ranking data, test the rankTransformation() function.
 	//
@@ -175,9 +175,9 @@ public class MTKTTest extends ColocalisationTest {
 		final double mean = 0.2;
 		final double spread = 0.1;
 		final double[] sigma = new double[] { 3.0, 3.0 };
-		Img<FloatType> ch1 = ColocalisationTest.produceMeanBasedNoiseImage(
+		Img<FloatType> ch1 = AbstractColocalisationTest.produceMeanBasedNoiseImage(
 			new FloatType(), 24, 24, mean, spread, sigma, 0x01234567);
-		Img<FloatType> ch2 = ColocalisationTest.produceMeanBasedNoiseImage(
+		Img<FloatType> ch2 = AbstractColocalisationTest.produceMeanBasedNoiseImage(
 			new FloatType(), 24, 24, mean, spread, sigma, 0x98765432);
 		double result = (Double) ops.run(MTKT.class, ch1, ch2);
 		assertEquals(2.710687382741972, result, 0.0);
@@ -240,9 +240,9 @@ public class MTKTTest extends ColocalisationTest {
 		final double mean = 0.2;
 		final double spread = 0.1;
 		final double[] sigma = new double[] { 3.0, 3.0 };
-		Img<FloatType> ch1 = ColocalisationTest.produceMeanBasedNoiseImage(
+		Img<FloatType> ch1 = AbstractColocalisationTest.produceMeanBasedNoiseImage(
 			new FloatType(), 24, 24, mean, spread, sigma, 0x01234567);
-		Img<FloatType> ch2 = ColocalisationTest.produceMeanBasedNoiseImage(
+		Img<FloatType> ch2 = AbstractColocalisationTest.produceMeanBasedNoiseImage(
 			new FloatType(), 24, 24, mean, spread, sigma, 0x98765432);
 		BinaryFunctionOp<RandomAccessibleInterval<FloatType>, RandomAccessibleInterval<FloatType>, Double> op =
 			Functions.binary(ops, MTKT.class, Double.class, ch1, ch2);

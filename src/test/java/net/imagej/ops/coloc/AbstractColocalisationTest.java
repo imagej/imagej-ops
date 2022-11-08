@@ -60,7 +60,7 @@ import org.scijava.app.StatusService;
 import org.scijava.cache.CacheService;
 
 /** Abstract base class for coloc op unit tests. */
-public abstract class ColocalisationTest extends AbstractOpTest {
+public abstract class AbstractColocalisationTest extends AbstractOpTest {
 
 	@Override
 	protected Context createContext() {

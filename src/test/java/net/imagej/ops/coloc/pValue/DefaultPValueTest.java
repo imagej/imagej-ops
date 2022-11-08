@@ -34,7 +34,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.function.BiFunction;
 
-import net.imagej.ops.coloc.ColocalisationTest;
+import net.imagej.ops.coloc.AbstractColocalisationTest;
 import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
 import net.imagej.ops.special.function.BinaryFunctionOp;
 import net.imglib2.img.Img;
@@ -48,7 +48,7 @@ import org.junit.Test;
  *
  * @author Ellen T Arena
  */
-public class DefaultPValueTest extends ColocalisationTest {
+public class DefaultPValueTest extends AbstractColocalisationTest {
 
 	/*
 	 * Tests 

@@ -32,7 +32,7 @@ package net.imagej.ops.coloc.icq;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import net.imagej.ops.coloc.ColocalisationTest;
+import net.imagej.ops.coloc.AbstractColocalisationTest;
 import net.imagej.ops.coloc.pValue.DefaultPValue;
 import net.imagej.ops.coloc.pValue.PValueResult;
 import net.imagej.ops.special.function.BinaryFunctionOp;
@@ -49,7 +49,7 @@ import org.junit.Test;
  *
  * @author Curtis Rueden
  */
-public class LiICQTest extends ColocalisationTest {
+public class LiICQTest extends AbstractColocalisationTest {
 
 	@Test
 	public void testICQ() {
@@ -97,9 +97,9 @@ public class LiICQTest extends ColocalisationTest {
 		final double mean = 0.2;
 		final double spread = 0.1;
 		final double[] sigma = new double[] { 3.0, 3.0 };
-		Img<FloatType> ch1 = ColocalisationTest.produceMeanBasedNoiseImage(new FloatType(), 24, 24,
+		Img<FloatType> ch1 = AbstractColocalisationTest.produceMeanBasedNoiseImage(new FloatType(), 24, 24,
 			mean, spread, sigma, 0x01234567);
-		Img<FloatType> ch2 = ColocalisationTest.produceMeanBasedNoiseImage(new FloatType(), 24, 24,
+		Img<FloatType> ch2 = AbstractColocalisationTest.produceMeanBasedNoiseImage(new FloatType(), 24, 24,
 			mean, spread, sigma, 0x98765432);
 		BinaryFunctionOp<RandomAccessibleInterval<FloatType>, RandomAccessibleInterval<FloatType>, Double> op =
 			Functions.binary(ops, LiICQ.class, Double.class, ch1, ch2);

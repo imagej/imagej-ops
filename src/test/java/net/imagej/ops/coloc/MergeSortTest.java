@@ -34,7 +34,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class MergeSortTest extends ColocalisationTest {
+public class MergeSortTest extends AbstractColocalisationTest {
 
 	// Test the class MergeSort... with sort & count example.
 	@Test
