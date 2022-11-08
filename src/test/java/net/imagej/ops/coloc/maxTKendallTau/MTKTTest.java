@@ -187,9 +187,9 @@ public class MTKTTest extends AbstractColocalisationTest {
 	@Test
 	public void testMTKTimage() {
 		RandomAccessibleInterval<UnsignedByteType> cropCh1 = Views.interval(
-			zeroCorrelationImageCh1, new long[] { 0, 0, 0 }, new long[] { 20, 20, 0 });
+			getZeroCorrelationImageCh1(), new long[] { 0, 0, 0 }, new long[] { 20, 20, 0 });
 		RandomAccessibleInterval<UnsignedByteType> cropCh2 = Views.interval(
-			zeroCorrelationImageCh2, new long[] { 0, 0, 0 }, new long[] { 20, 20, 0 });
+			getZeroCorrelationImageCh2(), new long[] { 0, 0, 0 }, new long[] { 20, 20, 0 });
 		double result = (Double) ops.run(MTKT.class, cropCh1, cropCh2);
 		assertEquals(2.562373279563565, result, 0.0);
 	}
@@ -255,9 +255,9 @@ public class MTKTTest extends AbstractColocalisationTest {
 	@Test
 	public void testMTKTpValueImage() {
 		RandomAccessibleInterval<UnsignedByteType> cropCh1 = Views.interval(
-			zeroCorrelationImageCh1, new long[] { 0, 0, 0 }, new long[] { 20, 20, 0 });
+			getZeroCorrelationImageCh1(), new long[] { 0, 0, 0 }, new long[] { 20, 20, 0 });
 		RandomAccessibleInterval<UnsignedByteType> cropCh2 = Views.interval(
-			zeroCorrelationImageCh2, new long[] { 0, 0, 0 }, new long[] { 20, 20, 0 });
+			getZeroCorrelationImageCh2(), new long[] { 0, 0, 0 }, new long[] { 20, 20, 0 });
 		BinaryFunctionOp<RandomAccessibleInterval<UnsignedByteType>, RandomAccessibleInterval<UnsignedByteType>, Double> op =
 			Functions.binary(ops, MTKT.class, Double.class, cropCh1, cropCh2);
 		final int[] blockSize = new int[cropCh1.numDimensions()];

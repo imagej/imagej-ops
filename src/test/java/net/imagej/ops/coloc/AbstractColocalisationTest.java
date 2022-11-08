@@ -69,25 +69,41 @@ public abstract class AbstractColocalisationTest extends AbstractOpTest {
 	}
 
 	// images and meta data for zero correlation
-	protected Img<UnsignedByteType> zeroCorrelationImageCh1;
-	protected Img<UnsignedByteType> zeroCorrelationImageCh2;
+	private Img<UnsignedByteType> zeroCorrelationImageCh1;
+	private Img<UnsignedByteType> zeroCorrelationImageCh2;
 
 	// images and meta data for positive correlation test
 	// and real noisy image Manders' coeff with mask test
-	protected Img<UnsignedByteType> positiveCorrelationImageCh1;
-	protected Img<UnsignedByteType> positiveCorrelationImageCh2;
+	private Img<UnsignedByteType> positiveCorrelationImageCh1;
+	private Img<UnsignedByteType> positiveCorrelationImageCh2;
 
-	/**
-	 * This method is run before every single test is run and is meant to set up
-	 * the images and meta data needed for testing image colocalisation.
-	 */
-	@Before
-	public void setup() {
-		zeroCorrelationImageCh1 = loadTiffFromJar("greenZstack.tif");
-		zeroCorrelationImageCh2 = loadTiffFromJar("redZstack.tif");
+	// -- Lazy accessors --
 
-		positiveCorrelationImageCh1 = loadTiffFromJar("colocsample1b-green.tif");
-		positiveCorrelationImageCh2 = loadTiffFromJar("colocsample1b-red.tif");
+	protected Img<UnsignedByteType> getZeroCorrelationImageCh1() {
+		if (zeroCorrelationImageCh1 == null) {
+			zeroCorrelationImageCh1 = loadTiffFromJar("greenZstack.tif");
+		}
+		return zeroCorrelationImageCh1;
+	}
+
+	protected Img<UnsignedByteType> getZeroCorrelationImageCh2() {
+		if (zeroCorrelationImageCh2 == null) {
+			zeroCorrelationImageCh2 = loadTiffFromJar("redZstack.tif");
+		}
+		return zeroCorrelationImageCh2;
+	}
+	protected Img<UnsignedByteType> getPositiveCorrelationImageCh1() {
+		if (positiveCorrelationImageCh1 == null) {
+			positiveCorrelationImageCh1 = loadTiffFromJar("colocsample1b-green.tif");
+		}
+		return positiveCorrelationImageCh1;
+	}
+
+	protected Img<UnsignedByteType> getPositiveCorrelationImageCh2() {
+		if (positiveCorrelationImageCh2 == null) {
+			positiveCorrelationImageCh2 = loadTiffFromJar("colocsample1b-red.tif");
+		}
+		return positiveCorrelationImageCh2;
 	}
 
 	/**
