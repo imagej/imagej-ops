@@ -51,8 +51,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
-import org.scijava.util.ConversionUtils;
-import org.scijava.util.GenericUtils;
+import org.scijava.util.Types;
 
 /**
  * Default service for finding {@link Op}s which match a request.
@@ -383,8 +382,8 @@ public class DefaultOpMatchingService extends AbstractService implements
 		for (final ModuleItem<?> item : candidate.inputs()) {
 			final Class<?> type = item.getType();
 			if (args[i] != null) {
-				final int currLevel = OpMatchingUtil.findCastLevels(type, OpMatchingUtil
-					.getClass(args[i]));
+				final int currLevel = OpMatchingUtil.findCastLevels(type, //
+					OpMatchingUtil.getClass(args[i]));
 				if (currLevel < 0) return -1;
 				level += currLevel;
 			}
@@ -460,10 +459,14 @@ public class DefaultOpMatchingService extends AbstractService implements
 				candidate.setStatus(StatusCode.TOO_FEW_OUTPUTS);
 				return false;
 			}
-			// FIXME: Use generic assignability test, once it exists.
-			final Class<?> raw = GenericUtils.getClass(outType);
+			// NB: Ideally, we would use a generic assignability test here.
+			// But at this point in the ImageJ Ops v1 lifecycle, we will
+			// leave the matching logic alone, in favor of the next
+			// incarnation of the project, SciJava Ops + ImageJ Ops v2,
+			// doing type reasoning including generics.
+			final Class<?> raw = Types.raw(outType);
 			final Class<?> outItemClass = outItems.next().getType();
-			if (!ConversionUtils.canCast(outItemClass, raw)) {
+			if (!Types.isAssignable(outItemClass, raw)) {
 				candidate.setStatus(StatusCode.OUTPUT_TYPES_DO_NOT_MATCH, //
 					"request=" + raw.getName() + ", actual=" + outItemClass.getName());
 				return false;
