@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import org.scijava.util.Types;
+
 /**
  * Utility class for {@link OpMatchingService}.
  * 
@@ -52,7 +54,7 @@ public class OpMatchingUtil {
 	 */
 	public static Class<?> getClass(final Object obj) {
 		if (obj == null) return null;
-		if (obj instanceof Class) return (Class<?>) obj;
+		if (obj instanceof Class) return Types.box((Class<?>) obj);
 		if (obj instanceof ParameterizedType)
 			return (Class<?>) ((ParameterizedType) obj).getRawType();
 		return obj.getClass();
