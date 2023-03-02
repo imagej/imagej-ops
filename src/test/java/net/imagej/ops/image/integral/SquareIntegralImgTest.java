@@ -50,8 +50,8 @@ import org.junit.Test;
  */
 public class SquareIntegralImgTest extends AbstractOpTest {
 
-	Img<ByteType> in;
-	RandomAccessibleInterval<DoubleType> out;
+	private Img<ByteType> in;
+	private RandomAccessibleInterval<DoubleType> out;
 
 	/**
 	 * Initialize image.
