@@ -84,12 +84,9 @@ public class DefaultFindEdges<T extends RealType<T>> extends
 				planePos.fwd();
 				computePlanar(planePos, input, output);
 			}
-
 		}
-		System.out.println("done");
 
 		return output;
-
 	}
 
 	private void computePlanar(final Position planePos,
