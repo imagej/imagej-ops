@@ -43,7 +43,7 @@ Try this Jython script in ImageJ's
 [Script Editor](http://imagej.net/Script_Editor)!
 
 ```python
-# @ImageJ ij
+#@ ImageJ ij
 
 # create a new blank image
 from jarray import array
