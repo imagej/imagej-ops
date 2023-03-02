@@ -2,7 +2,7 @@
  * #%L
  * ImageJ2 software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2022 ImageJ2 developers.
+ * Copyright (C) 2014 - 2023 ImageJ2 developers.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -126,7 +126,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucy.class)
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
+	public <I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>>
 		RandomAccessibleInterval<O> richardsonLucy(
 			final RandomAccessibleInterval<O> out,
 			final RandomAccessibleInterval<I> in,
@@ -144,7 +144,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucy.class)
-	public <I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	public <I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
 		RandomAccessibleInterval<O> richardsonLucy(
 			final RandomAccessibleInterval<O> out,
 			final RandomAccessibleInterval<I> in,
@@ -162,7 +162,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucy.class)
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	public <I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
 		RandomAccessibleInterval<O> richardsonLucy(
 			final RandomAccessibleInterval<O> out,
 			final RandomAccessibleInterval<I> in,
@@ -182,7 +182,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucy.class)
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	public <I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
 		RandomAccessibleInterval<O> richardsonLucy(
 			final RandomAccessibleInterval<O> out,
 			final RandomAccessibleInterval<I> in,
@@ -428,7 +428,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucyTV.class)
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
+	public <I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>>
 		RandomAccessibleInterval<O> richardsonLucyTV(
 			final RandomAccessibleInterval<O> out,
 			final RandomAccessibleInterval<I> in,
@@ -448,7 +448,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucyTV.class)
-	public <I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	public <I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
 		RandomAccessibleInterval<O> richardsonLucyTV(
 			final RandomAccessibleInterval<O> out,
 			final RandomAccessibleInterval<I> in,
@@ -468,7 +468,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucyTV.class)
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	public <I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
 		RandomAccessibleInterval<O> richardsonLucyTV(
 			final RandomAccessibleInterval<O> out,
 			final RandomAccessibleInterval<I> in,
@@ -488,7 +488,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.deconvolve.PadAndRichardsonLucyTV.class)
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	public <I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
 		RandomAccessibleInterval<O> richardsonLucyTV(
 			final RandomAccessibleInterval<O> out,
 			final RandomAccessibleInterval<I> in,
@@ -666,7 +666,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	}
 
 	@Deprecated
-	public <I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>>
+	public <I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>>
 		RandomAccessibleInterval<O> richardsonLucy(
 			final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
@@ -679,7 +679,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	}
 
 	@Deprecated
-	public <I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	public <I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
 		RandomAccessibleInterval<O> richardsonLucy(
 			final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
@@ -693,7 +693,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	}
 
 	@Deprecated
-	public <I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	public <I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
 		RandomAccessibleInterval<O> richardsonLucy(
 			final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
@@ -707,7 +707,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	}
 
 	@Deprecated
-	public <I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	public <I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
 		RandomAccessibleInterval<O> richardsonLucy(
 			final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
@@ -861,7 +861,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	}
 
 	@Deprecated
-	public <I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>>
+	public <I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>>
 		RandomAccessibleInterval<O> richardsonLucyTV(
 			final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
@@ -875,7 +875,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	}
 
 	@Deprecated
-	public <I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	public <I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
 		RandomAccessibleInterval<O> richardsonLucyTV(
 			final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
@@ -890,7 +890,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	}
 
 	@Deprecated
-	public <I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	public <I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
 		RandomAccessibleInterval<O> richardsonLucyTV(
 			final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
@@ -905,7 +905,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 	}
 
 	@Deprecated
-	public <I extends RealType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	public <I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C> & NativeType<C>>
 		RandomAccessibleInterval<O> richardsonLucyTV(
 			final RandomAccessibleInterval<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,

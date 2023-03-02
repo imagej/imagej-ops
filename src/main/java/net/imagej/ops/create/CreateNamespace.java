@@ -2,7 +2,7 @@
  * #%L
  * ImageJ2 software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2022 ImageJ2 developers.
+ * Copyright (C) 2014 - 2023 ImageJ2 developers.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -421,8 +421,8 @@ public class CreateNamespace extends AbstractNamespace {
 	/** Executes the "kernelGauss" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGauss.DefaultCreateKernelGauss.class)
-	public <T extends ComplexType<T> & NativeType<T>> RandomAccessibleInterval<T>
-		kernelGauss(final double[] sigma, final T outType)
+	public <T extends ComplexType<T>> RandomAccessibleInterval<T> kernelGauss(
+		final double[] sigma, final T outType)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
@@ -524,8 +524,8 @@ public class CreateNamespace extends AbstractNamespace {
 	 */
 	@OpMethod(
 		op = net.imagej.ops.create.kernelBiGauss.DefaultCreateKernelBiGauss.class)
-	public <T extends ComplexType<T> & NativeType<T>> RandomAccessibleInterval<T>
-		kernelBiGauss(final double[] sigmaPair, final Integer numDimensions, final T outType)
+	public <T extends ComplexType<T>> RandomAccessibleInterval<T> kernelBiGauss(
+		final double[] sigmaPair, final Integer numDimensions, final T outType)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
@@ -560,7 +560,7 @@ public class CreateNamespace extends AbstractNamespace {
 	 */
 	@OpMethod(
 		op = net.imagej.ops.create.kernelBiGauss.DefaultCreateKernel2ndDerivBiGauss.class)
-	public <T extends ComplexType<T> & NativeType<T>> RandomAccessibleInterval<T>
+	public <T extends ComplexType<T>> RandomAccessibleInterval<T>
 		kernel2ndDerivBiGauss(final double[] sigmaPair, final Integer numDimensions, final T outType)
 	{
 		@SuppressWarnings("unchecked")
@@ -647,8 +647,8 @@ public class CreateNamespace extends AbstractNamespace {
 	 */
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGabor.CreateKernelGaborIsotropic.class)
-	public <T extends ComplexType<T> & NativeType<T>> RandomAccessibleInterval<T>
-		kernelGabor(final Double sigma, final double[] period, final T outType)
+	public <T extends ComplexType<T>> RandomAccessibleInterval<T> kernelGabor(
+		final Double sigma, final double[] period, final T outType)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
@@ -735,8 +735,8 @@ public class CreateNamespace extends AbstractNamespace {
 	 */
 	@OpMethod(
 		op = net.imagej.ops.create.kernelGabor.DefaultCreateKernelGabor.class)
-	public <T extends ComplexType<T> & NativeType<T>> RandomAccessibleInterval<T>
-		kernelGabor(final double[] sigmas, final double[] period, final T outType)
+	public <T extends ComplexType<T>> RandomAccessibleInterval<T> kernelGabor(
+		final double[] sigmas, final double[] period, final T outType)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =

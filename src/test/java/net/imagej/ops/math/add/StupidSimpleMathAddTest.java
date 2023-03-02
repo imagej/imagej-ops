@@ -27,50 +27,27 @@
  * #L%
  */
 
-package net.imagej.ops.map;
+package net.imagej.ops.math.add;
 
-import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import static org.junit.Assert.assertEquals;
 
-import org.scijava.plugin.Parameter;
+import net.imagej.ops.AbstractOpTest;
+
+import org.junit.Test;
 
 /**
- * Abstract base class for {@link MapView} implementations.
- *
- * @author Christian Dietz (University of Konstanz)
- * @param <EI> element type of inputs
- * @param <EO> element type of outputs
- * @param <PI> producer of inputs
- * @param <PO> producer of outputs
+ * Tests an incredible simple math.add operation.
+ * <p>
+ * At one point this was actually failing, so, let's always check it!
+ * </p>
+ * 
+ * @author Curtis Rueden
  */
-public abstract class AbstractMapView<EI, EO, PI, PO> extends
-	AbstractUnaryFunctionOp<PI, PO> implements MapView<EI, EO, PI, PO>
-{
+public class StupidSimpleMathAddTest extends AbstractOpTest {
 
-	@Parameter
-	private UnaryComputerOp<EI, EO> op;
-
-	@Parameter
-	private EO type;
-
-	@Override
-	public UnaryComputerOp<EI, EO> getOp() {
-		return op;
+	@Test
+	public void testSimple() {
+		Object seven = ops.run("math.add", 2, 5);
+		assertEquals(7, seven);
 	}
-
-	@Override
-	public void setOp(final UnaryComputerOp<EI, EO> op) {
-		this.op = op;
-	}
-
-	@Override
-	public EO getType() {
-		return type;
-	}
-
-	@Override
-	public void setType(final EO type) {
-		this.type = type;
-	}
-
 }

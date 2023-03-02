@@ -2,7 +2,7 @@
  * #%L
  * ImageJ2 software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2022 ImageJ2 developers.
+ * Copyright (C) 2014 - 2023 ImageJ2 developers.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -35,8 +35,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-import org.scijava.util.GenericUtils;
+import net.imglib2.type.numeric.RealType;
+
+import org.scijava.util.Types;
 
 /**
  * Data structure which identifies an op by name and/or type(s) and/or argument
@@ -161,8 +164,7 @@ public class OpRef {
 		append(sb, name);
 		if (types != null) {
 			for (final Type t : types) {
-				// FIXME: Use better Type-to-string approach, once it exists.
-				append(sb, t instanceof Class ? ((Class<?>) t).getName() : t.toString());
+				append(sb, Types.name(t));
 			}
 		}
 		return sb.toString();
@@ -172,9 +174,11 @@ public class OpRef {
 	public boolean typesMatch(final Class<?> c) {
 		if (types == null) return true;
 		for (final Type t : types) {
-			// FIXME: Use generic assignability test, once it exists.
-			final Class<?> raw = GenericUtils.getClass(t);
-			if (!raw.isAssignableFrom(c)) return false;
+			// NB: We have only a raw class as source. We check only for
+			// raw assignability against the raw classes of each required type.
+			if (!Types.raws(t).stream().allMatch(raw -> raw.isAssignableFrom(c))) {
+				return false;
+			}
 		}
 		return true;
 	}
@@ -187,15 +191,30 @@ public class OpRef {
 		sb.append(getLabel());
 		sb.append("(");
 		boolean first = true;
-		for (Object arg : args) {
+		for (final Object arg : args) {
 			if (first) first = false;
 			else sb.append(", ");
-			if (arg.getClass() == Class.class) {
-				// special typed null placeholder
-				sb.append(((Class<?>) arg).getSimpleName());
-			}
-			else sb.append(arg.getClass().getSimpleName());
 
+			// If arg itself *is* a Type, we use it directly,
+			// because it's a special "typed null" placeholder.
+			// Otherwise, we simply use the raw class of the arg.
+			final Type argType = Type.class.isInstance(arg) ? //
+				(Type) arg : arg.getClass();
+
+			final List<Class<?>> classes = Types.raws(argType);
+			if (classes.size() == 0) {
+				// Exotic generic type with no upper bound classes!
+				sb.append(Types.name(argType));
+			}
+			else {
+				// Concatenate the list of simple class names with ampersands.
+				// If arg is a Class, this will just resolve to its simple name.
+				// But for generic types like "? extends foo.Foo & bar.Bar"
+				// this will resolve to a string like "Foo & Bar".
+				final List<String> classNames = classes.stream() //
+					.map(c -> c.getSimpleName()).collect(Collectors.toList());
+				sb.append(String.join(" & ", classNames));
+			}
 		}
 		sb.append(")");
 

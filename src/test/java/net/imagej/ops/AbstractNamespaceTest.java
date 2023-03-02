@@ -2,7 +2,7 @@
  * #%L
  * ImageJ2 software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2022 ImageJ2 developers.
+ * Copyright (C) 2014 - 2023 ImageJ2 developers.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -45,8 +45,7 @@ import org.scijava.command.CommandService;
 import org.scijava.module.ModuleItem;
 import org.scijava.plugin.Parameter;
 import org.scijava.util.ClassUtils;
-import org.scijava.util.ConversionUtils;
-import org.scijava.util.GenericUtils;
+import org.scijava.util.Types;
 
 /**
  * Base class for unit testing of namespaces. In particular, this class has
@@ -271,11 +270,7 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		final Class<? extends Op> opType, final OpCoverSet coverSet,
 		final boolean checkTypes)
 	{
-		// TODO: Type matching needs to be type<->type instead of class<->type.
-		// That is, the "special class placeholder" also needs to work with Type.
-		// Then we can pass Types here instead of Class instances.
-		// final Object[] argTypes = method.getGenericParameterTypes();
-		final Object[] argTypes = method.getParameterTypes();
+		final Object[] argTypes = method.getGenericParameterTypes();
 		final OpInfo info = ops.info(opType);
 
 		if (checkTypes) {
@@ -311,18 +306,31 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		int i = 0;
 		for (final ModuleItem<?> input : candidate.inputs()) {
 			final Object arg = paddedArgs[i++];
-			if (!typeMatches(arg, input.getType())) return false;
+			if (!typeMatches(arg, input.getGenericType())) return false;
 		}
 
 		return true;
 	}
 
-	private boolean typeMatches(final Object arg, final Class<?> type) {
+	private boolean typeMatches(final Object arg, final Type type) {
 		if (arg == null) return true;
+
 		// NB: Handle special typed null placeholder.
-		final Class<?> argType =
-			arg instanceof Class ? ((Class<?>) arg) : arg.getClass();
-		return argType == type;
+		final Type argType = arg instanceof Type ? ((Type) arg) : arg.getClass();
+
+		// NB: It would be nice to ensure these types are really exactly the
+		// same by checking equality. But in practice they can be distinct:
+		//
+		// * arg (from the OpCandidate's OpRef) may be
+		//   a TypeVariable like `O extends RealType`; while
+		//
+		// * type (from a ModuleItem of the OpCandidate's OpInfo)
+		//   may be a CaptureType like `x extends RealType<x>`.
+		//
+		// and though they have the same bounds, they are not *equal*.
+		// So for the time being, let's just check they have matching class bounds.
+
+		return Types.raws(argType).equals(Types.raws(type));
 	}
 
 	private boolean outputTypesMatch(final Type returnType,
@@ -338,9 +346,9 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		if (outTypes.size() == 1) baseType = returnType;
 		else {
 			// multiple return types; so the method return type must be a list
-			if (GenericUtils.getClass(returnType) != List.class) return false;
+			if (Types.raw(returnType) != List.class) return false;
 			// use the list's generic type parameter as the base type
-			baseType = GenericUtils.getTypeParameter(returnType, List.class, 0);
+			baseType = Types.param(returnType, List.class, 0);
 		}
 
 		for (final Type outType : outTypes) {
@@ -352,8 +360,8 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 
 	private boolean isSuperType(final Type baseType, final Type subType) {
 		// TODO: Handle generics.
-		final Class<?> baseClass = GenericUtils.getClass(baseType);
-		final Class<?> subClass = GenericUtils.getClass(subType);
+		final Class<?> baseClass = Types.raw(baseType);
+		final Class<?> subClass = Types.raw(subType);
 
 		// NB: This avoids a bug in generics reflection processing.
 		// See: https://github.com/scijava/scijava-common/issues/172
@@ -432,7 +440,7 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 	}
 
 	private String castTypeString(final ModuleItem<?> item) {
-		return ConversionUtils.getNonprimitiveType(item.getType()).getSimpleName();
+		return Types.box(item.getType()).getSimpleName();
 	}
 
 	// -- Helper classes --

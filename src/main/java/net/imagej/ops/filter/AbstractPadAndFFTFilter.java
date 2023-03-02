@@ -2,7 +2,7 @@
  * #%L
  * ImageJ2 software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2022 ImageJ2 developers.
+ * Copyright (C) 2014 - 2023 ImageJ2 developers.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -94,7 +94,7 @@ public abstract class AbstractPadAndFFTFilter<I extends RealType<I>, O extends R
 	 * FFT type
 	 */
 	@Parameter(required = false)
-	private ComplexType<C> fftType;
+	private C fftType;
 
 	/**
 	 * Op used to pad the input
@@ -136,8 +136,7 @@ public abstract class AbstractPadAndFFTFilter<I extends RealType<I>, O extends R
 			RandomAccessibleInterval.class, Dimensions.class, true);
 
 		if (fftType == null) {
-			fftType = (ComplexType<C>) ops().create().nativeType(
-				ComplexFloatType.class);
+			fftType = (C) ops().create().nativeType(ComplexFloatType.class);
 		}
 
 		/**
