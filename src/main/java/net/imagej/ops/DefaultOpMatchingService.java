@@ -588,8 +588,8 @@ public class DefaultOpMatchingService extends AbstractService implements
 
 		final Type type = item.getGenericType();
 		if (!canConvert(arg, type)) {
-			candidate.setStatus(StatusCode.CANNOT_CONVERT, arg.getClass().getName() +
-				" => " + type, item);
+			candidate.setStatus(StatusCode.CANNOT_CONVERT, //
+				arg.getClass().getName() + " => " + type, item);
 			return false;
 		}
 
