@@ -598,11 +598,8 @@ public class DefaultOpMatchingService extends AbstractService implements
 
 	/** Helper method of {@link #canAssign}. */
 	private boolean canConvert(final Object arg, final Type type) {
-		if (isMatchingClass(arg, type)) {
-			// NB: Class argument for matching, to help differentiate op signatures.
-			return true;
-		}
-		return convertService.supports(arg, type);
+		return isMatchingTypedNullPlaceholder(arg, type) || //
+			convertService.supports(arg, type);
 	}
 
 	/** Helper method of {@link #assignInputs}. */
@@ -619,17 +616,49 @@ public class DefaultOpMatchingService extends AbstractService implements
 
 	/** Helper method of {@link #assign}. */
 	private Object convert(final Object arg, final Type type) {
-		if (isMatchingClass(arg, type)) {
-			// NB: Class argument for matching; fill with null.
+		if (isMatchingTypedNullPlaceholder(arg, type)) {
+			// NB: Type argument for matching; fill with null.
 			return null;
 		}
 		return convertService.convert(arg, type);
 	}
 
-	/** Determines whether the argument is a matching class instance. */
-	private boolean isMatchingClass(final Object arg, final Type type) {
-		return arg instanceof Class && convertService.supports((Class<?>) arg,
-			type);
-	}
+	private boolean isMatchingTypedNullPlaceholder(final Object arg,
+		final Type type)
+	{
+		if (!Type.class.isInstance(arg)) return false; // not a "typed null"
 
+		// NB: We do only an approximation of generic type checking here.
+		// We might have arguments like:
+		//
+		// * arg = O extends RealType<O> & NativeType<O>
+		// * type = capture of x extends RealType<x> & NativeType<x>
+		//
+		// But the ConvertService is limited to supports(Class, Type) queries, not
+		// supports(Type, Type). So we merely check that all of the destination
+		// type's classes are assignable from at least one of the source arg type's
+		// classes.
+
+		final List<Class<?>> srcClasses = Types.raws((Type) arg);
+		final List<Class<?>> destClasses = Types.raws(type);
+
+		// For each destination type: is a source type assignable from it?
+		boolean castable = true;
+		for (final Class<?> dest : destClasses) {
+			if (!srcClasses.stream().anyMatch(src -> dest.isAssignableFrom(src))) {
+				// No source class is assignable to this destination class.
+				castable = false;
+				break;
+			}
+		}
+		if (castable) return true;
+
+		// The arg type is not castable, but what about convertible? If *any* of
+		// arg's classes are convertible to the destination type, then this arg
+		// is a match. It may be the case that an arg which is *multiple* such
+		// classes is convertible, but one that is *any one* of its classes is not.
+		// But we have no way of querying the ConvertService API about that. So we
+		// just make a best effort by checking the individual source classes.
+		return srcClasses.stream().anyMatch(src -> convertService.supports(src, type));
+	}
 }

@@ -86,11 +86,7 @@ public class DefaultCreateKernelGibsonLanni<T extends ComplexType<T> & NativeTyp
 	private double pZ = 2000E-9D; // position of particle
 
 	@Parameter
-	// HACK: Must declare class as ComplexType rather than T,
-	// to avoid current Ops generics matching limitations.
-	// Without this, the ConvertService returns null when
-	// attempting to convert an input type instance to T.
-	private ComplexType<T> type; // pixel type of created kernel
+	private T type; // pixel type of created kernel
 
 	private double ng0 = 1.5; // coverslip refractive index, design value
 	private double ng = 1.5; // coverslip refractive index, experimental
@@ -281,8 +277,7 @@ public class DefaultCreateKernelGibsonLanni<T extends ComplexType<T> & NativeTyp
 		}
 
 		// create an RAI to store the PSF
-		@SuppressWarnings("unchecked")
-		final Img<T> psf3d = createOp.calculate(size, (T) type);
+		final Img<T> psf3d = createOp.calculate(size, type);
 
 		// use a RandomAccess to access pixels
 		RandomAccess<T> ra = psf3d.randomAccess();
