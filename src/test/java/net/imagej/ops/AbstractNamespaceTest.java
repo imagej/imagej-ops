@@ -45,8 +45,7 @@ import org.scijava.command.CommandService;
 import org.scijava.module.ModuleItem;
 import org.scijava.plugin.Parameter;
 import org.scijava.util.ClassUtils;
-import org.scijava.util.ConversionUtils;
-import org.scijava.util.GenericUtils;
+import org.scijava.util.Types;
 
 /**
  * Base class for unit testing of namespaces. In particular, this class has
@@ -338,9 +337,9 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		if (outTypes.size() == 1) baseType = returnType;
 		else {
 			// multiple return types; so the method return type must be a list
-			if (GenericUtils.getClass(returnType) != List.class) return false;
+			if (Types.raw(returnType) != List.class) return false;
 			// use the list's generic type parameter as the base type
-			baseType = GenericUtils.getTypeParameter(returnType, List.class, 0);
+			baseType = Types.param(returnType, List.class, 0);
 		}
 
 		for (final Type outType : outTypes) {
@@ -352,8 +351,8 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 
 	private boolean isSuperType(final Type baseType, final Type subType) {
 		// TODO: Handle generics.
-		final Class<?> baseClass = GenericUtils.getClass(baseType);
-		final Class<?> subClass = GenericUtils.getClass(subType);
+		final Class<?> baseClass = Types.raw(baseType);
+		final Class<?> subClass = Types.raw(subType);
 
 		// NB: This avoids a bug in generics reflection processing.
 		// See: https://github.com/scijava/scijava-common/issues/172
@@ -432,7 +431,7 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 	}
 
 	private String castTypeString(final ModuleItem<?> item) {
-		return ConversionUtils.getNonprimitiveType(item.getType()).getSimpleName();
+		return Types.box(item.getType()).getSimpleName();
 	}
 
 	// -- Helper classes --
