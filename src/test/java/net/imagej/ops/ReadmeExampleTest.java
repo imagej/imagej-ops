@@ -69,7 +69,7 @@ public class ReadmeExampleTest {
 		final int end = contents.indexOf(String.format("```%n"), begin);
 		assertTrue(end > 0);
 		final String snippet = contents.substring(begin, end);
-		assertTrue(snippet.startsWith("# @ImageJ ij"));
+		assertTrue(snippet.startsWith("#@ ImageJ ij"));
 
 		final Context context = new Context();
 		final ScriptService script = context.getService(ScriptService.class);
