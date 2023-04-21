@@ -54,7 +54,7 @@ public class MapViewRandomAccessToRandomAccess<EI, EO extends Type<EO>> extends
 	public RandomAccessible<EO> calculate(final RandomAccessible<EI> input) {
 		final ComputerConverter<EI, EO> converter =
 			new ComputerConverter<>(getOp());
-		return new ConvertedRandomAccessible<>(input, converter, getType());
+		return new ConvertedRandomAccessible<>(input, converter, this::getType);
 	}
 
 }

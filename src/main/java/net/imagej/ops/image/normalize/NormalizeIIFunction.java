@@ -133,7 +133,7 @@ public class NormalizeIIFunction<T extends RealType<T>> extends
 			final double[] bounds = getBounds(input);
 			return new ConvertedIterableInterval<>(input,
 				new NormalizeRealTypeComputer<>(bounds[0], bounds[1], bounds[2],
-					bounds[3]), input.firstElement().createVariable());
+					bounds[3]), input.firstElement()::createVariable);
 		}
 		return super.calculate(input);
 	}

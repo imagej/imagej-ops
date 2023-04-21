@@ -38,7 +38,6 @@ import net.imglib2.FlatIterationOrder;
 import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.Sampler;
 import net.imglib2.img.Img;
 import net.imglib2.iterator.IntervalIterator;
 import net.imglib2.util.Intervals;
@@ -202,8 +201,8 @@ public class SlicesII<T> extends AbstractInterval implements IterableInterval<Ra
 		}
 
 		@Override
-		public Sampler<RandomAccessibleInterval<T>> copy() {
-			return copyCursor();
+		public Cursor<RandomAccessibleInterval<T>> copy() {
+			return new SlicesIICursor(this);
 		}
 
 		@Override
@@ -215,11 +214,6 @@ public class SlicesII<T> extends AbstractInterval implements IterableInterval<Ra
 		@Override
 		public void remove() {
 			throw new UnsupportedOperationException("Not supported");
-		}
-
-		@Override
-		public Cursor<RandomAccessibleInterval<T>> copyCursor() {
-			return new SlicesIICursor(this);
 		}
 	}
 

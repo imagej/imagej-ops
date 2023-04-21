@@ -55,7 +55,7 @@ public class MapViewIIToII<EI, EO extends Type<EO>> extends
 	public IterableInterval<EO> calculate(final IterableInterval<EI> input) {
 		final ComputerConverter<EI, EO> converter =
 			new ComputerConverter<>(getOp());
-		return new ConvertedIterableInterval<>(input, converter, getType());
+		return new ConvertedIterableInterval<>(input, converter, this::getType);
 	}
 
 }

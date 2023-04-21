@@ -58,7 +58,7 @@ public class MapViewRAIToRAI<EI, EO extends Type<EO>>
 		final ComputerConverter<EI, EO> converter =
 			new ComputerConverter<>(getOp());
 		return new ConvertedRandomAccessibleInterval<>(input, converter,
-			getType());
+			this::getType);
 	}
 
 }

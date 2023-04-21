@@ -38,7 +38,6 @@ import net.imglib2.Localizable;
 import net.imglib2.Point;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.Sampler;
 import net.imglib2.View;
 import net.imglib2.util.IntervalIndexer;
 import net.imglib2.view.Views;
@@ -179,12 +178,7 @@ public class ShuffledView<T> extends AbstractInterval implements
 		}
 
 		@Override
-		public Sampler<T> copy() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public RandomAccess<T> copyRandomAccess() {
+		public RandomAccess<T> copy() {
 			throw new UnsupportedOperationException();
 		}
 	}

@@ -36,6 +36,7 @@ import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
+import net.imglib2.img.basictypeaccess.array.ArrayDataAccess;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelingMapping;
 import net.imglib2.type.NativeType;
@@ -77,8 +78,9 @@ public class CopyNamespace extends AbstractNamespace {
 	// FIXME: do we really have to expose CopyArrayImg here? Shouldn't we rather
 	// just expose CopyImg?
 	@OpMethod(op = net.imagej.ops.copy.CopyArrayImg.class)
-	public <T extends NativeType<T>, A> ArrayImg<T, A> img(
-			final ArrayImg<T, A> in) {
+	public <T extends NativeType<T>, A extends ArrayDataAccess<A>> ArrayImg<T, A>
+		img(final ArrayImg<T, A> in)
+	{
 		@SuppressWarnings("unchecked")
 		final ArrayImg<T, A> result = (ArrayImg<T, A>) ops().run(
 				net.imagej.ops.copy.CopyArrayImg.class, in);
@@ -86,8 +88,9 @@ public class CopyNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.copy.CopyArrayImg.class)
-	public <T extends NativeType<T>, A> ArrayImg<T, A> img(
-			final ArrayImg<T, A> out, final ArrayImg<T, A> in) {
+	public <T extends NativeType<T>, A extends ArrayDataAccess<A>> ArrayImg<T, A>
+		img(final ArrayImg<T, A> out, final ArrayImg<T, A> in)
+	{
 		@SuppressWarnings("unchecked")
 		final ArrayImg<T, A> result = (ArrayImg<T, A>) ops().run(
 				net.imagej.ops.copy.CopyArrayImg.class, out, in);
