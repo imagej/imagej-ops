@@ -31,6 +31,7 @@ package net.imagej.ops.copy;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.special.hybrid.Hybrids;
@@ -43,6 +44,8 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.img.planar.PlanarImgFactory;
+import net.imglib2.type.logic.BitType;
+import net.imglib2.type.logic.NativeBoolType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
@@ -55,6 +58,7 @@ import org.scijava.util.MersenneTwisterFast;
  * Test {@link CopyRAI}.
  *
  * @author Tim-Oliver Buchholz (University of Konstanz)
+ * @author Gabriel Selzer
  */
 public class CopyRAITest extends AbstractOpTest {
 
@@ -168,6 +172,25 @@ public class CopyRAITest extends AbstractOpTest {
 
 		copy.compute(viewPlanar, outFromPlanar);
 		assertEquals(ops.stats().mean(outFromPlanar).getRealDouble(), 100.0, delta);
+
+	}
+
+	@Test
+	public void copyBooleanTypesTest() {
+
+		final Img<NativeBoolType> in = ops.create().img(new FinalDimensions(size2),
+			new NativeBoolType());
+		Cursor<NativeBoolType> cursor = in.cursor();
+		while (cursor.hasNext()) {
+			cursor.next().set(true);
+		}
+
+		final Img<BitType> out = ops.create().img(new FinalDimensions(size2),
+			new BitType());
+
+		ops.run("copy.rai", out, in);
+
+		assertTrue(out.firstElement().get());
 
 	}
 }
