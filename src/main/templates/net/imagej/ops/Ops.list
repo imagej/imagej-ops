@@ -455,6 +455,7 @@ namespaces = ```
 		[name: "translateView",                  iface: "TranslateView"],
 		[name: "unshearView",                    iface: "UnshearView"],
 		[name: "zeroMinView",                    iface: "ZeroMinView"],
+		[name: "realTransform",                  iface: "RealTransform"],
 	]],
 	[name: "zernike", iface: "Zernike", ops: [
 		[name: "magnitude",                      iface: "Magnitude"],
