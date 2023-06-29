@@ -311,30 +311,35 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	}
 
 	protected static <T extends RealType<T>> LabelRegion<String> createLabelRegion(
-		final RandomAccessibleInterval<T> interval, final float min, final float max, long... dims)
-	{
-		if (dims == null || dims.length == 0) {
-			dims = new long[interval.numDimensions()];
-			interval.dimensions(dims);
-		}
-		final ImgLabeling<String, IntType> labeling = 
-			new ImgLabeling<>(ArrayImgs.ints(dims));
-
-		final RandomAccess<LabelingType<String>> ra = labeling.randomAccess();
-		final RandomAccessibleIntervalCursor<T> c = new RandomAccessibleIntervalCursor<>(interval);		
-		final long[] pos = new long[labeling.numDimensions()];
-		while (c.hasNext()) {
-			final T item = c.next();
-			final float value = item.getRealFloat();
-			if (value >= min && value <= max) {
-				c.localize(pos);
-				ra.setPosition(pos);
-				ra.get().add("1");
-			}
-		}
-		final LabelRegions<String> labelRegions = new LabelRegions<>(labeling);
+			final RandomAccessibleInterval<T> interval, final float min, final float max, long... dims) {
+		final LabelRegions<String> labelRegions = createLabelRegions(interval, min, max, dims);
 
 		return labelRegions.getLabelRegion("1");
 
 	}
+	
+	protected static <T extends RealType<T>> LabelRegions<String> createLabelRegions(
+			final RandomAccessibleInterval<T> interval, final float min, final float max, long... dims)
+		{
+			if (dims == null || dims.length == 0) {
+				dims = new long[interval.numDimensions()];
+				interval.dimensions(dims);
+			}
+			final ImgLabeling<String, IntType> labeling = 
+				new ImgLabeling<>(ArrayImgs.ints(dims));
+
+			final RandomAccess<LabelingType<String>> ra = labeling.randomAccess();
+			final RandomAccessibleIntervalCursor<T> c = new RandomAccessibleIntervalCursor<>(interval);		
+			final long[] pos = new long[labeling.numDimensions()];
+			while (c.hasNext()) {
+				final T item = c.next();
+				final float value = item.getRealFloat();
+				if (value >= min && value <= max) {
+					c.localize(pos);
+					ra.setPosition(pos);
+					ra.get().add("1");
+				}
+			}
+			return new LabelRegions<>(labeling);
+		}
 }
