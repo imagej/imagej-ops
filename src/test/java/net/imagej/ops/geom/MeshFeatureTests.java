@@ -33,6 +33,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
 
+import ij.IJ;
 import net.imagej.mesh.Mesh;
 import net.imagej.mesh.Triangle;
 import net.imagej.ops.Ops;
@@ -44,6 +45,7 @@ import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgs;
+import net.imglib2.img.display.imagej.ImageJFunctions;
 import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -243,21 +245,28 @@ public class MeshFeatureTests extends AbstractFeatureTest {
 	@Test
 	public void voxelization3D() {
 		// https://github.com/imagej/imagej-ops/issues/422
-		RandomAccessibleInterval<BitType> sphere = generateSphere(20);
+		RandomAccessibleInterval<BitType> sphere = generateSphere(50);
 		final Mesh result = (Mesh) ops.run(DefaultMarchingCubes.class, sphere);
 
 		// The mesh is good by now, let's check the voxelization
-		RandomAccessibleInterval<BitType> voxelization = (RandomAccessibleInterval<BitType>) ops.run(DefaultVoxelization3D.class, result);
+		RandomAccessibleInterval<BitType> voxelization = (RandomAccessibleInterval<BitType>) ops.run(DefaultVoxelization3D.class, result, sphere.dimension(0), sphere.dimension(1), sphere.dimension(2));
 
 		// Flood fill (ops implementation starts from borders)
 		RandomAccessibleInterval<BitType> filledVoxelization = (RandomAccessibleInterval<BitType>) ops.run(DefaultFillHoles.class, voxelization);
 
-		// Compare inverted image
 		// Comparison
 		long diff = compareImages(sphere, filledVoxelization);
-		long total = ROI.size();
+		long total = 0;
 
-		assertTrue("Voxelization does not match the original image closely enough.", diff / (double) total < 0.15);
+		Cursor<BitType> cursor = Views.iterable(sphere).cursor();
+		while (cursor.hasNext()) {
+			cursor.fwd();
+			if (cursor.get().get()) {
+				total++;
+			}
+		}
+		
+		assertTrue("Voxelization does not match the original image closely enough.", diff / (double) total < 0.085);
 
 	}
 }
