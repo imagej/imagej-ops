@@ -33,28 +33,24 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
 
+import ij.IJ;
 import net.imagej.mesh.Mesh;
 import net.imagej.mesh.Triangle;
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.AbstractFeatureTest;
-import net.imagej.ops.geom.geom3d.DefaultBoxivityMesh;
-import net.imagej.ops.geom.geom3d.DefaultCompactness;
-import net.imagej.ops.geom.geom3d.DefaultConvexityMesh;
-import net.imagej.ops.geom.geom3d.DefaultMainElongation;
-import net.imagej.ops.geom.geom3d.DefaultMarchingCubes;
-import net.imagej.ops.geom.geom3d.DefaultMedianElongation;
-import net.imagej.ops.geom.geom3d.DefaultSolidityMesh;
-import net.imagej.ops.geom.geom3d.DefaultSparenessMesh;
-import net.imagej.ops.geom.geom3d.DefaultSphericity;
-import net.imagej.ops.geom.geom3d.DefaultSurfaceArea;
-import net.imagej.ops.geom.geom3d.DefaultSurfaceAreaConvexHullMesh;
-import net.imagej.ops.geom.geom3d.DefaultVerticesCountConvexHullMesh;
-import net.imagej.ops.geom.geom3d.DefaultVerticesCountMesh;
-import net.imagej.ops.geom.geom3d.DefaultVolumeConvexHullMesh;
-import net.imagej.ops.geom.geom3d.DefaultVolumeMesh;
+import net.imagej.ops.geom.geom3d.*;
+import net.imagej.ops.morphology.fillHoles.DefaultFillHoles;
+import net.imagej.ops.morphology.floodFill.DefaultFloodFill;
+import net.imglib2.Cursor;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImgs;
+import net.imglib2.img.display.imagej.ImageJFunctions;
 import net.imglib2.roi.labeling.LabelRegion;
+import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import net.imglib2.view.Views;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -199,8 +195,78 @@ public class MeshFeatureTests extends AbstractFeatureTest {
 
 	}
 
+	/**
+	 * Creates a 3D binary image of a sphere.
+	 *
+	 * @param r The radius of the sphere.
+	 * @return A RandomAccessibleInterval representing the sphere.
+	 */
+	public RandomAccessibleInterval<BitType> generateSphere(int r) {
+		long[] dims = new long[] {2*r, 2*r, 2*r}; // Dimensions of the bounding box of the sphere
+		Img<BitType> sphereImg = ArrayImgs.bits(dims);
+
+		Cursor<BitType> cursor = sphereImg.localizingCursor();
+
+		// Center of the sphere
+		int cx = r;
+		int cy = r;
+		int cz = r;
+
+		while (cursor.hasNext()) {
+			cursor.fwd();
+			int x = cursor.getIntPosition(0) - cx;
+			int y = cursor.getIntPosition(1) - cy;
+			int z = cursor.getIntPosition(2) - cz;
+
+			if (x * x + y * y + z * z <= r * r) {
+				cursor.get().set(true);
+			}
+		}
+
+		return sphereImg;
+	}
+
+	public long compareImages(RandomAccessibleInterval<BitType> img1, RandomAccessibleInterval<BitType> img2) {
+		long diff = 0;
+		Cursor<BitType> cursor1 = Views.iterable(img1).cursor();
+		Cursor<BitType> cursor2 = Views.iterable(img2).cursor();
+
+		while (cursor1.hasNext() && cursor2.hasNext()) {
+			cursor1.fwd();
+			cursor2.fwd();
+
+			if (!cursor1.get().valueEquals(cursor2.get())) {
+				diff++;
+			}
+		}
+		return diff;
+	}
+
 	@Test
 	public void voxelization3D() {
 		// https://github.com/imagej/imagej-ops/issues/422
+		RandomAccessibleInterval<BitType> sphere = generateSphere(50);
+		final Mesh result = (Mesh) ops.run(DefaultMarchingCubes.class, sphere);
+
+		// The mesh is good by now, let's check the voxelization
+		RandomAccessibleInterval<BitType> voxelization = (RandomAccessibleInterval<BitType>) ops.run(DefaultVoxelization3D.class, result, sphere.dimension(0), sphere.dimension(1), sphere.dimension(2));
+
+		// Flood fill (ops implementation starts from borders)
+		RandomAccessibleInterval<BitType> filledVoxelization = (RandomAccessibleInterval<BitType>) ops.run(DefaultFillHoles.class, voxelization);
+
+		// Comparison
+		long diff = compareImages(sphere, filledVoxelization);
+		long total = 0;
+
+		Cursor<BitType> cursor = Views.iterable(sphere).cursor();
+		while (cursor.hasNext()) {
+			cursor.fwd();
+			if (cursor.get().get()) {
+				total++;
+			}
+		}
+		
+		assertTrue("Voxelization does not match the original image closely enough.", diff / (double) total < 0.085);
+
 	}
 }

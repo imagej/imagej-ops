@@ -75,81 +75,91 @@ public class DefaultVoxelization3D extends AbstractUnaryFunctionOp<Mesh, RandomA
 	@Parameter
 	private OpService ops;
 
+	// Constants
+	private static final double EPSILON = 1e-6;
+
 	@Override
 	public RandomAccessibleInterval<BitType> calculate(Mesh input) {
-
 		Img<BitType> outImg = ops.create().img(new FinalInterval(width, height, depth), new BitType());
 
 		Vertices verts = input.vertices();
+		RealPoint minPoint = new RealPoint(3);
+		RealPoint maxPoint = new RealPoint(3);
 
-		RealPoint minPoint = new RealPoint(verts.iterator().next());
-		RealPoint maxPoint = new RealPoint(verts.iterator().next());
+		// Initialize minPoint and maxPoint with the first vertex
+		minPoint.setPosition(verts.iterator().next());
+		maxPoint.setPosition(verts.iterator().next());
 
+		// Calculate min and max with padding
+		double[] padding = {0.5, 0.5, 0.5};
 		for (RealLocalizable v : verts) {
-			if (v.getDoublePosition(0) < minPoint.getDoublePosition(0))
-				minPoint.setPosition(v.getDoublePosition(0), 0);
-			if (v.getDoublePosition(1) < minPoint.getDoublePosition(1))
-				minPoint.setPosition(v.getDoublePosition(1), 1);
-			if (v.getDoublePosition(2) < minPoint.getDoublePosition(2))
-				minPoint.setPosition(v.getDoublePosition(2), 2);
-
-			if (v.getDoublePosition(0) > maxPoint.getDoublePosition(0))
-				maxPoint.setPosition(v.getDoublePosition(0), 0);
-			if (v.getDoublePosition(1) > maxPoint.getDoublePosition(1))
-				maxPoint.setPosition(v.getDoublePosition(1), 1);
-			if (v.getDoublePosition(2) > maxPoint.getDoublePosition(2))
-				maxPoint.setPosition(v.getDoublePosition(2), 2);
+			for (int d = 0; d < 3; d++) {
+				if (v.getDoublePosition(d) < minPoint.getDoublePosition(d)) {
+					minPoint.setPosition(v.getDoublePosition(d) - padding[d], d);
+				}
+				if (v.getDoublePosition(d) > maxPoint.getDoublePosition(d)) {
+					maxPoint.setPosition(v.getDoublePosition(d) + padding[d], d);
+				}
+			}
 		}
 
-		RealPoint dimPoint = new RealPoint((maxPoint.getDoublePosition(0) - minPoint.getDoublePosition(0)),
-				(maxPoint.getDoublePosition(1) - minPoint.getDoublePosition(1)),
-				(maxPoint.getDoublePosition(2) - minPoint.getDoublePosition(2)));
-
+		// Calculate dimPoint and step sizes
+		double[] dimPoint = new double[3];
 		double[] stepSizes = new double[3];
-		stepSizes[0] = dimPoint.getDoublePosition(0) / width;
-		stepSizes[1] = dimPoint.getDoublePosition(1) / height;
-		stepSizes[2] = dimPoint.getDoublePosition(2) / depth;
-
 		double[] voxelHalfsize = new double[3];
-		for (int k = 0; k < stepSizes.length; k++)
-			voxelHalfsize[k] = stepSizes[k] / 2.0;
+		for (int d = 0; d < 3; d++) {
+			dimPoint[d] = maxPoint.getDoublePosition(d) - minPoint.getDoublePosition(d);
+			stepSizes[d] = dimPoint[d] / new int[]{width, height, depth}[d];
+			voxelHalfsize[d] = stepSizes[d] / 2.0;
+		}
 
 		for (final Triangle tri : input.triangles()) {
-			final Vector3D v1 = new Vector3D(tri.v0x(), tri.v0y(), tri.v0z());
-			final Vector3D v2 = new Vector3D(tri.v1x(), tri.v1y(), tri.v1z());
-			final Vector3D v3 = new Vector3D(tri.v2x(), tri.v2y(), tri.v2z());
+			Vector3D v1 = new Vector3D(tri.v0x(), tri.v0y(), tri.v0z());
+			Vector3D v2 = new Vector3D(tri.v1x(), tri.v1y(), tri.v1z());
+			Vector3D v3 = new Vector3D(tri.v2x(), tri.v2y(), tri.v2z());
 
-			double[] minSubBoundary = new double[] {
-					Math.min(Math.min(v1.getX(), v2.getX()), v3.getX()) - minPoint.getDoublePosition(0),
-					Math.min(Math.min(v1.getY(), v2.getY()), v3.getY()) - minPoint.getDoublePosition(1),
-					Math.min(Math.min(v1.getZ(), v2.getZ()), v3.getZ()) - minPoint.getDoublePosition(2) };
-			double[] maxSubBoundary = new double[] {
-					Math.max(Math.max(v1.getX(), v2.getX()), v3.getX()) - minPoint.getDoublePosition(0),
-					Math.max(Math.max(v1.getY(), v2.getY()), v3.getY()) - minPoint.getDoublePosition(1),
-					Math.max(Math.max(v1.getZ(), v2.getZ()), v3.getZ()) - minPoint.getDoublePosition(2) };
+			double[] minSubBoundary = {
+					Math.min(v1.getX(), Math.min(v2.getX(), v3.getX())) - minPoint.getDoublePosition(0),
+					Math.min(v1.getY(), Math.min(v2.getY(), v3.getY())) - minPoint.getDoublePosition(1),
+					Math.min(v1.getZ(), Math.min(v2.getZ(), v3.getZ())) - minPoint.getDoublePosition(2)
+			};
 
-			RandomAccess<BitType> ra = outImg.randomAccess();// Should use the
-																// interval
-																// implementation
-																// for speed
+			double[] maxSubBoundary = {
+					Math.max(v1.getX(), Math.max(v2.getX(), v3.getX())) - minPoint.getDoublePosition(0),
+					Math.max(v1.getY(), Math.max(v2.getY(), v3.getY())) - minPoint.getDoublePosition(1),
+					Math.max(v1.getZ(), Math.max(v2.getZ(), v3.getZ())) - minPoint.getDoublePosition(2)
+			};
 
-			long[] indices = new long[3];
-			for (indices[0] = (long) Math.floor(minSubBoundary[0] / stepSizes[0]); indices[0] < Math
-					.floor(maxSubBoundary[0] / stepSizes[0]); indices[0]++) {
-				for (indices[1] = (long) Math.floor(minSubBoundary[1] / stepSizes[1]); indices[1] < Math
-						.floor(maxSubBoundary[1] / stepSizes[1]); indices[1]++) {
-					for (indices[2] = (long) Math.floor(minSubBoundary[2] / stepSizes[2]); indices[2] < Math
-							.floor(maxSubBoundary[2] / stepSizes[2]); indices[2]++) {
-						ra.setPosition(indices);
-						if (!ra.get().get())// Don't check if voxel is already
-											// filled
-						{
-							double[] voxelCenter = new double[3];
+			int[][] indicesRange = new int[3][2];
+			for (int d = 0; d < 3; d++) {
+				indicesRange[d][0] = (int) Math.max(0, Math.floor(minSubBoundary[d] / stepSizes[d]));
+				indicesRange[d][1] = (int) Math.min(new int[]{width, height, depth}[d], Math.ceil(maxSubBoundary[d] / stepSizes[d]) + 1);
+			}
 
-							for (int k = 0; k < 3; k++)
-								voxelCenter[k] = indices[k] * stepSizes[k] + voxelHalfsize[k];
+			double[][] corners = {
+					{-0.5, -0.5, -0.5}, {0.5, -0.5, -0.5}, {-0.5, 0.5, -0.5}, {0.5, 0.5, -0.5},
+					{-0.5, -0.5, 0.5}, {0.5, -0.5, 0.5}, {-0.5, 0.5, 0.5}, {0.5, 0.5, 0.5}
+			};
 
-							if (triBoxOverlap(voxelCenter, voxelHalfsize, v1, v2, v3) == 1) {
+			RandomAccess<BitType> ra = outImg.randomAccess();
+			for (int i = indicesRange[0][0]; i < indicesRange[0][1]; i++) {
+				for (int j = indicesRange[1][0]; j < indicesRange[1][1]; j++) {
+					for (int k = indicesRange[2][0]; k < indicesRange[2][1]; k++) {
+						ra.setPosition(new int[]{i, j, k});
+						if (!ra.get().get()) {
+							boolean intersected = false;
+							double[] voxelCenter = {i * stepSizes[0], j * stepSizes[1], k * stepSizes[2]};
+							for (double[] corner : corners) {
+								double[] shiftedCenter = new double[3];
+								for (int d = 0; d < 3; d++) {
+									shiftedCenter[d] = voxelCenter[d] + corner[d] * voxelHalfsize[d];
+								}
+								if (triBoxOverlap(shiftedCenter, voxelHalfsize, v1, v2, v3) == 1) {
+									intersected = true;
+									break;
+								}
+							}
+							if (intersected) {
 								ra.get().set(true);
 							}
 						}
@@ -157,7 +167,6 @@ public class DefaultVoxelization3D extends AbstractUnaryFunctionOp<Mesh, RandomA
 				}
 			}
 		}
-
 		return outImg;
 	}
 
