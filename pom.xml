@@ -256,6 +256,13 @@
 		<!-- NB: Deploy releases to the SciJava Maven repository. -->
 		<releaseProfiles>sign,deploy-to-scijava</releaseProfiles>
 
+		<imglib2.version>7.0.3</imglib2.version>
+		<imglib2-realtransform.version>4.0.3</imglib2-realtransform.version>
+		<imglib2-roi.version>0.15.0</imglib2-roi.version>
+		<imglib2-algorithm.version>0.15.3</imglib2-algorithm.version>
+		<imagej-common.version>2.1.1-SNAPSHOT</imagej-common.version>
+		<enforcer.skip>true</enforcer.skip>
+
 		<scijava-common.version>2.98.0</scijava-common.version>
 	</properties>
 

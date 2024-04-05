@@ -66,7 +66,7 @@ public class DefaultInertiaTensor3D<B extends BooleanType<B>> extends
 	@Override
 	public RealMatrix calculate(final IterableRegion<B> input) {
 		final BlockRealMatrix output = new BlockRealMatrix(3, 3);
-		Cursor<Void> c = input.localizingCursor();
+		Cursor<Void> c = input.inside().localizingCursor();
 		double[] pos = new double[3];
 		double[] computedCentroid = new double[3];
 		centroid.calculate(input).localize(computedCentroid);
@@ -87,7 +87,7 @@ public class DefaultInertiaTensor3D<B extends BooleanType<B>> extends
 			output.setEntry(2, 1, output.getEntry(1, 2));
 		}
 
-		final double size = input.size();
+		final double size = input.inside().size();
 		output.setEntry(0, 0, output.getEntry(0, 0) / size);
 		output.setEntry(0, 1, output.getEntry(0, 1) / size);
 		output.setEntry(0, 2, output.getEntry(0, 2) / size);
