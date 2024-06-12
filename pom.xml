@@ -353,6 +353,11 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>imagej-ui-swing</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<!-- Do not remove - Maven incorrectly identifies it as an unused dependency!  -->
 			<groupId>org.scijava</groupId>
 			<artifactId>scripting-jython</artifactId>
