@@ -33,6 +33,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import net.imagej.axis.CalibratedAxis;
+import net.imagej.axis.DefaultLinearAxis;
 import net.imagej.mesh.Mesh;
 import net.imagej.mesh.Triangle;
 import net.imagej.ops.Ops;
@@ -52,12 +57,20 @@ import net.imagej.ops.geom.geom3d.DefaultVerticesCountConvexHullMesh;
 import net.imagej.ops.geom.geom3d.DefaultVerticesCountMesh;
 import net.imagej.ops.geom.geom3d.DefaultVolumeConvexHullMesh;
 import net.imagej.ops.geom.geom3d.DefaultVolumeMesh;
+import net.imagej.ops.geom.geom3d.mesh.DefaultVertexInterpolator;
 import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+/**
+ * Tests for mesh related ops
+ *
+ * @author Tim-Oliver Buchholz (University of Konstanz)
+ * @author Richard Domander
+ */
 public class MeshFeatureTests extends AbstractFeatureTest {
 	private static final double EPSILON = 10e-12;
 	private static LabelRegion<String> ROI;
@@ -67,6 +80,12 @@ public class MeshFeatureTests extends AbstractFeatureTest {
 	public static void setupBefore() {
 		ROI = createLabelRegion(getTestImage3D(), 1, 255);
 		mesh = getMesh();
+	}
+
+	@AfterClass
+	public static void oneTimeTearDown() {
+		mesh = null;
+		ROI = null;
 	}
 
 	@Test
@@ -85,12 +104,11 @@ public class MeshFeatureTests extends AbstractFeatureTest {
 				((DoubleType) ops.run(DefaultCompactness.class, mesh)).get(), EPSILON);
 	}
 
+	/**
+	 * ConvexHull3D is tested in {@link QuickHull3DTest}.
+	 */
 	@Test
-	public void convexHull3D() {
-		/**
-		 * convexHull3D is tested in {@link QuickHull3DTest}.
-		 */
-	}
+	public void convexHull3D() {}
 
 	@Test
 	public void convexityMesh() {
@@ -126,6 +144,36 @@ public class MeshFeatureTests extends AbstractFeatureTest {
 			assertEquals(expected.v2z(), actual.v2z(), EPSILON);
 		}
 		assertTrue(!expectedFacets.hasNext() && !actualFacets.hasNext());
+	}
+
+	@Test
+	public void marchingCubesCalibratedMesh() {
+		final double sx = 1.0;
+		final double sy = 0.5;
+		final double sz = 0.25;
+		final List<CalibratedAxis> axes = Stream
+				.of(new DefaultLinearAxis(sx), new DefaultLinearAxis(sy),
+						new DefaultLinearAxis(sz)).collect(Collectors.toList());
+		final Iterator<Triangle> meshFacets = mesh.triangles().iterator();
+
+		final Mesh result = ops.geom()
+				.marchingCubes(ROI, 1, new DefaultVertexInterpolator(), axes);
+
+		assertEquals(mesh.triangles().size(), result.triangles().size());
+		final Iterator<Triangle> actualFacets = result.triangles().iterator();
+		while (meshFacets.hasNext() && actualFacets.hasNext()) {
+			final Triangle mesh = meshFacets.next();
+			final Triangle actual = actualFacets.next();
+			assertEquals(mesh.v0x() * sx, actual.v0x(), EPSILON);
+			assertEquals(mesh.v0y() * sy, actual.v0y(), EPSILON);
+			assertEquals(mesh.v0z() * sz, actual.v0z(), EPSILON);
+			assertEquals(mesh.v1x() * sx, actual.v1x(), EPSILON);
+			assertEquals(mesh.v1y() * sy, actual.v1y(), EPSILON);
+			assertEquals(mesh.v1z() * sz, actual.v1z(), EPSILON);
+			assertEquals(mesh.v2x() * sx, actual.v2x(), EPSILON);
+			assertEquals(mesh.v2y() * sy, actual.v2y(), EPSILON);
+			assertEquals(mesh.v2z() * sz, actual.v2z(), EPSILON);
+		}
 	}
 
 	@Test
