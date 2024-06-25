@@ -70,9 +70,6 @@ public class CentroidMesh extends AbstractUnaryFunctionOp<Mesh, RealLocalizable>
 			final long v0 = input.triangles().vertex0(i);
 			final long v1 = input.triangles().vertex1(i);
 			final long v2 = input.triangles().vertex2(i);
-			final double nx = input.triangles().nx(i);
-			final double ny = input.triangles().ny(i);
-			final double nz = input.triangles().nz(i);
 			final double v0x = input.vertices().x(v0);
 			final double v0y = input.vertices().y(v0);
 			final double v0z = input.vertices().z(v0);
@@ -82,6 +79,18 @@ public class CentroidMesh extends AbstractUnaryFunctionOp<Mesh, RealLocalizable>
 			final double v2x = input.vertices().x(v2);
 			final double v2y = input.vertices().y(v2);
 			final double v2z = input.vertices().z(v2);
+
+			// Recompute (non-normalized) normals
+			final double ux = v1x - v0x;
+			final double uy = v1y - v0y;
+			final double uz = v1z - v0z;
+			final double vx = v2x - v0x;
+			final double vy = v2y - v0y;
+			final double vz = v2z - v0z;
+			final double nx = (uy * vz - uz * vy);
+			final double ny = -(ux * vz - uz * vx);
+			final double nz = (ux * vy - uy * vx);
+
 			c_x += (1 / 24d) * nx * (Math.pow((v0x + v1x), 2)
 					+ Math.pow((v1x + v2x), 2)
 					+ Math.pow((v2x + v0x), 2));
@@ -98,6 +107,6 @@ public class CentroidMesh extends AbstractUnaryFunctionOp<Mesh, RealLocalizable>
 		c_y *= d;
 		c_z *= d;
 
-		return new RealPoint(-c_x, -c_y, -c_z);
+		return new RealPoint(c_x, c_y, c_z);
 	}
 }
