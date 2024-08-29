@@ -134,6 +134,12 @@ public class ShuffledView<T> extends AbstractInterval implements
 		return randomAccess(); // FIXME
 	}
 
+	@Override
+	public T getType()
+	{
+		return image.getType();
+	}
+
 	private class ShuffledRandomAccess extends Point implements RandomAccess<T> {
 		private final RandomAccess<T> imageRA;
 		private final long[] blockPos;
