@@ -50,6 +50,7 @@ import net.imglib2.RealRandomAccessible;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.interpolation.InterpolatorFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.realtransform.InvertibleRealTransform;
 import net.imglib2.transform.integer.shear.InverseShearTransform;
 import net.imglib2.transform.integer.shear.ShearTransform;
 import net.imglib2.type.Type;
@@ -173,7 +174,8 @@ public class TransformNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.transform.collapseNumericView.DefaultCollapseNumeric2CompositeView.class)
 	public <N extends NumericType<N>> CompositeView<N, NumericComposite<N>>
-		collapseNumericView(final RandomAccessible<N> input, final int numChannels)
+		collapseNumericView(final RandomAccessible<N> input,
+			final int numChannels)
 	{
 		return (CompositeView<N, NumericComposite<N>>) ops().run(
 			Ops.Transform.CollapseNumericView.class, input, numChannels);
@@ -335,7 +337,8 @@ public class TransformNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.transform.extendMirrorDoubleView.DefaultExtendMirrorDoubleView.class)
 	public <T, F extends RandomAccessibleInterval<T>>
-		ExtendedRandomAccessibleInterval<T, F> extendMirrorDoubleView(final F input)
+		ExtendedRandomAccessibleInterval<T, F> extendMirrorDoubleView(
+			final F input)
 	{
 		return (ExtendedRandomAccessibleInterval<T, F>) ops().run(
 			Ops.Transform.ExtendMirrorDoubleView.class, input);
@@ -354,7 +357,8 @@ public class TransformNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.transform.extendMirrorSingleView.DefaultExtendMirrorSingleView.class)
 	public <T extends Type<T>, F extends RandomAccessibleInterval<T>>
-		ExtendedRandomAccessibleInterval<T, F> extendMirrorSingleView(final F input)
+		ExtendedRandomAccessibleInterval<T, F> extendMirrorSingleView(
+			final F input)
 	{
 		return (ExtendedRandomAccessibleInterval<T, F>) ops().run(
 			Ops.Transform.ExtendMirrorSingleView.class, input);
@@ -1202,5 +1206,47 @@ public class TransformNamespace extends AbstractNamespace {
 		return (RandomAccessibleInterval<T>) ops().run(
 			ConcatenateViewWithAccessMode.class, source, concatenationAxis, mode);
 	}
+
+	@OpMethod(
+		op = net.imagej.ops.transform.realTransform.DefaultTransformView.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> realTransform(
+		final RandomAccessibleInterval<T> in,
+		final InvertibleRealTransform transform)
+	{
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				Ops.Transform.RealTransform.class, in,
+				transform);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.transform.realTransform.DefaultTransformView.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> realTransform(
+		final RandomAccessibleInterval<T> in,
+		final InvertibleRealTransform transform, final Interval outputInterval)
+	{
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				Ops.Transform.RealTransform.class, in,
+				transform, outputInterval);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.transform.realTransform.DefaultTransformView.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> realTransform(
+		final RandomAccessibleInterval<T> in,
+		final InvertibleRealTransform transform, final Interval outputInterval,
+		final InterpolatorFactory<T, RandomAccessible<T>> interpolator)
+	{
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				Ops.Transform.RealTransform.class, in,
+				transform, outputInterval, interpolator);
+		return result;
+	}
+
+	
 
 }
