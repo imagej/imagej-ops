@@ -347,6 +347,9 @@ namespaces = ```
 	[name: "segment", iface: "Segment", ops: [
 		[name: "detectRidges",                 iface: "DetectRidges"],
 		[name: "detectJunctions",              iface: "DetectJunctions"],
+		[name: "detectHoughCircleDoG",           iface: "DetectHoughCircleDoG"],
+		[name: "detectHoughCircleLE",            iface: "DetectHoughCircleLE"],
+		[name: "transformHoughCircle",           iface: "TransformHoughCircle"],
 	]],
 	[name: "stats", iface: "Stats", ops: [
 		[name: "geometricMean",                  iface: "GeometricMean"],
