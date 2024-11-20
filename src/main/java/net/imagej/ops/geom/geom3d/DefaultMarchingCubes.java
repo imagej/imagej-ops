@@ -29,7 +29,11 @@
 
 package net.imagej.ops.geom.geom3d;
 
+import java.util.List;
+
+import net.imagej.axis.CalibratedAxis;
 import net.imagej.mesh.Mesh;
+import net.imagej.mesh.Triangles;
 import net.imagej.mesh.naive.NaiveDoubleMesh;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
@@ -55,6 +59,7 @@ import org.scijava.plugin.Plugin;
  * lookup tables are from his implementation.
  * 
  * @author Tim-Oliver Buchholz (University of Konstanz)
+ * @author Richard Domander
  * @param <T> BooleanType
  */
 @Plugin(type = Ops.Geometric.MarchingCubes.class)
@@ -69,6 +74,10 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 	@Parameter(type = ItemIO.INPUT, required = false)
 	private VertexInterpolator interpolatorClass =
 		new DefaultVertexInterpolator();
+
+	/** If not null, output mesh coordinates are calibrated */
+	@Parameter(type = ItemIO.INPUT, required = false)
+	private List<CalibratedAxis> axes;
 
 	@SuppressWarnings({ "unchecked" })
 	@Override
@@ -181,12 +190,33 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 					final double v2y = vertlist[TRIANGLE_TABLE[cubeindex][i]][1];
 					final double v2z = vertlist[TRIANGLE_TABLE[cubeindex][i]][2];
 					if (positiveArea(v0x, v0y, v0z, v1x, v1y, v1z, v2x, v2y, v2z)) {
-						output.triangles().add(v0x, v0y, v0z, v1x, v1y, v1z, v2x, v2y, v2z);
+						if (axes != null) {
+							addCalibrated(output.triangles(), v0x, v0y, v0z,
+									v1x, v1y, v1z, v2x, v2y, v2z);
+						} else {
+							output.triangles()
+									.add(v0x, v0y, v0z, v1x, v1y, v1z, v2x, v2y,
+											v2z);
+						}
 					}
 				}
 			}
 		}
 		return output;
+	}
+
+	private void addCalibrated(final Triangles triangles, final double v0x,
+			final double v0y, final double v0z, final double v1x,
+			final double v1y, final double v1z, final double v2x,
+			final double v2y, final double v2z) {
+		final CalibratedAxis xAxis = axes.get(0);
+		final CalibratedAxis yAxis = axes.get(1);
+		final CalibratedAxis zAxis = axes.get(2);
+		triangles.add(xAxis.calibratedValue(v0x), yAxis.calibratedValue(v0y),
+				zAxis.calibratedValue(v0z), xAxis.calibratedValue(v1x),
+				yAxis.calibratedValue(v1y), zAxis.calibratedValue(v1z),
+				xAxis.calibratedValue(v2x), yAxis.calibratedValue(v2y),
+				zAxis.calibratedValue(v2z));
 	}
 
 	private boolean positiveArea(double v0x, double v0y, double v0z, //
