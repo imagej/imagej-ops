@@ -31,6 +31,7 @@ package net.imagej.ops.geom;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 import net.imagej.mesh.Mesh;
@@ -38,11 +39,14 @@ import net.imagej.mesh.Triangle;
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.AbstractFeatureTest;
 import net.imagej.ops.geom.geom3d.*;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.neighborhood.DiamondShape;
+import net.imglib2.Cursor;
+import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.roi.Regions;
+import net.imglib2.roi.boundary.Boundary;
 import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.type.logic.BitType;
+import net.imglib2.type.logic.BoolType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.BeforeClass;
@@ -190,14 +194,26 @@ public class MeshFeatureTests extends AbstractFeatureTest {
 	}
 
 	@Test
-	public void voxelization3D() {
-		/*Value of 184 here corresponds with:
-		RandomAccessibleInterval<BitType> result = (RandomAccessibleInterval<BitType>) ops.run(DefaultVoxelization3D.class, mesh, ROI);
-		ops.morphology().fillHoles(result, result, new DiamondShape(1));
-		assertEquals(Ops.Geometric.Voxelization.NAME, ROI.size(), Regions.countTrue(result));
-		 */
-		assertEquals(Ops.Geometric.Voxelization.NAME, 184,
-		Regions.countTrue((RandomAccessibleInterval<BitType>) ops.run(DefaultVoxelization3D.class, mesh, ROI)));
+	public void voxelize3D(){
+		final Img<BitType> out = new ArrayImgFactory<>(new BitType()).create(getTestImage3D());
+		ops.run(DefaultVoxelize3D.class,out, mesh, 1.0);
+		final Boundary<BoolType> compareTo = new Boundary(ops.convert().bit(getTestImage3D()), Boundary.StructuringElement.FOUR_CONNECTED);
+		boolean matches = true;
+		Cursor<BitType> voxelizedPositive = Regions.iterable(out).localizingCursor();
+		Cursor<BoolType> boundaryPositive = compareTo.localizingCursor();
+		while(voxelizedPositive.hasNext() && boundaryPositive.hasNext() && matches){
+			voxelizedPositive.fwd();
+			boundaryPositive.fwd();
+			if(!Arrays.equals(voxelizedPositive.positionAsLongArray(),boundaryPositive.positionAsLongArray()))
+				matches = false;
+		}
+		if(voxelizedPositive.hasNext() || boundaryPositive.hasNext())
+			matches = false;
+		assertTrue(matches);
+	}
 
+	@Test
+	public void voxelization3D() {
+		// https://github.com/imagej/imagej-ops/issues/422
 	}
 }
