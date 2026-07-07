@@ -194,9 +194,16 @@ public class MeshFeatureTests extends AbstractFeatureTest {
 	}
 
 	@Test
-	public void voxelize3D(){
+	public void voxelization3D(){
+		/**
+		An ideal voxelization algorithm should be able to convert a {@link Mesh} generated from a binary image back into
+		a surface-pixel outline of the original binary image. This surface-pixel image should match the result of
+		processing the original binary image with {@link Boundary} using
+		{@link Boundary.StructuringElement.FOUR_CONNECTED}. When working with real images these can mismatch due to
+		isolated single-pixel objects in the original binary image not being incorporated into the {@link Mesh}
+		*/
 		final Img<BitType> out = new ArrayImgFactory<>(new BitType()).create(getTestImage3D());
-		ops.run(DefaultVoxelize3D.class,out, mesh, 1.0);
+		ops.run(EuclideanDistanceVoxelization3D.class,out, mesh, 1.0);
 		final Boundary<BoolType> compareTo = new Boundary(ops.convert().bit(getTestImage3D()), Boundary.StructuringElement.FOUR_CONNECTED);
 		boolean matches = true;
 		Cursor<BitType> voxelizedPositive = Regions.iterable(out).localizingCursor();
@@ -210,10 +217,5 @@ public class MeshFeatureTests extends AbstractFeatureTest {
 		if(voxelizedPositive.hasNext() || boundaryPositive.hasNext())
 			matches = false;
 		assertTrue(matches);
-	}
-
-	@Test
-	public void voxelization3D() {
-		// https://github.com/imagej/imagej-ops/issues/422
 	}
 }

@@ -37,7 +37,6 @@ import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops.Geometric.Voxelization;
 import net.imagej.ops.geom.geom3d.mesh.VertexInterpolator;
-import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.RealLocalizable;
@@ -678,12 +677,14 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@Deprecated
-	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class)
+	@OpMethod(ops = {
+			net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class,
+			net.imagej.ops.geom.geom3d.EuclideanDistanceVoxelization3D.class
+	})
 	public RandomAccessibleInterval<BitType> voxelization(final Mesh in) {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<BitType> result =
-				(RandomAccessibleInterval<BitType>) ops().run(net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class, in);
+				(RandomAccessibleInterval<BitType>) ops().run(net.imagej.ops.Ops.Geometric.Voxelization.class, in);
 		return result;
 	}
 
@@ -704,24 +705,17 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultVoxelize3D.class)
-	public RandomAccessibleInterval<BitType> voxelize(final Mesh in) {
+	@OpMethod(op = net.imagej.ops.geom.geom3d.EuclideanDistanceVoxelization3D.class)
+	public RandomAccessibleInterval<BitType> voxelization(final RandomAccessibleInterval<BitType> out, final Mesh in) {
 		final RandomAccessibleInterval<BitType> result =
-			(RandomAccessibleInterval<BitType>) ops().run(net.imagej.ops.geom.geom3d.DefaultVoxelize3D.class, in);
+				(RandomAccessibleInterval<BitType>) ops().run(net.imagej.ops.geom.geom3d.EuclideanDistanceVoxelization3D.class, out, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultVoxelize3D.class)
-	public RandomAccessibleInterval<BitType> voxelize(final RandomAccessibleInterval<BitType> out, final Mesh in) {
+	@OpMethod(op = net.imagej.ops.geom.geom3d.EuclideanDistanceVoxelization3D.class)
+	public RandomAccessibleInterval<BitType> voxelization(final RandomAccessibleInterval<BitType> out, final Mesh in, final double wallThickness) {
 		final RandomAccessibleInterval<BitType> result =
-				(RandomAccessibleInterval<BitType>) ops().run(net.imagej.ops.geom.geom3d.DefaultVoxelize3D.class, out, in);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultVoxelize3D.class)
-	public RandomAccessibleInterval<BitType> voxelize(final RandomAccessibleInterval<BitType> out, final Mesh in, final double wallThickness) {
-		final RandomAccessibleInterval<BitType> result =
-				(RandomAccessibleInterval<BitType>) ops().run(net.imagej.ops.geom.geom3d.DefaultVoxelize3D.class, out, in, wallThickness);
+				(RandomAccessibleInterval<BitType>) ops().run(net.imagej.ops.geom.geom3d.EuclideanDistanceVoxelization3D.class, out, in, wallThickness);
 		return result;
 	}
 	

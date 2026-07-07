@@ -43,6 +43,7 @@ import net.imglib2.type.logic.BitType;
 import net.imglib2.util.Intervals;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -54,9 +55,9 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Andrew McCall (University at Buffalo)
  */
-@Plugin(type = Ops.Geometric.Voxelize.class)
-public class DefaultVoxelize3D <O extends RandomAccessibleInterval<BitType>> extends AbstractUnaryHybridCF<Mesh, O>
-		implements Ops.Geometric.Voxelize {
+@Plugin(type = Ops.Geometric.Voxelization.class, priority = Priority.HIGH)
+public class EuclideanDistanceVoxelization3D<O extends RandomAccessibleInterval<BitType>> extends AbstractUnaryHybridCF<Mesh, O>
+		implements Ops.Geometric.Voxelization {
 
 	@Parameter
 	private OpService ops;
@@ -82,18 +83,19 @@ public class DefaultVoxelize3D <O extends RandomAccessibleInterval<BitType>> ext
 				}
 			}
 		});
-
 	}
 
 	@Override
 	public O createOutput(Mesh input){
 
 		float[] bounds = Meshes.boundingBox(input);
-		long[] outputInterval = new long[3];
+		long[] min = new long[3];
+		long[] max = new long[3];
 		for (int i = 0; i < 3; i++) {
-			outputInterval[i] = (long)Math.ceil(bounds[i+3]+(2*wallThickness)-bounds[i]);
+			min[i] = (long)Math.floor(bounds[i]-wallThickness/2);
+			max[i] = (long)Math.ceil(bounds[i+3]+wallThickness/2);
 		}
-		return (O) ops.create().img(new FinalInterval(outputInterval), new BitType());
+		return (O) ops.create().img(new FinalInterval(min,max), new BitType());
 	}
 
 	private Vector3D[] triangleToVector3DTriangle(Triangle t){
