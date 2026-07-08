@@ -71,13 +71,17 @@ public class EuclideanDistanceVoxelization3D<O extends RandomAccessibleInterval<
 
 		input.triangles().forEach((Triangle t) -> {
 			Vector3D[] vector3DTriangle = triangleToVector3DTriangle(t);
+			Vector3D normal = getNormalizedNormal(vector3DTriangle);
+			//check if triangle is degenerate
+			if(normal.getX() == Double.NEGATIVE_INFINITY)
+				return;
 			Interval triangleBox = boundingBox(vector3DTriangle);
 			LocalizingIntervalIterator iterator = new LocalizingIntervalIterator(triangleBox);
 			while (iterator.hasNext()) {
 				//For each point within triangle bounding box, set to true based on Euclidean distance of point to triangle surface
 				iterator.fwd();
 				if(Intervals.contains(output, iterator.positionAsPoint())) {
-					if (pointToTriangleDist(new Vector3D(iterator.getDoublePosition(0), iterator.getDoublePosition(1), iterator.getDoublePosition(2)), vector3DTriangle) <= wallThickness/2) {
+					if (pointToTriangleDist(new Vector3D(iterator.getDoublePosition(0), iterator.getDoublePosition(1), iterator.getDoublePosition(2)), vector3DTriangle, normal) <= wallThickness/2) {
 						ra.setPositionAndGet(iterator.positionAsPoint()).set(true);
 					}
 				}
@@ -108,6 +112,23 @@ public class EuclideanDistanceVoxelization3D<O extends RandomAccessibleInterval<
 		return o;
 	}
 
+	private Vector3D getNormalizedNormal(Vector3D[] t){
+		Vector3D ab = t[1].subtract(t[0]);
+		Vector3D ac = t[2].subtract(t[0]);
+
+		// Find the normal to the plane: n = ab x ac
+		Vector3D n = ab.crossProduct(ac);
+
+		// Normalize normal vector
+		try{
+			n = n.normalize();
+		}
+		catch(Exception e){
+			return  new Vector3D(Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY);  // Triangle is degenerate
+		}
+		return n;
+	}
+
 	private Interval boundingBox(Vector3D[] t){
 		long [] min = new long[3];
 		long [] max = new long[3];
@@ -122,12 +143,12 @@ public class EuclideanDistanceVoxelization3D<O extends RandomAccessibleInterval<
 		return new FinalInterval(min, max);
 	}
 
-	private double pointToTriangleDist(Vector3D p, Vector3D[] t){
-		Vector3D tPoint = nearestPointInTriangle3D(p, t);
+	private double pointToTriangleDist(Vector3D p, Vector3D[] t, Vector3D n){
+		Vector3D tPoint = nearestPointInTriangle3D(p, t, n);
 		return p.distance(tPoint);
 	}
 
-	private Vector3D nearestPointInTriangle3D(Vector3D p, Vector3D[] t) {
+	private Vector3D nearestPointInTriangle3D(Vector3D p, Vector3D[] t, Vector3D n) {
 		/*
 		Need to project point 'p' onto the plane of triangle 't' as first step. This allows
 		use of the barycentric coordinate system to locate the nearest point in 't.'
@@ -135,18 +156,7 @@ public class EuclideanDistanceVoxelization3D<O extends RandomAccessibleInterval<
 		Vector3D ab = t[1].subtract(t[0]);
 		Vector3D ac = t[2].subtract(t[0]);
 
-		//region Obtain projection of point p onto plane of triangle
-		// Find the normal to the plane: n = ab x ac
-		Vector3D n = ab.crossProduct(ac);
-
-		// Normalize normal vector
-		try{
-			n = n.normalize();
-		}
-		catch(Exception e){
-			return  new Vector3D(Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY);  // Triangle is degenerate
-		}
-
+		//region Use normal to obtain projection of point p onto plane of triangle
 		// Project point p onto the plane spanned by a->b and a->c.
 		double dist = p.dotProduct(n) - t[0].dotProduct(n);
 		Vector3D projection = p.add(n.scalarMultiply(-dist));
