@@ -31,28 +31,22 @@ package net.imagej.ops.geom;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 import net.imagej.mesh.Mesh;
 import net.imagej.mesh.Triangle;
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.AbstractFeatureTest;
-import net.imagej.ops.geom.geom3d.DefaultBoxivityMesh;
-import net.imagej.ops.geom.geom3d.DefaultCompactness;
-import net.imagej.ops.geom.geom3d.DefaultConvexityMesh;
-import net.imagej.ops.geom.geom3d.DefaultMainElongation;
-import net.imagej.ops.geom.geom3d.DefaultMarchingCubes;
-import net.imagej.ops.geom.geom3d.DefaultMedianElongation;
-import net.imagej.ops.geom.geom3d.DefaultSolidityMesh;
-import net.imagej.ops.geom.geom3d.DefaultSparenessMesh;
-import net.imagej.ops.geom.geom3d.DefaultSphericity;
-import net.imagej.ops.geom.geom3d.DefaultSurfaceArea;
-import net.imagej.ops.geom.geom3d.DefaultSurfaceAreaConvexHullMesh;
-import net.imagej.ops.geom.geom3d.DefaultVerticesCountConvexHullMesh;
-import net.imagej.ops.geom.geom3d.DefaultVerticesCountMesh;
-import net.imagej.ops.geom.geom3d.DefaultVolumeConvexHullMesh;
-import net.imagej.ops.geom.geom3d.DefaultVolumeMesh;
+import net.imagej.ops.geom.geom3d.*;
+import net.imglib2.Cursor;
+import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.roi.Regions;
+import net.imglib2.roi.boundary.Boundary;
 import net.imglib2.roi.labeling.LabelRegion;
+import net.imglib2.type.logic.BitType;
+import net.imglib2.type.logic.BoolType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.BeforeClass;
@@ -200,7 +194,28 @@ public class MeshFeatureTests extends AbstractFeatureTest {
 	}
 
 	@Test
-	public void voxelization3D() {
-		// https://github.com/imagej/imagej-ops/issues/422
+	public void voxelization3D(){
+		/**
+		An ideal voxelization algorithm should be able to convert a {@link Mesh} generated from a binary image back into
+		a surface-pixel outline of the original binary image. This surface-pixel image should match the result of
+		processing the original binary image with {@link Boundary} using
+		{@link Boundary.StructuringElement.FOUR_CONNECTED}. When working with real images these can mismatch due to
+		isolated single-pixel objects in the original binary image not being incorporated into the {@link Mesh}
+		*/
+		final Img<BitType> out = new ArrayImgFactory<>(new BitType()).create(getTestImage3D());
+		ops.run(EuclideanDistanceVoxelization3D.class,out, mesh, 1.0);
+		final Boundary<BoolType> compareTo = new Boundary(ops.convert().bit(getTestImage3D()), Boundary.StructuringElement.FOUR_CONNECTED);
+		boolean matches = true;
+		Cursor<BitType> voxelizedPositive = Regions.iterable(out).localizingCursor();
+		Cursor<BoolType> boundaryPositive = compareTo.localizingCursor();
+		while(voxelizedPositive.hasNext() && boundaryPositive.hasNext() && matches){
+			voxelizedPositive.fwd();
+			boundaryPositive.fwd();
+			if(!Arrays.equals(voxelizedPositive.positionAsLongArray(),boundaryPositive.positionAsLongArray()))
+				matches = false;
+		}
+		if(voxelizedPositive.hasNext() || boundaryPositive.hasNext())
+			matches = false;
+		assertTrue(matches);
 	}
 }

@@ -278,13 +278,14 @@ public class GeomNamespace extends AbstractNamespace {
 			net.imagej.ops.Ops.Geometric.ConvexHull.class, in);
 		return result;
 	}
-	
+
+	@Deprecated
 	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class)
 	public RandomAccessibleInterval<BitType> voxelization(final Mesh in, final int width, final int height, final int depth ) {
 		final RandomAccessibleInterval<BitType> result = (RandomAccessibleInterval<BitType>) ops().run(
 				Voxelization.class, in, width, height, depth );
-	 	return result;
-	}	
+		return result;
+	}
 
 	@OpMethod(op = net.imagej.ops.geom.geom2d.DefaultConvexityPolygon.class)
 	public DoubleType convexity(final Polygon2D in) {
@@ -675,27 +676,46 @@ public class GeomNamespace extends AbstractNamespace {
 			p1Value, p2Value);
 		return result;
 	}
-	
-	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class)
+
+	@OpMethod(ops = {
+			net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class,
+			net.imagej.ops.geom.geom3d.EuclideanDistanceVoxelization3D.class
+	})
 	public RandomAccessibleInterval<BitType> voxelization(final Mesh in) {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<BitType> result =
-			(RandomAccessibleInterval<BitType>) ops().run(net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class, in);
+				(RandomAccessibleInterval<BitType>) ops().run(net.imagej.ops.Ops.Geometric.Voxelization.class, in);
 		return result;
 	}
 
+	@Deprecated
 	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class)
 	public RandomAccessibleInterval<BitType> voxelization(final Mesh in, final int width) {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<BitType> result =
-			(RandomAccessibleInterval<BitType>) ops().run(net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class, in, width);
+				(RandomAccessibleInterval<BitType>) ops().run(net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class, in, width);
 		return result;
 	}
 
+	@Deprecated
 	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class)
 	public RandomAccessibleInterval<BitType> voxelization(final Mesh in, final int width, final int height) {
 		final RandomAccessibleInterval<BitType> result =
-			(RandomAccessibleInterval<BitType>) ops().run(net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class, in, width, height);
+				(RandomAccessibleInterval<BitType>) ops().run(net.imagej.ops.geom.geom3d.DefaultVoxelization3D.class, in, width, height);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geom.geom3d.EuclideanDistanceVoxelization3D.class)
+	public RandomAccessibleInterval<BitType> voxelization(final RandomAccessibleInterval<BitType> out, final Mesh in) {
+		final RandomAccessibleInterval<BitType> result =
+				(RandomAccessibleInterval<BitType>) ops().run(net.imagej.ops.geom.geom3d.EuclideanDistanceVoxelization3D.class, out, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geom.geom3d.EuclideanDistanceVoxelization3D.class)
+	public RandomAccessibleInterval<BitType> voxelization(final RandomAccessibleInterval<BitType> out, final Mesh in, final double wallThickness) {
+		final RandomAccessibleInterval<BitType> result =
+				(RandomAccessibleInterval<BitType>) ops().run(net.imagej.ops.geom.geom3d.EuclideanDistanceVoxelization3D.class, out, in, wallThickness);
 		return result;
 	}
 	

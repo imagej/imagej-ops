@@ -58,7 +58,9 @@ import org.scijava.plugin.Plugin;
  * </p>
  * 
  * @author Kyle Harrington (University of Idaho)
+ * @deprecated Use {@link EuclideanDistanceVoxelization3D} instead.
  */
+@Deprecated
 @Plugin(type = Ops.Geometric.Voxelization.class)
 public class DefaultVoxelization3D extends AbstractUnaryFunctionOp<Mesh, RandomAccessibleInterval<BitType>>
 		implements Ops.Geometric.Voxelization {
