@@ -50,12 +50,12 @@ import org.scijava.plugin.Plugin;
 /**
  * <p>
  * This is a voxelizer that produces a binary image with values set to true along the surface of the mesh.
- * Calculates the Euclidean distance in pixel between each pixel in the output image and the nearest point in the mesh,
+ * Calculates the Euclidean distance between each pixel in the output image and the nearest point in the mesh,
  * and sets the pixel to true if it is within 'wallThickness'/2 pixel units of the mesh.
- * Calling this op with the default wallThickness of 1, and subsequently performing a
+ * Calling this op with the default wallThickness of 1.0, and subsequently performing a
  * {@link net.imagej.ops.commands.morphology.FillHoles} command using
  * {@link net.imglib2.algorithm.neighborhood.DiamondShape} of size 1 is a functional inverse of
- * {@link net.imagej.ops.Ops.Geometric.MarchingCubes} for any object in the original data that is successfully converted
+ * {@link DefaultMarchingCubes} for any object in the original data that is successfully converted
  * to a mesh via marching cubes.
  * </p>
  *
@@ -70,8 +70,8 @@ public class EuclideanDistanceVoxelization3D<O extends RandomAccessibleInterval<
 	@Parameter
 	private OpService ops;
 
-	@Parameter(type = ItemIO.INPUT, required = false, description = "Average surface pixel thickness of the resulting " +
-			"voxelized image. Any pixel within 'wallThickness'/2 of the mesh will be set to true. Default value is 1.")
+	@Parameter(type = ItemIO.INPUT, required = false, description = "Average pixel thickness of the resulting voxelized" +
+			" image surface. Any pixel within 'wallThickness'/2 of the mesh will be set to true. Default value is 1.")
 	private double wallThickness = 1.0;
 
 	@Override
