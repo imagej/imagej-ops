@@ -6,13 +6,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *
+ * 
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -56,7 +56,7 @@ import org.scijava.plugin.Plugin;
  * Thanks to Tomas Möller for sharing his public domain code:
  * http://fileadmin.cs.lth.se/cs/personal/tomas_akenine-moller/code/tribox.txt
  * </p>
- *
+ * 
  * @author Kyle Harrington (University of Idaho)
  * @deprecated Use {@link EuclideanDistanceVoxelization3D} instead.
  */
@@ -131,9 +131,9 @@ public class DefaultVoxelization3D extends AbstractUnaryFunctionOp<Mesh, RandomA
 					Math.max(Math.max(v1.getZ(), v2.getZ()), v3.getZ()) - minPoint.getDoublePosition(2) };
 
 			RandomAccess<BitType> ra = outImg.randomAccess();// Should use the
-			// interval
-			// implementation
-			// for speed
+																// interval
+																// implementation
+																// for speed
 
 			long[] indices = new long[3];
 			for (indices[0] = (long) Math.floor(minSubBoundary[0] / stepSizes[0]); indices[0] < Math
@@ -144,7 +144,7 @@ public class DefaultVoxelization3D extends AbstractUnaryFunctionOp<Mesh, RandomA
 							.floor(maxSubBoundary[2] / stepSizes[2]); indices[2]++) {
 						ra.setPosition(indices);
 						if (!ra.get().get())// Don't check if voxel is already
-						// filled
+											// filled
 						{
 							double[] voxelCenter = new double[3];
 
@@ -198,7 +198,7 @@ public class DefaultVoxelization3D extends AbstractUnaryFunctionOp<Mesh, RandomA
 	}
 
 	private int axisTest_x01(double e0, double e02, double fez, double fey, double[] v0, double[] v1, double[] v2,
-							 double[] boxhalfsize) {
+			double[] boxhalfsize) {
 		double p0 = e0 * v0[1] - e02 * v0[2];
 		double p2 = e0 * v2[1] - e02 * v2[2];
 		double max;
@@ -219,7 +219,7 @@ public class DefaultVoxelization3D extends AbstractUnaryFunctionOp<Mesh, RandomA
 	}
 
 	private int axisTest_x2(double a, double b, double fa, double fb, double[] v0, double[] v1, double[] v2,
-							double[] boxhalfsize) {
+			double[] boxhalfsize) {
 		double p0 = a * v0[1] - b * v0[2];
 		double p1 = a * v1[1] - b * v1[2];
 		double max;
@@ -240,7 +240,7 @@ public class DefaultVoxelization3D extends AbstractUnaryFunctionOp<Mesh, RandomA
 	}
 
 	private int axisTest_y02(double a, double b, double fa, double fb, double[] v0, double[] v1, double[] v2,
-							 double[] boxhalfsize) {
+			double[] boxhalfsize) {
 		double p0 = -a * v0[0] + b * v0[2];
 		double p2 = -a * v2[0] + b * v2[2];
 		double max;
@@ -261,7 +261,7 @@ public class DefaultVoxelization3D extends AbstractUnaryFunctionOp<Mesh, RandomA
 	}
 
 	private int axisTest_y1(double a, double b, double fa, double fb, double[] v0, double[] v1, double[] v2,
-							double[] boxhalfsize) {
+			double[] boxhalfsize) {
 		double p0 = -a * v0[0] + b * v0[2];
 		double p1 = -a * v1[0] + b * v1[2];
 		double max;
@@ -282,7 +282,7 @@ public class DefaultVoxelization3D extends AbstractUnaryFunctionOp<Mesh, RandomA
 	}
 
 	private int axisTest_z12(double a, double b, double fa, double fb, double[] v0, double[] v1, double[] v2,
-							 double[] boxhalfsize) {
+			double[] boxhalfsize) {
 		double p1 = a * v1[0] - b * v1[1];
 		double p2 = a * v2[0] - b * v2[1];
 		double max;
@@ -303,7 +303,7 @@ public class DefaultVoxelization3D extends AbstractUnaryFunctionOp<Mesh, RandomA
 	}
 
 	private int axisTest_z0(double a, double b, double fa, double fb, double[] v0, double[] v1, double[] v2,
-							double[] boxhalfsize) {
+			double[] boxhalfsize) {
 		double p0 = a * v0[0] - b * v0[1];
 		double p1 = a * v1[0] - b * v1[1];
 		double max;
