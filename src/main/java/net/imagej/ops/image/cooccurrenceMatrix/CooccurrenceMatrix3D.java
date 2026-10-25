@@ -126,7 +126,8 @@ public class CooccurrenceMatrix3D<T extends RealType<T>> extends
 							&& pixels[sz][sy][sx] != Integer.MAX_VALUE) {
 
 						matrix[pixels[z][y][x]][pixels[sz][sy][sx]]++;
-						nrPairs++;
+						matrix[pixels[sz][sy][sx]][pixels[z][y][x]]++;
+						nrPairs += 2;
 
 					}
 				}
