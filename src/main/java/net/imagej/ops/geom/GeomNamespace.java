@@ -31,6 +31,7 @@ package net.imagej.ops.geom;
 
 import java.util.List;
 
+import net.imagej.axis.CalibratedAxis;
 import net.imagej.mesh.Mesh;
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
@@ -497,7 +498,18 @@ public class GeomNamespace extends AbstractNamespace {
 			net.imagej.ops.Ops.Geometric.MarchingCubes.class, in, isolevel,
 			interpolatorClass);
 		return result;
-	}	
+	}
+
+	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultMarchingCubes.class)
+	public <T extends Type<T>> Mesh marchingCubes(
+			final RandomAccessibleInterval<T> in, final double isolevel,
+			final VertexInterpolator interpolatorClass, final List<CalibratedAxis> axes)
+	{
+		final Mesh result = (Mesh) ops().run(
+				net.imagej.ops.Ops.Geometric.MarchingCubes.class, in, isolevel,
+				interpolatorClass, axes);
+		return result;
+	}
 	
 	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultMedianElongation.class)
 	public DoubleType medianElongation(final Mesh in) {
