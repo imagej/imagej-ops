@@ -11,6 +11,9 @@
 /.idea/
 /*.iml
 
+# VS Code #
+/.serena
+
 # Apple #
 .DS_Store
 
