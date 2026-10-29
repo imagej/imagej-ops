@@ -12,6 +12,7 @@
 /*.iml
 
 # VS Code #
+/.vscode
 /.serena
 
 # Apple #
