@@ -28,13 +28,17 @@
  */
 package net.imagej.ops.coloc;
 
-import io.scif.SCIFIOService;
-import io.scif.img.ImgIOException;
-import io.scif.img.ImgOpener;
-
 import java.util.Arrays;
 import java.util.Random;
 
+import org.scijava.Context;
+import org.scijava.app.StatusService;
+import org.scijava.cache.CacheService;
+import org.scijava.task.TaskService;
+
+import io.scif.SCIFIOService;
+import io.scif.img.ImgIOException;
+import io.scif.img.ImgOpener;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.OpMatchingService;
 import net.imagej.ops.OpService;
@@ -54,18 +58,14 @@ import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
-import org.junit.Before;
-import org.scijava.Context;
-import org.scijava.app.StatusService;
-import org.scijava.cache.CacheService;
-
 /** Abstract base class for coloc op unit tests. */
 public abstract class AbstractColocalisationTest extends AbstractOpTest {
 
 	@Override
 	protected Context createContext() {
 		return new Context(OpService.class, OpMatchingService.class,
-			CacheService.class, StatusService.class, SCIFIOService.class);
+			CacheService.class, StatusService.class, TaskService.class,
+			SCIFIOService.class);
 	}
 
 	// images and meta data for zero correlation
